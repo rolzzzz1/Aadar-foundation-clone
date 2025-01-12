@@ -23,7 +23,7 @@ import Card from "@mui/material/Card";
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 import MKSocialButton from "components/MKSocialButton";
-import MKCarousel from "components/MKCarousel";
+// import MKCarousel from "components/MKCarousel";
 
 // Material Kit 2 React examples
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
@@ -76,7 +76,7 @@ function Presentation() {
       >
         <Container>
           <Grid container item xs={12} lg={7} justifyContent="center" mx="auto">
-            <MKCarousel />
+            {/* <MKCarousel /> */}
 
             {/* <MKTypography
               variant="h1"
