@@ -78,7 +78,7 @@ function Presentation() {
           <Grid container item xs={12} lg={7} justifyContent="center" mx="auto">
             {/* <MKCarousel /> */}
 
-            {/* <MKTypography
+            <MKTypography
               variant="h1"
               color="white"
               textAlign="center"
@@ -100,7 +100,7 @@ function Presentation() {
               mt={1}
             >
               Home for hopeless, homeless, helpless and unclaimed people
-            </MKTypography> */}
+            </MKTypography>
           </Grid>
         </Container>
       </MKBox>
