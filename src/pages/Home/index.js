@@ -14,97 +14,110 @@ Coded by www.creative-tim.com
 */
 
 // @mui material components
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
+// import Container from "@mui/material/Container";
+// import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 // import { grey } from "@mui/material/colors";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
-import MKTypography from "components/MKTypography";
-import MKSocialButton from "components/MKSocialButton";
-// import MKCarousel from "components/MKCarousel";
+// import MKTypography from "components/MKTypography";
 
 // Material Kit 2 React examples
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import DefaultFooter from "examples/Footers/DefaultFooter";
-import FilledInfoCard from "examples/Cards/InfoCards/FilledInfoCard";
 
 // Presentation page sections
-import Counters from "pages/Presentation/sections/Counters";
-import Information from "pages/Presentation/sections/Information";
-import DesignBlocks from "pages/Presentation/sections/DesignBlocks";
-import Pages from "pages/Presentation/sections/Pages";
-import Testimonials from "pages/Presentation/sections/Testimonials";
-import Download from "pages/Presentation/sections/Download";
 
-// Presentation page components
-import BuiltByDevelopers from "pages/Presentation/components/BuiltByDevelopers";
+import About from "pages/Home/sections/Home sections/About";
+import Work from "pages/Home/sections/Home sections/Work";
+import Events from "pages/Home/sections/Home sections/Events";
 
 // Routes
 import routes from "routes";
 import footerRoutes from "footer.routes";
 
 // Images
-// import bgImage from "assets/images/bg-presentation.jpg";
-// import bgImage from "assets/images/main1.jpg";
-import bgImage from "assets/images/main4.png";
 
-function Presentation() {
+import bgImage from "assets/images/brushstroke.svg";
+// import bgImage1 from "assets/images/main1.jpg";
+import bgImage2 from "assets/images/aadar-main-black2.png";
+
+function Home() {
   return (
     <>
+      {/* Navbar component */}
       <DefaultNavbar
         routes={routes}
         action={{
-          type: "external",
-          route: "https://www.creative-tim.com/product/material-kit-react",
+          type: "internal",
+          route: "",
           label: "Donate Now",
           color: "success",
         }}
         sticky
       />
+
+      {/* Header, background image/carousel */}
       <MKBox
         minHeight="100vh"
         width="100%"
         sx={{
-          backgroundImage: `url(${bgImage})`,
+          backgroundImage: `url(${bgImage2})`,
           backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
           backgroundPosition: "top",
-          display: "grid",
-          placeItems: "center",
+          display: "flex",
+          justifyContent: "end",
+          alignItems: "center",
         }}
       >
-        <Container>
-          <Grid container item xs={12} lg={7} justifyContent="center" mx="auto">
-            {/* <MKCarousel /> */}
-
-            <MKTypography
-              variant="h1"
-              color="white"
-              textAlign="center"
-              mt={-4}
-              mb={1}
-              sx={({ breakpoints, typography: { size } }) => ({
-                [breakpoints.down("md")]: {
-                  fontSize: size["xl"],
-                },
-              })}
-            >
-              Aashram Swarg Sadan
-            </MKTypography>
-            <MKTypography
-              variant="body1"
-              color="white"
-              textAlign="center"
-              px={{ xs: 6, lg: 12 }}
-              mt={1}
-            >
-              Home for hopeless, homeless, helpless and unclaimed people
-            </MKTypography>
-          </Grid>
-        </Container>
+        <MKBox
+          // backgroundColor="white"
+          color="white"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          // textAlign="center"
+          sx={{
+            // backgroundColor: "#000000",
+            backgroundImage: `url(${bgImage})`,
+            backgroundSize: "auto",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "top",
+            width: "50%",
+            minHeight: "60vh",
+          }}
+        >
+          <h1>Aadar Foundation</h1>
+          <h3>Swarg Sadan Aashram</h3>
+        </MKBox>
       </MKBox>
+
+      {/* Main section */}
       <Card
+        sx={{
+          p: 2,
+          mx: { xs: 2, lg: 3 },
+          mt: -10,
+          mb: 4,
+          backgroundColor: ({ palette: { white }, functions: { rgba } }) => rgba(white.main, 0.8),
+          backdropFilter: "saturate(200%) blur(30px)",
+          boxShadow: ({ boxShadows: { xxl } }) => xxl,
+        }}
+      >
+        {/* About section component */}
+        <About />
+
+        {/* Our work section component */}
+        <Work />
+
+        {/* Events section component */}
+        <Events />
+      </Card>
+
+      {/* <Card
         sx={{
           p: 2,
           mx: { xs: 2, lg: 3 },
@@ -220,12 +233,14 @@ function Presentation() {
             </Grid>
           </Container>
         </MKBox>
-      </Card>
-      <MKBox pt={6} px={1} mt={6}>
+      </Card> */}
+
+      {/* Footer */}
+      <MKBox pt={2} px={0} mt={1}>
         <DefaultFooter content={footerRoutes} />
       </MKBox>
     </>
   );
 }
 
-export default Presentation;
+export default Home;

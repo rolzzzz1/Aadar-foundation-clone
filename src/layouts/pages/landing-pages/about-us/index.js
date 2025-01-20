@@ -14,8 +14,8 @@ Coded by www.creative-tim.com
 */
 
 // Material Kit 2 React pages
-import AboutUs from "pages/LandingPages/AboutUs";
+import About from "pages/LandingPages/About";
 
-export default function AboutUsPage() {
-  return <AboutUs />;
+export default function AboutPage() {
+  return <About />;
 }

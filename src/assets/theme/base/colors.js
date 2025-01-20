@@ -20,6 +20,11 @@ Coded by www.creative-tim.com
  */
 
 export default {
+  darkText: {
+    main: "#363636",
+    focus: "#363636",
+  },
+
   background: {
     default: "#f0f2f5",
   },

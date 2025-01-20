@@ -467,14 +467,14 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
         // left={0}
         right={0}
         zIndex={3}
-        // sx={({ palette: { transparent: transparentColor, grey }, functions: { rgba } }) => ({
-        //   backgroundColor: transparent ? transparentColor.main : rgba(grey[200], 0.8),
+        sx={({ palette: { transparent: transparentColor, grey }, functions: { rgba } }) => ({
+          backgroundColor: transparent ? transparentColor.main : rgba(grey[200], 0.8),
+          backdropFilter: transparent ? "none" : `saturate(200%) blur(10px)`,
+        })}
+        // sx={({ palette: { transparent: transparentColor, grey } }) => ({
+        //   backgroundColor: transparent ? transparentColor.main : grey[400],
         //   backdropFilter: transparent ? "none" : `saturate(200%) blur(30px)`,
         // })}
-        sx={({ palette: { transparent: transparentColor, grey } }) => ({
-          backgroundColor: transparent ? transparentColor.main : grey[400],
-          backdropFilter: transparent ? "none" : `saturate(200%) blur(30px)`,
-        })}
         display="flex"
         justifyContent="space-between"
         alignItems="center"
@@ -490,7 +490,6 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
         >
           <img src={aadarLogo} width="80px" />
         </MKBox>
-
         <MKBox
           py={1}
           px={{ xs: 4, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
@@ -501,6 +500,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
           shadow={transparent ? "none" : "md"}
           color={light ? "white" : "dark"}
           position={relative ? "relative" : "absolute"}
+          top={0}
           // left={0}
           right={0}
           zIndex={3}
@@ -545,7 +545,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
               {renderNavbarItems}
             </MKBox>
 
-            {/* FREE download button */}
+            {/* Donate button */}
             <MKBox ml={{ xs: "auto", lg: 0 }}>
               {action &&
                 (action.type === "internal" ? (
@@ -558,7 +558,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
                         : "gradient"
                     }
                     color={action.color ? action.color : "info"}
-                    size="small"
+                    size="medium"
                   >
                     {action.label}
                   </MKButton>
@@ -574,12 +574,13 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
                         : "gradient"
                     }
                     color={action.color ? action.color : "info"}
-                    size="small"
+                    size="medium"
                   >
                     {action.label}
                   </MKButton>
                 ))}
             </MKBox>
+
             <MKBox
               display={{ xs: "inline-block", lg: "none" }}
               lineHeight={0}
@@ -592,6 +593,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
               <Icon fontSize="default">{mobileNavbar ? "close" : "menu"}</Icon>
             </MKBox>
           </MKBox>
+
           <MKBox
             bgColor={transparent ? "white" : "transparent"}
             shadow={transparent ? "lg" : "none"}
@@ -601,9 +603,62 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
             {mobileView && <DefaultNavbarMobile routes={routes} open={mobileNavbar} />}
           </MKBox>
         </MKBox>
+
+        {/* <MKBox
+          py={1}
+          px={{ xs: 4, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
+          my={relative ? 0 : 2}
+          mx={relative ? 0 : 3}
+          width={relative ? "50%" : "calc(50% - 48px)"}
+          height={"30%"}
+          borderRadius="xl"
+          // shadow={transparent ? "none" : "md"}
+          color={light ? "white" : "dark"}
+          position={relative ? "relative" : "absolute"}
+          margin={0}
+          // left={0}
+          bottom={0}
+          right={0}
+          zIndex={3}
+          fontSize="14px"
+          display="flex"
+          gap="20px"
+          justifyContent="right"
+          alignItems="center"
+          // sx={({ palette: { transparent: transparentColor, grey } }) => ({
+          //   backgroundColor: transparent ? transparentColor.main : grey[300],
+          //   backdropFilter: transparent ? "none" : `saturate(100%) blur(30px)`,
+          // })}
+        >
+          <MKBox display="flex" gap="20px" fontSize="12px" padding={"0 20px 0 0"}>
+            <p>+91 2345678901</p>
+            <p>aadar123@gmail.com</p>
+          </MKBox>
+        </MKBox> */}
+
         {dropdownMenu}
         {nestedDropdownMenu}
       </MKBox>
+      {/* <MKBox
+        py={1}
+        px={{ xs: 4, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
+        my={relative ? 0 : 16}
+        mx={relative ? 0 : 3}
+        // width={relative ? "50%" : "calc(50% - 48px)"}
+        borderRadius="xl"
+        shadow={transparent ? "none" : "md"}
+        color={light ? "white" : "dark"}
+        position={relative ? "relative" : "absolute"}
+        // left={0}
+        right={0}
+        zIndex={4}
+        sx={({ palette: { transparent: transparentColor, grey } }) => ({
+          backgroundColor: transparent ? transparentColor.main : grey[400],
+          backdropFilter: transparent ? "none" : `saturate(200%) blur(30px)`,
+        })}
+      >
+        <MKTypography fontSize="12px">9039129571 aadar1234@gmail.com</MKTypography>
+      </MKBox> */}
     </Container>
   );
 }
