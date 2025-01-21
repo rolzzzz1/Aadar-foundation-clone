@@ -58,6 +58,7 @@ const routes = [
   {
     name: "Home",
     href: "/",
+    route: "/pages/home",
   },
   {
     name: "About Us",
