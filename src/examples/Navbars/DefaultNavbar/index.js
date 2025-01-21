@@ -527,14 +527,14 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
               >
                 {brand}
               </MKTypography>
-              <MKTypography
+              {/* <MKTypography
                 variant="button"
                 fontWeight="light"
                 color={light ? "white" : "dark"}
                 fontSize="14px"
               >
                 A Home for Homeless & Unclaimed People
-              </MKTypography>
+              </MKTypography> */}
             </MKBox>
             <MKBox
               color="inherit"

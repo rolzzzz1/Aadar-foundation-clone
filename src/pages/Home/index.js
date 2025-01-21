@@ -23,6 +23,7 @@ import footerRoutes from "footer.routes";
 
 import bgImage from "assets/images/brushstroke.svg";
 import bgImage2 from "assets/images/aadar-main-black2.png";
+import MKTypography from "components/MKTypography";
 
 function Home() {
   return (
@@ -68,8 +69,12 @@ function Home() {
             minHeight: "60vh",
           }}
         >
-          <h1>Aadar Foundation</h1>
-          <h3>Swarg Sadan Aashram</h3>
+          <MKTypography variant="h2" color="white">
+            Aadar Foundation
+          </MKTypography>
+          <MKTypography variant="body" color="white" textAlign="center" mt={2}>
+            A home for Homeless and Unclaimed people
+          </MKTypography>
         </MKBox>
       </MKBox>
 
