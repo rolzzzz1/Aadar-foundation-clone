@@ -57,7 +57,7 @@ import Work from "layouts/pages/landing-pages/work";
 const routes = [
   {
     name: "Home",
-    href: "/pages/home",
+    href: "/",
   },
   {
     name: "About Us",
