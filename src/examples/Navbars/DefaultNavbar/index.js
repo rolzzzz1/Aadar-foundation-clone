@@ -461,8 +461,8 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
         py={1}
         px={{ xs: 4, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
         my={relative ? 0 : 2}
-        mx={relative ? 0 : 3}
-        width={relative ? "100%" : "calc(100% - 48px)"}
+        mx={relative ? 0 : 2}
+        width={relative ? "100%" : "calc(100% - 24px)"}
         borderRadius="xl"
         shadow={transparent ? "none" : "md"}
         color={light ? "white" : "dark"}
@@ -550,7 +550,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
               display="flex"
               flexDirection="column"
             >
-              <MKTypography variant="button" fontWeight="bold" color={light ? "white" : "dark"}>
+              <MKTypography variant="button, h4" fontWeight="bold" color={light ? "white" : "dark"}>
                 {brand}
               </MKTypography>
               <MKTypography

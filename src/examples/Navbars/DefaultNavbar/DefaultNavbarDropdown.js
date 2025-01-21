@@ -29,7 +29,7 @@ import MKTypography from "components/MKTypography";
 
 function DefaultNavbarDropdown({
   name,
-  icon,
+  // icon,
   children,
   collapseStatus,
   light,
@@ -54,8 +54,8 @@ function DefaultNavbarDropdown({
     <>
       <MKBox
         {...rest}
-        mx={1}
-        p={1}
+        // mx={1}
+        p={0.5}
         display="flex"
         alignItems="baseline"
         color={light ? "light" : "dark"}
@@ -64,18 +64,17 @@ function DefaultNavbarDropdown({
         {...(route && routeComponent)}
         {...(href && linkComponent)}
       >
-        <MKTypography
+        {/* <MKTypography
           variant="body2"
           lineHeight={1}
           color="inherit"
           sx={{ alignSelf: "center", "& *": { verticalAlign: "middle" } }}
         >
           {icon}
-        </MKTypography>
+        </MKTypography> */}
         <MKTypography
           variant="button"
           fontWeight="regular"
-          fontSize="15px"
           textTransform="capitalize"
           color={light ? "ligth" : "dark"}
           sx={{
