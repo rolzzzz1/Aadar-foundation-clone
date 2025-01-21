@@ -46,6 +46,9 @@ import breakpoints from "assets/theme/base/breakpoints";
 import aadarLogo from "assets/images/logo-aadar.jpg";
 // import { grey } from "@mui/material/colors";
 
+import CallRoundedIcon from "@mui/icons-material/CallRounded";
+import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
+
 function DefaultNavbar({ brand, routes, transparent, light, action, sticky, relative, center }) {
   const [dropdown, setDropdown] = useState("");
   const [dropdownEl, setDropdownEl] = useState("");
@@ -487,13 +490,41 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
           py={transparent ? 1.5 : 0.75}
           pl={relative || transparent ? 0 : { xs: 0, lg: 1 }}
           borderRadius="xl"
+          display="flex"
         >
-          <img src={aadarLogo} width="90px" />
+          <MKBox component="img" src={aadarLogo} width="120px" borderRadius="10px" />
+          {/* <img src={aadarLogo} width="130px" /> */}
+          {/* <MKBox
+            component={Link}
+            to="/"
+            lineHeight={1}
+            py={transparent ? 1.5 : 0.75}
+            pl={relative || transparent ? 0 : { xs: 0, lg: 1 }}
+            display="flex"
+            flexDirection="column"
+          >
+            <MKTypography
+              variant="button"
+              fontWeight="bold"
+              color={light ? "white" : "dark"}
+              fontSize="20px"
+            >
+              {brand}
+            </MKTypography>
+            <MKTypography
+              variant="button"
+              fontWeight="light"
+              color={light ? "white" : "dark"}
+              fontSize="14px"
+            >
+              A Home for Homeless & Unclaimed People
+            </MKTypography>
+          </MKBox> */}
         </MKBox>
         <MKBox
           py={1}
           px={{ xs: 4, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
-          my={relative ? 0 : 2}
+          my={relative ? 0 : 3.5}
           mx={relative ? 0 : 3}
           width={relative ? "85%" : "calc(85% - 48px)"}
           borderRadius="xl"
@@ -523,18 +554,18 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
                 variant="button"
                 fontWeight="bold"
                 color={light ? "white" : "dark"}
-                fontSize="22px"
+                fontSize="20px"
               >
                 {brand}
               </MKTypography>
-              {/* <MKTypography
+              <MKTypography
                 variant="button"
                 fontWeight="light"
                 color={light ? "white" : "dark"}
                 fontSize="14px"
               >
                 A Home for Homeless & Unclaimed People
-              </MKTypography> */}
+              </MKTypography>
             </MKBox>
             <MKBox
               color="inherit"
@@ -638,27 +669,65 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
 
         {dropdownMenu}
         {nestedDropdownMenu}
+        {/* <MKBox
+          // py={1}
+          // px={{ xs: 4, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
+          my={relative ? 0 : 2}
+          mx={relative ? 0 : 3}
+          // width={relative ? "85%" : "calc(85% - 48px)"}
+          borderRadius="xl"
+          // shadow={transparent ? "none" : "md"}
+          color={light ? "white" : "dark"}
+          position={relative ? "relative" : "absolute"}
+          bottom={0}
+          // top={0}
+          // left={0}
+          right={0}
+          zIndex={3}
+          // sx={({ palette: { transparent: transparentColor, grey } }) => ({
+          //   backgroundColor: transparent ? transparentColor.main : grey[100],
+          //   backdropFilter: transparent ? "none" : `saturate(200%) blur(30px)`,
+          // })}
+        >
+          <p>8989021190</p>
+        </MKBox> */}
       </MKBox>
-      {/* <MKBox
+      <MKBox
         py={1}
         px={{ xs: 4, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
         my={relative ? 0 : 16}
         mx={relative ? 0 : 3}
         // width={relative ? "50%" : "calc(50% - 48px)"}
         borderRadius="xl"
-        shadow={transparent ? "none" : "md"}
+        // shadow={transparent ? "none" : "md"}
         color={light ? "white" : "dark"}
         position={relative ? "relative" : "absolute"}
         // left={0}
         right={0}
         zIndex={4}
-        sx={({ palette: { transparent: transparentColor, grey } }) => ({
-          backgroundColor: transparent ? transparentColor.main : grey[400],
-          backdropFilter: transparent ? "none" : `saturate(200%) blur(30px)`,
-        })}
+
+        // sx={({ palette: { transparent: transparentColor, grey } }) => ({
+        //   backgroundColor: transparent ? transparentColor.main : grey[400],
+        //   backdropFilter: transparent ? "none" : `saturate(200%) blur(30px)`,
+        // })}
       >
-        <MKTypography fontSize="12px">9039129571 aadar1234@gmail.com</MKTypography>
-      </MKBox> */}
+        <MKTypography fontSize="12px">
+          <MKBox
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            gap="10px"
+            // fontSize="12px"
+            sx={{ color: "#888888" }}
+          >
+            <CallRoundedIcon fontSize="small" />
+            <span>9039129571</span>
+
+            <EmailRoundedIcon fontSize="small" />
+            <span>aadar1234@gmail.com</span>
+          </MKBox>
+        </MKTypography>
+      </MKBox>
     </Container>
   );
 }

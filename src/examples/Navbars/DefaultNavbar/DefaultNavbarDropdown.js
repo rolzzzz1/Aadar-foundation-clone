@@ -81,7 +81,6 @@ function DefaultNavbarDropdown({
           sx={{
             // fontWeight: "100%",
             fontWeight: 400,
-            fontSize: "16px",
             ml: 1,
             mr: 0.25,
             "&:hover": { color: "#E7A232", textDecoration: "underline 2px" },
