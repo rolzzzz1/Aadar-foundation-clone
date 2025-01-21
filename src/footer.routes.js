@@ -45,11 +45,11 @@ export default {
     {
       name: "Useful links",
       items: [
-        { name: "home", href: "/" },
-        { name: "about us", href: "/pages/landing-pages/about-us" },
-        { name: "our work", href: "/pages/landing-pages/work" },
-        { name: "gallery", href: "" },
-        { name: "contact", href: "" },
+        { name: "home", route: "/" },
+        { name: "about us", route: "/pages/landing-pages/about-us" },
+        { name: "our work", route: "/pages/landing-pages/work" },
+        { name: "gallery", route: "" },
+        { name: "contact", route: "" },
       ],
     },
 
