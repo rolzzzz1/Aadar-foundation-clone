@@ -492,7 +492,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
           borderRadius="xl"
           display="flex"
         >
-          <MKBox component="img" src={aadarLogo} width="120px" borderRadius="10px" />
+          <MKBox component="img" src={aadarLogo} width="100px" borderRadius="10px" />
           {/* <img src={aadarLogo} width="130px" /> */}
           {/* <MKBox
             component={Link}
@@ -550,12 +550,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
               display="flex"
               flexDirection="column"
             >
-              <MKTypography
-                variant="button"
-                fontWeight="bold"
-                color={light ? "white" : "dark"}
-                fontSize="20px"
-              >
+              <MKTypography variant="button" fontWeight="bold" color={light ? "white" : "dark"}>
                 {brand}
               </MKTypography>
               <MKTypography
