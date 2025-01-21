@@ -488,7 +488,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
           pl={relative || transparent ? 0 : { xs: 0, lg: 1 }}
           borderRadius="xl"
         >
-          <img src={aadarLogo} width="80px" />
+          <img src={aadarLogo} width="90px" />
         </MKBox>
         <MKBox
           py={1}
@@ -523,7 +523,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
                 variant="button"
                 fontWeight="bold"
                 color={light ? "white" : "dark"}
-                fontSize="18px"
+                fontSize="22px"
               >
                 {brand}
               </MKTypography>
@@ -531,7 +531,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
                 variant="button"
                 fontWeight="light"
                 color={light ? "white" : "dark"}
-                fontSize="12px"
+                fontSize="14px"
               >
                 A Home for Homeless & Unclaimed People
               </MKTypography>

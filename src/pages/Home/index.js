@@ -1,34 +1,16 @@
-/*
-=========================================================
-* Material Kit 2 React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-kit-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 // @mui material components
-// import Container from "@mui/material/Container";
-// import Grid from "@mui/material/Grid";
+
 import Card from "@mui/material/Card";
 // import { grey } from "@mui/material/colors";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
-// import MKTypography from "components/MKTypography";
 
 // Material Kit 2 React examples
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import DefaultFooter from "examples/Footers/DefaultFooter";
 
-// Presentation page sections
-
+// Home page sections
 import About from "pages/Home/sections/Home sections/About";
 import Work from "pages/Home/sections/Home sections/Work";
 import Events from "pages/Home/sections/Home sections/Events";
@@ -40,7 +22,6 @@ import footerRoutes from "footer.routes";
 // Images
 
 import bgImage from "assets/images/brushstroke.svg";
-// import bgImage1 from "assets/images/main1.jpg";
 import bgImage2 from "assets/images/aadar-main-black2.png";
 
 function Home() {
@@ -73,15 +54,12 @@ function Home() {
         }}
       >
         <MKBox
-          // backgroundColor="white"
           color="white"
           display="flex"
           flexDirection="column"
           justifyContent="center"
           alignItems="center"
-          // textAlign="center"
           sx={{
-            // backgroundColor: "#000000",
             backgroundImage: `url(${bgImage})`,
             backgroundSize: "auto",
             backgroundRepeat: "no-repeat",

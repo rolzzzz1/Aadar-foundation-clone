@@ -78,7 +78,14 @@ function DefaultNavbarDropdown({
           fontSize="15px"
           textTransform="capitalize"
           color={light ? "ligth" : "dark"}
-          sx={{ fontWeight: "100%", ml: 1, mr: 0.25 }}
+          sx={{
+            // fontWeight: "100%",
+            fontWeight: 400,
+            fontSize: "16px",
+            ml: 1,
+            mr: 0.25,
+            "&:hover": { color: "#E7A232", textDecoration: "underline 2px" },
+          }}
         >
           {name}
         </MKTypography>

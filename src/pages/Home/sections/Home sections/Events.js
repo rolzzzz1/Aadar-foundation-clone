@@ -15,7 +15,6 @@ function Work() {
     <MKBox
       component="section"
       variant="gradient"
-      // bgColor="dark"
       position="relative"
       mt={4}
       py={3}

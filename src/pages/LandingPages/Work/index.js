@@ -1,45 +1,16 @@
-/*
-=========================================================
-* Material Kit 2 React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-kit-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 // @mui material components
-// import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import DefaultFooter from "examples/Footers/DefaultFooter";
-// import DefaultCounterCard from "examples/Cards/CounterCards/DefaultCounterCard";
-
-// import NavTabs from "layouts/sections/navigation/nav-tabs";
-// import TabsSimple from "layouts/sections/navigation/nav-tabs/components/TabsSimple";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
-// import MKInput from "components/MKInput";
-// import MKButton from "components/MKButton";
 
 // Routes
 import routes from "routes";
 import footerRoutes from "footer.routes";
-// import bgImage2 from "assets/images/swargSadanBlack.png";
-// import MKTypography from "components/MKTypography";
-
-// Material Kit 2 React examples
-// import HorizontalTeamCard from "examples/Cards/TeamCards/HorizontalTeamCard";
-
-// import Team from "pages/LandingPages/About/sections/Team";
 
 // Images
 import bgImage2 from "assets/images/swargSadanBlack.png";

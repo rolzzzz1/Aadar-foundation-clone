@@ -91,17 +91,6 @@ export default {
   copyright: (
     <MKTypography variant="button" fontWeight="regular" fontSize="16px" color="white">
       All rights reserved. Copyright &copy; {date} Aadar foundation
-      {/* <MKTypography
-        component="a"
-        href="https://www.creative-tim.com"
-        target="_blank"
-        rel="noreferrer"
-        variant="button"
-        fontWeight="regular"
-      >
-        Creative Tim
-      </MKTypography>
-      . */}
     </MKTypography>
   ),
 };
