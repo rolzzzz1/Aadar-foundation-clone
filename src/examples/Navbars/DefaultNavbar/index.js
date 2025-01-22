@@ -46,8 +46,8 @@ import breakpoints from "assets/theme/base/breakpoints";
 import aadarLogo from "assets/images/logo-aadar.jpg";
 // import { grey } from "@mui/material/colors";
 
-import CallRoundedIcon from "@mui/icons-material/CallRounded";
-import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
+// import CallRoundedIcon from "@mui/icons-material/CallRounded";
+// import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 
 function DefaultNavbar({ brand, routes, transparent, light, action, sticky, relative, center }) {
   const [dropdown, setDropdown] = useState("");
@@ -457,16 +457,19 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
 
   return (
     <Container sx={sticky ? { position: "sticky", top: 0, zIndex: 10 } : null}>
+      {/* <MKBox sx={sticky ? { position: "sticky", top: 0, zIndex: 10, margin: "0 auto" } : null}> */}
       <MKBox
         py={1}
-        px={{ xs: 4, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
+        pl={2.5}
+        // px={{ xs: 4, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
         my={relative ? 0 : 2}
         mx={relative ? 0 : 2}
-        width={relative ? "100%" : "calc(100% - 24px)"}
+        width={relative ? "100%" : "calc(100% - 36px)"}
         borderRadius="xl"
         shadow={transparent ? "none" : "md"}
         color={light ? "white" : "dark"}
         position={relative ? "relative" : "absolute"}
+        // position={"absolute"}
         // left={0}
         right={0}
         zIndex={3}
@@ -492,7 +495,12 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
           borderRadius="xl"
           display="flex"
         >
-          <MKBox component="img" src={aadarLogo} width="100px" borderRadius="10px" />
+          <MKBox
+            component="img"
+            src={aadarLogo}
+            width={{ xs: "60px", sm: "60px", md: "80px", lg: "100px" }}
+            borderRadius="10px"
+          />
           {/* <img src={aadarLogo} width="130px" /> */}
           {/* <MKBox
             component={Link}
@@ -524,13 +532,14 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
         <MKBox
           py={1}
           px={{ xs: 4, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
-          my={relative ? 0 : 3.5}
+          my={relative ? 0 : 2}
           mx={relative ? 0 : 3}
           width={relative ? "85%" : "calc(85% - 48px)"}
           borderRadius="xl"
           shadow={transparent ? "none" : "md"}
           color={light ? "white" : "dark"}
-          position={relative ? "relative" : "absolute"}
+          // position={relative ? "relative" : "absolute"}
+          position="relative"
           top={0}
           // left={0}
           right={0}
@@ -549,15 +558,21 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
               pl={relative || transparent ? 0 : { xs: 0, lg: 1 }}
               display="flex"
               flexDirection="column"
+              maxWidth={{ lg: "180px", xl: "250px" }}
             >
-              <MKTypography variant="button, h4" fontWeight="bold" color={light ? "white" : "dark"}>
+              <MKTypography
+                variant="button"
+                fontWeight="bold"
+                color={light ? "white" : "dark"}
+                fontSize={{ lg: "18px", xl: "20px" }}
+              >
                 {brand}
               </MKTypography>
               <MKTypography
                 variant="button"
                 fontWeight="light"
                 color={light ? "white" : "dark"}
-                fontSize="14px"
+                display={{ xs: "none", sm: "none", md: "inline", lg: "inline" }}
               >
                 A Home for Homeless & Unclaimed People
               </MKTypography>
@@ -566,7 +581,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
               color="inherit"
               display={{ xs: "none", lg: "flex" }}
               ml="auto"
-              mr={center ? "auto" : 0}
+              mr={center ? "auto" : 2}
             >
               {renderNavbarItems}
             </MKBox>
@@ -584,7 +599,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
                         : "gradient"
                     }
                     color={action.color ? action.color : "info"}
-                    size="medium"
+                    size="small"
                   >
                     {action.label}
                   </MKButton>
@@ -600,7 +615,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
                         : "gradient"
                     }
                     color={action.color ? action.color : "info"}
-                    size="medium"
+                    size="small"
                   >
                     {action.label}
                   </MKButton>
@@ -687,7 +702,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
           <p>8989021190</p>
         </MKBox> */}
       </MKBox>
-      <MKBox
+      {/* <MKBox
         py={1}
         px={{ xs: 4, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
         my={relative ? 0 : 16}
@@ -696,7 +711,8 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
         borderRadius="xl"
         // shadow={transparent ? "none" : "md"}
         color={light ? "white" : "dark"}
-        position={relative ? "relative" : "absolute"}
+        // position={relative ? "relative" : "absolute"}
+        position={"absolute"}
         // left={0}
         right={0}
         zIndex={4}
@@ -722,7 +738,8 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
             <span>aadar1234@gmail.com</span>
           </MKBox>
         </MKTypography>
-      </MKBox>
+      </MKBox> */}
+      {/* </MKBox> */}
     </Container>
   );
 }

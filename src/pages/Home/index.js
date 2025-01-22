@@ -27,7 +27,7 @@ import MKTypography from "components/MKTypography";
 
 function Home() {
   return (
-    <>
+    <MKBox minWidth="576px">
       {/* Navbar component */}
       <DefaultNavbar
         routes={routes}
@@ -222,7 +222,7 @@ function Home() {
       <MKBox pt={2} px={0} mt={1}>
         <DefaultFooter content={footerRoutes} />
       </MKBox>
-    </>
+    </MKBox>
   );
 }
 

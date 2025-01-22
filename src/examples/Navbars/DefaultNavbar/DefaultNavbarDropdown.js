@@ -20,8 +20,8 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 // @mui material components
-import Collapse from "@mui/material/Collapse";
-import Icon from "@mui/material/Icon";
+// import Collapse from "@mui/material/Collapse";
+// import Icon from "@mui/material/Icon";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
@@ -30,12 +30,12 @@ import MKTypography from "components/MKTypography";
 function DefaultNavbarDropdown({
   name,
   // icon,
-  children,
-  collapseStatus,
+  // children,
+  // collapseStatus,
   light,
   href,
   route,
-  collapse,
+  // collapse,
   ...rest
 }) {
   const linkComponent = {
@@ -76,28 +76,27 @@ function DefaultNavbarDropdown({
           variant="button"
           fontWeight="regular"
           textTransform="capitalize"
-          color={light ? "ligth" : "dark"}
+          color={light ? "light" : "dark"}
           sx={{
-            // fontWeight: "100%",
-            fontWeight: 400,
+            fontWeight: "100%",
             ml: 1,
-            mr: 0.25,
+            mr: 1,
             "&:hover": { color: "#E7A232", textDecoration: "underline 2px" },
           }}
         >
           {name}
         </MKTypography>
-        <MKTypography variant="body2" color={light ? "white" : "dark"} ml="auto">
+        {/* <MKTypography variant="body2" color={light ? "white" : "dark"} ml="auto">
           <Icon sx={{ fontWeight: "normal", verticalAlign: "middle" }}>
             {collapse && "keyboard_arrow_down"}
           </Icon>
-        </MKTypography>
+        </MKTypography> */}
       </MKBox>
-      {children && (
+      {/* {children && (
         <Collapse in={Boolean(collapseStatus)} timeout={400} unmountOnExit>
           {children}
         </Collapse>
-      )}
+      )} */}
     </>
   );
 }
