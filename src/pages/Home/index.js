@@ -27,7 +27,7 @@ import MKTypography from "components/MKTypography";
 
 function Home() {
   return (
-    <MKBox minWidth="576px">
+    <MKBox minWidth="575px">
       {/* Navbar component */}
       <DefaultNavbar
         routes={routes}
@@ -69,7 +69,7 @@ function Home() {
             minHeight: "60vh",
           }}
         >
-          <MKTypography variant="h2" color="white">
+          <MKTypography variant="h2" color="white" textAlign="center">
             Aadar Foundation
           </MKTypography>
           <MKTypography variant="body" color="white" textAlign="center" mt={2}>

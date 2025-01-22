@@ -564,7 +564,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
                 variant="button"
                 fontWeight="bold"
                 color={light ? "white" : "dark"}
-                fontSize={{ lg: "18px", xl: "20px" }}
+                fontSize={{ lg: "1.125rem", xl: "1.25rem" }}
                 lineHeight={1.25}
               >
                 {brand}
@@ -575,7 +575,13 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
                 lineHeight={1.25}
                 color={light ? "white" : "dark"}
                 display={{ xs: "inline", sm: "inline", md: "inline", lg: "inline" }}
-                fontSize={{ xs: "12px", sm: "12px", md: "12px", lg: "14px", xl: "14px" }}
+                fontSize={{
+                  xs: "0.75rem",
+                  sm: "0.75rem",
+                  md: "0.75rem",
+                  lg: "0.875rem",
+                  xl: "0.875rem",
+                }}
               >
                 A Home for Homeless & Unclaimed People
               </MKTypography>
