@@ -530,7 +530,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
           </MKBox> */}
         </MKBox>
         <MKBox
-          py={1}
+          // py={1}
           px={{ xs: 4, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
           my={relative ? 0 : 2}
           mx={relative ? 0 : 3}
@@ -565,14 +565,17 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
                 fontWeight="bold"
                 color={light ? "white" : "dark"}
                 fontSize={{ lg: "18px", xl: "20px" }}
+                lineHeight={1.25}
               >
                 {brand}
               </MKTypography>
               <MKTypography
                 variant="button"
                 fontWeight="light"
+                lineHeight={1.25}
                 color={light ? "white" : "dark"}
-                display={{ xs: "none", sm: "none", md: "inline", lg: "inline" }}
+                display={{ xs: "inline", sm: "inline", md: "inline", lg: "inline" }}
+                fontSize={{ xs: "12px", sm: "12px", md: "12px", lg: "14px", xl: "14px" }}
               >
                 A Home for Homeless & Unclaimed People
               </MKTypography>
@@ -587,7 +590,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
             </MKBox>
 
             {/* Donate button */}
-            <MKBox ml={{ xs: "auto", lg: 0 }}>
+            <MKBox ml={{ xs: "auto", lg: 0 }} display={{ xs: "none", sm: "none", md: "block" }}>
               {action &&
                 (action.type === "internal" ? (
                   <MKButton
