@@ -41,8 +41,8 @@ function CenteredBlogCard({
       justifyContent="center"
       // alignItems="center"
       borderRadius="lg"
-      minHeight="300px"
-      maxHeight="300px"
+      minHeight="250px"
+      maxHeight="250px"
       mx={2}
       mt={-3}
     >

@@ -7,7 +7,7 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 
 // Material Kit 2 React components
 import MKTypography from "components/MKTypography";
-
+import MKBox from "components/MKBox";
 // Images
 import logoCT from "assets/images/logo-aadar.jpg";
 
@@ -89,8 +89,18 @@ export default {
     // },
   ],
   copyright: (
-    <MKTypography variant="button" fontWeight="regular" fontSize="16px" color="white">
-      All rights reserved. Copyright &copy; {date} Aadar foundation
-    </MKTypography>
+    <MKBox display="flex" justifyContent="center" mx={"auto"} pt={0}>
+      <MKTypography
+        variant="button"
+        fontWeight="regular"
+        fontSize="0.8rem"
+        color="white"
+        // width="55%"
+        // sx={{ borderTop: "0.75px #A8A8A8 solid" }}
+        py={2}
+      >
+        Copyright &copy; {date} Aadar foundation - All rights reserved.
+      </MKTypography>
+    </MKBox>
   ),
 };

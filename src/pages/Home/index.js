@@ -1,6 +1,8 @@
 // @mui material components
 
 import Card from "@mui/material/Card";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
 // import { grey } from "@mui/material/colors";
 
 // Material Kit 2 React components
@@ -93,8 +95,64 @@ function Home() {
         {/* About section component */}
         <About />
 
+        {/* <MKBox display="flex" justifyContent="center" borderRadius="10px">
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/et_pTB-Vfs4?si=cP75J8JI23LzSfvE"
+            title="YouTube video player"
+            frameBorder={0}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+            autoPlay="true"
+          ></iframe>
+        </MKBox> */}
+
         {/* Our work section component */}
         <Work />
+
+        <MKBox
+          component="section"
+          py={4}
+          mt={8}
+          mb={2}
+          mx={"auto"}
+          width="90%"
+          sx={{ backgroundColor: "#CED4DA", borderRadius: "20px" }}
+        >
+          <Container>
+            <Grid container alignItems="center">
+              <Grid item md={4} sx={{ ml: { xs: 0, lg: 3 }, mb: { xs: 12, md: 0 } }}>
+                <Container>
+                  <MKTypography variant="h5">
+                    A few words on our journey, by one of our founders.
+                    <MKTypography variant="h6" my={1}>
+                      - Mr. Vikas Goswami{" "}
+                    </MKTypography>
+                  </MKTypography>
+                </Container>
+              </Grid>
+              <Grid item xs={12} md={6} mx={"auto"}>
+                <MKBox position="relative">
+                  <MKBox>
+                    <iframe
+                      width="100%"
+                      height="300"
+                      src="https://www.youtube.com/embed/et_pTB-Vfs4?si=cP75J8JI23LzSfvE"
+                      title="YouTube video player"
+                      frameBorder={0}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowfullscreen
+                      autoPlay="true"
+                    ></iframe>
+                  </MKBox>
+                </MKBox>
+              </Grid>
+            </Grid>
+          </Container>
+        </MKBox>
 
         {/* Events section component */}
         <Events />

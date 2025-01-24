@@ -9,9 +9,9 @@ import CenteredBlogCard from "examples/Cards/BlogCards/CenteredBlogCard1";
 import work1 from "assets/images/aboutImg.webp";
 import work2 from "assets/images/treatment.webp";
 import work3 from "assets/images/shelter.webp";
-import work4 from "assets/images/food.jpg";
-import work5 from "assets/images/care.jpg";
-import work6 from "assets/images/rehabilitation.jpg";
+import work4 from "assets/images/food2.jpg";
+import work5 from "assets/images/care2.jpg";
+import work6 from "assets/images/rehabilitation1.jpg";
 
 function Work() {
   return (

@@ -456,10 +456,10 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
   );
 
   return (
-    <Container sx={sticky ? { position: "sticky", top: 0, zIndex: 10 } : null}>
+    <Container sx={sticky ? { position: "sticky", top: 0, zIndex: 10, minWidth: "575px" } : null}>
       {/* <MKBox sx={sticky ? { position: "sticky", top: 0, zIndex: 10, margin: "0 auto" } : null}> */}
       <MKBox
-        py={1}
+        // py={1}
         pl={2.5}
         // px={{ xs: 4, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
         my={relative ? 0 : 2}
@@ -490,7 +490,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
           component={Link}
           to="/"
           lineHeight={1}
-          py={transparent ? 1.5 : 0.75}
+          // py={transparent ? 1.5 : 0.75}
           pl={relative || transparent ? 0 : { xs: 0, lg: 1 }}
           borderRadius="xl"
           display="flex"
@@ -498,8 +498,9 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
           <MKBox
             component="img"
             src={aadarLogo}
-            width={{ xs: "60px", sm: "60px", md: "80px", lg: "100px" }}
+            width={{ xs: "60px", sm: "60px", md: "80px", lg: "80px" }}
             borderRadius="10px"
+            my={1}
           />
           {/* <img src={aadarLogo} width="130px" /> */}
           {/* <MKBox
@@ -576,11 +577,11 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
                 color={light ? "white" : "dark"}
                 display={{ xs: "inline", sm: "inline", md: "inline", lg: "inline" }}
                 fontSize={{
-                  xs: "0.75rem",
-                  sm: "0.75rem",
-                  md: "0.75rem",
-                  lg: "0.875rem",
-                  xl: "0.875rem",
+                  xs: "0.5rem",
+                  sm: "0.5rem",
+                  md: "0.5rem",
+                  lg: "0.75rem",
+                  xl: "0.75rem",
                 }}
               >
                 A Home for Homeless & Unclaimed People

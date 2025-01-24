@@ -18,15 +18,28 @@ function About() {
       <Container>
         <Grid container alignItems="center">
           <Grid item xs={12} md={5} sx={{ ml: "auto" }}>
-            <MKBox position="relative">
-              <MKBox component="img" src={aboutImg} alt="macbook" width="80%" borderRadius="15px" />
+            <MKBox position="relative" display="flex" justifyContent="center">
+              <MKBox
+                component="img"
+                src={aboutImg}
+                alt="aboutImage"
+                width="70%"
+                borderRadius="15px"
+              />
             </MKBox>
           </Grid>
           <Grid item md={6} sx={{ ml: { xs: 0, lg: 3 }, mb: { xs: 12, md: 0 } }}>
             <Container>
-              <MKTypography variant="h2">Aadar Foundation </MKTypography>
-              <MKTypography variant="h4">(Ashram Swarg Sadan)</MKTypography>
-              <MKTypography color="text" mb={3} paddingTop="10px" maxWidth="600px" fontSize="18px">
+              <MKTypography variant="h3">Aadar Foundation </MKTypography>
+              <MKTypography variant="h5">(Ashram Swarg Sadan)</MKTypography>
+              <MKTypography
+                variant="body2"
+                color="text"
+                mb={3}
+                paddingTop="10px"
+                maxWidth="600px"
+                fontSize="0.9rem"
+              >
                 The Aadar Foundation's Ashram Swarg Sadan is being established in Gwalior, Madhya
                 Pradesh. Currently, the ashram has 92 residents, including those who are helpless,
                 disabled, paralyzed, or suffering from various ailments, all of whom receive proper
@@ -39,7 +52,7 @@ function About() {
                   to={"/pages/landing-pages/about-us"}
                   variant="outlined"
                   color="success"
-                  size="medium"
+                  size="small"
                 >
                   Read more
                 </MKButton>

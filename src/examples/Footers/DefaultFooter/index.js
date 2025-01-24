@@ -37,10 +37,14 @@ function DefaultFooter({ content }) {
     <MKBox
       component="footer"
       // bgColor="dark"
-      sx={{ backgroundColor: "#3F3F3F" }}
+      sx={{
+        backgroundColor: "#3F3F3F",
+        minWidth: "575px",
+        overflow: "hidden",
+      }}
     >
       <Container>
-        <Grid container spacing={3} sx={{ paddingTop: "40px" }}>
+        <Grid container spacing={4} sx={{ paddingTop: "40px" }}>
           <Grid
             item
             xs={12}
@@ -49,17 +53,18 @@ function DefaultFooter({ content }) {
               textAlign: "center",
               ml: "auto",
               mb: 3,
+              maxHeight: "200px",
             }}
           >
             <MKBox>
               <Link to={brand.route}>
-                <MKBox component="img" src={brand.image} alt={brand.name} maxWidth="4rem" mb={2} />
+                <MKBox component="img" src={brand.image} alt={brand.name} maxWidth="5rem" mb={1} />
               </Link>
               <MKTypography variant="h4" color="white">
                 {brand.name}
               </MKTypography>
             </MKBox>
-            <MKBox display="flex" alignItems="center" mt={3} justifyContent="center">
+            <MKBox display="flex" alignItems="center" mt={2} justifyContent="center">
               {socials.map(({ icon, link }, key) => (
                 <MKTypography
                   key={link}
@@ -83,7 +88,7 @@ function DefaultFooter({ content }) {
               <MKTypography
                 display="block"
                 variant="button"
-                fontSize="18px"
+                sx={{ fontSize: { sm: "1rem", md: "1.25rem" } }}
                 fontWeight="bold"
                 textTransform="capitalize"
                 color="white"
@@ -103,7 +108,8 @@ function DefaultFooter({ content }) {
                         variant="button"
                         fontWeight="regular"
                         textTransform="capitalize"
-                        fontSize="18px"
+                        sx={{ fontSize: { sm: "0.8rem", md: "0.9rem" } }}
+                        // fontSize={"0.9rem"}
                         color="white"
                       >
                         {name}
@@ -115,7 +121,8 @@ function DefaultFooter({ content }) {
                         variant="button"
                         fontWeight="regular"
                         textTransform="capitalize"
-                        fontSize="18px"
+                        sx={{ fontSize: { sm: "0.8rem", md: "0.9rem" } }}
+                        // fontSize={"0.9rem"}
                         color="white"
                       >
                         {name}
@@ -127,23 +134,33 @@ function DefaultFooter({ content }) {
             </Grid>
           ))}
 
-          <Grid item xs={6} md={4} sx={{ textAlign: "center", mb: 3 }}>
-            <MKTypography fontSize="18px" fontWeight="bold" color="white">
+          <Grid
+            item
+            xs={6}
+            md={4}
+            sx={{ textAlign: "center", mb: 3, px: 4, mx: "auto" }}
+            fontSize={"0.75rem"}
+          >
+            <MKTypography
+              sx={{ fontSize: { sm: "1rem", md: "1.25rem" } }}
+              fontWeight="bold"
+              color="white"
+            >
               Location
             </MKTypography>
 
-            <MKBox
-              mt={1}
-              display="flex"
-              flexDirection="column"
-              justifyContent="center"
-              // maxWidth="300px"
-            >
+            <MKBox mt={1}>
               <MKTypography
+                sx={{
+                  fontSize: { xs: "0.68rem", sm: "0.68rem", md: "0.8rem", lg: "0.9rem" },
+                  maxWidth: { xs: "200px", lg: "300px" },
+                }}
                 fontWeight="regular"
                 textTransform="capitalize"
-                fontSize="16px"
                 color="white"
+                lineHeight="1.2rem"
+                // maxWidth="200px"
+                mx="auto"
               >
                 ASHRAM ADD - SARKARI MULTI, Gudagudi Ka Naka Rd, near of MUKTIDHAM, Gwalior, Madhya
                 Pradesh 474001
@@ -151,7 +168,6 @@ function DefaultFooter({ content }) {
               <MKBox
                 fontWeight="regular"
                 // textTransform="capitalize"
-                fontSize="18px"
                 paddingTop="5px"
                 color="white"
                 display="flex"
@@ -159,15 +175,19 @@ function DefaultFooter({ content }) {
                 alignItems="center"
                 gap="5px"
               >
-                <CallRoundedIcon fontSize="medium" />
-                <MKTypography paddingLeft="10px" color="white">
+                <CallRoundedIcon sx={{ fontSize: { xs: "small", sm: "small", md: "medium" } }} />
+                <MKTypography
+                  sx={{ fontSize: { xs: "0.8rem", sm: "0.8rem", md: "0.9rem" } }}
+                  paddingLeft="10px"
+                  color="white"
+                >
                   90391 29571
                 </MKTypography>
               </MKBox>
               <MKBox
                 fontWeight="regular"
                 // textTransform="capitalize"
-                fontSize="18px"
+
                 paddingTop="5px"
                 color="white"
                 display="flex"
@@ -175,8 +195,12 @@ function DefaultFooter({ content }) {
                 alignItems="center"
                 gap="5px"
               >
-                <EmailRoundedIcon fontSize="medium" />
-                <MKTypography paddingLeft="10px" color="white">
+                <EmailRoundedIcon sx={{ fontSize: { xs: "small", sm: "small", md: "medium" } }} />
+                <MKTypography
+                  sx={{ fontSize: { xs: "0.8rem", sm: "0.8rem", md: "0.9rem" } }}
+                  paddingLeft="10px"
+                  color="white"
+                >
                   aadar1234@gmail.com
                 </MKTypography>
               </MKBox>
@@ -197,9 +221,13 @@ function DefaultFooter({ content }) {
               ))} */}
             </MKBox>
           </Grid>
-          <Grid item xs={12} sx={{ textAlign: "center", mb: 3, mt: 1 }}>
-            {copyright}
-          </Grid>
+        </Grid>
+        <Grid
+          // item
+          xs={12}
+          sx={{ textAlign: "center", mb: 0.5, mt: 1 }}
+        >
+          {copyright}
         </Grid>
       </Container>
     </MKBox>
