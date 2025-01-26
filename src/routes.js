@@ -30,6 +30,7 @@
 // Pages
 import About from "layouts/pages/landing-pages/about-us";
 import Work from "layouts/pages/landing-pages/work";
+import Home from "layouts/pages/home";
 // import ContactUs from "layouts/pages/landing-pages/contact-us";
 // import Author from "layouts/pages/landing-pages/author";
 // import SignIn from "layouts/pages/authentication/sign-in";
@@ -57,8 +58,9 @@ import Work from "layouts/pages/landing-pages/work";
 const routes = [
   {
     name: "Home",
-    href: "/",
-    route: "/pages/home",
+    route: "/",
+    // route: "/pages/home",
+    component: <Home />,
   },
   {
     name: "About Us",

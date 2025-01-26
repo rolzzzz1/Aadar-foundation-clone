@@ -26,6 +26,7 @@ import Grid from "@mui/material/Grid";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
+// import MKButton from "components/MKButton";
 
 import CallRoundedIcon from "@mui/icons-material/CallRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
@@ -146,7 +147,7 @@ function DefaultFooter({ content }) {
               fontWeight="bold"
               color="white"
             >
-              Location
+              Contact
             </MKTypography>
 
             <MKBox mt={1}>
@@ -161,12 +162,14 @@ function DefaultFooter({ content }) {
                 lineHeight="1.2rem"
                 // maxWidth="200px"
                 mx="auto"
+                mb={1}
               >
                 ASHRAM ADD - SARKARI MULTI, Gudagudi Ka Naka Rd, near of MUKTIDHAM, Gwalior, Madhya
                 Pradesh 474001
               </MKTypography>
               <MKBox
                 fontWeight="regular"
+                sx={{ fontSize: { xs: "0.8rem", sm: "0.8rem", md: "0.9rem" } }}
                 // textTransform="capitalize"
                 paddingTop="5px"
                 color="white"
@@ -175,7 +178,9 @@ function DefaultFooter({ content }) {
                 alignItems="center"
                 gap="5px"
               >
-                <CallRoundedIcon sx={{ fontSize: { xs: "small", sm: "small", md: "medium" } }} />
+                <CallRoundedIcon
+                  sx={{ fontSize: { xs: "small", sm: "small", md: "medium", lg: "medium" } }}
+                />
                 <MKTypography
                   sx={{ fontSize: { xs: "0.8rem", sm: "0.8rem", md: "0.9rem" } }}
                   paddingLeft="10px"
@@ -187,7 +192,7 @@ function DefaultFooter({ content }) {
               <MKBox
                 fontWeight="regular"
                 // textTransform="capitalize"
-
+                sx={{ fontSize: { xs: "0.8rem", sm: "0.8rem", md: "0.9rem" } }}
                 paddingTop="5px"
                 color="white"
                 display="flex"
@@ -195,7 +200,7 @@ function DefaultFooter({ content }) {
                 alignItems="center"
                 gap="5px"
               >
-                <EmailRoundedIcon sx={{ fontSize: { xs: "small", sm: "small", md: "medium" } }} />
+                <EmailRoundedIcon fontSize="inherit" />
                 <MKTypography
                   sx={{ fontSize: { xs: "0.8rem", sm: "0.8rem", md: "0.9rem" } }}
                   paddingLeft="10px"
@@ -204,6 +209,7 @@ function DefaultFooter({ content }) {
                   aadar1234@gmail.com
                 </MKTypography>
               </MKBox>
+
               {/* {socials.map(({ icon, link }, key) => (
                 <MKTypography
                   key={link}

@@ -24,11 +24,27 @@ import Grid from "@mui/material/Grid";
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 
-function HorizontalTeamCard({ image, name, position, description }) {
+import InstagramIcon from "@mui/icons-material/Instagram";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+
+function HorizontalTeamCard({
+  image,
+  name,
+  position,
+  // description
+}) {
   return (
-    <Card sx={{ mt: 3, padding: "10px" }}>
+    <Card sx={{ mt: 3, padding: "10px", minHeight: "220px" }}>
       <Grid container>
-        <Grid item xs={12} md={6} lg={4} sx={{ mt: -6 }}>
+        <Grid
+          item
+          xs={4}
+          sm={4}
+          md={4}
+          lg={4}
+          // sx={{ mt: -6 }}
+        >
           <MKBox width="100%" pt={2} pb={1} px={2}>
             <MKBox
               component="img"
@@ -37,20 +53,39 @@ function HorizontalTeamCard({ image, name, position, description }) {
               // width="100%"
               borderRadius="md"
               shadow="lg"
-              width="130px"
-              height="130px"
+              width="100px"
+              height="100px"
             />
           </MKBox>
         </Grid>
-        <Grid item xs={12} md={6} lg={8} sx={{ my: "auto", paddingLeft: "30px" }}>
-          <MKBox pt={{ xs: 1, lg: 2.5 }} pb={2.5} pr={4} pl={{ xs: 4, lg: 1 }} lineHeight={1}>
-            <MKTypography variant="h5">{name}</MKTypography>
+        <Grid
+          item
+          xs={8}
+          sm={8}
+          md={8}
+          lg={8}
+          sx={{
+            my: "auto",
+            paddingLeft: "40px",
+          }}
+        >
+          <MKBox pt={{ xs: 1, lg: 1.5 }} pb={2.5} pr={4} pl={{ xs: 4, lg: 1 }} lineHeight={1}>
+            <MKTypography variant="h6">{name.split(" ")[0]}</MKTypography>
+            <MKTypography variant="h6">{name.split(" ")[1]}</MKTypography>
             <MKTypography variant="h6" color={position.color} mb={1}>
               {position.label}
             </MKTypography>
-            <MKTypography variant="body2" color="text">
-              {description}
+            <MKTypography variant="body" fontSize="0.75rem" mb={1}>
+              Some text description Some text description
             </MKTypography>
+            <MKBox display="flex" gap="10px" color="text" mt={2}>
+              {/* <MKTypography variant="body2" color="text"> */}
+              {/* {description} */}
+              {<InstagramIcon fontSize="medium" sx={{ cursor: "pointer" }} />}
+              {<FacebookIcon fontSize="medium" sx={{ cursor: "pointer" }} />}
+              {<YouTubeIcon fontSize="medium" sx={{ cursor: "pointer" }} />}
+              {/* </MKTypography> */}
+            </MKBox>
           </MKBox>
         </Grid>
       </Grid>

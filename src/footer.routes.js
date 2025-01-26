@@ -8,6 +8,8 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 // Material Kit 2 React components
 import MKTypography from "components/MKTypography";
 import MKBox from "components/MKBox";
+// import MKButton from "components/MKButton";
+
 // Images
 import logoCT from "assets/images/logo-aadar.jpg";
 
@@ -98,9 +100,37 @@ export default {
         // width="55%"
         // sx={{ borderTop: "0.75px #A8A8A8 solid" }}
         py={2}
+        px={2}
       >
         Copyright &copy; {date} Aadar foundation - All rights reserved.
       </MKTypography>
+      {/* <MKBox>
+        <MKButton
+          variant="text"
+          sx={{
+            textTransform: "capitalize",
+            fontWeight: 300,
+            padding: "16px",
+            borderLeft: "1px solid #ffffff",
+            borderRadius: "0",
+          }}
+        >
+          Privacy policy
+        </MKButton>
+
+        <MKButton
+          variant="text"
+          sx={{
+            textTransform: "capitalize",
+            fontWeight: 300,
+            padding: "16px",
+            borderLeft: "1px solid #ffffff",
+            borderRadius: "0",
+          }}
+        >
+          Terms and conditions
+        </MKButton>
+      </MKBox> */}
     </MKBox>
   ),
 };

@@ -54,17 +54,20 @@ function TransparentBlogCard({ image, title, description, action }) {
         alt={title}
         borderRadius="lg"
         shadow="md"
-        width="90%"
-        minHeight="400px"
-        maxHeight="400px"
+        width="100%"
+        // minWidth="150px"
+        // maxWidth="150px"
+        minHeight="200px"
+        maxHeight="200px"
         position="relative"
         zIndex={1}
       />
       <MKBox
         borderRadius="lg"
         shadow="md"
-        width="90%"
-        height="100%"
+        width="100%"
+        maxHeight="200px"
+        minHeight="200px"
         position="absolute"
         // left={0}
         top={0}
@@ -89,37 +92,59 @@ function TransparentBlogCard({ image, title, description, action }) {
         overflow: "visible",
       }}
     >
-      {action.type === "internal" ? (
-        <Link to={action.route}>{imageTemplate}</Link>
-      ) : (
-        <MuiLink href={action.route} target="_blank" rel="noreferrer">
-          {imageTemplate}
-        </MuiLink>
-      )}
       <MKBox
-        pt={4}
-        pb={3}
+        width="80%"
         display="flex"
         flexDirection="column"
         justifyContent="center"
-        width="80%"
+        sx={{
+          // backgroundColor: "#CED4DA",
+          borderRadius: "10px",
+          maxHeight: "400px",
+          minHeight: "400px",
+        }}
       >
         {action.type === "internal" ? (
-          <Link to={action.route} sx={cardActionStyles}>
-            <MKTypography variant="h5" gutterBottom textAlign="center">
-              {title}
-            </MKTypography>
-          </Link>
+          <Link to={action.route}>{imageTemplate}</Link>
         ) : (
-          <MuiLink href={action.route} target="_blank" rel="noreferrer" sx={cardActionStyles}>
-            <MKTypography variant="h5" gutterBottom textAlign="center">
-              {title}
-            </MKTypography>
+          <MuiLink href={action.route} target="_blank" rel="noreferrer">
+            {imageTemplate}
           </MuiLink>
         )}
-        <MKTypography variant="body2" component="p" color="text" mb={3} textAlign="center">
-          {description}
-        </MKTypography>
+        <MKBox
+          pt={4}
+          pb={3}
+          // maxHeight="100px" For carousel
+          // minHeight="100px"
+          maxHeight="200px"
+          minHeight="200px"
+          mx={2}
+          // sx={{ backgroundColor: "#CED4DA", my: -3, width: "70%", borderRadius: "10px" }}
+        >
+          {action.type === "internal" ? (
+            <Link to={action.route} sx={cardActionStyles}>
+              <MKTypography variant="h6" gutterBottom textAlign="center">
+                {title}
+              </MKTypography>
+            </Link>
+          ) : (
+            <MuiLink href={action.route} target="_blank" rel="noreferrer" sx={cardActionStyles}>
+              <MKTypography variant="h6" gutterBottom textAlign="center">
+                {title}
+              </MKTypography>
+            </MuiLink>
+          )}
+          <MKTypography
+            variant="body2"
+            component="p"
+            color="text"
+            mb={3}
+            textAlign="center"
+            fontSize="0.75rem"
+          >
+            {description}
+          </MKTypography>
+        </MKBox>
       </MKBox>
     </Card>
   );

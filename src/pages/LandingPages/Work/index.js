@@ -28,7 +28,7 @@ import RehabilitationImg2 from "assets/images/rehabilitationImg1.jpg";
 
 function Work() {
   return (
-    <>
+    <MKBox minWidth="575px">
       {/* Navbar component */}
       <DefaultNavbar
         routes={routes}
@@ -56,39 +56,49 @@ function Work() {
         }}
       ></MKBox>
 
-      <MKBox component="section" pt={10} pb={8} mt={6}>
-        <Grid container display="flex" justifyContent={"center"} sx={{ margin: "10px 30px" }}>
+      <MKBox component="section" pt={10} pb={8} mt={6} display="flex" justifyContent={"center"}>
+        <Grid container display="flex" justifyContent={"center"} width="90%" mx={"auto"}>
           <MKBox pb={4}>
             <MKTypography variant="h2">Our Work</MKTypography>
           </MKBox>
 
           {/* Rescue */}
           <Grid container justifyContent="center" sx={{ textAlign: "center" }} px={6} py={4}>
-            <Grid item xs={12} md={6} overflow={"hidden"} sx={{ display: "flex", gap: "15px" }}>
+            <Grid
+              item
+              xs={12}
+              md={6}
+              my={"auto"}
+              overflow={"hidden"}
+              sx={{ display: "flex", gap: "15px" }}
+            >
               <MKBox
                 component="img"
                 src={RescueImg1}
                 alt="RescueImg1"
                 width="50%"
                 borderRadius="10px"
-                minHeight={"300px"}
-                maxHeight={"300px"}
+                height="80%"
+                minHeight={"160px"}
+                maxHeight={"200px"}
               ></MKBox>
               <MKBox
                 component="img"
                 src={RescueImg2}
                 alt="RescueImg1"
-                width="40%"
+                width="45%"
                 borderRadius="10px"
-                minHeight={"300px"}
-                maxHeight={"300px"}
+                height="80%"
+                my={"auto"}
+                minHeight={"160px"}
+                maxHeight={"200px"}
               ></MKBox>
             </Grid>
             <Grid item xs={12} md={6} px={6} my="auto">
-              <MKTypography variant="h2" py={1}>
+              <MKTypography variant="h3" py={1}>
                 Rescue
               </MKTypography>
-              <MKTypography variant="body1">
+              <MKTypography variant="body2" fontSize={{ sm: "0.85rem", md: "0.85rem" }}>
                 We rescue the homeless, helpless, hopeless, destitute persons generally found in
                 very harsh and painful conditions on roadsides, railway stations, bus stands,
                 religious and other public places.
@@ -99,10 +109,10 @@ function Work() {
           {/* Treatment */}
           <Grid container justifyContent="center" sx={{ textAlign: "center" }} px={6} py={4}>
             <Grid item xs={12} md={6} px={6} my="auto">
-              <MKTypography variant="h2" py={1}>
+              <MKTypography variant="h3" py={1}>
                 Treatment
               </MKTypography>
-              <MKTypography variant="body1">
+              <MKTypography variant="body2" fontSize={{ sm: "0.85rem", md: "0.85rem" }}>
                 Most of the residents brought to the Ashram are suffering from different types of
                 ailments. Hence medical/surgical treatment plays a significant part in the service
                 we offer them.
@@ -112,20 +122,20 @@ function Work() {
               <MKBox
                 component="img"
                 src={TreatmentImg1}
-                alt="RescueImg1"
+                alt="TreatmentImg1"
                 width="50%"
                 borderRadius="10px"
-                minHeight={"300px"}
-                maxHeight={"300px"}
+                minHeight={"160px"}
+                maxHeight={"200px"}
               ></MKBox>
               <MKBox
                 component="img"
                 src={TreatmentImg2}
-                alt="RescueImg1"
-                width="40%"
+                alt="TreatmentImg2"
+                width="45%"
                 borderRadius="10px"
-                minHeight={"300px"}
-                maxHeight={"300px"}
+                minHeight={"160px"}
+                maxHeight={"200px"}
               ></MKBox>
             </Grid>
           </Grid>
@@ -139,8 +149,8 @@ function Work() {
                 alt="RescueImg1"
                 width="100%"
                 borderRadius="10px"
-                minHeight={"300px"}
-                maxHeight={"300px"}
+                minHeight={"160px"}
+                maxHeight={"200px"}
               ></MKBox>
               {/* <MKBox
                 component="img"
@@ -151,10 +161,10 @@ function Work() {
               ></MKBox> */}
             </Grid>
             <Grid item xs={12} md={6} px={6} my="auto">
-              <MKTypography variant="h2" py={1}>
+              <MKTypography variant="h3" py={1}>
                 Shelter
               </MKTypography>
-              <MKTypography variant="body1">
+              <MKTypography variant="body2" fontSize={{ sm: "0.85rem", md: "0.85rem" }}>
                 Currently a home for 92 residents in the ashram.
               </MKTypography>
             </Grid>
@@ -163,10 +173,10 @@ function Work() {
           {/* Food */}
           <Grid container justifyContent="center" sx={{ textAlign: "center" }} px={6} py={4}>
             <Grid item xs={12} md={6} px={6} my="auto">
-              <MKTypography variant="h2" py={1}>
+              <MKTypography variant="h3" py={1}>
                 Food
               </MKTypography>
-              <MKTypography variant="body1">
+              <MKTypography variant="body2" fontSize={{ sm: "0.85rem", md: "0.85rem" }}>
                 Most of the rsidents admitted in the ashram are either sick or malnourished.
                 Therefore the diet arrangement is a very important and essential part of their
                 recovery. With breakfast, lunch, refreshment and dinner, fruits, milk, and protein
@@ -180,17 +190,17 @@ function Work() {
                 alt="RescueImg1"
                 width="50%"
                 borderRadius="10px"
-                minHeight={"300px"}
-                maxHeight={"300px"}
+                minHeight={"160px"}
+                maxHeight={"200px"}
               ></MKBox>
               <MKBox
                 component="img"
                 src={FoodImg2}
                 alt="RescueImg1"
-                width="40%"
+                width="45%"
                 borderRadius="10px"
-                minHeight={"300px"}
-                maxHeight={"300px"}
+                minHeight={"160px"}
+                maxHeight={"200px"}
               ></MKBox>
             </Grid>
           </Grid>
@@ -213,15 +223,15 @@ function Work() {
                 alt="RescueImg1"
                 width="90%"
                 borderRadius="10px"
-                minHeight={"300px"}
-                maxHeight={"300px"}
+                minHeight={"160px"}
+                maxHeight={"200px"}
               ></MKBox>
             </Grid>
             <Grid item xs={12} md={6} px={6} my="auto">
-              <MKTypography variant="h2" py={1}>
+              <MKTypography variant="h3" py={1}>
                 Care
               </MKTypography>
-              <MKTypography variant="body1">
+              <MKTypography variant="body2" fontSize={{ sm: "0.85rem", md: "0.85rem" }}>
                 During the recovery from illness and further basic care, medical care and
                 unconditional love is given to them by our team.
               </MKTypography>
@@ -231,10 +241,10 @@ function Work() {
           {/* Rehabilitation */}
           <Grid container justifyContent="center" sx={{ textAlign: "center" }} px={6} py={4}>
             <Grid item xs={12} md={6} px={6} my="auto">
-              <MKTypography variant="h2" py={1}>
+              <MKTypography variant="h3" py={1}>
                 Rehabilitation
               </MKTypography>
-              <MKTypography variant="body1">
+              <MKTypography variant="body2" fontSize={{ sm: "0.85rem", md: "0.85rem" }}>
                 After recovery with the efforts of the Swarg sadan Team, the residents are reunited
                 with their families.
               </MKTypography>
@@ -246,17 +256,17 @@ function Work() {
                 alt="RescueImg1"
                 width="50%"
                 borderRadius="10px"
-                minHeight={"300px"}
-                maxHeight={"300px"}
+                minHeight={"160px"}
+                maxHeight={"200px"}
               ></MKBox>
               <MKBox
                 component="img"
                 src={RehabilitationImg2}
                 alt="RescueImg1"
-                width="40%"
+                width="45%"
                 borderRadius="10px"
-                minHeight={"300px"}
-                maxHeight={"300px"}
+                minHeight={"160px"}
+                maxHeight={"200px"}
               ></MKBox>
             </Grid>
           </Grid>
@@ -267,7 +277,7 @@ function Work() {
       <MKBox pt={2} px={0} mt={1}>
         <DefaultFooter content={footerRoutes} />
       </MKBox>
-    </>
+    </MKBox>
   );
 }
 

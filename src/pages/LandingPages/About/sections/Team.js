@@ -24,7 +24,7 @@ function Team() {
       sx={{ backgroundColor: "#f8f9fa" }}
       py={6}
       px={{ xs: 2, lg: 0 }}
-      mx={-2}
+      // mx={-2}
       mb={8}
     >
       <Container>
@@ -33,8 +33,8 @@ function Team() {
             <MKTypography variant="h3">Our Team</MKTypography>
           </Grid>
         </Grid>
-        <Grid container spacing={6}>
-          <Grid item xs={12} lg={4}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={12} md={12} lg={4}>
             <MKBox mb={1}>
               <HorizontalTeamCard
                 image={team1}
@@ -44,7 +44,7 @@ function Team() {
               />
             </MKBox>
           </Grid>
-          <Grid item xs={12} lg={4}>
+          <Grid item xs={12} sm={12} md={12} lg={4}>
             <MKBox mb={1}>
               <HorizontalTeamCard
                 image={team2}
@@ -54,7 +54,7 @@ function Team() {
               />
             </MKBox>
           </Grid>
-          <Grid item xs={12} lg={4}>
+          <Grid item xs={12} sm={12} md={12} lg={4}>
             <MKBox mb={{ xs: 1, lg: 0 }}>
               <HorizontalTeamCard
                 image={team3}

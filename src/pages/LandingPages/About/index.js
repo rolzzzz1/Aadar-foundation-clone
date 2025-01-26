@@ -25,7 +25,7 @@ import aboutBgImg from "assets/images/swargSadanBlack.png";
 
 function About() {
   return (
-    <>
+    <MKBox minWidth="575px">
       {/* Navbar component */}
       <DefaultNavbar
         routes={routes}
@@ -123,7 +123,7 @@ function About() {
       <MKBox pt={2} px={0} mt={1}>
         <DefaultFooter content={footerRoutes} />
       </MKBox>
-    </>
+    </MKBox>
   );
 }
 

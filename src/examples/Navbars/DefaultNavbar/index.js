@@ -473,8 +473,8 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
         // left={0}
         right={0}
         zIndex={3}
-        sx={({ palette: { transparent: transparentColor, grey }, functions: { rgba } }) => ({
-          backgroundColor: transparent ? transparentColor.main : rgba(grey[200], 0.8),
+        sx={({ palette: { transparent: transparentColor, primary }, functions: { rgba } }) => ({
+          backgroundColor: transparent ? transparentColor.main : rgba(primary.main, 0.8),
           backdropFilter: transparent ? "none" : `saturate(200%) blur(10px)`,
         })}
         // sx={({ palette: { transparent: transparentColor, grey } }) => ({
@@ -602,7 +602,8 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
                 (action.type === "internal" ? (
                   <MKButton
                     component={Link}
-                    to={action.route}
+                    // to={action.route}
+                    to=""
                     variant={
                       action.color === "white" || action.color === "default"
                         ? "contained"
@@ -616,8 +617,9 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
                 ) : (
                   <MKButton
                     component="a"
-                    href={action.route}
-                    target="_blank"
+                    // href={action.route}
+                    href=""
+                    // target="_blank"
                     rel="noreferrer"
                     variant={
                       action.color === "white" || action.color === "default"
