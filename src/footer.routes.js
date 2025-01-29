@@ -50,8 +50,8 @@ export default {
         { name: "home", route: "/" },
         { name: "about us", route: "/pages/landing-pages/about-us" },
         { name: "our work", route: "/pages/landing-pages/work" },
-        { name: "gallery", route: "" },
-        { name: "contact", route: "" },
+        { name: "gallery", route: "/pages/landing-pages/gallery" },
+        { name: "contact", route: "/pages/landing-pages/contact" },
       ],
     },
 
