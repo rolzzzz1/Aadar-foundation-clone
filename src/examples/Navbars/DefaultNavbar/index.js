@@ -34,7 +34,7 @@ import MuiLink from "@mui/material/Link";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
-import MKButton from "components/MKButton";
+// import MKButton from "components/MKButton";
 // import MKAvatar from "components/MKAvatar";
 
 // Material Kit 2 React example components
@@ -49,7 +49,16 @@ import aadarLogo from "assets/images/logo-aadar.jpg";
 // import CallRoundedIcon from "@mui/icons-material/CallRounded";
 // import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 
-function DefaultNavbar({ brand, routes, transparent, light, action, sticky, relative, center }) {
+function DefaultNavbar({
+  brand,
+  routes,
+  transparent,
+  light,
+  // action,
+  sticky,
+  relative,
+  center,
+}) {
   const [dropdown, setDropdown] = useState("");
   const [dropdownEl, setDropdownEl] = useState("");
   const [dropdownName, setDropdownName] = useState("");
@@ -597,7 +606,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
             </MKBox>
 
             {/* Donate button */}
-            <MKBox ml={{ xs: "auto", lg: 0 }} display={{ xs: "none", sm: "none", md: "block" }}>
+            {/* <MKBox ml={{ xs: "auto", lg: 0 }} display={{ xs: "none", sm: "none", md: "block" }}>
               {action &&
                 (action.type === "internal" ? (
                   <MKButton
@@ -632,7 +641,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
                     {action.label}
                   </MKButton>
                 ))}
-            </MKBox>
+            </MKBox> */}
 
             <MKBox
               display={{ xs: "inline-block", lg: "none" }}

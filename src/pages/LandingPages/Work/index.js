@@ -42,7 +42,7 @@ function Work() {
       />
 
       <MKBox
-        my={-10}
+        my={-12}
         minHeight="60vh"
         width="100%"
         sx={{

@@ -33,7 +33,7 @@ import footerRoutes from "footer.routes";
 // Image
 import bgImage from "assets/images/illustrations/illustration-reset.jpg";
 
-function ContactUs() {
+function Contact() {
   return (
     <>
       <MKBox position="fixed" top="0.5rem" width="100%">
@@ -146,4 +146,4 @@ function ContactUs() {
   );
 }
 
-export default ContactUs;
+export default Contact;

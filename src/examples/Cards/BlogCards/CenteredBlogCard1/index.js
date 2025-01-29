@@ -28,12 +28,7 @@ import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 // import MKButton from "components/MKButton";
 
-function CenteredBlogCard({
-  image,
-  title,
-  action,
-  // description
-}) {
+function CenteredBlogCard({ image, title, action, description }) {
   const imageTemplate = (
     <MKBox
       position="relative"
@@ -41,9 +36,9 @@ function CenteredBlogCard({
       justifyContent="center"
       // alignItems="center"
       borderRadius="lg"
-      minHeight="250px"
-      maxHeight="250px"
-      mx={2}
+      minHeight="240px"
+      maxHeight="240px"
+      mx={1}
       mt={-3}
     >
       <MKBox
@@ -51,14 +46,14 @@ function CenteredBlogCard({
         src={image}
         alt={title}
         borderRadius="lg"
-        width="90%"
+        width="100%"
         position="relative"
         zIndex={1}
       />
       <MKBox
         borderRadius="lg"
         shadow="md"
-        width="90%"
+        width="10%"
         height="100%"
         position="absolute"
         // left={0}
@@ -90,17 +85,18 @@ function CenteredBlogCard({
               display="inline"
               variant="h5"
               textTransform="capitalize"
-              fontWeight="bold"
+              // fontWeight="bold"
               py={2}
+              sx={{ fontWeight: "500" }}
             >
               {title}
             </MKTypography>
 
-            {/* <MKBox mt={1} mb={3}>
+            <MKBox mt={1} mb={3}>
               <MKTypography variant="body2" component="p" color="text">
                 {description}
               </MKTypography>
-            </MKBox> */}
+            </MKBox>
           </MKBox>
         </Card>
       </Link>

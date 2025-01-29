@@ -17,33 +17,41 @@ function About() {
     <MKBox component="section" pt={2} my={2}>
       <Container>
         <Grid container alignItems="center">
-          <Grid item xs={12} md={5} sx={{ ml: "auto" }}>
+          <Grid item xs={12} md={4} sx={{ mx: "auto" }}>
             <MKBox position="relative" display="flex" justifyContent="center">
               <MKBox
                 component="img"
                 src={aboutImg}
                 alt="aboutImage"
-                width="70%"
+                width="88%"
                 borderRadius="15px"
               />
             </MKBox>
           </Grid>
-          <Grid item md={6} sx={{ ml: { xs: 0, lg: 3 }, mb: { xs: 12, md: 0 } }}>
+          <Grid item md={7} sx={{ ml: { xs: 0, lg: 3 }, mb: { xs: 12, md: 0 } }}>
             <Container>
-              <MKTypography variant="h3">Aadar Foundation </MKTypography>
-              <MKTypography variant="h5">(Ashram Swarg Sadan)</MKTypography>
+              <MKTypography variant="h3" fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'>
+                Aadar Foundation{" "}
+              </MKTypography>
+              <MKTypography variant="h5" sx={{ fontWeight: "500" }}>
+                (Swarg Sadan Ashram)
+              </MKTypography>
               <MKTypography
-                variant="body2"
+                variant="body1"
                 color="text"
-                mb={3}
-                paddingTop="10px"
+                my={2}
+                paddingTop="5px"
                 maxWidth="600px"
                 fontSize="0.9rem"
               >
-                The Aadar Foundation's Ashram Swarg Sadan is being established in Gwalior, Madhya
-                Pradesh. Currently, the ashram has 92 residents, including those who are helpless,
-                disabled, paralyzed, or suffering from various ailments, all of whom receive proper
-                care, food, medication, and amusement.
+                Aadar Foundation ( Swarg Sadan Ashram ) is established in Gwalior city, Madhya
+                Pradesh since 2015 by Mr. Vikas Goswami and his team. We continue our work by giving
+                love, basic necessities and respect to homeless, helpless, abandoned, mentally and
+                physically sick, injured, infected, old aged and people in dying conditions. These
+                people are generally found on railway stations, bus stands, religious and other
+                public places in very unhygienic, critically diseased and painful condition. So due
+                to lack of food, medicine and care, their condition becomes more and more critical
+                and even they generally go towards lingering and painful death.
               </MKTypography>
 
               <MKBox ml={{ xs: "auto", lg: 0 }}>

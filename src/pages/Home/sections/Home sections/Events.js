@@ -144,9 +144,21 @@ function Work() {
       mx={-2}
     >
       <Container my={0} py={0}>
-        <Grid container>
-          <Grid item xs={12} md={12} sx={{ textAlign: "center", mb: 4 }}>
-            <MKTypography variant="h3" color="darkText">
+        <Grid container mb={4}>
+          <Grid
+            item
+            xs={12}
+            md={12}
+            sx={{
+              textAlign: "center",
+              mb: 4,
+            }}
+          >
+            <MKTypography
+              variant="h3"
+              sx={{ fontWeight: "500" }}
+              fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            >
               Our recent posts
             </MKTypography>
           </Grid>
@@ -158,8 +170,8 @@ function Work() {
               title="Old Newspapers Donation"
               description="With your invaluable support, service work for the homeless and destitute victims is continuing in Ashram Swarg Sadan. "
               action={{
-                type: "internal",
-                route: "",
+                type: "external",
+                route: "https://www.instagram.com/p/CjsCx57v_rL/",
                 color: "info",
                 label: "Read More",
               }}
@@ -171,8 +183,8 @@ function Work() {
               title="ECS Bagless school visit"
               description="Little children of ecs bagless school came and visited Ashram Swarg Sadan Gwalior"
               action={{
-                type: "internal",
-                route: "",
+                type: "external",
+                route: "https://www.instagram.com/reel/DEwauX0vLv-/",
                 color: "info",
                 label: "Read More",
               }}
@@ -184,8 +196,8 @@ function Work() {
               title="Lost young boy went home"
               description="A youth was found in a deranged condition in Sonpura of Hastinapur, whom the police kept in Swarg Sadan Ashram and after 14 days, he left for his country Nepal. "
               action={{
-                type: "internal",
-                route: "",
+                type: "external",
+                route: "https://www.instagram.com/reel/C71hSrStrAP/",
                 color: "info",
                 label: "Read More",
               }}

@@ -22,23 +22,29 @@ function Work() {
       position="relative"
       mt={4}
       py={6}
-      px={{ xs: 2, lg: 0 }}
-      mx={-2}
+      // px={{ xs: 2, lg: 0 }}
+
+      // mx={-2}
     >
       <Container>
         <Grid container>
           <Grid item xs={12} md={12} sx={{ textAlign: "center", mb: 6 }}>
-            <MKTypography variant="h3" color="darkText">
+            <MKTypography
+              variant="h3"
+              // color="darkText"
+              fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+              sx={{ fontWeight: "500" }}
+            >
               Our Work
             </MKTypography>
           </Grid>
         </Grid>
-        <Grid container spacing={8}>
+        <Grid container spacing={4}>
           <Grid item xs={12} lg={4} sx={{ ml: "auto", mt: { xs: 3, lg: 0 } }}>
             <CenteredBlogCard
               image={work1}
               title="Rescue"
-              description="Description here"
+              description="Rescuing a person in bad state from the roadside "
               action={{ type: "internal", route: "/pages/landing-pages/work" }}
             />
           </Grid>
@@ -46,7 +52,7 @@ function Work() {
             <CenteredBlogCard
               image={work2}
               title="Treatment"
-              description="Description here"
+              description="Taking a person in critical condition for treatment in an ambulance"
               action={{ type: "internal", route: "/pages/landing-pages/work" }}
             />
           </Grid>
@@ -54,7 +60,7 @@ function Work() {
             <CenteredBlogCard
               image={work3}
               title="Shelter"
-              description="Description here"
+              description="A shelter with a clean and loving environment provided to the residents"
               action={{ type: "internal", route: "/pages/landing-pages/work" }}
             />
           </Grid>
@@ -64,7 +70,7 @@ function Work() {
             <CenteredBlogCard
               image={work4}
               title="Food"
-              description="Description here"
+              description="Nutritious food is provided to all the residents"
               action={{ type: "internal", route: "/pages/landing-pages/work" }}
             />
           </Grid>
@@ -72,7 +78,7 @@ function Work() {
             <CenteredBlogCard
               image={work5}
               title="Care"
-              description="Description here"
+              description="Yoga session and various activities are conducted at Swarg sadan ashram"
               action={{ type: "internal", route: "/pages/landing-pages/work" }}
             />
           </Grid>
@@ -80,7 +86,7 @@ function Work() {
             <CenteredBlogCard
               image={work6}
               title="Rehabilitation"
-              description="Description here"
+              description="A father is reunited with his son after the efforts of Aadar foundation team"
               action={{ type: "internal", route: "/pages/landing-pages/work" }}
             />
           </Grid>

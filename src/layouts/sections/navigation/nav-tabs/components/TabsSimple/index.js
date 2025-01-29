@@ -33,10 +33,10 @@ function TabsSimple() {
   return (
     <Container>
       <Grid container item justifyContent="center" xs={12} lg={4} mx="auto">
-        <AppBar position="static">
+        <AppBar position="static" sx={{ zIndex: 3 }}>
           <Tabs value={activeTab} onChange={handleTabType}>
-            <Tab label="Our Vision" />
-            <Tab label="Our Mission" />
+            <Tab label="Vision" />
+            <Tab label="Mission" />
           </Tabs>
         </AppBar>
       </Grid>
@@ -61,11 +61,12 @@ function TabsSimple() {
                 justifyContent="center"
                 alignItems="center"
                 textAlign="center"
+                padding="0 50px"
               >
                 <MKTypography variant={"h4"} py={3}>
                   Vision
                 </MKTypography>
-                <MKTypography maxWidth="600px" variant="body1" fontSize="18px">
+                <MKTypography maxWidth="600px" variant="body1" fontSize="0.9rem">
                   To save every helpless hopeless sick person who is in harsh and painful conditions
                   and going towards lingering death due to lack of help and support on roadside,
                   religious and other public places.
@@ -85,11 +86,12 @@ function TabsSimple() {
                 justifyContent="center"
                 alignItems="center"
                 textAlign="center"
+                padding="0 20px"
               >
                 <MKTypography variant={"h4"} py={3}>
                   Mission
                 </MKTypography>
-                <MKTypography variant="body1" fontSize="18px" maxWidth="800px">
+                <MKTypography variant="body1" fontSize="0.9rem" maxWidth="800px">
                   To serve the living image of God by helping all those who are facing a hopeless
                   and painful phase in life. The Organization is applying all efforts to save the
                   lives of these persons with the blessing of almighty God. Apna Ghar provides a

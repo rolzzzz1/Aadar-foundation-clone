@@ -51,21 +51,24 @@ function DefaultFooter({ content }) {
             xs={12}
             md={4}
             sx={{
-              textAlign: "center",
               ml: "auto",
               mb: 3,
               maxHeight: "200px",
             }}
           >
             <MKBox>
+              {/* <MKBox component={Link} to="/">
+                <MKBox component="img" src={brand.image} alt={brand.name} maxWidth="5rem" mb={1} />
+              </MKBox> */}
+
               <Link to={brand.route}>
                 <MKBox component="img" src={brand.image} alt={brand.name} maxWidth="5rem" mb={1} />
+                <MKTypography variant="h4" color="white">
+                  {brand.name}
+                </MKTypography>
               </Link>
-              <MKTypography variant="h4" color="white">
-                {brand.name}
-              </MKTypography>
             </MKBox>
-            <MKBox display="flex" alignItems="center" mt={2} justifyContent="center">
+            <MKBox display="flex" alignItems="center" mt={2} justifyContent="left">
               {socials.map(({ icon, link }, key) => (
                 <MKTypography
                   key={link}
@@ -78,6 +81,12 @@ function DefaultFooter({ content }) {
                   color="white"
                   opacity={0.8}
                   mr={key === socials.length - 1 ? 0 : 2.5}
+                  sx={{
+                    "&:hover": {
+                      color: "#E7A232",
+                      textDecoration: "underline 2px",
+                    },
+                  }}
                 >
                   {icon}
                 </MKTypography>
@@ -85,6 +94,84 @@ function DefaultFooter({ content }) {
             </MKBox>
           </Grid>
           {menus.map(({ name: title, items }) => (
+            <Grid
+              key={title}
+              item
+              xs={6}
+              md={2}
+              sx={{
+                // textAlign: "center",
+                mb: 3,
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <MKBox>
+                <MKTypography
+                  display="block"
+                  variant="button"
+                  sx={{ fontSize: { sm: "0.9rem", md: "1.1rem" } }}
+                  fontWeight="bold"
+                  textTransform="capitalize"
+                  color="white"
+                  mb={1}
+                >
+                  {title}
+                </MKTypography>
+              </MKBox>
+              <MKBox sx={{ display: "flex", justifyContent: "left", gap: "60px" }}>
+                <MKBox component="ul" p={0} m={0} sx={{ listStyle: "none" }}>
+                  {items.map(({ name, route, href }) => (
+                    <MKBox key={name} component="li" p={0} m={0} lineHeight={1.25}>
+                      {href ? (
+                        <MKTypography
+                          component="a"
+                          href={href}
+                          // target="_blank"
+                          rel="noreferrer"
+                          variant="button"
+                          fontWeight="regular"
+                          textTransform="capitalize"
+                          sx={{
+                            fontSize: { sm: "0.8rem", md: "0.9rem" },
+                            "&:hover": {
+                              color: "#E7A232",
+                              textDecoration: "underline 2px",
+                            },
+                          }}
+                          // fontSize={"0.9rem"}
+                          color="white"
+                        >
+                          {name}
+                        </MKTypography>
+                      ) : (
+                        <MKTypography
+                          component={Link}
+                          to={route}
+                          variant="button"
+                          fontWeight="regular"
+                          textTransform="capitalize"
+                          sx={{
+                            fontSize: { sm: "0.8rem", md: "0.9rem" },
+                            "&:hover": {
+                              color: "#E7A232",
+                              textDecoration: "underline 2px",
+                            },
+                          }}
+                          // fontSize={"0.9rem"}
+                          color="white"
+                        >
+                          {name}
+                        </MKTypography>
+                      )}
+                    </MKBox>
+                  ))}
+                </MKBox>
+              </MKBox>
+            </Grid>
+          ))}
+
+          {/* {menus.map(({ name: title, items1 }) => (
             <Grid key={title} item xs={6} md={4} sx={{ textAlign: "center", mb: 3 }}>
               <MKTypography
                 display="block"
@@ -98,7 +185,7 @@ function DefaultFooter({ content }) {
                 {title}
               </MKTypography>
               <MKBox component="ul" p={0} m={0} sx={{ listStyle: "none" }}>
-                {items.map(({ name, route, href }) => (
+                {items1.map(({ name, route, href }) => (
                   <MKBox key={name} component="li" p={0} m={0} lineHeight={1.25}>
                     {href ? (
                       <MKTypography
@@ -133,22 +220,33 @@ function DefaultFooter({ content }) {
                 ))}
               </MKBox>
             </Grid>
-          ))}
+          ))} */}
 
           <Grid
             item
             xs={6}
-            md={4}
-            sx={{ textAlign: "center", mb: 3, px: 4, mx: "auto" }}
+            md={3}
+            sx={{
+              // textAlign: "center",
+              mb: 3,
+              px: 4,
+              mx: "auto",
+            }}
             fontSize={"0.75rem"}
           >
-            <MKTypography
-              sx={{ fontSize: { sm: "1rem", md: "1.25rem" } }}
-              fontWeight="bold"
-              color="white"
-            >
-              Contact
-            </MKTypography>
+            <MKBox>
+              <MKTypography
+                display="block"
+                variant="button"
+                sx={{ fontSize: { sm: "0.9rem", md: "1.1rem" } }}
+                fontWeight="bold"
+                textTransform="capitalize"
+                color="white"
+                mb={1}
+              >
+                Contact
+              </MKTypography>
+            </MKBox>
 
             <MKBox mt={1}>
               <MKTypography
@@ -161,11 +259,11 @@ function DefaultFooter({ content }) {
                 color="white"
                 lineHeight="1.2rem"
                 // maxWidth="200px"
-                mx="auto"
+                // mx="auto"
                 mb={1}
               >
-                ASHRAM ADD - SARKARI MULTI, Gudagudi Ka Naka Rd, near of MUKTIDHAM, Gwalior, Madhya
-                Pradesh 474001
+                Swarg sadan ashram - Sarkari Malti, Behind Muktidham, Guda Gudi Ka Naka, Gwalior,
+                India, 474001
               </MKTypography>
               <MKBox
                 fontWeight="regular"
@@ -174,19 +272,20 @@ function DefaultFooter({ content }) {
                 paddingTop="5px"
                 color="white"
                 display="flex"
-                justifyContent="center"
+                justifyContent="left"
                 alignItems="center"
                 gap="5px"
               >
                 <CallRoundedIcon
-                  sx={{ fontSize: { xs: "small", sm: "small", md: "medium", lg: "medium" } }}
+
+                // sx={{ fontSize: { xs: "small", sm: "small", md: "medium", lg: "medium" } }}
                 />
                 <MKTypography
                   sx={{ fontSize: { xs: "0.8rem", sm: "0.8rem", md: "0.9rem" } }}
                   paddingLeft="10px"
                   color="white"
                 >
-                  90391 29571
+                  062662 02679
                 </MKTypography>
               </MKBox>
               <MKBox
@@ -196,7 +295,7 @@ function DefaultFooter({ content }) {
                 paddingTop="5px"
                 color="white"
                 display="flex"
-                justifyContent="center"
+                justifyContent="left"
                 alignItems="center"
                 gap="5px"
               >
@@ -206,7 +305,7 @@ function DefaultFooter({ content }) {
                   paddingLeft="10px"
                   color="white"
                 >
-                  aadar1234@gmail.com
+                  aadarfoundatio2018@gmail.com
                 </MKTypography>
               </MKBox>
 

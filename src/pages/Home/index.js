@@ -11,6 +11,7 @@ import MKBox from "components/MKBox";
 // Material Kit 2 React examples
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import DefaultFooter from "examples/Footers/DefaultFooter";
+import DefaultCounterCard from "examples/Cards/CounterCards/DefaultCounterCard";
 
 // Home page sections
 import About from "pages/Home/sections/Home sections/About";
@@ -67,15 +68,29 @@ function Home() {
             backgroundSize: "auto",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "top",
-            width: "50%",
-            minHeight: "60vh",
+            width: "40%",
+            minHeight: "80vh",
           }}
         >
-          <MKTypography variant="h2" color="white" textAlign="center">
+          <MKTypography
+            variant="h2"
+            color="white"
+            textAlign="center"
+            ml={-6}
+            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+          >
             Aadar Foundation
           </MKTypography>
-          <MKTypography variant="body" color="white" textAlign="center" mt={2}>
-            A home for Homeless and Unclaimed people
+          <MKTypography
+            variant="body"
+            color="white"
+            textAlign="center"
+            mt={2}
+            ml={-6}
+            display="inline-block"
+            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+          >
+            A home for Hopeless, Homeless, Helpless <br /> and Unclaimed people
           </MKTypography>
         </MKBox>
       </MKBox>
@@ -85,7 +100,7 @@ function Home() {
         sx={{
           p: 2,
           mx: { xs: 2, lg: 3 },
-          mt: -10,
+          mt: -6,
           mb: 4,
           backgroundColor: ({ palette: { white }, functions: { rgba } }) => rgba(white.main, 0.8),
           backdropFilter: "saturate(200%) blur(30px)",
@@ -149,6 +164,48 @@ function Home() {
                     ></iframe>
                   </MKBox>
                 </MKBox>
+              </Grid>
+            </Grid>
+          </Container>
+        </MKBox>
+
+        <MKBox component="section" pt={8} pb={2}>
+          <Container>
+            <Grid container justifyContent="center" sx={{ textAlign: "center" }}>
+              <Grid item xs={12} md={3}>
+                <DefaultCounterCard
+                  count={9}
+                  separator=","
+                  title="Years Since"
+                  description="Active since 2015 to serve the homeless, helpless and destitute facing a very painful phase of life."
+                />
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <DefaultCounterCard
+                  count={500}
+                  separator=","
+                  suffix="+"
+                  title="People helped"
+                  description="Helped humans suffering from lack of love, food, shelter, treatment, family, care."
+                />
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <DefaultCounterCard
+                  count={80}
+                  separator=","
+                  suffix="+"
+                  title="Events"
+                  description="Actively engaging with society helping our residents and conducting various events."
+                />
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <DefaultCounterCard
+                  count={98}
+                  separator=","
+                  suffix="+"
+                  title="People rehabilitated"
+                  description="98 people till now have been reunited with their families by the efforts of Swarg sadan team."
+                />
               </Grid>
             </Grid>
           </Container>

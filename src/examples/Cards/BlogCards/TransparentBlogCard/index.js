@@ -33,7 +33,7 @@ function TransparentBlogCard({ image, title, description, action }) {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    width: "max-content",
+    // width: "max-content",
 
     // "& .material-icons, .material-icons-round,": {
     //   transform: `translateX(2px)`,
@@ -57,17 +57,17 @@ function TransparentBlogCard({ image, title, description, action }) {
         width="100%"
         // minWidth="150px"
         // maxWidth="150px"
-        minHeight="200px"
-        maxHeight="200px"
+        minHeight="280px"
+        maxHeight="280px"
         position="relative"
         zIndex={1}
       />
-      <MKBox
+      {/* <MKBox
         borderRadius="lg"
         shadow="md"
         width="100%"
-        maxHeight="200px"
-        minHeight="200px"
+        maxHeight="280px"
+        minHeight="280px"
         position="absolute"
         // left={0}
         top={0}
@@ -77,76 +77,84 @@ function TransparentBlogCard({ image, title, description, action }) {
           filter: "blur(12px)",
           backgroundSize: "cover",
         }}
-      />
+      /> */}
     </MKBox>
   );
 
   return (
-    <Card
-      sx={{
-        background: "transparent",
-        boxShadow: "none",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        overflow: "visible",
-      }}
-    >
-      <MKBox
-        width="80%"
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
+    <MuiLink href={action.route} target="_blank" rel="noreferrer">
+      <Card
         sx={{
-          // backgroundColor: "#CED4DA",
-          borderRadius: "10px",
+          background: "transparent",
+          // backgroundColor: "#000000",
+          boxShadow: "none",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          // overflow: "visible",
           maxHeight: "400px",
           minHeight: "400px",
+          "&:hover": {
+            backgroundColor: "#CED4DA",
+          },
         }}
       >
-        {action.type === "internal" ? (
-          <Link to={action.route}>{imageTemplate}</Link>
-        ) : (
-          <MuiLink href={action.route} target="_blank" rel="noreferrer">
-            {imageTemplate}
-          </MuiLink>
-        )}
         <MKBox
-          pt={4}
-          pb={3}
-          // maxHeight="100px" For carousel
-          // minHeight="100px"
-          maxHeight="200px"
-          minHeight="200px"
-          mx={2}
-          // sx={{ backgroundColor: "#CED4DA", my: -3, width: "70%", borderRadius: "10px" }}
+          width="80%"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          sx={{
+            // backgroundColor: "#CED4DA",
+            borderRadius: "10px",
+            // maxHeight: "500px",
+            // minHeight: "500px",
+          }}
         >
           {action.type === "internal" ? (
-            <Link to={action.route} sx={cardActionStyles}>
-              <MKTypography variant="h6" gutterBottom textAlign="center">
-                {title}
-              </MKTypography>
-            </Link>
+            <Link to={action.route}>{imageTemplate}</Link>
           ) : (
-            <MuiLink href={action.route} target="_blank" rel="noreferrer" sx={cardActionStyles}>
-              <MKTypography variant="h6" gutterBottom textAlign="center">
-                {title}
-              </MKTypography>
+            <MuiLink href={action.route} target="_blank" rel="noreferrer">
+              {imageTemplate}
             </MuiLink>
           )}
-          <MKTypography
-            variant="body2"
-            component="p"
-            color="text"
-            mb={3}
-            textAlign="center"
-            fontSize="0.75rem"
+          <MKBox
+            pt={2}
+            pb={3}
+            // maxHeight="100px" For carousel
+            // minHeight="100px"
+            maxHeight="200px"
+            minHeight="200px"
+            mx={1}
+            // sx={{ backgroundColor: "#CED4DA", my: -3, width: "70%", borderRadius: "10px" }}
           >
-            {description}
-          </MKTypography>
+            {action.type === "internal" ? (
+              <Link to={action.route} sx={cardActionStyles}>
+                <MKTypography variant="h6" gutterBottom textAlign="center">
+                  {title}
+                </MKTypography>
+              </Link>
+            ) : (
+              <MuiLink href={action.route} target="_blank" rel="noreferrer" sx={cardActionStyles}>
+                <MKTypography variant="h6" gutterBottom textAlign="center">
+                  {title}
+                </MKTypography>
+              </MuiLink>
+            )}
+            <MKTypography
+              variant="body2"
+              component="p"
+              color="text"
+              mb={3}
+              textAlign="center"
+              fontSize="0.85rem"
+            >
+              {description}
+            </MKTypography>
+          </MKBox>
         </MKBox>
-      </MKBox>
-    </Card>
+      </Card>
+    </MuiLink>
   );
 }
 

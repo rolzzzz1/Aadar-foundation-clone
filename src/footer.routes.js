@@ -45,13 +45,21 @@ export default {
   ],
   menus: [
     {
-      name: "Useful links",
+      name: "Navigation",
       items: [
         { name: "home", route: "/" },
         { name: "about us", route: "/pages/landing-pages/about-us" },
         { name: "our work", route: "/pages/landing-pages/work" },
         { name: "gallery", route: "" },
         { name: "contact", route: "" },
+      ],
+    },
+
+    {
+      name: "Useful links",
+      items: [
+        { name: "privacy policy", route: "" },
+        { name: "terms and conditions", route: "" },
       ],
     },
 
@@ -91,7 +99,7 @@ export default {
     // },
   ],
   copyright: (
-    <MKBox display="flex" justifyContent="center" mx={"auto"} pt={0}>
+    <MKBox display="flex" justifyContent="center" mx={"auto"} pt={0} alignItems="center">
       <MKTypography
         variant="button"
         fontWeight="regular"
@@ -104,33 +112,20 @@ export default {
       >
         Copyright &copy; {date} Aadar foundation - All rights reserved.
       </MKTypography>
-      {/* <MKBox>
-        <MKButton
-          variant="text"
-          sx={{
-            textTransform: "capitalize",
-            fontWeight: 300,
-            padding: "16px",
-            borderLeft: "1px solid #ffffff",
-            borderRadius: "0",
-          }}
-        >
-          Privacy policy
-        </MKButton>
 
-        <MKButton
-          variant="text"
-          sx={{
-            textTransform: "capitalize",
-            fontWeight: 300,
-            padding: "16px",
-            borderLeft: "1px solid #ffffff",
-            borderRadius: "0",
-          }}
-        >
-          Terms and conditions
-        </MKButton>
-      </MKBox> */}
+      {/* <MKTypography
+        component={Link}
+        to={"/pages/landing-pages/about-us"}
+        variant="button"
+        fontWeight="regular"
+        textTransform="capitalize"
+        fontSize="0.8rem"
+        py={2}
+        px={2}
+        color="white"
+      >
+        Privacy policy
+      </MKTypography> */}
     </MKBox>
   ),
 };
