@@ -22,6 +22,7 @@ function Work() {
       position="relative"
       mt={4}
       py={6}
+      borderRadius={"10px"}
       // px={{ xs: 2, lg: 0 }}
 
       // mx={-2}
@@ -40,7 +41,15 @@ function Work() {
           </Grid>
         </Grid>
         <Grid container spacing={4}>
-          <Grid item xs={12} lg={4} sx={{ ml: "auto", mt: { xs: 3, lg: 0 } }}>
+          <Grid
+            item
+            xs={12}
+            lg={4}
+            sx={{
+              ml: "auto",
+              mt: { xs: 3, lg: 0 },
+            }}
+          >
             <CenteredBlogCard
               image={work1}
               title="Rescue"
