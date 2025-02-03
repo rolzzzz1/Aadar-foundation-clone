@@ -58,8 +58,11 @@ export default {
     {
       name: "Useful links",
       items: [
-        { name: "privacy policy", route: "" },
-        { name: "terms and conditions", route: "" },
+        {
+          name: "privacy policy",
+          route: "/pages/landing-pages/privacy-policy",
+        },
+        { name: "terms and conditions", route: "/pages/landing-pages/terms-conditions" },
       ],
     },
 
@@ -110,7 +113,7 @@ export default {
         py={2}
         px={2}
       >
-        Copyright &copy; {date} Aadar foundation - All rights reserved.
+        Copyright &copy; {date} Aadar foundation - All rights reserved. Designed by Aishwarya Sharma
       </MKTypography>
 
       {/* <MKTypography

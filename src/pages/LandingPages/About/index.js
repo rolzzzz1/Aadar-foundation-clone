@@ -1,6 +1,7 @@
 // @mui material components
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
 
 // Material Kit 2 React examples
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
@@ -8,7 +9,7 @@ import DefaultFooter from "examples/Footers/DefaultFooter";
 // import DefaultCounterCard from "examples/Cards/CounterCards/DefaultCounterCard";
 
 // Material Kit 2 React layouts
-import TabsSimple from "layouts/sections/navigation/nav-tabs/components/TabsSimple";
+// import TabsSimple from "layouts/sections/navigation/nav-tabs/components/TabsSimple";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
@@ -22,6 +23,10 @@ import Team from "pages/LandingPages/About/sections/Team";
 
 // Images
 import aboutBgImg from "assets/images/swargSadanBlack.png";
+import bgImage from "assets/images/smallBrushstroke2.svg";
+import aboutImg from "assets/images/main1.jpg";
+import swargSadan from "assets/images/swargSadan.webp";
+import beforeAfter from "assets/images/before-after3.png";
 
 function About() {
   return (
@@ -39,180 +44,337 @@ function About() {
       />
 
       {/* About section of about page */}
+
+      {/* Main Image and text */}
       <MKBox
-        my={-12}
-        minHeight="60vh"
+        minHeight="80vh"
         width="100%"
         sx={{
           backgroundImage: `url(${aboutBgImg})`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
-          backgroundPosition: "top",
+          backgroundPosition: "left",
           display: "flex",
           justifyContent: "end",
-          alignItems: "center",
+          alignItems: "end",
         }}
-      ></MKBox>
-      <MKBox component="section" pt={8} mt={8}>
-        <Container>
-          <MKBox
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-            alignItems="center"
-            // textAlign="center"
+      >
+        <MKBox
+          color="white"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          sx={{
+            backgroundImage: `url(${bgImage})`,
+            backgroundSize: "contain",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "top",
+            width: "40%",
+            minHeight: "40vh",
+            // marginRight: "150px",
+            // marginTop: { md: "80px", lg: "80px" },
+          }}
+        >
+          <MKTypography
+            variant="h3"
+            color="white"
+            textAlign="center"
+            ml={-2}
+            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           >
-            <MKTypography variant={"h2"} py={3}>
-              About us
-            </MKTypography>
-            <MKTypography variant="body1" fontSize="1rem">
-              Considering serving the suffering human beings as worship of God, Mr. Vikas Goswami
-              started service from 1st July 2015. First he and his team started the service by
-              finding people who were wounded, injured, sick, helpless, disabled, victims living a
-              painful life in helpless condition. The team found various helpless people at railway
-              stations, bus stands, outside temples or anywhere in the city and started giving them
-              first aid.
-            </MKTypography>
-            <MKTypography variant="body1" fontSize="1rem" paddingTop="20px">
-              As they carried on this service,{" "}
-              <b>
-                {" "}
-                Aadar foundation (Ashram Swarg Sadan) was founded on 20 June 2018 in Gwalior city by
-                Mr. Vikas Goswami and his colleagues Pawan Suryavanshi, Faizan Beg, Vibha Aneja,
-                Pramod Sumoliya, Sadia Parveen, Kamal Aneja.
-              </b>
-            </MKTypography>
-            <MKTypography variant="body1" fontSize="1rem" paddingTop="20px">
-              Since then the team started adopting the people who are homeless, helpless, abandoned,
-              mentally or physically ill, injured, elderly, lonely people and are slowly moving
-              towards a painful death. When included in the Swarg Sadan family, our mission is to
-              give them respect, love, hope and happiness. Looking at their clothes and condition,
-              no one comes near them to talk to them or help them. Without proper care, due to lack
-              of food and water, their condition becomes pitiable and they slowly move towards a
-              painful death. By bringing them to the Ashram Swarg Sadan, they are given free food,
-              good care, treatment, medicines, clean clothes, counselling, sports, entertainment and
-              all kinds of family atmosphere. After recovery, efforts are made to trace their family
-              members.{" "}
-              <b>
-                So far 230 Prabhu Jans have been brought to the Ashram. 70 Prabhu Jans have been
-                rehabilitated in their families in 13 states across India. 91 prominent Jans are
-                being provided full service at the Ashram.
-              </b>
-            </MKTypography>
-          </MKBox>
-          {/* <MKBox py={4}>
-            <TabsSimple />
-          </MKBox> */}
-        </Container>
+            About Us
+          </MKTypography>
+        </MKBox>
       </MKBox>
 
-      <Grid
-        container
+      <Card
         sx={{
-          textAlign: "center",
-          paddingTop: "50px",
+          p: 2,
+          mx: { xs: 2, lg: 3 },
+          mt: -2,
+          mb: 4,
+          backgroundColor: "#f0f2f5",
+          backdropFilter: "saturate(200%) blur(30px)",
+          boxShadow: ({ boxShadows: { xxl } }) => xxl,
         }}
-        mx={4}
       >
-        <Grid py={4} md={5} pb={1}>
-          <TabsSimple />
-        </Grid>
-        <Grid py={4} md={7} textAlign="center" pb={1}>
-          <MKTypography variant="h5" fontSize="1.5rem">
-            What we do
-          </MKTypography>
+        <MKBox
+          component="section"
+          // pt={8} mt={8}
+        >
+          <Container>
+            <MKBox
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              alignItems="start"
+              // textAlign="center"
+            >
+              <MKTypography
+                variant={"h3"}
+                py={5}
+                fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                sx={{ letterSpacing: "0.05rem" }}
+              >
+                Who we are
+              </MKTypography>
 
-          <MKTypography fontSize="1rem" mx="auto" maxWidth="550px" paddingTop="20px">
-            Our organization works for homeless, helpless, loveless, sick people. It works to give a
-            new life to people who are seriously injured, sick, hungry and thirsty, separated from
-            their homes, and abandoned by their loved ones, in solitude at railway stations,
-            religious places, on roads, etc. Food, good care, treatment, entertainment, clean
-            clothes, counseling are completely free for them in the ashram Swarg Sadan, which is
-            provided by social cooperation.
-          </MKTypography>
-          <MKTypography fontSize="1rem" mx="auto" maxWidth="500px" paddingTop="20px">
-            The organization has also adopted orphan girls under the Grah Se After Care Yojana run
-            by the Women and Child Development Department. Where the girls study, do computer,
-            sewing, knitting, beauty parlor, or other livelihood earning courses, and they are also
-            made proficient in Grah work according to their wish. The organization has also done the
-            work of getting 10 girls married.
-          </MKTypography>
-        </Grid>
-      </Grid>
+              <Grid container display="flex" justifyContent={"center"}>
+                <Grid lg={6}>
+                  <MKBox
+                    component="img"
+                    src={swargSadan}
+                    alt={"Swarg sadan building image"}
+                    borderRadius="xxl"
+                    width="90%"
+                    height="100%"
+                  ></MKBox>
+                  {/* <img
+                  src={swargSadan}
+                  alt="aboutImage"
+                  width="90%"
+                  height="100%"
+                  // width="400px"
+                /> */}
+                </Grid>
+                <Grid lg={6}>
+                  <MKTypography
+                    variant="body1"
+                    fontSize="1rem"
+                    fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                    sx={{ letterSpacing: "0.05rem" }}
+                  >
+                    At Aadar Foundation, we believe that serving humanity is the highest form of
+                    worship. With this vision, <b>Mr. Vikas Goswami</b> began his journey of service
+                    on <b>July 1, 2015</b>, reaching out to the most vulnerable—those who were
+                    wounded, sick, abandoned, or disabled—struggling to survive on the streets. He
+                    and his team sought out these individuals at railway stations, bus stands,
+                    outside temples, and other places across the city, providing them with first aid
+                    and care.
+                  </MKTypography>
+                </Grid>
+              </Grid>
+              {/* <MKTypography
+              variant="body1"
+              fontSize="1rem"
+              fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+              sx={{ letterSpacing: "0.05rem" }}
+            >
+              At Aadar Foundation, we believe that serving humanity is the highest form of worship.
+              With this vision, <b>Mr. Vikas Goswami</b> began his journey of service on{" "}
+              <b>July 1, 2015</b>, reaching out to the most vulnerable—those who were wounded, sick,
+              abandoned, or disabled—struggling to survive on the streets. He and his team sought
+              out these individuals at railway stations, bus stands, outside temples, and other
+              places across the city, providing them with first aid and care.
+            </MKTypography> */}
+              <MKTypography
+                variant="body1"
+                fontSize="1.1rem"
+                fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                paddingTop="40px"
+                paddingBottom="30px"
+                sx={{ letterSpacing: "0.05rem" }}
+                textAlign="center"
+                width="80%"
+                mx={"auto"}
+              >
+                As the mission grew,{" "}
+                <b>
+                  Aadar Foundation (Ashram Swarg Sadan) was officially established on June 20, 2018,
+                  in Gwalior, by Mr. Vikas Goswami and his dedicated colleagues Pawan Suryavanshi,
+                  Faizan Beg, Vibha Aneja, Pramod Sumoliya, Sadia Parveen, and Kamal Aneja.
+                </b>
+              </MKTypography>
 
-      <MKTypography fontSize="1rem" mx="auto" px={8}>
-        The organization is working with social economic help. People's cooperation in every way
-        helps the ashram in its day to day operation. We are working with a very transparent system.
-        Social persons are also directly involved in this, the donors who come here are impressed by
-        the service of the servants and the arrangements of the ashram. We appeal to all those
-        persons who make the life of all these suffering God's incarnations simple and easy by
-        serving selflessly.
-      </MKTypography>
+              <Grid container display="flex" justifyContent={"center"}>
+                <Grid lg={6}>
+                  <MKTypography
+                    variant="body1"
+                    fontSize="1rem"
+                    fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                    paddingTop="10px"
+                    sx={{ letterSpacing: "0.05rem" }}
+                  >
+                    Since then, Aadar Foundation has been a refuge for the{" "}
+                    <b>homeless, abandoned, mentally or physically ill, elderly, and injured</b>,
+                    offering them dignity, love, and hope. These individuals, often ignored by
+                    society, face hunger, neglect, and deteriorating health. At <b>Swarg Sadan</b>,
+                    we provide them with
+                    <b>
+                      {" "}
+                      shelter, nutritious food, medical care, clean clothing, counseling,
+                      recreational activities, and a warm, family-like environment.
+                    </b>
+                  </MKTypography>
+                  <MKTypography
+                    variant="body1"
+                    fontSize="1rem"
+                    fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                    paddingTop="10px"
+                    sx={{ letterSpacing: "0.05rem" }}
+                  >
+                    Beyond care, we strive to reunite them with their families whenever possible. So
+                    far, we have welcomed <b>230 Prabhu Jans (beloved souls) into our ashram</b>,
+                    successfully
+                    <b> rehabilitating 98 individuals </b> with their families across{" "}
+                    <b>13 states in India</b>. Currently, <b>91 Prabhu Jans</b> are receiving
+                    full-time care at our facility.
+                  </MKTypography>
+                </Grid>
+                <Grid lg={6} pl={4} my="auto">
+                  <MKBox
+                    component="img"
+                    src={aboutImg}
+                    alt={"Before after images"}
+                    borderRadius="xxl"
+                    width="90%"
+                  ></MKBox>
+                </Grid>
+              </Grid>
 
-      {/* <MKBox component="section" pt={3} pb={8}>
-        <Container>
-          <Grid container justifyContent="center" sx={{ textAlign: "center" }}>
-            <Grid item xs={12} md={3}>
-              <DefaultCounterCard
-                count={9}
-                separator=","
-                title="Years Since"
-                description="Active since 2015 to serve the homeless helpless destitute sick persons who are facing a very painful phase of life."
-              />
+              <Grid container display="flex" justifyContent={"center"}>
+                <Grid pt={6}>
+                  <MKTypography
+                    variant="body1"
+                    fontSize="1.2rem"
+                    fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                    // paddingTop="30px"
+                    sx={{ letterSpacing: "0.05rem", fontWeight: "500" }}
+                    textAlign="center"
+                    mx={"auto"}
+                    width="80%"
+                  >
+                    At Aadar Foundation, we are committed to restoring dignity, rekindling hope, and
+                    transforming lives—one person at a time.
+                  </MKTypography>
+                </Grid>
+              </Grid>
+            </MKBox>
+
+            {/* <MKBox py={4}>
+              <TabsSimple />
+            </MKBox> */}
+
+            <MKBox
+              component="img"
+              src={beforeAfter}
+              alt={"Swarg sadan building image"}
+              borderRadius="xxl"
+              mt={6}
+              width="50%"
+              height="100%"
+            ></MKBox>
+
+            <Grid py={4} md={12} pb={1} mt={4}>
+              <MKTypography
+                variant="h3"
+                fontSize="1.5rem"
+                fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+              >
+                What we do
+              </MKTypography>
+
+              <MKTypography
+                fontSize="1rem"
+                mx="auto"
+                paddingTop="20px"
+                sx={{ letterSpacing: "0.05rem" }}
+              >
+                At Aadar Foundation, we are dedicated to providing care, support, and dignity to the
+                homeless, helpless, and abandoned. Our mission is to bring hope and a new life to
+                those who are critically ill, injured, hungry, or left alone at railway stations,
+                religious sites, streets, and other public places. Through our shelter, Swarg Sadan,
+                we offer food, medical care, counseling, clean clothing, and entertainment—all
+                completely free, made possible through social cooperation and generous
+                contributions.
+              </MKTypography>
+              <MKTypography
+                fontSize="1rem"
+                mx="auto"
+                paddingTop="20px"
+                sx={{ letterSpacing: "0.05rem" }}
+              >
+                In addition to supporting the homeless, we have also extended our efforts to
+                orphaned girls through the Grah Se After Care Yojana, a program run by the Women and
+                Child Development Department. Here, the girls receive education and vocational
+                training in fields like computer skills, sewing, knitting, and beauty care,
+                empowering them to build independent and self-sufficient lives. Our organization has
+                also facilitated the marriages of 10 young women, helping them embark on a new
+                chapter with dignity and security.
+              </MKTypography>
+              <MKTypography
+                fontSize="1rem"
+                mx="auto"
+                paddingTop="20px"
+                sx={{ letterSpacing: "0.05rem", fontWeight: "500" }}
+              >
+                Aadar Foundation operates with complete transparency, relying on social and economic
+                support. Every contribution—whether financial, material, or voluntary—plays a
+                crucial role in sustaining our mission. Visitors and donors who witness our work
+                firsthand are deeply moved by the dedication of our team and the compassionate
+                environment we have created.
+              </MKTypography>
+              <MKTypography
+                mx="auto"
+                paddingTop="60px"
+                sx={{ letterSpacing: "0.05rem", fontWeight: "500" }}
+                width="80%"
+                textAlign="center"
+                fontSize="1.2rem"
+              >
+                We invite all individuals who believe in selfless service to join us in transforming
+                lives and making the world a kinder place. Together, we can restore hope and dignity
+                to those in need.
+              </MKTypography>
             </Grid>
-            <Grid item xs={12} md={3}>
-              <DefaultCounterCard
-                count={500}
-                separator=","
-                suffix="+"
-                title="People helped"
-                description="Helped humans suffering from lack of treatment, lack of family, separated from their homes, in dirty conditions and much more."
-              />
-            </Grid>
-            <Grid item xs={12} md={3}>
-              <DefaultCounterCard
-                count={80}
-                separator=","
-                suffix="+"
-                title="Events done"
-                description="Actively engage with society helping them and various activities for the less fortunate."
-              />
-            </Grid>
-          </Grid>
-        </Container>
-      </MKBox> */}
 
-      <MKTypography variant="h5" paddingTop="40px" textAlign="center" fontSize="1.5rem">
-        How we work
-      </MKTypography>
-      <MKTypography fontSize="1rem" paddingTop="20px" mx="auto" px={4}>
-        <b>1. Food Prasad and Nutrition</b>
-        <br />
-        Most of the people living in the ashram are sick or extremely malnourished, weak, so food
-        arrangements are made keeping their health in mind. Morning breakfast, lunch, evening meal
-        along with milk, fruits, protein rich items are provided as per doctor's advice.
-      </MKTypography>
-      <MKTypography fontSize="1rem" paddingTop="20px" mx="auto" px={4}>
-        <b>2. Executive Committee and Core Team</b>
-        <br />A core team has been formed for the ashram operator along with the executive committee
-        which reviews the activities of the ashram by meeting every three months. It is their job to
-        run the ashram, maintain the system, monitor every activity, manage the availability of
-        resources to maintain the necessary system in the ashram. The executive committee prepares a
-        report and presents it in the core team meeting. After considering it, corrective efforts
-        are made.
-      </MKTypography>
-      <MKTypography fontSize="1rem" paddingTop="20px" mx="auto" px={4}>
-        <b>3. Festivals and Entertainment</b>
-        <br />
-        Festivals like Holi, Deepawali, Bhai Dooj, Rakshabandhan etc. are celebrated well in the
-        ashram. Mother sits on the days of the Mother Goddess, Ganeshji puja, Ramzan and Eid are
-        celebrated according to the Muslim Gods. For entertainment also, musical instruments,
-        dancing and singing, celebration of birthdays and marriage anniversaries by the social
-        people on their special days are an important part of their entertainment.
-      </MKTypography>
+            <Grid py={4} md={12} pb={1} mt={4}>
+              <MKTypography
+                variant="h3"
+                py={3}
+                fontSize="1.5rem"
+                fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+              >
+                How we work
+              </MKTypography>
+              <MKTypography fontSize="1rem" sx={{ letterSpacing: "0.05rem" }}>
+                <b>1. Food & Nutrition</b>
+                <br />
+                At Aadar Foundation, we prioritize the health and well-being of the homeless
+                individuals we support. Many of them are sick, malnourished, or physically weak, so
+                our meal plans are designed with their nutritional needs in mind. Under medical
+                guidance, we provide balanced meals, including breakfast, lunch, and dinner, along
+                with milk, fruits, and protein-rich foods to aid their recovery and well-being.
+              </MKTypography>
+              <MKTypography fontSize="1rem" paddingTop="20px" sx={{ letterSpacing: "0.05rem" }}>
+                <b>2. Leadership & Governance</b>
+                <br />
+                To ensure the smooth operation of our ashram, we have a dedicated Executive
+                Committee and Core Team in place. The Core Team oversees daily management, resource
+                allocation, and system maintenance, while the Executive Committee conducts quarterly
+                reviews of ashram activities. The committee prepares detailed reports, which are
+                presented in Core Team meetings, allowing for continuous evaluation and necessary
+                improvements.
+              </MKTypography>
+              <MKTypography fontSize="1rem" paddingTop="20px" sx={{ letterSpacing: "0.05rem" }}>
+                <b>3. Celebrations & Community Engagement</b>
+                <br />
+                We believe in fostering a sense of joy, belonging, and cultural inclusivity. Our
+                ashram celebrates festivals like Holi, Diwali, Bhai Dooj, and Rakshabandhan, as well
+                as Ganesh Puja, Ramzan, and Eid, respecting the diverse faiths of our residents. To
+                uplift spirits, we organize musical performances, dance and singing sessions, and
+                community-led celebrations, including birthday and anniversary events hosted by
+                well-wishers. These activities bring happiness and strengthen the sense of family
+                among our residents.
+              </MKTypography>
+            </Grid>
+          </Container>
+        </MKBox>
 
-      {/* Team component of about us page */}
-      <Team />
+        {/* Team component of about us page */}
+        <Team />
+      </Card>
 
       {/* Footer */}
       <MKBox pt={2} px={0} mt={1}>

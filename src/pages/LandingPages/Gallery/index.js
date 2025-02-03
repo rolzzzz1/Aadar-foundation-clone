@@ -10,6 +10,7 @@ import routes from "routes";
 import footerRoutes from "footer.routes";
 
 import bgImage2 from "assets/images/swargSadanBlack.png";
+import bgImage from "assets/images/smallBrushstroke2.svg";
 import MKTypography from "components/MKTypography";
 
 function Gallery() {
@@ -27,22 +28,55 @@ function Gallery() {
         sticky
       />
 
+      {/* Main image part */}
       <MKBox
-        my={-12}
-        minHeight="60vh"
+        minHeight="80vh"
         width="100%"
         sx={{
           backgroundImage: `url(${bgImage2})`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
-          backgroundPosition: "top",
+          backgroundPosition: "left",
           display: "flex",
           justifyContent: "end",
-          alignItems: "center",
+          alignItems: "end",
         }}
-      ></MKBox>
+      >
+        <MKBox
+          color="white"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          sx={{
+            backgroundImage: `url(${bgImage})`,
+            backgroundSize: "contain",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "top",
+            width: "40%",
+            minHeight: "40vh",
+          }}
+        >
+          <MKTypography
+            variant="h3"
+            color="white"
+            textAlign="center"
+            ml={-2}
+            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+          >
+            Gallery
+          </MKTypography>
+        </MKBox>
+      </MKBox>
 
-      <MKBox component="section" pt={14} pb={14} mt={12} display="flex" justifyContent={"center"}>
+      <MKBox
+        component="section"
+        // pt={14}
+        pb={4}
+        mt={4}
+        display="flex"
+        justifyContent={"center"}
+      >
         <MKTypography variant="h3">Our gallery is coming soon ...</MKTypography>
       </MKBox>
 

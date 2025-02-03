@@ -158,13 +158,22 @@ function Work() {
               variant="h3"
               sx={{ fontWeight: "500" }}
               fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+              mb={4}
             >
               Our recent posts
             </MKTypography>
           </Grid>
         </Grid>
         <Grid container spacing={3}>
-          <Grid item xs={12} lg={4} sx={{ ml: "auto", mt: { xs: 3, lg: 0 } }}>
+          <Grid
+            item
+            xs={10}
+            md={8}
+            lg={4}
+            sx={{ ml: "auto", mt: { xs: 3, lg: 0 } }}
+            mx="auto"
+            mb={6}
+          >
             <TransparentBlogCard
               image={event1}
               title="Old Newspapers Donation"
@@ -177,7 +186,15 @@ function Work() {
               }}
             />
           </Grid>
-          <Grid item xs={12} lg={4} sx={{ ml: "auto", mt: { xs: 3, lg: 0 } }}>
+          <Grid
+            item
+            xs={10}
+            md={8}
+            lg={4}
+            sx={{ ml: "auto", mt: { xs: 3, lg: 0 } }}
+            mx="auto"
+            mb={6}
+          >
             <TransparentBlogCard
               image={event2}
               title="ECS Bagless school visit"
@@ -190,7 +207,15 @@ function Work() {
               }}
             />
           </Grid>
-          <Grid item xs={12} lg={4} sx={{ ml: "auto", mt: { xs: 3, lg: 0 } }}>
+          <Grid
+            item
+            xs={10}
+            md={8}
+            lg={4}
+            sx={{ ml: "auto", mt: { xs: 3, lg: 0 } }}
+            mx="auto"
+            mb={6}
+          >
             <TransparentBlogCard
               image={event3}
               title="Lost young boy went home"

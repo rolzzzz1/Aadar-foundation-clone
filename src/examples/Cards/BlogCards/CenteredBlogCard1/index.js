@@ -71,7 +71,15 @@ function CenteredBlogCard({ image, title, action, description }) {
   return (
     <>
       <Link to={action.route}>
-        <Card sx={{ marginTop: "20px" }}>
+        <Card
+          sx={{
+            marginTop: "20px",
+            "&:hover": {
+              // border: "2px solid #CED4DA",
+              backgroundColor: "#f9ddbc",
+            },
+          }}
+        >
           {imageTemplate}
           {/* {action.type === "internal" ? (
           <Link to={action.route}>{imageTemplate}</Link>
@@ -93,7 +101,12 @@ function CenteredBlogCard({ image, title, action, description }) {
             </MKTypography>
 
             <MKBox mt={1} mb={3}>
-              <MKTypography variant="body2" component="p" color="text">
+              <MKTypography
+                variant="body2"
+                component="p"
+                color="text"
+                sx={{ fontWeight: "400", fontSize: { lg: "0.8rem", xl: "0.9rem" } }}
+              >
                 {description}
               </MKTypography>
             </MKBox>

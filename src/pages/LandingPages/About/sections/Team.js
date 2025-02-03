@@ -45,7 +45,31 @@ function Team() {
             />
           </MKBox>
         </Grid> */}
-        <Grid container spacing={3}>
+        <Grid container spacing={4}>
+          <Grid item xs={12} sm={12} md={12} lg={6}>
+            <MKBox mb={1} mx={8}>
+              <HorizontalTeamCard
+                image={team1}
+                name="Vikas Goswami"
+                position={{ color: "info", label: "Founder" }}
+                description="< Social icons links here >"
+              />
+            </MKBox>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={12}
+            lg={6}
+            display="flex"
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            <MKBox mb={1}>Some description text here</MKBox>
+          </Grid>
+        </Grid>
+        <Grid container spacing={4}>
           <Grid item xs={12} sm={12} md={12} lg={4}>
             <MKBox mb={1}>
               <HorizontalTeamCard
@@ -77,7 +101,7 @@ function Team() {
             </MKBox>
           </Grid>
         </Grid>
-        <Grid container spacing={3}>
+        <Grid container spacing={4}>
           <Grid item xs={12} sm={12} md={12} lg={4}>
             <MKBox mb={1}>
               <HorizontalTeamCard

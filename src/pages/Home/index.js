@@ -1,22 +1,25 @@
 // @mui material components
 
 import Card from "@mui/material/Card";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
+// import Container from "@mui/material/Container";
+// import Grid from "@mui/material/Grid";
 // import { grey } from "@mui/material/colors";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
+import MKTypography from "components/MKTypography";
 
 // Material Kit 2 React examples
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import DefaultFooter from "examples/Footers/DefaultFooter";
-import DefaultCounterCard from "examples/Cards/CounterCards/DefaultCounterCard";
+// import DefaultCounterCard from "examples/Cards/CounterCards/DefaultCounterCard";
 
 // Home page sections
 import About from "pages/Home/sections/Home sections/About";
 import Work from "pages/Home/sections/Home sections/Work";
 import Events from "pages/Home/sections/Home sections/Events";
+import Journey from "pages/Home/sections/Home sections/Journey";
+import Counters from "pages/Home/sections/Home sections/Counters";
 
 // Routes
 import routes from "routes";
@@ -26,11 +29,10 @@ import footerRoutes from "footer.routes";
 
 import bgImage from "assets/images/brushstroke.svg";
 import bgImage2 from "assets/images/aadar-main-black2.png";
-import MKTypography from "components/MKTypography";
 
 function Home() {
   return (
-    <MKBox minWidth="575px">
+    <MKBox minWidth="576px">
       {/* Navbar component */}
       <DefaultNavbar
         routes={routes}
@@ -43,7 +45,7 @@ function Home() {
         sticky
       />
 
-      {/* Header, background image/carousel */}
+      {/* Main image/carousel section*/}
       <MKBox
         minHeight="100vh"
         width="100%"
@@ -63,13 +65,15 @@ function Home() {
           flexDirection="column"
           justifyContent="center"
           alignItems="center"
+          // mb={-8}
+          mr={6}
           sx={{
             backgroundImage: `url(${bgImage})`,
-            backgroundSize: "auto",
+            backgroundSize: "contain",
             backgroundRepeat: "no-repeat",
-            backgroundPosition: "top",
-            width: "40%",
-            minHeight: "80vh",
+            backgroundPosition: "left",
+            // width: "40%",
+            minHeight: "100vh",
           }}
         >
           <MKTypography
@@ -78,6 +82,7 @@ function Home() {
             textAlign="center"
             ml={-6}
             fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            sx={{ fontSize: { xs: "1.5rem", sm: "1.7rem", md: "2rem", lg: "2rem" } }}
           >
             Aadar Foundation
           </MKTypography>
@@ -89,6 +94,7 @@ function Home() {
             ml={-6}
             display="inline-block"
             fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            sx={{ fontSize: { xs: "0.9rem", sm: "0.9rem", md: "1.1rem", lg: "1.3rem" } }}
           >
             A home for Hopeless, Homeless, Helpless <br /> and Unclaimed people
           </MKTypography>
@@ -110,112 +116,31 @@ function Home() {
         {/* About section component */}
         <About />
 
-        {/* <MKBox display="flex" justifyContent="center" borderRadius="10px">
-          <iframe
-            width="560"
-            height="315"
-            src="https://www.youtube.com/embed/et_pTB-Vfs4?si=cP75J8JI23LzSfvE"
-            title="YouTube video player"
-            frameBorder={0}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerPolicy="strict-origin-when-cross-origin"
-            allowfullscreen
-            autoPlay="true"
-          ></iframe>
-        </MKBox> */}
+        {/* Video section component */}
+        <Journey />
 
         {/* Our work section component */}
         <Work />
 
-        <MKBox
-          component="section"
-          py={4}
-          mt={8}
-          mb={2}
-          mx={"auto"}
-          width="90%"
-          sx={{ backgroundColor: "#CED4DA", borderRadius: "20px" }}
-        >
-          <Container>
-            <Grid container alignItems="center">
-              <Grid item md={4} sx={{ ml: { xs: 0, lg: 3 }, mb: { xs: 12, md: 0 } }}>
-                <Container>
-                  <MKTypography variant="h5">
-                    A few words on our journey, by one of our founders.
-                    <MKTypography variant="h6" my={1}>
-                      - Mr. Vikas Goswami{" "}
-                    </MKTypography>
-                  </MKTypography>
-                </Container>
-              </Grid>
-              <Grid item xs={12} md={6} mx={"auto"}>
-                <MKBox position="relative">
-                  <MKBox>
-                    <iframe
-                      width="100%"
-                      height="300"
-                      src="https://www.youtube.com/embed/et_pTB-Vfs4?si=cP75J8JI23LzSfvE"
-                      title="YouTube video player"
-                      frameBorder={0}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerPolicy="strict-origin-when-cross-origin"
-                      allowfullscreen
-                      autoPlay="true"
-                    ></iframe>
-                  </MKBox>
-                </MKBox>
-              </Grid>
-            </Grid>
-          </Container>
-        </MKBox>
-
-        <MKBox component="section" pt={8} pb={2}>
-          <Container>
-            <Grid container justifyContent="center" sx={{ textAlign: "center" }}>
-              <Grid item xs={12} md={3}>
-                <DefaultCounterCard
-                  count={9}
-                  separator=","
-                  title="Years Since"
-                  description="Active since 2015 to serve the homeless, helpless and destitute facing a very painful phase of life."
-                />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <DefaultCounterCard
-                  count={500}
-                  separator=","
-                  suffix="+"
-                  title="People helped"
-                  description="Helped humans suffering from lack of love, food, shelter, treatment, family, care."
-                />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <DefaultCounterCard
-                  count={80}
-                  separator=","
-                  suffix="+"
-                  title="Events"
-                  description="Actively engaging with society helping our residents and conducting various events."
-                />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <DefaultCounterCard
-                  count={98}
-                  separator=","
-                  suffix="+"
-                  title="People rehabilitated"
-                  description="98 people till now have been reunited with their families by the efforts of Swarg sadan team."
-                />
-              </Grid>
-            </Grid>
-          </Container>
-        </MKBox>
+        {/* Counters section */}
+        <Counters />
 
         {/* Events section component */}
         <Events />
       </Card>
 
-      {/* <Card
+      {/* Footer */}
+      <MKBox pt={2} px={0} mt={1}>
+        <DefaultFooter content={footerRoutes} />
+      </MKBox>
+    </MKBox>
+  );
+}
+
+export default Home;
+
+{
+  /* <Card
         sx={{
           p: 2,
           mx: { xs: 2, lg: 3 },
@@ -331,14 +256,5 @@ function Home() {
             </Grid>
           </Container>
         </MKBox>
-      </Card> */}
-
-      {/* Footer */}
-      <MKBox pt={2} px={0} mt={1}>
-        <DefaultFooter content={footerRoutes} />
-      </MKBox>
-    </MKBox>
-  );
+      </Card> */
 }
-
-export default Home;

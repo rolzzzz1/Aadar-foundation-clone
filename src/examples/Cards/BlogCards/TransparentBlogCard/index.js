@@ -57,8 +57,8 @@ function TransparentBlogCard({ image, title, description, action }) {
         width="100%"
         // minWidth="150px"
         // maxWidth="150px"
-        minHeight="280px"
-        maxHeight="280px"
+        minHeight="260px"
+        maxHeight="260px"
         position="relative"
         zIndex={1}
       />
@@ -92,10 +92,11 @@ function TransparentBlogCard({ image, title, description, action }) {
           justifyContent: "center",
           alignItems: "center",
           // overflow: "visible",
-          maxHeight: "400px",
-          minHeight: "400px",
+          maxHeight: "360px",
+          minHeight: "360px",
           "&:hover": {
-            backgroundColor: "#CED4DA",
+            // border: "2px solid #CED4DA",
+            backgroundColor: "#f9ddbc",
           },
         }}
       >

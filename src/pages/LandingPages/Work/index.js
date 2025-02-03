@@ -13,6 +13,7 @@ import routes from "routes";
 import footerRoutes from "footer.routes";
 
 // Images
+import bgImage from "assets/images/smallBrushstroke2.svg";
 import bgImage2 from "assets/images/swargSadanBlack.png";
 import RescueImg1 from "assets/images/aboutImg.webp";
 import RescueImg2 from "assets/images/RescueImg1.jpg";
@@ -41,22 +42,55 @@ function Work() {
         sticky
       />
 
+      {/* Main image part */}
       <MKBox
-        my={-12}
-        minHeight="60vh"
+        minHeight="80vh"
         width="100%"
         sx={{
           backgroundImage: `url(${bgImage2})`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
-          backgroundPosition: "top",
+          backgroundPosition: "left",
           display: "flex",
           justifyContent: "end",
-          alignItems: "center",
+          alignItems: "end",
         }}
-      ></MKBox>
+      >
+        <MKBox
+          color="white"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          sx={{
+            backgroundImage: `url(${bgImage})`,
+            backgroundSize: "contain",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "top",
+            width: "40%",
+            minHeight: "40vh",
+          }}
+        >
+          <MKTypography
+            variant="h3"
+            color="white"
+            textAlign="center"
+            ml={-2}
+            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+          >
+            Our Work
+          </MKTypography>
+        </MKBox>
+      </MKBox>
 
-      <MKBox component="section" pt={10} pb={8} mt={6} display="flex" justifyContent={"center"}>
+      <MKBox
+        component="section"
+        // pt={10}
+        pb={8}
+        mt={4}
+        display="flex"
+        justifyContent={"center"}
+      >
         <Grid container display="flex" justifyContent={"center"} width="90%" mx={"auto"}>
           <MKBox pb={4}>
             <MKTypography variant="h2">Our Work</MKTypography>

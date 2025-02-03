@@ -14,6 +14,7 @@ import routes from "routes";
 import footerRoutes from "footer.routes";
 
 import bgImage2 from "assets/images/swargSadanBlack.png";
+import bgImage from "assets/images/smallBrushstroke2.svg";
 import MKTypography from "components/MKTypography";
 
 function Gallery() {
@@ -31,7 +32,7 @@ function Gallery() {
         sticky
       />
 
-      <MKBox
+      {/* <MKBox
         my={-12}
         minHeight="60vh"
         width="100%"
@@ -44,18 +45,103 @@ function Gallery() {
           justifyContent: "end",
           alignItems: "center",
         }}
-      ></MKBox>
+      ></MKBox> */}
+
+      <MKBox
+        minHeight="80vh"
+        width="100%"
+        sx={{
+          backgroundImage: `url(${bgImage2})`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "left",
+          display: "flex",
+          justifyContent: "end",
+          alignItems: "end",
+        }}
+      >
+        <MKBox
+          color="white"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          sx={{
+            backgroundImage: `url(${bgImage})`,
+            backgroundSize: "contain",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "top",
+            width: "40%",
+            minHeight: "40vh",
+          }}
+        >
+          <MKTypography
+            variant="h3"
+            color="white"
+            textAlign="center"
+            ml={-2}
+            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+          >
+            Contact
+          </MKTypography>
+        </MKBox>
+      </MKBox>
+
+      {/* <MKBox
+        minHeight="80vh"
+        width="100%"
+        sx={{
+          backgroundImage: `url(${bgImage2})`,
+          backgroundSize: "contain",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "top",
+          display: "flex",
+          justifyContent: "end",
+          alignItems: "end",
+        }}
+      >
+        <MKBox
+          color="white"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          sx={{
+            backgroundImage: `url(${bgImage})`,
+            backgroundSize: "auto",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "top",
+            width: "20%",
+            minHeight: "40vh",
+            marginRight: "150px",
+          }}
+        >
+          <MKTypography
+            variant="h3"
+            color="white"
+            textAlign="center"
+            ml={-2}
+            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+          >
+            Contact
+          </MKTypography>
+        </MKBox>
+      </MKBox> */}
 
       {/* <MKBox component="section" pt={6} pb={6} mt={6} display="flex" justifyContent={"center"}>
         <MKTypography variant="h3">Contact page is coming soon ...</MKTypography>
       </MKBox> */}
 
-      <MKBox component="section" pt={10} my={6}>
+      <MKBox
+        component="section"
+        // pt={10}
+        my={4}
+      >
         <Container>
           <Grid container alignItems="center">
             <Grid item md={4} sx={{ ml: { xs: 0, lg: 3 }, mb: { xs: 12, md: 0 } }}>
               <Container>
-                <MKTypography variant="h4" sx={{ fontWeight: "500" }}>
+                <MKTypography variant="h4" sx={{ fontWeight: "500" }} pb={4}>
                   Get in touch @
                 </MKTypography>
                 <MKTypography

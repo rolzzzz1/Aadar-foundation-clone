@@ -20,7 +20,7 @@ function Work() {
       variant="gradient"
       bgColor="light"
       position="relative"
-      mt={4}
+      mt={8}
       py={6}
       borderRadius={"10px"}
       // px={{ xs: 2, lg: 0 }}
@@ -43,12 +43,15 @@ function Work() {
         <Grid container spacing={4}>
           <Grid
             item
-            xs={12}
+            xs={10}
+            sm={10}
+            md={6}
             lg={4}
             sx={{
               ml: "auto",
               mt: { xs: 3, lg: 0 },
             }}
+            mx={"auto"}
           >
             <CenteredBlogCard
               image={work1}
@@ -57,7 +60,15 @@ function Work() {
               action={{ type: "internal", route: "/pages/landing-pages/work" }}
             />
           </Grid>
-          <Grid item xs={12} lg={4} sx={{ ml: "auto", mt: { xs: 3, lg: 0 } }}>
+          <Grid
+            item
+            xs={10}
+            sm={10}
+            md={6}
+            lg={4}
+            sx={{ ml: "auto", mt: { xs: 3, lg: 0 } }}
+            mx={"auto"}
+          >
             <CenteredBlogCard
               image={work2}
               title="Treatment"
@@ -65,7 +76,15 @@ function Work() {
               action={{ type: "internal", route: "/pages/landing-pages/work" }}
             />
           </Grid>
-          <Grid item xs={12} lg={4} sx={{ ml: "auto", mt: { xs: 3, lg: 0 } }}>
+          <Grid
+            item
+            xs={10}
+            sm={10}
+            md={6}
+            lg={4}
+            sx={{ ml: "auto", mt: { xs: 3, lg: 0 } }}
+            mx={"auto"}
+          >
             <CenteredBlogCard
               image={work3}
               title="Shelter"
@@ -73,29 +92,53 @@ function Work() {
               action={{ type: "internal", route: "/pages/landing-pages/work" }}
             />
           </Grid>
-        </Grid>
-        <Grid container spacing={8} sx={{ marginTop: "20px" }}>
-          <Grid item xs={12} lg={4} sx={{ ml: "auto", mt: { xs: 3, lg: 0 } }}>
+          {/* </Grid>
+        <Grid container spacing={8} sx={{ marginTop: "20px" }}> */}
+          <Grid
+            item
+            xs={10}
+            sm={10}
+            md={6}
+            lg={4}
+            sx={{ ml: "auto", mt: { xs: 3, lg: 0 } }}
+            mx={"auto"}
+          >
             <CenteredBlogCard
               image={work4}
               title="Food"
-              description="Nutritious food is provided to all the residents"
+              description="Nutritious food is provided to all the residents of the ashram"
               action={{ type: "internal", route: "/pages/landing-pages/work" }}
             />
           </Grid>
-          <Grid item xs={12} lg={4} sx={{ ml: "auto", mt: { xs: 3, lg: 0 } }}>
+          <Grid
+            item
+            xs={10}
+            sm={10}
+            md={6}
+            lg={4}
+            sx={{ ml: "auto", mt: { xs: 3, lg: 0 } }}
+            mx={"auto"}
+          >
             <CenteredBlogCard
               image={work5}
               title="Care"
-              description="Yoga session and various activities are conducted at Swarg sadan ashram"
+              description="Yoga session being conducted at Swarg sadan ashram"
               action={{ type: "internal", route: "/pages/landing-pages/work" }}
             />
           </Grid>
-          <Grid item xs={12} lg={4} sx={{ ml: "auto", mt: { xs: 3, lg: 0 } }}>
+          <Grid
+            item
+            xs={10}
+            sm={10}
+            md={6}
+            lg={4}
+            sx={{ ml: "auto", mt: { xs: 3, lg: 0 } }}
+            mx={"auto"}
+          >
             <CenteredBlogCard
               image={work6}
               title="Rehabilitation"
-              description="A father is reunited with his son after the efforts of Aadar foundation team"
+              description="A father reunited with son after the efforts of Aadar foundation team"
               action={{ type: "internal", route: "/pages/landing-pages/work" }}
             />
           </Grid>
