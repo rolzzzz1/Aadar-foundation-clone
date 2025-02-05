@@ -13,16 +13,20 @@ function Journey() {
       mb={2}
       mx={"auto"}
       width="90%"
-      sx={{ backgroundColor: "#CED4DA", borderRadius: "20px" }}
+      sx={{ backgroundColor: "#f0f2f5", borderRadius: "20px" }}
+      // sx={{ backgroundColor: "#ffefdd", borderRadius: "20px" }}
     >
       <Container>
         <Grid container alignItems="center">
           <Grid item md={4} sx={{ ml: { xs: 0, lg: 3 }, mb: { xs: 2, md: 0 } }}>
-            <Container>
+            {/* <Container> */}
+            <MKBox mx="auto" px={2}>
               <MKTypography
                 sx={{
                   fontWeight: "400",
                   fontSize: { sm: "1.2rem", md: "1.3rem", lg: "1.5rem", xl: "1.5rem" },
+                  letterSpacing: "0.05rem",
+                  // color: "#ffffff",
                 }}
               >
                 A few words on our journey, by one of our founders.
@@ -30,20 +34,28 @@ function Journey() {
                   sx={{
                     fontWeight: "600",
                     fontSize: { sm: "1rem", md: "1rem", lg: "1.3rem", xl: "1.3rem" },
+                    letterSpacing: "0.05rem",
                   }}
                   my={2}
                 >
                   - Mr. Vikas Goswami{" "}
                 </MKTypography>
               </MKTypography>
-            </Container>
+            </MKBox>
+
+            {/* </Container> */}
           </Grid>
           <Grid item xs={12} md={6} mx={"auto"}>
             <MKBox position="relative">
-              <MKBox display="flex" justifyCOntent="center">
+              <MKBox
+                display="flex"
+                justifyCOntent="center"
+                border="solid 2px #000000"
+                minHeight="280px"
+              >
                 <iframe
                   width="100%"
-                  height="280"
+                  // height="280"
                   src="https://www.youtube.com/embed/et_pTB-Vfs4?si=cP75J8JI23LzSfvE"
                   title="YouTube video player"
                   frameBorder={0}

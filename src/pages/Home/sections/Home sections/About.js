@@ -69,7 +69,7 @@ function About() {
 
               sx={{
                 letterSpacing: "0.05rem",
-                fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.85rem", lg: "0.8rem" },
+                fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.85rem", lg: "0.87rem" },
               }}
             >
               Founded in 2018 by Mr. Vikas Goswami and his dedicated team, Aadar Foundation (Swarg
@@ -89,7 +89,7 @@ function About() {
               fontSize="0.9rem"
               sx={{
                 letterSpacing: "0.05rem",
-                fontSize: { md: "0.75rem", lg: "0.8rem" },
+                fontSize: { md: "0.75rem", lg: "0.87rem" },
                 fontWeight: "500",
               }}
             >

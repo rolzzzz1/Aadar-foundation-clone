@@ -10,9 +10,11 @@ import MKTypography from "components/MKTypography";
 import HorizontalTeamCard from "examples/Cards/TeamCards/HorizontalTeamCard";
 
 // Images
+import user from "assets/images/user.png";
 import team1 from "assets/images/vikas.jpg";
 import team2 from "assets/images/faizan.jpg";
 import team3 from "assets/images/pawan.jpg";
+
 // import team4 from "assets/images/ivana-square.jpg";
 
 function Team() {
@@ -21,19 +23,19 @@ function Team() {
       component="section"
       variant="gradient"
       position="relative"
-      sx={{ backgroundColor: "#f8f9fa" }}
-      py={6}
+      sx={{ backgroundColor: "#f8f9fa", borderRadius: "20px" }}
+      py={5}
       px={{ xs: 2, lg: 0 }}
       // mx={-2}
-      mt={4}
+      mt={8}
       mb={8}
     >
       <Container>
-        <Grid container textAlign={"center"}>
+        {/* <Grid container textAlign={"center"}>
           <Grid item xs={12} md={12} sx={{ mb: 2 }}>
             <MKTypography variant="h3">Our Team</MKTypography>
           </Grid>
-        </Grid>
+        </Grid> */}
 
         {/* <Grid item xs={12} sm={12} md={12} lg={4} height="200px">
           <MKBox mb={1} width="45%">
@@ -45,8 +47,9 @@ function Team() {
             />
           </MKBox>
         </Grid> */}
+
         <Grid container spacing={4}>
-          <Grid item xs={12} sm={12} md={12} lg={6}>
+          <Grid item xs={12} sm={12} md={12} lg={5}>
             <MKBox mb={1} mx={8}>
               <HorizontalTeamCard
                 image={team1}
@@ -61,25 +64,27 @@ function Team() {
             xs={12}
             sm={12}
             md={12}
-            lg={6}
+            lg={7}
             display="flex"
             justifyContent={"center"}
             alignItems={"center"}
           >
-            <MKBox mb={1}>Some description text here</MKBox>
+            <MKBox mb={1} textAlign="center">
+              <MKTypography
+                sx={{ fontSize: { xs: "1rem", sm: "1rem", md: "1.3rem", lg: "1.3rem" } }}
+              >
+                Meet the team behind <br />
+              </MKTypography>
+              <MKTypography
+                variant="h4"
+                sx={{ fontSize: { xs: "1rem", sm: "1.2rem", md: "1.4rem", lg: "1.4rem" } }}
+              >
+                Aadar Foundation ( Swarg Sadan Ashram )
+              </MKTypography>
+            </MKBox>
           </Grid>
         </Grid>
         <Grid container spacing={4}>
-          <Grid item xs={12} sm={12} md={12} lg={4}>
-            <MKBox mb={1}>
-              <HorizontalTeamCard
-                image={team1}
-                name="Vikas Goswami"
-                position={{ color: "info", label: "Founder" }}
-                description="< Social icons links here >"
-              />
-            </MKBox>
-          </Grid>
           <Grid item xs={12} sm={12} md={12} lg={4}>
             <MKBox mb={1}>
               <HorizontalTeamCard
@@ -100,13 +105,23 @@ function Team() {
               />
             </MKBox>
           </Grid>
+          <Grid item xs={12} sm={12} md={12} lg={4}>
+            <MKBox mb={1}>
+              <HorizontalTeamCard
+                image={user}
+                name="Vibha Aneja"
+                position={{ color: "info", label: "Founder" }}
+                description="< Social icons links here >"
+              />
+            </MKBox>
+          </Grid>
         </Grid>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={12} md={12} lg={4}>
             <MKBox mb={1}>
               <HorizontalTeamCard
-                image={team1}
-                name="Vikas Goswami"
+                image={user}
+                name="Pramod Sumoliya"
                 position={{ color: "info", label: "Founder" }}
                 description="< Social icons links here >"
               />
@@ -115,8 +130,8 @@ function Team() {
           <Grid item xs={12} sm={12} md={12} lg={4}>
             <MKBox mb={1}>
               <HorizontalTeamCard
-                image={team2}
-                name="Faizan Beg"
+                image={user}
+                name="Sadia Parveen"
                 position={{ color: "info", label: "Founder" }}
                 description="< Social icons links here >"
               />
@@ -125,8 +140,8 @@ function Team() {
           <Grid item xs={12} sm={12} md={12} lg={4}>
             <MKBox mb={{ xs: 1, lg: 0 }}>
               <HorizontalTeamCard
-                image={team3}
-                name="Pawan Suryawanshi"
+                image={user}
+                name="Kamal Aneja"
                 position={{ color: "info", label: "Founder" }}
                 description="< Social icons links here >"
               />

@@ -57,6 +57,7 @@ function HorizontalTeamCard({
               shadow="lg"
               width="100px"
               height="100px"
+              border="solid 1px #777"
             />
           </MKBox>
         </Grid>
@@ -77,9 +78,9 @@ function HorizontalTeamCard({
             <MKTypography variant="h6" fontSize="0.8rem" color={position.color} mb={1}>
               {position.label}
             </MKTypography>
-            <MKTypography variant="body" fontSize="0.75rem" mb={1}>
+            {/* <MKTypography variant="body" fontSize="0.75rem" mb={1}>
               Some text description Some text description
-            </MKTypography>
+            </MKTypography> */}
           </MKBox>
         </Grid>
       </Grid>

@@ -1,6 +1,12 @@
+import { Link } from "react-router-dom";
+
+// @mui material components
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-// import Card from "@mui/material/Card";
+import Card from "@mui/material/Card";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import YouTubeIcon from "@mui/icons-material/YouTube";
 
 // Material Kit 2 React examples
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
@@ -8,16 +14,17 @@ import DefaultFooter from "examples/Footers/DefaultFooter";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
+import MKTypography from "components/MKTypography";
 
 // Routes
 import routes from "routes";
 import footerRoutes from "footer.routes";
 
+// Images
 import bgImage2 from "assets/images/swargSadanBlack.png";
 import bgImage from "assets/images/smallBrushstroke2.svg";
-import MKTypography from "components/MKTypography";
 
-function Gallery() {
+function Contact() {
   return (
     <MKBox minWidth="575px">
       {/* Navbar component */}
@@ -32,21 +39,7 @@ function Gallery() {
         sticky
       />
 
-      {/* <MKBox
-        my={-12}
-        minHeight="60vh"
-        width="100%"
-        sx={{
-          backgroundImage: `url(${bgImage2})`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "top",
-          display: "flex",
-          justifyContent: "end",
-          alignItems: "center",
-        }}
-      ></MKBox> */}
-
+      {/* Main Image and text */}
       <MKBox
         minHeight="80vh"
         width="100%"
@@ -87,244 +80,147 @@ function Gallery() {
         </MKBox>
       </MKBox>
 
-      {/* <MKBox
-        minHeight="80vh"
-        width="100%"
+      {/* Contact section */}
+      <Card
         sx={{
-          backgroundImage: `url(${bgImage2})`,
-          backgroundSize: "contain",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "top",
-          display: "flex",
-          justifyContent: "end",
-          alignItems: "end",
+          p: 2,
+          mx: { xs: 2, lg: 3 },
+          mt: -2,
+          mb: 4,
+          backgroundColor: "#f0f2f5",
+          backdropFilter: "saturate(200%) blur(30px)",
+          boxShadow: ({ boxShadows: { xxl } }) => xxl,
         }}
       >
-        <MKBox
-          color="white"
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-          sx={{
-            backgroundImage: `url(${bgImage})`,
-            backgroundSize: "auto",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "top",
-            width: "20%",
-            minHeight: "40vh",
-            marginRight: "150px",
-          }}
-        >
-          <MKTypography
-            variant="h3"
-            color="white"
-            textAlign="center"
-            ml={-2}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
-          >
-            Contact
-          </MKTypography>
-        </MKBox>
-      </MKBox> */}
-
-      {/* <MKBox component="section" pt={6} pb={6} mt={6} display="flex" justifyContent={"center"}>
-        <MKTypography variant="h3">Contact page is coming soon ...</MKTypography>
-      </MKBox> */}
-
-      <MKBox
-        component="section"
-        // pt={10}
-        my={4}
-      >
-        <Container>
-          <Grid container alignItems="center">
-            <Grid item md={4} sx={{ ml: { xs: 0, lg: 3 }, mb: { xs: 12, md: 0 } }}>
-              <Container>
-                <MKTypography variant="h4" sx={{ fontWeight: "500" }} pb={4}>
-                  Get in touch @
-                </MKTypography>
-                <MKTypography
-                  variant="body1"
-                  paddingTop="15px"
-                  fontSize="0.9rem"
-                  sx={{ fontWeight: "600" }}
-                >
-                  Address :
-                </MKTypography>
-                <MKTypography variant="body1" fontSize="0.9rem">
-                  <b>Swarg sadan ashram</b> <br />
-                  Sarkari Malti, Behind Muktidham, Guda Gudi Ka Naka, Gwalior, India, 474001
-                </MKTypography>
-
-                <MKTypography
-                  variant="body1"
-                  paddingTop="15px"
-                  fontSize="0.9rem"
-                  sx={{ fontWeight: "600" }}
-                >
-                  Phone number :
-                </MKTypography>
-                <MKTypography variant="body1" fontSize="0.9rem">
-                  062662 02679
-                </MKTypography>
-
-                <MKTypography
-                  variant="body1"
-                  paddingTop="15px"
-                  fontSize="0.9rem"
-                  sx={{ fontWeight: "600" }}
-                >
-                  Email :
-                </MKTypography>
-                <MKTypography variant="body1" fontSize="0.9rem">
-                  aadarfoundatio2018@gmail.com
-                </MKTypography>
-
-                <MKBox ml={{ xs: "auto", lg: 0 }}>
-                  {/* <MKButton
-                    component={Link}
-                    to={"/pages/landing-pages/about-us"}
-                    variant="outlined"
-                    color="success"
-                    size="small"
+        <MKBox component="section" my={4}>
+          <Container>
+            <Grid container alignItems="center">
+              <Grid item md={4} sx={{ ml: { xs: 0, lg: 3 }, mb: { xs: 12, md: 0 } }}>
+                <Container>
+                  <MKTypography variant="h4" sx={{ fontWeight: "500" }} pb={4}>
+                    Get in touch @
+                  </MKTypography>
+                  <MKTypography
+                    variant="body1"
+                    paddingTop="15px"
+                    fontSize="1.2rem"
+                    sx={{ fontWeight: "600" }}
                   >
-                    Read more
-                  </MKButton> */}
+                    Address :
+                  </MKTypography>
+                  <MKTypography variant="body1" fontSize="1rem">
+                    <b>Swarg sadan ashram</b> <br />
+                    Sarkari Malti, Behind Muktidham, Guda Gudi Ka Naka, Gwalior, India, 474001
+                  </MKTypography>
+
+                  <MKTypography
+                    variant="body1"
+                    paddingTop="15px"
+                    fontSize="1.2rem"
+                    sx={{ fontWeight: "600" }}
+                  >
+                    Phone number :
+                  </MKTypography>
+                  <MKTypography variant="body1" fontSize="1rem">
+                    062662 02679
+                  </MKTypography>
+
+                  <MKTypography
+                    variant="body1"
+                    paddingTop="15px"
+                    fontSize="1.2rem"
+                    sx={{ fontWeight: "600" }}
+                  >
+                    Email :
+                  </MKTypography>
+                  <MKTypography variant="body1" fontSize="1rem">
+                    aadarfoundatio2018@gmail.com
+                  </MKTypography>
+                </Container>
+              </Grid>
+              <Grid item xs={12} md={6} sx={{ mx: "auto" }} px={2.5}>
+                <MKBox
+                  position="relative"
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="center"
+                  sx={{ alignItems: { sm: "start", md: "center" } }}
+                  gap="30px"
+                >
+                  <MKTypography fontSize="1.3rem" sx={{ fontWeight: "600" }}>
+                    Follow us
+                  </MKTypography>
+                  <MKBox display="flex" gap="40px">
+                    <MKBox
+                      component={Link}
+                      to={"https://www.youtube.com/@AadarFoundation/"}
+                      target={"_blank"}
+                      sx={{
+                        backgroundColor: "#ECA533",
+                        borderRadius: "10px",
+                        display: "flex",
+                        justifyContent: "center",
+                        "&:hover": {
+                          boxShadow:
+                            "0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)",
+                        },
+                      }}
+                      px={2}
+                      py={1}
+                    >
+                      <YouTubeIcon
+                        fontSize="large"
+                        sx={{
+                          color: "#ffffff",
+                        }}
+                      />
+                    </MKBox>
+
+                    <MKBox
+                      component={Link}
+                      to={"https://www.instagram.com/ashramswargsadangwalior/"}
+                      target={"_blank"}
+                      sx={{
+                        backgroundColor: "#ECA533",
+                        borderRadius: "10px",
+                        display: "flex",
+                        justifyContent: "center",
+                        "&:hover": {
+                          boxShadow:
+                            "0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)",
+                        },
+                      }}
+                      px={2}
+                      py={1}
+                    >
+                      <InstagramIcon fontSize="large" sx={{ color: "#ffffff" }} />
+                    </MKBox>
+                    <MKBox
+                      component={Link}
+                      to={"https://www.facebook.com/AshramSwargSadanGwalior/"}
+                      target={"_blank"}
+                      sx={{
+                        backgroundColor: "#ECA533",
+                        borderRadius: "10px",
+                        display: "flex",
+                        justifyContent: "center",
+                        "&:hover": {
+                          boxShadow:
+                            "0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)",
+                        },
+                      }}
+                      px={2}
+                      py={1}
+                    >
+                      <FacebookIcon fontSize="large" sx={{ color: "#ffffff" }} />
+                    </MKBox>
+                  </MKBox>
                 </MKBox>
-              </Container>
+              </Grid>
             </Grid>
-            <Grid item xs={12} md={6} sx={{ ml: "auto" }}>
-              <MKBox position="relative" display="flex" justifyContent="center">
-                {/* <MKBox
-                  component="img"
-                  src={aboutImg}
-                  alt="aboutImage"
-                  width="88%"
-                  borderRadius="15px"
-                /> */}
-                CONTACT FORM HERE
-              </MKBox>
-            </Grid>
-          </Grid>
-        </Container>
-      </MKBox>
-
-      {/* <Container>
-        <Grid container>
-          <Grid item xs={12} md={12} mt={22} sx={{ textAlign: "center", mb: 2 }}>
-            <MKTypography
-              variant="h3"
-              // color="darkText"
-              fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
-              sx={{ fontWeight: "500" }}
-            >
-              Contact
-            </MKTypography>
-          </Grid>
-        </Grid>
-
-        <Grid container spacing={6} mb={4}>
-          <Grid
-            item
-            xs={12}
-            lg={4}
-            sx={{
-              //   ml: "auto",
-              mt: { xs: 3, lg: 0 },
-              //   border: "1px #000000 solid",
-            }}
-          >
-            <Card sx={{ margin: "20px" }}>
-              <MKBox
-                width="100%"
-                minHeight="200px"
-                display="flex"
-                justifyContent="center"
-                flexDirection="column"
-                alignItems="center"
-              >
-                <MKTypography variant="h5">Address</MKTypography>
-                <MKTypography
-                  variant="body2"
-                  fontSize="0.8rem"
-                  paddingTop="10px"
-                  px="20px"
-                  textAlign="center"
-                >
-                  ASHRAM ADD - SARKARI MULTI, Gudagudi Ka Naka Rd, near of MUKTIDHAM, Gwalior,
-                  Madhya Pradesh 474001
-                </MKTypography>
-              </MKBox>
-            </Card>
-          </Grid>
-
-          <Grid
-            item
-            xs={12}
-            lg={4}
-            sx={{
-              //   ml: "auto",
-              mt: { xs: 3, lg: 0 },
-              // border: "1px #000000 solid"
-            }}
-          >
-            <Card sx={{ margin: "20px" }}>
-              <MKBox
-                width="100%"
-                minHeight="200px"
-                display="flex"
-                justifyContent="center"
-                flexDirection="column"
-                alignItems="center"
-              >
-                <MKTypography variant="h5">Phone number</MKTypography>
-                <MKTypography
-                  variant="body2"
-                  fontSize="0.8rem"
-                  paddingTop="10px"
-                  px="20px"
-                  textAlign="center"
-                >
-                  90391 29571
-                </MKTypography>
-              </MKBox>
-            </Card>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            lg={4}
-            sx={{
-              //   ml: "auto",
-              mt: { xs: 3, lg: 0 },
-              // border: "1px #000000 solid"
-            }}
-          >
-            <Card sx={{ margin: "20px" }}>
-              <MKBox
-                width="100%"
-                minHeight="200px"
-                display="flex"
-                justifyContent="center"
-                flexDirection="column"
-                alignItems="center"
-              >
-                <MKTypography variant="h5">Email</MKTypography>
-                <MKTypography
-                  variant="body2"
-                  fontSize="0.8rem"
-                  paddingTop="10px"
-                  px="20px"
-                  textAlign="center"
-                >
-                  aadar1234@gmail.com
-                </MKTypography>
-              </MKBox>
-            </Card>
-          </Grid>
-        </Grid>
-      </Container> */}
+          </Container>
+        </MKBox>
+      </Card>
 
       {/* Footer */}
       <MKBox pt={2} px={0} mt={1}>
@@ -334,4 +230,4 @@ function Gallery() {
   );
 }
 
-export default Gallery;
+export default Contact;

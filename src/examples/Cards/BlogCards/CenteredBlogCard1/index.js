@@ -105,7 +105,11 @@ function CenteredBlogCard({ image, title, action, description }) {
                 variant="body2"
                 component="p"
                 color="text"
-                sx={{ fontWeight: "400", fontSize: { lg: "0.8rem", xl: "0.9rem" } }}
+                sx={{
+                  fontWeight: "400",
+                  fontSize: { lg: "0.8rem", xl: "0.9rem" },
+                  letterSpacing: "0.05rem",
+                }}
               >
                 {description}
               </MKTypography>

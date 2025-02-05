@@ -15,7 +15,7 @@ function Counters() {
               count={9}
               separator=","
               title="Years Since"
-              description="Active since 2015 to serve the homeless, helpless and destitute facing a very painful phase of life."
+              description="Serving the homeless, helpless, and destitute since 2015, providing support and relief during their most difficult times."
             />
           </Grid>
           <Grid item xs={12} md={3}>
@@ -24,7 +24,7 @@ function Counters() {
               separator=","
               suffix="+"
               title="People helped"
-              description="Helped humans suffering from lack of love, food, shelter, treatment, family, care."
+              description="Providing support to those suffering from a lack of love, food, shelter, medical care, and family."
             />
           </Grid>
           <Grid item xs={12} md={3}>
@@ -33,7 +33,7 @@ function Counters() {
               separator=","
               suffix="+"
               title="Events"
-              description="Actively engaging with society helping our residents and conducting various events."
+              description="We are actively engaged in our community, supporting residents and organizing various events to foster connection and well-being."
             />
           </Grid>
           <Grid item xs={12} md={3}>

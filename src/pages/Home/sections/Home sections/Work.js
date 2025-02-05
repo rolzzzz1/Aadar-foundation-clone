@@ -18,11 +18,13 @@ function Work() {
     <MKBox
       component="section"
       variant="gradient"
-      bgColor="light"
+      // bgColor="light"
       position="relative"
       mt={8}
       py={6}
       borderRadius={"10px"}
+      mx={-2}
+      sx={{ backgroundColor: "#f0f2f5" }}
       // px={{ xs: 2, lg: 0 }}
 
       // mx={-2}

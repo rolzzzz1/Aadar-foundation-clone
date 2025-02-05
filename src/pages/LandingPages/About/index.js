@@ -26,7 +26,12 @@ import aboutBgImg from "assets/images/swargSadanBlack.png";
 import bgImage from "assets/images/smallBrushstroke2.svg";
 import aboutImg from "assets/images/main1.jpg";
 import swargSadan from "assets/images/swargSadan.webp";
-import beforeAfter from "assets/images/before-after3.png";
+import beforeAfter1 from "assets/images/before-after1.png";
+import group1 from "assets/images/group1.jpg";
+import resque1 from "assets/images/resque1.jpg";
+import food from "assets/images/foodAboutpage.jpg";
+import team from "assets/images/teamImg.jpg";
+import celebration from "assets/images/celebration.jpeg";
 
 function About() {
   return (
@@ -130,20 +135,16 @@ function About() {
                     width="90%"
                     height="100%"
                   ></MKBox>
-                  {/* <img
-                  src={swargSadan}
-                  alt="aboutImage"
-                  width="90%"
-                  height="100%"
-                  // width="400px"
-                /> */}
                 </Grid>
                 <Grid lg={6}>
                   <MKTypography
                     variant="body1"
                     fontSize="1rem"
                     fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
-                    sx={{ letterSpacing: "0.05rem" }}
+                    sx={{
+                      letterSpacing: "0.05rem",
+                      paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+                    }}
                   >
                     At Aadar Foundation, we believe that serving humanity is the highest form of
                     worship. With this vision, <b>Mr. Vikas Goswami</b> began his journey of service
@@ -155,19 +156,6 @@ function About() {
                   </MKTypography>
                 </Grid>
               </Grid>
-              {/* <MKTypography
-              variant="body1"
-              fontSize="1rem"
-              fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
-              sx={{ letterSpacing: "0.05rem" }}
-            >
-              At Aadar Foundation, we believe that serving humanity is the highest form of worship.
-              With this vision, <b>Mr. Vikas Goswami</b> began his journey of service on{" "}
-              <b>July 1, 2015</b>, reaching out to the most vulnerable—those who were wounded, sick,
-              abandoned, or disabled—struggling to survive on the streets. He and his team sought
-              out these individuals at railway stations, bus stands, outside temples, and other
-              places across the city, providing them with first aid and care.
-            </MKTypography> */}
               <MKTypography
                 variant="body1"
                 fontSize="1.1rem"
@@ -222,13 +210,18 @@ function About() {
                     full-time care at our facility.
                   </MKTypography>
                 </Grid>
-                <Grid lg={6} pl={4} my="auto">
+                <Grid
+                  lg={6}
+                  pl={4}
+                  my="auto"
+                  sx={{ paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" } }}
+                >
                   <MKBox
                     component="img"
                     src={aboutImg}
                     alt={"Before after images"}
                     borderRadius="xxl"
-                    width="90%"
+                    width="100%"
                   ></MKBox>
                 </Grid>
               </Grid>
@@ -256,17 +249,46 @@ function About() {
               <TabsSimple />
             </MKBox> */}
 
-            <MKBox
-              component="img"
-              src={beforeAfter}
-              alt={"Swarg sadan building image"}
-              borderRadius="xxl"
-              mt={6}
-              width="50%"
-              height="100%"
-            ></MKBox>
+            <Grid container lg={12} mt={6} display="flex" justifyContent="center" my={4}>
+              <Grid sm={6} md={6} lg={4} px={2}>
+                <MKBox
+                  component="img"
+                  src={resque1}
+                  alt={"Swarg sadan building image"}
+                  borderRadius="xxl"
+                  width="100%"
+                  // height="90%"
+                  sx={{ height: { sm: "80%", md: "80%", lg: "90%" } }}
+                  my={2}
+                ></MKBox>
+              </Grid>
+              <Grid sm={6} md={6} lg={4} px={2}>
+                <MKBox
+                  component="img"
+                  src={beforeAfter1}
+                  alt={"Swarg sadan building image"}
+                  borderRadius="xxl"
+                  width="100%"
+                  // height="80%"
+                  sx={{ height: { sm: "80%", md: "80%", lg: "80%" } }}
+                  my={2}
+                ></MKBox>
+              </Grid>
+              <Grid sm={12} md={12} lg={4} px={1}>
+                <MKBox
+                  component="img"
+                  src={group1}
+                  alt={"Swarg sadan building image"}
+                  borderRadius="xxl"
+                  width="100%"
+                  // height="70%"
+                  sx={{ height: { sm: "80%", md: "80%", lg: "70%" } }}
+                  my={2}
+                ></MKBox>
+              </Grid>
+            </Grid>
 
-            <Grid py={4} md={12} pb={1} mt={4}>
+            <Grid py={4} md={12} pb={1} sx={{ marginTop: { sm: -10, md: -14, lg: 0 } }}>
               <MKTypography
                 variant="h3"
                 fontSize="1.5rem"
@@ -329,7 +351,43 @@ function About() {
               </MKTypography>
             </Grid>
 
-            <Grid py={4} md={12} pb={1} mt={4}>
+            <Grid container lg={12} mt={6}>
+              <Grid sm={3} md={3} lg={3} px={2}>
+                <MKBox
+                  component="img"
+                  src={food}
+                  alt={"Swarg sadan building image"}
+                  borderRadius="xxl"
+                  width="100%"
+                  height="70%"
+                  my={2}
+                ></MKBox>
+              </Grid>
+              <Grid sm={4} md={4} lg={4} px={1}>
+                <MKBox
+                  component="img"
+                  src={celebration}
+                  alt={"Swarg sadan building image"}
+                  borderRadius="xxl"
+                  width="100%"
+                  height="80%"
+                  my={2}
+                ></MKBox>
+              </Grid>
+              <Grid sm={5} md={5} lg={5} px={2}>
+                <MKBox
+                  component="img"
+                  src={team}
+                  alt={"Swarg sadan building image"}
+                  borderRadius="xxl"
+                  width="100%"
+                  height="90%"
+                  my={2}
+                ></MKBox>
+              </Grid>
+            </Grid>
+
+            <Grid py={4} md={12} pb={1} my={-5}>
               <MKTypography
                 variant="h3"
                 py={3}
@@ -340,7 +398,8 @@ function About() {
               </MKTypography>
               <MKTypography fontSize="1rem" sx={{ letterSpacing: "0.05rem" }}>
                 <b>1. Food & Nutrition</b>
-                <br />
+              </MKTypography>
+              <MKTypography fontSize="1rem" sx={{ letterSpacing: "0.05rem" }} paddingTop="10px">
                 At Aadar Foundation, we prioritize the health and well-being of the homeless
                 individuals we support. Many of them are sick, malnourished, or physically weak, so
                 our meal plans are designed with their nutritional needs in mind. Under medical
@@ -349,7 +408,8 @@ function About() {
               </MKTypography>
               <MKTypography fontSize="1rem" paddingTop="20px" sx={{ letterSpacing: "0.05rem" }}>
                 <b>2. Leadership & Governance</b>
-                <br />
+              </MKTypography>
+              <MKTypography fontSize="1rem" paddingTop="10px" sx={{ letterSpacing: "0.05rem" }}>
                 To ensure the smooth operation of our ashram, we have a dedicated Executive
                 Committee and Core Team in place. The Core Team oversees daily management, resource
                 allocation, and system maintenance, while the Executive Committee conducts quarterly
@@ -359,7 +419,8 @@ function About() {
               </MKTypography>
               <MKTypography fontSize="1rem" paddingTop="20px" sx={{ letterSpacing: "0.05rem" }}>
                 <b>3. Celebrations & Community Engagement</b>
-                <br />
+              </MKTypography>
+              <MKTypography fontSize="1rem" paddingTop="10px" sx={{ letterSpacing: "0.05rem" }}>
                 We believe in fostering a sense of joy, belonging, and cultural inclusivity. Our
                 ashram celebrates festivals like Holi, Diwali, Bhai Dooj, and Rakshabandhan, as well
                 as Ganesh Puja, Ramzan, and Eid, respecting the diverse faiths of our residents. To
