@@ -95,56 +95,64 @@ function Contact() {
         <MKBox component="section" my={4}>
           <Container>
             <Grid container alignItems="center">
-              <Grid item md={4} sx={{ ml: { xs: 0, lg: 3 }, mb: { xs: 12, md: 0 } }}>
-                <Container>
-                  <MKTypography variant="h4" sx={{ fontWeight: "500" }} pb={4}>
-                    Get in touch @
-                  </MKTypography>
-                  <MKTypography
-                    variant="body1"
-                    paddingTop="15px"
-                    fontSize="1.2rem"
-                    sx={{ fontWeight: "600" }}
-                  >
-                    Address :
-                  </MKTypography>
-                  <MKTypography variant="body1" fontSize="1rem">
-                    <b>Swarg sadan ashram</b> <br />
-                    Sarkari Malti, Behind Muktidham, Guda Gudi Ka Naka, Gwalior, India, 474001
-                  </MKTypography>
+              <Grid
+                item
+                md={12}
+                lg={4}
+                sx={{
+                  // ml: { xs: 0, lg: 3 },
+                  mb: { xs: 8, md: 8, lg: 0 },
+                }}
+              >
+                {/* <Container> */}
+                <MKTypography variant="h4" sx={{ fontWeight: "500" }} pb={4}>
+                  Get in touch @
+                </MKTypography>
+                <MKTypography
+                  variant="body1"
+                  paddingTop="15px"
+                  fontSize="1.2rem"
+                  sx={{ fontWeight: "600" }}
+                >
+                  Address :
+                </MKTypography>
+                <MKTypography variant="body1" fontSize="1rem" maxWidth="350px">
+                  <b>Swarg sadan ashram</b> <br />
+                  Sarkari Malti, Behind Muktidham, Guda Gudi Ka Naka, Gwalior, India, 474001
+                </MKTypography>
 
-                  <MKTypography
-                    variant="body1"
-                    paddingTop="15px"
-                    fontSize="1.2rem"
-                    sx={{ fontWeight: "600" }}
-                  >
-                    Phone number :
-                  </MKTypography>
-                  <MKTypography variant="body1" fontSize="1rem">
-                    062662 02679
-                  </MKTypography>
+                <MKTypography
+                  variant="body1"
+                  paddingTop="15px"
+                  fontSize="1.2rem"
+                  sx={{ fontWeight: "600" }}
+                >
+                  Phone number :
+                </MKTypography>
+                <MKTypography variant="body1" fontSize="1rem">
+                  062662 02679
+                </MKTypography>
 
-                  <MKTypography
-                    variant="body1"
-                    paddingTop="15px"
-                    fontSize="1.2rem"
-                    sx={{ fontWeight: "600" }}
-                  >
-                    Email :
-                  </MKTypography>
-                  <MKTypography variant="body1" fontSize="1rem">
-                    aadarfoundatio2018@gmail.com
-                  </MKTypography>
-                </Container>
+                <MKTypography
+                  variant="body1"
+                  paddingTop="15px"
+                  fontSize="1.2rem"
+                  sx={{ fontWeight: "600" }}
+                >
+                  Email :
+                </MKTypography>
+                <MKTypography variant="body1" fontSize="1rem">
+                  aadarfoundatio2018@gmail.com
+                </MKTypography>
+                {/* </Container> */}
               </Grid>
-              <Grid item xs={12} md={6} sx={{ mx: "auto" }} px={2.5}>
+              <Grid item xs={12} md={12} lg={8} sx={{ mx: "auto" }}>
                 <MKBox
                   position="relative"
                   display="flex"
                   flexDirection="column"
                   justifyContent="center"
-                  sx={{ alignItems: { sm: "start", md: "center" } }}
+                  sx={{ alignItems: { sm: "start", md: "start", lg: "center" } }}
                   gap="30px"
                 >
                   <MKTypography fontSize="1.3rem" sx={{ fontWeight: "600" }}>

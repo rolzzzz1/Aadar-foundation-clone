@@ -23,7 +23,7 @@ import ShelterImg1 from "assets/images/swargSadan.webp";
 import FoodImg1 from "assets/images/foodImg1.jpg";
 import FoodImg2 from "assets/images/foodImg2.jpg";
 // import CareImg1 from "assets/images/careImg1.jpg";
-import CareImg2 from "assets/images/aboutPageImg.webp";
+import CareImg2 from "assets/images/aboutPageImg.png";
 import RehabilitationImg1 from "assets/images/rehabilitation.jpg";
 import RehabilitationImg2 from "assets/images/rehabilitationImg1.jpg";
 

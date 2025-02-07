@@ -1,18 +1,4 @@
-// function TermsConditions() {
-//   return <h1>Terms and conditions</h1>;
-// }
-
-// export default TermsConditions;
-
-// import { Link } from "react-router-dom";
-
-// @mui material components
-import Container from "@mui/material/Container";
-// import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-// import FacebookIcon from "@mui/icons-material/Facebook";
-// import InstagramIcon from "@mui/icons-material/Instagram";
-// import YouTubeIcon from "@mui/icons-material/YouTube";
 
 // Material Kit 2 React examples
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
@@ -29,6 +15,8 @@ import footerRoutes from "footer.routes";
 // Images
 import bgImage2 from "assets/images/swargSadanBlack.png";
 import bgImage from "assets/images/smallBrushstroke2.svg";
+
+import { termsData } from "./data/termsData.js";
 
 function TermsConditions() {
   return (
@@ -98,7 +86,8 @@ function TermsConditions() {
           boxShadow: ({ boxShadows: { xxl } }) => xxl,
         }}
       >
-        <MKBox component="section" my={4}>
+        {termsData}
+        {/* <MKBox component="section" my={4}>
           <Container>
             Terms & Conditions Use of this site is provided by Apna Ghar Ashram subject to the
             following Terms and Conditions: Your use constitutes acceptance of these terms and
@@ -146,7 +135,7 @@ function TermsConditions() {
             8599999911/22, Website : www.apnagharashram.org,Email:bharatpur@apnagharashram.org ,
             hq@apnagharashram.org .
           </Container>
-        </MKBox>
+        </MKBox> */}
       </Card>
 
       {/* Footer */}

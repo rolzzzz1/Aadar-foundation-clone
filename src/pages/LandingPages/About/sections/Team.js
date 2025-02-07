@@ -14,6 +14,8 @@ import user from "assets/images/user.png";
 import team1 from "assets/images/vikas.jpg";
 import team2 from "assets/images/faizan.jpg";
 import team3 from "assets/images/pawan.jpg";
+import team5 from "assets/images/Pramod.jpg";
+import team6 from "assets/images/Sadia.jpg";
 
 // import team4 from "assets/images/ivana-square.jpg";
 
@@ -54,7 +56,7 @@ function Team() {
               <HorizontalTeamCard
                 image={team1}
                 name="Vikas Goswami"
-                position={{ color: "info", label: "Founder" }}
+                position={{ color: "info", label: "Founder & CEO" }}
                 description="< Social icons links here >"
               />
             </MKBox>
@@ -64,22 +66,30 @@ function Team() {
             xs={12}
             sm={12}
             md={12}
-            lg={7}
+            lg={6}
             display="flex"
             justifyContent={"center"}
             alignItems={"center"}
           >
             <MKBox mb={1} textAlign="center">
               <MKTypography
-                sx={{ fontSize: { xs: "1rem", sm: "1rem", md: "1.3rem", lg: "1.3rem" } }}
+                sx={{ fontSize: { xs: "1rem", sm: "1rem", md: "1.2rem", lg: "1.2rem" } }}
               >
                 Meet the team behind <br />
               </MKTypography>
               <MKTypography
                 variant="h4"
+                pt={1}
                 sx={{ fontSize: { xs: "1rem", sm: "1.2rem", md: "1.4rem", lg: "1.4rem" } }}
               >
                 Aadar Foundation ( Swarg Sadan Ashram )
+              </MKTypography>
+              <MKTypography
+                pt={2}
+                sx={{ fontSize: { xs: "0.8rem", sm: "0.8rem", md: "1rem", lg: "1rem" } }}
+              >
+                We started our journey with a team of seven <br /> and continue to move forward
+                together.
               </MKTypography>
             </MKBox>
           </Grid>
@@ -90,7 +100,10 @@ function Team() {
               <HorizontalTeamCard
                 image={team2}
                 name="Faizan Beg"
-                position={{ color: "info", label: "Founder" }}
+                position={{
+                  color: "info",
+                  label: "Holistic Care Administrator",
+                }}
                 description="< Social icons links here >"
               />
             </MKBox>
@@ -100,7 +113,10 @@ function Team() {
               <HorizontalTeamCard
                 image={team3}
                 name="Pawan Suryawanshi"
-                position={{ color: "info", label: "Founder" }}
+                position={{
+                  color: "info",
+                  label: "Healthcare Operations Manager  ",
+                }}
                 description="< Social icons links here >"
               />
             </MKBox>
@@ -110,7 +126,10 @@ function Team() {
               <HorizontalTeamCard
                 image={user}
                 name="Vibha Aneja"
-                position={{ color: "info", label: "Founder" }}
+                position={{
+                  color: "info",
+                  label: "Residential Care and Food Services ",
+                }}
                 description="< Social icons links here >"
               />
             </MKBox>
@@ -120,9 +139,12 @@ function Team() {
           <Grid item xs={12} sm={12} md={12} lg={4}>
             <MKBox mb={1}>
               <HorizontalTeamCard
-                image={user}
+                image={team5}
                 name="Pramod Sumoliya"
-                position={{ color: "info", label: "Founder" }}
+                position={{
+                  color: "info",
+                  label: "Medical Facility Manager",
+                }}
                 description="< Social icons links here >"
               />
             </MKBox>
@@ -130,9 +152,9 @@ function Team() {
           <Grid item xs={12} sm={12} md={12} lg={4}>
             <MKBox mb={1}>
               <HorizontalTeamCard
-                image={user}
+                image={team6}
                 name="Sadia Parveen"
-                position={{ color: "info", label: "Founder" }}
+                position={{ color: "info", label: "Communications and Writing Manager" }}
                 description="< Social icons links here >"
               />
             </MKBox>
@@ -142,7 +164,7 @@ function Team() {
               <HorizontalTeamCard
                 image={user}
                 name="Kamal Aneja"
-                position={{ color: "info", label: "Founder" }}
+                position={{ color: "info", label: "Mobility Services Manager " }}
                 description="< Social icons links here >"
               />
             </MKBox>

@@ -55,9 +55,9 @@ function HorizontalTeamCard({
               // width="100%"
               borderRadius="md"
               shadow="lg"
-              width="100px"
-              height="100px"
-              border="solid 1px #777"
+              width="150px"
+              height="150px"
+              // border="solid 1px #777"
             />
           </MKBox>
         </Grid>
@@ -69,13 +69,21 @@ function HorizontalTeamCard({
           lg={8}
           sx={{
             my: "auto",
-            paddingLeft: "40px",
+            // paddingLeft: "40px",
           }}
+          pl={10}
         >
-          <MKBox pt={{ xs: 1, lg: 1.5 }} pb={2.5} pr={4} pl={{ xs: 4, lg: 1 }} lineHeight={1}>
+          <MKBox pt={{ xs: 1, lg: 1.5 }} pb={2.5} pr={3} pl={{ xs: 4, lg: 1 }} lineHeight={1}>
             <MKTypography variant="h6">{name.split(" ")[0]}</MKTypography>
             <MKTypography variant="h6">{name.split(" ")[1]}</MKTypography>
-            <MKTypography variant="h6" fontSize="0.8rem" color={position.color} mb={1}>
+            <MKTypography
+              variant="h6"
+              fontSize="0.8rem"
+              sx={{ fontWeight: "500" }}
+              color={position.color}
+              mb={1}
+              pt={1}
+            >
               {position.label}
             </MKTypography>
             {/* <MKTypography variant="body" fontSize="0.75rem" mb={1}>
