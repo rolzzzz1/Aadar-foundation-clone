@@ -17,7 +17,7 @@ import DefaultFooter from "examples/Footers/DefaultFooter";
 // Home page sections
 import About from "pages/Home/sections/Home sections/About";
 import Work from "pages/Home/sections/Home sections/Work";
-import Events from "pages/Home/sections/Home sections/Events";
+// import Events from "pages/Home/sections/Home sections/Events";
 import Journey from "pages/Home/sections/Home sections/Journey";
 import Counters from "pages/Home/sections/Home sections/Counters";
 
@@ -126,7 +126,7 @@ function Home() {
         <Counters />
 
         {/* Events section component */}
-        <Events />
+        {/* <Events /> */}
       </Card>
 
       {/* Footer */}

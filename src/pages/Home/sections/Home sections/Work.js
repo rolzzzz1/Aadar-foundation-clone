@@ -90,7 +90,7 @@ function Work() {
             <CenteredBlogCard
               image={work3}
               title="Shelter"
-              description="A shelter with a clean and loving environment provided to the residents"
+              description="Clean & loving environment provided to the residents "
               action={{ type: "internal", route: "/pages/landing-pages/work" }}
             />
           </Grid>

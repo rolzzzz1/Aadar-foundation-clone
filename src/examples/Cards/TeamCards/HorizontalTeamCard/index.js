@@ -36,6 +36,7 @@ function HorizontalTeamCard({
         mt: 3,
         padding: "10px",
         // minHeight: "200px"
+        backgroundColor: "#f0f2f5",
       }}
     >
       <Grid container>
@@ -71,7 +72,7 @@ function HorizontalTeamCard({
             my: "auto",
             // paddingLeft: "40px",
           }}
-          pl={10}
+          pl={9}
         >
           <MKBox pt={{ xs: 1, lg: 1.5 }} pb={2.5} pr={3} pl={{ xs: 4, lg: 1 }} lineHeight={1}>
             <MKTypography variant="h6">{name.split(" ")[0]}</MKTypography>

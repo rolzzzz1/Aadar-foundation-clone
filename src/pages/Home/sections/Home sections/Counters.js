@@ -2,6 +2,7 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 
 import MKBox from "components/MKBox";
+import MKTypography from "components/MKTypography";
 
 import DefaultCounterCard from "examples/Cards/CounterCards/DefaultCounterCard";
 
@@ -10,6 +11,17 @@ function Counters() {
     <MKBox component="section" pt={8} pb={2}>
       <Container>
         <Grid container justifyContent="center" sx={{ textAlign: "center" }}>
+          <Grid item xs={12} md={12}>
+            <MKTypography
+              variant="h3"
+              // color="darkText"
+              fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+              sx={{ fontWeight: "500" }}
+              mb={2}
+            >
+              Our Impact
+            </MKTypography>
+          </Grid>
           <Grid item xs={12} md={3}>
             <DefaultCounterCard
               count={9}

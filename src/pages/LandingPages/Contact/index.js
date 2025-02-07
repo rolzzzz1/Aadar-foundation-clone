@@ -130,7 +130,7 @@ function Contact() {
                   Phone number :
                 </MKTypography>
                 <MKTypography variant="body1" fontSize="1rem">
-                  062662 02679
+                  9039129571, 9826441863, 9630982392
                 </MKTypography>
 
                 <MKTypography

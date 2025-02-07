@@ -349,7 +349,7 @@ function About() {
               <Grid container display="flex" justifyContent={"flex-start"} width="100%">
                 {/* Rescue */}
                 <Grid container justifyContent="center" py={4}>
-                  <Grid item xs={12} md={4} pr={4} my="auto">
+                  <Grid item xs={12} md={12} lg={4} pr={4} my="auto">
                     <MKTypography
                       variant="h3"
                       py={1}
@@ -368,7 +368,9 @@ function About() {
                   <Grid
                     item
                     xs={12}
-                    md={8}
+                    sm={12}
+                    md={12}
+                    lg={8}
                     my={"auto"}
                     overflow={"hidden"}
                     sx={{
@@ -376,7 +378,9 @@ function About() {
                       justifyContent: "center",
                       alignItems: "center",
                       gap: "15px",
+                      marginTop: { xs: 4, sm: 4, md: 4, lg: 0 },
                     }}
+                    // mt={4}
                   >
                     <MKBox
                       component="img"
@@ -415,7 +419,7 @@ function About() {
 
                 {/* Treatment */}
                 <Grid container justifyContent="center" py={4}>
-                  <Grid item xs={12} md={4} pr={4} my="auto">
+                  <Grid item xs={12} md={12} lg={4} pr={4} my="auto">
                     <MKTypography
                       variant="h3"
                       py={1}
@@ -433,13 +437,17 @@ function About() {
                   <Grid
                     item
                     xs={12}
-                    md={8}
+                    sm={12}
+                    md={12}
+                    lg={8}
                     overflow={"hidden"}
+                    // mt={4}
                     sx={{
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
                       gap: "15px",
+                      marginTop: { xs: 4, sm: 4, md: 4, lg: 0 },
                     }}
                   >
                     <MKBox
@@ -473,7 +481,8 @@ function About() {
                   <Grid
                     item
                     xs={12}
-                    md={4}
+                    md={12}
+                    lg={4}
                     // px={6}
                     pr={10}
                     my="auto"
@@ -495,13 +504,17 @@ function About() {
                   <Grid
                     item
                     xs={12}
-                    md={8}
+                    sm={12}
+                    md={12}
+                    lg={8}
                     overflow={"hidden"}
+                    // mt={4}
                     sx={{
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
                       gap: "15px",
+                      marginTop: { xs: 4, sm: 4, md: 4, lg: 0 },
                     }}
                   >
                     <MKBox
@@ -535,7 +548,8 @@ function About() {
                   <Grid
                     item
                     xs={12}
-                    md={4}
+                    md={12}
+                    lg={4}
                     // px={6}
                     pr={2}
                     my="auto"
@@ -563,13 +577,17 @@ function About() {
                   <Grid
                     item
                     xs={12}
-                    md={8}
+                    sm={12}
+                    md={12}
+                    lg={8}
                     overflow={"hidden"}
+                    // mt={4}
                     sx={{
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
                       gap: "15px",
+                      marginTop: { xs: 4, sm: 4, md: 4, lg: 0 },
                     }}
                   >
                     <MKBox
@@ -605,7 +623,8 @@ function About() {
                   <Grid
                     item
                     xs={12}
-                    md={4}
+                    md={12}
+                    lg={4}
                     // px={6}
                     pr={10}
                     my="auto"
@@ -627,13 +646,17 @@ function About() {
                   <Grid
                     item
                     xs={12}
-                    md={8}
+                    sm={12}
+                    md={12}
+                    lg={8}
                     overflow={"hidden"}
+                    // mt={4}
                     sx={{
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
                       gap: "15px",
+                      marginTop: { xs: 4, sm: 4, md: 4, lg: 0 },
                     }}
                   >
                     {/* <MKBox
@@ -651,8 +674,8 @@ function About() {
                       alt="RescueImg1"
                       width="60%"
                       borderRadius="10px"
-                      minHeight={"250px"}
-                      maxHeight={"250px"}
+                      minHeight={"180px"}
+                      maxHeight={"180px"}
                     ></MKBox>
                   </Grid>
                 </Grid>
@@ -667,7 +690,8 @@ function About() {
                   <Grid
                     item
                     xs={12}
-                    md={4}
+                    md={12}
+                    lg={4}
                     // px={6}
                     pr={10}
                     my="auto"
@@ -689,13 +713,17 @@ function About() {
                   <Grid
                     item
                     xs={12}
-                    md={8}
+                    sm={12}
+                    md={12}
+                    lg={8}
                     overflow={"hidden"}
+                    // mt={4}
                     sx={{
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
                       gap: "15px",
+                      marginTop: { xs: 4, sm: 4, md: 4, lg: 0 },
                     }}
                   >
                     <MKBox
@@ -704,8 +732,8 @@ function About() {
                       alt="RescueImg1"
                       width="40%"
                       borderRadius="10px"
-                      minHeight={"250px"}
-                      maxHeight={"250px"}
+                      minHeight={"180px"}
+                      maxHeight={"180px"}
                     ></MKBox>
                     <MKBox
                       component="img"
@@ -713,8 +741,8 @@ function About() {
                       alt="RescueImg1"
                       width="40%"
                       borderRadius="10px"
-                      minHeight={"250px"}
-                      maxHeight={"250px"}
+                      minHeight={"180px"}
+                      maxHeight={"180px"}
                     ></MKBox>
                   </Grid>
                 </Grid>
@@ -805,18 +833,16 @@ function About() {
               >
                 How we work
               </MKTypography>
-              <MKTypography fontSize="1rem" sx={{ letterSpacing: "0.05rem" }}>
-                <b>1. Food & Nutrition</b>
+              <MKTypography fontSize="1rem" paddingTop="10px" sx={{ letterSpacing: "0.05rem" }}>
+                Helpless and destitute individuals, the focus of our work, often cannot reach the
+                Ashram on their own. Our dedicated ambulance and rescue team, in collaboration with
+                the police and government organizations, ensure their safe arrival. Once admitted,
+                they receive essential care and medical treatment. Efforts are then made, with the
+                support of authorities, to rehabilitate them with their families whenever possible.
               </MKTypography>
-              <MKTypography fontSize="1rem" sx={{ letterSpacing: "0.05rem" }} paddingTop="10px">
-                At Aadar Foundation, we prioritize the health and well-being of the homeless
-                individuals we support. Many of them are sick, malnourished, or physically weak, so
-                our meal plans are designed with their nutritional needs in mind. Under medical
-                guidance, we provide balanced meals, including breakfast, lunch, and dinner, along
-                with milk, fruits, and protein-rich foods to aid their recovery and well-being.
-              </MKTypography>
+
               <MKTypography fontSize="1rem" paddingTop="20px" sx={{ letterSpacing: "0.05rem" }}>
-                <b>2. Leadership & Governance</b>
+                <b>Leadership & Governance</b>
               </MKTypography>
               <MKTypography fontSize="1rem" paddingTop="10px" sx={{ letterSpacing: "0.05rem" }}>
                 To ensure the smooth operation of our ashram, we have a dedicated Executive
@@ -827,7 +853,19 @@ function About() {
                 improvements.
               </MKTypography>
               <MKTypography fontSize="1rem" paddingTop="20px" sx={{ letterSpacing: "0.05rem" }}>
-                <b>3. Celebrations & Community Engagement</b>
+                <b>Medical facility</b>
+              </MKTypography>
+              <MKTypography fontSize="1rem" paddingTop="10px" sx={{ letterSpacing: "0.05rem" }}>
+                Most of the residents brought to the Ashram are suffering from different types of
+                ailments. Hence medical/surgical treatment plays a significant part in the service
+                we offer them. There is a team of doctors who are available to offer their services
+                to our Ashram. For patients who are in a more critical condition, there is an
+                arrangement with local hospitals where medical investigations and treatments
+                (medical and surgical) are provided to our residents.
+              </MKTypography>
+
+              <MKTypography fontSize="1rem" paddingTop="20px" sx={{ letterSpacing: "0.05rem" }}>
+                <b>Celebrations & Community Engagement</b>
               </MKTypography>
               <MKTypography fontSize="1rem" paddingTop="10px" sx={{ letterSpacing: "0.05rem" }}>
                 We believe in fostering a sense of joy, belonging, and cultural inclusivity. Our

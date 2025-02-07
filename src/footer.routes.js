@@ -49,7 +49,7 @@ export default {
       items: [
         { name: "home", route: "/" },
         { name: "about us", route: "/pages/landing-pages/about-us" },
-        { name: "our work", route: "/pages/landing-pages/work" },
+        { name: "our work", route: "/pages/landing-pages/about-us" },
         { name: "gallery", route: "/pages/landing-pages/gallery" },
         { name: "contact", route: "/pages/landing-pages/contact" },
       ],

@@ -107,7 +107,7 @@ function CenteredBlogCard({ image, title, action, description }) {
                 color="text"
                 sx={{
                   fontWeight: "400",
-                  fontSize: { lg: "0.8rem", xl: "0.9rem" },
+                  fontSize: { md: "0.9rem", lg: "0.8rem", xl: "0.9rem" },
                   letterSpacing: "0.05rem",
                 }}
               >

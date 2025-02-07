@@ -24,7 +24,7 @@ function Journey() {
               <MKTypography
                 sx={{
                   fontWeight: "400",
-                  fontSize: { sm: "1.2rem", md: "1.3rem", lg: "1.5rem", xl: "1.5rem" },
+                  fontSize: { sm: "1rem", md: "1rem", lg: "1.3rem", xl: "1.3rem" },
                   letterSpacing: "0.05rem",
                   // color: "#ffffff",
                 }}
@@ -38,7 +38,7 @@ function Journey() {
                   }}
                   my={2}
                 >
-                  - Mr. Vikas Goswami{" "}
+                  Mr. Vikas Goswami{" "}
                 </MKTypography>
               </MKTypography>
             </MKBox>
