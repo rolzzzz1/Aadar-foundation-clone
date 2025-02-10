@@ -30,7 +30,7 @@
 // Pages
 import Home from "layouts/pages/home";
 import About from "layouts/pages/landing-pages/about-us";
-// import Work from "layouts/pages/landing-pages/work";
+import Work from "layouts/pages/landing-pages/work";
 import Gallery from "layouts/pages/landing-pages/gallery";
 import Contact from "layouts/pages/landing-pages/contact";
 import PrivacyPolicy from "layouts/pages/landing-pages/privacy-policy";
@@ -74,14 +74,10 @@ const routes = [
   },
   {
     name: "Our Work",
-    route: "/pages/landing-pages/about-us",
-    component: <About />,
+    route: "/pages/landing-pages/work",
+    component: <Work />,
   },
-  // {
-  //   name: "Our Work",
-  //   route: "/pages/landing-pages/work",
-  //   component: <Work />,
-  // },
+
   {
     name: "Gallery",
     route: "/pages/landing-pages/gallery",

@@ -30,7 +30,7 @@ function Team() {
       px={{ xs: 2, lg: 0 }}
       // mx={-2}
       mt={8}
-      mb={8}
+      mb={4}
     >
       <Container>
         {/* <Grid container textAlign={"center"}>

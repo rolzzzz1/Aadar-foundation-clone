@@ -54,13 +54,17 @@ function DefaultNavbarDropdown({
     <>
       <MKBox
         {...rest}
-        // mx={1}
+        mx={1}
         p={0.5}
         display="flex"
         alignItems="baseline"
         color={light ? "light" : "dark"}
         opacity={light ? 1 : 0.6}
-        sx={{ cursor: "pointer", userSelect: "none" }}
+        sx={{
+          cursor: "pointer",
+          userSelect: "none",
+          "&: hover": { color: "#E7A232", textDecoration: "underline 2px" },
+        }}
         {...(route && routeComponent)}
         {...(href && linkComponent)}
       >
@@ -78,11 +82,12 @@ function DefaultNavbarDropdown({
           textTransform="capitalize"
           color={light ? "light" : "dark"}
           sx={{
+            fontSize: { sm: "0.8", md: "0.875rem" },
             fontWeight: "100%",
-            ml: 1,
             mr: 1,
             "&:hover": { color: "#E7A232", textDecoration: "underline 2px" },
           }}
+          width="100%"
         >
           {name}
         </MKTypography>

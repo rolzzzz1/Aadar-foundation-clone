@@ -64,7 +64,14 @@ function DefaultFooter({ content }) {
           <MKBox pl={4} sx={{ paddingLeft: { lg: "48px", xl: "64px" } }}>
             <MKBox>
               <Link to={brand.route}>
-                <MKBox component="img" src={brand.image} alt={brand.name} maxWidth="5rem" mb={1} />
+                <MKBox
+                  component="img"
+                  src={brand.image}
+                  alt={brand.name}
+                  maxWidth="5rem"
+                  mb={1}
+                  sx={{ borderRadius: "10px" }}
+                />
                 <MKTypography variant="h4" color="white">
                   {brand.name}
                 </MKTypography>

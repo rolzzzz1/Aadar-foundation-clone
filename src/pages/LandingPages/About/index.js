@@ -1,4 +1,6 @@
 // @mui material components
+import React from "react";
+
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -14,6 +16,7 @@ import DefaultFooter from "examples/Footers/DefaultFooter";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
+// import MKButton from "components/MKButton";
 
 // Routes
 import routes from "routes";
@@ -121,6 +124,7 @@ function About() {
         <MKBox
           component="section"
           // pt={8} mt={8}
+          mb={4}
         >
           <Container>
             <MKBox
@@ -265,52 +269,69 @@ function About() {
             </MKBox> */}
 
             <Grid container lg={12} mt={6} display="flex" justifyContent="center" my={4}>
-              <Grid sm={6} md={6} lg={4} px={2}>
+              <Grid sm={6} md={6} lg={4} px={2} display="flex" justifyContent="center">
                 <MKBox
                   component="img"
                   src={resque1}
                   alt={"Swarg sadan building image"}
                   borderRadius="xxl"
-                  width="100%"
+                  // width="100%"
                   // height="90%"
-                  sx={{ height: { sm: "80%", md: "80%", lg: "90%" } }}
+                  sx={{
+                    height: { sm: "80%", md: "80%", lg: "90%" },
+                    width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
+                  }}
                   my={2}
                 ></MKBox>
               </Grid>
-              <Grid sm={6} md={6} lg={4} px={2}>
+              <Grid sm={6} md={6} lg={4} px={2} display="flex" justifyContent="center">
                 <MKBox
                   component="img"
                   src={beforeAfter1}
                   alt={"Swarg sadan building image"}
                   borderRadius="xxl"
-                  width="100%"
+                  // width="100%"
                   // height="80%"
-                  sx={{ height: { sm: "80%", md: "80%", lg: "80%" } }}
+                  sx={{
+                    height: { sm: "80%", md: "80%", lg: "80%" },
+                    width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
+                  }}
                   my={2}
                 ></MKBox>
               </Grid>
-              <Grid sm={12} md={12} lg={4} px={1}>
+              <Grid sm={12} md={12} lg={4} px={1} display="flex" justifyContent="center">
                 <MKBox
                   component="img"
                   src={group1}
                   alt={"Swarg sadan building image"}
                   borderRadius="xxl"
-                  width="100%"
+                  // width="100%"
                   // height="70%"
-                  sx={{ height: { sm: "80%", md: "80%", lg: "70%" } }}
+                  sx={{
+                    height: { sm: "80%", md: "80%", lg: "70%" },
+                    width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
+                  }}
                   my={2}
                 ></MKBox>
               </Grid>
             </Grid>
 
-            <Grid py={4} md={12} pb={1} sx={{ marginTop: { sm: -10, md: -14, lg: 0 } }}>
+            <Grid
+              py={4}
+              md={12}
+              pb={1}
+              sx={{ marginTop: { sm: -10, md: -14, lg: 0 } }}
+              // id="workSection"
+            >
               <MKTypography
                 variant="h3"
                 fontSize="1.875rem"
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                // ref={workSection}
               >
                 Our work
               </MKTypography>
+
               <MKTypography
                 variant="h3"
                 fontSize="1.5rem"
@@ -392,6 +413,7 @@ function About() {
                       minHeight={"180px"}
                       maxHeight={"180px"}
                     ></MKBox>
+
                     <MKBox
                       component="img"
                       src={RescueImg2}
@@ -674,8 +696,8 @@ function About() {
                       alt="RescueImg1"
                       width="60%"
                       borderRadius="10px"
-                      minHeight={"180px"}
-                      maxHeight={"180px"}
+                      minHeight={"200px"}
+                      maxHeight={"200px"}
                     ></MKBox>
                   </Grid>
                 </Grid>
@@ -732,8 +754,8 @@ function About() {
                       alt="RescueImg1"
                       width="40%"
                       borderRadius="10px"
-                      minHeight={"180px"}
-                      maxHeight={"180px"}
+                      minHeight={"200px"}
+                      maxHeight={"200px"}
                     ></MKBox>
                     <MKBox
                       component="img"
@@ -741,8 +763,8 @@ function About() {
                       alt="RescueImg1"
                       width="40%"
                       borderRadius="10px"
-                      minHeight={"180px"}
-                      maxHeight={"180px"}
+                      minHeight={"200px"}
+                      maxHeight={"200px"}
                     ></MKBox>
                   </Grid>
                 </Grid>
@@ -788,43 +810,55 @@ function About() {
               </MKTypography>
             </Grid>
 
-            <Grid container lg={12} mt={6}>
-              <Grid sm={3} md={3} lg={3} px={2}>
+            <Grid container lg={12} mt={6} display="flex" justifyContent="center" my={4}>
+              <Grid sm={6} md={6} lg={4} px={2} display="flex" justifyContent="center">
                 <MKBox
                   component="img"
                   src={food}
                   alt={"Swarg sadan building image"}
                   borderRadius="xxl"
-                  width="100%"
-                  height="70%"
+                  // width="100%"
+                  sx={{
+                    height: { xs: "90%", sm: "80%", md: "80%", lg: "60%" },
+                    width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
+                  }}
+                  // height="70%"
                   my={2}
                 ></MKBox>
               </Grid>
-              <Grid sm={4} md={4} lg={4} px={1}>
+              <Grid sm={6} md={6} lg={4} px={1} display="flex" justifyContent="center">
                 <MKBox
                   component="img"
                   src={celebration}
                   alt={"Swarg sadan building image"}
                   borderRadius="xxl"
-                  width="100%"
-                  height="80%"
+                  // width="100%"
+                  sx={{
+                    height: { xs: "90%", sm: "80%", md: "80%", lg: "70%" },
+                    width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
+                  }}
+                  // height="80%"
                   my={2}
                 ></MKBox>
               </Grid>
-              <Grid sm={5} md={5} lg={5} px={2}>
+              <Grid sm={12} md={12} lg={4} px={2} display="flex" justifyContent="center">
                 <MKBox
                   component="img"
                   src={team}
                   alt={"Swarg sadan building image"}
                   borderRadius="xxl"
-                  width="100%"
-                  height="90%"
+                  // width="100%"
+                  sx={{
+                    height: { xs: "90%", sm: "80%", md: "80%", lg: "80%" },
+                    width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
+                  }}
+                  // height="90%"
                   my={2}
                 ></MKBox>
               </Grid>
             </Grid>
 
-            <Grid py={4} md={12} pb={1} my={-5}>
+            <Grid py={4} md={12} pb={1} my={-10}>
               <MKTypography
                 variant="h3"
                 py={3}
