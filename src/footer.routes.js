@@ -8,10 +8,12 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 // Material Kit 2 React components
 import MKTypography from "components/MKTypography";
 import MKBox from "components/MKBox";
-// import MKButton from "components/MKButton";
+import MKButton from "components/MKButton";
 
 // Images
 import logoCT from "assets/images/logo-aadar.jpg";
+// import logoME from "assets/images/MyLogo1.png";
+import logoME from "assets/images/MeLogo2.jpg";
 
 const date = new Date().getFullYear();
 
@@ -106,29 +108,60 @@ export default {
       <MKTypography
         variant="button"
         fontWeight="regular"
-        fontSize="0.8rem"
+        fontSize="0.9rem"
         color="white"
         // width="55%"
         // sx={{ borderTop: "0.75px #A8A8A8 solid" }}
         py={2}
         px={2}
       >
-        Copyright &copy; {date} Aadar foundation - All rights reserved. Designed by Aishwarya Sharma
+        Copyright &copy; {date} Aadar foundation - All rights reserved.
+        <MKBox display="flex" justifyContent="center" alignItems="center" m={1}>
+          <MKTypography
+            variant="button"
+            fontWeight="regular"
+            fontSize="0.9rem"
+            color="white"
+            pr={2}
+          >
+            Designed by{" "}
+            <MKTypography
+              component="a"
+              href={"https://www.google.com/"}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <MKButton
+                variant="text"
+                size="small"
+                sx={{
+                  color: "#ffffff",
+                  textTransform: "capitalize",
+                  border: "2px solid transparent",
+                  "&: hover": {
+                    border: "2px solid #FFFFFF",
+                  },
+                  marginLeft: "5px",
+                  padding: "5px 5px",
+                }}
+              >
+                <MKTypography fontWeight="regular" fontSize="0.9rem" color="white">
+                  Aishwarya Sharma
+                </MKTypography>
+                &nbsp;
+                <MKBox
+                  component="img"
+                  src={logoME}
+                  borderRadius="3px"
+                  width="27px"
+                  height="22px"
+                  ml={1}
+                ></MKBox>
+              </MKButton>
+            </MKTypography>
+          </MKTypography>
+        </MKBox>
       </MKTypography>
-
-      {/* <MKTypography
-        component={Link}
-        to={"/pages/landing-pages/about-us"}
-        variant="button"
-        fontWeight="regular"
-        textTransform="capitalize"
-        fontSize="0.8rem"
-        py={2}
-        px={2}
-        color="white"
-      >
-        Privacy policy
-      </MKTypography> */}
     </MKBox>
   ),
 };

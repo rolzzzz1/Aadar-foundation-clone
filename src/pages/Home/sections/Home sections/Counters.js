@@ -22,7 +22,7 @@ function Counters() {
               Our Impact
             </MKTypography>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} sm={6} md={6} lg={3}>
             <DefaultCounterCard
               count={9}
               separator=","
@@ -30,7 +30,7 @@ function Counters() {
               description="Serving the homeless, helpless, and destitute since 2015, providing support and relief during their most difficult times."
             />
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} sm={6} md={6} lg={3}>
             <DefaultCounterCard
               count={500}
               separator=","
@@ -39,7 +39,7 @@ function Counters() {
               description="Providing support to those suffering from a lack of love, food, shelter, medical care, and family."
             />
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} sm={6} md={6} lg={3}>
             <DefaultCounterCard
               count={80}
               separator=","
@@ -48,7 +48,7 @@ function Counters() {
               description="We are actively engaged in our community, supporting residents and organizing various events to foster connection and well-being."
             />
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} sm={6} md={6} lg={3}>
             <DefaultCounterCard
               count={98}
               separator=","

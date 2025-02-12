@@ -18,7 +18,17 @@ function Journey() {
     >
       <Container>
         <Grid container alignItems="center">
-          <Grid item md={4} sx={{ ml: { xs: 0, lg: 3 }, mb: { xs: 2, md: 0 } }}>
+          <Grid
+            item
+            xs={10}
+            sm={10}
+            md={4}
+            sx={{
+              // ml: { xs: 0, lg: 3 },
+              mx: "auto",
+              mb: { xs: 2, md: 0 },
+            }}
+          >
             {/* <Container> */}
             <MKBox mx="auto" px={2}>
               <MKTypography
@@ -45,7 +55,7 @@ function Journey() {
 
             {/* </Container> */}
           </Grid>
-          <Grid item xs={12} md={6} mx={"auto"}>
+          <Grid item xs={10} sm={10} md={6} mx={"auto"}>
             <MKBox position="relative">
               <MKBox
                 display="flex"

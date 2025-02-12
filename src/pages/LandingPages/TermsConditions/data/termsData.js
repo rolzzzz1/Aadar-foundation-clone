@@ -16,7 +16,7 @@ export const termsData = (
         fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
         sx={{
           letterSpacing: "0.05rem",
-          paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+          // paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
         }}
       >
         Use of this site is provided by Aadar foundation subject to the following Terms and
@@ -30,7 +30,7 @@ export const termsData = (
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
-            paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+            // paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
           }}
         >
           <ol>
@@ -42,7 +42,7 @@ export const termsData = (
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 sx={{
                   letterSpacing: "0.05rem",
-                  paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+                  // paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
                 }}
               >
                 Your use constitutes acceptance of these terms and conditions as at the date of your
@@ -57,7 +57,7 @@ export const termsData = (
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 sx={{
                   letterSpacing: "0.05rem",
-                  paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+                  // paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
                 }}
               >
                 Aadar foundation reserves the rights to change these terms and conditions at any
@@ -73,7 +73,7 @@ export const termsData = (
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 sx={{
                   letterSpacing: "0.05rem",
-                  paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+                  // paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
                 }}
               >
                 You agree to use this site only for lawful purposes, and in a manner which does not
@@ -89,7 +89,7 @@ export const termsData = (
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 sx={{
                   letterSpacing: "0.05rem",
-                  paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+                  // paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
                 }}
               >
                 This site and the information, names, images, pictures, logos regarding or relating
@@ -109,7 +109,7 @@ export const termsData = (
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 sx={{
                   letterSpacing: "0.05rem",
-                  paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+                  // paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
                 }}
               >
                 Aadar foundation does not warrant that the functions contained in the material
@@ -127,7 +127,7 @@ export const termsData = (
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 sx={{
                   letterSpacing: "0.05rem",
-                  paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+                  // paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
                 }}
               >
                 Copyright restrictions: <br />
@@ -152,7 +152,7 @@ export const termsData = (
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 sx={{
                   letterSpacing: "0.05rem",
-                  paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+                  // paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
                 }}
               >
                 Aadar foundation takes no responsibility for the content of external Internet sites.
@@ -172,7 +172,7 @@ export const termsData = (
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 sx={{
                   letterSpacing: "0.05rem",
-                  paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+                  // paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
                 }}
               >
                 Any communication or material that you transmit to, or post on, any public area of
@@ -188,7 +188,7 @@ export const termsData = (
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 sx={{
                   letterSpacing: "0.05rem",
-                  paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+                  // paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
                 }}
               >
                 If there is any conflict between these terms and conditions and rules and/or
@@ -204,7 +204,7 @@ export const termsData = (
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 sx={{
                   letterSpacing: "0.05rem",
-                  paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+                  // paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
                 }}
               >
                 These terms and conditions shall be governed and construed in accordance with the
@@ -220,7 +220,7 @@ export const termsData = (
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 sx={{
                   letterSpacing: "0.05rem",
-                  paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+                  // paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
                 }}
               >
                 If these terms and conditions are not accepted in full, the use of this site must be
@@ -236,14 +236,13 @@ export const termsData = (
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
-            paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+            // paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
           }}
         >
-          <b>
-            ???Aadar foundation is a registered NGO by the name Aadar foundation in Gwalior, Madhya
-            Pradesh – 474001, India, Tel : +91 62662 02679, Website : https://aadar.foundation/,
-            Email: aadarfoundatio2018@gmail.com ???
-          </b>
+          Aadar foundation is a registered NGO by the name Aadar foundation in Gwalior, Madhya
+          Pradesh – 474001, India,
+          <br /> Tel : +91 9039129571, Website : https://aadar.foundation/, Email:
+          aadarfoundatio2018@gmail.com
         </MKTypography>
       </MKBox>
     </Container>

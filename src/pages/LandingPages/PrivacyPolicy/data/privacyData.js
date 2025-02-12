@@ -16,35 +16,34 @@ export const privacyData = (
         fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
         sx={{
           letterSpacing: "0.05rem",
-          paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+          paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
         }}
       >
-        A privacy policy states how you will respect the privacy of your website users. It says what
-        information you will gather, how you will use it and how you will keep it secure. A privacy
-        policy is a legal document that discloses some or all of the ways a party gathers, uses,
-        discloses and manages a customer’s data. The exact contents of a privacy policy will depend
-        upon the applicable law and may need to address the requirements of multiple countries or
-        jurisdictions. While there is no universal guidance for the content of specific privacy
-        policies, a number of organization provide example forms.
+        A privacy policy outlines how a website respects and protects user privacy. It specifies the
+        information collected, how it is used, and the security measures in place. As a legal
+        document, it details how a party gathers, uses, discloses, and manages customer data. The
+        content of a privacy policy varies based on applicable laws and may need to comply with
+        regulations across multiple jurisdictions. While no universal template exists, various
+        organizations provide example policies to guide compliance.
       </MKTypography>
       <MKTypography
-        mt={4}
+        mt={3}
         variant="body1"
         fontSize="1rem"
         fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
         sx={{
           letterSpacing: "0.05rem",
-          paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+          paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "0px" },
         }}
       >
         <MKTypography
-          mt={1.5}
+          mt={1}
           variant="body1"
           fontSize="1.2rem"
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
-            paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+            paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
             fontWeight: "500",
           }}
         >
@@ -52,78 +51,77 @@ export const privacyData = (
         </MKTypography>
 
         <MKTypography
-          mt={1.5}
+          mt={1}
           variant="body1"
           fontSize="1rem"
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
-            paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+            // paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
           }}
         >
-          This privacy sets out how Aadar foundation ( Swarg sadan ) uses and protects any
-          information that you give to Aadar foundation when you use this website.
+          This Privacy Policy outlines how Aadar Foundation (Swarg Sadan) collects, uses, and
+          protects any information you provide while using this website.
         </MKTypography>
         <MKTypography
-          mt={1.5}
+          mt={1}
           variant="body1"
           fontSize="1rem"
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
-            paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+            // paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
           }}
         >
-          Aadar foundation is committed to ensure that your privacy is protected. We shall ask you
-          to provide certain information by which you can be identified while using this website,
-          then you can be assured that it will only be used in accordance with this privacy
-          statement.
+          Aadar Foundation is committed to safeguarding your privacy. If we request information that
+          identifies you while using this website, rest assured that it will only be used in
+          accordance with this privacy statement.
         </MKTypography>
         <MKTypography
-          mt={1.5}
+          mt={1}
           variant="body1"
           fontSize="1rem"
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
-            paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+            // paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
           }}
         >
-          Aadar foundation may change this policy from time to time by updating this page. You
-          should check this page from time to time to ensure that you are happy with any changes.{" "}
-          <b>???? This policy is effective from 01 January 2020. ???? </b>
+          We may update this policy periodically by revising this page. Please review it regularly
+          to stay informed of any changes. This policy has been effective since January 1, 2025.
         </MKTypography>
       </MKTypography>
       <MKTypography
-        mt={4}
+        mt={3}
         variant="body1"
         fontSize="1rem"
         fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
         sx={{
           letterSpacing: "0.05rem",
-          paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+          // paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
         }}
       >
         <MKTypography
-          mt={1.5}
+          mt={1}
           variant="body1"
-          fontSize="1rem"
+          fontSize="1.2rem"
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
-            paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+            paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
+            fontWeight: "500",
           }}
         >
-          <b>What We Collect </b>
+          What We Collect
         </MKTypography>
         <MKTypography
-          mt={1.5}
+          mt={1}
           variant="body1"
           fontSize="1rem"
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
-            paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+            // paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
           }}
         >
           We may collect the following information :
@@ -132,48 +130,49 @@ export const privacyData = (
               <ul>
                 <li>Name and job title.</li>
                 <li>Contact information.</li>
-                <li>Demographic information such as postcode preferences and interests.</li>
+                <li>Demographic information such as postcode, preferences and interests.</li>
               </ul>
             </MKBox>
           }
         </MKTypography>
       </MKTypography>
       <MKTypography
-        mt={4}
+        mt={3}
         variant="body1"
         fontSize="1rem"
         fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
         sx={{
           letterSpacing: "0.05rem",
-          paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+          // paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
         }}
       >
         <MKTypography
-          mt={1.5}
+          mt={1}
           variant="body1"
-          fontSize="1rem"
+          fontSize="1.2rem"
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
-            paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+            paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
+            fontWeight: "500",
           }}
         >
-          <b>What We Do With The Information We Gather </b>
+          What We Do With The Information We Gather
         </MKTypography>
         <MKTypography
-          mt={1.5}
+          mt={1}
           variant="body1"
           fontSize="1rem"
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
-            paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+            // paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
           }}
         >
           We require this information to understand your needs and to join you with the service, and
           in particular for the following reasons :
         </MKTypography>
-        <MKBox pl={4} mt={1.5}>
+        <MKBox pl={4} mt={1}>
           <ul>
             <li>Internal record keeping.</li>
             <li>We may use the information to improve our services.</li>
@@ -185,229 +184,229 @@ export const privacyData = (
         </MKBox>
       </MKTypography>
       <MKTypography
-        mt={4}
+        mt={3}
         variant="body1"
         fontSize="1rem"
         fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
         sx={{
           letterSpacing: "0.05rem",
-          paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+          // paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
         }}
       >
         <MKTypography
-          mt={1.5}
+          mt={1}
           variant="body1"
-          fontSize="1rem"
+          fontSize="1.2rem"
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
-            paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+            paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
+            fontWeight: "500",
           }}
         >
-          <b>Security</b>
+          Security
         </MKTypography>
         <MKTypography
-          mt={1.5}
+          mt={1}
           variant="body1"
           fontSize="1rem"
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
-            paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+            // paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
           }}
         >
-          We are committed to ensure that your information is secure. In order to prevent
-          unauthorised access or disclosure we have put in place suitable physical, electronic and
-          managerial procedures to safeguard and secure the information we collect online.
+          We are committed to ensuring the security of your information. To prevent unauthorized
+          access or disclosure, we have implemented appropriate physical, electronic, and managerial
+          measures to safeguard and protect the information we collect online.
         </MKTypography>
       </MKTypography>
       <MKTypography
-        mt={4}
+        mt={3}
         variant="body1"
         fontSize="1rem"
         fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
         sx={{
           letterSpacing: "0.05rem",
-          paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+          // paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
         }}
       >
         <MKTypography
-          mt={1.5}
+          mt={1}
           variant="body1"
-          fontSize="1rem"
+          fontSize="1.2rem"
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
-            paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+            paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
+            fontWeight: "500",
           }}
         >
-          <b>How We Use Cookies</b>
+          How We Use Cookies
         </MKTypography>
         <MKTypography
-          mt={1.5}
+          mt={1}
           variant="body1"
           fontSize="1rem"
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
-            paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+            // paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
           }}
         >
-          A cookie is a small file which asks permission to be placed on your computer’s hard drive.
-          Once you agree, the file is added and the cookie helps analyze web traffic or lets you
-          visit a particular site. Cookies allow web applications to respond to you as an
-          individual. The web application can tailor its operations to your needs, likes and
-          dislikes by gathering and remembering information about your preferences.{" "}
+          A cookie is a small file that requests permission to be stored on your computer’s hard
+          drive. Once accepted, it helps analyze web traffic or enhances your browsing experience.
+          Cookies enable websites to respond to you as an individual by remembering your preferences
+          and tailoring content accordingly.
         </MKTypography>
         <MKTypography
-          mt={1.5}
+          mt={1}
           variant="body1"
           fontSize="1rem"
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
-            paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+            // paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
           }}
         >
-          We use traffic log cookies to identify which pages are being used. This helps us analyze
-          data about webpage traffic and improve our website in order to tailor it to customer
-          needs. We only use this information for statistical analysis purposes and then the data is
-          removed from the system.{" "}
+          We use traffic log cookies to identify which pages are visited, helping us analyze website
+          traffic and improve our services to better meet user needs. This information is used
+          solely for statistical analysis and is then removed from our system.
         </MKTypography>
         <MKTypography
-          mt={1.5}
+          mt={1}
           variant="body1"
           fontSize="1rem"
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
-            paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+            // paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
           }}
         >
-          Overall, cookies help us provide you with a better website, by enabling us to monitor
-          which pages you find useful and which you do not. A cookie in no way gives us access to
-          your computer or any information about you, other than the data you choose to share with
-          us.
+          Overall, cookies enhance your browsing experience by allowing us to monitor which pages
+          are useful. They do not grant us access to your computer or any personal information
+          beyond what you choose to share.
         </MKTypography>{" "}
         <MKTypography
-          mt={1.5}
+          mt={1}
           variant="body1"
           fontSize="1rem"
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
-            paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+            // paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
           }}
         >
-          You can choose to accept or decline cookies. Most web browsers automatically accept
-          cookies, but you can usually modify your browser setting to decline cookies if you prefer.
-          This may prevent you from taking full advantage of the website.
+          You can accept or decline cookies. Most browsers accept cookies by default, but you can
+          modify your settings to decline them. However, doing so may limit your ability to fully
+          utilize the website.
         </MKTypography>
       </MKTypography>
       <MKTypography
-        mt={4}
+        mt={3}
         variant="body1"
         fontSize="1rem"
         fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
         sx={{
           letterSpacing: "0.05rem",
-          paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+          // paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
         }}
       >
         <MKTypography
-          mt={1.5}
+          mt={1}
           variant="body1"
-          fontSize="1rem"
+          fontSize="1.2rem"
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
-            paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+            paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
+            fontWeight: "500",
           }}
         >
-          <b>Links to Other Websites</b>
+          Links to Other Websites
         </MKTypography>
         <MKTypography
-          mt={1.5}
+          mt={1}
           variant="body1"
           fontSize="1rem"
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
-            paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+            // paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
           }}
         >
-          Our website may contain links to other websites of interest. However, once you have uses
-          these links to leave our site, you should note that we do not have any control over that
-          other website. Therefore, we cannot be responsible for the protection and privacy of any
-          information which you provide while visiting such sites and such sites are not governed by
-          his privacy statement applicable to the website in question.
+          Our website may contain links to other websites of interest. However, once you leave our
+          site using these links, please note that we have no control over those external websites.
+          Therefore, we cannot be responsible for the protection and privacy of any information you
+          provide while visiting them. These sites are not governed by this privacy policy, and we
+          encourage you to review their respective privacy statements.
         </MKTypography>
       </MKTypography>
       <MKTypography
-        mt={4}
+        mt={3}
         variant="body1"
         fontSize="1rem"
         fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
         sx={{
           letterSpacing: "0.05rem",
-          paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+          // paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
         }}
       >
         <MKTypography
-          mt={1.5}
+          mt={1}
           variant="body1"
-          fontSize="1rem"
+          fontSize="1.2rem"
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
-            paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+            paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
+            fontWeight: "500",
           }}
         >
           <b>Controlling Your Personal Information</b>
         </MKTypography>
         <MKTypography
-          mt={1.5}
+          mt={1}
           variant="body1"
           fontSize="1rem"
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
-            paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+            // paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
           }}
         >
-          We will not sell, distribute or lease your personal information to third parties unless we
-          have your permission or are required by law to do so. We may use your personal information
-          to send you promotional information about third parties which we think you may find
-          interesting if you tell us that you wish this to happen.{" "}
+          We do not sell, distribute, or share your personal information with third parties unless
+          we have your permission or are required by law. However, if you have opted in, we may use
+          your information to send you promotional content about third parties that we believe may
+          be of interest to you.
         </MKTypography>
         <MKTypography
-          mt={1.5}
+          mt={1}
           variant="body1"
           fontSize="1rem"
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
-            paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+            // paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
           }}
         >
-          You may request details of personal information which we hold about your under the Date
-          Protection Act 1998. If you would like a copy of the information held on you please write
-          to Aadar foundation (Swarg sadan ashram - Sarkari Malti, Behind Muktidham, Guda Gudi Ka
-          Naka, Gwalior, India, 474001) at - Email: aadarfoundatio2018@gmail.com{" "}
+          You have the right to request details of the personal information we hold about you under
+          the Data Protection Act 1998. To request a copy, please write to: Aadar Foundation (Swarg
+          Sadan Ashram) Sarkari Malti, Behind Muktidham, Guda Gudi Ka Naka, Gwalior, India, 474001
+          Email: aadarfoundatio2018@gmail.com
         </MKTypography>{" "}
         <MKTypography
-          mt={1.5}
+          mt={1}
           variant="body1"
           fontSize="1rem"
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
-            paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+            // paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
           }}
         >
-          If you believe that any information we are holding on about you is incorrect or
-          incomplete, please write to or email us as soon as possible, at the above address. We will
-          promptly correct any information found to be incorrect.
+          If you believe any information we hold about you is incorrect or incomplete, please
+          contact us at the above address. We will promptly update any inaccuracies.
         </MKTypography>
       </MKTypography>
     </Container>

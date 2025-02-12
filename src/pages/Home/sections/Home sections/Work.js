@@ -45,12 +45,12 @@ function Work() {
         <Grid container spacing={4}>
           <Grid
             item
-            xs={10}
-            sm={10}
+            xs={8}
+            sm={8}
             md={6}
             lg={4}
             sx={{
-              ml: "auto",
+              // ml: "auto",
               mt: { xs: 3, lg: 0 },
             }}
             mx={"auto"}
@@ -64,11 +64,14 @@ function Work() {
           </Grid>
           <Grid
             item
-            xs={10}
-            sm={10}
+            xs={8}
+            sm={8}
             md={6}
             lg={4}
-            sx={{ ml: "auto", mt: { xs: 3, lg: 0 } }}
+            sx={{
+              // ml: "auto",
+              mt: { xs: 3, lg: 0 },
+            }}
             mx={"auto"}
           >
             <CenteredBlogCard
@@ -80,11 +83,14 @@ function Work() {
           </Grid>
           <Grid
             item
-            xs={10}
-            sm={10}
+            xs={8}
+            sm={8}
             md={6}
             lg={4}
-            sx={{ ml: "auto", mt: { xs: 3, lg: 0 } }}
+            sx={{
+              // ml: "auto",
+              mt: { xs: 3, lg: 0 },
+            }}
             mx={"auto"}
           >
             <CenteredBlogCard
@@ -98,11 +104,14 @@ function Work() {
         <Grid container spacing={8} sx={{ marginTop: "20px" }}> */}
           <Grid
             item
-            xs={10}
-            sm={10}
+            xs={8}
+            sm={8}
             md={6}
             lg={4}
-            sx={{ ml: "auto", mt: { xs: 3, lg: 0 } }}
+            sx={{
+              // ml: "auto",
+              mt: { xs: 3, lg: 0 },
+            }}
             mx={"auto"}
           >
             <CenteredBlogCard
@@ -114,11 +123,14 @@ function Work() {
           </Grid>
           <Grid
             item
-            xs={10}
-            sm={10}
+            xs={8}
+            sm={8}
             md={6}
             lg={4}
-            sx={{ ml: "auto", mt: { xs: 3, lg: 0 } }}
+            sx={{
+              // ml: "auto",
+              mt: { xs: 3, lg: 0 },
+            }}
             mx={"auto"}
           >
             <CenteredBlogCard
@@ -130,11 +142,14 @@ function Work() {
           </Grid>
           <Grid
             item
-            xs={10}
-            sm={10}
+            xs={8}
+            sm={8}
             md={6}
             lg={4}
-            sx={{ ml: "auto", mt: { xs: 3, lg: 0 } }}
+            sx={{
+              // ml: "auto",
+              mt: { xs: 3, lg: 0 },
+            }}
             mx={"auto"}
           >
             <CenteredBlogCard
