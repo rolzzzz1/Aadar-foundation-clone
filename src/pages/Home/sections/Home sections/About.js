@@ -17,7 +17,7 @@ function About() {
     <MKBox component="section" pt={2} my={2}>
       {/* <Container margin="0px"> */}
       <Grid container alignItems="center">
-        <Grid item xs={5} sm={5} md={5} lg={4} sx={{ mx: "auto" }}>
+        <Grid item xs={7} sm={6} md={5} lg={4} sx={{ mx: "auto" }}>
           <MKBox position="relative" display="flex" justifyContent="center">
             <MKBox
               component="img"
@@ -31,10 +31,18 @@ function About() {
         <Grid
           item
           xs={11}
-          sm={12}
+          sm={11}
           md={12}
           lg={7}
-          sx={{ ml: { xs: 0, lg: 1 }, mb: { xs: 2, md: 0 } }}
+          sx={{
+            mx: "auto",
+            // ml: { xs: 0, lg: 1 },
+            mb: { xs: 2, md: 0 },
+            mt: { xs: 2, sm: 2 },
+          }}
+          display="flex"
+          justifyContent={"center"}
+          alignItems={"center"}
         >
           <Container sx={{ margin: "20px 1px", padding: "10px 20px" }}>
             <MKTypography
@@ -69,7 +77,7 @@ function About() {
 
               sx={{
                 letterSpacing: "0.05rem",
-                fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.85rem", lg: "0.8rem" },
+                fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.85rem", lg: "0.87rem" },
               }}
             >
               Founded in 2018 by Mr. Vikas Goswami and his dedicated team, Aadar Foundation (Swarg
@@ -89,7 +97,7 @@ function About() {
               fontSize="0.9rem"
               sx={{
                 letterSpacing: "0.05rem",
-                fontSize: { md: "0.75rem", lg: "0.8rem" },
+                fontSize: { md: "0.75rem", lg: "0.87rem" },
                 fontWeight: "500",
               }}
             >

@@ -17,7 +17,7 @@ import DefaultFooter from "examples/Footers/DefaultFooter";
 // Home page sections
 import About from "pages/Home/sections/Home sections/About";
 import Work from "pages/Home/sections/Home sections/Work";
-import Events from "pages/Home/sections/Home sections/Events";
+// import Events from "pages/Home/sections/Home sections/Events";
 import Journey from "pages/Home/sections/Home sections/Journey";
 import Counters from "pages/Home/sections/Home sections/Counters";
 
@@ -80,7 +80,7 @@ function Home() {
             variant="h2"
             color="white"
             textAlign="center"
-            ml={-6}
+            ml={-2}
             fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
             sx={{ fontSize: { xs: "1.5rem", sm: "1.7rem", md: "2rem", lg: "2rem" } }}
           >
@@ -91,7 +91,7 @@ function Home() {
             color="white"
             textAlign="center"
             mt={2}
-            ml={-6}
+            ml={-2}
             display="inline-block"
             fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
             sx={{ fontSize: { xs: "0.9rem", sm: "0.9rem", md: "1.1rem", lg: "1.3rem" } }}
@@ -126,7 +126,7 @@ function Home() {
         <Counters />
 
         {/* Events section component */}
-        <Events />
+        {/* <Events /> */}
       </Card>
 
       {/* Footer */}

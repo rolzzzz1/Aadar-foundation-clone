@@ -1,4 +1,6 @@
 // @mui material components
+import React from "react";
+
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -14,6 +16,7 @@ import DefaultFooter from "examples/Footers/DefaultFooter";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
+// import MKButton from "components/MKButton";
 
 // Routes
 import routes from "routes";
@@ -26,7 +29,26 @@ import aboutBgImg from "assets/images/swargSadanBlack.png";
 import bgImage from "assets/images/smallBrushstroke2.svg";
 import aboutImg from "assets/images/main1.jpg";
 import swargSadan from "assets/images/swargSadan.webp";
-import beforeAfter from "assets/images/before-after3.png";
+import beforeAfter1 from "assets/images/before-after1.png";
+import group1 from "assets/images/group1.jpg";
+import resque1 from "assets/images/resque1.jpg";
+import food from "assets/images/foodAboutpage.jpg";
+import team from "assets/images/teamImg.jpg";
+import celebration from "assets/images/celebration.jpeg";
+
+import RescueImg1 from "assets/images/aboutImg.webp";
+import RescueImg2 from "assets/images/RescueImg1.jpg";
+import RescueImg3 from "assets/images/resque3.jpg";
+import TreatmentImg1 from "assets/images/treatment.webp";
+import TreatmentImg2 from "assets/images/treatmentImg2.jpg";
+import ShelterImg1 from "assets/images/shelter1.jpg";
+import ShelterImg2 from "assets/images/shelter2.jpg";
+import FoodImg1 from "assets/images/foodImg1.jpg";
+import FoodImg2 from "assets/images/food2.jpg";
+// import CareImg1 from "assets/images/careImg1.jpg";
+import CareImg2 from "assets/images/aboutPageImg.png";
+import RehabilitationImg1 from "assets/images/rehabilitation.jpg";
+import RehabilitationImg2 from "assets/images/rehabilitationImg1.jpg";
 
 function About() {
   return (
@@ -102,6 +124,7 @@ function About() {
         <MKBox
           component="section"
           // pt={8} mt={8}
+          mb={4}
         >
           <Container>
             <MKBox
@@ -130,20 +153,16 @@ function About() {
                     width="90%"
                     height="100%"
                   ></MKBox>
-                  {/* <img
-                  src={swargSadan}
-                  alt="aboutImage"
-                  width="90%"
-                  height="100%"
-                  // width="400px"
-                /> */}
                 </Grid>
                 <Grid lg={6}>
                   <MKTypography
                     variant="body1"
                     fontSize="1rem"
                     fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
-                    sx={{ letterSpacing: "0.05rem" }}
+                    sx={{
+                      letterSpacing: "0.05rem",
+                      paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+                    }}
                   >
                     At Aadar Foundation, we believe that serving humanity is the highest form of
                     worship. With this vision, <b>Mr. Vikas Goswami</b> began his journey of service
@@ -155,19 +174,6 @@ function About() {
                   </MKTypography>
                 </Grid>
               </Grid>
-              {/* <MKTypography
-              variant="body1"
-              fontSize="1rem"
-              fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
-              sx={{ letterSpacing: "0.05rem" }}
-            >
-              At Aadar Foundation, we believe that serving humanity is the highest form of worship.
-              With this vision, <b>Mr. Vikas Goswami</b> began his journey of service on{" "}
-              <b>July 1, 2015</b>, reaching out to the most vulnerable—those who were wounded, sick,
-              abandoned, or disabled—struggling to survive on the streets. He and his team sought
-              out these individuals at railway stations, bus stands, outside temples, and other
-              places across the city, providing them with first aid and care.
-            </MKTypography> */}
               <MKTypography
                 variant="body1"
                 fontSize="1.1rem"
@@ -181,9 +187,10 @@ function About() {
               >
                 As the mission grew,{" "}
                 <b>
-                  Aadar Foundation (Ashram Swarg Sadan) was officially established on June 20, 2018,
-                  in Gwalior, by Mr. Vikas Goswami and his dedicated colleagues Pawan Suryavanshi,
-                  Faizan Beg, Vibha Aneja, Pramod Sumoliya, Sadia Parveen, and Kamal Aneja.
+                  Aadar Foundation (Ashram Swarg Sadan - a residential home for destitute) was
+                  officially established on June 20, 2018, in Gwalior (known as Tansen ki nagari),
+                  by Mr. Vikas Goswami and his dedicated colleagues Pawan Suryavanshi, Faizan Beg,
+                  Vibha Aneja, Pramod Sumoliya, Sadia Parveen, and Kamal Aneja.
                 </b>
               </MKTypography>
 
@@ -222,13 +229,18 @@ function About() {
                     full-time care at our facility.
                   </MKTypography>
                 </Grid>
-                <Grid lg={6} pl={4} my="auto">
+                <Grid
+                  lg={6}
+                  pl={4}
+                  my="auto"
+                  sx={{ paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" } }}
+                >
                   <MKBox
                     component="img"
                     src={aboutImg}
                     alt={"Before after images"}
                     borderRadius="xxl"
-                    width="90%"
+                    width="100%"
                   ></MKBox>
                 </Grid>
               </Grid>
@@ -256,21 +268,76 @@ function About() {
               <TabsSimple />
             </MKBox> */}
 
-            <MKBox
-              component="img"
-              src={beforeAfter}
-              alt={"Swarg sadan building image"}
-              borderRadius="xxl"
-              mt={6}
-              width="50%"
-              height="100%"
-            ></MKBox>
+            <Grid container lg={12} mt={6} display="flex" justifyContent="center" my={4}>
+              <Grid sm={6} md={6} lg={4} px={2} display="flex" justifyContent="center">
+                <MKBox
+                  component="img"
+                  src={resque1}
+                  alt={"Swarg sadan building image"}
+                  borderRadius="xxl"
+                  // width="100%"
+                  // height="90%"
+                  sx={{
+                    height: { sm: "80%", md: "80%", lg: "90%" },
+                    width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
+                  }}
+                  my={2}
+                ></MKBox>
+              </Grid>
+              <Grid sm={6} md={6} lg={4} px={2} display="flex" justifyContent="center">
+                <MKBox
+                  component="img"
+                  src={beforeAfter1}
+                  alt={"Swarg sadan building image"}
+                  borderRadius="xxl"
+                  // width="100%"
+                  // height="80%"
+                  sx={{
+                    height: { sm: "80%", md: "80%", lg: "80%" },
+                    width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
+                  }}
+                  my={2}
+                ></MKBox>
+              </Grid>
+              <Grid sm={12} md={12} lg={4} px={1} display="flex" justifyContent="center">
+                <MKBox
+                  component="img"
+                  src={group1}
+                  alt={"Swarg sadan building image"}
+                  borderRadius="xxl"
+                  // width="100%"
+                  // height="70%"
+                  sx={{
+                    height: { sm: "80%", md: "80%", lg: "70%" },
+                    width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
+                  }}
+                  my={2}
+                ></MKBox>
+              </Grid>
+            </Grid>
 
-            <Grid py={4} md={12} pb={1} mt={4}>
+            <Grid
+              py={4}
+              md={12}
+              pb={1}
+              sx={{ marginTop: { sm: -10, md: -14, lg: 0 } }}
+              // id="workSection"
+            >
+              <MKTypography
+                variant="h3"
+                fontSize="1.875rem"
+                fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                // ref={workSection}
+              >
+                Our work
+              </MKTypography>
+
               <MKTypography
                 variant="h3"
                 fontSize="1.5rem"
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                pt={4}
+                sx={{ fontWeight: "500" }}
               >
                 What we do
               </MKTypography>
@@ -289,6 +356,420 @@ function About() {
                 completely free, made possible through social cooperation and generous
                 contributions.
               </MKTypography>
+              <MKTypography
+                variant="h3"
+                fontSize="1.5rem"
+                fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                pt={4}
+                sx={{ fontWeight: "500" }}
+              >
+                Key aspects of our work
+              </MKTypography>
+
+              {/* Our work page section */}
+              <Grid container display="flex" justifyContent={"flex-start"} width="100%">
+                {/* Rescue */}
+                <Grid container justifyContent="center" py={4}>
+                  <Grid item xs={12} md={12} lg={4} pr={4} my="auto">
+                    <MKTypography
+                      variant="h3"
+                      py={1}
+                      fontSize="1.3rem"
+                      fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                      sx={{ fontWeight: "500" }}
+                    >
+                      Rescue
+                    </MKTypography>
+                    <MKTypography fontSize="0.9rem" sx={{ letterSpacing: "0.05rem" }}>
+                      We rescue homeless and destitute individuals who are often found in severe and
+                      distressing conditions on roadsides, railway stations, bus stands, religious
+                      sites, and other public places.
+                    </MKTypography>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    lg={8}
+                    my={"auto"}
+                    overflow={"hidden"}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      gap: "15px",
+                      marginTop: { xs: 4, sm: 4, md: 4, lg: 0 },
+                    }}
+                    // mt={4}
+                  >
+                    <MKBox
+                      component="img"
+                      src={RescueImg1}
+                      alt="RescueImg1"
+                      width="30%"
+                      borderRadius="10px"
+                      height="80%"
+                      minHeight={"180px"}
+                      maxHeight={"180px"}
+                    ></MKBox>
+
+                    <MKBox
+                      component="img"
+                      src={RescueImg2}
+                      alt="RescueImg1"
+                      width="30%"
+                      borderRadius="10px"
+                      height="80%"
+                      my={"auto"}
+                      minHeight={"180px"}
+                      maxHeight={"180px"}
+                    ></MKBox>
+                    <MKBox
+                      component="img"
+                      src={RescueImg3}
+                      alt="RescueImg1"
+                      width="30%"
+                      borderRadius="10px"
+                      height="80%"
+                      my={"auto"}
+                      minHeight={"180px"}
+                      maxHeight={"180px"}
+                    ></MKBox>
+                  </Grid>
+                </Grid>
+
+                {/* Treatment */}
+                <Grid container justifyContent="center" py={4}>
+                  <Grid item xs={12} md={12} lg={4} pr={4} my="auto">
+                    <MKTypography
+                      variant="h3"
+                      py={1}
+                      fontSize="1.3rem"
+                      fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                      sx={{ fontWeight: "500" }}
+                    >
+                      Treatment
+                    </MKTypography>
+                    <MKTypography fontSize="0.9rem" sx={{ letterSpacing: "0.05rem" }}>
+                      Most residents brought to the Ashram suffer from various ailments, making
+                      medical and surgical treatment a vital part of the care we provide.
+                    </MKTypography>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    lg={8}
+                    overflow={"hidden"}
+                    // mt={4}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      gap: "15px",
+                      marginTop: { xs: 4, sm: 4, md: 4, lg: 0 },
+                    }}
+                  >
+                    <MKBox
+                      component="img"
+                      src={TreatmentImg1}
+                      alt="TreatmentImg1"
+                      width="40%"
+                      borderRadius={"10px"}
+                      minHeight={"180px"}
+                      maxHeight={"180px"}
+                    ></MKBox>
+                    <MKBox
+                      component="img"
+                      src={TreatmentImg2}
+                      alt="TreatmentImg2"
+                      width="40%"
+                      borderRadius="10px"
+                      minHeight={"180px"}
+                      maxHeight={"180px"}
+                    ></MKBox>
+                  </Grid>
+                </Grid>
+
+                {/* Shelter */}
+                <Grid
+                  container
+                  justifyContent="center"
+                  // sx={{ textAlign: "center" }} px={6}
+                  py={4}
+                >
+                  <Grid
+                    item
+                    xs={12}
+                    md={12}
+                    lg={4}
+                    // px={6}
+                    pr={10}
+                    my="auto"
+                  >
+                    <MKTypography
+                      variant="h3"
+                      py={1}
+                      fontSize="1.3rem"
+                      fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                      sx={{ fontWeight: "500" }}
+                    >
+                      Shelter
+                    </MKTypography>
+                    <MKTypography fontSize="0.9rem" mx="auto" sx={{ letterSpacing: "0.05rem" }}>
+                      We provide a shelter with homely environment to our residents of Swarg sadan.
+                      Currently a home for 92 residents in the ashram.
+                    </MKTypography>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    lg={8}
+                    overflow={"hidden"}
+                    // mt={4}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      gap: "15px",
+                      marginTop: { xs: 4, sm: 4, md: 4, lg: 0 },
+                    }}
+                  >
+                    <MKBox
+                      component="img"
+                      src={ShelterImg1}
+                      alt="RescueImg1"
+                      width="40%"
+                      borderRadius="10px"
+                      minHeight={"180px"}
+                      maxHeight={"180px"}
+                    ></MKBox>
+                    <MKBox
+                      component="img"
+                      src={ShelterImg2}
+                      alt="RescueImg1"
+                      width="40%"
+                      borderRadius="10px"
+                      minHeight={"180px"}
+                      maxHeight={"180px"}
+                    ></MKBox>
+                  </Grid>
+                </Grid>
+
+                {/* Food */}
+                <Grid
+                  container
+                  justifyContent="center"
+                  // sx={{ textAlign: "center" }} px={6}
+                  py={4}
+                >
+                  <Grid
+                    item
+                    xs={12}
+                    md={12}
+                    lg={4}
+                    // px={6}
+                    pr={2}
+                    my="auto"
+                  >
+                    <MKTypography
+                      variant="h3"
+                      py={1}
+                      fontSize="1.3rem"
+                      fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                      sx={{ fontWeight: "500" }}
+                    >
+                      Food
+                    </MKTypography>
+                    <MKTypography fontSize="0.9rem" mx="auto" sx={{ letterSpacing: "0.05rem" }}>
+                      Most of the residents admitted in the ashram are either sick or malnourished.
+                      Therefore the diet arrangement is a essential part of their recovery. Under
+                      medical guidance, we provide balanced meals, along with milk, fruits, and
+                      protein-rich foods to aid their recovery and well-being.
+                    </MKTypography>
+                    {/* Most of the residents admitted in the ashram are either sick or malnourished.
+                      Therefore the diet arrangement is a very important and essential part of their
+                      recovery. With breakfast, lunch, refreshment and dinner, fruits, milk, and
+                      protein supplements are also made available to them. */}
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    lg={8}
+                    overflow={"hidden"}
+                    // mt={4}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      gap: "15px",
+                      marginTop: { xs: 4, sm: 4, md: 4, lg: 0 },
+                    }}
+                  >
+                    <MKBox
+                      component="img"
+                      src={FoodImg1}
+                      alt="RescueImg1"
+                      width="40%"
+                      borderRadius="10px"
+                      // height="90%"
+                      minHeight={"180px"}
+                      maxHeight={"180px"}
+                    ></MKBox>
+                    <MKBox
+                      component="img"
+                      src={FoodImg2}
+                      alt="RescueImg1"
+                      width="40%"
+                      // height="90%"
+                      borderRadius="10px"
+                      minHeight={"180px"}
+                      maxHeight={"180px"}
+                    ></MKBox>
+                  </Grid>
+                </Grid>
+
+                {/* Care */}
+                <Grid
+                  container
+                  justifyContent="center"
+                  // sx={{ textAlign: "center" }} px={6}
+                  py={4}
+                >
+                  <Grid
+                    item
+                    xs={12}
+                    md={12}
+                    lg={4}
+                    // px={6}
+                    pr={10}
+                    my="auto"
+                  >
+                    <MKTypography
+                      variant="h3"
+                      py={1}
+                      fontSize="1.3rem"
+                      fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                      sx={{ fontWeight: "500" }}
+                    >
+                      Care
+                    </MKTypography>
+                    <MKTypography fontSize="0.9rem" mx="auto" sx={{ letterSpacing: "0.05rem" }}>
+                      During the recovery from illness and further basic care, medical care and
+                      unconditional love is given to them by our team.
+                    </MKTypography>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    lg={8}
+                    overflow={"hidden"}
+                    // mt={4}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      gap: "15px",
+                      marginTop: { xs: 4, sm: 4, md: 4, lg: 0 },
+                    }}
+                  >
+                    {/* <MKBox
+                component="img"
+                src={CareImg1}
+                alt="RescueImg1"
+                width="40%"
+                borderRadius="10px"
+                minHeight={"300px"}
+                maxHeight={"300px"}
+              ></MKBox> */}
+                    <MKBox
+                      component="img"
+                      src={CareImg2}
+                      alt="RescueImg1"
+                      width="60%"
+                      borderRadius="10px"
+                      minHeight={"200px"}
+                      maxHeight={"200px"}
+                    ></MKBox>
+                  </Grid>
+                </Grid>
+
+                {/* Rehabilitation */}
+                <Grid
+                  container
+                  justifyContent="center"
+                  // sx={{ textAlign: "center" }} px={6}
+                  py={4}
+                >
+                  <Grid
+                    item
+                    xs={12}
+                    md={12}
+                    lg={4}
+                    // px={6}
+                    pr={10}
+                    my="auto"
+                  >
+                    <MKTypography
+                      variant="h3"
+                      py={1}
+                      fontSize="1.3rem"
+                      fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                      sx={{ fontWeight: "500" }}
+                    >
+                      Rehabilitation
+                    </MKTypography>
+                    <MKTypography fontSize="0.9rem" mx="auto" sx={{ letterSpacing: "0.05rem" }}>
+                      After recovery with the efforts of the Swarg Sadan Team, we have reunited many
+                      residents with their families.
+                    </MKTypography>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    lg={8}
+                    overflow={"hidden"}
+                    // mt={4}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      gap: "15px",
+                      marginTop: { xs: 4, sm: 4, md: 4, lg: 0 },
+                    }}
+                  >
+                    <MKBox
+                      component="img"
+                      src={RehabilitationImg1}
+                      alt="RescueImg1"
+                      width="40%"
+                      borderRadius="10px"
+                      minHeight={"200px"}
+                      maxHeight={"200px"}
+                    ></MKBox>
+                    <MKBox
+                      component="img"
+                      src={RehabilitationImg2}
+                      alt="RescueImg1"
+                      width="40%"
+                      borderRadius="10px"
+                      minHeight={"200px"}
+                      maxHeight={"200px"}
+                    ></MKBox>
+                  </Grid>
+                </Grid>
+              </Grid>
+
               <MKTypography
                 fontSize="1rem"
                 mx="auto"
@@ -329,7 +810,55 @@ function About() {
               </MKTypography>
             </Grid>
 
-            <Grid py={4} md={12} pb={1} mt={4}>
+            <Grid container lg={12} mt={6} display="flex" justifyContent="center" my={4}>
+              <Grid sm={6} md={6} lg={4} px={2} display="flex" justifyContent="center">
+                <MKBox
+                  component="img"
+                  src={food}
+                  alt={"Swarg sadan building image"}
+                  borderRadius="xxl"
+                  // width="100%"
+                  sx={{
+                    height: { xs: "90%", sm: "80%", md: "80%", lg: "60%" },
+                    width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
+                  }}
+                  // height="70%"
+                  my={2}
+                ></MKBox>
+              </Grid>
+              <Grid sm={6} md={6} lg={4} px={1} display="flex" justifyContent="center">
+                <MKBox
+                  component="img"
+                  src={celebration}
+                  alt={"Swarg sadan building image"}
+                  borderRadius="xxl"
+                  // width="100%"
+                  sx={{
+                    height: { xs: "90%", sm: "80%", md: "80%", lg: "70%" },
+                    width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
+                  }}
+                  // height="80%"
+                  my={2}
+                ></MKBox>
+              </Grid>
+              <Grid sm={12} md={12} lg={4} px={2} display="flex" justifyContent="center">
+                <MKBox
+                  component="img"
+                  src={team}
+                  alt={"Swarg sadan building image"}
+                  borderRadius="xxl"
+                  // width="100%"
+                  sx={{
+                    height: { xs: "90%", sm: "80%", md: "80%", lg: "80%" },
+                    width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
+                  }}
+                  // height="90%"
+                  my={2}
+                ></MKBox>
+              </Grid>
+            </Grid>
+
+            <Grid py={4} md={12} pb={1} my={-10}>
               <MKTypography
                 variant="h3"
                 py={3}
@@ -338,18 +867,18 @@ function About() {
               >
                 How we work
               </MKTypography>
-              <MKTypography fontSize="1rem" sx={{ letterSpacing: "0.05rem" }}>
-                <b>1. Food & Nutrition</b>
-                <br />
-                At Aadar Foundation, we prioritize the health and well-being of the homeless
-                individuals we support. Many of them are sick, malnourished, or physically weak, so
-                our meal plans are designed with their nutritional needs in mind. Under medical
-                guidance, we provide balanced meals, including breakfast, lunch, and dinner, along
-                with milk, fruits, and protein-rich foods to aid their recovery and well-being.
+              <MKTypography fontSize="1rem" paddingTop="10px" sx={{ letterSpacing: "0.05rem" }}>
+                Helpless and destitute individuals, the focus of our work, often cannot reach the
+                Ashram on their own. Our dedicated ambulance and rescue team, in collaboration with
+                the police and government organizations, ensure their safe arrival. Once admitted,
+                they receive essential care and medical treatment. Efforts are then made, with the
+                support of authorities, to rehabilitate them with their families whenever possible.
               </MKTypography>
+
               <MKTypography fontSize="1rem" paddingTop="20px" sx={{ letterSpacing: "0.05rem" }}>
-                <b>2. Leadership & Governance</b>
-                <br />
+                <b>Leadership & Governance</b>
+              </MKTypography>
+              <MKTypography fontSize="1rem" paddingTop="10px" sx={{ letterSpacing: "0.05rem" }}>
                 To ensure the smooth operation of our ashram, we have a dedicated Executive
                 Committee and Core Team in place. The Core Team oversees daily management, resource
                 allocation, and system maintenance, while the Executive Committee conducts quarterly
@@ -358,8 +887,21 @@ function About() {
                 improvements.
               </MKTypography>
               <MKTypography fontSize="1rem" paddingTop="20px" sx={{ letterSpacing: "0.05rem" }}>
-                <b>3. Celebrations & Community Engagement</b>
-                <br />
+                <b>Medical facility</b>
+              </MKTypography>
+              <MKTypography fontSize="1rem" paddingTop="10px" sx={{ letterSpacing: "0.05rem" }}>
+                Most of the residents brought to the Ashram are suffering from different types of
+                ailments. Hence medical/surgical treatment plays a significant part in the service
+                we offer them. There is a team of doctors who are available to offer their services
+                to our Ashram. For patients who are in a more critical condition, there is an
+                arrangement with local hospitals where medical investigations and treatments
+                (medical and surgical) are provided to our residents.
+              </MKTypography>
+
+              <MKTypography fontSize="1rem" paddingTop="20px" sx={{ letterSpacing: "0.05rem" }}>
+                <b>Celebrations & Community Engagement</b>
+              </MKTypography>
+              <MKTypography fontSize="1rem" paddingTop="10px" sx={{ letterSpacing: "0.05rem" }}>
                 We believe in fostering a sense of joy, belonging, and cultural inclusivity. Our
                 ashram celebrates festivals like Holi, Diwali, Bhai Dooj, and Rakshabandhan, as well
                 as Ganesh Puja, Ramzan, and Eid, respecting the diverse faiths of our residents. To

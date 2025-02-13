@@ -77,6 +77,7 @@ const routes = [
     route: "/pages/landing-pages/work",
     component: <Work />,
   },
+
   {
     name: "Gallery",
     route: "/pages/landing-pages/gallery",

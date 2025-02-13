@@ -149,6 +149,7 @@ function TransparentBlogCard({ image, title, description, action }) {
               mb={3}
               textAlign="center"
               fontSize="0.85rem"
+              sx={{ letterSpacing: "0.01rem" }}
             >
               {description}
             </MKTypography>

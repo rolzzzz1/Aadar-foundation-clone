@@ -64,7 +64,14 @@ function DefaultFooter({ content }) {
           <MKBox pl={4} sx={{ paddingLeft: { lg: "48px", xl: "64px" } }}>
             <MKBox>
               <Link to={brand.route}>
-                <MKBox component="img" src={brand.image} alt={brand.name} maxWidth="5rem" mb={1} />
+                <MKBox
+                  component="img"
+                  src={brand.image}
+                  alt={brand.name}
+                  maxWidth="5rem"
+                  mb={1}
+                  sx={{ borderRadius: "10px" }}
+                />
                 <MKTypography variant="h4" color="white">
                   {brand.name}
                 </MKTypography>
@@ -232,7 +239,7 @@ function DefaultFooter({ content }) {
               </MKTypography>
               <MKBox
                 fontWeight="regular"
-                sx={{ fontSize: { xs: "0.8rem", sm: "0.8rem", md: "0.8rem", lg: "0.9rem" } }}
+                // sx={{ fontSize: { xs: "0.8rem", sm: "0.8rem", md: "0.8rem", lg: "0.9rem" } }}
                 // textTransform="capitalize"
                 paddingTop="5px"
                 color="white"
@@ -242,15 +249,15 @@ function DefaultFooter({ content }) {
                 gap="5px"
               >
                 <CallRoundedIcon
-
-                // sx={{ fontSize: { xs: "small", sm: "small", md: "medium", lg: "medium" } }}
+                  fontSize="small"
+                  // sx={{ fontSize: { xs: "small", sm: "small", md: "medium", lg: "medium" } }}
                 />
                 <MKTypography
                   sx={{ fontSize: { xs: "0.8rem", sm: "0.8rem", md: "0.8rem", lg: "0.9rem" } }}
                   paddingLeft="10px"
                   color="white"
                 >
-                  062662 02679
+                  9039129571, 9826441863, 9630982392
                 </MKTypography>
               </MKBox>
               <MKBox
@@ -264,7 +271,7 @@ function DefaultFooter({ content }) {
                 alignItems="center"
                 gap="5px"
               >
-                <EmailRoundedIcon fontSize="inherit" />
+                <EmailRoundedIcon fontSize="small" />
                 <MKTypography
                   sx={{ fontSize: { xs: "0.8rem", sm: "0.8rem", md: "0.8rem", lg: "0.9rem" } }}
                   paddingLeft="10px"
