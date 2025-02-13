@@ -13,7 +13,7 @@ import MKButton from "components/MKButton";
 // Images
 import logoCT from "assets/images/logo-aadar.jpg";
 // import logoME from "assets/images/MyLogo1.png";
-import logoME from "assets/images/MeLogo2.jpg";
+import logoME from "assets/images/MeLogo3.png";
 
 const date = new Date().getFullYear();
 
@@ -127,7 +127,7 @@ export default {
             Designed by{" "}
             <MKTypography
               component="a"
-              href={"https://www.google.com/"}
+              href={"https://linktr.ee/Rolzzzz"}
               target="_blank"
               rel="noreferrer"
             >
