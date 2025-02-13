@@ -55,9 +55,19 @@ export default {
   // },
 
   primary: {
-    main: "#F7F9F7",
-    focus: "#F7F9F7",
+    main: "#D7D7D7",
+    focus: "#D7D7D7",
   },
+
+  // primary: {
+  //   main: "#fbeede",
+  //   focus: "#fbeede",
+  // },
+
+  // primary: {
+  //   main: "#F9E4C1",
+  //   focus: "#F9E4C1",
+  // },
 
   // primary: {
   //   main: "#e91e63",

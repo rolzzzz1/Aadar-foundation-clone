@@ -36,8 +36,9 @@ function CenteredBlogCard({ image, title, action, description }) {
       justifyContent="center"
       // alignItems="center"
       borderRadius="lg"
-      minHeight="240px"
-      maxHeight="240px"
+      // minHeight="240px"
+      // maxHeight="240px"
+      sx={{ minHeight: "240px", maxHeight: "240px" }}
       mx={1}
       mt={-3}
     >
@@ -88,13 +89,23 @@ function CenteredBlogCard({ image, title, action, description }) {
             {imageTemplate}
           </MuiLink>
         )} */}
-          <MKBox p={3} mt={-1} textAlign="center">
+          <MKBox
+            p={3}
+            mt={-1}
+            textAlign="center"
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ minHeight: "140px", maxHeight: "140px" }}
+          >
             <MKTypography
               display="inline"
               variant="h5"
               textTransform="capitalize"
               // fontWeight="bold"
-              py={2}
+              pt={2}
+              pb={1}
               sx={{ fontWeight: "500" }}
             >
               {title}
@@ -105,7 +116,11 @@ function CenteredBlogCard({ image, title, action, description }) {
                 variant="body2"
                 component="p"
                 color="text"
-                sx={{ fontWeight: "400", fontSize: { lg: "0.8rem", xl: "0.9rem" } }}
+                sx={{
+                  fontWeight: "400",
+                  fontSize: { md: "0.9rem", lg: "0.75rem", xl: "0.9rem" },
+                  letterSpacing: "0.05rem",
+                }}
               >
                 {description}
               </MKTypography>

@@ -527,14 +527,14 @@ function DefaultNavbar({
           to="/"
           lineHeight={1}
           // py={transparent ? 1.5 : 0.75}
-          pl={relative || transparent ? 0 : { xs: 0, lg: 1 }}
+          pl={relative || transparent ? 0 : { xs: 0.5, sm: 0.5, md: 1.5, lg: 2.5 }}
           borderRadius="xl"
           display="flex"
         >
           <MKBox
             component="img"
             src={aadarLogo}
-            width={{ xs: "60px", sm: "60px", md: "80px", lg: "80px" }}
+            width={{ xs: "70px", sm: "70px", md: "80px", lg: "90px" }}
             borderRadius="10px"
             my={1}
           />
@@ -601,7 +601,7 @@ function DefaultNavbar({
                 variant="button"
                 fontWeight="bold"
                 color={light ? "white" : "dark"}
-                fontSize={{ lg: "1.125rem", xl: "1.25rem" }}
+                fontSize={{ xs: "1rem", sm: "1rem", md: "1.125rem", lg: "1.125rem", xl: "1.25rem" }}
                 lineHeight={1.25}
               >
                 {brand}
@@ -613,11 +613,11 @@ function DefaultNavbar({
                 color={light ? "white" : "dark"}
                 display={{ xs: "inline", sm: "inline", md: "inline", lg: "inline" }}
                 fontSize={{
-                  xs: "0.5rem",
-                  sm: "0.5rem",
-                  md: "0.5rem",
-                  lg: "0.75rem",
-                  xl: "0.75rem",
+                  xs: "0.75rem",
+                  sm: "0.75rem",
+                  md: "0.75rem",
+                  lg: "0.8rem",
+                  xl: "0.8rem",
                 }}
               >
                 A Home for Homeless & Unclaimed People

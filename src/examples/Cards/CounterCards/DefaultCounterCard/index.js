@@ -35,7 +35,11 @@ function DefaultCounterCard({ color, count, title, description, ...rest }) {
         </MKTypography>
       )}
       {description && (
-        <MKTypography variant="body2" color="text">
+        <MKTypography
+          variant="body2"
+          color="text"
+          sx={{ letterSpacing: "0.03rem", fontSize: "0.85rem" }}
+        >
           {description}
         </MKTypography>
       )}

@@ -160,7 +160,7 @@ function Work() {
               fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
               mb={4}
             >
-              Our recent posts
+              Recent posts
             </MKTypography>
           </Grid>
         </Grid>
