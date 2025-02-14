@@ -26,7 +26,7 @@ import bgImage from "assets/images/smallBrushstroke2.svg";
 
 function Contact() {
   return (
-    <MKBox minWidth="575px">
+    <MKBox minWidth="320px">
       {/* Navbar component */}
       <DefaultNavbar
         routes={routes}
@@ -74,6 +74,8 @@ function Contact() {
             textAlign="center"
             ml={-2}
             fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
+            mb={{ xs: 2, sm: 0 }}
           >
             Contact
           </MKTypography>
@@ -155,10 +157,14 @@ function Contact() {
                   sx={{ alignItems: { sm: "start", md: "start", lg: "center" } }}
                   gap="30px"
                 >
-                  <MKTypography fontSize="1.3rem" sx={{ fontWeight: "600" }}>
+                  <MKTypography
+                    fontSize="1.3rem"
+                    textAlign={{ xs: "center", sm: "left" }}
+                    sx={{ fontWeight: "600" }}
+                  >
                     Follow us
                   </MKTypography>
-                  <MKBox display="flex" gap="40px">
+                  <MKBox display="flex" justifyContent="center" gap={{ xs: "30px", sm: "40px" }}>
                     <MKBox
                       component={Link}
                       to={"https://www.youtube.com/@AadarFoundation/"}
@@ -173,8 +179,8 @@ function Contact() {
                             "0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)",
                         },
                       }}
-                      px={2}
-                      py={1}
+                      px={{ xs: 1, sm: 2 }}
+                      py={{ xs: 1, sm: 1 }}
                     >
                       <YouTubeIcon
                         fontSize="large"
@@ -198,8 +204,8 @@ function Contact() {
                             "0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)",
                         },
                       }}
-                      px={2}
-                      py={1}
+                      px={{ xs: 1, sm: 2 }}
+                      py={{ xs: 1, sm: 1 }}
                     >
                       <InstagramIcon fontSize="large" sx={{ color: "#ffffff" }} />
                     </MKBox>
@@ -217,8 +223,8 @@ function Contact() {
                             "0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)",
                         },
                       }}
-                      px={2}
-                      py={1}
+                      px={{ xs: 1, sm: 2 }}
+                      py={{ xs: 1, sm: 1 }}
                     >
                       <FacebookIcon fontSize="large" sx={{ color: "#ffffff" }} />
                     </MKBox>
