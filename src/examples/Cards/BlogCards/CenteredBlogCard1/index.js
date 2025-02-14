@@ -38,7 +38,8 @@ function CenteredBlogCard({ image, title, action, description }) {
       borderRadius="lg"
       // minHeight="240px"
       // maxHeight="240px"
-      sx={{ minHeight: "240px", maxHeight: "240px" }}
+
+      sx={{ minHeight: { xs: "200px", sm: "240px" }, maxHeight: { xs: "140px", sm: "240px" } }}
       mx={1}
       mt={-3}
     >
@@ -97,7 +98,7 @@ function CenteredBlogCard({ image, title, action, description }) {
             flexDirection="column"
             justifyContent="center"
             alignItems="center"
-            sx={{ minHeight: "140px", maxHeight: "140px" }}
+            sx={{ minHeight: { xs: "0", sm: "140px" }, maxHeight: { xs: "0", sm: "140px" } }}
           >
             <MKTypography
               display="inline"
@@ -111,15 +112,20 @@ function CenteredBlogCard({ image, title, action, description }) {
               {title}
             </MKTypography>
 
-            <MKBox mt={1} mb={3}>
+            <MKBox
+              mt={1}
+              mb={3}
+              // sx={{ display: { xs: "none" } }}
+            >
               <MKTypography
                 variant="body2"
                 component="p"
                 color="text"
                 sx={{
                   fontWeight: "400",
-                  fontSize: { md: "0.9rem", lg: "0.75rem", xl: "0.9rem" },
+                  fontSize: { xs: "0.85rem", md: "0.9rem", lg: "0.75rem", xl: "0.9rem" },
                   letterSpacing: "0.05rem",
+                  // display: { xs: "none" },
                 }}
               >
                 {description}

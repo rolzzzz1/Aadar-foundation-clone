@@ -496,7 +496,7 @@ function DefaultNavbar({
       {/* <MKBox sx={sticky ? { position: "sticky", top: 0, zIndex: 10, margin: "0 auto" } : null}> */}
       <MKBox
         // py={1}
-        pl={2.5}
+        pl={{ xs: 0.5, sm: 2 }}
         // px={{ xs: 4, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
         my={relative ? 0 : 2}
         mx={relative ? 0 : 2}
@@ -534,7 +534,7 @@ function DefaultNavbar({
           <MKBox
             component="img"
             src={aadarLogo}
-            width={{ xs: "70px", sm: "70px", md: "80px", lg: "90px" }}
+            width={{ xs: "50px", sm: "70px", md: "80px", lg: "90px" }}
             borderRadius="10px"
             my={1}
           />
@@ -568,9 +568,9 @@ function DefaultNavbar({
         </MKBox>
         <MKBox
           // py={1}
-          px={{ xs: 4, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
+          px={{ xs: 2, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
           my={relative ? 0 : 2}
-          mx={relative ? 0 : 3}
+          mx={relative ? 0 : { xs: 1.5, md: 3 }}
           width={relative ? "85%" : "calc(85% - 48px)"}
           borderRadius="xl"
           shadow={transparent ? "none" : "md"}
@@ -601,7 +601,13 @@ function DefaultNavbar({
                 variant="button"
                 fontWeight="bold"
                 color={light ? "white" : "dark"}
-                fontSize={{ xs: "1rem", sm: "1rem", md: "1.125rem", lg: "1.125rem", xl: "1.25rem" }}
+                fontSize={{
+                  xs: "0.85rem",
+                  sm: "1rem",
+                  md: "1.125rem",
+                  lg: "1.125rem",
+                  xl: "1.25rem",
+                }}
                 lineHeight={1.25}
               >
                 {brand}
@@ -611,7 +617,7 @@ function DefaultNavbar({
                 fontWeight="light"
                 lineHeight={1.25}
                 color={light ? "white" : "dark"}
-                display={{ xs: "inline", sm: "inline", md: "inline", lg: "inline" }}
+                display={{ xs: "none", sm: "inline", md: "inline", lg: "inline" }}
                 fontSize={{
                   xs: "0.75rem",
                   sm: "0.75rem",

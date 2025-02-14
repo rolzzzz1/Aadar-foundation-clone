@@ -45,7 +45,7 @@ function Work() {
         <Grid container spacing={4}>
           <Grid
             item
-            xs={8}
+            xs={11}
             sm={8}
             md={6}
             lg={4}
@@ -64,7 +64,7 @@ function Work() {
           </Grid>
           <Grid
             item
-            xs={8}
+            xs={11}
             sm={8}
             md={6}
             lg={4}
@@ -83,7 +83,7 @@ function Work() {
           </Grid>
           <Grid
             item
-            xs={8}
+            xs={11}
             sm={8}
             md={6}
             lg={4}
@@ -104,7 +104,7 @@ function Work() {
         <Grid container spacing={8} sx={{ marginTop: "20px" }}> */}
           <Grid
             item
-            xs={8}
+            xs={11}
             sm={8}
             md={6}
             lg={4}
@@ -123,7 +123,7 @@ function Work() {
           </Grid>
           <Grid
             item
-            xs={8}
+            xs={11}
             sm={8}
             md={6}
             lg={4}
@@ -142,7 +142,7 @@ function Work() {
           </Grid>
           <Grid
             item
-            xs={8}
+            xs={11}
             sm={8}
             md={6}
             lg={4}
