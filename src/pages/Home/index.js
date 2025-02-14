@@ -32,7 +32,7 @@ import bgImage2 from "assets/images/aadar-main-black2.png";
 
 function Home() {
   return (
-    <MKBox minWidth="576px">
+    <MKBox minWidth="320px">
       {/* Navbar component */}
       <DefaultNavbar
         routes={routes}
