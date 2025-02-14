@@ -40,7 +40,7 @@ function DefaultFooter({ content }) {
       // bgColor="dark"
       sx={{
         backgroundColor: "#3F3F3F",
-        minWidth: "576px",
+        minWidth: "320px",
         overflow: "hidden",
         paddingTop: "40px",
       }}
