@@ -55,17 +55,20 @@ function Home() {
           backgroundRepeat: "no-repeat",
           backgroundPosition: "top",
           display: "flex",
-          justifyContent: "end",
-          alignItems: "center",
+          justifyContent: { xs: "center", sm: "end" },
+          alignItems: "end",
         }}
       >
+        <MKTypography color="white" fontSize="0.9rem" mb={8} display={{ xs: "inline", sm: "none" }}>
+          A home for Hopeless, Homeless, Helpless <br /> and Unclaimed people
+        </MKTypography>
         <MKBox
           color="white"
-          display="flex"
+          // display="flex"
+          display={{ xs: "none", sm: "flex" }}
           flexDirection="column"
           justifyContent="center"
           alignItems="center"
-          // mb={-8}
           mr={6}
           sx={{
             backgroundImage: `url(${bgImage})`,
@@ -73,6 +76,7 @@ function Home() {
             backgroundRepeat: "no-repeat",
             backgroundPosition: "left",
             // width: "40%",
+
             minHeight: "100vh",
           }}
         >
@@ -83,6 +87,7 @@ function Home() {
             ml={-2}
             fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
             sx={{ fontSize: { xs: "1.5rem", sm: "1.7rem", md: "2rem", lg: "2rem" } }}
+            // display={{ xs: "none", sm: "inline" }}
           >
             Aadar Foundation
           </MKTypography>
