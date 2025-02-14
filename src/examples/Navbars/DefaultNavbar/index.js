@@ -492,7 +492,7 @@ function DefaultNavbar({
   );
 
   return (
-    <Container sx={sticky ? { position: "sticky", top: 0, zIndex: 10, minWidth: "576px" } : null}>
+    <Container sx={sticky ? { position: "sticky", top: 0, zIndex: 10, minWidth: "320px" } : null}>
       {/* <MKBox sx={sticky ? { position: "sticky", top: 0, zIndex: 10, margin: "0 auto" } : null}> */}
       <MKBox
         // py={1}
