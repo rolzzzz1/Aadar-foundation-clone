@@ -52,7 +52,7 @@ import RehabilitationImg2 from "assets/images/rehabilitationImg1.jpg";
 
 function About() {
   return (
-    <MKBox minWidth="575px">
+    <MKBox minWidth="320px">
       {/* Navbar component */}
       <DefaultNavbar
         routes={routes}
@@ -104,6 +104,8 @@ function About() {
             textAlign="center"
             ml={-2}
             fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
+            mb={{ xs: 2, sm: 0 }}
           >
             About Us
           </MKTypography>
@@ -135,8 +137,9 @@ function About() {
               // textAlign="center"
             >
               <MKTypography
-                variant={"h3"}
+                variant="h3"
                 py={5}
+                fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 sx={{ letterSpacing: "0.05rem" }}
               >
@@ -157,7 +160,8 @@ function About() {
                 <Grid lg={6}>
                   <MKTypography
                     variant="body1"
-                    fontSize="1rem"
+                    // fontSize="1rem"
+                    fontSize={{ xs: "0.8rem", md: "1rem" }}
                     fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                     sx={{
                       letterSpacing: "0.05rem",
@@ -176,7 +180,7 @@ function About() {
               </Grid>
               <MKTypography
                 variant="body1"
-                fontSize="1.1rem"
+                fontSize={{ xs: "0.9rem", md: "1.1rem" }}
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 paddingTop="40px"
                 paddingBottom="30px"
@@ -198,7 +202,7 @@ function About() {
                 <Grid lg={6}>
                   <MKTypography
                     variant="body1"
-                    fontSize="1rem"
+                    fontSize={{ xs: "0.8rem", md: "1rem" }}
                     fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                     paddingTop="10px"
                     sx={{ letterSpacing: "0.05rem" }}
@@ -216,7 +220,7 @@ function About() {
                   </MKTypography>
                   <MKTypography
                     variant="body1"
-                    fontSize="1rem"
+                    fontSize={{ xs: "0.8rem", md: "1rem" }}
                     fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                     paddingTop="10px"
                     sx={{ letterSpacing: "0.05rem" }}
@@ -249,7 +253,7 @@ function About() {
                 <Grid pt={6}>
                   <MKTypography
                     variant="body1"
-                    fontSize="1.2rem"
+                    fontSize={{ xs: "1rem", md: "1.2rem" }}
                     fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                     // paddingTop="30px"
                     sx={{ letterSpacing: "0.05rem", fontWeight: "500" }}
@@ -325,7 +329,7 @@ function About() {
             >
               <MKTypography
                 variant="h3"
-                fontSize="1.875rem"
+                fontSize={{ xs: "1.5rem", sm: "1.875rem" }}
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 // ref={workSection}
               >
@@ -334,7 +338,7 @@ function About() {
 
               <MKTypography
                 variant="h3"
-                fontSize="1.5rem"
+                fontSize={{ xs: "1.2rem", sm: "1.5rem" }}
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 pt={4}
                 sx={{ fontWeight: "500" }}
@@ -343,7 +347,7 @@ function About() {
               </MKTypography>
 
               <MKTypography
-                fontSize="1rem"
+                fontSize={{ xs: "0.8rem", md: "1rem" }}
                 mx="auto"
                 paddingTop="20px"
                 sx={{ letterSpacing: "0.05rem" }}
@@ -358,7 +362,7 @@ function About() {
               </MKTypography>
               <MKTypography
                 variant="h3"
-                fontSize="1.5rem"
+                fontSize={{ xs: "1.2rem", sm: "1.5rem" }}
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 pt={4}
                 sx={{ fontWeight: "500" }}
@@ -374,7 +378,7 @@ function About() {
                     <MKTypography
                       variant="h3"
                       py={1}
-                      fontSize="1.3rem"
+                      fontSize={{ xs: "1.1rem", sm: "1.3rem" }}
                       fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                       sx={{ fontWeight: "500" }}
                     >
@@ -445,7 +449,7 @@ function About() {
                     <MKTypography
                       variant="h3"
                       py={1}
-                      fontSize="1.3rem"
+                      fontSize={{ xs: "1.1rem", sm: "1.3rem" }}
                       fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                       sx={{ fontWeight: "500" }}
                     >
@@ -512,7 +516,7 @@ function About() {
                     <MKTypography
                       variant="h3"
                       py={1}
-                      fontSize="1.3rem"
+                      fontSize={{ xs: "1.1rem", sm: "1.3rem" }}
                       fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                       sx={{ fontWeight: "500" }}
                     >
@@ -579,7 +583,7 @@ function About() {
                     <MKTypography
                       variant="h3"
                       py={1}
-                      fontSize="1.3rem"
+                      fontSize={{ xs: "1.1rem", sm: "1.3rem" }}
                       fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                       sx={{ fontWeight: "500" }}
                     >
@@ -654,7 +658,7 @@ function About() {
                     <MKTypography
                       variant="h3"
                       py={1}
-                      fontSize="1.3rem"
+                      fontSize={{ xs: "1.1rem", sm: "1.3rem" }}
                       fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                       sx={{ fontWeight: "500" }}
                     >
@@ -721,7 +725,7 @@ function About() {
                     <MKTypography
                       variant="h3"
                       py={1}
-                      fontSize="1.3rem"
+                      fontSize={{ xs: "1.1rem", sm: "1.3rem" }}
                       fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                       sx={{ fontWeight: "500" }}
                     >
@@ -771,7 +775,7 @@ function About() {
               </Grid>
 
               <MKTypography
-                fontSize="1rem"
+                fontSize={{ xs: "0.8rem", md: "1rem" }}
                 mx="auto"
                 paddingTop="20px"
                 sx={{ letterSpacing: "0.05rem" }}
@@ -785,7 +789,7 @@ function About() {
                 chapter with dignity and security.
               </MKTypography>
               <MKTypography
-                fontSize="1rem"
+                fontSize={{ xs: "0.8rem", md: "1rem" }}
                 mx="auto"
                 paddingTop="20px"
                 sx={{ letterSpacing: "0.05rem", fontWeight: "500" }}
@@ -802,7 +806,7 @@ function About() {
                 sx={{ letterSpacing: "0.05rem", fontWeight: "500" }}
                 width="80%"
                 textAlign="center"
-                fontSize="1.2rem"
+                fontSize={{ xs: "0.9rem", md: "1.1rem" }}
               >
                 We invite all individuals who believe in selfless service to join us in transforming
                 lives and making the world a kinder place. Together, we can restore hope and dignity
@@ -858,16 +862,20 @@ function About() {
               </Grid>
             </Grid>
 
-            <Grid py={4} md={12} pb={1} my={-10}>
+            <Grid py={4} md={12} pb={1} my={{ xs: -6, sm: -10 }}>
               <MKTypography
                 variant="h3"
                 py={3}
-                fontSize="1.5rem"
+                fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
               >
                 How we work
               </MKTypography>
-              <MKTypography fontSize="1rem" paddingTop="10px" sx={{ letterSpacing: "0.05rem" }}>
+              <MKTypography
+                fontSize={{ xs: "0.8rem", md: "1rem" }}
+                paddingTop="10px"
+                sx={{ letterSpacing: "0.05rem" }}
+              >
                 Helpless and destitute individuals, the focus of our work, often cannot reach the
                 Ashram on their own. Our dedicated ambulance and rescue team, in collaboration with
                 the police and government organizations, ensure their safe arrival. Once admitted,
@@ -875,10 +883,18 @@ function About() {
                 support of authorities, to rehabilitate them with their families whenever possible.
               </MKTypography>
 
-              <MKTypography fontSize="1rem" paddingTop="20px" sx={{ letterSpacing: "0.05rem" }}>
+              <MKTypography
+                fontSize={{ xs: "0.8rem", md: "1rem" }}
+                paddingTop="20px"
+                sx={{ letterSpacing: "0.05rem" }}
+              >
                 <b>Leadership & Governance</b>
               </MKTypography>
-              <MKTypography fontSize="1rem" paddingTop="10px" sx={{ letterSpacing: "0.05rem" }}>
+              <MKTypography
+                fontSize={{ xs: "0.8rem", md: "1rem" }}
+                paddingTop="10px"
+                sx={{ letterSpacing: "0.05rem" }}
+              >
                 To ensure the smooth operation of our ashram, we have a dedicated Executive
                 Committee and Core Team in place. The Core Team oversees daily management, resource
                 allocation, and system maintenance, while the Executive Committee conducts quarterly
@@ -886,10 +902,18 @@ function About() {
                 presented in Core Team meetings, allowing for continuous evaluation and necessary
                 improvements.
               </MKTypography>
-              <MKTypography fontSize="1rem" paddingTop="20px" sx={{ letterSpacing: "0.05rem" }}>
+              <MKTypography
+                fontSize={{ xs: "0.8rem", md: "1rem" }}
+                paddingTop="20px"
+                sx={{ letterSpacing: "0.05rem" }}
+              >
                 <b>Medical facility</b>
               </MKTypography>
-              <MKTypography fontSize="1rem" paddingTop="10px" sx={{ letterSpacing: "0.05rem" }}>
+              <MKTypography
+                fontSize={{ xs: "0.8rem", md: "1rem" }}
+                paddingTop="10px"
+                sx={{ letterSpacing: "0.05rem" }}
+              >
                 Most of the residents brought to the Ashram are suffering from different types of
                 ailments. Hence medical/surgical treatment plays a significant part in the service
                 we offer them. There is a team of doctors who are available to offer their services
@@ -898,10 +922,18 @@ function About() {
                 (medical and surgical) are provided to our residents.
               </MKTypography>
 
-              <MKTypography fontSize="1rem" paddingTop="20px" sx={{ letterSpacing: "0.05rem" }}>
+              <MKTypography
+                fontSize={{ xs: "0.8rem", md: "1rem" }}
+                paddingTop="20px"
+                sx={{ letterSpacing: "0.05rem" }}
+              >
                 <b>Celebrations & Community Engagement</b>
               </MKTypography>
-              <MKTypography fontSize="1rem" paddingTop="10px" sx={{ letterSpacing: "0.05rem" }}>
+              <MKTypography
+                fontSize={{ xs: "0.8rem", md: "1rem" }}
+                paddingTop="10px"
+                sx={{ letterSpacing: "0.05rem" }}
+              >
                 We believe in fostering a sense of joy, belonging, and cultural inclusivity. Our
                 ashram celebrates festivals like Holi, Diwali, Bhai Dooj, and Rakshabandhan, as well
                 as Ganesh Puja, Ramzan, and Eid, respecting the diverse faiths of our residents. To
