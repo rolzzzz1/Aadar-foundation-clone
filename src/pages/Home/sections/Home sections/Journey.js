@@ -66,7 +66,7 @@ function Journey() {
                 display="flex"
                 justifyCOntent="center"
                 border="solid 2px #000000"
-                minHeight="140px"
+                minHeight={{ xs: "140px", sm: "280px" }}
               >
                 <iframe
                   width="100%"

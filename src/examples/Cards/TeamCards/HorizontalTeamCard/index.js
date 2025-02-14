@@ -42,13 +42,13 @@ function HorizontalTeamCard({
       <Grid container>
         <Grid
           item
-          xs={4}
+          xs={2}
           sm={4}
           md={4}
           lg={4}
           // sx={{ mt: -6 }}
         >
-          <MKBox width="100%" pt={2} pb={1} px={2}>
+          <MKBox width="100%" pt={2} pb={1} px={{ xs: 0.5, sm: 2 }}>
             <MKBox
               component="img"
               src={image}
@@ -56,15 +56,17 @@ function HorizontalTeamCard({
               // width="100%"
               borderRadius="md"
               shadow="lg"
-              width="150px"
-              height="150px"
+              width={{ xs: "100px", sm: "150px", md: "150px", lg: "150px" }}
+              height={{ xs: "100px", sm: "150px", md: "150px", lg: "150px" }}
+              // width="150px"
+              // height="150px"
               // border="solid 1px #777"
             />
           </MKBox>
         </Grid>
         <Grid
           item
-          xs={8}
+          xs={10}
           sm={8}
           md={8}
           lg={8}
@@ -72,14 +74,25 @@ function HorizontalTeamCard({
             my: "auto",
             // paddingLeft: "40px",
           }}
-          pl={9}
+          pl={{ xs: 6, sm: 9 }}
         >
-          <MKBox pt={{ xs: 1, lg: 1.5 }} pb={2.5} pr={3} pl={{ xs: 4, lg: 1 }} lineHeight={1}>
-            <MKTypography variant="h6">{name.split(" ")[0]}</MKTypography>
-            <MKTypography variant="h6">{name.split(" ")[1]}</MKTypography>
+          <MKBox
+            pt={{ xs: 1, lg: 1.5 }}
+            pb={2.5}
+            pr={{ xs: 0, sm: 3 }}
+            pl={{ xs: 4, lg: 1 }}
+            lineHeight={1}
+          >
+            <MKTypography variant="h6" fontSize={{ xs: "0.8rem", sm: "1rem" }}>
+              {name.split(" ")[0]}
+            </MKTypography>
+            <MKTypography variant="h6" fontSize={{ xs: "0.8rem", sm: "1rem" }}>
+              {name.split(" ")[1]}
+            </MKTypography>
             <MKTypography
               variant="h6"
-              fontSize="0.8rem"
+              // fontSize="0.8rem"
+              fontSize={{ xs: "0.75rem", sm: "0.8rem" }}
               sx={{ fontWeight: "500" }}
               color={position.color}
               mb={1}
