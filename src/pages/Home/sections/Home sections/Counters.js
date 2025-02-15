@@ -8,7 +8,7 @@ import DefaultCounterCard from "examples/Cards/CounterCards/DefaultCounterCard";
 
 function Counters() {
   return (
-    <MKBox component="section" pt={8} pb={2}>
+    <MKBox component="section" pt={{ xs: 4, sm: 8 }} pb={2}>
       <Container>
         <Grid container justifyContent="center" sx={{ textAlign: "center" }}>
           <Grid item xs={12} md={12}>
@@ -16,6 +16,7 @@ function Counters() {
               variant="h3"
               // color="darkText"
               fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+              fontSize={{ xs: "1.5rem", sm: "1.5rem", md: "1.75rem", lg: "1.875rem" }}
               sx={{ fontWeight: "500" }}
               mb={2}
             >

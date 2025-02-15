@@ -14,10 +14,10 @@ import aboutImg from "assets/images/aboutImg.webp";
 
 function About() {
   return (
-    <MKBox component="section" pt={2} my={2}>
+    <MKBox component="section" pt={2} my={{ xs: 0.5, sm: 2 }}>
       {/* <Container margin="0px"> */}
       <Grid container alignItems="center">
-        <Grid item xs={7} sm={6} md={5} lg={4} sx={{ mx: "auto" }}>
+        <Grid item xs={9} sm={6} md={5} lg={4} sx={{ mx: "auto" }}>
           <MKBox position="relative" display="flex" justifyContent="center">
             <MKBox
               component="img"
@@ -50,7 +50,7 @@ function About() {
               fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
               sx={{
                 letterSpacing: "0.05rem",
-                fontSize: { xs: "1.5rem", sm: "1.5rem", md: "1.75rem", lg: "1.875rem" },
+                fontSize: { xs: "1.3rem", sm: "1.3rem", md: "1.75rem", lg: "1.875rem" },
                 fontWeight: "500",
               }}
             >

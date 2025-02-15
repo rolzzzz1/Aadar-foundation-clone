@@ -59,8 +59,15 @@ function Home() {
           alignItems: "end",
         }}
       >
-        <MKTypography color="white" fontSize="0.9rem" mb={8} display={{ xs: "inline", sm: "none" }}>
-          A home for Hopeless, Homeless, Helpless <br /> and Unclaimed people
+        <MKTypography
+          color="white"
+          textAlign="center"
+          fontSize="1.3rem"
+          mb={8}
+          px={1}
+          display={{ xs: "inline", sm: "none" }}
+        >
+          A home for Hopeless, Homeless, Helpless and Unclaimed people
         </MKTypography>
         <MKBox
           color="white"

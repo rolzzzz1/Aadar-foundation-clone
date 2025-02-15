@@ -15,7 +15,7 @@ import MKTypography from "components/MKTypography";
 
 function Gallery() {
   return (
-    <MKBox minWidth="575px">
+    <MKBox minWidth="320px">
       {/* Navbar component */}
       <DefaultNavbar
         routes={routes}
@@ -63,6 +63,8 @@ function Gallery() {
             textAlign="center"
             ml={-2}
             fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
+            mb={{ xs: 2, sm: 0 }}
           >
             Gallery
           </MKTypography>
@@ -72,16 +74,17 @@ function Gallery() {
       <MKBox
         component="section"
         // pt={14}
-        pb={4}
-        mt={4}
+        my={4}
         display="flex"
         justifyContent={"center"}
       >
-        <MKTypography variant="h3">Our gallery is coming soon ...</MKTypography>
+        <MKTypography variant="h3" fontSize={{ xs: "1.3rem", lg: "1.875rem" }}>
+          Our gallery is coming soon ...
+        </MKTypography>
       </MKBox>
 
       {/* Footer */}
-      <MKBox pt={2} px={0} mt={1}>
+      <MKBox px={0}>
         <DefaultFooter content={footerRoutes} />
       </MKBox>
     </MKBox>
