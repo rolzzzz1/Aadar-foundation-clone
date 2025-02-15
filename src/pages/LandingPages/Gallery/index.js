@@ -52,7 +52,7 @@ function Gallery() {
             backgroundImage: `url(${bgImage})`,
             backgroundSize: "contain",
             backgroundRepeat: "no-repeat",
-            backgroundPosition: "top",
+            backgroundPosition: "center",
             width: "40%",
             minHeight: "40vh",
           }}
@@ -64,7 +64,7 @@ function Gallery() {
             ml={-2}
             fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
             fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
-            mb={{ xs: 2, sm: 0 }}
+            mb={{ xs: 1, sm: 0 }}
           >
             Gallery
           </MKTypography>
