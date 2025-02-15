@@ -22,7 +22,7 @@ import { privacyData } from "./data/privacyData.js";
 
 function PrivacyPolicy() {
   return (
-    <MKBox minWidth="575px">
+    <MKBox minWidth="320px">
       {/* Navbar component */}
       <DefaultNavbar
         routes={routes}
@@ -70,6 +70,8 @@ function PrivacyPolicy() {
             textAlign="center"
             ml={-2}
             fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
+            mb={{ xs: 2, sm: 0 }}
           >
             Privacy policy
           </MKTypography>
