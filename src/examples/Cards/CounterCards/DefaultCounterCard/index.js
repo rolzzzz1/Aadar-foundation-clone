@@ -26,11 +26,16 @@ import MKTypography from "components/MKTypography";
 function DefaultCounterCard({ color, count, title, description, ...rest }) {
   return (
     <MKBox p={2} textAlign="center" lineHeight={1}>
-      <MKTypography variant="h1" color={color} textGradient>
+      <MKTypography
+        variant="h1"
+        fontSize={{ xs: "2.5rem", sm: "2.5rem", md: "3rem" }}
+        color={color}
+        textGradient
+      >
         <CountUp end={count} duration={1} {...rest} />
       </MKTypography>
       {title && (
-        <MKTypography variant="h5" mt={2} mb={1}>
+        <MKTypography variant="h5" fontSize={{ xs: "1.1rem", sm: "1.25rem" }} mt={2} mb={1}>
           {title}
         </MKTypography>
       )}

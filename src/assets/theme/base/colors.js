@@ -60,6 +60,11 @@ export default {
   },
 
   // primary: {
+  //   main: "#ECA533",
+  //   focus: "#ECA533", // Main yellow color
+  // },
+
+  // primary: {
   //   main: "#fbeede",
   //   focus: "#fbeede",
   // },
