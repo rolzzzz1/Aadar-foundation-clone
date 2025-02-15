@@ -91,11 +91,9 @@ function About() {
             backgroundImage: `url(${bgImage})`,
             backgroundSize: "contain",
             backgroundRepeat: "no-repeat",
-            backgroundPosition: "top",
+            backgroundPosition: "center",
             width: "40%",
             minHeight: "40vh",
-            // marginRight: "150px",
-            // marginTop: { md: "80px", lg: "80px" },
           }}
         >
           <MKTypography
@@ -105,7 +103,7 @@ function About() {
             ml={-2}
             fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
             fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
-            mb={{ xs: 2, sm: 0 }}
+            mb={{ xs: 1, sm: 0 }}
           >
             About Us
           </MKTypography>
