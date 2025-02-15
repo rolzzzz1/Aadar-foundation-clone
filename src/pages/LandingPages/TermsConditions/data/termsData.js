@@ -6,13 +6,18 @@ import MKTypography from "components/MKTypography";
 export const termsData = (
   <MKBox component="section" my={4} mx={2}>
     <Container>
-      <MKTypography variant="h4" sx={{ fontWeight: "500" }} pb={4}>
+      <MKTypography
+        variant="h4"
+        sx={{ fontWeight: "500" }}
+        pb={4}
+        fontSize={{ xs: "1.2rem", md: "1.5rem" }}
+      >
         Terms & Conditions
       </MKTypography>
       <MKTypography
         mt={2}
         variant="body1"
-        fontSize="1rem"
+        fontSize={{ xs: "0.8rem", md: "1rem" }}
         fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
         sx={{
           letterSpacing: "0.05rem",
@@ -22,11 +27,11 @@ export const termsData = (
         Use of this site is provided by Aadar foundation subject to the following Terms and
         Conditions:
       </MKTypography>
-      <MKBox ml={4}>
+      <MKBox ml={2}>
         <MKTypography
           mt={2}
           variant="body1"
-          fontSize="1rem"
+          fontSize={{ xs: "0.8rem", md: "1rem" }}
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
@@ -38,7 +43,7 @@ export const termsData = (
               <MKTypography
                 mt={1}
                 variant="body1"
-                fontSize="1rem"
+                fontSize={{ xs: "0.8rem", md: "1rem" }}
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 sx={{
                   letterSpacing: "0.05rem",
@@ -53,7 +58,7 @@ export const termsData = (
               <MKTypography
                 mt={1}
                 variant="body1"
-                fontSize="1rem"
+                fontSize={{ xs: "0.8rem", md: "1rem" }}
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 sx={{
                   letterSpacing: "0.05rem",
@@ -69,7 +74,7 @@ export const termsData = (
               <MKTypography
                 mt={1}
                 variant="body1"
-                fontSize="1rem"
+                fontSize={{ xs: "0.8rem", md: "1rem" }}
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 sx={{
                   letterSpacing: "0.05rem",
@@ -85,7 +90,7 @@ export const termsData = (
               <MKTypography
                 mt={1}
                 variant="body1"
-                fontSize="1rem"
+                fontSize={{ xs: "0.8rem", md: "1rem" }}
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 sx={{
                   letterSpacing: "0.05rem",
@@ -105,7 +110,7 @@ export const termsData = (
               <MKTypography
                 mt={1}
                 variant="body1"
-                fontSize="1rem"
+                fontSize={{ xs: "0.8rem", md: "1rem" }}
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 sx={{
                   letterSpacing: "0.05rem",
@@ -123,7 +128,7 @@ export const termsData = (
               <MKTypography
                 mt={1}
                 variant="body1"
-                fontSize="1rem"
+                fontSize={{ xs: "0.8rem", md: "1rem" }}
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 sx={{
                   letterSpacing: "0.05rem",
@@ -148,7 +153,7 @@ export const termsData = (
               <MKTypography
                 mt={1}
                 variant="body1"
-                fontSize="1rem"
+                fontSize={{ xs: "0.8rem", md: "1rem" }}
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 sx={{
                   letterSpacing: "0.05rem",
@@ -168,7 +173,7 @@ export const termsData = (
               <MKTypography
                 mt={1}
                 variant="body1"
-                fontSize="1rem"
+                fontSize={{ xs: "0.8rem", md: "1rem" }}
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 sx={{
                   letterSpacing: "0.05rem",
@@ -184,7 +189,7 @@ export const termsData = (
               <MKTypography
                 mt={1}
                 variant="body1"
-                fontSize="1rem"
+                fontSize={{ xs: "0.8rem", md: "1rem" }}
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 sx={{
                   letterSpacing: "0.05rem",
@@ -200,7 +205,7 @@ export const termsData = (
               <MKTypography
                 mt={1}
                 variant="body1"
-                fontSize="1rem"
+                fontSize={{ xs: "0.8rem", md: "1rem" }}
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 sx={{
                   letterSpacing: "0.05rem",
@@ -216,7 +221,7 @@ export const termsData = (
               <MKTypography
                 mt={1}
                 variant="body1"
-                fontSize="1rem"
+                fontSize={{ xs: "0.8rem", md: "1rem" }}
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                 sx={{
                   letterSpacing: "0.05rem",
@@ -232,7 +237,7 @@ export const termsData = (
         <MKTypography
           mt={2}
           variant="body1"
-          fontSize="1rem"
+          fontSize={{ xs: "0.8rem", md: "1rem" }}
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",

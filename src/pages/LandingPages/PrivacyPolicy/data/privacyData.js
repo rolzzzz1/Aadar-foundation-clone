@@ -6,13 +6,18 @@ import MKTypography from "components/MKTypography";
 export const privacyData = (
   <MKBox component="section" my={4}>
     <Container>
-      <MKTypography variant="h4" sx={{ fontWeight: "500" }} pb={4}>
+      <MKTypography
+        variant="h4"
+        sx={{ fontWeight: "500" }}
+        pb={4}
+        fontSize={{ xs: "1.2rem", md: "1.5rem" }}
+      >
         Privacy policy
       </MKTypography>
       <MKTypography
-        mt={2}
+        mt={{ xs: 0, sm: 2 }}
         variant="body1"
-        fontSize="1rem"
+        fontSize={{ xs: "0.8rem", md: "1rem" }}
         fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
         sx={{
           letterSpacing: "0.05rem",
@@ -27,7 +32,7 @@ export const privacyData = (
         organizations provide example policies to guide compliance.
       </MKTypography>
       <MKTypography
-        mt={3}
+        mt={{ xs: 0, sm: 3 }}
         variant="body1"
         fontSize="1rem"
         fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
@@ -39,7 +44,7 @@ export const privacyData = (
         <MKTypography
           mt={1}
           variant="body1"
-          fontSize="1.2rem"
+          fontSize={{ xs: "1rem", md: "1.2rem" }}
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
@@ -53,7 +58,7 @@ export const privacyData = (
         <MKTypography
           mt={1}
           variant="body1"
-          fontSize="1rem"
+          fontSize={{ xs: "0.8rem", md: "1rem" }}
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
@@ -66,7 +71,7 @@ export const privacyData = (
         <MKTypography
           mt={1}
           variant="body1"
-          fontSize="1rem"
+          fontSize={{ xs: "0.8rem", md: "1rem" }}
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
@@ -80,7 +85,7 @@ export const privacyData = (
         <MKTypography
           mt={1}
           variant="body1"
-          fontSize="1rem"
+          fontSize={{ xs: "0.8rem", md: "1rem" }}
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
@@ -104,7 +109,7 @@ export const privacyData = (
         <MKTypography
           mt={1}
           variant="body1"
-          fontSize="1.2rem"
+          fontSize={{ xs: "1rem", md: "1.2rem" }}
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
@@ -117,7 +122,7 @@ export const privacyData = (
         <MKTypography
           mt={1}
           variant="body1"
-          fontSize="1rem"
+          fontSize={{ xs: "0.8rem", md: "1rem" }}
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
@@ -139,7 +144,7 @@ export const privacyData = (
       <MKTypography
         mt={3}
         variant="body1"
-        fontSize="1rem"
+        fontSize={{ xs: "0.8rem", md: "1rem" }}
         fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
         sx={{
           letterSpacing: "0.05rem",
@@ -149,7 +154,7 @@ export const privacyData = (
         <MKTypography
           mt={1}
           variant="body1"
-          fontSize="1.2rem"
+          fontSize={{ xs: "1rem", md: "1.2rem" }}
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
@@ -162,7 +167,7 @@ export const privacyData = (
         <MKTypography
           mt={1}
           variant="body1"
-          fontSize="1rem"
+          fontSize={{ xs: "0.8rem", md: "1rem" }}
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
@@ -186,7 +191,7 @@ export const privacyData = (
       <MKTypography
         mt={3}
         variant="body1"
-        fontSize="1rem"
+        fontSize={{ xs: "0.8rem", md: "1rem" }}
         fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
         sx={{
           letterSpacing: "0.05rem",
@@ -196,7 +201,7 @@ export const privacyData = (
         <MKTypography
           mt={1}
           variant="body1"
-          fontSize="1.2rem"
+          fontSize={{ xs: "1rem", md: "1.2rem" }}
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
@@ -209,7 +214,7 @@ export const privacyData = (
         <MKTypography
           mt={1}
           variant="body1"
-          fontSize="1rem"
+          fontSize={{ xs: "0.8rem", md: "1rem" }}
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
@@ -234,7 +239,7 @@ export const privacyData = (
         <MKTypography
           mt={1}
           variant="body1"
-          fontSize="1.2rem"
+          fontSize={{ xs: "1rem", md: "1.2rem" }}
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
@@ -247,7 +252,7 @@ export const privacyData = (
         <MKTypography
           mt={1}
           variant="body1"
-          fontSize="1rem"
+          fontSize={{ xs: "0.8rem", md: "1rem" }}
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
@@ -262,7 +267,7 @@ export const privacyData = (
         <MKTypography
           mt={1}
           variant="body1"
-          fontSize="1rem"
+          fontSize={{ xs: "0.8rem", md: "1rem" }}
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
@@ -276,7 +281,7 @@ export const privacyData = (
         <MKTypography
           mt={1}
           variant="body1"
-          fontSize="1rem"
+          fontSize={{ xs: "0.8rem", md: "1rem" }}
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
@@ -290,7 +295,7 @@ export const privacyData = (
         <MKTypography
           mt={1}
           variant="body1"
-          fontSize="1rem"
+          fontSize={{ xs: "0.8rem", md: "1rem" }}
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
@@ -315,7 +320,7 @@ export const privacyData = (
         <MKTypography
           mt={1}
           variant="body1"
-          fontSize="1.2rem"
+          fontSize={{ xs: "1rem", md: "1.2rem" }}
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
@@ -328,7 +333,7 @@ export const privacyData = (
         <MKTypography
           mt={1}
           variant="body1"
-          fontSize="1rem"
+          fontSize={{ xs: "0.8rem", md: "1rem" }}
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
@@ -355,7 +360,7 @@ export const privacyData = (
         <MKTypography
           mt={1}
           variant="body1"
-          fontSize="1.2rem"
+          fontSize={{ xs: "1rem", md: "1.2rem" }}
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
@@ -363,12 +368,12 @@ export const privacyData = (
             fontWeight: "500",
           }}
         >
-          <b>Controlling Your Personal Information</b>
+          Controlling Your Personal Information
         </MKTypography>
         <MKTypography
           mt={1}
           variant="body1"
-          fontSize="1rem"
+          fontSize={{ xs: "0.8rem", md: "1rem" }}
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
@@ -383,7 +388,7 @@ export const privacyData = (
         <MKTypography
           mt={1}
           variant="body1"
-          fontSize="1rem"
+          fontSize={{ xs: "0.8rem", md: "1rem" }}
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
@@ -398,7 +403,7 @@ export const privacyData = (
         <MKTypography
           mt={1}
           variant="body1"
-          fontSize="1rem"
+          fontSize={{ xs: "0.8rem", md: "1rem" }}
           fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",

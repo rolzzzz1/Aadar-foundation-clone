@@ -20,7 +20,7 @@ import { termsData } from "./data/termsData.js";
 
 function TermsConditions() {
   return (
-    <MKBox minWidth="575px">
+    <MKBox minWidth="320px">
       {/* Navbar component */}
       <DefaultNavbar
         routes={routes}
@@ -68,6 +68,8 @@ function TermsConditions() {
             textAlign="center"
             ml={-2}
             fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
+            mb={{ xs: 2, sm: 0 }}
           >
             Terms and conditions
           </MKTypography>
