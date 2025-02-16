@@ -10,7 +10,7 @@ import MKTypography from "components/MKTypography";
 import MKButton from "components/MKButton";
 
 // Images
-import aboutImg from "assets/images/aboutImg.webp";
+import aboutImg from "assets/images/ourWorkImages/aboutImg.webp";
 
 function About() {
   return (

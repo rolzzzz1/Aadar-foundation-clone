@@ -8,9 +8,9 @@ import MKTypography from "components/MKTypography";
 
 import TransparentBlogCard from "examples/Cards/BlogCards/TransparentBlogCard";
 
-import event1 from "assets/images/event 1.jpg";
-import event2 from "assets/images/event 2.jpg";
-import event3 from "assets/images/event 3.jpg";
+import event1 from "assets/images/eventImages/event 1.jpg";
+import event2 from "assets/images/eventImages/event 2.jpg";
+import event3 from "assets/images/eventImages/event 3.jpg";
 
 function Work() {
   // function Example() {

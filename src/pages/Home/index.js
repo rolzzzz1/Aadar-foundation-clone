@@ -1,9 +1,5 @@
 // @mui material components
-
 import Card from "@mui/material/Card";
-// import Container from "@mui/material/Container";
-// import Grid from "@mui/material/Grid";
-// import { grey } from "@mui/material/colors";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
@@ -12,7 +8,6 @@ import MKTypography from "components/MKTypography";
 // Material Kit 2 React examples
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import DefaultFooter from "examples/Footers/DefaultFooter";
-// import DefaultCounterCard from "examples/Cards/CounterCards/DefaultCounterCard";
 
 // Home page sections
 import About from "pages/Home/sections/Home sections/About";
@@ -26,9 +21,8 @@ import routes from "routes";
 import footerRoutes from "footer.routes";
 
 // Images
-
-import bgImage from "assets/images/brushstroke.svg";
-import bgImage2 from "assets/images/aadar-main-black2.png";
+import bgImage from "assets/images/mainThemeImages/brushstroke.svg";
+import bgImage2 from "assets/images/mainThemeImages/aadar-main-black2.png";
 
 function Home() {
   return (

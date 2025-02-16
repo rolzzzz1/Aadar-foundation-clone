@@ -11,9 +11,9 @@ import MKBox from "components/MKBox";
 import MKButton from "components/MKButton";
 
 // Images
-import logoCT from "assets/images/logo-aadar.jpg";
+import logoCT from "assets/images/logos/logo-aadar.jpg";
 // import logoME from "assets/images/MyLogo1.png";
-import logoME from "assets/images/MeLogo3.png";
+import logoME from "assets/images/logos/MeLogo3.png";
 
 const date = new Date().getFullYear();
 
@@ -135,6 +135,9 @@ export default {
                 variant="text"
                 size="small"
                 sx={{
+                  backgroundColor: "#575757",
+                  backdropFilter: `saturate(200%) blur(30px)`,
+
                   color: "#ffffff",
                   textTransform: "capitalize",
                   border: "2px solid transparent",

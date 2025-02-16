@@ -70,13 +70,20 @@ const routes = [
   {
     name: "About Us",
     route: "/pages/landing-pages/about-us",
-    component: <About />,
+    component: <About isWorkOn={false} />,
   },
+
   {
     name: "Our Work",
     route: "/pages/landing-pages/work",
-    component: <Work />,
+    component: <Work isWorkOn={true} />,
   },
+
+  // {
+  //   name: "Our Work",
+  //   route: "/pages/landing-pages/work",
+  //   component: <Work />,
+  // },
 
   {
     name: "Gallery",

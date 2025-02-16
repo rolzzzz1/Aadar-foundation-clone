@@ -1,6 +1,8 @@
 // @mui material components
 import React from "react";
 
+import PropTypes from "prop-types";
+
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -16,7 +18,7 @@ import DefaultFooter from "examples/Footers/DefaultFooter";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
-// import MKButton from "components/MKButton";
+import MKButton from "components/MKButton";
 
 // Routes
 import routes from "routes";
@@ -25,32 +27,60 @@ import footerRoutes from "footer.routes";
 import Team from "pages/LandingPages/About/sections/Team";
 
 // Images
-import aboutBgImg from "assets/images/swargSadanBlack.png";
-import bgImage from "assets/images/smallBrushstroke2.svg";
-import aboutImg from "assets/images/main1.jpg";
-import swargSadan from "assets/images/swargSadan.webp";
-import beforeAfter1 from "assets/images/before-after1.png";
-import group1 from "assets/images/group1.jpg";
-import resque1 from "assets/images/resque1.jpg";
-import food from "assets/images/foodAboutpage.jpg";
-import team from "assets/images/teamImg.jpg";
-import celebration from "assets/images/celebration.jpeg";
+import aboutBgImg from "assets/images/mainThemeImages/swargSadanBlack.png";
+import bgImage from "assets/images/mainThemeImages/smallBrushstroke2.svg";
+import aboutImg from "assets/images/aboutPageImages/main1.jpg";
+import swargSadan from "assets/images/aboutPageImages/swargSadan.webp";
+import beforeAfter1 from "assets/images/aboutPageImages/before-after1.png";
+import group1 from "assets/images/aboutPageImages/group1.jpg";
+import resque1 from "assets/images/aboutPageImages/resque1.jpg";
+import food from "assets/images/aboutPageImages/foodAboutpage.jpg";
+import team from "assets/images/aboutPageImages/teamImg.jpg";
+import celebration from "assets/images/aboutPageImages/celebration.jpeg";
 
-import RescueImg1 from "assets/images/aboutImg.webp";
-import RescueImg2 from "assets/images/RescueImg1.jpg";
-import RescueImg3 from "assets/images/resque3.jpg";
-import TreatmentImg1 from "assets/images/treatment.webp";
-import TreatmentImg2 from "assets/images/treatmentImg2.jpg";
-import ShelterImg1 from "assets/images/shelter1.jpg";
-import ShelterImg2 from "assets/images/shelter2.jpg";
-import FoodImg1 from "assets/images/foodImg1.jpg";
-import FoodImg2 from "assets/images/food2.jpg";
+import RescueImg1 from "assets/images/ourWorkImages/aboutImg.webp";
+import RescueImg2 from "assets/images/ourWorkImages/RescueImg1.jpg";
+import RescueImg3 from "assets/images/ourWorkImages/resque3.jpg";
+import TreatmentImg1 from "assets/images/ourWorkImages/treatment.webp";
+import TreatmentImg2 from "assets/images/ourWorkImages/treatmentImg2.jpg";
+import ShelterImg1 from "assets/images/ourWorkImages/shelter1.jpg";
+import ShelterImg2 from "assets/images/ourWorkImages/shelter2.jpg";
+import FoodImg1 from "assets/images/ourWorkImages/foodImg1.jpg";
+import FoodImg2 from "assets/images/ourWorkImages/food2.jpg";
 // import CareImg1 from "assets/images/careImg1.jpg";
-import CareImg2 from "assets/images/aboutPageImg.png";
-import RehabilitationImg1 from "assets/images/rehabilitation.jpg";
-import RehabilitationImg2 from "assets/images/rehabilitationImg1.jpg";
+import CareImg2 from "assets/images/ourWorkImages/aboutPageImg.png";
+import RehabilitationImg1 from "assets/images/ourWorkImages/rehabilitation.jpg";
+import RehabilitationImg2 from "assets/images/ourWorkImages/rehabilitationImg1.jpg";
 
-function About() {
+function About(props) {
+  const [workSectionOn, setWorkSectionOn] = React.useState(false);
+  const workSection = React.useRef();
+
+  function scrollToWork() {
+    setWorkSectionOn(true);
+
+    setTimeout(() => {
+      setWorkSectionOn(false);
+    }, 2000);
+  }
+
+  React.useEffect(() => {
+    if (props.isWorkOn) {
+      document.getElementById("workBtn").click();
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (workSectionOn !== false && workSection.current !== null) {
+      setTimeout(function () {
+        workSection.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }, 100);
+    }
+  }, [workSectionOn]);
+
   return (
     <MKBox minWidth="320px">
       {/* Navbar component */}
@@ -126,6 +156,9 @@ function About() {
           // pt={8} mt={8}
           mb={4}
         >
+          <MKButton id="workBtn" sx={{ display: "none" }} onClick={() => scrollToWork()}>
+            Our work
+          </MKButton>
           <Container>
             <MKBox
               display="flex"
@@ -329,7 +362,7 @@ function About() {
                 variant="h3"
                 fontSize={{ xs: "1.5rem", sm: "1.875rem" }}
                 fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
-                // ref={workSection}
+                ref={workSection}
               >
                 Our work
               </MKTypography>
@@ -955,5 +988,15 @@ function About() {
     </MKBox>
   );
 }
+
+// Setting default values for the props of DefaultNavbar
+About.defaultProps = {
+  isWorkOn: false,
+};
+
+// Typechecking props for the DefaultNavbar
+About.propTypes = {
+  isWorkOn: PropTypes.bool,
+};
 
 export default About;
