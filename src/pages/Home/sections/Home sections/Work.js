@@ -18,23 +18,18 @@ function Work() {
     <MKBox
       component="section"
       variant="gradient"
-      // bgColor="light"
       position="relative"
       mt={{ xs: 4, sm: 8 }}
       py={{ xs: 4, sm: 6 }}
       borderRadius={"10px"}
       mx={-2}
       sx={{ backgroundColor: "#f0f2f5" }}
-      // px={{ xs: 2, lg: 0 }}
-
-      // mx={-2}
     >
       <Container>
         <Grid container>
           <Grid item xs={12} md={12} sx={{ textAlign: "center", mb: { xs: 2, sm: 6 } }}>
             <MKTypography
               variant="h3"
-              // color="darkText"
               fontSize={{ xs: "1.5rem", sm: "1.5rem", md: "1.75rem", lg: "1.875rem" }}
               fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
               sx={{ fontWeight: "500" }}
@@ -51,7 +46,6 @@ function Work() {
             md={6}
             lg={4}
             sx={{
-              // ml: "auto",
               mt: { xs: 3, lg: 1 },
             }}
             mx={"auto"}
@@ -70,7 +64,6 @@ function Work() {
             md={6}
             lg={4}
             sx={{
-              // ml: "auto",
               mt: { xs: 2, lg: 0 },
             }}
             mx={"auto"}
@@ -89,7 +82,6 @@ function Work() {
             md={6}
             lg={4}
             sx={{
-              // ml: "auto",
               mt: { xs: 3, lg: 0 },
             }}
             mx={"auto"}
@@ -101,8 +93,6 @@ function Work() {
               action={{ type: "internal", route: "/pages/landing-pages/work" }}
             />
           </Grid>
-          {/* </Grid>
-        <Grid container spacing={8} sx={{ marginTop: "20px" }}> */}
           <Grid
             item
             xs={11}
@@ -110,7 +100,6 @@ function Work() {
             md={6}
             lg={4}
             sx={{
-              // ml: "auto",
               mt: { xs: 3, lg: 0 },
             }}
             mx={"auto"}
@@ -129,7 +118,6 @@ function Work() {
             md={6}
             lg={4}
             sx={{
-              // ml: "auto",
               mt: { xs: 3, lg: 0 },
             }}
             mx={"auto"}
@@ -148,7 +136,6 @@ function Work() {
             md={6}
             lg={4}
             sx={{
-              // ml: "auto",
               mt: { xs: 3, lg: 0 },
             }}
             mx={"auto"}

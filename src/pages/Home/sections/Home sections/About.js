@@ -15,7 +15,6 @@ import aboutImg from "assets/images/ourWorkImages/aboutImg.webp";
 function About() {
   return (
     <MKBox component="section" pt={2} my={{ xs: 0.5, sm: 2 }}>
-      {/* <Container margin="0px"> */}
       <Grid container alignItems="center">
         <Grid item xs={9} sm={6} md={5} lg={4} sx={{ mx: "auto" }}>
           <MKBox position="relative" display="flex" justifyContent="center">
@@ -36,7 +35,6 @@ function About() {
           lg={7}
           sx={{
             mx: "auto",
-            // ml: { xs: 0, lg: 1 },
             mb: { xs: 2, md: 0 },
             mt: { xs: 2, sm: 2 },
           }}
@@ -71,10 +69,6 @@ function About() {
               variant="body1"
               color="text"
               mt={2}
-              // paddingTop="10px"
-              // maxWidth="600px"
-              // fontSize="0.9rem"
-
               sx={{
                 letterSpacing: "0.05rem",
                 fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.85rem", lg: "0.87rem" },
@@ -90,8 +84,6 @@ function About() {
             </MKTypography>
             <MKTypography
               variant="body1"
-              // color="text"
-              // my={2}
               paddingTop="10px"
               maxWidth="600px"
               fontSize="0.9rem"
@@ -125,7 +117,6 @@ function About() {
           </Container>
         </Grid>
       </Grid>
-      {/* </Container> */}
     </MKBox>
   );
 }

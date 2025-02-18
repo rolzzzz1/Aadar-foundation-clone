@@ -19,13 +19,8 @@ export default function App() {
 
   // Setting page scroll to 0 when changing the route
   useEffect(() => {
-    // if (pathname === "/pages/landing-pages/work") {
-    //   document.documentElement.scrollTop = 0;
-    //   document.scrollingElement.scrollTop = 1620;
-    // } else {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
-    // }
   }, [pathname]);
 
   const getRoutes = (allRoutes) =>

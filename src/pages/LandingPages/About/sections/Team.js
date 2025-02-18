@@ -26,7 +26,7 @@ function Team() {
       sx={{ backgroundColor: "#f8f9fa", borderRadius: "20px" }}
       py={5}
       px={{ xs: 0, lg: 0 }}
-      mt={8}
+      mt={2}
       mb={4}
     >
       <Container>
@@ -66,7 +66,7 @@ function Team() {
               </MKTypography>
             </MKBox>
           </Grid>
-          <Grid item xs={12} sm={10} md={8} lg={6} xl={5}>
+          <Grid item xs={11} sm={10} md={8} lg={6} xl={5} mb={{ xs: 3, sm: 3, md: 4 }}>
             <MKBox mb={1}>
               <HorizontalTeamCard
                 image={team1}
@@ -78,7 +78,7 @@ function Team() {
           </Grid>
         </Grid>
         <Grid container spacing={4} display="flex" justifyContent={"center"}>
-          <Grid item xs={12} sm={10} md={8} lg={6} xl={4}>
+          <Grid item xs={11} sm={10} md={8} lg={6} xl={4}>
             <MKBox mb={1}>
               <HorizontalTeamCard
                 image={team2}
@@ -91,7 +91,7 @@ function Team() {
               />
             </MKBox>
           </Grid>
-          <Grid item xs={12} sm={10} md={8} lg={6} xl={4}>
+          <Grid item xs={11} sm={10} md={8} lg={6} xl={4}>
             <MKBox mb={{ xs: 1, lg: 0 }}>
               <HorizontalTeamCard
                 image={team3}
@@ -104,7 +104,7 @@ function Team() {
               />
             </MKBox>
           </Grid>
-          <Grid item xs={12} sm={10} md={8} lg={6} xl={4}>
+          <Grid item xs={11} sm={10} md={8} lg={6} xl={4}>
             <MKBox mb={1}>
               <HorizontalTeamCard
                 image={user}
@@ -119,7 +119,7 @@ function Team() {
           </Grid>
           {/* </Grid>
         <Grid container spacing={4}> */}
-          <Grid item xs={12} sm={10} md={8} lg={6} xl={4}>
+          <Grid item xs={11} sm={10} md={8} lg={6} xl={4}>
             <MKBox mb={1}>
               <HorizontalTeamCard
                 image={team5}
@@ -132,7 +132,7 @@ function Team() {
               />
             </MKBox>
           </Grid>
-          <Grid item xs={12} sm={10} md={8} lg={6} xl={4}>
+          <Grid item xs={11} sm={10} md={8} lg={6} xl={4}>
             <MKBox mb={1}>
               <HorizontalTeamCard
                 image={team6}
@@ -142,7 +142,7 @@ function Team() {
               />
             </MKBox>
           </Grid>
-          <Grid item xs={12} sm={10} md={8} lg={6} xl={4}>
+          <Grid item xs={11} sm={10} md={8} lg={6} xl={4}>
             <MKBox mb={{ xs: 1, lg: 0 }}>
               <HorizontalTeamCard
                 image={user}
