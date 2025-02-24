@@ -4,6 +4,7 @@ import Card from "@mui/material/Card";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
+// import MKCarousel from "components/MKCarousel";
 
 // Material Kit 2 React examples
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
@@ -12,7 +13,7 @@ import DefaultFooter from "examples/Footers/DefaultFooter";
 // Home page sections
 import About from "pages/Home/sections/Home sections/About";
 import Work from "pages/Home/sections/Home sections/Work";
-// import Events from "pages/Home/sections/Home sections/Events";
+import Events from "pages/Home/sections/Home sections/Events";
 import Journey from "pages/Home/sections/Home sections/Journey";
 import Counters from "pages/Home/sections/Home sections/Counters";
 
@@ -23,8 +24,21 @@ import footerRoutes from "footer.routes";
 // Images
 import bgImage from "assets/images/mainThemeImages/brushstroke.svg";
 import bgImage2 from "assets/images/mainThemeImages/aadar-main-black2.png";
+// import img1 from "assets/images/galleryImages/resque1.jpg";
+// import img2 from "assets/images/galleryImages/resque2.jpg";
 
 function Home() {
+  // var items = [
+  //   {
+  //     name: "Image 1",
+  //     imgUrl: img1,
+  //   },
+  //   {
+  //     name: "Image 2",
+  //     imgUrl: img2,
+  //   },
+  // ];
+
   return (
     <MKBox minWidth="320px">
       {/* Navbar component */}
@@ -111,9 +125,10 @@ function Home() {
       <Card
         sx={{
           p: 2,
+          pb: { xs: 4, sm: 8 },
           mx: { xs: 2, lg: 3 },
           mt: -6,
-          mb: 4,
+          mb: { xs: 2, sm: 4 },
           backgroundColor: ({ palette: { white }, functions: { rgba } }) => rgba(white.main, 0.8),
           backdropFilter: "saturate(200%) blur(30px)",
           boxShadow: ({ boxShadows: { xxl } }) => xxl,
@@ -132,7 +147,11 @@ function Home() {
         <Counters />
 
         {/* Events section component */}
-        {/* <Events /> */}
+        <Events />
+
+        {/* <MKBox pt={4}>
+          <MKCarousel item={items} />
+        </MKBox> */}
       </Card>
 
       {/* Footer */}

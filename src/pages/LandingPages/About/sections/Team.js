@@ -14,6 +14,7 @@ import user from "assets/images/teamImages/user.png";
 import team1 from "assets/images/teamImages/vikas.jpg";
 import team2 from "assets/images/teamImages/faizan.jpg";
 import team3 from "assets/images/teamImages/pawan.jpg";
+import team4 from "assets/images/teamImages/vibha.jpg";
 import team5 from "assets/images/teamImages/Pramod.jpg";
 import team6 from "assets/images/teamImages/Sadia.jpg";
 
@@ -107,7 +108,7 @@ function Team() {
           <Grid item xs={11} sm={10} md={8} lg={6} xl={4}>
             <MKBox mb={1}>
               <HorizontalTeamCard
-                image={user}
+                image={team4}
                 name="Vibha Aneja"
                 position={{
                   color: "info",

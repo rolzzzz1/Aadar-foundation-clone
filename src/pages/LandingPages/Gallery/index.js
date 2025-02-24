@@ -10,6 +10,7 @@ import DefaultFooter from "examples/Footers/DefaultFooter";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
+// import MKCarousel from "components/MKCarousel";
 
 // Routes
 import routes from "routes";
@@ -30,8 +31,23 @@ import img9 from "assets/images/galleryImages/games1.jpg";
 import img10 from "assets/images/galleryImages/diwali.jpg";
 import img11 from "assets/images/galleryImages/before-after-female.png";
 import img12 from "assets/images/galleryImages/before-after-male.png";
+import img13 from "assets/images/galleryImages/paper-clipping1.jpg";
+import img14 from "assets/images/galleryImages/paper-clipping2.jpg";
+
+// import img15 from "assets/images/galleryImages/paper-clipping3.jpeg";
 
 function Gallery() {
+  // var items = [
+  //   {
+  //     name: "Image 1",
+  //     imgUrl: img1,
+  //   },
+  //   {
+  //     name: "Image 2",
+  //     imgUrl: img2,
+  //   },
+  // ];
+
   return (
     <MKBox minWidth="320px">
       {/* Navbar component */}
@@ -109,13 +125,40 @@ function Gallery() {
                   Our gallery is coming soon ...
                 </MKTypography> */}
               <MKTypography variant="h4" sx={{ fontWeight: "500" }} pb={6}>
-                Photos
+                Photo Gallery
               </MKTypography>
               <MKBox display="flex" justifyContent="left" flexWrap="wrap" gap="20px">
+                {/* <MKBox position="relative" width={{ xs: "100%", sm: "50%", md: "50%", lg: "30%" }}>
+                  <MKBox
+                    component="img"
+                    src={img1}
+                    // width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
+                    width="100%"
+                    // height="30%"
+                    maxHeight="280px"
+                    borderRadius="7px"
+                    objectFit="cover"
+                    flex="1"
+                  ></MKBox>
+                  <MKBox
+                    position="absolute"
+                    bottom="0px"
+                    left="0px"
+                    sx={{
+                      backgroundColor: "#000000",
+                      width: "100%",
+                      borderRadius: "0 0 7px 7px",
+                    }}
+                  >
+                    <MKTypography variant="h6" px={1} sx={{ color: "#ffffff", fontWeight: "500" }}>
+                      Rescuing a man from roadside.
+                    </MKTypography>
+                  </MKBox>
+                </MKBox> */}
                 <MKBox
                   component="img"
                   src={img1}
-                  width="30%"
+                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
                   height="30%"
                   maxHeight="280px"
                   borderRadius="7px"
@@ -125,7 +168,7 @@ function Gallery() {
                 <MKBox
                   component="img"
                   src={img2}
-                  width="30%"
+                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
                   height="30%"
                   maxHeight="280px"
                   borderRadius="7px"
@@ -135,7 +178,7 @@ function Gallery() {
                 <MKBox
                   component="img"
                   src={img3}
-                  width="30%"
+                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
                   height="30%"
                   maxHeight="280px"
                   borderRadius="7px"
@@ -145,7 +188,7 @@ function Gallery() {
                 <MKBox
                   component="img"
                   src={img4}
-                  width="30%"
+                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
                   maxHeight="280px"
                   borderRadius="7px"
                   objectFit="cover"
@@ -154,7 +197,7 @@ function Gallery() {
                 <MKBox
                   component="img"
                   src={img5}
-                  width="30%"
+                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
                   maxHeight="280px"
                   borderRadius="7px"
                   objectFit="cover"
@@ -164,7 +207,7 @@ function Gallery() {
                 <MKBox
                   component="img"
                   src={img6}
-                  width="30%"
+                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
                   maxHeight="280px"
                   borderRadius="7px"
                   objectFit="cover"
@@ -173,7 +216,7 @@ function Gallery() {
                 <MKBox
                   component="img"
                   src={img7}
-                  width="30%"
+                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
                   maxHeight="280px"
                   borderRadius="7px"
                   objectFit="cover"
@@ -182,7 +225,7 @@ function Gallery() {
                 <MKBox
                   component="img"
                   src={img8}
-                  width="30%"
+                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
                   maxHeight="280px"
                   borderRadius="7px"
                   objectFit="cover"
@@ -191,7 +234,7 @@ function Gallery() {
                 <MKBox
                   component="img"
                   src={img9}
-                  width="30%"
+                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
                   maxHeight="280px"
                   borderRadius="7px"
                   objectFit="cover"
@@ -200,7 +243,7 @@ function Gallery() {
                 <MKBox
                   component="img"
                   src={img10}
-                  width="30%"
+                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
                   maxHeight="280px"
                   borderRadius="7px"
                   objectFit="cover"
@@ -209,7 +252,7 @@ function Gallery() {
                 <MKBox
                   component="img"
                   src={img11}
-                  width="30%"
+                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
                   maxHeight="280px"
                   borderRadius="7px"
                   objectFit="cover"
@@ -218,16 +261,48 @@ function Gallery() {
                 <MKBox
                   component="img"
                   src={img12}
-                  width="30%"
+                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
                   maxHeight="280px"
                   borderRadius="7px"
                   objectFit="cover"
                   flex="1"
                 ></MKBox>
+                <MKBox
+                  component="img"
+                  src={img13}
+                  width={{ xs: "100%", sm: "50%", md: "30%", lg: "40%" }}
+                  maxHeight="280px"
+                  border="1px solid #000000"
+                  borderRadius="7px"
+                  objectFit="cover"
+                  flex="1"
+                ></MKBox>
+                <MKBox
+                  component="img"
+                  src={img14}
+                  width={{ xs: "100%", sm: "50%", md: "30%", lg: "40%" }}
+                  maxHeight="280px"
+                  border="1px solid #000000"
+                  borderRadius="7px"
+                  objectFit="cover"
+                  flex="1"
+                ></MKBox>
+                {/* <MKBox
+                  component="img"
+                  src={img15}
+                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "50%" }}
+                  maxHeight="280px"
+                  borderRadius="7px"
+                  objectFit="cover"
+                  // flex="1"
+                ></MKBox> */}
               </MKBox>
             </MKBox>
           </Grid>
           {/* </Container> */}
+          {/* <MKBox pt={4}>
+            <MKCarousel item={items} />
+          </MKBox> */}
         </MKBox>
       </Card>
 

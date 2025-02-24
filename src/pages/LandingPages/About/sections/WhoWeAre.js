@@ -113,8 +113,8 @@ function WhoWeAre() {
             Beyond care, we strive to reunite them with their families whenever possible. So far, we
             have welcomed <b>230 Prabhu Jans (beloved souls) into our ashram</b>, successfully
             <b> rehabilitating 98 individuals </b> with their families across{" "}
-            <b>13 states in India</b>. Currently, <b>91 Prabhu Jans</b> are receiving full-time care
-            at our facility.
+            <b> Nepal and 13 states in India</b>. Currently, <b>105 Prabhu Jans</b> are receiving
+            full-time care at our facility.
           </MKTypography>
         </Grid>
         <Grid
