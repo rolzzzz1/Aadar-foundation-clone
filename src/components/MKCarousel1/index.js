@@ -23,6 +23,11 @@ export default function MKCarousel1(props) {
       duration="300"
       indicators={false}
       minWidth="320px"
+      navButtonsProps={{
+        style: {
+          opacity: 0.6,
+        },
+      }}
     >
       {items.map((item, i) => (
         <Item key={i} item={item} />

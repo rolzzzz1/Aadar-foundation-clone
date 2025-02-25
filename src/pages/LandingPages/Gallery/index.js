@@ -3,6 +3,18 @@
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 
+import "./styles.css";
+
+import LightGallery from "lightgallery/react";
+
+import "lightgallery/css/lightgallery.css";
+import "lightgallery/css/lg-zoom.css";
+import "lightgallery/css/lg-thumbnail.css";
+
+// Plugins
+import lgThumbnail from "lightgallery/plugins/thumbnail";
+import lgZoom from "lightgallery/plugins/zoom";
+
 // Material Kit 2 React examples
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import DefaultFooter from "examples/Footers/DefaultFooter";
@@ -33,20 +45,55 @@ import img11 from "assets/images/galleryImages/before-after-female.png";
 import img12 from "assets/images/galleryImages/before-after-male.png";
 import img13 from "assets/images/galleryImages/paper-clipping1.jpg";
 import img14 from "assets/images/galleryImages/paper-clipping2.jpg";
-
-// import img15 from "assets/images/galleryImages/paper-clipping3.jpeg";
+import img15 from "assets/images/galleryImages/path-award.jpg";
+import img16 from "assets/images/galleryImages/swarg-sadan.jpg";
+import img17 from "assets/images/galleryImages/raddi-donation.jpg";
+import img18 from "assets/images/galleryImages/swargSadan.webp";
+import img19 from "assets/images/galleryImages/residents.webp";
+import img20 from "assets/images/galleryImages/diwali1.jpg";
 
 function Gallery() {
-  // var items = [
-  //   {
-  //     name: "Image 1",
-  //     imgUrl: img1,
-  //   },
-  //   {
-  //     name: "Image 2",
-  //     imgUrl: img2,
-  //   },
-  // ];
+  const images = [
+    { src: img1, alt: "1" },
+    { src: img2, alt: "2" },
+    { src: img3, alt: "3" },
+    { src: img4, alt: "4" },
+    { src: img5, alt: "5" },
+    { src: img6, alt: "6" },
+    { src: img7, alt: "7" },
+    { src: img8, alt: "8" },
+    { src: img9, alt: "9" },
+    { src: img10, alt: "10" },
+    { src: img11, alt: "11" },
+    { src: img12, alt: "12" },
+    { src: img13, alt: "13" },
+    { src: img14, alt: "14" },
+    { src: img15, alt: "15" },
+    { src: img16, alt: "16" },
+    { src: img17, alt: "17" },
+    { src: img18, alt: "18" },
+    { src: img19, alt: "19" },
+    { src: img20, alt: "20" },
+  ];
+
+  function renderGallery() {
+    const onInit = () => {
+      console.log("lightGallery has been initialized");
+    };
+    return (
+      <div className="App">
+        <LightGallery onInit={onInit} speed={500} plugins={[lgThumbnail, lgZoom]}>
+          {images.map((image, index) => {
+            return (
+              <a href={image.src} key={index}>
+                <img alt={image.alt} src={image.src} />
+              </a>
+            );
+          })}
+        </LightGallery>
+      </div>
+    );
+  }
 
   return (
     <MKBox minWidth="320px">
@@ -127,34 +174,8 @@ function Gallery() {
               <MKTypography variant="h4" sx={{ fontWeight: "500" }} pb={6}>
                 Photo Gallery
               </MKTypography>
-              <MKBox display="flex" justifyContent="left" flexWrap="wrap" gap="20px">
-                {/* <MKBox position="relative" width={{ xs: "100%", sm: "50%", md: "50%", lg: "30%" }}>
-                  <MKBox
-                    component="img"
-                    src={img1}
-                    // width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
-                    width="100%"
-                    // height="30%"
-                    maxHeight="280px"
-                    borderRadius="7px"
-                    objectFit="cover"
-                    flex="1"
-                  ></MKBox>
-                  <MKBox
-                    position="absolute"
-                    bottom="0px"
-                    left="0px"
-                    sx={{
-                      backgroundColor: "#000000",
-                      width: "100%",
-                      borderRadius: "0 0 7px 7px",
-                    }}
-                  >
-                    <MKTypography variant="h6" px={1} sx={{ color: "#ffffff", fontWeight: "500" }}>
-                      Rescuing a man from roadside.
-                    </MKTypography>
-                  </MKBox>
-                </MKBox> */}
+              {renderGallery()}
+              {/* <MKBox display="flex" justifyContent="left" flexWrap="wrap" gap="20px">
                 <MKBox
                   component="img"
                   src={img1}
@@ -287,16 +308,7 @@ function Gallery() {
                   objectFit="cover"
                   flex="1"
                 ></MKBox>
-                {/* <MKBox
-                  component="img"
-                  src={img15}
-                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "50%" }}
-                  maxHeight="280px"
-                  borderRadius="7px"
-                  objectFit="cover"
-                  // flex="1"
-                ></MKBox> */}
-              </MKBox>
+              </MKBox> */}
             </MKBox>
           </Grid>
           {/* </Container> */}

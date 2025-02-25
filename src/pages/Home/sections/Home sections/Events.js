@@ -138,15 +138,9 @@ function Work() {
         </Grid>
         <Grid container lg={12}>
           {width < 768 ? (
-            width < 576 ? (
-              <MKBox pt={1} width="100%">
-                <MKCarousel1 item={groupsCreatedTwo} navButtons={false} />
-              </MKBox>
-            ) : (
-              <MKBox pt={1} width="100%">
-                <MKCarousel1 item={groupsCreatedTwo} navButtons={true} />
-              </MKBox>
-            )
+            <MKBox pt={1} width="100%">
+              <MKCarousel1 item={groupsCreatedTwo} navButtons={true} />
+            </MKBox>
           ) : (
             <MKBox pt={1} width="100%">
               <MKCarousel1 item={groupsCreatedOne} navButtons={true} />
