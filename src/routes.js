@@ -79,6 +79,11 @@ const routes = [
     component: <Work isWorkOn={true} />,
   },
   {
+    name: "Volunteer",
+    route: "",
+    // component: <Work isWorkOn={true} />,
+  },
+  {
     name: "Gallery",
     route: "/pages/landing-pages/gallery",
     component: <Gallery />,

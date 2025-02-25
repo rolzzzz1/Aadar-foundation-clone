@@ -46,7 +46,7 @@ function Work() {
             md={6}
             lg={4}
             sx={{
-              mt: { xs: 3, lg: 1 },
+              mt: { xs: 3, lg: 0 },
             }}
             mx={"auto"}
           >
@@ -64,7 +64,7 @@ function Work() {
             md={6}
             lg={4}
             sx={{
-              mt: { xs: 2, lg: 0 },
+              mt: { xs: 3, lg: 0 },
             }}
             mx={"auto"}
           >

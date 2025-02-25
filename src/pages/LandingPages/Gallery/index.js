@@ -86,7 +86,7 @@ function Gallery() {
           {images.map((image, index) => {
             return (
               <a href={image.src} key={index}>
-                <img alt={image.alt} src={image.src} />
+                <img alt={image.alt} src={image.src} className="galleryImgs" />
               </a>
             );
           })}

@@ -7,12 +7,29 @@ import Grid from "@mui/material/Grid";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
-import MKButton from "components/MKButton";
+// import MKButton from "components/MKButton";
+import Icon from "@mui/material/Icon";
 
 // Images
 import aboutImg from "assets/images/ourWorkImages/aboutImg.webp";
 
 function About() {
+  const cardActionStyles = {
+    display: "flex",
+    alignItems: "center",
+    width: "max-content",
+
+    "& .material-icons, .material-icons-round,": {
+      transform: `translateX(2px)`,
+      transition: "transform 0.2s cubic-bezier(0.34,1.61,0.7,1.3)",
+    },
+
+    "&:hover .material-icons, &:focus .material-icons, &:hover .material-icons-round, &:focus .material-icons-round":
+      {
+        transform: `translateX(6px)`,
+      },
+  };
+
   return (
     <MKBox component="section" pt={2} my={{ xs: 0.5, sm: 2 }}>
       <Grid container alignItems="center">
@@ -97,22 +114,36 @@ function About() {
               that no one is left to suffer alone.
             </MKTypography>
 
-            <MKBox ml={{ xs: "auto", lg: 0 }} mt={2}>
-              <MKButton
-                component={Link}
-                to={"/pages/landing-pages/about-us"}
+            <MKBox mt={2}>
+              {/* <MKButton
                 variant="outlined"
                 color="success"
                 size="small"
+                component={Link}
+                to={"/pages/landing-pages/about-us"}
                 sx={{
                   "&:hover": {
                     backgroundColor: "#4CAF50",
                     color: "#ffffff",
                   },
+                  textTransform: "capitalize",
                 }}
               >
+                Read more ...
+              </MKButton> */}
+
+              <MKTypography
+                component={Link}
+                to={"/pages/landing-pages/about-us"}
+                variant="body2"
+                fontWeight="regular"
+                color={"success"}
+                textTransform="capitalize"
+                sx={cardActionStyles}
+              >
                 Read more
-              </MKButton>
+                <Icon sx={{ fontWeight: "bold" }}>arrow_forward</Icon>
+              </MKTypography>
             </MKBox>
           </Container>
         </Grid>
