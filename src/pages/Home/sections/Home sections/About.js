@@ -18,6 +18,7 @@ function About() {
     display: "flex",
     alignItems: "center",
     width: "max-content",
+    fontSize: { md: "0.75rem", lg: "0.87rem" },
 
     "& .material-icons, .material-icons-round,": {
       transform: `translateX(2px)`,
