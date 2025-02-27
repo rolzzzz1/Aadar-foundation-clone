@@ -11,9 +11,9 @@ import MKBox from "components/MKBox";
 import MKButton from "components/MKButton";
 
 // Images
-import logoCT from "assets/images/logo-aadar.jpg";
+import logoCT from "assets/images/logos/logo-aadar.jpg";
 // import logoME from "assets/images/MyLogo1.png";
-import logoME from "assets/images/MeLogo3.png";
+import logoME from "assets/images/logos/MeLogo3.png";
 
 const date = new Date().getFullYear();
 
@@ -36,14 +36,6 @@ export default {
       icon: <FacebookIcon />,
       link: "https://www.facebook.com/AshramSwargSadanGwalior/",
     },
-    // {
-    //   icon: <TwitterIcon />,
-    //   link: "https://twitter.com/creativetim",
-    // },
-    // {
-    //   icon: <GitHubIcon />,
-    //   link: "https://github.com/creativetimofficial",
-    // },
   ],
   menus: [
     {
@@ -52,8 +44,8 @@ export default {
         { name: "home", route: "/" },
         { name: "about us", route: "/pages/landing-pages/about-us" },
         { name: "our work", route: "/pages/landing-pages/work" },
+        // { name: "volunteer", route: "/pages/landing-pages/volunteer" },
         { name: "gallery", route: "/pages/landing-pages/gallery" },
-        { name: "contact", route: "/pages/landing-pages/contact" },
       ],
     },
 
@@ -65,6 +57,7 @@ export default {
           route: "/pages/landing-pages/privacy-policy",
         },
         { name: "terms and conditions", route: "/pages/landing-pages/terms-conditions" },
+        { name: "contact", route: "/pages/landing-pages/contact" },
       ],
     },
 
@@ -75,31 +68,6 @@ export default {
     //     { name: "freebies", href: "https://www.creative-tim.com/templates/free" },
     //     { name: "premium tools", href: "https://www.creative-tim.com/templates/premium" },
     //     { name: "blog", href: "https://www.creative-tim.com/blog" },
-    //   ],
-    // },
-    // {
-    //   name: "resources",
-    //   items: [
-    //     { name: "illustrations", href: "https://iradesign.io/" },
-    //     { name: "bits & snippets", href: "https://www.creative-tim.com/bits" },
-    //     { name: "affiliate program", href: "https://www.creative-tim.com/affiliates/new" },
-    //   ],
-    // },
-    // {
-    //   name: "help & support",
-    //   items: [
-    //     { name: "contact us", href: "https://www.creative-tim.com/contact-us" },
-    //     { name: "knowledge center", href: "https://www.creative-tim.com/knowledge-center" },
-    //     { name: "custom development", href: "https://services.creative-tim.com/" },
-    //     { name: "sponsorships", href: "https://www.creative-tim.com/sponsorships" },
-    //   ],
-    // },
-    // {
-    //   name: "legal",
-    //   items: [
-    //     { name: "terms & conditions", href: "https://www.creative-tim.com/terms" },
-    //     { name: "privacy policy", href: "https://www.creative-tim.com/privacy" },
-    //     { name: "licenses (EULA)", href: "https://www.creative-tim.com/license" },
     //   ],
     // },
   ],
@@ -135,6 +103,9 @@ export default {
                 variant="text"
                 size="small"
                 sx={{
+                  backgroundColor: "#575757",
+                  backdropFilter: `saturate(200%) blur(30px)`,
+
                   color: "#ffffff",
                   textTransform: "capitalize",
                   border: "2px solid transparent",

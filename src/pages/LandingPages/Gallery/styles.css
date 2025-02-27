@@ -1,0 +1,42 @@
+/* img {
+  width: 100%;
+  display: block;
+  padding: 5px 0px;
+  border-radius: 20px;
+} */
+
+.lg-container {
+  min-width: 320px;
+}
+
+.lg-react-element {
+  column-count: 3;
+  column-gap: 10px;
+}
+
+.galleryImgs {
+  max-width: 100%;
+  display: block;
+  padding: 5px 0px;
+  border-radius: 20px;
+  transition: transform 0.2s;
+}
+
+.galleryImgs:hover {
+  filter: opacity(0.7);
+  transform: scale(1.01);
+}
+
+@media (max-width: 576px) {
+  .lg-react-element {
+    column-count: 1;
+    column-gap: 10px;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 768px) {
+  .lg-react-element {
+    column-count: 2;
+    column-gap: 10px;
+  }
+}

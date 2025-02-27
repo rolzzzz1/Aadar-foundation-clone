@@ -43,7 +43,7 @@ import DefaultNavbarMobile from "examples/Navbars/DefaultNavbar/DefaultNavbarMob
 
 // Material Kit 2 React base styles
 import breakpoints from "assets/theme/base/breakpoints";
-import aadarLogo from "assets/images/logo-aadar.jpg";
+import aadarLogo from "assets/images/logos/logo-aadar.jpg";
 // import { grey } from "@mui/material/colors";
 
 // import CallRoundedIcon from "@mui/icons-material/CallRounded";

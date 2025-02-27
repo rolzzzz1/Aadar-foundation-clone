@@ -56,8 +56,8 @@ function HorizontalTeamCard({
               // width="100%"
               borderRadius="md"
               shadow="lg"
-              width={{ xs: "100px", sm: "150px", md: "150px", lg: "150px" }}
-              height={{ xs: "100px", sm: "150px", md: "150px", lg: "150px" }}
+              width={{ xs: "80px", sm: "150px", md: "150px", lg: "150px" }}
+              height={{ xs: "80px", sm: "150px", md: "150px", lg: "150px" }}
               // width="150px"
               // height="150px"
               // border="solid 1px #777"
@@ -80,19 +80,19 @@ function HorizontalTeamCard({
             pt={{ xs: 1, lg: 1.5 }}
             pb={2.5}
             pr={{ xs: 0, sm: 3 }}
-            pl={{ xs: 4, lg: 1 }}
+            pl={{ xs: 3, lg: 1 }}
             lineHeight={1}
           >
-            <MKTypography variant="h6" fontSize={{ xs: "0.8rem", sm: "1rem" }}>
+            <MKTypography variant="h6" fontSize={{ xs: "0.8rem", sm: "1.1rem" }}>
               {name.split(" ")[0]}
             </MKTypography>
-            <MKTypography variant="h6" fontSize={{ xs: "0.8rem", sm: "1rem" }}>
+            <MKTypography variant="h6" fontSize={{ xs: "0.8rem", sm: "1.1rem" }}>
               {name.split(" ")[1]}
             </MKTypography>
             <MKTypography
               variant="h6"
               // fontSize="0.8rem"
-              fontSize={{ xs: "0.75rem", sm: "0.8rem" }}
+              fontSize={{ xs: "0.65rem", sm: "0.8rem" }}
               sx={{ fontWeight: "500" }}
               color={position.color}
               mb={1}

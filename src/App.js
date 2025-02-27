@@ -14,18 +14,15 @@ import Home from "layouts/pages/home";
 // Material Kit 2 React routes
 import routes from "routes";
 
+import { Analytics } from "@vercel/analytics/react";
+
 export default function App() {
   const { pathname } = useLocation();
 
   // Setting page scroll to 0 when changing the route
   useEffect(() => {
-    // if (pathname === "/pages/landing-pages/work") {
-    //   document.documentElement.scrollTop = 0;
-    //   document.scrollingElement.scrollTop = 1620;
-    // } else {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
-    // }
   }, [pathname]);
 
   const getRoutes = (allRoutes) =>
@@ -49,6 +46,7 @@ export default function App() {
         <Route path="/home" element={<Home />} />
         <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
+      <Analytics />
     </ThemeProvider>
   );
 }
