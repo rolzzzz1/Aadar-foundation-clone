@@ -17,6 +17,23 @@ Coded by www.creative-tim.com
 
 import About from "pages/LandingPages/About";
 
-export default function AboutPage() {
-  return <About />;
+import PropTypes from "prop-types";
+
+export default function AboutPage(props) {
+  return (
+    <>
+      <About isWorkOn={props.isWorkOn} />
+      {/* {props.isWorkOn ? "On" : "Off"} */}
+    </>
+  );
 }
+
+// Setting default values for the props of DefaultNavbar
+AboutPage.defaultProps = {
+  isWorkOn: false,
+};
+
+// Typechecking props for the DefaultNavbar
+AboutPage.propTypes = {
+  isWorkOn: PropTypes.bool,
+};

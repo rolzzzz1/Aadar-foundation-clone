@@ -13,8 +13,8 @@ import routes from "routes";
 import footerRoutes from "footer.routes";
 
 // Images
-import bgImage2 from "assets/images/swargSadanBlack.png";
-import bgImage from "assets/images/smallBrushstroke2.svg";
+import bgImage2 from "assets/images/mainThemeImages/swargSadanBlack.png";
+import bgImage from "assets/images/mainThemeImages/smallBrushstroke2.svg";
 
 import { termsData } from "./data/termsData.js";
 

@@ -6,35 +6,30 @@ import MKTypography from "components/MKTypography";
 
 import CenteredBlogCard from "examples/Cards/BlogCards/CenteredBlogCard1";
 
-import work1 from "assets/images/aboutImg.webp";
-import work2 from "assets/images/treatment.webp";
-import work3 from "assets/images/shelter.webp";
-import work4 from "assets/images/food2.jpg";
-import work5 from "assets/images/care2.jpg";
-import work6 from "assets/images/rehabilitation1.jpg";
+import work1 from "assets/images/ourWorkImages/aboutImg.webp";
+import work2 from "assets/images/ourWorkImages/treatment.webp";
+import work3 from "assets/images/ourWorkImages/shelter.webp";
+import work4 from "assets/images/ourWorkImages/food2.jpg";
+import work5 from "assets/images/ourWorkImages/care2.jpg";
+import work6 from "assets/images/ourWorkImages/rehabilitation1.jpg";
 
 function Work() {
   return (
     <MKBox
       component="section"
       variant="gradient"
-      // bgColor="light"
       position="relative"
       mt={{ xs: 4, sm: 8 }}
       py={{ xs: 4, sm: 6 }}
       borderRadius={"10px"}
       mx={-2}
       sx={{ backgroundColor: "#f0f2f5" }}
-      // px={{ xs: 2, lg: 0 }}
-
-      // mx={-2}
     >
       <Container>
         <Grid container>
           <Grid item xs={12} md={12} sx={{ textAlign: "center", mb: { xs: 2, sm: 6 } }}>
             <MKTypography
               variant="h3"
-              // color="darkText"
               fontSize={{ xs: "1.5rem", sm: "1.5rem", md: "1.75rem", lg: "1.875rem" }}
               fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
               sx={{ fontWeight: "500" }}
@@ -51,8 +46,7 @@ function Work() {
             md={6}
             lg={4}
             sx={{
-              // ml: "auto",
-              mt: { xs: 3, lg: 1 },
+              mt: { xs: 3, lg: 0 },
             }}
             mx={"auto"}
           >
@@ -70,8 +64,7 @@ function Work() {
             md={6}
             lg={4}
             sx={{
-              // ml: "auto",
-              mt: { xs: 2, lg: 0 },
+              mt: { xs: 3, lg: 0 },
             }}
             mx={"auto"}
           >
@@ -89,7 +82,6 @@ function Work() {
             md={6}
             lg={4}
             sx={{
-              // ml: "auto",
               mt: { xs: 3, lg: 0 },
             }}
             mx={"auto"}
@@ -101,8 +93,6 @@ function Work() {
               action={{ type: "internal", route: "/pages/landing-pages/work" }}
             />
           </Grid>
-          {/* </Grid>
-        <Grid container spacing={8} sx={{ marginTop: "20px" }}> */}
           <Grid
             item
             xs={11}
@@ -110,7 +100,6 @@ function Work() {
             md={6}
             lg={4}
             sx={{
-              // ml: "auto",
               mt: { xs: 3, lg: 0 },
             }}
             mx={"auto"}
@@ -129,7 +118,6 @@ function Work() {
             md={6}
             lg={4}
             sx={{
-              // ml: "auto",
               mt: { xs: 3, lg: 0 },
             }}
             mx={"auto"}
@@ -148,7 +136,6 @@ function Work() {
             md={6}
             lg={4}
             sx={{
-              // ml: "auto",
               mt: { xs: 3, lg: 0 },
             }}
             mx={"auto"}
