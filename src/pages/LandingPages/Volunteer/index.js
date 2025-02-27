@@ -1,4 +1,6 @@
 // import { useState } from "react";
+import React, { useRef } from "react";
+import emailjs from "@emailjs/browser";
 
 // @mui material components
 import Container from "@mui/material/Container";
@@ -29,6 +31,50 @@ function Volunteer() {
   //   const [checked, setChecked] = useState(true);
 
   //   const handleChecked = () => setChecked(!checked);
+
+  const form = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+    // console.log(data);
+
+    emailjs
+      .sendForm("service_a7f8kvk", "template_kj0zzo9", form.current, {
+        publicKey: "i1eYRzEru3UMSm8qR",
+      })
+      .then(
+        () => {
+          console.log("SUCCESS!");
+          console.log(data);
+        },
+        (error) => {
+          console.log("FAILED...", error.text);
+        }
+      );
+  };
+
+  // const handleSubmit = (event) => {
+  //   const formData = new FormData(event.target);
+  //   const data = Object.fromEntries(formData.entries());
+  //   // const result = registerUserSchema.safeParse(data);
+
+  //   // if (!result.success) {
+  //   //   event.preventDefault();
+  //   //   // handle errors here.
+  //   // }
+
+  //   event.preventDefault();
+  //   console.log("submitted");
+  //   console.log(data);
+  //   // console.log(formData.get("email"));
+  // };
+
+  // const handleSubmitAction = (formData) => {
+  //   console.log(formData.entries);
+  // };
 
   return (
     <MKBox minWidth="320px">
@@ -142,55 +188,95 @@ function Volunteer() {
                 </MKTypography>
               </Grid>
               <Grid container item xs={12} lg={7} sx={{ mx: "auto" }}>
-                <MKBox width="100%" component="form" method="post" autocomplete="off" pt={8}>
+                <MKBox
+                  width="100%"
+                  component="form"
+                  method="post"
+                  autocomplete="off"
+                  pt={8}
+                  // action={handleSubmitAction}
+                  ref={form}
+                  // onSubmit={handleSubmit}
+                  onSubmit={sendEmail}
+                >
                   <MKBox p={3}>
                     <Grid container spacing={3}>
                       <Grid item xs={12} md={6}>
-                        <MKInput variant="outlined" label="Name *" fullWidth />
+                        <MKInput
+                          variant="outlined"
+                          label="Name"
+                          name="name"
+                          fullWidth
+                          required={true}
+                        />
                       </Grid>
                       <Grid item xs={12} md={6}>
-                        <MKInput variant="outlined" label="Gender" fullWidth />
+                        <MKInput variant="outlined" label="Gender" name="gender" fullWidth />
                       </Grid>
                       <Grid item xs={12} md={6}>
-                        <MKInput variant="outlined" type="number" label="Age" fullWidth />
+                        <MKInput
+                          variant="outlined"
+                          type="number"
+                          name="age"
+                          label="Age"
+                          fullWidth
+                        />
                       </Grid>
                       <Grid item xs={12} md={6}>
                         <MKInput
                           variant="outlined"
                           type="email"
-                          label="Email Address *"
+                          name="email"
+                          label="Email Address"
                           fullWidth
+                          required={true}
                         />
                       </Grid>
                       <Grid item xs={12} md={6}>
-                        <MKInput variant="outlined" type="tel" label="Phone number *" fullWidth />
+                        <MKInput
+                          variant="outlined"
+                          type="tel"
+                          name="phone"
+                          label="Phone number"
+                          fullWidth
+                          required={true}
+                        />
                       </Grid>
 
                       <Grid item xs={12} md={6}>
-                        <MKInput variant="outlined" label="Occupation" fullWidth />
+                        <MKInput
+                          variant="outlined"
+                          name="occupation"
+                          label="Occupation"
+                          fullWidth
+                        />
                       </Grid>
                       <Grid item xs={12}>
                         <MKInput
                           variant="outlined"
-                          label="Address *"
+                          label="Address"
+                          name="address"
                           multiline
                           fullWidth
+                          required={true}
                           rows={3}
                         />
                       </Grid>
                       <Grid item xs={12} md={6}>
-                        <MKInput variant="outlined" label="City" fullWidth />
+                        <MKInput variant="outlined" name="city" label="City" fullWidth />
                       </Grid>
                       <Grid item xs={12} md={6}>
-                        <MKInput variant="outlined" label="State" fullWidth />
+                        <MKInput variant="outlined" name="state" label="State" fullWidth />
                       </Grid>
                       <Grid item xs={12}>
                         <MKInput
                           variant="outlined"
-                          label="Brief profile *"
+                          label="Brief profile"
+                          name="profile"
                           multiline
                           fullWidth
-                          rows={3}
+                          required={true}
+                          rows={5}
                         />
                       </Grid>
                       {/* <Grid item xs={12} alignItems="center" ml={-1}>

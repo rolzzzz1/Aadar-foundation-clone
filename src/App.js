@@ -14,6 +14,8 @@ import Home from "layouts/pages/home";
 // Material Kit 2 React routes
 import routes from "routes";
 
+import { Analytics } from "@vercel/analytics/react";
+
 export default function App() {
   const { pathname } = useLocation();
 
@@ -44,6 +46,7 @@ export default function App() {
         <Route path="/home" element={<Home />} />
         <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
+      <Analytics />
     </ThemeProvider>
   );
 }

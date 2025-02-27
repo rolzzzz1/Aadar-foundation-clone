@@ -44,8 +44,8 @@ export default {
         { name: "home", route: "/" },
         { name: "about us", route: "/pages/landing-pages/about-us" },
         { name: "our work", route: "/pages/landing-pages/work" },
+        // { name: "volunteer", route: "/pages/landing-pages/volunteer" },
         { name: "gallery", route: "/pages/landing-pages/gallery" },
-        { name: "contact", route: "/pages/landing-pages/contact" },
       ],
     },
 
@@ -57,6 +57,7 @@ export default {
           route: "/pages/landing-pages/privacy-policy",
         },
         { name: "terms and conditions", route: "/pages/landing-pages/terms-conditions" },
+        { name: "contact", route: "/pages/landing-pages/contact" },
       ],
     },
 
