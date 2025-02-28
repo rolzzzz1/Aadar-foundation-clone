@@ -9,6 +9,8 @@ import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 import MuiLink from "@mui/material/Link";
 
+import "./styles.css";
+
 // import event1 from "assets/images/eventImages/event 1.jpg";
 // import event2 from "assets/images/eventImages/event 2.jpg";
 
@@ -69,7 +71,7 @@ function Item(props) {
               key={i}
               // width="30%"
               width={{ xs: "70%", sm: "60%", md: "36%", lg: "33%", xl: "30%" }}
-              height="90%"
+              height="100%"
               // px={1}
 
               sx={{
@@ -81,6 +83,7 @@ function Item(props) {
                 },
               }}
               borderRadius="7px"
+              className="eventsImgs"
             >
               <MuiLink href={item.postLink} target="_blank" rel="noreferrer">
                 <MKBox
@@ -96,6 +99,7 @@ function Item(props) {
                     height="100%"
                     borderRadius="7px"
                     mx="auto"
+                    // className="eventsImgs"
                   ></MKBox>
                 </MKBox>
 
