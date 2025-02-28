@@ -256,6 +256,7 @@ function About(props) {
                       height="80%"
                       minHeight={"180px"}
                       maxHeight={"180px"}
+                      display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
                     ></MKBox>
 
                     <MKBox
@@ -268,12 +269,14 @@ function About(props) {
                       my={"auto"}
                       minHeight={"180px"}
                       maxHeight={"180px"}
+                      display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
                     ></MKBox>
                     <MKBox
                       component="img"
                       src={RescueImg3}
                       alt="RescueImg1"
-                      width="30%"
+                      // width="30%"
+                      width="80%"
                       borderRadius="10px"
                       height="80%"
                       my={"auto"}
@@ -324,12 +327,14 @@ function About(props) {
                       borderRadius={"10px"}
                       minHeight={"180px"}
                       maxHeight={"180px"}
+                      display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
                     ></MKBox>
                     <MKBox
                       component="img"
                       src={TreatmentImg2}
                       alt="TreatmentImg2"
-                      width="40%"
+                      // width="40%"
+                      width={{ xs: "80%", sm: "60%", md: "40%" }}
                       borderRadius="10px"
                       minHeight={"180px"}
                       maxHeight={"180px"}
@@ -387,7 +392,8 @@ function About(props) {
                       component="img"
                       src={ShelterImg1}
                       alt="RescueImg1"
-                      width="40%"
+                      // width="40%"
+                      width={{ xs: "80%", sm: "60%", md: "40%" }}
                       borderRadius="10px"
                       minHeight={"180px"}
                       maxHeight={"180px"}
@@ -400,6 +406,7 @@ function About(props) {
                       borderRadius="10px"
                       minHeight={"180px"}
                       maxHeight={"180px"}
+                      display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
                     ></MKBox>
                   </Grid>
                 </Grid>
@@ -465,12 +472,14 @@ function About(props) {
                       // height="90%"
                       minHeight={"180px"}
                       maxHeight={"180px"}
+                      display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
                     ></MKBox>
                     <MKBox
                       component="img"
                       src={FoodImg2}
                       alt="RescueImg1"
-                      width="40%"
+                      // width="40%"
+                      width={{ xs: "80%", sm: "60%", md: "40%" }}
                       // height="90%"
                       borderRadius="10px"
                       minHeight={"180px"}
@@ -538,7 +547,7 @@ function About(props) {
                       component="img"
                       src={CareImg2}
                       alt="RescueImg1"
-                      width="60%"
+                      width={{ xs: "100%", sm: "60%", md: "60%" }}
                       borderRadius="10px"
                       minHeight={"200px"}
                       maxHeight={"200px"}
@@ -596,11 +605,12 @@ function About(props) {
                       component="img"
                       src={RehabilitationImg1}
                       alt="RescueImg1"
-                      width="40%"
+                      width={{ xs: "60%", sm: "60%", md: "40%" }}
                       borderRadius="10px"
                       minHeight={"200px"}
                       maxHeight={"200px"}
                     ></MKBox>
+
                     <MKBox
                       component="img"
                       src={RehabilitationImg2}
@@ -609,6 +619,7 @@ function About(props) {
                       borderRadius="10px"
                       minHeight={"200px"}
                       maxHeight={"200px"}
+                      display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
                     ></MKBox>
                   </Grid>
                 </Grid>
