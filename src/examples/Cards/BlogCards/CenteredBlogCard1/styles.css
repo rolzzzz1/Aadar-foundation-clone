@@ -1,0 +1,8 @@
+.centerBlogImgs {
+  transition: transform 0.2s;
+}
+
+.centerBlogImgs:hover {
+  filter: opacity(0.9);
+  transform: scale(1.01);
+}

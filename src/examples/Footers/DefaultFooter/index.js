@@ -257,7 +257,7 @@ function DefaultFooter({ content }) {
                   paddingLeft="10px"
                   color="white"
                 >
-                  9039129571, 9826441863, 9630982392
+                  +91 9039129571, +91 9826441863, +91 9630982392
                 </MKTypography>
               </MKBox>
               <MKBox

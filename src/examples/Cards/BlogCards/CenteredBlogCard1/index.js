@@ -28,6 +28,8 @@ import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 // import MKButton from "components/MKButton";
 
+import "./styles.css";
+
 function CenteredBlogCard({ image, title, action, description }) {
   const imageTemplate = (
     <MKBox
@@ -51,6 +53,7 @@ function CenteredBlogCard({ image, title, action, description }) {
         width="100%"
         position="relative"
         zIndex={1}
+        // className="centerBlogImgs"
       />
       <MKBox
         borderRadius="lg"
@@ -81,6 +84,7 @@ function CenteredBlogCard({ image, title, action, description }) {
               backgroundColor: "#f9ddbc",
             },
           }}
+          className="centerBlogImgs"
         >
           {imageTemplate}
           {/* {action.type === "internal" ? (
