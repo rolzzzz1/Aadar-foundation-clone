@@ -44,6 +44,7 @@ import DefaultNavbarMobile from "examples/Navbars/DefaultNavbar/DefaultNavbarMob
 // Material Kit 2 React base styles
 import breakpoints from "assets/theme/base/breakpoints";
 import aadarLogo from "assets/images/logos/logo-aadar.jpg";
+
 // import { grey } from "@mui/material/colors";
 
 // import CallRoundedIcon from "@mui/icons-material/CallRounded";
@@ -538,6 +539,7 @@ function DefaultNavbar({
             borderRadius="10px"
             my={1}
           />
+
           {/* <img src={aadarLogo} width="130px" /> */}
           {/* <MKBox
             component={Link}
@@ -612,6 +614,7 @@ function DefaultNavbar({
               >
                 {brand}
               </MKTypography>
+
               <MKTypography
                 variant="button"
                 fontWeight="light"
@@ -629,6 +632,7 @@ function DefaultNavbar({
                 A Home for Homeless & Unclaimed People
               </MKTypography>
             </MKBox>
+
             <MKBox
               color="inherit"
               display={{ xs: "none", lg: "flex" }}
