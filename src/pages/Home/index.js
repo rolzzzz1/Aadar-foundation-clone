@@ -24,6 +24,9 @@ import footerRoutes from "footer.routes";
 // Images
 import bgImage from "assets/images/mainThemeImages/brushstroke.svg";
 import bgImage2 from "assets/images/mainThemeImages/aadar-main-black2.png";
+// import aadarHindi from "assets/images/aadarImg.png";
+import aadarHindiWhite from "assets/images/aadarHindiWhite.png";
+import aadarHindiYellow from "assets/images/aadarHindiYellow.png";
 // import img1 from "assets/images/galleryImages/resque1.jpg";
 // import img2 from "assets/images/galleryImages/resque2.jpg";
 
@@ -52,8 +55,8 @@ function Home() {
         }}
         sticky
       />
-
       {/* Main image/carousel section*/}
+
       <MKBox
         minHeight="100vh"
         width="100%"
@@ -67,16 +70,26 @@ function Home() {
           alignItems: "end",
         }}
       >
-        <MKTypography
-          color="white"
-          textAlign="center"
-          fontSize="1.3rem"
-          mb={8}
-          px={1}
-          display={{ xs: "inline", sm: "none" }}
-        >
-          A home for Hopeless, Homeless, Helpless and Unclaimed people
-        </MKTypography>
+        <MKBox display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+          <MKBox
+            component="img"
+            src={aadarHindiYellow}
+            width={{ xs: "80px", sm: "100px", md: "120px", lg: "120px" }}
+            display={{ xs: "inline", sm: "none" }}
+            mb={2}
+          />{" "}
+          <MKTypography
+            color="white"
+            textAlign="center"
+            fontSize="1.3rem"
+            mb={8}
+            px={1}
+            display={{ xs: "inline", sm: "none" }}
+          >
+            A home for Hopeless, Homeless, Helpless and Unclaimed people
+          </MKTypography>
+        </MKBox>
+
         <MKBox
           color="white"
           // display="flex"
@@ -104,7 +117,15 @@ function Home() {
             sx={{ fontSize: { xs: "1.5rem", sm: "1.7rem", md: "2rem", lg: "2rem" } }}
             // display={{ xs: "none", sm: "inline" }}
           >
-            Aadar Foundation
+            <MKBox
+              component="img"
+              src={aadarHindiWhite}
+              // width="120px"
+              width={{ xs: "80px", sm: "100px", md: "120px", lg: "120px" }}
+              // borderRadius="10px"
+              my={1}
+              mb={-2}
+            />{" "}
           </MKTypography>
           <MKTypography
             variant="body"
@@ -120,7 +141,6 @@ function Home() {
           </MKTypography>
         </MKBox>
       </MKBox>
-
       {/* Main section */}
       <Card
         sx={{
@@ -153,7 +173,6 @@ function Home() {
           <MKCarousel item={items} />
         </MKBox> */}
       </Card>
-
       {/* Footer */}
       <MKBox pt={2} px={0} mt={1}>
         <DefaultFooter content={footerRoutes} />
