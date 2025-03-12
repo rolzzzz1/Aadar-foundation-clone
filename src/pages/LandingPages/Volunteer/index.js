@@ -1,6 +1,11 @@
 import { useState } from "react";
 import React, { useRef } from "react";
 
+import validator from "validator";
+
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
+
 // import emailjs from "@emailjs/browser";
 
 // @mui material components
@@ -47,6 +52,33 @@ function Volunteer() {
   const [successMsg, setSuccessMsg] = useState(false);
   const [errMsg, setErrMsg] = useState(false);
   const [error, setError] = useState("Please fill the required ( * ) fields ");
+
+  const [emailError, setEmailError] = useState("");
+  const validateEmail = (e) => {
+    const email = e.target.value;
+
+    if (validator.isEmail(email)) {
+      setEmailError("");
+    } else {
+      setEmailError("Enter valid Email!");
+    }
+  };
+
+  const [phone, setPhone] = useState("");
+
+  // const [phoneError, setPhoneError] = useState("");
+  // // const [phoneValid, setPhoneValid] = useState("");
+  // const validatePhone = (e) => {
+  //   // setPhone(e.target.value);
+
+  //   if (validator.isMobilePhone(e.target.value)) {
+  //     // setPhoneValid("Valid Phone Number :)");
+  //     setPhoneError("");
+  //   } else {
+  //     setPhoneError("Enter valid Phone Number! ");
+  //     // setPhoneValid("");
+  //   }
+  // };
 
   const sendEmail = (e) => {
     e.preventDefault();
@@ -304,17 +336,49 @@ function Volunteer() {
                           type="email"
                           name="email"
                           label="Email *"
+                          onChange={(e) => validateEmail(e)}
                           fullWidth
                         />
+                        <Grid item xs={12} md={12} height="0.5rem" pl={1}>
+                          <MKTypography color="error" fontSize="0.8rem">
+                            {emailError}
+                          </MKTypography>
+                        </Grid>
                       </Grid>
 
                       <Grid item xs={12} md={6}>
-                        <MKInput
+                        {/* <MKInput
                           variant="outlined"
                           type="tel"
                           name="phone"
                           label="Phone number *"
+                          onChange={(e) => validatePhone(e)}
                           fullWidth
+                        />
+
+                        <Grid item xs={12} md={12} height="0.5rem" pl={1}>
+                          <MKTypography color="error" fontSize="0.8rem">
+                            {phoneError}
+                          </MKTypography>
+                        </Grid> */}
+
+                        <PhoneInput
+                          defaultCountry="in"
+                          value={phone}
+                          onChange={(phone) => setPhone(phone)}
+                          style={{ height: "85%" }}
+                          inputStyle={{
+                            backgroundColor: "transparent",
+                            width: "100%",
+                            height: "100%",
+                          }}
+                          hideDropdown="true"
+                          // countrySelectorStyleProps={{
+                          //   style: {
+                          //     height: "100%",
+                          //     backgroundColor: "transparent",
+                          //   },
+                          // }}
                         />
                       </Grid>
 
@@ -371,7 +435,7 @@ function Volunteer() {
                           sx={{ border: "1px solid rgb(73, 80, 87, 0.2)" }}
                           borderRadius="5px"
                         >
-                          <FormControl component={"fieldset"}>
+                          <FormControl component={"fieldset"} name="interests">
                             <FormGroup>
                               <FormControlLabel
                                 control={
