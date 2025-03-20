@@ -2,11 +2,11 @@ import { useState } from "react";
 import React, { useRef } from "react";
 
 import validator from "validator";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 
-import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 
-// import emailjs from "@emailjs/browser";
+import emailjs from "@emailjs/browser";
 
 // @mui material components
 import Container from "@mui/material/Container";
@@ -15,23 +15,19 @@ import Grid from "@mui/material/Grid";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import Checkbox from "@mui/material/Checkbox";
-// import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
-// import FormLabel from "@mui/material/FormLabel";
-
-// import Switch from "@mui/material/Switch";
 
 // Material Kit 2 React examples
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import DefaultFooter from "examples/Footers/DefaultFooter";
-// import MKAlert from "components/MKAlert";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 import MKInput from "components/MKInput";
 import MKButton from "components/MKButton";
+import { MKPhone } from "components/MKPhone";
 
 // Routes
 import routes from "routes";
@@ -41,16 +37,12 @@ import footerRoutes from "footer.routes";
 import bgImage2 from "assets/images/mainThemeImages/swargSadanBlack.png";
 import bgImage from "assets/images/mainThemeImages/smallBrushstroke2.svg";
 import team from "assets/images/aboutPageImages/teamImg.jpg";
-import { FormControl } from "@mui/material";
 
 function Volunteer() {
-  //   const [checked, setChecked] = useState(true);
-
-  //   const handleChecked = () => setChecked(!checked);
-
   const form = useRef();
   const [successMsg, setSuccessMsg] = useState(false);
   const [errMsg, setErrMsg] = useState(false);
+  const [imageFileError, setImageFileError] = useState("");
   const [error, setError] = useState("Please fill the required ( * ) fields ");
 
   const [emailError, setEmailError] = useState("");
@@ -65,102 +57,123 @@ function Volunteer() {
   };
 
   const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState("");
 
-  // const [phoneError, setPhoneError] = useState("");
-  // // const [phoneValid, setPhoneValid] = useState("");
-  // const validatePhone = (e) => {
-  //   // setPhone(e.target.value);
+  const validatePhone = (inputValue, country) => {
+    const countryCode = country.iso2;
+    const inputPhone = inputValue;
+    const countryDialcode = country.dialCode;
 
-  //   if (validator.isMobilePhone(e.target.value)) {
-  //     // setPhoneValid("Valid Phone Number :)");
-  //     setPhoneError("");
-  //   } else {
-  //     setPhoneError("Enter valid Phone Number! ");
-  //     // setPhoneValid("");
-  //   }
-  // };
+    const phoneNumber = parsePhoneNumberFromString(inputPhone, countryCode);
+    if (!phoneNumber || !phoneNumber.isValid()) {
+      var code = "+" + countryDialcode;
+      if (inputPhone !== code) {
+        setPhoneError("Please enter valid number");
+      } else {
+        setPhoneError("");
+      }
+    } else {
+      setPhoneError("");
+    }
+  };
+
+  const [fileValid, setFileValid] = useState(true);
+
+  const handleImageFile = (file) => {
+    var fileSizeKb = Math.round(file.target.files[0].size / 1024);
+
+    if (fileSizeKb > 50) {
+      setImageFileError(
+        "Image size - " + fileSizeKb + "Kb" + " -- Please upload image less than 50kb"
+      );
+      setFileValid(false);
+      setError("Upload valid image");
+    } else {
+      setImageFileError("");
+      setFileValid(true);
+      setError("Please fill the required ( * ) fields ");
+    }
+  };
+
+  const [interestsState, setInterestsState] = React.useState({
+    medical: true,
+    administration: false,
+    others: false,
+  });
+
+  const handleChange = (event) => {
+    setInterestsState({
+      ...interestsState,
+      [event.target.name]: event.target.checked,
+    });
+  };
+
+  const { medical, administration, others } = interestsState;
 
   const sendEmail = (e) => {
     e.preventDefault();
 
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
-    console.log(data);
+
+    var check = Object.values(interestsState).every((item) => item === false);
 
     if (
       data.name !== "" &&
       data.email !== "" &&
-      data.phone.length === 10 &&
       data.phone !== "" &&
+      data.qualification !== "" &&
       data.address !== "" &&
       data.profile !== "" &&
-      data.qualification !== "" &&
-      data.interests !== ""
+      check !== true &&
+      fileValid
     ) {
       setSuccessMsg(true);
+      setTimeout(() => {
+        setSuccessMsg(false);
+      }, 5000);
+
       setErrMsg(false);
 
       // Sending email
-      // emailjs
-      //   .sendForm("service_a7f8kvk", "template_kj0zzo9", form.current, {
-      //     publicKey: "i1eYRzEru3UMSm8qR",
-      //   })
-      //   .then(
-      //     () => {
-      //       console.log("SUCCESS!");
-      //       console.log(data);
-      //     },
-      //     (error) => {
-      //       console.log("FAILED...", error.text);
-      //     }
-      //   );
+      emailjs
+        // .send("service_a7f8kvk", "template_kj0zzo9", emailData, { publicKey: "i1eYRzEru3UMSm8qR" })
+        .sendForm("service_a7f8kvk", "template_kj0zzo9", form.current, {
+          publicKey: "i1eYRzEru3UMSm8qR",
+        })
+        .then(
+          () => {
+            console.log(data);
+            console.log("SUCCESS!");
+          },
+          (error) => {
+            console.log("FAILED...", error.text);
+          }
+        );
     } else {
       console.log("required field missing");
 
-      if (data.name !== "" && data.email !== "" && data.address !== "" && data.profile !== "") {
-        if (data.phone.length !== 0 && data.phone.length !== 10) {
-          setError("Please enter valid phone number");
-        }
-      }
-
       setErrMsg(true);
+      setTimeout(() => {
+        setErrMsg(false);
+      }, 5000);
       setSuccessMsg(false);
     }
 
-    // emailjs
-    //   .sendForm("service_a7f8kvk", "template_kj0zzo9", form.current, {
-    //     publicKey: "i1eYRzEru3UMSm8qR",
-    //   })
-    //   .then(
-    //     () => {
-    //       console.log("SUCCESS!");
-    //       console.log(data);
-    //     },
-    //     (error) => {
-    //       console.log("FAILED...", error.text);
-    //     }
-    //   );
+    emailjs
+      .sendForm("service_a7f8kvk", "template_kj0zzo9", form.current, {
+        publicKey: "i1eYRzEru3UMSm8qR",
+      })
+      .then(
+        () => {
+          console.log("SUCCESS!");
+          console.log(data);
+        },
+        (error) => {
+          console.log("FAILED...", error.text);
+        }
+      );
   };
-
-  // const handleSubmit = (event) => {
-  //   const formData = new FormData(event.target);
-  //   const data = Object.fromEntries(formData.entries());
-  //   // const result = registerUserSchema.safeParse(data);
-
-  //   // if (!result.success) {
-  //   //   event.preventDefault();
-  //   //   // handle errors here.
-  //   // }
-
-  //   event.preventDefault();
-  //   console.log("submitted");
-  //   console.log(data);
-  //   // console.log(formData.get("email"));
-  // };
-
-  // const handleSubmitAction = (formData) => {
-  //   console.log(formData.entries);
-  // };
 
   return (
     <MKBox minWidth="320px">
@@ -239,11 +252,9 @@ function Volunteer() {
                 md={12}
                 lg={4}
                 sx={{
-                  // ml: { xs: 0, lg: 3 },
                   mb: { xs: 8, md: 8, lg: 0 },
                 }}
               >
-                {/* <Container> */}
                 <MKTypography variant="h4" sx={{ fontWeight: "500" }} pb={4}>
                   Join us as a volunteer{" "}
                 </MKTypography>
@@ -252,25 +263,21 @@ function Volunteer() {
                   src={team}
                   alt={"Swarg sadan building image"}
                   borderRadius="xxl"
-                  // width="100%"
                   sx={{
                     height: { xs: "90%", sm: "80%", md: "80%", lg: "80%" },
                     width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
                   }}
-                  // height="90%"
                   my={2}
                 ></MKBox>
                 <MKTypography variant="body1" fontSize="0.9rem" pt={2}>
                   Aadar foundation provides opportunities not only for homeless, helpless, and
                   destitute individuals but also for those who wish to make a meaningful impact in
                   the lives of others. It serves as a growing platform for volunteers dedicated to
-                  service.
-                  <b>( areas where volunteers are required, what they can expect - come here )</b>
-                  We are seeking proactive, enthusiastic, and hardworking volunteers to join us.
-                  Volunteers have played a vital role in Aadar Foundation’s work, and we always
-                  welcome fresh ideas and skills. To ensure the best match between our expectations
-                  and yours, we encourage interested individuals to apply and provide the necessary
-                  information.
+                  service. We are seeking proactive, enthusiastic, and hardworking volunteers to
+                  join us. Volunteers have played a vital role in Aadar Foundation’s work, and we
+                  always welcome fresh ideas and skills. To ensure the best match between our
+                  expectations and yours, we encourage interested individuals to apply and provide
+                  the necessary information.
                 </MKTypography>
               </Grid>
               <Grid container item xs={12} lg={7} sx={{ mx: "auto" }}>
@@ -280,9 +287,7 @@ function Volunteer() {
                   method="post"
                   autocomplete="off"
                   pt={8}
-                  // action={submitAction}
                   ref={form}
-                  // onSubmit={handleSubmit}
                   onSubmit={sendEmail}
                 >
                   <MKBox p={3}>
@@ -347,39 +352,19 @@ function Volunteer() {
                       </Grid>
 
                       <Grid item xs={12} md={6}>
-                        {/* <MKInput
-                          variant="outlined"
-                          type="tel"
+                        <MKPhone
+                          value={phone}
                           name="phone"
-                          label="Phone number *"
-                          onChange={(e) => validatePhone(e)}
-                          fullWidth
+                          onChange={(inputValue, country) => {
+                            setPhone(inputValue);
+                            validatePhone(inputValue, country);
+                          }}
                         />
-
                         <Grid item xs={12} md={12} height="0.5rem" pl={1}>
                           <MKTypography color="error" fontSize="0.8rem">
                             {phoneError}
                           </MKTypography>
-                        </Grid> */}
-
-                        <PhoneInput
-                          defaultCountry="in"
-                          value={phone}
-                          onChange={(phone) => setPhone(phone)}
-                          style={{ height: "85%" }}
-                          inputStyle={{
-                            backgroundColor: "transparent",
-                            width: "100%",
-                            height: "100%",
-                          }}
-                          hideDropdown="true"
-                          // countrySelectorStyleProps={{
-                          //   style: {
-                          //     height: "100%",
-                          //     backgroundColor: "transparent",
-                          //   },
-                          // }}
-                        />
+                        </Grid>
                       </Grid>
 
                       <Grid item xs={12} md={6}>
@@ -393,8 +378,9 @@ function Volunteer() {
                       <Grid item xs={12} md={6}>
                         <MKInput
                           variant="outlined"
-                          name="occupation"
-                          label="Present occupation"
+                          name="age"
+                          label="Age"
+                          type="number"
                           fullWidth
                         />
                       </Grid>
@@ -435,37 +421,48 @@ function Volunteer() {
                           sx={{ border: "1px solid rgb(73, 80, 87, 0.2)" }}
                           borderRadius="5px"
                         >
-                          <FormControl component={"fieldset"} name="interests">
-                            <FormGroup>
-                              <FormControlLabel
-                                control={
-                                  <Checkbox defaultChecked name="interests" value="medical" />
-                                }
-                                label={
-                                  <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                                    Medical
-                                  </MKTypography>
-                                }
-                                defaultChecked
-                              />
-                              <FormControlLabel
-                                control={<Checkbox name="interests" value="administration" />}
-                                label={
-                                  <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                                    Administration
-                                  </MKTypography>
-                                }
-                              />
-                              <FormControlLabel
-                                control={<Checkbox name="interests" value="..." />}
-                                label={
-                                  <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                                    ...
-                                  </MKTypography>
-                                }
-                              />
-                            </FormGroup>
-                          </FormControl>
+                          <FormGroup>
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  defaultChecked
+                                  name="medical"
+                                  onChange={handleChange}
+                                  checked={medical}
+                                />
+                              }
+                              label={
+                                <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
+                                  Medical
+                                </MKTypography>
+                              }
+                              defaultChecked
+                            />
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  name="administration"
+                                  checked={administration}
+                                  onChange={handleChange}
+                                />
+                              }
+                              label={
+                                <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
+                                  Administration
+                                </MKTypography>
+                              }
+                            />
+                            <FormControlLabel
+                              control={
+                                <Checkbox name="others" checked={others} onChange={handleChange} />
+                              }
+                              label={
+                                <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
+                                  Others
+                                </MKTypography>
+                              }
+                            />
+                          </FormGroup>
                         </MKBox>
                       </Grid>
                       <Grid item xs={12}>
@@ -480,26 +477,30 @@ function Volunteer() {
                           borderRadius="5px"
                           display="flex"
                           alignItems="center"
+                          overflow="hidden"
                         >
-                          <input type="file" accept="image/*" name="photoId"></input>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            name="photoId"
+                            onChange={(e) => handleImageFile(e)}
+                          ></input>
                         </MKBox>
+                        <Grid item xs={12} md={12} height="0.5rem" pl={1}>
+                          <MKTypography color="error" fontSize="0.8rem">
+                            {imageFileError}
+                          </MKTypography>
+                        </Grid>
                       </Grid>
                     </Grid>
-                    <Grid container item xs={12} my={1} pt={1}>
+                    <Grid container item xs={12} my={1} pt={3} minHeight={"60px"}>
                       {errMsg && (
-                        <MKBox
-                          border="2px solidrgb(65, 60, 60)"
-                          borderRadius="5px"
-                          width="100%"
-                          pl={2}
-                        >
+                        <MKBox border="2px solid #F44335" borderRadius="5px" width="100%" pl={2}>
                           <MKTypography color="error" fontSize="1rem">
                             {error}
                           </MKTypography>
                         </MKBox>
                       )}
-                    </Grid>
-                    <Grid container item xs={12} my={1} pt={1}>
                       {successMsg && (
                         <MKBox border="2px solid #4CAF50" borderRadius="5px" width="100%" pl={2}>
                           <MKTypography color="success" fontSize="1rem">
@@ -509,7 +510,7 @@ function Volunteer() {
                       )}
                     </Grid>
 
-                    <Grid container item justifyContent="center" xs={12} my={2} pt={4}>
+                    <Grid container item justifyContent="center" xs={12} my={2} pt={2}>
                       <MKButton type="submit" variant="gradient" color="dark" fullWidth>
                         Submit
                       </MKButton>
