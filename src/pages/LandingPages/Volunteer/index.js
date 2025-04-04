@@ -58,6 +58,7 @@ function Volunteer() {
 
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState("");
+  const [isPhoneValid, setIsPhoneValid] = useState(false);
 
   const validatePhone = (inputValue, country) => {
     const countryCode = country.iso2;
@@ -72,8 +73,10 @@ function Volunteer() {
       } else {
         setPhoneError("");
       }
+      setIsPhoneValid(false);
     } else {
       setPhoneError("");
+      setIsPhoneValid(true);
     }
   };
 
@@ -96,9 +99,13 @@ function Volunteer() {
   };
 
   const [interestsState, setInterestsState] = React.useState({
-    medical: true,
-    administration: false,
-    others: false,
+    activitiesVolunteer: true,
+    medical: false,
+    professionals: false,
+    management: false,
+    prabhujiSeva: false,
+    trainer: false,
+    counsellor: false,
   });
 
   const handleChange = (event) => {
@@ -108,7 +115,15 @@ function Volunteer() {
     });
   };
 
-  const { medical, administration, others } = interestsState;
+  const {
+    activitiesVolunteer,
+    medical,
+    professionals,
+    management,
+    prabhujiSeva,
+    trainer,
+    counsellor,
+  } = interestsState;
 
   const sendEmail = (e) => {
     e.preventDefault();
@@ -116,16 +131,16 @@ function Volunteer() {
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
 
-    var check = Object.values(interestsState).every((item) => item === false);
+    var interestCheck = Object.values(interestsState).every((item) => item === false);
 
     if (
       data.name !== "" &&
       data.email !== "" &&
-      data.phone !== "" &&
+      isPhoneValid &&
       data.qualification !== "" &&
       data.address !== "" &&
       data.profile !== "" &&
-      check !== true &&
+      interestCheck !== true &&
       fileValid
     ) {
       setSuccessMsg(true);
@@ -160,19 +175,19 @@ function Volunteer() {
       setSuccessMsg(false);
     }
 
-    emailjs
-      .sendForm("service_a7f8kvk", "template_kj0zzo9", form.current, {
-        publicKey: "i1eYRzEru3UMSm8qR",
-      })
-      .then(
-        () => {
-          console.log("SUCCESS!");
-          console.log(data);
-        },
-        (error) => {
-          console.log("FAILED...", error.text);
-        }
-      );
+    // emailjs
+    //   .sendForm("service_a7f8kvk", "template_kj0zzo9", form.current, {
+    //     publicKey: "i1eYRzEru3UMSm8qR",
+    //   })
+    //   .then(
+    //     () => {
+    //       console.log("SUCCESS!");
+    //       console.log(data);
+    //     },
+    //     (error) => {
+    //       console.log("FAILED...", error.text);
+    //     }
+    //   );
   };
 
   return (
@@ -366,15 +381,6 @@ function Volunteer() {
                           </MKTypography>
                         </Grid>
                       </Grid>
-
-                      <Grid item xs={12} md={6}>
-                        <MKInput
-                          variant="outlined"
-                          name="qualification"
-                          label="Qualification *"
-                          fullWidth
-                        />
-                      </Grid>
                       <Grid item xs={12} md={6}>
                         <MKInput
                           variant="outlined"
@@ -384,6 +390,34 @@ function Volunteer() {
                           fullWidth
                         />
                       </Grid>
+
+                      <Grid item xs={12} md={6}>
+                        <MKInput
+                          variant="outlined"
+                          name="qualification"
+                          label="Qualification & Year *"
+                          fullWidth
+                        />
+                      </Grid>
+
+                      <Grid item xs={12} md={6}>
+                        <MKInput
+                          variant="outlined"
+                          name="college"
+                          label="College / University"
+                          fullWidth
+                        />
+                      </Grid>
+
+                      <Grid item xs={12} md={6}>
+                        <MKInput
+                          variant="outlined"
+                          name="occupation"
+                          label="Present occupation"
+                          fullWidth
+                        />
+                      </Grid>
+
                       <Grid item xs={12}>
                         <MKInput
                           variant="outlined"
@@ -425,6 +459,20 @@ function Volunteer() {
                             <FormControlLabel
                               control={
                                 <Checkbox
+                                  name="activitiesVolunteer"
+                                  checked={activitiesVolunteer}
+                                  onChange={handleChange}
+                                />
+                              }
+                              label={
+                                <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
+                                  Activities volunteer
+                                </MKTypography>
+                              }
+                            />
+                            <FormControlLabel
+                              control={
+                                <Checkbox
                                   defaultChecked
                                   name="medical"
                                   onChange={handleChange}
@@ -433,7 +481,7 @@ function Volunteer() {
                               }
                               label={
                                 <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                                  Medical
+                                  Medical services
                                 </MKTypography>
                               }
                               defaultChecked
@@ -441,24 +489,70 @@ function Volunteer() {
                             <FormControlLabel
                               control={
                                 <Checkbox
-                                  name="administration"
-                                  checked={administration}
+                                  name="professionals"
+                                  checked={professionals}
                                   onChange={handleChange}
                                 />
                               }
                               label={
                                 <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                                  Administration
+                                  Professionals
                                 </MKTypography>
                               }
                             />
                             <FormControlLabel
                               control={
-                                <Checkbox name="others" checked={others} onChange={handleChange} />
+                                <Checkbox
+                                  name="management"
+                                  checked={management}
+                                  onChange={handleChange}
+                                />
                               }
                               label={
                                 <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                                  Others
+                                  Management
+                                </MKTypography>
+                              }
+                            />
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  name="prabhujiSeva"
+                                  checked={prabhujiSeva}
+                                  onChange={handleChange}
+                                />
+                              }
+                              label={
+                                <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
+                                  Prabhuji seva
+                                </MKTypography>
+                              }
+                            />
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  name="trainer"
+                                  checked={trainer}
+                                  onChange={handleChange}
+                                />
+                              }
+                              label={
+                                <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
+                                  Education / Trainer
+                                </MKTypography>
+                              }
+                            />
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  name="counsellor"
+                                  checked={counsellor}
+                                  onChange={handleChange}
+                                />
+                              }
+                              label={
+                                <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
+                                  Counsellor
                                 </MKTypography>
                               }
                             />
