@@ -506,9 +506,9 @@ function DefaultNavbar({
         // pl={{ xs: 0.5, sm: 2 }}
         // px={{ xs: 4, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
         my={relative ? 0 : 2}
-        // mx={relative ? 0 : 1}
-        width="100%"
-        // width={relative ? "100%" : "calc(100% - 8px)"}
+        mx={relative ? 0 : 1}
+        // width="100%"
+        width={relative ? "100%" : "calc(100% - 16px)"}
         borderRadius="xl"
         shadow={transparent ? "none" : "md"}
         color={light ? "white" : "dark"}

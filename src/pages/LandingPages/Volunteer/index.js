@@ -267,10 +267,16 @@ function Volunteer() {
                 md={12}
                 lg={4}
                 sx={{
-                  mb: { xs: 8, md: 8, lg: 0 },
+                  mb: { xs: 4, md: 8, lg: 0 },
                 }}
               >
-                <MKTypography variant="h4" sx={{ fontWeight: "500" }} pb={4}>
+                <MKTypography
+                  variant="h3"
+                  fontSize={{ xs: "1.2rem", sm: "1.5rem" }}
+                  fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                  sx={{ letterSpacing: "0.05rem", fontWeight: "500" }}
+                  pb={{ xs: 2, sm: 4 }}
+                >
                   Join us as a volunteer{" "}
                 </MKTypography>
                 <MKBox
@@ -280,8 +286,14 @@ function Volunteer() {
                   borderRadius="xxl"
                   sx={{
                     height: { xs: "90%", sm: "80%", md: "80%", lg: "80%" },
-                    width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
+                    width: { xs: "100%", sm: "80%", md: "80%", lg: "100%" },
                   }}
+                  fontSize={{ xs: "0.8rem", md: "1rem" }}
+                  fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                  // sx={{
+                  //   letterSpacing: "0.05rem",
+                  //   paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+                  // }}
                   my={2}
                 ></MKBox>
                 <MKTypography variant="body1" fontSize="0.9rem" pt={2}>
@@ -301,11 +313,12 @@ function Volunteer() {
                   component="form"
                   method="post"
                   autocomplete="off"
-                  pt={8}
+                  minWidth="240px"
+                  pt={{ xs: 2, md: 2, lg: 8 }}
                   ref={form}
                   onSubmit={sendEmail}
                 >
-                  <MKBox p={3}>
+                  <MKBox py={3} px={0}>
                     <Grid container spacing={3}>
                       <Grid item xs={12} md={6}>
                         <MKInput variant="outlined" label="Name *" name="name" fullWidth />
@@ -316,9 +329,14 @@ function Volunteer() {
                         md={6}
                         display="flex"
                         alignItems={"center"}
-                        justifyContent={"space-between"}
+                        // justifyContent={"space-around"}
                       >
-                        <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }} pl={1}>
+                        <MKTypography
+                          fontSize="0.89rem"
+                          sx={{ color: "#6c757d" }}
+                          pl={1}
+                          pr={{ xs: 2, sm: 3, md: 3, lg: 3 }}
+                        >
                           Gender
                         </MKTypography>
 
@@ -328,26 +346,37 @@ function Volunteer() {
                           name="row-radio-buttons-group"
                           defaultValue={"male"}
                         >
-                          <FormControlLabel
-                            value="male"
-                            control={<Radio />}
-                            name="gender"
-                            label={
-                              <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                                Male
-                              </MKTypography>
-                            }
-                          />
-                          <FormControlLabel
-                            value="female"
-                            control={<Radio size={"small"} />}
-                            name="gender"
-                            label={
-                              <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                                Female
-                              </MKTypography>
-                            }
-                          />
+                          <MKBox display="flex">
+                            <FormControlLabel
+                              value="male"
+                              control={<Radio />}
+                              name="gender"
+                              sx={{ padding: 0.25 }}
+                              label={
+                                <MKTypography
+                                  fontSize={{ xs: "0.75rem", sm: "0.89rem" }}
+                                  sx={{ color: "#6c757d" }}
+                                >
+                                  Male
+                                </MKTypography>
+                              }
+                            />
+
+                            <FormControlLabel
+                              value="female"
+                              control={<Radio size={"small"} />}
+                              name="gender"
+                              sx={{ padding: 0.25 }}
+                              label={
+                                <MKTypography
+                                  fontSize={{ xs: "0.75rem", sm: "0.89rem" }}
+                                  sx={{ color: "#6c757d" }}
+                                >
+                                  Female
+                                </MKTypography>
+                              }
+                            />
+                          </MKBox>
                         </RadioGroup>
                       </Grid>
                       <Grid item xs={12} md={6}>
