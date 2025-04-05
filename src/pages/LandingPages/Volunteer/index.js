@@ -42,8 +42,11 @@ function Volunteer() {
   const form = useRef();
   const [successMsg, setSuccessMsg] = useState(false);
   const [errMsg, setErrMsg] = useState(false);
-  const [imageFileError, setImageFileError] = useState("");
-  const [error, setError] = useState("Please fill the required ( * ) fields ");
+  // const [imageFileError, setImageFileError] = useState("");
+  const [
+    error,
+    // setError
+  ] = useState("Please fill the required ( * ) fields ");
 
   const [emailError, setEmailError] = useState("");
   const validateEmail = (e) => {
@@ -80,23 +83,23 @@ function Volunteer() {
     }
   };
 
-  const [fileValid, setFileValid] = useState(true);
+  // const [fileValid, setFileValid] = useState(true);
 
-  const handleImageFile = (file) => {
-    var fileSizeKb = Math.round(file.target.files[0].size / 1024);
+  // const handleImageFile = (file) => {
+  //   var fileSizeKb = Math.round(file.target.files[0].size / 1024);
 
-    if (fileSizeKb > 50) {
-      setImageFileError(
-        "Image size - " + fileSizeKb + "Kb" + " -- Please upload image less than 50kb"
-      );
-      setFileValid(false);
-      setError("Upload valid image");
-    } else {
-      setImageFileError("");
-      setFileValid(true);
-      setError("Please fill the required ( * ) fields ");
-    }
-  };
+  //   if (fileSizeKb > 50) {
+  //     setImageFileError(
+  //       "Image size - " + fileSizeKb + "Kb" + " -- Please upload image less than 50kb"
+  //     );
+  //     setFileValid(false);
+  //     setError("Upload valid image");
+  //   } else {
+  //     setImageFileError("");
+  //     setFileValid(true);
+  //     setError("Please fill the required ( * ) fields ");
+  //   }
+  // };
 
   const [interestsState, setInterestsState] = React.useState({
     activitiesVolunteer: true,
@@ -140,8 +143,9 @@ function Volunteer() {
       data.qualification !== "" &&
       data.address !== "" &&
       data.profile !== "" &&
-      interestCheck !== true &&
-      fileValid
+      interestCheck !== true
+      // &&
+      // fileValid
     ) {
       setSuccessMsg(true);
       setTimeout(() => {
@@ -153,8 +157,14 @@ function Volunteer() {
       // Sending email
       emailjs
         // .send("service_a7f8kvk", "template_kj0zzo9", emailData, { publicKey: "i1eYRzEru3UMSm8qR" })
-        .sendForm("service_a7f8kvk", "template_kj0zzo9", form.current, {
-          publicKey: "i1eYRzEru3UMSm8qR",
+        //Aishwarya emailjs
+        // .sendForm("service_a7f8kvk", "template_kj0zzo9", form.current, {
+        //   publicKey: "i1eYRzEru3UMSm8qR",
+        // })
+
+        //Aadar emailjs
+        .sendForm("service_4a9mgcp", "template_ie847rr", form.current, {
+          publicKey: "41w8LwNiKZaoka4j-",
         })
         .then(
           () => {
@@ -495,7 +505,14 @@ function Volunteer() {
                               }
                               label={
                                 <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                                  Activities volunteer
+                                  Activities volunteer{" "}
+                                  {/* <MKTypography
+                                    display={{ xs: "none", sm: "inline-block" }}
+                                    fontSize={{ sm: "0.75rem", md: "0.89rem" }}
+                                    sx={{ color: "#B5BABE", pl: 2 }}
+                                  >
+                                    Like conducting games, yoga, dance and others{" "}
+                                  </MKTypography> */}
                                 </MKTypography>
                               }
                             />
@@ -588,7 +605,7 @@ function Volunteer() {
                           </FormGroup>
                         </MKBox>
                       </Grid>
-                      <Grid item xs={12}>
+                      {/* <Grid item xs={12}>
                         <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
                           Upload photo id
                         </MKTypography>
@@ -614,7 +631,7 @@ function Volunteer() {
                             {imageFileError}
                           </MKTypography>
                         </Grid>
-                      </Grid>
+                      </Grid> */}
                     </Grid>
                     <Grid container item xs={12} my={1} pt={3} minHeight={"60px"}>
                       {errMsg && (
