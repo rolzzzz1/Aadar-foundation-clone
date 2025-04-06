@@ -1,12 +1,22 @@
-// import { useState } from "react";
+import { useState } from "react";
 import React, { useRef } from "react";
+
+import validator from "validator";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
+
+import "react-international-phone/style.css";
+
 import emailjs from "@emailjs/browser";
 
 // @mui material components
 import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-// import Switch from "@mui/material/Switch";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
 
 // Material Kit 2 React examples
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
@@ -17,6 +27,7 @@ import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 import MKInput from "components/MKInput";
 import MKButton from "components/MKButton";
+import { MKPhone } from "components/MKPhone";
 
 // Routes
 import routes from "routes";
@@ -28,53 +39,166 @@ import bgImage from "assets/images/mainThemeImages/smallBrushstroke2.svg";
 import team from "assets/images/aboutPageImages/teamImg.jpg";
 
 function Volunteer() {
-  //   const [checked, setChecked] = useState(true);
-
-  //   const handleChecked = () => setChecked(!checked);
-
   const form = useRef();
+  const [successMsg, setSuccessMsg] = useState(false);
+  const [errMsg, setErrMsg] = useState(false);
+  // const [imageFileError, setImageFileError] = useState("");
+  const [
+    error,
+    // setError
+  ] = useState("Please fill the required ( * ) fields ");
+
+  const [emailError, setEmailError] = useState("");
+  const validateEmail = (e) => {
+    const email = e.target.value;
+
+    if (validator.isEmail(email)) {
+      setEmailError("");
+    } else {
+      setEmailError("Enter valid Email!");
+    }
+  };
+
+  const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const [isPhoneValid, setIsPhoneValid] = useState(false);
+
+  const validatePhone = (inputValue, country) => {
+    const countryCode = country.iso2;
+    const inputPhone = inputValue;
+    const countryDialcode = country.dialCode;
+
+    const phoneNumber = parsePhoneNumberFromString(inputPhone, countryCode);
+    if (!phoneNumber || !phoneNumber.isValid()) {
+      var code = "+" + countryDialcode;
+      if (inputPhone !== code) {
+        setPhoneError("Please enter valid number");
+      } else {
+        setPhoneError("");
+      }
+      setIsPhoneValid(false);
+    } else {
+      setPhoneError("");
+      setIsPhoneValid(true);
+    }
+  };
+
+  // const [fileValid, setFileValid] = useState(true);
+
+  // const handleImageFile = (file) => {
+  //   var fileSizeKb = Math.round(file.target.files[0].size / 1024);
+
+  //   if (fileSizeKb > 50) {
+  //     setImageFileError(
+  //       "Image size - " + fileSizeKb + "Kb" + " -- Please upload image less than 50kb"
+  //     );
+  //     setFileValid(false);
+  //     setError("Upload valid image");
+  //   } else {
+  //     setImageFileError("");
+  //     setFileValid(true);
+  //     setError("Please fill the required ( * ) fields ");
+  //   }
+  // };
+
+  const [interestsState, setInterestsState] = React.useState({
+    activitiesVolunteer: true,
+    medical: false,
+    professionals: false,
+    management: false,
+    prabhujiSeva: false,
+    trainer: false,
+    counsellor: false,
+  });
+
+  const handleChange = (event) => {
+    setInterestsState({
+      ...interestsState,
+      [event.target.name]: event.target.checked,
+    });
+  };
+
+  const {
+    activitiesVolunteer,
+    medical,
+    professionals,
+    management,
+    prabhujiSeva,
+    trainer,
+    counsellor,
+  } = interestsState;
 
   const sendEmail = (e) => {
     e.preventDefault();
 
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
-    // console.log(data);
 
-    emailjs
-      .sendForm("service_a7f8kvk", "template_kj0zzo9", form.current, {
-        publicKey: "i1eYRzEru3UMSm8qR",
-      })
-      .then(
-        () => {
-          console.log("SUCCESS!");
-          console.log(data);
-        },
-        (error) => {
-          console.log("FAILED...", error.text);
-        }
-      );
+    var interestCheck = Object.values(interestsState).every((item) => item === false);
+
+    if (
+      data.name !== "" &&
+      data.email !== "" &&
+      isPhoneValid &&
+      data.qualification !== "" &&
+      data.address !== "" &&
+      data.profile !== "" &&
+      interestCheck !== true
+      // &&
+      // fileValid
+    ) {
+      setSuccessMsg(true);
+      setTimeout(() => {
+        setSuccessMsg(false);
+      }, 5000);
+
+      setErrMsg(false);
+
+      // Sending email
+      emailjs
+        // .send("service_a7f8kvk", "template_kj0zzo9", emailData, { publicKey: "i1eYRzEru3UMSm8qR" })
+        //Aishwarya emailjs
+        // .sendForm("service_a7f8kvk", "template_kj0zzo9", form.current, {
+        //   publicKey: "i1eYRzEru3UMSm8qR",
+        // })
+
+        //Aadar emailjs
+        .sendForm("service_4a9mgcp", "template_ie847rr", form.current, {
+          publicKey: "41w8LwNiKZaoka4j-",
+        })
+        .then(
+          () => {
+            console.log(data);
+            console.log("SUCCESS!");
+          },
+          (error) => {
+            console.log("FAILED...", error.text);
+          }
+        );
+    } else {
+      console.log("required field missing");
+
+      setErrMsg(true);
+      setTimeout(() => {
+        setErrMsg(false);
+      }, 5000);
+      setSuccessMsg(false);
+    }
+
+    // emailjs
+    //   .sendForm("service_a7f8kvk", "template_kj0zzo9", form.current, {
+    //     publicKey: "i1eYRzEru3UMSm8qR",
+    //   })
+    //   .then(
+    //     () => {
+    //       console.log("SUCCESS!");
+    //       console.log(data);
+    //     },
+    //     (error) => {
+    //       console.log("FAILED...", error.text);
+    //     }
+    //   );
   };
-
-  // const handleSubmit = (event) => {
-  //   const formData = new FormData(event.target);
-  //   const data = Object.fromEntries(formData.entries());
-  //   // const result = registerUserSchema.safeParse(data);
-
-  //   // if (!result.success) {
-  //   //   event.preventDefault();
-  //   //   // handle errors here.
-  //   // }
-
-  //   event.preventDefault();
-  //   console.log("submitted");
-  //   console.log(data);
-  //   // console.log(formData.get("email"));
-  // };
-
-  // const handleSubmitAction = (formData) => {
-  //   console.log(formData.entries);
-  // };
 
   return (
     <MKBox minWidth="320px">
@@ -153,38 +277,44 @@ function Volunteer() {
                 md={12}
                 lg={4}
                 sx={{
-                  // ml: { xs: 0, lg: 3 },
-                  mb: { xs: 8, md: 8, lg: 0 },
+                  mb: { xs: 4, md: 8, lg: 0 },
                 }}
               >
-                {/* <Container> */}
-                <MKTypography variant="h4" sx={{ fontWeight: "500" }} pb={4}>
-                  Join us as a volunteer
+                <MKTypography
+                  variant="h3"
+                  fontSize={{ xs: "1.2rem", sm: "1.5rem" }}
+                  fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                  sx={{ letterSpacing: "0.05rem", fontWeight: "500" }}
+                  pb={{ xs: 2, sm: 4 }}
+                >
+                  Join us as a volunteer{" "}
                 </MKTypography>
                 <MKBox
                   component="img"
                   src={team}
                   alt={"Swarg sadan building image"}
                   borderRadius="xxl"
-                  // width="100%"
                   sx={{
                     height: { xs: "90%", sm: "80%", md: "80%", lg: "80%" },
-                    width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
+                    width: { xs: "100%", sm: "80%", md: "80%", lg: "100%" },
                   }}
-                  // height="90%"
+                  fontSize={{ xs: "0.8rem", md: "1rem" }}
+                  fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                  // sx={{
+                  //   letterSpacing: "0.05rem",
+                  //   paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+                  // }}
                   my={2}
                 ></MKBox>
                 <MKTypography variant="body1" fontSize="0.9rem" pt={2}>
                   Aadar foundation provides opportunities not only for homeless, helpless, and
                   destitute individuals but also for those who wish to make a meaningful impact in
                   the lives of others. It serves as a growing platform for volunteers dedicated to
-                  service.
-                  <b>( areas where volunteers are required, what they can expect - come here )</b>
-                  We are seeking proactive, enthusiastic, and hardworking volunteers to join us.
-                  Volunteers have played a vital role in Aadar Foundation’s work, and we always
-                  welcome fresh ideas and skills. To ensure the best match between our expectations
-                  and yours, we encourage interested individuals to apply and provide the necessary
-                  information.
+                  service. We are seeking proactive, enthusiastic, and hardworking volunteers to
+                  join us. Volunteers have played a vital role in Aadar Foundation’s work, and we
+                  always welcome fresh ideas and skills. To ensure the best match between our
+                  expectations and yours, we encourage interested individuals to apply and provide
+                  the necessary information.
                 </MKTypography>
               </Grid>
               <Grid container item xs={12} lg={7} sx={{ mx: "auto" }}>
@@ -193,53 +323,128 @@ function Volunteer() {
                   component="form"
                   method="post"
                   autocomplete="off"
-                  pt={8}
-                  // action={handleSubmitAction}
+                  minWidth="240px"
+                  pt={{ xs: 2, md: 2, lg: 8 }}
                   ref={form}
-                  // onSubmit={handleSubmit}
                   onSubmit={sendEmail}
                 >
-                  <MKBox p={3}>
+                  <MKBox py={3} px={0}>
                     <Grid container spacing={3}>
                       <Grid item xs={12} md={6}>
-                        <MKInput
-                          variant="outlined"
-                          label="Name"
-                          name="name"
-                          fullWidth
-                          required={true}
-                        />
+                        <MKInput variant="outlined" label="Name *" name="name" fullWidth />
                       </Grid>
-                      <Grid item xs={12} md={6}>
-                        <MKInput variant="outlined" label="Gender" name="gender" fullWidth />
-                      </Grid>
-                      <Grid item xs={12} md={6}>
-                        <MKInput
-                          variant="outlined"
-                          type="number"
-                          name="age"
-                          label="Age"
-                          fullWidth
-                        />
+                      <Grid
+                        item
+                        xs={12}
+                        md={6}
+                        display="flex"
+                        alignItems={"center"}
+                        // justifyContent={"space-around"}
+                      >
+                        <MKTypography
+                          fontSize="0.89rem"
+                          sx={{ color: "#6c757d" }}
+                          pl={1}
+                          pr={{ xs: 2, sm: 3, md: 3, lg: 3 }}
+                        >
+                          Gender
+                        </MKTypography>
+
+                        <RadioGroup
+                          row
+                          aria-labelledby="demo-row-radio-buttons-group-label"
+                          name="row-radio-buttons-group"
+                          defaultValue={"male"}
+                        >
+                          <MKBox display="flex">
+                            <FormControlLabel
+                              value="male"
+                              control={<Radio />}
+                              name="gender"
+                              sx={{ padding: 0.25 }}
+                              label={
+                                <MKTypography
+                                  fontSize={{ xs: "0.75rem", sm: "0.89rem" }}
+                                  sx={{ color: "#6c757d" }}
+                                >
+                                  Male
+                                </MKTypography>
+                              }
+                            />
+
+                            <FormControlLabel
+                              value="female"
+                              control={<Radio size={"small"} />}
+                              name="gender"
+                              sx={{ padding: 0.25 }}
+                              label={
+                                <MKTypography
+                                  fontSize={{ xs: "0.75rem", sm: "0.89rem" }}
+                                  sx={{ color: "#6c757d" }}
+                                >
+                                  Female
+                                </MKTypography>
+                              }
+                            />
+                          </MKBox>
+                        </RadioGroup>
                       </Grid>
                       <Grid item xs={12} md={6}>
                         <MKInput
                           variant="outlined"
                           type="email"
                           name="email"
-                          label="Email Address"
+                          label="Email *"
+                          onChange={(e) => validateEmail(e)}
                           fullWidth
-                          required={true}
                         />
+                        <Grid item xs={12} md={12} height="0.5rem" pl={1}>
+                          <MKTypography color="error" fontSize="0.8rem">
+                            {emailError}
+                          </MKTypography>
+                        </Grid>
+                      </Grid>
+
+                      <Grid item xs={12} md={6}>
+                        <MKPhone
+                          value={phone}
+                          name="phone"
+                          onChange={(inputValue, country) => {
+                            setPhone(inputValue);
+                            validatePhone(inputValue, country);
+                          }}
+                        />
+                        <Grid item xs={12} md={12} height="0.5rem" pl={1}>
+                          <MKTypography color="error" fontSize="0.8rem">
+                            {phoneError}
+                          </MKTypography>
+                        </Grid>
                       </Grid>
                       <Grid item xs={12} md={6}>
                         <MKInput
                           variant="outlined"
-                          type="tel"
-                          name="phone"
-                          label="Phone number"
+                          name="age"
+                          label="Age"
+                          type="number"
                           fullWidth
-                          required={true}
+                        />
+                      </Grid>
+
+                      <Grid item xs={12} md={6}>
+                        <MKInput
+                          variant="outlined"
+                          name="qualification"
+                          label="Qualification & Year *"
+                          fullWidth
+                        />
+                      </Grid>
+
+                      <Grid item xs={12} md={6}>
+                        <MKInput
+                          variant="outlined"
+                          name="college"
+                          label="College / University"
+                          fullWidth
                         />
                       </Grid>
 
@@ -247,18 +452,18 @@ function Volunteer() {
                         <MKInput
                           variant="outlined"
                           name="occupation"
-                          label="Occupation"
+                          label="Present occupation"
                           fullWidth
                         />
                       </Grid>
+
                       <Grid item xs={12}>
                         <MKInput
                           variant="outlined"
-                          label="Address"
+                          label="Address *"
                           name="address"
                           multiline
                           fullWidth
-                          required={true}
                           rows={3}
                         />
                       </Grid>
@@ -271,38 +476,181 @@ function Volunteer() {
                       <Grid item xs={12}>
                         <MKInput
                           variant="outlined"
-                          label="Brief profile"
+                          label="Brief profile *"
                           name="profile"
                           multiline
                           fullWidth
-                          required={true}
                           rows={5}
                         />
                       </Grid>
-                      {/* <Grid item xs={12} alignItems="center" ml={-1}>
-                        <Switch checked={checked} onChange={handleChecked} />
-                        <MKTypography
-                          variant="button"
-                          fontWeight="regular"
-                          color="text"
-                          ml={-1}
-                          sx={{ cursor: "pointer", userSelect: "none" }}
-                          onClick={handleChecked}
-                        >
-                          &nbsp;&nbsp;I agree the&nbsp;
+                      <Grid item xs={12}>
+                        <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
+                          Areas of interests *
                         </MKTypography>
-                        <MKTypography
-                          component="a"
-                          href="#"
-                          variant="button"
-                          fontWeight="regular"
-                          color="dark"
+                        <MKBox
+                          mt={2}
+                          pl={2}
+                          py={1}
+                          sx={{ border: "1px solid rgb(73, 80, 87, 0.2)" }}
+                          borderRadius="5px"
                         >
-                          Terms and Conditions
+                          <FormGroup>
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  name="activitiesVolunteer"
+                                  checked={activitiesVolunteer}
+                                  onChange={handleChange}
+                                />
+                              }
+                              label={
+                                <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
+                                  Activities volunteer{" "}
+                                  {/* <MKTypography
+                                    display={{ xs: "none", sm: "inline-block" }}
+                                    fontSize={{ sm: "0.75rem", md: "0.89rem" }}
+                                    sx={{ color: "#B5BABE", pl: 2 }}
+                                  >
+                                    Like conducting games, yoga, dance and others{" "}
+                                  </MKTypography> */}
+                                </MKTypography>
+                              }
+                            />
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  defaultChecked
+                                  name="medical"
+                                  onChange={handleChange}
+                                  checked={medical}
+                                />
+                              }
+                              label={
+                                <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
+                                  Medical services
+                                </MKTypography>
+                              }
+                              defaultChecked
+                            />
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  name="professionals"
+                                  checked={professionals}
+                                  onChange={handleChange}
+                                />
+                              }
+                              label={
+                                <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
+                                  Professionals
+                                </MKTypography>
+                              }
+                            />
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  name="management"
+                                  checked={management}
+                                  onChange={handleChange}
+                                />
+                              }
+                              label={
+                                <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
+                                  Management
+                                </MKTypography>
+                              }
+                            />
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  name="prabhujiSeva"
+                                  checked={prabhujiSeva}
+                                  onChange={handleChange}
+                                />
+                              }
+                              label={
+                                <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
+                                  Prabhuji seva
+                                </MKTypography>
+                              }
+                            />
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  name="trainer"
+                                  checked={trainer}
+                                  onChange={handleChange}
+                                />
+                              }
+                              label={
+                                <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
+                                  Education / Trainer
+                                </MKTypography>
+                              }
+                            />
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  name="counsellor"
+                                  checked={counsellor}
+                                  onChange={handleChange}
+                                />
+                              }
+                              label={
+                                <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
+                                  Counsellor
+                                </MKTypography>
+                              }
+                            />
+                          </FormGroup>
+                        </MKBox>
+                      </Grid>
+                      {/* <Grid item xs={12}>
+                        <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
+                          Upload photo id
                         </MKTypography>
+                        <MKBox
+                          mt={2}
+                          py={2}
+                          pl={2}
+                          sx={{ border: "1px solid rgb(73, 80, 87, 0.2)" }}
+                          borderRadius="5px"
+                          display="flex"
+                          alignItems="center"
+                          overflow="hidden"
+                        >
+                          <input
+                            type="file"
+                            accept="image/*"
+                            name="photoId"
+                            onChange={(e) => handleImageFile(e)}
+                          ></input>
+                        </MKBox>
+                        <Grid item xs={12} md={12} height="0.5rem" pl={1}>
+                          <MKTypography color="error" fontSize="0.8rem">
+                            {imageFileError}
+                          </MKTypography>
+                        </Grid>
                       </Grid> */}
                     </Grid>
-                    <Grid container item justifyContent="center" xs={12} my={2} pt={4}>
+                    <Grid container item xs={12} my={1} pt={3} minHeight={"60px"}>
+                      {errMsg && (
+                        <MKBox border="2px solid #F44335" borderRadius="5px" width="100%" pl={2}>
+                          <MKTypography color="error" fontSize="1rem">
+                            {error}
+                          </MKTypography>
+                        </MKBox>
+                      )}
+                      {successMsg && (
+                        <MKBox border="2px solid #4CAF50" borderRadius="5px" width="100%" pl={2}>
+                          <MKTypography color="success" fontSize="1rem">
+                            Request sent
+                          </MKTypography>
+                        </MKBox>
+                      )}
+                    </Grid>
+
+                    <Grid container item justifyContent="center" xs={12} my={2} pt={2}>
                       <MKButton type="submit" variant="gradient" color="dark" fullWidth>
                         Submit
                       </MKButton>
@@ -313,97 +661,6 @@ function Volunteer() {
             </Grid>
           </Container>
         </MKBox>
-
-        {/* <MKBox component="section" py={12}>
-          <Container>
-            <Grid
-              container
-              item
-              justifyContent="center"
-              xs={10}
-              lg={7}
-              mx="auto"
-              textAlign="center"
-            >
-              <MKTypography variant="h4" sx={{ fontWeight: "500" }} pb={4}>
-                Join us as a volunteer
-              </MKTypography>
-              <MKTypography
-                fontSize={{ xs: "0.8rem", md: "1rem" }}
-                mx="auto"
-                paddingTop="20px"
-                sx={{ letterSpacing: "0.05rem" }}
-              >
-                The organization provides opportunities not only for homeless, helpless, and
-                destitute individuals but also for those who wish to make a meaningful impact in the
-                lives of others. It serves as a growing platform for volunteers dedicated to
-                service.
-                <b>( areas where volunteers are required, what they can expect - come here )</b>
-                We are seeking proactive, enthusiastic, and hardworking volunteers to join us.
-                Volunteers have played a vital role in Aadar Foundation’s work, and we always
-                welcome fresh ideas and skills. To ensure the best match between our expectations
-                and yours, we encourage interested individuals to apply and provide the necessary
-                information.
-              </MKTypography>
-              <MKTypography variant="h4" sx={{ fontWeight: "500" }} pb={4} pt={8}>
-                New volunteer
-              </MKTypography>
-            </Grid>
-            <Grid container item xs={12} lg={7} sx={{ mx: "auto" }}>
-              <MKBox width="100%" component="form" method="post" autocomplete="off">
-                <MKBox p={3}>
-                  <Grid container spacing={3}>
-                    <Grid item xs={12} md={6}>
-                      <MKInput variant="standard" label="First Name" fullWidth />
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                      <MKInput variant="standard" label="Last Name" fullWidth />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <MKInput variant="standard" type="email" label="Email Address" fullWidth />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <MKInput
-                        variant="standard"
-                        label="Your Message"
-                        multiline
-                        fullWidth
-                        rows={6}
-                      />
-                    </Grid>
-                    <Grid item xs={12} alignItems="center" ml={-1}>
-                      <Switch checked={checked} onChange={handleChecked} />
-                      <MKTypography
-                        variant="button"
-                        fontWeight="regular"
-                        color="text"
-                        ml={-1}
-                        sx={{ cursor: "pointer", userSelect: "none" }}
-                        onClick={handleChecked}
-                      >
-                        &nbsp;&nbsp;I agree the&nbsp;
-                      </MKTypography>
-                      <MKTypography
-                        component="a"
-                        href="#"
-                        variant="button"
-                        fontWeight="regular"
-                        color="dark"
-                      >
-                        Terms and Conditions
-                      </MKTypography>
-                    </Grid>
-                  </Grid>
-                  <Grid container item justifyContent="center" xs={12} my={2}>
-                    <MKButton type="submit" variant="gradient" color="dark" fullWidth>
-                      Send Message
-                    </MKButton>
-                  </Grid>
-                </MKBox>
-              </MKBox>
-            </Grid>
-          </Container>
-        </MKBox> */}
       </Card>
 
       {/* Footer */}
