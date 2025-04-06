@@ -31,30 +31,11 @@ import aadarHindiYellow from "assets/images/aadarHindiYellow.png";
 // import img2 from "assets/images/galleryImages/resque2.jpg";
 
 function Home() {
-  // var items = [
-  //   {
-  //     name: "Image 1",
-  //     imgUrl: img1,
-  //   },
-  //   {
-  //     name: "Image 2",
-  //     imgUrl: img2,
-  //   },
-  // ];
-
   return (
     <MKBox minWidth="320px">
       {/* Navbar component */}
-      <DefaultNavbar
-        routes={routes}
-        action={{
-          type: "internal",
-          route: "",
-          label: "Donate Now",
-          color: "success",
-        }}
-        sticky
-      />
+      <DefaultNavbar routes={routes} sticky />
+
       {/* Main image/carousel section*/}
 
       <MKBox

@@ -99,7 +99,7 @@ function DefaultNavbar({
 
   const renderNavbarItems = routes.map(({ name, icon, href, route, collapse }) => {
     // return (
-    if (name !== "Privacy policy" && name !== "Terms Conditions") {
+    if (name !== "Privacy policy" && name !== "Terms Conditions" && name !== "Donate") {
       return (
         <DefaultNavbarDropdown
           key={name}
@@ -493,15 +493,22 @@ function DefaultNavbar({
   );
 
   return (
-    <Container sx={sticky ? { position: "sticky", top: 0, zIndex: 10, minWidth: "320px" } : null}>
+    <Container
+      sx={
+        sticky
+          ? { position: "sticky", top: 0, zIndex: 10, minWidth: "320px", margin: "auto" }
+          : null
+      }
+    >
       {/* <MKBox sx={sticky ? { position: "sticky", top: 0, zIndex: 10, margin: "0 auto" } : null}> */}
       <MKBox
         // py={1}
-        pl={{ xs: 0.5, sm: 2 }}
+        // pl={{ xs: 0.5, sm: 2 }}
         // px={{ xs: 4, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
         my={relative ? 0 : 2}
-        mx={relative ? 0 : 2}
-        width={relative ? "100%" : "calc(100% - 36px)"}
+        mx={relative ? 0 : 1.5}
+        // width="100%"
+        width={relative ? "100%" : "calc(100% - 24px)"}
         borderRadius="xl"
         shadow={transparent ? "none" : "md"}
         color={light ? "white" : "dark"}
@@ -573,7 +580,7 @@ function DefaultNavbar({
           px={{ xs: 2, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
           my={relative ? 0 : 2}
           mx={relative ? 0 : { xs: 1.5, md: 3 }}
-          width={relative ? "85%" : "calc(85% - 48px)"}
+          width={relative ? "95%" : "calc(95% - 48px)"}
           borderRadius="xl"
           shadow={transparent ? "none" : "md"}
           color={light ? "white" : "dark"}
@@ -680,7 +687,31 @@ function DefaultNavbar({
                 ))}
             </MKBox> */}
 
-            <MKBox
+            <MKBox display="flex" alignItems="center">
+              {/* <MKButton
+                component={Link}
+                to={"/pages/landing-pages/donate"}
+                variant="contained"
+                color="success"
+                size="small"
+                sx={{ padding: { md: "10px 15px", lg: "10px 15px", xl: "10px 20px" } }}
+              >
+                Donate
+              </MKButton> */}
+              <MKBox
+                display={{ xs: "inline-block", lg: "none" }}
+                lineHeight={0}
+                py={1.5}
+                pl={1.5}
+                color={transparent ? "white" : "inherit"}
+                sx={{ cursor: "pointer" }}
+                onClick={openMobileNavbar}
+              >
+                <Icon fontSize="default">{mobileNavbar ? "close" : "menu"}</Icon>
+              </MKBox>
+            </MKBox>
+
+            {/* <MKBox
               display={{ xs: "inline-block", lg: "none" }}
               lineHeight={0}
               py={1.5}
@@ -690,7 +721,7 @@ function DefaultNavbar({
               onClick={openMobileNavbar}
             >
               <Icon fontSize="default">{mobileNavbar ? "close" : "menu"}</Icon>
-            </MKBox>
+            </MKBox> */}
           </MKBox>
 
           <MKBox

@@ -82,9 +82,9 @@ function DefaultNavbarDropdown({
           textTransform="capitalize"
           color={light ? "light" : "dark"}
           sx={{
-            fontSize: { sm: "0.8", md: "0.875rem" },
+            fontSize: { sm: "0.8", md: "0.875rem", lg: "0.8rem", xl: "0.9rem" },
             fontWeight: "100%",
-            mr: 1,
+            mr: 0.8,
             "&:hover": { color: "#E7A232", textDecoration: "underline 2px" },
           }}
           width="100%"

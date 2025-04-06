@@ -39,7 +39,7 @@ function DefaultNavbarMobile({ routes, open }) {
 
   const renderNavbarItems = routes.map(
     ({ name, icon, collapse: routeCollapses, href, route, collapse: navCollapse }) => {
-      if (name !== "Privacy policy" && name !== "Terms Conditions") {
+      if (name !== "Privacy policy" && name !== "Terms Conditions" && name !== "Donate") {
         return (
           <DefaultNavbarDropdown
             key={name}

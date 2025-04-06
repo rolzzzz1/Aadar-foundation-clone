@@ -33,7 +33,8 @@ import About from "layouts/pages/landing-pages/about-us";
 import Work from "layouts/pages/landing-pages/work";
 import Gallery from "layouts/pages/landing-pages/gallery";
 import Contact from "layouts/pages/landing-pages/contact";
-// import Volunteer from "layouts/pages/landing-pages/volunteer";
+import Volunteer from "layouts/pages/landing-pages/volunteer";
+import Donate from "layouts/pages/landing-pages/donate";
 import PrivacyPolicy from "layouts/pages/landing-pages/privacy-policy";
 import TermsConditions from "layouts/pages/landing-pages/terms-conditions";
 
@@ -79,11 +80,16 @@ const routes = [
     route: "/pages/landing-pages/work",
     component: <Work isWorkOn={true} />,
   },
-  // {
-  //   name: "Volunteer",
-  //   route: "/pages/landing-pages/volunteer",
-  //   component: <Volunteer />,
-  // },
+  {
+    name: "Volunteer",
+    route: "/pages/landing-pages/volunteer",
+    component: <Volunteer />,
+  },
+  {
+    name: "Donate",
+    route: "/pages/landing-pages/donate",
+    component: <Donate />,
+  },
   {
     name: "Gallery",
     route: "/pages/landing-pages/gallery",
