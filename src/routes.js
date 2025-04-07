@@ -65,8 +65,8 @@ import TermsConditions from "layouts/pages/landing-pages/terms-conditions";
 const routes = [
   {
     name: "Home",
-    route: "/",
-    // route: "/pages/home",
+    // route: "/",
+    route: "/pages/home",
     component: <Home />,
   },
   {

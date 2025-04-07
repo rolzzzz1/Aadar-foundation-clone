@@ -350,21 +350,26 @@ function Volunteer() {
                           Gender
                         </MKTypography>
 
-                        <RadioGroup
-                          row
-                          aria-labelledby="demo-row-radio-buttons-group-label"
-                          name="row-radio-buttons-group"
-                          defaultValue={"male"}
-                        >
-                          <MKBox display="flex">
+                        <MKBox display="flex" justifyContent="space-between">
+                          <RadioGroup
+                            row
+                            aria-labelledby="demo-row-radio-buttons-group-label"
+                            name="row-radio-buttons-group"
+                            defaultValue={"male"}
+                          >
                             <FormControlLabel
                               value="male"
                               control={<Radio />}
                               name="gender"
-                              sx={{ padding: 0.25 }}
+                              sx={{ padding: 0.25, marginRight: "10px" }}
                               label={
                                 <MKTypography
-                                  fontSize={{ xs: "0.75rem", sm: "0.89rem" }}
+                                  fontSize={{
+                                    xs: "0.75rem",
+                                    sm: "0.89rem",
+                                    lg: "0.75rem",
+                                    xl: "0.89rem",
+                                  }}
                                   sx={{ color: "#6c757d" }}
                                 >
                                   Male
@@ -379,15 +384,20 @@ function Volunteer() {
                               sx={{ padding: 0.25 }}
                               label={
                                 <MKTypography
-                                  fontSize={{ xs: "0.75rem", sm: "0.89rem" }}
+                                  fontSize={{
+                                    xs: "0.75rem",
+                                    sm: "0.89rem",
+                                    lg: "0.75rem",
+                                    xl: "0.89rem",
+                                  }}
                                   sx={{ color: "#6c757d" }}
                                 >
                                   Female
                                 </MKTypography>
                               }
                             />
-                          </MKBox>
-                        </RadioGroup>
+                          </RadioGroup>
+                        </MKBox>
                       </Grid>
                       <Grid item xs={12} md={6}>
                         <MKInput
