@@ -30,11 +30,12 @@ import Grow from "@mui/material/Grow";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import MuiLink from "@mui/material/Link";
+// import Button from "@mui/material/Button";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
-import MKButton from "components/MKButton";
+// import MKButton from "components/MKButton";
 // import MKAvatar from "components/MKAvatar";
 
 // Material Kit 2 React example components
@@ -688,7 +689,7 @@ function DefaultNavbar({
             </MKBox> */}
 
             <MKBox display="flex" alignItems="center">
-              <MKButton
+              {/* <MKButton
                 component={Link}
                 to={"/pages/landing-pages/donate"}
                 variant="contained"
@@ -697,7 +698,44 @@ function DefaultNavbar({
                 sx={{ padding: { md: "10px 15px", lg: "10px 15px", xl: "10px 20px" } }}
               >
                 Donate
-              </MKButton>
+              </MKButton> */}
+
+              {/* <MKBox ml={{ xs: "auto", lg: 0 }}>
+                {action &&
+                  (action.type === "internal" ? (
+                    <MKButton
+                      component={Link}
+                      to={action.route}
+                      variant={
+                        action.color === "white" || action.color === "default"
+                          ? "contained"
+                          : "gradient"
+                      }
+                      color={action.color ? action.color : "info"}
+                      size="small"
+                    >
+                      {action.label}
+                    </MKButton>
+                  ) : (
+                    <MKButton
+                      component="a"
+                      href={action.route}
+                      target="_blank"
+                      rel="noreferrer"
+                      variant={
+                        action.color === "white" || action.color === "default"
+                          ? "contained"
+                          : "gradient"
+                      }
+                      color={action.color ? action.color : "info"}
+                      size="small"
+                    >
+                      {action.label}
+                    </MKButton>
+                  ))}
+              </MKBox> */}
+              {/* <Button variant="contained">Donate</Button> */}
+
               <MKBox
                 display={{ xs: "inline-block", lg: "none" }}
                 lineHeight={0}

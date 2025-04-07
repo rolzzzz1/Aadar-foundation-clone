@@ -39,7 +39,7 @@ function Home() {
       <DefaultNavbar
         routes={routes}
         action={{
-          type: "external",
+          type: "internal",
           route: "https://www.creative-tim.com/product/material-kit-react",
           label: "Donate Now",
           color: "success",
