@@ -34,7 +34,18 @@ function Home() {
   return (
     <MKBox minWidth="320px">
       {/* Navbar component */}
-      <DefaultNavbar routes={routes} sticky />
+      {/* <DefaultNavbar routes={routes} sticky /> */}
+
+      <DefaultNavbar
+        routes={routes}
+        action={{
+          type: "internal",
+          route: "https://www.creative-tim.com/product/material-kit-react",
+          label: "Donate Now",
+          color: "success",
+        }}
+        sticky
+      />
 
       {/* Main image/carousel section*/}
 
