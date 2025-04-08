@@ -40,8 +40,8 @@ function Home() {
         routes={routes}
         action={{
           type: "internal",
-          route: "https://www.creative-tim.com/product/material-kit-react",
-          label: "Donate Now",
+          route: "/pages/landing-pages/donate",
+          label: "Donate",
           color: "success",
         }}
         sticky

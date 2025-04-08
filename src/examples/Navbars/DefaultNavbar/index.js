@@ -51,16 +51,7 @@ import aadarLogo from "assets/images/logos/logo-aadar.jpg";
 // import CallRoundedIcon from "@mui/icons-material/CallRounded";
 // import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 
-function DefaultNavbar({
-  brand,
-  routes,
-  transparent,
-  light,
-  // action,
-  sticky,
-  relative,
-  center,
-}) {
+function DefaultNavbar({ brand, routes, transparent, light, action, sticky, relative, center }) {
   const [dropdown, setDropdown] = useState("");
   const [dropdownEl, setDropdownEl] = useState("");
   const [dropdownName, setDropdownName] = useState("");
@@ -532,8 +523,8 @@ function DefaultNavbar({
       >
         {/* <MKAvatar src={aadarLogo} alt="xl" size="xl" /> */}
         <MKBox
-          component={Link}
-          to="/"
+          // component={Link}
+          // to="/"
           lineHeight={1}
           // py={transparent ? 1.5 : 0.75}
           pl={relative || transparent ? 0 : { xs: 0.5, sm: 0.5, md: 1.5, lg: 2.5 }}
@@ -598,9 +589,8 @@ function DefaultNavbar({
         >
           <MKBox display="flex" justifyContent="space-between" alignItems="center">
             <MKBox
-              component={Link}
-              to="/layouts/pages/home"
-              // href="/"
+              // component={Link}
+              // to="/"
               lineHeight={1}
               py={transparent ? 1.5 : 0.75}
               pl={relative || transparent ? 0 : { xs: 0, lg: 1 }}
@@ -652,45 +642,8 @@ function DefaultNavbar({
             </MKBox>
 
             {/* Donate button */}
-            {/* <MKBox ml={{ xs: "auto", lg: 0 }} display={{ xs: "none", sm: "none", md: "block" }}>
-              {action &&
-                (action.type === "internal" ? (
-                  <MKButton
-                    component={Link}
-                    // to={action.route}
-                    to=""
-                    variant={
-                      action.color === "white" || action.color === "default"
-                        ? "contained"
-                        : "gradient"
-                    }
-                    color={action.color ? action.color : "info"}
-                    size="small"
-                  >
-                    {action.label}
-                  </MKButton>
-                ) : (
-                  <MKButton
-                    component="a"
-                    // href={action.route}
-                    href=""
-                    // target="_blank"
-                    rel="noreferrer"
-                    variant={
-                      action.color === "white" || action.color === "default"
-                        ? "contained"
-                        : "gradient"
-                    }
-                    color={action.color ? action.color : "info"}
-                    size="small"
-                  >
-                    {action.label}
-                  </MKButton>
-                ))}
-            </MKBox> */}
-
             <MKBox display="flex" alignItems="center">
-              <MKButton
+              {/* <MKButton
                 component={Link}
                 to={"/pages/landing-pages/donate"}
                 variant="contained"
@@ -699,9 +652,9 @@ function DefaultNavbar({
                 sx={{ padding: { md: "10px 15px", lg: "10px 15px", xl: "10px 20px" } }}
               >
                 Donate
-              </MKButton>
+              </MKButton> */}
 
-              {/* <MKBox ml={{ xs: "auto", lg: 0 }}>
+              <MKBox ml={{ xs: "auto", lg: 0 }}>
                 {action &&
                   (action.type === "internal" ? (
                     <MKButton
@@ -734,8 +687,7 @@ function DefaultNavbar({
                       {action.label}
                     </MKButton>
                   ))}
-              </MKBox> */}
-              {/* <Button variant="contained">Donate</Button> */}
+              </MKBox>
 
               <MKBox
                 display={{ xs: "inline-block", lg: "none" }}

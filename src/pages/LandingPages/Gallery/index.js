@@ -101,9 +101,9 @@ function Gallery() {
       <DefaultNavbar
         routes={routes}
         action={{
-          type: "external",
-          route: "https://www.creative-tim.com/product/material-kit-react",
-          label: "Donate Now",
+          type: "internal",
+          route: "/pages/landing-pages/donate",
+          label: "Donate",
           color: "success",
         }}
         sticky
