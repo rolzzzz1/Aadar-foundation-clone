@@ -35,7 +35,7 @@ import MuiLink from "@mui/material/Link";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
-// import MKButton from "components/MKButton";
+import MKButton from "components/MKButton";
 // import MKAvatar from "components/MKAvatar";
 
 // Material Kit 2 React example components
@@ -599,7 +599,8 @@ function DefaultNavbar({
           <MKBox display="flex" justifyContent="space-between" alignItems="center">
             <MKBox
               component={Link}
-              to="/"
+              to="/layouts/pages/home"
+              // href="/"
               lineHeight={1}
               py={transparent ? 1.5 : 0.75}
               pl={relative || transparent ? 0 : { xs: 0, lg: 1 }}
@@ -689,7 +690,7 @@ function DefaultNavbar({
             </MKBox> */}
 
             <MKBox display="flex" alignItems="center">
-              {/* <MKButton
+              <MKButton
                 component={Link}
                 to={"/pages/landing-pages/donate"}
                 variant="contained"
@@ -698,7 +699,7 @@ function DefaultNavbar({
                 sx={{ padding: { md: "10px 15px", lg: "10px 15px", xl: "10px 20px" } }}
               >
                 Donate
-              </MKButton> */}
+              </MKButton>
 
               {/* <MKBox ml={{ xs: "auto", lg: 0 }}>
                 {action &&

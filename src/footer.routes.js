@@ -21,7 +21,8 @@ export default {
   brand: {
     name: "Aadar foundation",
     image: logoCT,
-    route: "/",
+    // route: "/",
+    href: "/",
   },
   socials: [
     {
@@ -41,7 +42,7 @@ export default {
     {
       name: "Navigation",
       items: [
-        { name: "home", route: "/" },
+        { name: "home", href: "/" },
         { name: "about us", route: "/pages/landing-pages/about-us" },
         { name: "our work", route: "/pages/landing-pages/work" },
         { name: "volunteer", route: "/pages/landing-pages/volunteer" },

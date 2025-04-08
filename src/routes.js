@@ -28,7 +28,7 @@
 // import GitHubIcon from "@mui/icons-material/GitHub";
 
 // Pages
-import Home from "layouts/pages/home";
+// import Home from "layouts/pages/home";
 import About from "layouts/pages/landing-pages/about-us";
 import Work from "layouts/pages/landing-pages/work";
 import Gallery from "layouts/pages/landing-pages/gallery";
@@ -63,11 +63,15 @@ import TermsConditions from "layouts/pages/landing-pages/terms-conditions";
 // import Typography from "layouts/sections/elements/typography";
 
 const routes = [
+  // {
+  //   name: "Home",
+  //   // route: "/",
+  //   route: "/pages/home",
+  //   component: <Home />,
+  // },
   {
     name: "Home",
-    // route: "/",
-    route: "/pages/home",
-    component: <Home />,
+    href: "/",
   },
   {
     name: "About Us",

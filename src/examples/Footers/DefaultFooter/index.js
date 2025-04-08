@@ -63,7 +63,8 @@ function DefaultFooter({ content }) {
         >
           <MKBox pl={4} sx={{ paddingLeft: { lg: "48px", xl: "64px" } }}>
             <MKBox>
-              <Link to={brand.route}>
+              {/* <Link to={brand.route}> */}
+              <Link to={brand.href}>
                 <MKBox
                   component="img"
                   src={brand.image}
