@@ -203,76 +203,124 @@ function Donate() {
                 </MKTypography>
               </MKBox>
             </Grid>
-            <Grid container display="flex" pt={12} justifyContent={"center"} alignItems={"center"}>
+            <Grid display={"flex"} flexDirection={"column"} alignItems={"center"}>
               <MKTypography
-                variant="h4"
                 sx={{
-                  fontSize: { md: "2rem", lg: "2.5rem" },
+                  fontSize: { md: "1.5rem", lg: "2rem" },
                   fontWeight: "500",
-                  color: "#ECA533",
                 }}
+                pt={8}
+                pb={4}
+              >
+                Bank account details
+              </MKTypography>
+              <MKTypography fontSize="1.1rem" py={1}>
+                <b>Account name - </b>
+              </MKTypography>
+              <MKTypography fontSize="1.1rem" py={1}>
+                <b>Bank name - </b>
+              </MKTypography>
+              <MKTypography fontSize="1.1rem" py={1}>
+                <b>IFSC code - </b>
+              </MKTypography>
+              <MKTypography fontSize="1.1rem" py={1}>
+                <b>Account number - </b>
+              </MKTypography>
+            </Grid>
+            <MKBox
+              component="section"
+              mt={10}
+              py={2}
+              mb={2}
+              mx={"auto"}
+              sx={{
+                backgroundColor: "#F8F8F8",
+                borderRadius: "20px",
+                width: { xs: "100%", sm: "100%" },
+                // marginTop: { xs: 2, sm: 4 },
+              }}
+            >
+              <Grid container display="flex" pt={6} justifyContent={"center"} alignItems={"center"}>
+                <MKTypography
+                  variant="h4"
+                  sx={{
+                    fontSize: { md: "2rem", lg: "2.5rem" },
+                    fontWeight: "500",
+                    color: "#ECA533",
+                  }}
 
-                // pb={2}
-              >
-                Join Us
-              </MKTypography>
-              <MKTypography
-                variant="h4"
-                sx={{
-                  fontSize: { md: "1.3rem", lg: "1.5rem" },
-                  fontWeight: "500",
-                }}
-                pl={4}
-              >
-                Here’s how you can take part in our services
-              </MKTypography>
-            </Grid>
-            <Grid container display="flex" pt={3}>
-              <Grid container alignItems="flex-start" pt={6} lg={6} xl={6}>
-                <MKTypography
-                  sx={{
-                    fontSize: { md: "1.4rem", lg: "1.6rem" },
-                    fontWeight: "400",
-                  }}
-                  textAlign="center"
-                  pb={2}
+                  // pb={2}
                 >
-                  Membership
+                  Join Us
+                </MKTypography>
+                <MKTypography
+                  variant="h4"
+                  sx={{
+                    fontSize: { md: "1.3rem", lg: "1.5rem" },
+                    fontWeight: "500",
+                  }}
+                  pl={4}
+                >
+                  Here’s how you can take part in our services
                 </MKTypography>
               </Grid>
-              <Grid
-                container
-                alignItems="flex-start"
-                pt={6}
-                lg={6}
-                xl={6}
-                display="flex"
-                flexDirection={"column"}
-              >
-                <MKTypography
-                  sx={{
-                    fontSize: { md: "1.4rem", lg: "1.6rem" },
-                    fontWeight: "400",
-                  }}
-                  textAlign="center"
-                  pb={4}
+              <Grid container pt={3}>
+                <Grid container display={"flex"} justifyContent={"center"} pt={4} lg={6} xl={6}>
+                  <MKTypography
+                    sx={{
+                      fontSize: { md: "1.4rem", lg: "1.5rem" },
+                      fontWeight: "400",
+                    }}
+                    pb={2}
+                  >
+                    Membership
+                  </MKTypography>
+                </Grid>
+                <Grid container display={"flex"} justifyContent={"center"} pt={4} lg={6} xl={6}>
+                  <MKTypography
+                    sx={{
+                      fontSize: { md: "1.4rem", lg: "1.5rem" },
+                      fontWeight: "400",
+                    }}
+                    pb={2}
+                  >
+                    Sponsor Prabhuji
+                  </MKTypography>
+                </Grid>
+                {/* <Grid
+                  container
+                  alignItems="flex-start"
+                  pt={6}
+                  lg={6}
+                  xl={6}
+                  display="flex"
+                  flexDirection={"column"}
                 >
-                  Bank account details
-                </MKTypography>
-                <MKTypography fontSize="1.1rem">
-                  <b>Account name - </b>
-                </MKTypography>
-                <MKTypography fontSize="1.1rem">
-                  <b>Bank name - </b>
-                </MKTypography>
-                <MKTypography fontSize="1.1rem">
-                  <b>IFSC code - </b>
-                </MKTypography>
-                <MKTypography fontSize="1.1rem">
-                  <b>Account number - </b>
-                </MKTypography>
+                  <MKTypography
+                    sx={{
+                      fontSize: { md: "1.4rem", lg: "1.6rem" },
+                      fontWeight: "400",
+                    }}
+                    textAlign="center"
+                    pb={4}
+                  >
+                    Bank account details
+                  </MKTypography>
+                  <MKTypography fontSize="1.1rem">
+                    <b>Account name - </b>
+                  </MKTypography>
+                  <MKTypography fontSize="1.1rem">
+                    <b>Bank name - </b>
+                  </MKTypography>
+                  <MKTypography fontSize="1.1rem">
+                    <b>IFSC code - </b>
+                  </MKTypography>
+                  <MKTypography fontSize="1.1rem">
+                    <b>Account number - </b>
+                  </MKTypography>
+                </Grid> */}
               </Grid>
-            </Grid>
+            </MKBox>
           </Container>
         </MKBox>
       </Card>
