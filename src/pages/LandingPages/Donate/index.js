@@ -230,10 +230,9 @@ function Donate() {
             <Grid container display="flex" pt={3}>
               <Grid container alignItems="flex-start" pt={6} lg={6} xl={6}>
                 <MKTypography
-                  variant="h4"
                   sx={{
                     fontSize: { md: "1.4rem", lg: "1.6rem" },
-                    fontWeight: "500",
+                    fontWeight: "400",
                   }}
                   textAlign="center"
                   pb={2}
@@ -241,17 +240,36 @@ function Donate() {
                   Membership
                 </MKTypography>
               </Grid>
-              <Grid container alignItems="flex-start" pt={6} lg={6} xl={6}>
+              <Grid
+                container
+                alignItems="flex-start"
+                pt={6}
+                lg={6}
+                xl={6}
+                display="flex"
+                flexDirection={"column"}
+              >
                 <MKTypography
-                  variant="h4"
                   sx={{
                     fontSize: { md: "1.4rem", lg: "1.6rem" },
-                    fontWeight: "500",
+                    fontWeight: "400",
                   }}
                   textAlign="center"
-                  pb={2}
+                  pb={4}
                 >
                   Bank account details
+                </MKTypography>
+                <MKTypography fontSize="1.1rem">
+                  <b>Account name - </b>
+                </MKTypography>
+                <MKTypography fontSize="1.1rem">
+                  <b>Bank name - </b>
+                </MKTypography>
+                <MKTypography fontSize="1.1rem">
+                  <b>IFSC code - </b>
+                </MKTypography>
+                <MKTypography fontSize="1.1rem">
+                  <b>Account number - </b>
                 </MKTypography>
               </Grid>
             </Grid>
