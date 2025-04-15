@@ -40,6 +40,7 @@ function Home() {
   const routes = getRoutes(t);
   const footerRoutes = getFooterRoutes(t);
   const donateBtn = t("navbar.donateBtn");
+  const homePage = t("homePage");
 
   return (
     <MKBox minWidth="320px">
@@ -80,7 +81,7 @@ function Home() {
             display={{ xs: "inline", sm: "none" }}
             mb={2}
           />{" "}
-          <MKTypography
+          {/* <MKTypography
             color="white"
             textAlign="center"
             fontSize="1.3rem"
@@ -89,7 +90,7 @@ function Home() {
             display={{ xs: "inline", sm: "none" }}
           >
             A home for Hopeless, Homeless, Helpless and Unclaimed people
-          </MKTypography>
+          </MKTypography> */}
         </MKBox>
 
         <MKBox
@@ -139,7 +140,8 @@ function Home() {
             fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
             sx={{ fontSize: { xs: "0.9rem", sm: "0.9rem", md: "1.1rem", lg: "1.3rem" } }}
           >
-            A home for Hopeless, Homeless, Helpless <br /> and Unclaimed people
+            {/* A home for Hopeless, Homeless, Helpless <br /> and Unclaimed people */}
+            {homePage.tagLine1} <br /> {homePage.tagLine2}
           </MKTypography>
         </MKBox>
       </MKBox>
