@@ -2,6 +2,8 @@
 // import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
 
+import { useTranslation } from "react-i18next";
+
 // Material Kit 2 React examples
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import DefaultFooter from "examples/Footers/DefaultFooter";
@@ -11,8 +13,11 @@ import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 
 // Routes
-import routes from "routes";
-import footerRoutes from "footer.routes";
+import getRoutes from "routes1";
+import getFooterRoutes from "footer.routes1";
+
+// import routes from "routes";
+// import footerRoutes from "footer.routes";
 
 // Images
 import bgImage2 from "assets/images/mainThemeImages/swargSadanBlack.png";
@@ -21,6 +26,11 @@ import bgImage from "assets/images/mainThemeImages/smallBrushstroke2.svg";
 import { privacyData } from "./data/privacyData.js";
 
 function PrivacyPolicy() {
+  const { t } = useTranslation();
+  const routes = getRoutes(t);
+  const footerRoutes = getFooterRoutes(t);
+  const donateBtn = t("navbar.donateBtn");
+
   return (
     <MKBox minWidth="320px">
       {/* Navbar component */}
@@ -29,7 +39,7 @@ function PrivacyPolicy() {
         action={{
           type: "external",
           route: "https://www.creative-tim.com/product/material-kit-react",
-          label: "Donate Now",
+          label: donateBtn,
           color: "success",
         }}
         sticky

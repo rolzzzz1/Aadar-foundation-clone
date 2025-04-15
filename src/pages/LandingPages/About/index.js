@@ -25,7 +25,9 @@ import MKButton from "components/MKButton";
 // Routes
 // import routes from "routes";
 import getRoutes from "routes1";
-import footerRoutes from "footer.routes";
+
+// import footerRoutes from "footer.routes";
+import getFooterRoutes from "footer.routes1";
 
 import Team from "pages/LandingPages/About/sections/Team";
 import WhoWeAre from "pages/LandingPages/About/sections/WhoWeAre";
@@ -84,6 +86,7 @@ function About(props) {
 
   const { t } = useTranslation();
   const routes = getRoutes(t);
+  const footerRoutes = getFooterRoutes(t);
   const donateBtn = t("navbar.donateBtn");
 
   return (

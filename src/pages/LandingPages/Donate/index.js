@@ -1,5 +1,7 @@
 import React from "react";
 
+import { useTranslation } from "react-i18next";
+
 // @mui material components
 import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
@@ -17,8 +19,11 @@ import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 
 // Routes
-import routes from "routes";
-import footerRoutes from "footer.routes";
+// import routes from "routes";
+import getRoutes from "routes1";
+
+import getFooterRoutes from "footer.routes1";
+// import footerRoutes from "footer.routes";
 
 // Images
 import bgImage2 from "assets/images/mainThemeImages/swargSadanBlack.png";
@@ -27,6 +32,11 @@ import scanner from "assets/images/scanner.jpg";
 import donateImg from "assets/images/donate-happy-faces.png";
 
 function Donate() {
+  const { t } = useTranslation();
+  const routes = getRoutes(t);
+  const footerRoutes = getFooterRoutes(t);
+  const donateBtn = t("navbar.donateBtn");
+
   return (
     <MKBox minWidth="320px">
       {/* Navbar component */}
@@ -35,7 +45,7 @@ function Donate() {
         action={{
           type: "internal",
           route: "/pages/landing-pages/donate",
-          label: "Donate",
+          label: donateBtn,
           color: "success",
         }}
         sticky

@@ -23,7 +23,8 @@ import Counters from "pages/Home/sections/Home sections/Counters";
 // import routes from "routes";
 import getRoutes from "routes1";
 
-import footerRoutes from "footer.routes";
+// import footerRoutes from "footer.routes";
+import getFooterRoutes from "footer.routes1";
 
 // Images
 import bgImage from "assets/images/mainThemeImages/brushstroke.svg";
@@ -37,6 +38,7 @@ import aadarHindiYellow from "assets/images/aadarHindiYellow.png";
 function Home() {
   const { t } = useTranslation();
   const routes = getRoutes(t);
+  const footerRoutes = getFooterRoutes(t);
   const donateBtn = t("navbar.donateBtn");
 
   return (

@@ -1,4 +1,30 @@
 {
+  "footer": {
+    "title": "Aadar foundation",
+    "menus": {
+      "name": "Navigation",
+      "items": {
+        "home": "home",
+        "about us": "about us",
+        "our work": "our work",
+        "volunteer": "volunteer",
+        "gallery": "gallery"
+      },
+      "name1": "Useful links",
+      "items1": {
+        "privacy policy": "privacy policy",
+        "terms and conditions": "terms and conditions",
+        "contact": "contact"
+      }
+    },
+    "contactInfo": {
+      "title": "contact",
+      "address": "Swarg sadan ashram - Sarkari Malti, Behind Muktidham, Guda Gudi Ka Naka, Gwalior, India, 474001"
+    },
+    "copyright": "Copyright © 2025 Aadar foundation - All rights reserved.",
+    "designed by": "Designed by",
+    "developerName": "Aishwarya Sharma"
+  },
   "Home": "Home",
   "About Us": "About Us",
   "Our Work": "Our Work",

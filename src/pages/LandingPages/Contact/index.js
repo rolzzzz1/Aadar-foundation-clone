@@ -21,7 +21,9 @@ import MKTypography from "components/MKTypography";
 // Routes
 // import routes from "routes";
 import getRoutes from "routes1";
-import footerRoutes from "footer.routes";
+
+import getFooterRoutes from "footer.routes1";
+// import footerRoutes from "footer.routes";
 
 // Images
 import bgImage2 from "assets/images/mainThemeImages/swargSadanBlack.png";
@@ -30,6 +32,7 @@ import bgImage from "assets/images/mainThemeImages/smallBrushstroke2.svg";
 function Contact() {
   const { t } = useTranslation();
   const routes = getRoutes(t);
+  const footerRoutes = getFooterRoutes(t);
   const donateBtn = t("navbar.donateBtn");
 
   return (

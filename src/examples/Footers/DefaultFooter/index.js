@@ -16,6 +16,8 @@ Coded by www.creative-tim.com
 // react-router-dom components
 import { Link } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
+
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
 
@@ -32,7 +34,10 @@ import CallRoundedIcon from "@mui/icons-material/CallRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 
 function DefaultFooter({ content }) {
-  const { brand, socials, menus, copyright } = content;
+  const { brand, socials, menus, copyright } = content[0];
+
+  const { t } = useTranslation();
+  const contactInfo = t("footer.contactInfo");
 
   return (
     <MKBox
@@ -214,7 +219,7 @@ function DefaultFooter({ content }) {
                 color="white"
                 mb={1}
               >
-                Contact
+                {contactInfo.title}
               </MKTypography>
             </MKBox>
 
@@ -235,8 +240,7 @@ function DefaultFooter({ content }) {
                 // mx="auto"
                 mb={1}
               >
-                Swarg sadan ashram - Sarkari Malti, Behind Muktidham, Guda Gudi Ka Naka, Gwalior,
-                India, 474001
+                {contactInfo.address}
               </MKTypography>
               <MKBox
                 fontWeight="regular"

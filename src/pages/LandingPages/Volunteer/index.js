@@ -34,7 +34,9 @@ import { MKPhone } from "components/MKPhone";
 // Routes
 // import routes from "routes";
 import getRoutes from "routes1";
-import footerRoutes from "footer.routes";
+
+import getFooterRoutes from "footer.routes1";
+// import footerRoutes from "footer.routes";
 
 // Images
 import bgImage2 from "assets/images/mainThemeImages/swargSadanBlack.png";
@@ -205,6 +207,7 @@ function Volunteer() {
 
   const { t } = useTranslation();
   const routes = getRoutes(t);
+  const footerRoutes = getFooterRoutes(t);
   const donateBtn = t("navbar.donateBtn");
 
   return (
