@@ -29,6 +29,7 @@
 
 // Pages
 // import Home from "layouts/pages/home";
+
 import About from "layouts/pages/landing-pages/about-us";
 import Work from "layouts/pages/landing-pages/work";
 import Gallery from "layouts/pages/landing-pages/gallery";

@@ -3,6 +3,8 @@ import React from "react";
 
 import PropTypes from "prop-types";
 
+import { useTranslation } from "react-i18next";
+
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -21,7 +23,8 @@ import MKTypography from "components/MKTypography";
 import MKButton from "components/MKButton";
 
 // Routes
-import routes from "routes";
+// import routes from "routes";
+import getRoutes from "routes1";
 import footerRoutes from "footer.routes";
 
 import Team from "pages/LandingPages/About/sections/Team";
@@ -79,6 +82,10 @@ function About(props) {
     }
   }, [workSectionOn]);
 
+  const { t } = useTranslation();
+  const routes = getRoutes(t);
+  const donateBtn = t("navbar.donateBtn");
+
   return (
     <MKBox minWidth="320px">
       {/* Navbar component */}
@@ -87,7 +94,7 @@ function About(props) {
         action={{
           type: "internal",
           route: "/pages/landing-pages/donate",
-          label: "Donate",
+          label: donateBtn,
           color: "success",
         }}
         sticky

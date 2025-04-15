@@ -16,6 +16,8 @@ Coded by www.creative-tim.com
 
 import { Fragment, useState, useEffect } from "react";
 
+import { useTranslation } from "react-i18next";
+
 // react-router components
 import { Link } from "react-router-dom";
 
@@ -36,6 +38,7 @@ import MuiLink from "@mui/material/Link";
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 import MKButton from "components/MKButton";
+import LanguageSelector from "components/language-selector";
 // import MKAvatar from "components/MKAvatar";
 
 // Material Kit 2 React example components
@@ -51,7 +54,16 @@ import aadarLogo from "assets/images/logos/logo-aadar.jpg";
 // import CallRoundedIcon from "@mui/icons-material/CallRounded";
 // import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 
-function DefaultNavbar({ brand, routes, transparent, light, action, sticky, relative, center }) {
+function DefaultNavbar({
+  // brand,
+  routes,
+  transparent,
+  light,
+  action,
+  sticky,
+  relative,
+  center,
+}) {
   const [dropdown, setDropdown] = useState("");
   const [dropdownEl, setDropdownEl] = useState("");
   const [dropdownName, setDropdownName] = useState("");
@@ -93,23 +105,26 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
     // return (
     if (name !== "Privacy policy" && name !== "Terms Conditions" && name !== "Donate") {
       return (
-        <DefaultNavbarDropdown
-          key={name}
-          name={name}
-          icon={icon}
-          href={href}
-          route={route}
-          collapse={Boolean(collapse)}
-          onMouseEnter={({ currentTarget }) => {
-            if (collapse) {
-              setDropdown(currentTarget);
-              setDropdownEl(currentTarget);
-              setDropdownName(name);
-            }
-          }}
-          onMouseLeave={() => collapse && setDropdown(null)}
-          light={light}
-        />
+        <>
+          <DefaultNavbarDropdown
+            key={name}
+            name={name}
+            // name={navbar.name}
+            icon={icon}
+            href={href}
+            route={route}
+            collapse={Boolean(collapse)}
+            onMouseEnter={({ currentTarget }) => {
+              if (collapse) {
+                setDropdown(currentTarget);
+                setDropdownEl(currentTarget);
+                setDropdownName(name);
+              }
+            }}
+            onMouseLeave={() => collapse && setDropdown(null)}
+            light={light}
+          />
+        </>
       );
     }
 
@@ -484,6 +499,9 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
     </Popper>
   );
 
+  const { t } = useTranslation();
+  const navbar = t("navbar");
+
   return (
     <Container
       sx={
@@ -611,7 +629,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
                 }}
                 lineHeight={1.25}
               >
-                {brand}
+                {navbar.title}
               </MKTypography>
 
               <MKTypography
@@ -628,7 +646,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
                   xl: "0.8rem",
                 }}
               >
-                A Home for Homeless & Unclaimed People
+                {navbar.subTitle}
               </MKTypography>
             </MKBox>
 
@@ -639,6 +657,43 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
               mr={center ? "auto" : 2}
             >
               {renderNavbarItems}
+            </MKBox>
+            <MKBox
+              mx={1}
+              p={0.5}
+              display="flex"
+              alignItems="baseline"
+              color={light ? "light" : "dark"}
+              opacity={light ? 1 : 0.6}
+              sx={{
+                cursor: "pointer",
+                userSelect: "none",
+                "&: hover": { color: "#E7A232", textDecoration: "underline 2px" },
+              }}
+            >
+              {/* <MKTypography
+                  variant="body2"
+                  lineHeight={1}
+                  color="inherit"
+                  sx={{ alignSelf: "center", "& *": { verticalAlign: "middle" } }}
+                >
+                  {icon}
+                </MKTypography> */}
+              <MKTypography
+                variant="button"
+                fontWeight="regular"
+                textTransform="capitalize"
+                color={light ? "light" : "dark"}
+                sx={{
+                  fontSize: { sm: "0.8", md: "0.875rem", lg: "0.8rem", xl: "0.9rem" },
+                  fontWeight: "100%",
+                  mr: 0.8,
+                  "&:hover": { color: "#E7A232", textDecoration: "underline 2px" },
+                }}
+                width="100%"
+              >
+                <LanguageSelector />
+              </MKTypography>
             </MKBox>
 
             {/* Donate button */}

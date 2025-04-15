@@ -1,0 +1,72 @@
+{
+  "Home": "Home",
+  "About Us": "About Us",
+  "Our Work": "Our Work",
+  "Volunteer": "Volunteer",
+  "Gallery": "Gallery",
+  "Contact": "Contact",
+  "navbar": {
+    "title": "Aadar Foundation",
+    "subTitle": "A Home for Homeless & Unclaimed People",
+    "donateBtn": "Donate"
+  },
+  "homePage": {
+    "aboutSection": {
+      "title": "About Aadar Foundation",
+      "subTitle": "(Swarg Sadan Ashram)",
+      "description1": "Founded in 2018 by Mr. Vikas Goswami and his dedicated team, Aadar Foundation (Swarg Sadan Ashram) is a sanctuary for the homeless, abandoned, and critically ill in Gwalior, Madhya Pradesh. Every day, we rescue individuals—elderly, injured, and mentally or physically ill—left to suffer in public spaces without food, medical care, or dignity. Many are on the brink of a lonely, painful death. At Aadar Foundation, we provide shelter, medical aid, nourishment, and, most importantly, love—because every life deserves care and respect. Together, we can give them a second chance.",
+      "description2": "At Aadar Foundation, we strive to rescue, rehabilitate, and restore hope, ensuring that no one is left to suffer alone.",
+      "btn": "Read more"
+    },
+    "journeySection": {
+      "description": "A few words on our journey, by one of our founders.",
+      "founderName": "Mr. Vikas Goswami"
+    },
+    "workSection": {
+      "title": "Our Work",
+      "workTask1": {
+        "title": "Rescue",
+        "description": "Taking a person in critical condition for treatment in an ambulance"
+      },
+      "workTask2": {
+        "title": "Treatment",
+        "description": "Rescuing a person in bad state from the roadside"
+      },
+      "workTask3": {
+        "title": "Shelter",
+        "description": "Clean & loving environment provided to the residents"
+      },
+      "workTask4": {
+        "title": "Food",
+        "description": "Nutritious food is provided to all the residents of the ashram"
+      },
+      "workTask5": {
+        "title": "Care",
+        "description": "Yoga session being conducted at Swarg sadan ashram"
+      },
+      "workTask6": {
+        "title": "Rehabilitation",
+        "description": "A father reunited with son after the efforts of Aadar foundation team"
+      }
+    },
+    "impactSection": {
+      "title": "Our Impact",
+      "impact1": {
+        "title": "Years Since",
+        "description": "Serving the homeless, helpless, and destitute since 2015, providing support and relief during their most difficult times."
+      },
+      "impact2": {
+        "title": "People helped",
+        "description": "Providing support to those suffering from a lack of love, food, shelter, medical care, and family."
+      },
+      "impact3": {
+        "title": "Events",
+        "description": "We are actively engaged in our community, supporting residents and organizing various events to foster connection and well-being."
+      },
+      "impact4": {
+        "title": "People rehabilitated",
+        "description": "98 people till now have been reunited with their families by the efforts of Swarg sadan team."
+      }
+    }
+  }
+}

@@ -1,6 +1,8 @@
 // @mui material components
 import Card from "@mui/material/Card";
 
+import { useTranslation } from "react-i18next";
+
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
@@ -18,7 +20,9 @@ import Journey from "pages/Home/sections/Home sections/Journey";
 import Counters from "pages/Home/sections/Home sections/Counters";
 
 // Routes
-import routes from "routes";
+// import routes from "routes";
+import getRoutes from "routes1";
+
 import footerRoutes from "footer.routes";
 
 // Images
@@ -31,6 +35,10 @@ import aadarHindiYellow from "assets/images/aadarHindiYellow.png";
 // import img2 from "assets/images/galleryImages/resque2.jpg";
 
 function Home() {
+  const { t } = useTranslation();
+  const routes = getRoutes(t);
+  const donateBtn = t("navbar.donateBtn");
+
   return (
     <MKBox minWidth="320px">
       {/* Navbar component */}
@@ -41,7 +49,7 @@ function Home() {
         action={{
           type: "internal",
           route: "/pages/landing-pages/donate",
-          label: "Donate",
+          label: donateBtn,
           color: "success",
         }}
         sticky

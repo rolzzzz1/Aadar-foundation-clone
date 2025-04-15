@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 
@@ -5,6 +7,9 @@ import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 
 function Journey() {
+  const { t } = useTranslation();
+  const homePage = t("homePage");
+
   return (
     <MKBox
       component="section"
@@ -38,7 +43,7 @@ function Journey() {
                   letterSpacing: "0.05rem",
                 }}
               >
-                A few words on our journey, by one of our founders.
+                {homePage.journeySection.description}
               </MKTypography>
               <MKTypography
                 sx={{
@@ -48,7 +53,7 @@ function Journey() {
                 }}
                 my={2}
               >
-                Mr. Vikas Goswami{" "}
+                {homePage.journeySection.founderName}
               </MKTypography>
             </MKBox>
           </Grid>
