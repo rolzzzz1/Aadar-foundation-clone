@@ -3,6 +3,8 @@
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 
+import { useTranslation } from "react-i18next";
+
 import "./styles.css";
 
 import LightGallery from "lightgallery/react";
@@ -25,7 +27,8 @@ import MKTypography from "components/MKTypography";
 // import MKCarousel from "components/MKCarousel";
 
 // Routes
-import routes from "routes";
+// import routes from "routes";
+import getRoutes from "routes1";
 import footerRoutes from "footer.routes";
 
 // Images
@@ -95,6 +98,10 @@ function Gallery() {
     );
   }
 
+  const { t } = useTranslation();
+  const routes = getRoutes(t);
+  const donateBtn = t("navbar.donateBtn");
+
   return (
     <MKBox minWidth="320px">
       {/* Navbar component */}
@@ -103,7 +110,7 @@ function Gallery() {
         action={{
           type: "internal",
           route: "/pages/landing-pages/donate",
-          label: "Donate",
+          label: donateBtn,
           color: "success",
         }}
         sticky

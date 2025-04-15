@@ -67,6 +67,33 @@
         "title": "People rehabilitated",
         "description": "98 people till now have been reunited with their families by the efforts of Swarg sadan team."
       }
+    },
+    "postsSection": {
+      "title": "Instagram Posts",
+      "post1": {
+        "title": "Swarg Sadan Ashram expansion",
+        "description": "Swarg Sadan Ashram will be expanded in 4 Bigha, thousands of homeless people will get benefit."
+      },
+      "post2": {
+        "title": "ECS Bagless school visit",
+        "description": "Little children of ecs bagless school came and visited Ashram Swarg Sadan Gwalior."
+      },
+      "post3": {
+        "title": "Lost young boy went home",
+        "description": "A youth was found in a deranged condition whom the police kept in Swarg Sadan Ashram, left for his country Nepal."
+      },
+      "post4": {
+        "title": "Old Newspapers Donation",
+        "description": "With your invaluable support, service work for the homeless and destitute victims is continuing in Ashram Swarg Sadan."
+      },
+      "post5": {
+        "title": "Beautiful moment captured",
+        "description": "A beautiful moment captured at the ashram where a resident is helping the other with his lunch."
+      },
+      "post6": {
+        "title": "Blanket donation",
+        "description": "Blanket distribution to the needy and homeless for this winter."
+      }
     }
   }
 }

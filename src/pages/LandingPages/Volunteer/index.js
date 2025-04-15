@@ -1,6 +1,8 @@
 import { useState } from "react";
 import React, { useRef } from "react";
 
+import { useTranslation } from "react-i18next";
+
 import validator from "validator";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 
@@ -30,7 +32,8 @@ import MKButton from "components/MKButton";
 import { MKPhone } from "components/MKPhone";
 
 // Routes
-import routes from "routes";
+// import routes from "routes";
+import getRoutes from "routes1";
 import footerRoutes from "footer.routes";
 
 // Images
@@ -200,6 +203,10 @@ function Volunteer() {
     //   );
   };
 
+  const { t } = useTranslation();
+  const routes = getRoutes(t);
+  const donateBtn = t("navbar.donateBtn");
+
   return (
     <MKBox minWidth="320px">
       {/* Navbar component */}
@@ -208,7 +215,7 @@ function Volunteer() {
         action={{
           type: "internal",
           route: "/pages/landing-pages/donate",
-          label: "Donate",
+          label: donateBtn,
           color: "success",
         }}
         sticky

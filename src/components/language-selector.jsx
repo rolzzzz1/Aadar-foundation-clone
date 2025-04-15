@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Switch from "@mui/material/Switch";
 
@@ -8,6 +8,17 @@ import MKBox from "components/MKBox";
 
 const LanguageSelector = () => {
   const { i18n } = useTranslation();
+
+  useEffect(() => {
+    document.body.dir = i18n.dir();
+    if (i18n.language === "hi") {
+      setChecked(true);
+    } else {
+      setChecked(false);
+    }
+  }, [i18n, i18n.language]);
+
+  console.log(i18n.language);
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
