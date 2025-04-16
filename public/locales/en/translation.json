@@ -1,40 +1,16 @@
 {
-  "footer": {
-    "title": "Aadar foundation",
-    "menus": {
-      "name": "Navigation",
-      "items": {
-        "home": "home",
-        "about us": "about us",
-        "our work": "our work",
-        "volunteer": "volunteer",
-        "gallery": "gallery"
-      },
-      "name1": "Useful links",
-      "items1": {
-        "privacy policy": "privacy policy",
-        "terms and conditions": "terms and conditions",
-        "contact": "contact"
-      }
-    },
-    "contactInfo": {
-      "title": "contact",
-      "address": "Swarg sadan ashram - Sarkari Malti, Behind Muktidham, Guda Gudi Ka Naka, Gwalior, India, 474001"
-    },
-    "copyright": "Copyright © 2025 Aadar foundation - All rights reserved.",
-    "designed by": "Designed by",
-    "developerName": "Aishwarya Sharma"
-  },
-  "Home": "Home",
-  "About Us": "About Us",
-  "Our Work": "Our Work",
-  "Volunteer": "Volunteer",
-  "Gallery": "Gallery",
-  "Contact": "Contact",
   "navbar": {
     "title": "Aadar Foundation",
     "subTitle": "A Home for Homeless & Unclaimed People",
-    "donateBtn": "Donate"
+    "donateBtn": "Donate",
+    "navItems": {
+      "Home": "Home",
+      "About Us": "About Us",
+      "Our Work": "Our Work",
+      "Volunteer": "Volunteer",
+      "Gallery": "Gallery",
+      "Contact": "Contact"
+    }
   },
   "homePage": {
     "tagLine1": "A home for Hopeless, Homeless, Helpless ",
@@ -123,5 +99,128 @@
         "description": "Blanket distribution to the needy and homeless for this winter."
       }
     }
+  },
+  "aboutUsPage": {
+    "title": "About Us",
+    "whoWeAreSection": {
+      "title": "Who we are",
+      "description1": "At Aadar Foundation, we believe that serving humanity is the highest form of worship. With this vision, <1>Mr. Vikas Goswami</1> began his journey of service on <1>July 1, 2015</1>, reaching out to the most vulnerable—those who were wounded, sick, abandoned, or disabled—struggling to survive on the streets. He and his team sought out these individuals at railway stations, bus stands, outside temples, and other places across the city, providing them with first aid and care.",
+      "description2": "As the mission grew, <1>Aadar Foundation (Ashram Swarg Sadan - a residential home for destitute) was officially established on June 20, 2018, in Gwalior (known as Tansen ki nagari), by Mr. Vikas Goswami and his dedicated colleagues Pawan Suryavanshi, Faizan Beg, Vibha Aneja, Pramod Sumoliya, Sadia Parveen, and Kamal Aneja.</1>",
+      "description3": "Since then, Aadar Foundation has been a refuge for the <1>homeless, abandoned, mentally or physically ill, elderly, and injured</1>, offering them dignity, love, and hope. These individuals, often ignored by society, face hunger, neglect, and deteriorating health. At <1>Swarg Sadan</1>, we provide them with <1>shelter, nutritious food, medical care, clean clothing, counseling, recreational activities, and a warm, family-like environment.</1>",
+      "description4": "Beyond care, we strive to reunite them with their families whenever possible. So far, we have welcomed <1>230 Prabhu Jans (beloved souls) into our ashram</1>, successfully <1>rehabilitating 98 individuals</1> with their families across <1>Nepal and 13 states in India</1>. Currently, <1>105 Prabhu Jans</1> are receiving full-time care at our facility.",
+      "description5": "At Aadar Foundation, we are committed to restoring dignity, rekindling hope, and transforming lives—one person at a time."
+    },
+    "ourWorkSection": {
+      "title": "Our work",
+      "whatWeDoSection": {
+        "title": "What we do",
+        "description": "At Aadar Foundation, we are dedicated to providing care, support, and dignity to the homeless, helpless, and abandoned. Our mission is to bring hope and a new life to those who are critically ill, injured, hungry, or left alone at railway stations, religious sites, streets, and other public places. Through our shelter, Swarg Sadan, we offer food, medical care, counseling, clean clothing, and entertainment—all completely free, made possible through social cooperation and generous contributions."
+      },
+      "keyAspectsSection": {
+        "title": "Key aspects of our work",
+        "work1": {
+          "title": "Rescue",
+          "description": "We rescue homeless and destitute individuals who are often found in severe and distressing conditions on roadsides, railway stations, bus stands, religious sites, and other public places."
+        },
+        "work2": {
+          "title": "Treatment",
+          "description": "Most residents brought to the Ashram suffer from various ailments, making medical and surgical treatment a vital part of the care we provide."
+        },
+        "work3": {
+          "title": "Shelter",
+          "description": "We provide a shelter with homely environment to our residents of Swarg sadan. Currently a home for 92 residents in the ashram."
+        },
+        "work4": {
+          "title": "Food",
+          "description": "Most of the residents admitted in the ashram are either sick or malnourished. Therefore the diet arrangement is a essential part of their recovery. Under medical guidance, we provide balanced meals, along with milk, fruits, and protein-rich foods to aid their recovery and well-being."
+        },
+        "work5": {
+          "title": "Care",
+          "description": "During the recovery from illness and further basic care, medical care and unconditional love is given to them by our team."
+        },
+        "work6": {
+          "title": "Rehabilitation",
+          "description": "After recovery with the efforts of the Swarg Sadan Team, we have reunited many residents with their families."
+        },
+        "description1": "In addition to supporting the homeless, we have also extended our efforts to orphaned girls through the Grah Se After Care Yojana, a program run by the Women and Child Development Department. Here, the girls receive education and vocational training in fields like computer skills, sewing, knitting, and beauty care, empowering them to build independent and self-sufficient lives. Our organization has also facilitated the marriages of 10 young women, helping them embark on a new chapter with dignity and security.",
+        "description2": "Aadar Foundation operates with complete transparency, relying on social and economic support. Every contribution—whether financial, material, or voluntary—plays a crucial role in sustaining our mission. Visitors and donors who witness our work firsthand are deeply moved by the dedication of our team and the compassionate environment we have created.",
+        "description3": "We invite all individuals who believe in selfless service to join us in transforming lives and making the world a kinder place. Together, we can restore hope and dignity to those in need."
+      }
+    },
+    "howWeWorkSection": {
+      "title": "How we work",
+      "description": "Helpless and destitute individuals, the focus of our work, often cannot reach the Ashram on their own. Our dedicated ambulance and rescue team, in collaboration with the police and government organizations, ensure their safe arrival. Once admitted, they receive essential care and medical treatment. Efforts are then made, with the support of authorities, to rehabilitate them with their families whenever possible.",
+      "work1": {
+        "title": "Leadership & Governance",
+        "description": "To ensure the smooth operation of our ashram, we have a dedicated Executive Committee and Core Team in place. The Core Team oversees daily management, resource allocation, and system maintenance, while the Executive Committee conducts quarterly reviews of ashram activities. The committee prepares detailed reports, which are presented in Core Team meetings, allowing for continuous evaluation and necessary improvements."
+      },
+      "work2": {
+        "title": "Medical facility",
+        "description": "Most of the residents brought to the Ashram are suffering from different types of ailments. Hence medical/surgical treatment plays a significant part in the service we offer them. There is a team of doctors who are available to offer their services to our Ashram. For patients who are in a more critical condition, there is an arrangement with local hospitals where medical investigations and treatments (medical and surgical) are provided to our residents."
+      },
+      "work3": {
+        "title": "Celebrations & Community Engagement",
+        "description": "We believe in fostering a sense of joy, belonging, and cultural inclusivity. Our ashram celebrates festivals like Holi, Diwali, Bhai Dooj, and Rakshabandhan, as well as Ganesh Puja, Ramzan, and Eid, respecting the diverse faiths of our residents. To uplift spirits, we organize musical performances, dance and singing sessions, and community-led celebrations, including birthday and anniversary events hosted by well-wishers. These activities bring happiness and strengthen the sense of family among our residents."
+      }
+    },
+    "teamSection": {
+      "title": "Aadar Foundation ( Swarg Sadan Ashram )",
+      "subTitle1": "Meet the team behind",
+      "subTitle2": "We started our journey with a team of seven <1 /> and continue to move forward together.",
+      "member1": {
+        "name": "Vikas Goswami",
+        "designation": "Founder & CEO"
+      },
+      "member2": {
+        "name": "Faizan Beg Mirza",
+        "designation": "Co-Founder & Needs and Facility Manager"
+      },
+      "member3": {
+        "name": "Pawan Suryawanshi",
+        "designation": "Co-Founder & Healthcare Operations Manager"
+      },
+      "member4": {
+        "name": "Vibha Aneja",
+        "designation": "Co-Founder & Residential Care and Food Services"
+      },
+      "member5": {
+        "name": "Pramod Sumoliya",
+        "designation": "Co-Founder & Medical Facility Manager"
+      },
+      "member6": {
+        "name": "Sadia Parveen",
+        "designation": "Co-Founder & Communications Manager"
+      },
+      "member7": {
+        "name": "Kamal Aneja",
+        "designation": "Co-Founder & Transport Manager"
+      }
+    }
+  },
+  "footer": {
+    "title": "Aadar foundation",
+    "menus": {
+      "name": "Navigation",
+      "items": {
+        "home": "home",
+        "about us": "about us",
+        "our work": "our work",
+        "volunteer": "volunteer",
+        "gallery": "gallery"
+      },
+      "name1": "Useful links",
+      "items1": {
+        "privacy policy": "privacy policy",
+        "terms and conditions": "terms and conditions",
+        "contact": "contact"
+      }
+    },
+    "contactInfo": {
+      "title": "contact",
+      "address": "Swarg sadan ashram - Sarkari Malti, Behind Muktidham, Guda Gudi Ka Naka, Gwalior, India, 474001"
+    },
+    "copyright": "Copyright © 2025 Aadar foundation - All rights reserved.",
+    "designed by": "Designed by",
+    "developerName": "Aishwarya Sharma"
   }
 }

@@ -2,6 +2,8 @@
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 
+import { useTranslation, Trans } from "react-i18next";
+
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
@@ -19,6 +21,9 @@ import team5 from "assets/images/teamImages/Pramod.jpg";
 import team6 from "assets/images/teamImages/Sadia.jpg";
 
 function Team() {
+  const { t } = useTranslation();
+  const aboutUsPage = t("aboutUsPage");
+
   return (
     <MKBox
       component="section"
@@ -48,22 +53,24 @@ function Team() {
               <MKTypography
                 sx={{ fontSize: { xs: "1rem", sm: "1rem", md: "1.2rem", lg: "1.2rem" } }}
               >
-                Meet the team behind <br />
+                {aboutUsPage.teamSection.subTitle1} <br />
               </MKTypography>
               <MKTypography
                 variant="h4"
                 pt={1}
                 sx={{ fontSize: { xs: "1rem", sm: "1.2rem", md: "1.4rem", lg: "1.4rem" } }}
               >
-                Aadar Foundation ( Swarg Sadan Ashram )
+                {aboutUsPage.teamSection.title}
               </MKTypography>
               <MKTypography
                 pt={2}
                 sx={{ fontSize: { xs: "0.8rem", sm: "0.8rem", md: "1rem", lg: "1rem" } }}
                 display={{ xs: "none", sm: "inline" }}
               >
-                We started our journey with a team of seven <br /> and continue to move forward
-                together.
+                <Trans i18nKey={aboutUsPage.teamSection.subTitle2} components={{ 1: <br /> }} />
+                {/* {aboutUsPage.teamSection.subTitle2} */}
+                {/* We started our journey with a team of seven <br /> and continue to move forward
+                together. */}
               </MKTypography>
             </MKBox>
           </Grid>
@@ -71,8 +78,8 @@ function Team() {
             <MKBox mb={1}>
               <HorizontalTeamCard
                 image={team1}
-                name="Vikas Goswami"
-                position={{ color: "info", label: "Founder & CEO" }}
+                name={aboutUsPage.teamSection.member1.name}
+                position={{ color: "info", label: aboutUsPage.teamSection.member1.designation }}
                 description="< Social icons links here >"
               />
             </MKBox>
@@ -83,10 +90,10 @@ function Team() {
             <MKBox mb={1}>
               <HorizontalTeamCard
                 image={team2}
-                name="Faizan Beg Mirza"
+                name={aboutUsPage.teamSection.member2.name}
                 position={{
                   color: "info",
-                  label: "Co-Founder & Needs and Facility Manager",
+                  label: aboutUsPage.teamSection.member2.designation,
                 }}
                 description="< Social icons links here >"
               />
@@ -96,10 +103,10 @@ function Team() {
             <MKBox mb={{ xs: 1, lg: 0 }}>
               <HorizontalTeamCard
                 image={team3}
-                name="Pawan Suryawanshi"
+                name={aboutUsPage.teamSection.member3.name}
                 position={{
                   color: "info",
-                  label: "Co-Founder & Healthcare Operations Manager  ",
+                  label: aboutUsPage.teamSection.member3.designation,
                 }}
                 description="< Social icons links here >"
               />
@@ -109,10 +116,10 @@ function Team() {
             <MKBox mb={1}>
               <HorizontalTeamCard
                 image={team4}
-                name="Vibha Aneja"
+                name={aboutUsPage.teamSection.member4.name}
                 position={{
                   color: "info",
-                  label: "Co-Founder & Residential Care and Food Services ",
+                  label: aboutUsPage.teamSection.member4.designation,
                 }}
                 description="< Social icons links here >"
               />
@@ -124,10 +131,10 @@ function Team() {
             <MKBox mb={1}>
               <HorizontalTeamCard
                 image={team5}
-                name="Pramod Sumoliya"
+                name={aboutUsPage.teamSection.member5.name}
                 position={{
                   color: "info",
-                  label: "Co-Founder & Medical Facility Manager",
+                  label: aboutUsPage.teamSection.member5.designation,
                 }}
                 description="< Social icons links here >"
               />
@@ -137,8 +144,8 @@ function Team() {
             <MKBox mb={1}>
               <HorizontalTeamCard
                 image={team6}
-                name="Sadia Parveen"
-                position={{ color: "info", label: "Co-Founder & Communications Manager" }}
+                name={aboutUsPage.teamSection.member6.name}
+                position={{ color: "info", label: aboutUsPage.teamSection.member6.designation }}
                 description="< Social icons links here >"
               />
             </MKBox>
@@ -147,8 +154,8 @@ function Team() {
             <MKBox mb={{ xs: 1, lg: 0 }}>
               <HorizontalTeamCard
                 image={user}
-                name="Kamal Aneja"
-                position={{ color: "info", label: "Co-Founder & Transport Manager " }}
+                name={aboutUsPage.teamSection.member7.name}
+                position={{ color: "info", label: aboutUsPage.teamSection.member7.designation }}
                 description="< Social icons links here >"
               />
             </MKBox>

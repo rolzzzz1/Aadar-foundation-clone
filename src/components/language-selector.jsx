@@ -10,7 +10,7 @@ const LanguageSelector = () => {
   const { i18n } = useTranslation();
 
   useEffect(() => {
-    document.body.dir = i18n.dir();
+    // document.body.dir = i18n.dir();
     if (i18n.language === "hi") {
       setChecked(true);
     } else {

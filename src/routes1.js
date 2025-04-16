@@ -7,31 +7,31 @@ import Donate from "layouts/pages/landing-pages/donate";
 
 const getRoutes = (t) => [
   {
-    name: t("Home"),
+    name: t("navbar.navItems.Home"),
     href: "/",
   },
   {
-    name: t("About Us"),
+    name: t("navbar.navItems.About Us"),
     route: "/pages/landing-pages/about-us",
     component: <About isWorkOn={false} />,
   },
   {
-    name: t("Our Work"),
+    name: t("navbar.navItems.Our Work"),
     route: "/pages/landing-pages/work",
     component: <Work isWorkOn={true} />,
   },
   {
-    name: t("Volunteer"),
+    name: t("navbar.navItems.Volunteer"),
     route: "/pages/landing-pages/volunteer",
     component: <Volunteer />,
   },
   {
-    name: t("Gallery"),
+    name: t("navbar.navItems.Gallery"),
     route: "/pages/landing-pages/gallery",
     component: <Gallery />,
   },
   {
-    name: t("Contact"),
+    name: t("navbar.navItems.Contact"),
     route: "/pages/landing-pages/contact",
     component: <Contact />,
   },
