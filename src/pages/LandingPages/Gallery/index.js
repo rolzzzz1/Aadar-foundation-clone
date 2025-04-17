@@ -104,6 +104,7 @@ function Gallery() {
   const routes = getRoutes(t);
   const footerRoutes = getFooterRoutes(t);
   const donateBtn = t("navbar.donateBtn");
+  const galleryPage = t("galleryPage");
 
   return (
     <MKBox minWidth="320px">
@@ -157,7 +158,7 @@ function Gallery() {
             fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
             mb={{ xs: 1, sm: 0 }}
           >
-            Gallery
+            {galleryPage.tagLine}
           </MKTypography>
         </MKBox>
       </MKBox>
@@ -182,7 +183,7 @@ function Gallery() {
                   Our gallery is coming soon ...
                 </MKTypography> */}
               <MKTypography variant="h4" sx={{ fontWeight: "500" }} pb={6}>
-                Photo Gallery
+                {galleryPage.title}
               </MKTypography>
               {renderGallery()}
               {/* <MKBox display="flex" justifyContent="left" flexWrap="wrap" gap="20px">

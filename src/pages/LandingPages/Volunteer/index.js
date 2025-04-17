@@ -8,7 +8,7 @@ import { parsePhoneNumberFromString } from "libphonenumber-js";
 
 import "react-international-phone/style.css";
 
-import emailjs from "@emailjs/browser";
+// import emailjs from "@emailjs/browser";
 
 // @mui material components
 import Container from "@mui/material/Container";
@@ -44,6 +44,14 @@ import bgImage from "assets/images/mainThemeImages/smallBrushstroke2.svg";
 import team from "assets/images/aboutPageImages/teamImg.jpg";
 
 function Volunteer() {
+  const { t } = useTranslation();
+  const routes = getRoutes(t);
+  const footerRoutes = getFooterRoutes(t);
+  const donateBtn = t("navbar.donateBtn");
+  const volunteerPage = t("volunteerPage");
+
+  const error1 = volunteerPage.messages.error1;
+
   const form = useRef();
   const [successMsg, setSuccessMsg] = useState(false);
   const [errMsg, setErrMsg] = useState(false);
@@ -51,7 +59,7 @@ function Volunteer() {
   const [
     error,
     // setError
-  ] = useState("Please fill the required ( * ) fields ");
+  ] = useState(error1);
 
   const [emailError, setEmailError] = useState("");
   const validateEmail = (e) => {
@@ -160,26 +168,26 @@ function Volunteer() {
       setErrMsg(false);
 
       // Sending email
-      emailjs
-        // .send("service_a7f8kvk", "template_kj0zzo9", emailData, { publicKey: "i1eYRzEru3UMSm8qR" })
-        //Aishwarya emailjs
-        // .sendForm("service_a7f8kvk", "template_kj0zzo9", form.current, {
-        //   publicKey: "i1eYRzEru3UMSm8qR",
-        // })
+      // emailjs
+      //   // .send("service_a7f8kvk", "template_kj0zzo9", emailData, { publicKey: "i1eYRzEru3UMSm8qR" })
+      //   //Aishwarya emailjs
+      //   // .sendForm("service_a7f8kvk", "template_kj0zzo9", form.current, {
+      //   //   publicKey: "i1eYRzEru3UMSm8qR",
+      //   // })
 
-        //Aadar emailjs
-        .sendForm("service_4a9mgcp", "template_ie847rr", form.current, {
-          publicKey: "41w8LwNiKZaoka4j-",
-        })
-        .then(
-          () => {
-            console.log(data);
-            console.log("SUCCESS!");
-          },
-          (error) => {
-            console.log("FAILED...", error.text);
-          }
-        );
+      //   //Aadar emailjs
+      //   .sendForm("service_4a9mgcp", "template_ie847rr", form.current, {
+      //     publicKey: "41w8LwNiKZaoka4j-",
+      //   })
+      //   .then(
+      //     () => {
+      //       console.log(data);
+      //       console.log("SUCCESS!");
+      //     },
+      //     (error) => {
+      //       console.log("FAILED...", error.text);
+      //     }
+      //   );
     } else {
       console.log("required field missing");
 
@@ -204,11 +212,6 @@ function Volunteer() {
     //     }
     //   );
   };
-
-  const { t } = useTranslation();
-  const routes = getRoutes(t);
-  const footerRoutes = getFooterRoutes(t);
-  const donateBtn = t("navbar.donateBtn");
 
   return (
     <MKBox minWidth="320px">
@@ -262,7 +265,7 @@ function Volunteer() {
             fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
             mb={{ xs: 1, sm: 0 }}
           >
-            Get Involved
+            {volunteerPage.tagLine}
           </MKTypography>
         </MKBox>
       </MKBox>
@@ -297,7 +300,7 @@ function Volunteer() {
                   sx={{ letterSpacing: "0.05rem", fontWeight: "500" }}
                   pb={{ xs: 2, sm: 4 }}
                 >
-                  Join us as a volunteer{" "}
+                  {volunteerPage.title}
                 </MKTypography>
                 <MKBox
                   component="img"
@@ -317,14 +320,15 @@ function Volunteer() {
                   my={2}
                 ></MKBox>
                 <MKTypography variant="body1" fontSize="0.9rem" pt={2}>
-                  Aadar foundation provides opportunities not only for homeless, helpless, and
+                  {volunteerPage.description}
+                  {/* Aadar foundation provides opportunities not only for homeless, helpless, and
                   destitute individuals but also for those who wish to make a meaningful impact in
                   the lives of others. It serves as a growing platform for volunteers dedicated to
                   service. We are seeking proactive, enthusiastic, and hardworking volunteers to
                   join us. Volunteers have played a vital role in Aadar Foundation’s work, and we
                   always welcome fresh ideas and skills. To ensure the best match between our
                   expectations and yours, we encourage interested individuals to apply and provide
-                  the necessary information.
+                  the necessary information. */}
                 </MKTypography>
               </Grid>
               <Grid container item xs={12} lg={7} sx={{ mx: "auto" }}>
@@ -341,7 +345,13 @@ function Volunteer() {
                   <MKBox py={3} px={0}>
                     <Grid container spacing={3}>
                       <Grid item xs={12} md={6}>
-                        <MKInput variant="outlined" label="Name *" name="name" fullWidth />
+                        <MKInput
+                          variant="outlined"
+                          label={volunteerPage.formLabels.name}
+                          InputLabelProps={{ shrink: true }}
+                          name="name"
+                          fullWidth
+                        />
                       </Grid>
                       <Grid
                         item
@@ -357,7 +367,7 @@ function Volunteer() {
                           pl={1}
                           pr={{ xs: 2, sm: 3, md: 3, lg: 3 }}
                         >
-                          Gender
+                          {volunteerPage.formLabels.gender.label}
                         </MKTypography>
 
                         <MKBox display="flex" justifyContent="space-between">
@@ -382,7 +392,7 @@ function Volunteer() {
                                   }}
                                   sx={{ color: "#6c757d" }}
                                 >
-                                  Male
+                                  {volunteerPage.formLabels.gender.male}
                                 </MKTypography>
                               }
                             />
@@ -402,7 +412,7 @@ function Volunteer() {
                                   }}
                                   sx={{ color: "#6c757d" }}
                                 >
-                                  Female
+                                  {volunteerPage.formLabels.gender.female}
                                 </MKTypography>
                               }
                             />
@@ -414,7 +424,9 @@ function Volunteer() {
                           variant="outlined"
                           type="email"
                           name="email"
-                          label="Email *"
+                          InputLabelProps={{ shrink: true }}
+                          sx={{ verticalAlign: "middle" }}
+                          label={volunteerPage.formLabels.email}
                           onChange={(e) => validateEmail(e)}
                           fullWidth
                         />
@@ -444,7 +456,8 @@ function Volunteer() {
                         <MKInput
                           variant="outlined"
                           name="age"
-                          label="Age"
+                          InputLabelProps={{ shrink: true }}
+                          label={volunteerPage.formLabels.age}
                           type="number"
                           fullWidth
                         />
@@ -453,8 +466,9 @@ function Volunteer() {
                       <Grid item xs={12} md={6}>
                         <MKInput
                           variant="outlined"
+                          InputLabelProps={{ shrink: true }}
                           name="qualification"
-                          label="Qualification & Year *"
+                          label={volunteerPage.formLabels.qualification}
                           fullWidth
                         />
                       </Grid>
@@ -463,7 +477,8 @@ function Volunteer() {
                         <MKInput
                           variant="outlined"
                           name="college"
-                          label="College / University"
+                          InputLabelProps={{ shrink: true }}
+                          label={volunteerPage.formLabels.college}
                           fullWidth
                         />
                       </Grid>
@@ -472,7 +487,8 @@ function Volunteer() {
                         <MKInput
                           variant="outlined"
                           name="occupation"
-                          label="Present occupation"
+                          InputLabelProps={{ shrink: true }}
+                          label={volunteerPage.formLabels.occupation}
                           fullWidth
                         />
                       </Grid>
@@ -480,7 +496,8 @@ function Volunteer() {
                       <Grid item xs={12}>
                         <MKInput
                           variant="outlined"
-                          label="Address *"
+                          label={volunteerPage.formLabels.address}
+                          InputLabelProps={{ shrink: true }}
                           name="address"
                           multiline
                           fullWidth
@@ -488,15 +505,28 @@ function Volunteer() {
                         />
                       </Grid>
                       <Grid item xs={12} md={6}>
-                        <MKInput variant="outlined" name="city" label="City" fullWidth />
+                        <MKInput
+                          variant="outlined"
+                          InputLabelProps={{ shrink: true }}
+                          name="city"
+                          label={volunteerPage.formLabels.city}
+                          fullWidth
+                        />
                       </Grid>
                       <Grid item xs={12} md={6}>
-                        <MKInput variant="outlined" name="state" label="State" fullWidth />
+                        <MKInput
+                          variant="outlined"
+                          InputLabelProps={{ shrink: true }}
+                          name="state"
+                          label={volunteerPage.formLabels.state}
+                          fullWidth
+                        />
                       </Grid>
                       <Grid item xs={12}>
                         <MKInput
                           variant="outlined"
-                          label="Brief profile *"
+                          InputLabelProps={{ shrink: true }}
+                          label={volunteerPage.formLabels.profile}
                           name="profile"
                           multiline
                           fullWidth
@@ -505,7 +535,7 @@ function Volunteer() {
                       </Grid>
                       <Grid item xs={12}>
                         <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                          Areas of interests *
+                          {volunteerPage.formLabels.interests.label}
                         </MKTypography>
                         <MKBox
                           mt={2}
@@ -525,7 +555,7 @@ function Volunteer() {
                               }
                               label={
                                 <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                                  Activities volunteer{" "}
+                                  {volunteerPage.formLabels.interests.interest1}{" "}
                                   {/* <MKTypography
                                     display={{ xs: "none", sm: "inline-block" }}
                                     fontSize={{ sm: "0.75rem", md: "0.89rem" }}
@@ -547,7 +577,7 @@ function Volunteer() {
                               }
                               label={
                                 <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                                  Medical services
+                                  {volunteerPage.formLabels.interests.interest2}
                                 </MKTypography>
                               }
                               defaultChecked
@@ -562,7 +592,7 @@ function Volunteer() {
                               }
                               label={
                                 <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                                  Professionals
+                                  {volunteerPage.formLabels.interests.interest3}
                                 </MKTypography>
                               }
                             />
@@ -576,7 +606,7 @@ function Volunteer() {
                               }
                               label={
                                 <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                                  Management
+                                  {volunteerPage.formLabels.interests.interest4}
                                 </MKTypography>
                               }
                             />
@@ -590,7 +620,7 @@ function Volunteer() {
                               }
                               label={
                                 <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                                  Prabhuji seva
+                                  {volunteerPage.formLabels.interests.interest5}
                                 </MKTypography>
                               }
                             />
@@ -604,7 +634,7 @@ function Volunteer() {
                               }
                               label={
                                 <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                                  Education / Trainer
+                                  {volunteerPage.formLabels.interests.interest6}
                                 </MKTypography>
                               }
                             />
@@ -618,7 +648,7 @@ function Volunteer() {
                               }
                               label={
                                 <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                                  Counsellor
+                                  {volunteerPage.formLabels.interests.interest7}
                                 </MKTypography>
                               }
                             />
@@ -664,7 +694,7 @@ function Volunteer() {
                       {successMsg && (
                         <MKBox border="2px solid #4CAF50" borderRadius="5px" width="100%" pl={2}>
                           <MKTypography color="success" fontSize="1rem">
-                            Request sent
+                            {volunteerPage.messages.success}
                           </MKTypography>
                         </MKBox>
                       )}
@@ -672,7 +702,7 @@ function Volunteer() {
 
                     <Grid container item justifyContent="center" xs={12} my={2} pt={2}>
                       <MKButton type="submit" variant="gradient" color="dark" fullWidth>
-                        Submit
+                        {volunteerPage.formLabels.btn}
                       </MKButton>
                     </Grid>
                   </MKBox>

@@ -197,6 +197,65 @@
       }
     }
   },
+  "volunteerPage": {
+    "tagLine": "Get Involved",
+    "title": "Join us as a volunteer",
+    "description": "Aadar foundation provides opportunities not only for homeless, helpless, and destitute individuals but also for those who wish to make a meaningful impact in the lives of others. It serves as a growing platform for volunteers dedicated to service. We are seeking proactive, enthusiastic, and hardworking volunteers to join us. Volunteers have played a vital role in Aadar Foundation’s work, and we always welcome fresh ideas and skills. To ensure the best match between our expectations and yours, we encourage interested individuals to apply and provide the necessary information.",
+    "formLabels": {
+      "name": "Name *",
+      "gender": {
+        "label": "Gender",
+        "male": "Male",
+        "female": "Female"
+      },
+      "email": "Email *",
+      "phoneNumber": "Phone number *",
+      "age": "Age",
+      "qualification": "Qualification & year *",
+      "college": "College / University",
+      "occupation": "Present occupation",
+      "address": "Address *",
+      "city": "City",
+      "state": "State",
+      "profile": "Brief profile *",
+      "interests": {
+        "label": "Areas of interests *",
+        "interest1": "Activities volunteer",
+        "interest2": "Medical services",
+        "interest3": "Professionals",
+        "interest4": "Management",
+        "interest5": "Prabhuji seva",
+        "interest6": "Education / Trainer",
+        "interest7": "Counsellor"
+      },
+      "btn": "Submit"
+    },
+    "messages": {
+      "error1": "Please fill the required ( * ) fields",
+      "error2": "Enter valid Email!",
+      "error3": "Please enter valid number",
+      "success": "Request sent"
+    }
+  },
+  "galleryPage": {
+    "tagLine": "Gallery",
+    "title": "Photo gallery"
+  },
+  "contactPage": {
+    "tagLine": "Contact",
+    "title": "Get in touch @",
+    "address": {
+      "label": "Address :",
+      "title": "Swarg sadan ashram",
+      "address": "Sarkari Malti, Behind Muktidham, Guda Gudi Ka Naka, Gwalior, India, 474001"
+    },
+    "phoneNumber": {
+      "label": "Phone number :",
+      "numbers": "+91 9039129571, +91 9826441863, +91 9630982392"
+    },
+    "emailLabel": "Email :",
+    "followUs": "Follow us"
+  },
   "footer": {
     "title": "Aadar foundation",
     "menus": {
