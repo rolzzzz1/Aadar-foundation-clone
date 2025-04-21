@@ -21,13 +21,14 @@ import getFooterRoutes from "footer.routes1";
 import bgImage2 from "assets/images/mainThemeImages/swargSadanBlack.png";
 import bgImage from "assets/images/mainThemeImages/smallBrushstroke2.svg";
 
-import { termsData } from "./data/termsData.js";
+import termsData from "./data/termsData.js";
 
 function TermsConditions() {
   const { t } = useTranslation();
   const routes = getRoutes(t);
   const footerRoutes = getFooterRoutes(t);
   const donateBtn = t("navbar.donateBtn");
+  const termsConditionsPage = t("termsConditionsPage");
 
   return (
     <MKBox minWidth="320px">
@@ -35,8 +36,8 @@ function TermsConditions() {
       <DefaultNavbar
         routes={routes}
         action={{
-          type: "external",
-          route: "https://www.creative-tim.com/product/material-kit-react",
+          type: "internal",
+          route: "/pages/landing-pages/donate",
           label: donateBtn,
           color: "success",
         }}
@@ -81,7 +82,7 @@ function TermsConditions() {
             fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
             mb={{ xs: 2, sm: 0 }}
           >
-            Terms and conditions
+            {termsConditionsPage.title}
           </MKTypography>
         </MKBox>
       </MKBox>
@@ -98,7 +99,7 @@ function TermsConditions() {
           boxShadow: ({ boxShadows: { xxl } }) => xxl,
         }}
       >
-        {termsData}
+        {termsData()}
         {/* <MKBox component="section" my={4}>
           <Container>
             Terms & Conditions Use of this site is provided by Apna Ghar Ashram subject to the

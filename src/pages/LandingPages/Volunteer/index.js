@@ -1,4 +1,7 @@
-import { useState } from "react";
+import {
+  // useEffect,
+  useState,
+} from "react";
 import React, { useRef } from "react";
 
 import { useTranslation } from "react-i18next";
@@ -8,7 +11,7 @@ import { parsePhoneNumberFromString } from "libphonenumber-js";
 
 import "react-international-phone/style.css";
 
-// import emailjs from "@emailjs/browser";
+import emailjs from "@emailjs/browser";
 
 // @mui material components
 import Container from "@mui/material/Container";
@@ -50,8 +53,6 @@ function Volunteer() {
   const donateBtn = t("navbar.donateBtn");
   const volunteerPage = t("volunteerPage");
 
-  const error1 = volunteerPage.messages.error1;
-
   const form = useRef();
   const [successMsg, setSuccessMsg] = useState(false);
   const [errMsg, setErrMsg] = useState(false);
@@ -59,7 +60,7 @@ function Volunteer() {
   const [
     error,
     // setError
-  ] = useState(error1);
+  ] = useState(volunteerPage.messages.error1);
 
   const [emailError, setEmailError] = useState("");
   const validateEmail = (e) => {
@@ -68,7 +69,7 @@ function Volunteer() {
     if (validator.isEmail(email)) {
       setEmailError("");
     } else {
-      setEmailError("Enter valid Email!");
+      setEmailError(volunteerPage.messages.error2);
     }
   };
 
@@ -85,7 +86,7 @@ function Volunteer() {
     if (!phoneNumber || !phoneNumber.isValid()) {
       var code = "+" + countryDialcode;
       if (inputPhone !== code) {
-        setPhoneError("Please enter valid number");
+        setPhoneError(volunteerPage.messages.error3);
       } else {
         setPhoneError("");
       }
@@ -167,27 +168,25 @@ function Volunteer() {
 
       setErrMsg(false);
 
-      // Sending email
-      // emailjs
-      //   // .send("service_a7f8kvk", "template_kj0zzo9", emailData, { publicKey: "i1eYRzEru3UMSm8qR" })
-      //   //Aishwarya emailjs
-      //   // .sendForm("service_a7f8kvk", "template_kj0zzo9", form.current, {
-      //   //   publicKey: "i1eYRzEru3UMSm8qR",
-      //   // })
-
-      //   //Aadar emailjs
-      //   .sendForm("service_4a9mgcp", "template_ie847rr", form.current, {
-      //     publicKey: "41w8LwNiKZaoka4j-",
-      //   })
-      //   .then(
-      //     () => {
-      //       console.log(data);
-      //       console.log("SUCCESS!");
-      //     },
-      //     (error) => {
-      //       console.log("FAILED...", error.text);
-      //     }
-      //   );
+      // Sending email //Aadar emailjs
+      emailjs
+        .sendForm("service_4a9mgcp", "template_ie847rr", form.current, {
+          publicKey: "41w8LwNiKZaoka4j-",
+        })
+        .then(
+          () => {
+            console.log(data);
+            console.log("SUCCESS!");
+          },
+          (error) => {
+            console.log("FAILED...", error.text);
+            setErrMsg(true);
+            setTimeout(() => {
+              setErrMsg(false);
+            }, 5000);
+            setSuccessMsg(false);
+          }
+        );
     } else {
       console.log("required field missing");
 
@@ -198,6 +197,7 @@ function Volunteer() {
       setSuccessMsg(false);
     }
 
+    // Sending email //Aishwarya emailjs
     // emailjs
     //   .sendForm("service_a7f8kvk", "template_kj0zzo9", form.current, {
     //     publicKey: "i1eYRzEru3UMSm8qR",
@@ -212,6 +212,12 @@ function Volunteer() {
     //     }
     //   );
   };
+
+  // const { i18n } = useTranslation();
+
+  // useEffect(() => {
+  //   setError(volunteerPage.messages.error1);
+  // }, [i18n, i18n.language]);
 
   return (
     <MKBox minWidth="320px">

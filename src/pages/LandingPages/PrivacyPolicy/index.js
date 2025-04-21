@@ -23,13 +23,15 @@ import getFooterRoutes from "footer.routes1";
 import bgImage2 from "assets/images/mainThemeImages/swargSadanBlack.png";
 import bgImage from "assets/images/mainThemeImages/smallBrushstroke2.svg";
 
-import { privacyData } from "./data/privacyData.js";
+// import { privacyData } from "./data/privacyData.js";
+import privacyData from "./data/privacyData.js";
 
 function PrivacyPolicy() {
   const { t } = useTranslation();
   const routes = getRoutes(t);
   const footerRoutes = getFooterRoutes(t);
   const donateBtn = t("navbar.donateBtn");
+  const privacyPolicyPage = t("privacyPolicyPage");
 
   return (
     <MKBox minWidth="320px">
@@ -37,8 +39,8 @@ function PrivacyPolicy() {
       <DefaultNavbar
         routes={routes}
         action={{
-          type: "external",
-          route: "https://www.creative-tim.com/product/material-kit-react",
+          type: "internal",
+          route: "/pages/landing-pages/donate",
           label: donateBtn,
           color: "success",
         }}
@@ -83,7 +85,7 @@ function PrivacyPolicy() {
             fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
             mb={{ xs: 2, sm: 0 }}
           >
-            Privacy policy
+            {privacyPolicyPage.title}
           </MKTypography>
         </MKBox>
       </MKBox>
@@ -100,7 +102,8 @@ function PrivacyPolicy() {
           boxShadow: ({ boxShadows: { xxl } }) => xxl,
         }}
       >
-        {privacyData}
+        {/* {privacyData} */}
+        {privacyData()}
       </Card>
 
       {/* Footer */}

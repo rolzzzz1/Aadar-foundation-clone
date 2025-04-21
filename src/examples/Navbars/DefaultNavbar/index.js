@@ -34,6 +34,10 @@ import Divider from "@mui/material/Divider";
 import MuiLink from "@mui/material/Link";
 // import Button from "@mui/material/Button";
 
+import FacebookIcon from "@mui/icons-material/Facebook";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
@@ -552,7 +556,7 @@ function DefaultNavbar({
           <MKBox
             component="img"
             src={aadarLogo}
-            width={{ xs: "50px", sm: "70px", md: "80px", lg: "90px" }}
+            width={{ xs: "50px", sm: "70px", md: "80px", lg: "80px", xl: "90px" }}
             borderRadius="10px"
             my={1}
           />
@@ -605,6 +609,94 @@ function DefaultNavbar({
             backdropFilter: transparent ? "none" : `saturate(200%) blur(30px)`,
           })}
         >
+          <MKBox
+            sx={{ backgroundColor: "#f0f2f5" }}
+            width="100%"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            mx="auto"
+          >
+            <MKTypography
+              component="a"
+              href={"https://www.youtube.com/@AadarFoundation/"}
+              target="_blank"
+              rel="noreferrer"
+              variant="h5"
+              // color="dark"
+              color="text"
+              opacity={0.8}
+              mr={2}
+              sx={{
+                "&:hover": {
+                  color: "#E7A232",
+                  textDecoration: "underline 2px",
+                },
+              }}
+              height="20px"
+            >
+              <YouTubeIcon />
+            </MKTypography>
+            <MKTypography
+              component="a"
+              href={"https://www.youtube.com/@AadarFoundation/"}
+              target="_blank"
+              rel="noreferrer"
+              variant="h5"
+              // color="dark"
+              color="text"
+              opacity={0.8}
+              mr={2}
+              sx={{
+                "&:hover": {
+                  color: "#E7A232",
+                  textDecoration: "underline 2px",
+                },
+              }}
+              height="20px"
+            >
+              <InstagramIcon />
+            </MKTypography>
+            <MKTypography
+              component="a"
+              href={"https://www.youtube.com/@AadarFoundation/"}
+              target="_blank"
+              rel="noreferrer"
+              variant="h5"
+              // color="dark"
+              color="text"
+              opacity={0.8}
+              mr={2}
+              sx={{
+                "&:hover": {
+                  color: "#E7A232",
+                  textDecoration: "underline 2px",
+                },
+              }}
+              height="20px"
+            >
+              <FacebookIcon />
+            </MKTypography>
+
+            <MKTypography
+              variant="button"
+              fontWeight="light"
+              lineHeight={1.25}
+              color={light ? "white" : "dark"}
+              display={{ xs: "none", sm: "inline", md: "inline", lg: "inline" }}
+              fontSize={{
+                xs: "0.75rem",
+                sm: "0.68rem",
+                md: "0.75rem",
+                lg: "0.8rem",
+                xl: "0.8rem",
+              }}
+              pr={3}
+              pl={4}
+            >
+              <LanguageSelector />
+            </MKTypography>
+          </MKBox>
           <MKBox display="flex" justifyContent="space-between" alignItems="center">
             <MKBox
               // component={Link}
@@ -640,7 +732,7 @@ function DefaultNavbar({
                 display={{ xs: "none", sm: "inline", md: "inline", lg: "inline" }}
                 fontSize={{
                   xs: "0.75rem",
-                  sm: "0.75rem",
+                  sm: "0.68rem",
                   md: "0.75rem",
                   lg: "0.8rem",
                   xl: "0.8rem",
@@ -648,6 +740,24 @@ function DefaultNavbar({
               >
                 {navbar.subTitle}
               </MKTypography>
+
+              {/* <MKBox display="flex" alignItems="center">
+                <MKTypography
+                  variant="button"
+                  fontWeight="regular"
+                  textTransform="capitalize"
+                  color={light ? "light" : "dark"}
+                  sx={{
+                    fontSize: { sm: "0.8", md: "0.875rem", lg: "0.8rem", xl: "0.9rem" },
+                    fontWeight: "100%",
+                    mr: 0.8,
+                    ml: 2,
+                    // "&:hover": { color: "#E7A232", textDecoration: "underline 2px" },
+                  }}
+                >
+                  <LanguageSelector />
+                </MKTypography>
+              </MKBox> */}
             </MKBox>
 
             <MKBox
@@ -679,7 +789,7 @@ function DefaultNavbar({
                 >
                   {icon}
                 </MKTypography> */}
-              <MKTypography
+              {/* <MKTypography
                 variant="button"
                 fontWeight="regular"
                 textTransform="capitalize"
@@ -688,16 +798,31 @@ function DefaultNavbar({
                   fontSize: { sm: "0.8", md: "0.875rem", lg: "0.8rem", xl: "0.9rem" },
                   fontWeight: "100%",
                   mr: 0.8,
-                  "&:hover": { color: "#E7A232", textDecoration: "underline 2px" },
+                  // "&:hover": { color: "#E7A232", textDecoration: "underline 2px" },
                 }}
                 width="100%"
               >
                 <LanguageSelector />
-              </MKTypography>
+              </MKTypography> */}
             </MKBox>
 
             {/* Donate button */}
             <MKBox display="flex" alignItems="center">
+              {/* <MKTypography
+                variant="button"
+                fontWeight="regular"
+                textTransform="capitalize"
+                color={light ? "light" : "dark"}
+                sx={{
+                  fontSize: { sm: "0.8", md: "0.875rem", lg: "0.8rem", xl: "0.9rem" },
+                  fontWeight: "100%",
+                  mr: 1.5,
+                  // "&:hover": { color: "#E7A232", textDecoration: "underline 2px" },
+                }}
+                width="100%"
+              >
+                <LanguageSelector />
+              </MKTypography> */}
               {/* <MKButton
                 component={Link}
                 to={"/pages/landing-pages/donate"}

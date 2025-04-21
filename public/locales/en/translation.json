@@ -256,6 +256,71 @@
     "emailLabel": "Email :",
     "followUs": "Follow us"
   },
+  "privacyPolicyPage": {
+    "tagLine": "Privacy policy",
+    "title": "Privacy policy",
+    "description": "A privacy policy outlines how a website respects and protects user privacy. It specifies the information collected, how it is used, and the security measures in place. As a legal document, it details how a party gathers, uses, discloses, and manages customer data. The content of a privacy policy varies based on applicable laws and may need to comply with regulations across multiple jurisdictions. While no universal template exists, various organizations provide example policies to guide compliance.",
+    "websitePrivacySection": {
+      "title": "Website privacy",
+      "description1": "This Privacy Policy outlines how Aadar Foundation (Swarg Sadan) collects, uses, and protects any information you provide while using this website.",
+      "description2": "Aadar Foundation is committed to safeguarding your privacy. If we request information that identifies you while using this website, rest assured that it will only be used in accordance with this privacy statement.",
+      "description3": "We may update this policy periodically by revising this page. Please review it regularly to stay informed of any changes. This policy has been effective since January 1, 2025."
+    },
+    "whatWeCollectSection": {
+      "title": "What we collect",
+      "listDescription": "We may collect the following information :",
+      "listItem1": "Name and job title.",
+      "listItem2": "Contact information.",
+      "listItem3": "Demographic information such as postcode, preferences and interests."
+    },
+    "whyWeCollectSection": {
+      "title": "What We Do With The Information We Gather",
+      "listDescription": "We require this information to understand your needs and to join you with the service, and in particular for the following reasons :",
+      "listItem1": "Internal record keeping.",
+      "listItem2": "We may use the information to improve our services.",
+      "listItem3": "We may periodically send emails about new information about our services which we think you may find interesting using the email address which you have provided."
+    },
+    "securitySection": {
+      "title": "Security",
+      "description": "We are committed to ensuring the security of your information. To prevent unauthorized access or disclosure, we have implemented appropriate physical, electronic, and managerial measures to safeguard and protect the information we collect online."
+    },
+    "cookiesSection": {
+      "title": "How We Use Cookies",
+      "description1": "A cookie is a small file that requests permission to be stored on your computer’s hard drive. Once accepted, it helps analyze web traffic or enhances your browsing experience. Cookies enable websites to respond to you as an individual by remembering your preferences and tailoring content accordingly.",
+      "description2": "We use traffic log cookies to identify which pages are visited, helping us analyze website traffic and improve our services to better meet user needs. This information is used solely for statistical analysis and is then removed from our system.",
+      "description3": "Overall, cookies enhance your browsing experience by allowing us to monitor which pages are useful. They do not grant us access to your computer or any personal information beyond what you choose to share.",
+      "description4": "You can accept or decline cookies. Most browsers accept cookies by default, but you can modify your settings to decline them. However, doing so may limit your ability to fully utilize the website."
+    },
+    "linkWebsiteSection": {
+      "title": "Links to Other Websites",
+      "description": "Our website may contain links to other websites of interest. However, once you leave our site using these links, please note that we have no control over those external websites. Therefore, we cannot be responsible for the protection and privacy of any information you provide while visiting them. These sites are not governed by this privacy policy, and we encourage you to review their respective privacy statements."
+    },
+    "controlPersonalInfoSection": {
+      "title": "Controlling Your Personal Information",
+      "description1": "We do not sell, distribute, or share your personal information with third parties unless we have your permission or are required by law. However, if you have opted in, we may use your information to send you promotional content about third parties that we believe may be of interest to you.",
+      "description2": "You have the right to request details of the personal information we hold about you under the Data Protection Act 1998. To request a copy, please write to: Aadar Foundation (Swarg Sadan Ashram) Sarkari Malti, Behind Muktidham, Guda Gudi Ka Naka, Gwalior, India, 474001 Email: aadarfoundatio2018@gmail.com",
+      "description3": "If you believe any information we hold about you is incorrect or incomplete, please contact us at the above address. We will promptly update any inaccuracies."
+    }
+  },
+  "termsConditionsPage": {
+    "title": "Terms and conditions",
+    "descriptionStart": "Use of this site is provided by Aadar foundation subject to the following Terms and Conditions:",
+    "listItem1": "Your use constitutes acceptance of these terms and conditions as at the date of your first use of the site.",
+    "listItem2": "Aadar foundation reserves the rights to change these terms and conditions at any time by posting changes online. Your continued use of this site after changes are posted constitutes your acceptance of this agreement as modified.",
+    "listItem3": "You agree to use this site only for lawful purposes, and in a manner which does not infringe the rights, or restrict, or inhibit the use and enjoyment of the site by any third party.",
+    "listItem4": "This site and the information, names, images, pictures, logos regarding or relating to Aadar foundation are provided “as is” without any representation or endorsement made and without warranty of any kind whether express or implied. In no event will Aadar foundation be liable for any damages including, without limitation, indirect or consequential damages, or any damages whatsoever arising from the use or in connection with such use or loss of use of the site, whether in contract or in negligence.",
+    "listItem5": "Aadar foundation does not warrant that the functions contained in the material contained in this site will be uninterrupted or error free, that defects will be corrected, or that this site or the server that makes it available are free of viruses or bugs or represents the full functionality, accuracy and reliability of the materials.",
+    "listItem6": "Copyright restrictions: Commercial use or publication of all or any item displayed is strictly prohibited with out prior authorization from Aadar foundation. Nothing contained herein shall be construed as conferring any license by Aadar foundation to use any item displayed. Documents may be copied for personal use only on the condition that copyright and source indications are also copied, no modifications are made and the document is copied entirely. However, some documents and photos have been published on this site with the permission of the relevant copyright owners (who are not Aadar foundation). All rights are reserved on these documents and permission to copy them must be requested from the copyright owners (the sources are indicated within these documents/photographs).",
+    "listItem7": "Aadar foundation takes no responsibility for the content of external Internet sites. Other websites that we link to are owned and operated by third parties and Aadar foundation has no control over them. The fact that we include links to other websites does not mean thatAadar foundation approves of or endorses any other third party website or the content of that website. We accept no liability for any statements, information, products or services that are published on or are accessible through any websites owned or operated by third parties.",
+    "listItem8": "Any communication or material that you transmit to, or post on, any public area of the site including any data, questions, comments, suggestions, or the like, is, and will be treated as, non-confidential and non-proprietary information.",
+    "listItem9": "If there is any conflict between these terms and conditions and rules and/or specific terms of use appearing on this site relating to specific material then the latter shall prevail.",
+    "listItem10": "These terms and conditions shall be governed and construed in accordance with the laws of India. Any disputes shall be subject to the exclusive jurisdiction of the Courts of Madhya Pradesh.",
+    "listItem11": "If these terms and conditions are not accepted in full, the use of this site must be terminated immediately.",
+    "descriptionEnd": "Aadar foundation is a registered NGO by the name Aadar foundation in Gwalior, Madhya Pradesh – 474001, India, Tel : +91 9039129571, Website : https://aadar.foundation/, Email: aadarfoundatio2018@gmail.com"
+  },
+  "donatePage": {
+    "tagLine": "Donate"
+  },
   "footer": {
     "title": "Aadar foundation",
     "menus": {
