@@ -81,16 +81,16 @@ function Home() {
             display={{ xs: "inline", sm: "none" }}
             mb={2}
           />{" "}
-          {/* <MKTypography
+          <MKTypography
             color="white"
             textAlign="center"
-            fontSize="1.3rem"
+            fontSize="0.9rem"
             mb={8}
             px={1}
             display={{ xs: "inline", sm: "none" }}
           >
             A home for Hopeless, Homeless, Helpless and Unclaimed people
-          </MKTypography> */}
+          </MKTypography>
         </MKBox>
 
         <MKBox

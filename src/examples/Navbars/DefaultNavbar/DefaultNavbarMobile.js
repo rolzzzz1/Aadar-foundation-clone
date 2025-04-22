@@ -28,11 +28,12 @@ import MuiLink from "@mui/material/Link";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
+import MKButton from "components/MKButton";
 
 // Material Kit 2 React example components
 import DefaultNavbarDropdown from "examples/Navbars/DefaultNavbar/DefaultNavbarDropdown";
 
-function DefaultNavbarMobile({ routes, open }) {
+function DefaultNavbarMobile({ routes, open, action }) {
   const [collapse, setCollapse] = useState("");
 
   const handleSetCollapse = (name) => (collapse === name ? setCollapse(false) : setCollapse(name));
@@ -269,6 +270,41 @@ function DefaultNavbarMobile({ routes, open }) {
       <MKBox width="calc(100% + 1.625rem)" my={2} ml={-1}>
         {renderNavbarItems}
       </MKBox>
+      <MKBox
+        ml={{ xs: "auto", lg: 0 }}
+        display={{ xs: "flex", sm: "none" }}
+        justifyContent="center"
+        pb={2}
+      >
+        {action &&
+          (action.type === "internal" ? (
+            <MKButton
+              component={Link}
+              to={action.route}
+              variant={
+                action.color === "white" || action.color === "default" ? "contained" : "gradient"
+              }
+              color={action.color ? action.color : "info"}
+              size="small"
+            >
+              {action.label}
+            </MKButton>
+          ) : (
+            <MKButton
+              component="a"
+              href={action.route}
+              target="_blank"
+              rel="noreferrer"
+              variant={
+                action.color === "white" || action.color === "default" ? "contained" : "gradient"
+              }
+              color={action.color ? action.color : "info"}
+              size="small"
+            >
+              {action.label}
+            </MKButton>
+          ))}
+      </MKBox>
     </Collapse>
   );
 }
@@ -277,6 +313,26 @@ function DefaultNavbarMobile({ routes, open }) {
 DefaultNavbarMobile.propTypes = {
   routes: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object])).isRequired,
   open: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]).isRequired,
+  action: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.shape({
+      type: PropTypes.oneOf(["external", "internal"]).isRequired,
+      route: PropTypes.string.isRequired,
+      color: PropTypes.oneOf([
+        "primary",
+        "secondary",
+        "info",
+        "success",
+        "warning",
+        "error",
+        "dark",
+        "light",
+        "default",
+        "white",
+      ]),
+      label: PropTypes.string.isRequired,
+    }),
+  ]),
 };
 
 export default DefaultNavbarMobile;

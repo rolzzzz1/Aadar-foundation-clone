@@ -319,7 +319,69 @@
     "descriptionEnd": "Aadar foundation is a registered NGO by the name Aadar foundation in Gwalior, Madhya Pradesh – 474001, India, Tel : +91 9039129571, Website : https://aadar.foundation/, Email: aadarfoundatio2018@gmail.com"
   },
   "donatePage": {
-    "tagLine": "Donate"
+    "tagLine": "Donate",
+    "title": "Donate",
+    "description": "We ensure that every donation is used with purpose and precision. Each decision we make is thoughtfully considered, and even the smallest contribution is directed toward initiatives where it will yield the greatest impact.",
+    "emailMessage": "Please email your <1>name, mobile number and screenshot</1> of your transaction at <1>aadarfoundatio2018@gmail.com</1> to get receipt of your contribution.",
+    "imageTagLine": "\" Help us increase number of these smiles \"",
+    "bankAccountDetails": {
+      "title": "Bank account details",
+      "acccountName": {
+        "title": "Account name",
+        "value": "Aadar foundation"
+      },
+      "bankName": {
+        "title": "Bank name",
+        "value": "Bank of Baroda"
+      },
+      "ifscCode": {
+        "title": "IFSC code",
+        "value": "BARB0VJCCGW"
+      },
+      "accountNo": {
+        "title": "Account number",
+        "value": "67940100000154"
+      }
+    },
+    "message80g": "All donations to the Organisation are 50 % tax exempted under section 80 G of Income Tax Act 1961. ",
+    "panNo": "PAN No - AAIAA2457N",
+    "membershipSection": {
+      "title": "Join Us",
+      "subTitle": "Here’s how you can take part in our services",
+      "membership": {
+        "title": "Membership",
+        "membership1": {
+          "name": "Monthly membership -",
+          "time": "( per month )"
+        },
+        "membership2": {
+          "name": "Half-yearly membership -",
+          "time": "( per 6 months )"
+        },
+        "membership3": {
+          "name": "Annual membership -",
+          "time": "( per year )"
+        }
+      },
+      "sponsorPrabhuji": {
+        "title": "Sponsor Prabhuji",
+        "sponsorship1": {
+          "name": "Expenses of one Prabhuji -",
+          "services": "( for a Month )"
+        },
+        "sponsorship2": {
+          "name": "Expenses of one Prabhuji -",
+          "services": "( for a Year )"
+        }
+      },
+      "foodSponsorship": {
+        "title": "Food sponsorship",
+        "foodSponsorship1": "One time meal (breakfast) during a day for 50 Prabhuji (1unit) -",
+        "foodSponsorship2": "One time meal (lunch/dinner) during a day for 50 Prabhuji (1 Units) -",
+        "foodSponsorship3": "One time meal (lunch/dinner) during a day for 100 Prabhuji (2 Units) -",
+        "foodSponsorship4": "Full day meal for 100 Prabhuji (2 units) -"
+      }
+    }
   },
   "footer": {
     "title": "Aadar foundation",

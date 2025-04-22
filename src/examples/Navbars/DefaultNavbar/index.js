@@ -1,19 +1,3 @@
-/* eslint-disable no-param-reassign */
-/**
-=========================================================
-* Material Kit 2 React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-kit-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { Fragment, useState, useEffect } from "react";
 
 import { useTranslation } from "react-i18next";
@@ -32,18 +16,12 @@ import Grow from "@mui/material/Grow";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import MuiLink from "@mui/material/Link";
-// import Button from "@mui/material/Button";
-
-import FacebookIcon from "@mui/icons-material/Facebook";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import YouTubeIcon from "@mui/icons-material/YouTube";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 import MKButton from "components/MKButton";
 import LanguageSelector from "components/language-selector";
-// import MKAvatar from "components/MKAvatar";
 
 // Material Kit 2 React example components
 import DefaultNavbarDropdown from "examples/Navbars/DefaultNavbar/DefaultNavbarDropdown";
@@ -52,11 +30,6 @@ import DefaultNavbarMobile from "examples/Navbars/DefaultNavbar/DefaultNavbarMob
 // Material Kit 2 React base styles
 import breakpoints from "assets/theme/base/breakpoints";
 import aadarLogo from "assets/images/logos/logo-aadar.jpg";
-
-// import { grey } from "@mui/material/colors";
-
-// import CallRoundedIcon from "@mui/icons-material/CallRounded";
-// import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 
 function DefaultNavbar({
   // brand,
@@ -79,6 +52,9 @@ function DefaultNavbar({
   const [mobileView, setMobileView] = useState(false);
 
   const openMobileNavbar = () => setMobileNavbar(!mobileNavbar);
+
+  const { t } = useTranslation();
+  const donateBtn = t("navbar.donateBtn");
 
   useEffect(() => {
     // A function that sets the display state for the DefaultNavbarMobile.
@@ -503,7 +479,6 @@ function DefaultNavbar({
     </Popper>
   );
 
-  const { t } = useTranslation();
   const navbar = t("navbar");
 
   return (
@@ -549,7 +524,7 @@ function DefaultNavbar({
           // to="/"
           lineHeight={1}
           // py={transparent ? 1.5 : 0.75}
-          pl={relative || transparent ? 0 : { xs: 0.5, sm: 0.5, md: 1.5, lg: 2.5 }}
+          pl={relative || transparent ? 0 : { xs: 1, sm: 1, md: 1.5, lg: 2.5 }}
           borderRadius="xl"
           display="flex"
         >
@@ -593,7 +568,7 @@ function DefaultNavbar({
           // py={1}
           px={{ xs: 2, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
           my={relative ? 0 : 2}
-          mx={relative ? 0 : { xs: 1.5, md: 3 }}
+          mx={relative ? 0 : { xs: 1, sm: 1, md: 3 }}
           width={relative ? "95%" : "calc(95% - 48px)"}
           borderRadius="xl"
           shadow={transparent ? "none" : "md"}
@@ -613,11 +588,11 @@ function DefaultNavbar({
             sx={{ backgroundColor: "#f0f2f5" }}
             width="100%"
             display="flex"
-            justifyContent="center"
+            justifyContent="end"
             alignItems="center"
             mx="auto"
           >
-            <MKTypography
+            {/* <MKTypography
               component="a"
               href={"https://www.youtube.com/@AadarFoundation/"}
               target="_blank"
@@ -639,7 +614,7 @@ function DefaultNavbar({
             </MKTypography>
             <MKTypography
               component="a"
-              href={"https://www.youtube.com/@AadarFoundation/"}
+              href={"https://www.instagram.com/ashramswargsadangwalior/"}
               target="_blank"
               rel="noreferrer"
               variant="h5"
@@ -659,7 +634,7 @@ function DefaultNavbar({
             </MKTypography>
             <MKTypography
               component="a"
-              href={"https://www.youtube.com/@AadarFoundation/"}
+              href={"https://www.facebook.com/AshramSwargSadanGwalior/"}
               target="_blank"
               rel="noreferrer"
               variant="h5"
@@ -676,14 +651,14 @@ function DefaultNavbar({
               height="20px"
             >
               <FacebookIcon />
-            </MKTypography>
+            </MKTypography> */}
 
             <MKTypography
               variant="button"
               fontWeight="light"
               lineHeight={1.25}
               color={light ? "white" : "dark"}
-              display={{ xs: "none", sm: "inline", md: "inline", lg: "inline" }}
+              display={{ xs: "inline", sm: "inline", md: "inline", lg: "inline" }}
               fontSize={{
                 xs: "0.75rem",
                 sm: "0.68rem",
@@ -691,7 +666,7 @@ function DefaultNavbar({
                 lg: "0.8rem",
                 xl: "0.8rem",
               }}
-              pr={3}
+              pr={1}
               pl={4}
             >
               <LanguageSelector />
@@ -706,14 +681,14 @@ function DefaultNavbar({
               pl={relative || transparent ? 0 : { xs: 0, lg: 1 }}
               display="flex"
               flexDirection="column"
-              maxWidth={{ lg: "180px", xl: "250px" }}
+              maxWidth={{ xs: "200px", md: "220px", lg: "200px", xl: "250px" }}
             >
               <MKTypography
                 variant="button"
                 fontWeight="bold"
                 color={light ? "white" : "dark"}
                 fontSize={{
-                  xs: "0.85rem",
+                  xs: "1rem",
                   sm: "1rem",
                   md: "1.125rem",
                   lg: "1.125rem",
@@ -729,14 +704,15 @@ function DefaultNavbar({
                 fontWeight="light"
                 lineHeight={1.25}
                 color={light ? "white" : "dark"}
-                display={{ xs: "none", sm: "inline", md: "inline", lg: "inline" }}
+                display={{ xs: "inline", sm: "inline", md: "inline", lg: "inline" }}
                 fontSize={{
-                  xs: "0.75rem",
+                  xs: "0.68rem",
                   sm: "0.68rem",
                   md: "0.75rem",
                   lg: "0.8rem",
                   xl: "0.8rem",
                 }}
+                pt={0.25}
               >
                 {navbar.subTitle}
               </MKTypography>
@@ -834,7 +810,7 @@ function DefaultNavbar({
                 Donate
               </MKButton> */}
 
-              <MKBox ml={{ xs: "auto", lg: 0 }}>
+              <MKBox ml={{ xs: "auto", lg: 0 }} display={{ xs: "none", sm: "block" }}>
                 {action &&
                   (action.type === "internal" ? (
                     <MKButton
@@ -901,7 +877,18 @@ function DefaultNavbar({
             borderRadius="xl"
             px={transparent ? 2 : 0}
           >
-            {mobileView && <DefaultNavbarMobile routes={routes} open={mobileNavbar} />}
+            {mobileView && (
+              <DefaultNavbarMobile
+                routes={routes}
+                open={mobileNavbar}
+                action={{
+                  type: "internal",
+                  route: "/pages/landing-pages/donate",
+                  label: donateBtn,
+                  color: "success",
+                }}
+              />
+            )}
           </MKBox>
         </MKBox>
 

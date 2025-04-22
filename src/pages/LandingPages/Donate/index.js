@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 
 // @mui material components
 import Container from "@mui/material/Container";
@@ -41,6 +41,7 @@ function Donate() {
   const footerRoutes = getFooterRoutes(t);
   const donateBtn = t("navbar.donateBtn");
   const donatePage = t("donatePage");
+  const { i18n } = useTranslation();
 
   return (
     <MKBox minWidth="320px">
@@ -99,7 +100,7 @@ function Donate() {
         </MKBox>
       </MKBox>
 
-      {/* Contact section */}
+      {/* Donate section */}
       <Card
         sx={{
           p: 2,
@@ -113,32 +114,28 @@ function Donate() {
       >
         <MKBox component="section" my={4}>
           <Container>
-            <Grid container display="flex" pt={3}>
-              <Grid lg={12}>
-                <MKTypography
-                  variant="h4"
-                  sx={{ fontWeight: "500", fontSize: { md: "1.2rem", lg: "1.5rem" } }}
-                  pb={5}
-                >
-                  Donate
-                </MKTypography>
-              </Grid>
+            <Grid lg={12}>
+              <MKTypography
+                variant="h4"
+                sx={{ fontWeight: "500", fontSize: { md: "1.2rem", lg: "1.5rem" } }}
+                pb={{ md: 3, lg: 5 }}
+              >
+                {donatePage.title}
+              </MKTypography>
+            </Grid>
+            <Grid container display="flex" pt={2}>
               <Grid container alignItems="flex-start" lg={6} xl={6}>
                 <MKBox>
-                  {/* <MKTypography
-                    variant="h4"
-                    sx={{ fontWeight: "500", fontSize: { md: "1.2rem", lg: "1.5rem" } }}
-                    pb={5}
-                  >
-                    Donate
-                  </MKTypography> */}
                   <MKTypography
                     variant="h4"
                     sx={{ fontWeight: "500", fontSize: { md: "1.2rem", lg: "1.5rem" } }}
-                    mt={4}
+                    mt={2}
                   >
-                    Your action today has <br />
-                    the{" "}
+                    {i18n.language === "hi" ? "आपके आज के कार्य में" : "Your action today has"}{" "}
+                    <br />
+                    {i18n.language === "hi" ? "एक" : "the"}
+                    {/* Your action today has <br />
+                    the{" "} */}
                     <MKTypography
                       display="inline"
                       variant="h4"
@@ -148,7 +145,9 @@ function Donate() {
                         color: "#ECA533",
                       }}
                     >
-                      power to transform a life.
+                      {i18n.language === "hi"
+                        ? " जीवन बदलने की शक्ति है।"
+                        : " power to transform a life."}
                     </MKTypography>
                     <MKTypography
                       variant="body1"
@@ -156,15 +155,16 @@ function Donate() {
                       fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
                       sx={{
                         letterSpacing: "0.05rem",
-                        paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
+                        paddingTop: { xs: "40px", sm: "40px", md: "20px", lg: "0px" },
                       }}
-                      mt={6}
+                      mt={{ md: 3, lg: 6 }}
                       mr={8}
                     >
-                      We ensure that every donation is used with purpose and precision. Each
+                      {donatePage.description}
+                      {/* We ensure that every donation is used with purpose and precision. Each
                       decision we make is thoughtfully considered, and even the smallest
                       contribution is directed toward initiatives where it will yield the greatest
-                      impact.
+                      impact. */}
                     </MKTypography>
                   </MKTypography>
 
@@ -176,10 +176,15 @@ function Donate() {
                     width="100%"
                     height="250px"
                     sx={{ border: "10px solid #ECA533" }}
-                    mt={8}
+                    mt={{ md: 5, lg: 5, xl: 8 }}
                   ></MKBox>
-                  <MKTypography textAlign="center" variant="h5" mt={1.5}>
-                    <i>" Help us increase number of these smiles "</i>
+                  <MKTypography
+                    textAlign="center"
+                    variant="h5"
+                    mt={1.5}
+                    fontSize={{ xs: "1rem", md: "1.2rem" }}
+                  >
+                    <i>{donatePage.imageTagLine}</i>
                   </MKTypography>
                   {/* <MKBox border="2px solid #F44335" borderRadius="5px" width="100%" p={1} mt={11}>
                     <MKTypography color="error" fontSize="1rem" textAlign="center">
@@ -191,7 +196,7 @@ function Donate() {
                 </MKBox>
               </Grid>
 
-              <Grid lg={6} xl={6}>
+              <Grid lg={6} xl={6} px={4}>
                 {/* <MKTypography
                   // display="inline"
                   variant="h4"
@@ -207,25 +212,32 @@ function Donate() {
                 <MKBox
                   border="2px solid #F44335"
                   borderRadius="5px"
-                  width="100%"
+                  // width="80%"
                   p={1}
                   mx={4}
                   mb={4}
+                  mt={{ md: 8 }}
                 >
-                  <MKTypography color="error" fontSize="1rem" textAlign="center">
-                    Please email your <b>name, mobile number and screenshot</b> of your transaction
-                    at <b>aadarfoundatio2018@gmail.com</b> to get receipt of your contribution.
+                  <MKTypography
+                    color="error"
+                    textAlign="center"
+                    fontSize={{ xs: "0.8rem", md: "1rem" }}
+                  >
+                    <Trans i18nKey={donatePage.emailMessage} components={{ 1: <b /> }} />
+                    {/* Please email your <b>name, mobile number and screenshot</b> of your transaction
+                    at <b>aadarfoundatio2018@gmail.com</b> to get receipt of your contribution. */}
                   </MKTypography>
                 </MKBox>
-                <MKBox
-                  component="img"
-                  src={scanner}
-                  alt={"Swarg sadan building image"}
-                  borderRadius="xxl"
-                  width="100%"
-                  height="500px"
-                  mx={4}
-                ></MKBox>
+                <MKBox display="flex" justifyContent="center" mt={{ md: 6 }}>
+                  <MKBox
+                    component="img"
+                    src={scanner}
+                    alt={"Swarg sadan building image"}
+                    borderRadius="xxl"
+                    // width="80%"
+                    height="500px"
+                  ></MKBox>
+                </MKBox>
               </Grid>
             </Grid>
             {/* <Grid container alignItems="flex-start" pt={6}>
@@ -240,7 +252,7 @@ function Donate() {
               <MKBox
                 sx={{ backgroundColor: "#fbecd4", borderRadius: "20px" }}
                 py={8}
-                px={40}
+                px={{ lg: 20, xl: 40 }}
                 mt={8}
                 display={"flex"}
                 flexDirection={"column"}
@@ -248,22 +260,30 @@ function Donate() {
               >
                 <MKTypography
                   sx={{
-                    fontSize: { md: "1.5rem", lg: "2rem" },
+                    fontSize: { md: "1.2rem", lg: "1.5rem" },
                     fontWeight: "500",
                     letterSpacing: "0.05rem",
                   }}
+                  variant="h4"
                   // pt={8}
                   pb={4}
                 >
-                  Bank account details
+                  {donatePage.bankAccountDetails.title}
                 </MKTypography>
 
-                <MKTypography fontSize="1.1rem" py={1} sx={{ letterSpacing: "0.05rem" }}>
-                  <b>Account name - </b>AADAR FOUNDATION{" "}
+                <MKTypography
+                  fontSize={{ md: "1.2rem", lg: "1rem" }}
+                  py={{ lg: 1 }}
+                  sx={{ letterSpacing: "0.05rem" }}
+                >
+                  <b>{donatePage.bankAccountDetails.acccountName.title} - </b>
+                  {donatePage.bankAccountDetails.acccountName.value}
                   <Tooltip title="Click to copy" placement="right">
                     <MKButton
                       onClick={() => {
-                        navigator.clipboard.writeText("AADAR FOUNDATION");
+                        navigator.clipboard.writeText(
+                          donatePage.bankAccountDetails.acccountName.value
+                        );
                       }}
                       variant="text"
                       color="text"
@@ -275,12 +295,17 @@ function Donate() {
                   </Tooltip>
                 </MKTypography>
 
-                <MKTypography fontSize="1.1rem" py={1} sx={{ letterSpacing: "0.05rem" }}>
-                  <b>Bank name - </b>BANK OF BARODA{" "}
+                <MKTypography
+                  fontSize={{ md: "1.2rem", lg: "1rem" }}
+                  py={{ lg: 1 }}
+                  sx={{ letterSpacing: "0.05rem" }}
+                >
+                  <b>{donatePage.bankAccountDetails.bankName.title} - </b>
+                  {donatePage.bankAccountDetails.bankName.value}{" "}
                   <Tooltip title="Click to copy" placement="right">
                     <MKButton
                       onClick={() => {
-                        navigator.clipboard.writeText("BANK OF BARODA");
+                        navigator.clipboard.writeText(donatePage.bankAccountDetails.bankName.value);
                       }}
                       variant="text"
                       color="text"
@@ -291,8 +316,12 @@ function Donate() {
                     </MKButton>
                   </Tooltip>
                 </MKTypography>
-                <MKTypography fontSize="1.1rem" py={1} sx={{ letterSpacing: "0.05rem" }}>
-                  <b>IFSC code - </b>BARB0VJCCGW{" "}
+                <MKTypography
+                  fontSize={{ md: "1.2rem", lg: "1rem" }}
+                  py={{ lg: 1 }}
+                  sx={{ letterSpacing: "0.05rem" }}
+                >
+                  <b>{donatePage.bankAccountDetails.ifscCode.title} - </b>BARB0VJCCGW{" "}
                   <Tooltip title="Click to copy" placement="right">
                     <MKButton
                       onClick={() => {
@@ -307,8 +336,12 @@ function Donate() {
                     </MKButton>
                   </Tooltip>
                 </MKTypography>
-                <MKTypography fontSize="1.1rem" py={1} sx={{ letterSpacing: "0.05rem" }}>
-                  <b>Account number - </b>67940100000154{" "}
+                <MKTypography
+                  fontSize={{ md: "1.2rem", lg: "1rem" }}
+                  py={{ lg: 1 }}
+                  sx={{ letterSpacing: "0.05rem" }}
+                >
+                  <b>{donatePage.bankAccountDetails.accountNo.title} - </b>67940100000154{" "}
                   <Tooltip title="Click to copy" placement="right">
                     <MKButton
                       onClick={() => {
@@ -327,9 +360,11 @@ function Donate() {
             </Grid>
             <MKBox border="2px solid #66BB6A" borderRadius="5px" width="80%" p={2} mx="auto" my={8}>
               <MKTypography color="success" fontSize="1rem" textAlign="center">
-                All donations to the Organisation are 50 % tax exempted under section 80 G of Income
+                {donatePage.message80g} <br />
+                <b>{donatePage.panNo}</b>
+                {/* All donations to the Organisation are 50 % tax exempted under section 80 G of Income
                 Tax Act 1961. <br />
-                <b>PAN No - AAIAA2457N</b>
+                <b>PAN No - AAIAA2457N</b> */}
               </MKTypography>
             </MKBox>
             {/* <MKBox m={2} px={20} py={10} textAlign={"center"}>
@@ -354,24 +389,24 @@ function Donate() {
                 <MKTypography
                   variant="h4"
                   sx={{
-                    fontSize: { md: "2.5rem", lg: "3rem" },
+                    fontSize: { md: "1.7rem", lg: "2rem" },
                     fontWeight: "500",
                     color: "#ECA533",
                   }}
 
                   // pb={2}
                 >
-                  Join Us
+                  {donatePage.membershipSection.title}
                 </MKTypography>
                 <MKTypography
                   variant="h4"
                   sx={{
-                    fontSize: { md: "1.5rem", lg: "1.8rem" },
+                    fontSize: { xs: "1rem", md: "1.2rem", lg: "1.5rem" },
                     fontWeight: "500",
                   }}
                   pl={4}
                 >
-                  Here’s how you can take part in our services
+                  {donatePage.membershipSection.subTitle}
                 </MKTypography>
               </Grid>
               <Grid container pt={6}>
@@ -387,45 +422,58 @@ function Donate() {
                 >
                   <MKTypography
                     sx={{
-                      fontSize: { md: "1.6rem", lg: "1.8rem" },
+                      fontSize: { xs: "1rem", md: "1.2rem", lg: "1.5rem" },
                       fontWeight: "400",
                     }}
                     pb={2}
                   >
-                    Membership
+                    {donatePage.membershipSection.membership.title}
                   </MKTypography>
-                  <MKBox pt={2} px={4}>
-                    <MKTypography fontSize="1.1rem" py={1.2} sx={{ letterSpacing: "0.05rem" }}>
-                      <b>Monthly membership - </b> Rs 100 / 200 / 500{" "}
+                  <MKBox pt={2} px={{ md: 5, lg: 8 }}>
+                    <MKTypography
+                      fontSize={{ md: "1.2rem", lg: "1rem" }}
+                      py={1}
+                      sx={{ letterSpacing: "0.05rem" }}
+                    >
+                      <b>{donatePage.membershipSection.membership.membership1.name} </b> Rs
+                      100/200/500{" "}
                       <MKTypography
                         fontSize="0.9rem"
-                        py={1}
+                        // py={1}
                         sx={{ letterSpacing: "0.05rem" }}
-                        display="inline"
+                        // display="inline"
                       >
-                        ( per month )
+                        {donatePage.membershipSection.membership.membership1.time}
                       </MKTypography>
                     </MKTypography>
-                    <MKTypography fontSize="1.1rem" py={1.2} sx={{ letterSpacing: "0.05rem" }}>
-                      <b>Half-yearly membership - </b>Rs 2600{" "}
+                    <MKTypography
+                      fontSize={{ md: "1.2rem", lg: "1rem" }}
+                      py={1}
+                      sx={{ letterSpacing: "0.05rem" }}
+                    >
+                      <b>{donatePage.membershipSection.membership.membership2.name} </b>Rs 2600{" "}
                       <MKTypography
                         fontSize="0.9rem"
-                        py={1}
+                        // py={1}
                         sx={{ letterSpacing: "0.05rem" }}
-                        display="inline"
+                        // display="inline"
                       >
-                        ( per 6 months )
+                        {donatePage.membershipSection.membership.membership2.time}
                       </MKTypography>
                     </MKTypography>
-                    <MKTypography fontSize="1.1rem" py={1.2} sx={{ letterSpacing: "0.05rem" }}>
-                      <b>Annual membership - </b>Rs 5100{" "}
+                    <MKTypography
+                      fontSize={{ md: "1.2rem", lg: "1rem" }}
+                      py={1}
+                      sx={{ letterSpacing: "0.05rem" }}
+                    >
+                      <b>{donatePage.membershipSection.membership.membership3.name} </b>Rs 5100{" "}
                       <MKTypography
                         fontSize="0.9rem"
-                        py={1}
+                        // py={1}
                         sx={{ letterSpacing: "0.05rem" }}
-                        display="inline"
+                        // display="inline"
                       >
-                        ( per year )
+                        {donatePage.membershipSection.membership.membership3.time}
                       </MKTypography>
                     </MKTypography>
                   </MKBox>
@@ -442,43 +490,42 @@ function Donate() {
                 >
                   <MKTypography
                     sx={{
-                      fontSize: { md: "1.6rem", lg: "1.8rem" },
+                      fontSize: { xs: "1rem", md: "1.2rem", lg: "1.5rem" },
                       fontWeight: "400",
                     }}
                     pb={2}
                   >
-                    Sponsor Prabhuji
+                    {donatePage.membershipSection.sponsorPrabhuji.title}
                   </MKTypography>
-                  <MKBox pt={2} px={4}>
-                    <MKTypography fontSize="1.1rem" py={1.2} sx={{ letterSpacing: "0.05rem" }}>
-                      <b>
-                        Expenses of one Prabhuji{" "}
-                        <MKTypography
-                          fontSize="0.9rem"
-                          py={1}
-                          sx={{ letterSpacing: "0.05rem" }}
-                          display="inline"
-                        >
-                          (Treatment, Food, Cloth and care etc.)
-                        </MKTypography>{" "}
-                        for a Month -
-                      </b>{" "}
+                  <MKBox pt={2} px={{ md: 5, lg: 10 }}>
+                    <MKTypography
+                      fontSize={{ md: "1.2rem", lg: "1rem" }}
+                      py={0.8}
+                      sx={{ letterSpacing: "0.05rem" }}
+                    >
+                      <b>{donatePage.membershipSection.sponsorPrabhuji.sponsorship1.name} </b>
                       Rs 3000
+                      <MKTypography fontSize="0.9rem" sx={{ letterSpacing: "0.05rem" }}>
+                        {donatePage.membershipSection.sponsorPrabhuji.sponsorship1.services}
+                      </MKTypography>{" "}
                     </MKTypography>
-                    <MKTypography fontSize="1.1rem" py={1.2} sx={{ letterSpacing: "0.05rem" }}>
-                      <b>
-                        Expenses of one Prabhuji{" "}
-                        <MKTypography
-                          fontSize="0.9rem"
-                          py={1}
-                          sx={{ letterSpacing: "0.05rem" }}
-                          display="inline"
-                        >
-                          (Treatment, Food, Cloth and care etc.)
-                        </MKTypography>{" "}
-                        for a Year -
-                      </b>{" "}
-                      Rs 30000
+                    <MKTypography
+                      fontSize={{ md: "1.2rem", lg: "1rem" }}
+                      py={0.8}
+                      sx={{ letterSpacing: "0.05rem" }}
+                    >
+                      <b>{donatePage.membershipSection.sponsorPrabhuji.sponsorship2.name}</b> Rs
+                      30000
+                    </MKTypography>
+                    <MKTypography fontSize="0.9rem" sx={{ letterSpacing: "0.05rem" }}>
+                      {donatePage.membershipSection.sponsorPrabhuji.sponsorship2.services}
+                    </MKTypography>{" "}
+                    <MKTypography
+                      fontSize={{ md: "0.7rem", lg: "0.85rem" }}
+                      py={2}
+                      sx={{ letterSpacing: "0.05rem" }}
+                    >
+                      ** This includes their treatment, food, clothes and care.
                     </MKTypography>
                   </MKBox>
                 </Grid>
@@ -494,26 +541,40 @@ function Donate() {
               >
                 <MKTypography
                   sx={{
-                    fontSize: { md: "1.6rem", lg: "1.8rem" },
+                    fontSize: { xs: "1rem", md: "1.2rem", lg: "1.5rem" },
                     fontWeight: "400",
                   }}
                   pb={4}
                 >
-                  Food sponsorship
+                  {donatePage.membershipSection.foodSponsorship.title}
                 </MKTypography>
-                <MKTypography fontSize="1.1rem" py={1.2} sx={{ letterSpacing: "0.05rem" }}>
-                  <b>One time meal (breakfast) during a day for 50 Prabhuji (1unit) - </b>Rs 1500
+                <MKTypography
+                  fontSize={{ md: "0.8rem", lg: "1rem" }}
+                  py={1.2}
+                  sx={{ letterSpacing: "0.05rem" }}
+                >
+                  <b>{donatePage.membershipSection.foodSponsorship.foodSponsorship1} </b>Rs 1500
                 </MKTypography>
-                <MKTypography fontSize="1.1rem" py={1.2} sx={{ letterSpacing: "0.05rem" }}>
-                  <b>One time meal (lunch/dinner) during a day for 50 Prabhuji (1 Units) - </b>Rs
-                  3000
+                <MKTypography
+                  fontSize={{ md: "0.8rem", lg: "1rem" }}
+                  py={1.2}
+                  sx={{ letterSpacing: "0.05rem" }}
+                >
+                  <b>{donatePage.membershipSection.foodSponsorship.foodSponsorship2} </b>Rs 3000
                 </MKTypography>
-                <MKTypography fontSize="1.1rem" py={1.2} sx={{ letterSpacing: "0.05rem" }}>
-                  <b>One time meal (lunch/dinner) during a day for 100 Prabhuji (2 Units) - </b>Rs
-                  6000
+                <MKTypography
+                  fontSize={{ md: "0.8rem", lg: "1rem" }}
+                  py={1.2}
+                  sx={{ letterSpacing: "0.05rem" }}
+                >
+                  <b>{donatePage.membershipSection.foodSponsorship.foodSponsorship3} </b>Rs 6000
                 </MKTypography>
-                <MKTypography fontSize="1.3rem" py={1.8} sx={{ letterSpacing: "0.05rem" }}>
-                  <b>Full day meal for 100 Prabhuji (2 units) - </b>Rs 15000
+                <MKTypography
+                  fontSize={{ md: "1rem", lg: "1.3rem" }}
+                  py={1.8}
+                  sx={{ letterSpacing: "0.05rem" }}
+                >
+                  <b>{donatePage.membershipSection.foodSponsorship.foodSponsorship4} </b>Rs 15000
                 </MKTypography>
               </Grid>
             </MKBox>

@@ -46,7 +46,7 @@ const LanguageSelector = () => {
         sx={{ cursor: "pointer", userSelect: "none", margin: 0, color: "#344767" }}
         onClick={toggleSwitch}
       >
-        Eng
+        English
       </MKTypography>
       <Switch size="small" checked={checked} onChange={toggleSwitch} sx={{ py: 0.6 }} />
       <MKTypography
@@ -57,7 +57,7 @@ const LanguageSelector = () => {
         sx={{ cursor: "pointer", userSelect: "none", margin: 0, color: "#344767" }}
         onClick={toggleSwitch}
       >
-        हिं
+        हिन्दी
       </MKTypography>
     </MKBox>
   );
