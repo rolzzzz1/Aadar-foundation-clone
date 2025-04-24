@@ -1,12 +1,12 @@
 // @mui material components
 import Card from "@mui/material/Card";
 
+// i18next imports
 import { useTranslation } from "react-i18next";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
-// import MKCarousel from "components/MKCarousel";
 
 // Material Kit 2 React examples
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
@@ -20,20 +20,14 @@ import Journey from "pages/Home/sections/Home sections/Journey";
 import Counters from "pages/Home/sections/Home sections/Counters";
 
 // Routes
-// import routes from "routes";
 import getRoutes from "routes1";
-
-// import footerRoutes from "footer.routes";
 import getFooterRoutes from "footer.routes1";
 
 // Images
 import bgImage from "assets/images/mainThemeImages/brushstroke.svg";
 import bgImage2 from "assets/images/mainThemeImages/aadar-main-black2.png";
-// import aadarHindi from "assets/images/aadarImg.png";
 import aadarHindiWhite from "assets/images/aadarHindiWhite.png";
 import aadarHindiYellow from "assets/images/aadarHindiYellow.png";
-// import img1 from "assets/images/galleryImages/resque1.jpg";
-// import img2 from "assets/images/galleryImages/resque2.jpg";
 
 function Home() {
   const { t } = useTranslation();
@@ -45,8 +39,6 @@ function Home() {
   return (
     <MKBox minWidth="320px">
       {/* Navbar component */}
-      {/* <DefaultNavbar routes={routes} sticky /> */}
-
       <DefaultNavbar
         routes={routes}
         action={{
@@ -59,7 +51,6 @@ function Home() {
       />
 
       {/* Main image/carousel section*/}
-
       <MKBox
         minHeight="100vh"
         width="100%"
@@ -95,7 +86,6 @@ function Home() {
 
         <MKBox
           color="white"
-          // display="flex"
           display={{ xs: "none", sm: "flex" }}
           flexDirection="column"
           justifyContent="center"
@@ -106,8 +96,6 @@ function Home() {
             backgroundSize: "contain",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "left",
-            // width: "40%",
-
             minHeight: "100vh",
           }}
         >
@@ -118,14 +106,11 @@ function Home() {
             ml={-2}
             fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
             sx={{ fontSize: { xs: "1.5rem", sm: "1.7rem", md: "2rem", lg: "2rem" } }}
-            // display={{ xs: "none", sm: "inline" }}
           >
             <MKBox
               component="img"
               src={aadarHindiWhite}
-              // width="120px"
               width={{ xs: "80px", sm: "100px", md: "120px", lg: "120px" }}
-              // borderRadius="10px"
               my={1}
               mb={-2}
             />{" "}
@@ -140,11 +125,11 @@ function Home() {
             fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
             sx={{ fontSize: { xs: "0.9rem", sm: "0.9rem", md: "1.1rem", lg: "1.3rem" } }}
           >
-            {/* A home for Hopeless, Homeless, Helpless <br /> and Unclaimed people */}
             {homePage.tagLine1} <br /> {homePage.tagLine2}
           </MKTypography>
         </MKBox>
       </MKBox>
+
       {/* Main section */}
       <Card
         sx={{
@@ -161,22 +146,19 @@ function Home() {
         {/* About section component */}
         <About />
 
-        {/* Video section component */}
+        {/* Journey video section component */}
         <Journey />
 
         {/* Our work section component */}
         <Work />
 
-        {/* Counters section */}
+        {/* Counters section component */}
         <Counters />
 
         {/* Events section component */}
         <Events />
-
-        {/* <MKBox pt={4}>
-          <MKCarousel item={items} />
-        </MKBox> */}
       </Card>
+
       {/* Footer */}
       <MKBox pt={2} px={0} mt={1}>
         <DefaultFooter content={footerRoutes} />

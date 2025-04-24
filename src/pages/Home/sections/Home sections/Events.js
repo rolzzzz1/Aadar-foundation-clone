@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react";
+
+// @mui material components
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-// import Carousel from "react-material-ui-carousel";
-// import { Paper, Button } from "@mui/material";
 
+// i18next imports
 import { useTranslation } from "react-i18next";
 
+// Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 import MKCarousel1 from "components/MKCarousel1";
 
-// import TransparentBlogCard from "examples/Cards/BlogCards/TransparentBlogCard";
-
+// Images
 import event1 from "assets/images/eventImages/event 1.jpg";
 import event2 from "assets/images/eventImages/event 2.jpg";
 import event3 from "assets/images/eventImages/event 3.jpg";
@@ -78,13 +79,6 @@ function Work() {
       description: `${postsSection.post6.description}`,
       postLink: "https://www.instagram.com/p/DEh-adYyD7C/",
     },
-    // {
-    //   id: 6,
-    //   name: "Blanket donation",
-    //   imgUrl: event6,
-    //   description: "Blanket distribution to the needy and homeless for this winter.",
-    //   postLink: "https://www.instagram.com/p/DEh-adYyD7C/",
-    // },
   ];
 
   var groupsCreatedOne = [];
@@ -109,7 +103,6 @@ function Work() {
       mt={2}
       py={4}
       pb={2}
-      // px={{ xs: 2, lg: 0 }}
       sx={{ backgroundColor: "#f0f2f5" }}
       borderRadius={"10px"}
       mx={-2}

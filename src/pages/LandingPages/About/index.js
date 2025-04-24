@@ -1,10 +1,10 @@
-// @mui material components
 import React from "react";
-
 import PropTypes from "prop-types";
 
+// i18next imports
 import { useTranslation } from "react-i18next";
 
+// @mui material components
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -12,10 +12,6 @@ import Card from "@mui/material/Card";
 // Material Kit 2 React examples
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import DefaultFooter from "examples/Footers/DefaultFooter";
-// import DefaultCounterCard from "examples/Cards/CounterCards/DefaultCounterCard";
-
-// Material Kit 2 React layouts
-// import TabsSimple from "layouts/sections/navigation/nav-tabs/components/TabsSimple";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
@@ -23,24 +19,19 @@ import MKTypography from "components/MKTypography";
 import MKButton from "components/MKButton";
 
 // Routes
-// import routes from "routes";
 import getRoutes from "routes1";
-
-// import footerRoutes from "footer.routes";
 import getFooterRoutes from "footer.routes1";
 
+// About page sections files
 import Team from "pages/LandingPages/About/sections/Team";
 import WhoWeAre from "pages/LandingPages/About/sections/WhoWeAre";
-// import OurWork from "pages/LandingPages/About/sections/OurWork";
 
 // Images
 import aboutBgImg from "assets/images/mainThemeImages/swargSadanBlack.png";
 import bgImage from "assets/images/mainThemeImages/smallBrushstroke2.svg";
-
 import food from "assets/images/aboutPageImages/foodAboutpage.jpg";
 import team from "assets/images/aboutPageImages/teamImg.jpg";
 import celebration from "assets/images/aboutPageImages/celebration.jpeg";
-
 import RescueImg1 from "assets/images/ourWorkImages/aboutImg.webp";
 import RescueImg2 from "assets/images/ourWorkImages/RescueImg1.jpg";
 import RescueImg3 from "assets/images/ourWorkImages/resque3.jpg";
@@ -50,7 +41,6 @@ import ShelterImg1 from "assets/images/ourWorkImages/shelter1.jpg";
 import ShelterImg2 from "assets/images/ourWorkImages/shelter2.jpg";
 import FoodImg1 from "assets/images/ourWorkImages/foodImg1.jpg";
 import FoodImg2 from "assets/images/ourWorkImages/food2.jpg";
-// import CareImg1 from "assets/images/careImg1.jpg";
 import CareImg2 from "assets/images/ourWorkImages/aboutPageImg.png";
 import RehabilitationImg1 from "assets/images/ourWorkImages/rehabilitation.jpg";
 import RehabilitationImg2 from "assets/images/ourWorkImages/rehabilitationImg1.jpg";
@@ -103,8 +93,6 @@ function About(props) {
         }}
         sticky
       />
-
-      {/* About section of about page */}
 
       {/* Main Image and text */}
       <MKBox
@@ -160,20 +148,14 @@ function About(props) {
           boxShadow: ({ boxShadows: { xxl } }) => xxl,
         }}
       >
-        <MKBox
-          component="section"
-          // pt={8} mt={8}
-          mb={4}
-        >
+        <MKBox component="section" mb={4}>
           <MKButton id="workBtn" sx={{ display: "none" }} onClick={() => scrollToWork()}>
             Our work
           </MKButton>
           <Container>
             {/* Who we are MKBox section */}
+
             <WhoWeAre />
-            {/* <MKBox py={4}>
-              <TabsSimple />
-            </MKBox> */}
 
             {/* Our work, what we do section */}
 
@@ -204,13 +186,6 @@ function About(props) {
                 sx={{ letterSpacing: "0.05rem" }}
               >
                 {aboutUsPage.ourWorkSection.whatWeDoSection.description}
-                {/* At Aadar Foundation, we are dedicated to providing care, support, and dignity to the
-                homeless, helpless, and abandoned. Our mission is to bring hope and a new life to
-                those who are critically ill, injured, hungry, or left alone at railway stations,
-                religious sites, streets, and other public places. Through our shelter, Swarg Sadan,
-                we offer food, medical care, counseling, clean clothing, and entertainment—all
-                completely free, made possible through social cooperation and generous
-                contributions. */}
               </MKTypography>
               <MKTypography
                 variant="h3"
@@ -238,9 +213,6 @@ function About(props) {
                     </MKTypography>
                     <MKTypography fontSize="0.9rem" sx={{ letterSpacing: "0.05rem" }}>
                       {aboutUsPage.ourWorkSection.keyAspectsSection.work1.description}
-                      {/* We rescue homeless and destitute individuals who are often found in severe and
-                      distressing conditions on roadsides, railway stations, bus stands, religious
-                      sites, and other public places. */}
                     </MKTypography>
                   </Grid>
                   <Grid
@@ -258,7 +230,6 @@ function About(props) {
                       gap: "15px",
                       marginTop: { xs: 4, sm: 4, md: 4, lg: 0 },
                     }}
-                    // mt={4}
                   >
                     <MKBox
                       component="img"
@@ -288,7 +259,6 @@ function About(props) {
                       component="img"
                       src={RescueImg3}
                       alt="RescueImg1"
-                      // width="30%"
                       width="80%"
                       borderRadius="10px"
                       height="80%"
@@ -313,8 +283,6 @@ function About(props) {
                     </MKTypography>
                     <MKTypography fontSize="0.9rem" sx={{ letterSpacing: "0.05rem" }}>
                       {aboutUsPage.ourWorkSection.keyAspectsSection.work2.description}
-                      {/* Most residents brought to the Ashram suffer from various ailments, making
-                      medical and surgical treatment a vital part of the care we provide. */}
                     </MKTypography>
                   </Grid>
                   <Grid
@@ -324,7 +292,6 @@ function About(props) {
                     md={12}
                     lg={8}
                     overflow={"hidden"}
-                    // mt={4}
                     sx={{
                       display: "flex",
                       justifyContent: "center",
@@ -347,7 +314,6 @@ function About(props) {
                       component="img"
                       src={TreatmentImg2}
                       alt="TreatmentImg2"
-                      // width="40%"
                       width={{ xs: "80%", sm: "60%", md: "40%" }}
                       borderRadius="10px"
                       minHeight={"180px"}
@@ -357,21 +323,8 @@ function About(props) {
                 </Grid>
 
                 {/* Shelter */}
-                <Grid
-                  container
-                  justifyContent="center"
-                  // sx={{ textAlign: "center" }} px={6}
-                  py={4}
-                >
-                  <Grid
-                    item
-                    xs={12}
-                    md={12}
-                    lg={4}
-                    // px={6}
-                    pr={10}
-                    my="auto"
-                  >
+                <Grid container justifyContent="center" py={4}>
+                  <Grid item xs={12} md={12} lg={4} pr={10} my="auto">
                     <MKTypography
                       variant="h3"
                       py={1}
@@ -383,8 +336,6 @@ function About(props) {
                     </MKTypography>
                     <MKTypography fontSize="0.9rem" mx="auto" sx={{ letterSpacing: "0.05rem" }}>
                       {aboutUsPage.ourWorkSection.keyAspectsSection.work3.description}
-                      {/* We provide a shelter with homely environment to our residents of Swarg sadan.
-                      Currently a home for 92 residents in the ashram. */}
                     </MKTypography>
                   </Grid>
                   <Grid
@@ -394,7 +345,6 @@ function About(props) {
                     md={12}
                     lg={8}
                     overflow={"hidden"}
-                    // mt={4}
                     sx={{
                       display: "flex",
                       justifyContent: "center",
@@ -407,7 +357,6 @@ function About(props) {
                       component="img"
                       src={ShelterImg1}
                       alt="RescueImg1"
-                      // width="40%"
                       width={{ xs: "80%", sm: "60%", md: "40%" }}
                       borderRadius="10px"
                       minHeight={"180px"}
@@ -427,21 +376,8 @@ function About(props) {
                 </Grid>
 
                 {/* Food */}
-                <Grid
-                  container
-                  justifyContent="center"
-                  // sx={{ textAlign: "center" }} px={6}
-                  py={4}
-                >
-                  <Grid
-                    item
-                    xs={12}
-                    md={12}
-                    lg={4}
-                    // px={6}
-                    pr={2}
-                    my="auto"
-                  >
+                <Grid container justifyContent="center" py={4}>
+                  <Grid item xs={12} md={12} lg={4} pr={2} my="auto">
                     <MKTypography
                       variant="h3"
                       py={1}
@@ -453,15 +389,7 @@ function About(props) {
                     </MKTypography>
                     <MKTypography fontSize="0.9rem" mx="auto" sx={{ letterSpacing: "0.05rem" }}>
                       {aboutUsPage.ourWorkSection.keyAspectsSection.work4.description}
-                      {/* Most of the residents admitted in the ashram are either sick or malnourished.
-                      Therefore the diet arrangement is a essential part of their recovery. Under
-                      medical guidance, we provide balanced meals, along with milk, fruits, and
-                      protein-rich foods to aid their recovery and well-being. */}
                     </MKTypography>
-                    {/* Most of the residents admitted in the ashram are either sick or malnourished.
-                          Therefore the diet arrangement is a very important and essential part of their
-                          recovery. With breakfast, lunch, refreshment and dinner, fruits, milk, and
-                          protein supplements are also made available to them. */}
                   </Grid>
                   <Grid
                     item
@@ -470,7 +398,6 @@ function About(props) {
                     md={12}
                     lg={8}
                     overflow={"hidden"}
-                    // mt={4}
                     sx={{
                       display: "flex",
                       justifyContent: "center",
@@ -485,7 +412,6 @@ function About(props) {
                       alt="RescueImg1"
                       width="40%"
                       borderRadius="10px"
-                      // height="90%"
                       minHeight={"180px"}
                       maxHeight={"180px"}
                       display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
@@ -494,9 +420,7 @@ function About(props) {
                       component="img"
                       src={FoodImg2}
                       alt="RescueImg1"
-                      // width="40%"
                       width={{ xs: "80%", sm: "60%", md: "40%" }}
-                      // height="90%"
                       borderRadius="10px"
                       minHeight={"180px"}
                       maxHeight={"180px"}
@@ -505,21 +429,8 @@ function About(props) {
                 </Grid>
 
                 {/* Care */}
-                <Grid
-                  container
-                  justifyContent="center"
-                  // sx={{ textAlign: "center" }} px={6}
-                  py={4}
-                >
-                  <Grid
-                    item
-                    xs={12}
-                    md={12}
-                    lg={4}
-                    // px={6}
-                    pr={10}
-                    my="auto"
-                  >
+                <Grid container justifyContent="center" py={4}>
+                  <Grid item xs={12} md={12} lg={4} pr={10} my="auto">
                     <MKTypography
                       variant="h3"
                       py={1}
@@ -531,8 +442,6 @@ function About(props) {
                     </MKTypography>
                     <MKTypography fontSize="0.9rem" mx="auto" sx={{ letterSpacing: "0.05rem" }}>
                       {aboutUsPage.ourWorkSection.keyAspectsSection.work5.description}
-                      {/* During the recovery from illness and further basic care, medical care and
-                      unconditional love is given to them by our team. */}
                     </MKTypography>
                   </Grid>
                   <Grid
@@ -542,7 +451,6 @@ function About(props) {
                     md={12}
                     lg={8}
                     overflow={"hidden"}
-                    // mt={4}
                     sx={{
                       display: "flex",
                       justifyContent: "center",
@@ -551,15 +459,6 @@ function About(props) {
                       marginTop: { xs: 4, sm: 4, md: 4, lg: 0 },
                     }}
                   >
-                    {/* <MKBox
-                    component="img"
-                    src={CareImg1}
-                    alt="RescueImg1"
-                    width="40%"
-                    borderRadius="10px"
-                    minHeight={"300px"}
-                    maxHeight={"300px"}
-                  ></MKBox> */}
                     <MKBox
                       component="img"
                       src={CareImg2}
@@ -573,21 +472,8 @@ function About(props) {
                 </Grid>
 
                 {/* Rehabilitation */}
-                <Grid
-                  container
-                  justifyContent="center"
-                  // sx={{ textAlign: "center" }} px={6}
-                  py={4}
-                >
-                  <Grid
-                    item
-                    xs={12}
-                    md={12}
-                    lg={4}
-                    // px={6}
-                    pr={10}
-                    my="auto"
-                  >
+                <Grid container justifyContent="center" py={4}>
+                  <Grid item xs={12} md={12} lg={4} pr={10} my="auto">
                     <MKTypography
                       variant="h3"
                       py={1}
@@ -599,8 +485,6 @@ function About(props) {
                     </MKTypography>
                     <MKTypography fontSize="0.9rem" mx="auto" sx={{ letterSpacing: "0.05rem" }}>
                       {aboutUsPage.ourWorkSection.keyAspectsSection.work6.description}
-                      {/* After recovery with the efforts of the Swarg Sadan Team, we have reunited many
-                      residents with their families. */}
                     </MKTypography>
                   </Grid>
                   <Grid
@@ -610,7 +494,6 @@ function About(props) {
                     md={12}
                     lg={8}
                     overflow={"hidden"}
-                    // mt={4}
                     sx={{
                       display: "flex",
                       justifyContent: "center",
@@ -650,13 +533,6 @@ function About(props) {
                 sx={{ letterSpacing: "0.05rem" }}
               >
                 {aboutUsPage.ourWorkSection.keyAspectsSection.description1}
-                {/* In addition to supporting the homeless, we have also extended our efforts to
-                orphaned girls through the Grah Se After Care Yojana, a program run by the Women and
-                Child Development Department. Here, the girls receive education and vocational
-                training in fields like computer skills, sewing, knitting, and beauty care,
-                empowering them to build independent and self-sufficient lives. Our organization has
-                also facilitated the marriages of 10 young women, helping them embark on a new
-                chapter with dignity and security. */}
               </MKTypography>
               <MKTypography
                 fontSize={{ xs: "0.8rem", md: "1rem" }}
@@ -665,11 +541,6 @@ function About(props) {
                 sx={{ letterSpacing: "0.05rem", fontWeight: "500" }}
               >
                 <b>{aboutUsPage.ourWorkSection.keyAspectsSection.description2}</b>
-                {/* Aadar Foundation operates with complete transparency, relying on social and economic
-                support. Every contribution—whether financial, material, or voluntary—plays a
-                crucial role in sustaining our mission. Visitors and donors who witness our work
-                firsthand are deeply moved by the dedication of our team and the compassionate
-                environment we have created. */}
               </MKTypography>
               <MKTypography
                 mx="auto"
@@ -680,9 +551,6 @@ function About(props) {
                 fontSize={{ xs: "0.9rem", md: "1.1rem" }}
               >
                 <b>{aboutUsPage.ourWorkSection.keyAspectsSection.description3}</b>
-                {/* We invite all individuals who believe in selfless service to join us in transforming
-                lives and making the world a kinder place. Together, we can restore hope and dignity
-                to those in need. */}
               </MKTypography>
               <Grid container lg={12} mt={6} display="flex" justifyContent="center" my={4}>
                 <Grid sm={6} md={6} lg={4} px={2} display="flex" justifyContent="center">
@@ -691,12 +559,10 @@ function About(props) {
                     src={food}
                     alt={"Swarg sadan building image"}
                     borderRadius="xxl"
-                    // width="100%"
                     sx={{
                       height: { xs: "90%", sm: "80%", md: "80%", lg: "60%" },
                       width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
                     }}
-                    // height="70%"
                     my={2}
                   ></MKBox>
                 </Grid>
@@ -706,12 +572,10 @@ function About(props) {
                     src={celebration}
                     alt={"Swarg sadan building image"}
                     borderRadius="xxl"
-                    // width="100%"
                     sx={{
                       height: { xs: "90%", sm: "80%", md: "80%", lg: "70%" },
                       width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
                     }}
-                    // height="80%"
                     my={2}
                   ></MKBox>
                 </Grid>
@@ -721,12 +585,10 @@ function About(props) {
                     src={team}
                     alt={"Swarg sadan building image"}
                     borderRadius="xxl"
-                    // width="100%"
                     sx={{
                       height: { xs: "90%", sm: "80%", md: "80%", lg: "80%" },
                       width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
                     }}
-                    // height="90%"
                     my={2}
                   ></MKBox>
                 </Grid>
@@ -749,11 +611,6 @@ function About(props) {
                 sx={{ letterSpacing: "0.05rem" }}
               >
                 {aboutUsPage.howWeWorkSection.description}
-                {/* Helpless and destitute individuals, the focus of our work, often cannot reach the
-                Ashram on their own. Our dedicated ambulance and rescue team, in collaboration with
-                the police and government organizations, ensure their safe arrival. Once admitted,
-                they receive essential care and medical treatment. Efforts are then made, with the
-                support of authorities, to rehabilitate them with their families whenever possible. */}
               </MKTypography>
 
               <MKTypography
@@ -769,12 +626,6 @@ function About(props) {
                 sx={{ letterSpacing: "0.05rem" }}
               >
                 {aboutUsPage.howWeWorkSection.work1.description}
-                {/* To ensure the smooth operation of our ashram, we have a dedicated Executive
-                Committee and Core Team in place. The Core Team oversees daily management, resource
-                allocation, and system maintenance, while the Executive Committee conducts quarterly
-                reviews of ashram activities. The committee prepares detailed reports, which are
-                presented in Core Team meetings, allowing for continuous evaluation and necessary
-                improvements. */}
               </MKTypography>
               <MKTypography
                 fontSize={{ xs: "0.8rem", md: "1rem" }}
@@ -789,12 +640,6 @@ function About(props) {
                 sx={{ letterSpacing: "0.05rem" }}
               >
                 {aboutUsPage.howWeWorkSection.work2.description}
-                {/* Most of the residents brought to the Ashram are suffering from different types of
-                ailments. Hence medical/surgical treatment plays a significant part in the service
-                we offer them. There is a team of doctors who are available to offer their services
-                to our Ashram. For patients who are in a more critical condition, there is an
-                arrangement with local hospitals where medical investigations and treatments
-                (medical and surgical) are provided to our residents. */}
               </MKTypography>
 
               <MKTypography
@@ -810,13 +655,6 @@ function About(props) {
                 sx={{ letterSpacing: "0.05rem" }}
               >
                 {aboutUsPage.howWeWorkSection.work3.description}
-                {/* We believe in fostering a sense of joy, belonging, and cultural inclusivity. Our
-                ashram celebrates festivals like Holi, Diwali, Bhai Dooj, and Rakshabandhan, as well
-                as Ganesh Puja, Ramzan, and Eid, respecting the diverse faiths of our residents. To
-                uplift spirits, we organize musical performances, dance and singing sessions, and
-                community-led celebrations, including birthday and anniversary events hosted by
-                well-wishers. These activities bring happiness and strengthen the sense of family
-                among our residents. */}
               </MKTypography>
             </Grid>
           </Container>

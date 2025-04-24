@@ -1,17 +1,16 @@
 import { Link } from "react-router-dom";
 
+// i18next imports
 import { useTranslation } from "react-i18next";
 
 // @mui material components
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
+import Icon from "@mui/material/Icon";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
-
-// import MKButton from "components/MKButton";
-import Icon from "@mui/material/Icon";
 
 // Images
 import aboutImg from "assets/images/ourWorkImages/aboutImg.webp";
@@ -115,23 +114,6 @@ function About() {
             </MKTypography>
 
             <MKBox mt={2}>
-              {/* <MKButton
-                variant="outlined"
-                color="success"
-                size="small"
-                component={Link}
-                to={"/pages/landing-pages/about-us"}
-                sx={{
-                  "&:hover": {
-                    backgroundColor: "#4CAF50",
-                    color: "#ffffff",
-                  },
-                  textTransform: "capitalize",
-                }}
-              >
-                Read more ...
-              </MKButton> */}
-
               <MKTypography
                 component={Link}
                 to={"/pages/landing-pages/about-us"}

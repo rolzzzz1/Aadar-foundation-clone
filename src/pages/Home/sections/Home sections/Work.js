@@ -1,13 +1,18 @@
+// i18next imports
 import { useTranslation } from "react-i18next";
 
+// @mui material components
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 
+// Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 
+// Material Kit 2 React examples
 import CenteredBlogCard from "examples/Cards/BlogCards/CenteredBlogCard1";
 
+// Images
 import work1 from "assets/images/ourWorkImages/aboutImg.webp";
 import work2 from "assets/images/ourWorkImages/treatment.webp";
 import work3 from "assets/images/ourWorkImages/shelter.webp";

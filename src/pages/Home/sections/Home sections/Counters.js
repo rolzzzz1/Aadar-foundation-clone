@@ -1,11 +1,15 @@
+// @mui material components
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 
+// i18next imports
 import { useTranslation } from "react-i18next";
 
+// Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 
+// Material Kit 2 React examples
 import DefaultCounterCard from "examples/Cards/CounterCards/DefaultCounterCard";
 
 function Counters() {
