@@ -1,8 +1,9 @@
-// @mui material components
 import React from "react";
 
+// i18next imports
 import { useTranslation, Trans } from "react-i18next";
 
+// @mui material components
 import Grid from "@mui/material/Grid";
 
 // Material Kit 2 React components
@@ -21,13 +22,7 @@ function WhoWeAre() {
   const aboutUsPage = t("aboutUsPage");
 
   return (
-    <MKBox
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="start"
-      // textAlign="center"
-    >
+    <MKBox display="flex" flexDirection="column" justifyContent="center" alignItems="start">
       <MKTypography
         variant="h3"
         py={5}
@@ -52,7 +47,6 @@ function WhoWeAre() {
         <Grid lg={6}>
           <MKTypography
             variant="body1"
-            // fontSize="1rem"
             fontSize={{ xs: "0.8rem", md: "1rem" }}
             fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
             sx={{
@@ -76,13 +70,6 @@ function WhoWeAre() {
         mx={"auto"}
       >
         <Trans i18nKey={aboutUsPage.whoWeAreSection.description2} components={{ 1: <b /> }} />
-        {/* As the mission grew,{" "}
-        <b>
-          Aadar Foundation (Ashram Swarg Sadan - a residential home for destitute) was officially
-          established on June 20, 2018, in Gwalior (known as Tansen ki nagari), by Mr. Vikas Goswami
-          and his dedicated colleagues Pawan Suryavanshi, Faizan Beg, Vibha Aneja, Pramod Sumoliya,
-          Sadia Parveen, and Kamal Aneja.
-        </b> */}
       </MKTypography>
 
       <Grid container display="flex" justifyContent={"center"}>
@@ -95,15 +82,6 @@ function WhoWeAre() {
             sx={{ letterSpacing: "0.05rem" }}
           >
             <Trans i18nKey={aboutUsPage.whoWeAreSection.description3} components={{ 1: <b /> }} />
-            {/* Since then, Aadar Foundation has been a refuge for the{" "}
-            <b>homeless, abandoned, mentally or physically ill, elderly, and injured</b>, offering
-            them dignity, love, and hope. These individuals, often ignored by society, face hunger,
-            neglect, and deteriorating health. At <b>Swarg Sadan</b>, we provide them with
-            <b>
-              {" "}
-              shelter, nutritious food, medical care, clean clothing, counseling, recreational
-              activities, and a warm, family-like environment.
-            </b> */}
           </MKTypography>
           <MKTypography
             variant="body1"
@@ -113,11 +91,6 @@ function WhoWeAre() {
             sx={{ letterSpacing: "0.05rem" }}
           >
             <Trans i18nKey={aboutUsPage.whoWeAreSection.description4} components={{ 1: <b /> }} />
-            {/* Beyond care, we strive to reunite them with their families whenever possible. So far, we
-            have welcomed <b>230 Prabhu Jans (beloved souls) into our ashram</b>, successfully
-            <b> rehabilitating 98 individuals </b> with their families across{" "}
-            <b> Nepal and 13 states in India</b>. Currently, <b>105 Prabhu Jans</b> are receiving
-            full-time care at our facility. */}
           </MKTypography>
         </Grid>
         <Grid
@@ -142,7 +115,6 @@ function WhoWeAre() {
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
             fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
-            // paddingTop="30px"
             sx={{ letterSpacing: "0.05rem", fontWeight: "500" }}
             textAlign="center"
             mx={"auto"}
@@ -159,8 +131,6 @@ function WhoWeAre() {
             src={resque1}
             alt={"Swarg sadan building image"}
             borderRadius="xxl"
-            // width="100%"
-            // height="90%"
             sx={{
               height: { sm: "80%", md: "80%", lg: "90%" },
               width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
@@ -174,8 +144,6 @@ function WhoWeAre() {
             src={beforeAfter1}
             alt={"Swarg sadan building image"}
             borderRadius="xxl"
-            // width="100%"
-            // height="80%"
             sx={{
               height: { sm: "80%", md: "80%", lg: "80%" },
               width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
@@ -189,8 +157,6 @@ function WhoWeAre() {
             src={group1}
             alt={"Swarg sadan building image"}
             borderRadius="xxl"
-            // width="100%"
-            // height="70%"
             sx={{
               height: { sm: "80%", md: "80%", lg: "70%" },
               width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },

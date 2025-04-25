@@ -137,6 +137,8 @@ function About(props) {
         </MKBox>
       </MKBox>
 
+      {/* Main section of about/our work page */}
+
       <Card
         sx={{
           p: 2,

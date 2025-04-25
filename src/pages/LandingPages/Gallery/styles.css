@@ -27,6 +27,17 @@
   transform: scale(1.01);
 }
 
+.video-gallery a {
+  display: flex;
+  margin: 20px;
+}
+
+.video-gallery img {
+  width: 350px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
 @media (max-width: 576px) {
   .lg-react-element {
     column-count: 1;

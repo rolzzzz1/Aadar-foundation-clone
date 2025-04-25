@@ -1,14 +1,11 @@
-import {
-  // useEffect,
-  useState,
-} from "react";
-import React, { useRef } from "react";
+import React, { useState, useRef } from "react";
 
+// i18next imports
 import { useTranslation } from "react-i18next";
 
 import validator from "validator";
-import { parsePhoneNumberFromString } from "libphonenumber-js";
 
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 import "react-international-phone/style.css";
 
 import emailjs from "@emailjs/browser";
@@ -33,13 +30,11 @@ import MKTypography from "components/MKTypography";
 import MKInput from "components/MKInput";
 import MKButton from "components/MKButton";
 import { MKPhone } from "components/MKPhone";
+import MKProgress from "components/MKProgress";
 
 // Routes
-// import routes from "routes";
 import getRoutes from "routes1";
-
 import getFooterRoutes from "footer.routes1";
-// import footerRoutes from "footer.routes";
 
 // Images
 import bgImage2 from "assets/images/mainThemeImages/swargSadanBlack.png";
@@ -56,11 +51,13 @@ function Volunteer() {
   const form = useRef();
   const [successMsg, setSuccessMsg] = useState(false);
   const [errMsg, setErrMsg] = useState(false);
+  const [errNotSentMsg, setErrNotSentMsg] = useState(false);
   // const [imageFileError, setImageFileError] = useState("");
   const [
     error,
     // setError
   ] = useState(volunteerPage.messages.error1);
+  const [counter, setCounter] = useState(0);
 
   const [emailError, setEmailError] = useState("");
   const validateEmail = (e) => {
@@ -97,11 +94,11 @@ function Volunteer() {
     }
   };
 
-  // const [fileValid, setFileValid] = useState(true);
+  // Upload image section
 
+  // const [fileValid, setFileValid] = useState(true);
   // const handleImageFile = (file) => {
   //   var fileSizeKb = Math.round(file.target.files[0].size / 1024);
-
   //   if (fileSizeKb > 50) {
   //     setImageFileError(
   //       "Image size - " + fileSizeKb + "Kb" + " -- Please upload image less than 50kb"
@@ -150,6 +147,8 @@ function Volunteer() {
 
     var interestCheck = Object.values(interestsState).every((item) => item === false);
 
+    setCounter(70);
+
     if (
       data.name !== "" &&
       data.email !== "" &&
@@ -161,63 +160,48 @@ function Volunteer() {
       // &&
       // fileValid
     ) {
-      setSuccessMsg(true);
-      setTimeout(() => {
-        setSuccessMsg(false);
-      }, 5000);
+      //   // Sending email //Aadar emailjs
+      //   // emailjs
+      //   //   .sendForm("service_4a9mgcp", "template_ie847rr", form.current, {
+      //   //     publicKey: "41w8LwNiKZaoka4j-",
+      //   //   })
 
-      setErrMsg(false);
-
-      // Sending email //Aadar emailjs
+      // Sending email //Aishwarya emailjs
       emailjs
-        .sendForm("service_4a9mgcp", "template_ie847rr", form.current, {
-          publicKey: "41w8LwNiKZaoka4j-",
+        .sendForm("service_a7f8kvk", "template_kj0zzo9", form.current, {
+          publicKey: "i1eYRzEru3UMSm8qR",
         })
         .then(
           () => {
-            console.log(data);
-            console.log("SUCCESS!");
+            setCounter(100);
+            setSuccessMsg(true);
+            setTimeout(() => {
+              setSuccessMsg(false);
+            }, 5000);
+
+            setErrMsg(false);
+
+            setTimeout(() => {
+              setCounter(0);
+            }, 5000);
           },
           (error) => {
             console.log("FAILED...", error.text);
-            setErrMsg(true);
+
+            setErrNotSentMsg(true);
             setTimeout(() => {
-              setErrMsg(false);
+              setErrNotSentMsg(false);
             }, 5000);
-            setSuccessMsg(false);
           }
         );
     } else {
-      console.log("required field missing");
-
       setErrMsg(true);
       setTimeout(() => {
         setErrMsg(false);
       }, 5000);
       setSuccessMsg(false);
     }
-
-    // Sending email //Aishwarya emailjs
-    // emailjs
-    //   .sendForm("service_a7f8kvk", "template_kj0zzo9", form.current, {
-    //     publicKey: "i1eYRzEru3UMSm8qR",
-    //   })
-    //   .then(
-    //     () => {
-    //       console.log("SUCCESS!");
-    //       console.log(data);
-    //     },
-    //     (error) => {
-    //       console.log("FAILED...", error.text);
-    //     }
-    //   );
   };
-
-  // const { i18n } = useTranslation();
-
-  // useEffect(() => {
-  //   setError(volunteerPage.messages.error1);
-  // }, [i18n, i18n.language]);
 
   return (
     <MKBox minWidth="320px">
@@ -319,22 +303,10 @@ function Volunteer() {
                   }}
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
                   fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
-                  // sx={{
-                  //   letterSpacing: "0.05rem",
-                  //   paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
-                  // }}
                   my={2}
                 ></MKBox>
                 <MKTypography variant="body1" fontSize="0.9rem" pt={2}>
                   {volunteerPage.description}
-                  {/* Aadar foundation provides opportunities not only for homeless, helpless, and
-                  destitute individuals but also for those who wish to make a meaningful impact in
-                  the lives of others. It serves as a growing platform for volunteers dedicated to
-                  service. We are seeking proactive, enthusiastic, and hardworking volunteers to
-                  join us. Volunteers have played a vital role in Aadar Foundation’s work, and we
-                  always welcome fresh ideas and skills. To ensure the best match between our
-                  expectations and yours, we encourage interested individuals to apply and provide
-                  the necessary information. */}
                 </MKTypography>
               </Grid>
               <Grid container item xs={12} lg={7} sx={{ mx: "auto" }}>
@@ -359,14 +331,7 @@ function Volunteer() {
                           fullWidth
                         />
                       </Grid>
-                      <Grid
-                        item
-                        xs={12}
-                        md={6}
-                        display="flex"
-                        alignItems={"center"}
-                        // justifyContent={"space-around"}
-                      >
+                      <Grid item xs={12} md={6} display="flex" alignItems={"center"}>
                         <MKTypography
                           fontSize="0.89rem"
                           sx={{ color: "#6c757d" }}
@@ -562,13 +527,6 @@ function Volunteer() {
                               label={
                                 <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
                                   {volunteerPage.formLabels.interests.interest1}{" "}
-                                  {/* <MKTypography
-                                    display={{ xs: "none", sm: "inline-block" }}
-                                    fontSize={{ sm: "0.75rem", md: "0.89rem" }}
-                                    sx={{ color: "#B5BABE", pl: 2 }}
-                                  >
-                                    Like conducting games, yoga, dance and others{" "}
-                                  </MKTypography> */}
                                 </MKTypography>
                               }
                             />
@@ -660,7 +618,9 @@ function Volunteer() {
                             />
                           </FormGroup>
                         </MKBox>
+                        <MKProgress color="success" value={counter} />
                       </Grid>
+
                       {/* <Grid item xs={12}>
                         <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
                           Upload photo id
@@ -694,6 +654,13 @@ function Volunteer() {
                         <MKBox border="2px solid #F44335" borderRadius="5px" width="100%" pl={2}>
                           <MKTypography color="error" fontSize="1rem">
                             {error}
+                          </MKTypography>
+                        </MKBox>
+                      )}
+                      {errNotSentMsg && (
+                        <MKBox border="2px solid #F44335" borderRadius="5px" width="100%" pl={2}>
+                          <MKTypography color="error" fontSize="1rem">
+                            Could not send email, please try again later
                           </MKTypography>
                         </MKBox>
                       )}

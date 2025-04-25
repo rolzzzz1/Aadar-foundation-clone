@@ -2,6 +2,7 @@
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 
+// i18next imports
 import { useTranslation, Trans } from "react-i18next";
 
 // Material Kit 2 React components
@@ -68,9 +69,6 @@ function Team() {
                 display={{ xs: "none", sm: "inline" }}
               >
                 <Trans i18nKey={aboutUsPage.teamSection.subTitle2} components={{ 1: <br /> }} />
-                {/* {aboutUsPage.teamSection.subTitle2} */}
-                {/* We started our journey with a team of seven <br /> and continue to move forward
-                together. */}
               </MKTypography>
             </MKBox>
           </Grid>
@@ -125,8 +123,6 @@ function Team() {
               />
             </MKBox>
           </Grid>
-          {/* </Grid>
-        <Grid container spacing={4}> */}
           <Grid item xs={11} sm={10} md={8} lg={6} xl={4}>
             <MKBox mb={1}>
               <HorizontalTeamCard

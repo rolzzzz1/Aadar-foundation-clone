@@ -1,17 +1,20 @@
 // @mui material components
-// import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 
+// i18next imports
 import { useTranslation } from "react-i18next";
 
+// customised styles
 import "./styles.css";
 
+// imported lightGallery package
 import LightGallery from "lightgallery/react";
-
 import "lightgallery/css/lightgallery.css";
 import "lightgallery/css/lg-zoom.css";
 import "lightgallery/css/lg-thumbnail.css";
+import "lightgallery/css/lg-video.css";
+import lgVideo from "lightgallery/plugins/video";
 
 // Plugins
 import lgThumbnail from "lightgallery/plugins/thumbnail";
@@ -24,14 +27,10 @@ import DefaultFooter from "examples/Footers/DefaultFooter";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
-// import MKCarousel from "components/MKCarousel";
 
 // Routes
-// import routes from "routes";
 import getRoutes from "routes1";
-
 import getFooterRoutes from "footer.routes1";
-// import footerRoutes from "footer.routes";
 
 // Images
 import bgImage2 from "assets/images/mainThemeImages/swargSadanBlack.png";
@@ -56,6 +55,59 @@ import img17 from "assets/images/galleryImages/raddi-donation.jpg";
 import img18 from "assets/images/galleryImages/swargSadan.webp";
 import img19 from "assets/images/galleryImages/residents.webp";
 import img20 from "assets/images/galleryImages/diwali1.jpg";
+// import video1 from "assets/images/video1.mp4";
+
+// Including videos in gallery using light gallery
+
+// const VideoGallery = () => {
+//   return (
+//     <div className="video-gallery">
+//       <LightGallery speed={500} plugins={[lgVideo]} mode="lg-fade">
+//         {/* YouTube video */}
+//         <a
+//           data-lg-size="1280-720"
+//           data-lg-video='{"source": [{"src":"https://www.youtube.com/watch?v=et_pTB-Vfs4", "type":"youtube"}]}'
+//           href="https://www.youtube.com/watch?v=et_pTB-Vfs4"
+//         >
+//           <img src="https://img.youtube.com/vi/et_pTB-Vfs4/mqdefault.jpg" alt="YouTube Video" />
+//         </a>
+
+//         <a
+//           data-lg-size="1280-720"
+//           data-lg-video='{"source": [{"src":"https://www.youtube.com/watch?v=DKBrEuCffcQ", "type":"youtube"}]}'
+//           href="https://www.youtube.com/watch?v=DKBrEuCffcQ"
+//         >
+//           <img src="https://img.youtube.com/vi/DKBrEuCffcQ/mqdefault.jpg" alt="YouTube Video" />
+//         </a>
+//         <a
+//           data-lg-size="1280-720"
+//           data-lg-video='{"source": [{"src":"https://www.youtube.com/watch?v=T2Zc4nc4nAc", "type":"youtube"}]}'
+//           href="https://www.youtube.com/watch?v=T2Zc4nc4nAc"
+//         >
+//           <img src="https://img.youtube.com/vi/T2Zc4nc4nAc/mqdefault.jpg" alt="YouTube Video" />
+//         </a>
+
+//         {/* Vimeo video */}
+//         {/* <a
+//           data-lg-size="1280-720"
+//           data-lg-video='{"source": [{"src":"https://vimeo.com/1084537", "type":"vimeo"}]}'
+//           href="https://vimeo.com/1084537"
+//         >
+//           <img src="https://i.vimeocdn.com/video/1084537_295x166.jpg" alt="Vimeo Video" />
+//         </a> */}
+
+//         {/* HTML5 video */}
+//         {/* <a
+//           data-lg-size="1280-720"
+//           data-lg-video='{"source": [{"src":"assets/images/video1.mp4", "type":"video/mp4"}], "attributes": {"preload": false, "controls": true}}'
+//           href={video1}
+//         >
+//           <img src="https://i.vimeocdn.com/video/1084537_295x166.jpg" alt="HTML5 Video" />
+//         </a> */}
+//       </LightGallery>
+//     </div>
+//   );
+// };
 
 function Gallery() {
   const images = [
@@ -87,7 +139,7 @@ function Gallery() {
     };
     return (
       <div className="App">
-        <LightGallery onInit={onInit} speed={500} plugins={[lgThumbnail, lgZoom]}>
+        <LightGallery onInit={onInit} speed={500} plugins={[lgThumbnail, lgZoom, lgVideo]}>
           {images.map((image, index) => {
             return (
               <a href={image.src} key={index}>
@@ -176,156 +228,14 @@ function Gallery() {
         }}
       >
         <MKBox component="section" my={3} mx={5}>
-          {/* <Container> */}
           <Grid container alignItems="center" display="flex" justifyContent={"center"}>
             <MKBox component="section" my={1}>
-              {/* <MKTypography variant="h3" fontSize={{ xs: "1.3rem", lg: "1.875rem" }}>
-                  Our gallery is coming soon ...
-                </MKTypography> */}
               <MKTypography variant="h4" sx={{ fontWeight: "500" }} pb={6}>
                 {galleryPage.title}
               </MKTypography>
               {renderGallery()}
-              {/* <MKBox display="flex" justifyContent="left" flexWrap="wrap" gap="20px">
-                <MKBox
-                  component="img"
-                  src={img1}
-                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
-                  height="30%"
-                  maxHeight="280px"
-                  borderRadius="7px"
-                  objectFit="cover"
-                  flex="1"
-                ></MKBox>
-                <MKBox
-                  component="img"
-                  src={img2}
-                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
-                  height="30%"
-                  maxHeight="280px"
-                  borderRadius="7px"
-                  objectFit="cover"
-                  flex="1"
-                ></MKBox>
-                <MKBox
-                  component="img"
-                  src={img3}
-                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
-                  height="30%"
-                  maxHeight="280px"
-                  borderRadius="7px"
-                  objectFit="cover"
-                  flex="1"
-                ></MKBox>
-                <MKBox
-                  component="img"
-                  src={img4}
-                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
-                  maxHeight="280px"
-                  borderRadius="7px"
-                  objectFit="cover"
-                  flex="1"
-                ></MKBox>
-                <MKBox
-                  component="img"
-                  src={img5}
-                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
-                  maxHeight="280px"
-                  borderRadius="7px"
-                  objectFit="cover"
-                  flex="1 "
-                ></MKBox>
-
-                <MKBox
-                  component="img"
-                  src={img6}
-                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
-                  maxHeight="280px"
-                  borderRadius="7px"
-                  objectFit="cover"
-                  flex="1"
-                ></MKBox>
-                <MKBox
-                  component="img"
-                  src={img7}
-                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
-                  maxHeight="280px"
-                  borderRadius="7px"
-                  objectFit="cover"
-                  flex="1"
-                ></MKBox>
-                <MKBox
-                  component="img"
-                  src={img8}
-                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
-                  maxHeight="280px"
-                  borderRadius="7px"
-                  objectFit="cover"
-                  flex="1"
-                ></MKBox>
-                <MKBox
-                  component="img"
-                  src={img9}
-                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
-                  maxHeight="280px"
-                  borderRadius="7px"
-                  objectFit="cover"
-                  flex="1"
-                ></MKBox>
-                <MKBox
-                  component="img"
-                  src={img10}
-                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
-                  maxHeight="280px"
-                  borderRadius="7px"
-                  objectFit="cover"
-                  flex="1"
-                ></MKBox>
-                <MKBox
-                  component="img"
-                  src={img11}
-                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
-                  maxHeight="280px"
-                  borderRadius="7px"
-                  objectFit="cover"
-                  flex="1"
-                ></MKBox>
-                <MKBox
-                  component="img"
-                  src={img12}
-                  width={{ xs: "100%", sm: "50%", md: "40%", lg: "30%" }}
-                  maxHeight="280px"
-                  borderRadius="7px"
-                  objectFit="cover"
-                  flex="1"
-                ></MKBox>
-                <MKBox
-                  component="img"
-                  src={img13}
-                  width={{ xs: "100%", sm: "50%", md: "30%", lg: "40%" }}
-                  maxHeight="280px"
-                  border="1px solid #000000"
-                  borderRadius="7px"
-                  objectFit="cover"
-                  flex="1"
-                ></MKBox>
-                <MKBox
-                  component="img"
-                  src={img14}
-                  width={{ xs: "100%", sm: "50%", md: "30%", lg: "40%" }}
-                  maxHeight="280px"
-                  border="1px solid #000000"
-                  borderRadius="7px"
-                  objectFit="cover"
-                  flex="1"
-                ></MKBox>
-              </MKBox> */}
             </MKBox>
           </Grid>
-          {/* </Container> */}
-          {/* <MKBox pt={4}>
-            <MKCarousel item={items} />
-          </MKBox> */}
         </MKBox>
       </Card>
 
@@ -338,98 +248,3 @@ function Gallery() {
 }
 
 export default Gallery;
-
-// // Material Kit 2 React examples
-// import DefaultNavbar from "examples/Navbars/DefaultNavbar";
-// import DefaultFooter from "examples/Footers/DefaultFooter";
-
-// // Material Kit 2 React components
-// import MKBox from "components/MKBox";
-
-// // Routes
-// import routes from "routes";
-// import footerRoutes from "footer.routes";
-
-// import bgImage2 from "assets/images/mainThemeImages/swargSadanBlack.png";
-// import bgImage from "assets/images/mainThemeImages/smallBrushstroke2.svg";
-// import MKTypography from "components/MKTypography";
-
-// function Gallery() {
-//   return (
-//     <MKBox minWidth="320px">
-//       {/* Navbar component */}
-//       <DefaultNavbar
-//         routes={routes}
-//         action={{
-//           type: "external",
-//           route: "https://www.creative-tim.com/product/material-kit-react",
-//           label: "Donate Now",
-//           color: "success",
-//         }}
-//         sticky
-//       />
-
-//       {/* Main image part */}
-//       <MKBox
-//         minHeight="80vh"
-//         width="100%"
-//         sx={{
-//           backgroundImage: `url(${bgImage2})`,
-//           backgroundSize: "cover",
-//           backgroundRepeat: "no-repeat",
-//           backgroundPosition: "left",
-//           display: "flex",
-//           justifyContent: "end",
-//           alignItems: "end",
-//         }}
-//       >
-//         <MKBox
-//           color="white"
-//           display="flex"
-//           flexDirection="column"
-//           justifyContent="center"
-//           alignItems="center"
-//           sx={{
-//             backgroundImage: `url(${bgImage})`,
-//             backgroundSize: "contain",
-//             backgroundRepeat: "no-repeat",
-//             backgroundPosition: "center",
-//             width: "40%",
-//             minHeight: "40vh",
-//           }}
-//         >
-//           <MKTypography
-//             variant="h3"
-//             color="white"
-//             textAlign="center"
-//             ml={-2}
-//             fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
-//             fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
-//             mb={{ xs: 1, sm: 0 }}
-//           >
-//             Gallery
-//           </MKTypography>
-//         </MKBox>
-//       </MKBox>
-
-//       <MKBox
-//         component="section"
-//         // pt={14}
-//         my={4}
-//         display="flex"
-//         justifyContent={"center"}
-//       >
-//         <MKTypography variant="h3" fontSize={{ xs: "1.3rem", lg: "1.875rem" }}>
-//           Our gallery is coming soon ...
-//         </MKTypography>
-//       </MKBox>
-
-//       {/* Footer */}
-//       <MKBox px={0}>
-//         <DefaultFooter content={footerRoutes} />
-//       </MKBox>
-//     </MKBox>
-//   );
-// }
-
-// export default Gallery;
