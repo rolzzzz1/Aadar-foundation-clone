@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
 
+// i18next imports
+import { useTranslation } from "react-i18next";
+
 // @mui material components
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
@@ -17,23 +20,29 @@ import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 
 // Routes
-import routes from "routes";
-import footerRoutes from "footer.routes";
+import getRoutes from "routes1";
+import getFooterRoutes from "footer.routes1";
 
 // Images
 import bgImage2 from "assets/images/mainThemeImages/swargSadanBlack.png";
 import bgImage from "assets/images/mainThemeImages/smallBrushstroke2.svg";
 
 function Contact() {
+  const { t } = useTranslation();
+  const routes = getRoutes(t);
+  const footerRoutes = getFooterRoutes(t);
+  const donateBtn = t("navbar.donateBtn");
+  const contactPage = t("contactPage");
+
   return (
     <MKBox minWidth="320px">
       {/* Navbar component */}
       <DefaultNavbar
         routes={routes}
         action={{
-          type: "external",
-          route: "https://www.creative-tim.com/product/material-kit-react",
-          label: "Donate Now",
+          type: "internal",
+          route: "/pages/landing-pages/donate",
+          label: donateBtn,
           color: "success",
         }}
         sticky
@@ -77,7 +86,7 @@ function Contact() {
             fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
             mb={{ xs: 1, sm: 0 }}
           >
-            Contact
+            {contactPage.tagLine}
           </MKTypography>
         </MKBox>
       </MKBox>
@@ -102,13 +111,11 @@ function Contact() {
                 md={12}
                 lg={4}
                 sx={{
-                  // ml: { xs: 0, lg: 3 },
                   mb: { xs: 8, md: 8, lg: 0 },
                 }}
               >
-                {/* <Container> */}
                 <MKTypography variant="h4" sx={{ fontWeight: "500" }} pb={4}>
-                  Get in touch @
+                  {contactPage.title}
                 </MKTypography>
                 <MKTypography
                   variant="body1"
@@ -116,11 +123,11 @@ function Contact() {
                   fontSize="1.2rem"
                   sx={{ fontWeight: "600" }}
                 >
-                  Address :
+                  {contactPage.address.label}
                 </MKTypography>
                 <MKTypography variant="body1" fontSize="1rem" maxWidth="350px">
-                  <b>Swarg sadan ashram</b> <br />
-                  Sarkari Malti, Behind Muktidham, Guda Gudi Ka Naka, Gwalior, India, 474001
+                  <b>{contactPage.address.title}</b> <br />
+                  {contactPage.address.address}
                 </MKTypography>
 
                 <MKTypography
@@ -129,7 +136,7 @@ function Contact() {
                   fontSize="1.2rem"
                   sx={{ fontWeight: "600" }}
                 >
-                  Phone number :
+                  {contactPage.phoneNumber.label}
                 </MKTypography>
                 <MKTypography variant="body1" fontSize="1rem">
                   +91 9039129571, +91 9826441863, +91 9630982392
@@ -141,12 +148,11 @@ function Contact() {
                   fontSize="1.2rem"
                   sx={{ fontWeight: "600" }}
                 >
-                  Email :
+                  {contactPage.emailLabel}
                 </MKTypography>
                 <MKTypography variant="body1" fontSize="1rem">
                   aadarfoundatio2018@gmail.com
                 </MKTypography>
-                {/* </Container> */}
               </Grid>
               <Grid item xs={12} md={12} lg={8} sx={{ mx: "auto" }}>
                 <MKBox
@@ -162,7 +168,7 @@ function Contact() {
                     textAlign={{ xs: "center", sm: "left" }}
                     sx={{ fontWeight: "600" }}
                   >
-                    Follow us
+                    {contactPage.followUs}
                   </MKTypography>
                   <MKBox display="flex" justifyContent="center" gap={{ xs: "30px", sm: "40px" }}>
                     <MKBox

@@ -1,9 +1,11 @@
-import { useState } from "react";
-import React, { useRef } from "react";
+import React, { useState, useRef } from "react";
+
+// i18next imports
+import { useTranslation } from "react-i18next";
 
 import validator from "validator";
-import { parsePhoneNumberFromString } from "libphonenumber-js";
 
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 import "react-international-phone/style.css";
 
 import emailjs from "@emailjs/browser";
@@ -28,10 +30,11 @@ import MKTypography from "components/MKTypography";
 import MKInput from "components/MKInput";
 import MKButton from "components/MKButton";
 import { MKPhone } from "components/MKPhone";
+import MKProgress from "components/MKProgress";
 
 // Routes
-import routes from "routes";
-import footerRoutes from "footer.routes";
+import getRoutes from "routes1";
+import getFooterRoutes from "footer.routes1";
 
 // Images
 import bgImage2 from "assets/images/mainThemeImages/swargSadanBlack.png";
@@ -39,14 +42,22 @@ import bgImage from "assets/images/mainThemeImages/smallBrushstroke2.svg";
 import team from "assets/images/aboutPageImages/teamImg.jpg";
 
 function Volunteer() {
+  const { t } = useTranslation();
+  const routes = getRoutes(t);
+  const footerRoutes = getFooterRoutes(t);
+  const donateBtn = t("navbar.donateBtn");
+  const volunteerPage = t("volunteerPage");
+
   const form = useRef();
   const [successMsg, setSuccessMsg] = useState(false);
   const [errMsg, setErrMsg] = useState(false);
+  const [errNotSentMsg, setErrNotSentMsg] = useState(false);
   // const [imageFileError, setImageFileError] = useState("");
   const [
     error,
     // setError
-  ] = useState("Please fill the required ( * ) fields ");
+  ] = useState(volunteerPage.messages.error1);
+  const [counter, setCounter] = useState(0);
 
   const [emailError, setEmailError] = useState("");
   const validateEmail = (e) => {
@@ -55,7 +66,7 @@ function Volunteer() {
     if (validator.isEmail(email)) {
       setEmailError("");
     } else {
-      setEmailError("Enter valid Email!");
+      setEmailError(volunteerPage.messages.error2);
     }
   };
 
@@ -72,7 +83,7 @@ function Volunteer() {
     if (!phoneNumber || !phoneNumber.isValid()) {
       var code = "+" + countryDialcode;
       if (inputPhone !== code) {
-        setPhoneError("Please enter valid number");
+        setPhoneError(volunteerPage.messages.error3);
       } else {
         setPhoneError("");
       }
@@ -83,11 +94,11 @@ function Volunteer() {
     }
   };
 
-  // const [fileValid, setFileValid] = useState(true);
+  // Upload image section
 
+  // const [fileValid, setFileValid] = useState(true);
   // const handleImageFile = (file) => {
   //   var fileSizeKb = Math.round(file.target.files[0].size / 1024);
-
   //   if (fileSizeKb > 50) {
   //     setImageFileError(
   //       "Image size - " + fileSizeKb + "Kb" + " -- Please upload image less than 50kb"
@@ -136,6 +147,8 @@ function Volunteer() {
 
     var interestCheck = Object.values(interestsState).every((item) => item === false);
 
+    setCounter(70);
+
     if (
       data.name !== "" &&
       data.email !== "" &&
@@ -147,57 +160,47 @@ function Volunteer() {
       // &&
       // fileValid
     ) {
-      setSuccessMsg(true);
-      setTimeout(() => {
-        setSuccessMsg(false);
-      }, 5000);
+      // Sending email //Aishwarya emailjs
+      // emailjs
+      //   .sendForm("service_a7f8kvk", "template_kj0zzo9", form.current, {
+      //     publicKey: "i1eYRzEru3UMSm8qR",
+      //   })
 
-      setErrMsg(false);
-
-      // Sending email
+      // Sending email //Aadar emailjs
       emailjs
-        // .send("service_a7f8kvk", "template_kj0zzo9", emailData, { publicKey: "i1eYRzEru3UMSm8qR" })
-        //Aishwarya emailjs
-        // .sendForm("service_a7f8kvk", "template_kj0zzo9", form.current, {
-        //   publicKey: "i1eYRzEru3UMSm8qR",
-        // })
-
-        //Aadar emailjs
         .sendForm("service_4a9mgcp", "template_ie847rr", form.current, {
           publicKey: "41w8LwNiKZaoka4j-",
         })
         .then(
           () => {
-            console.log(data);
-            console.log("SUCCESS!");
+            setCounter(100);
+            setSuccessMsg(true);
+            setTimeout(() => {
+              setSuccessMsg(false);
+            }, 5000);
+
+            setErrMsg(false);
+
+            setTimeout(() => {
+              setCounter(0);
+            }, 5000);
           },
           (error) => {
             console.log("FAILED...", error.text);
+
+            setErrNotSentMsg(true);
+            setTimeout(() => {
+              setErrNotSentMsg(false);
+            }, 5000);
           }
         );
     } else {
-      console.log("required field missing");
-
       setErrMsg(true);
       setTimeout(() => {
         setErrMsg(false);
       }, 5000);
       setSuccessMsg(false);
     }
-
-    // emailjs
-    //   .sendForm("service_a7f8kvk", "template_kj0zzo9", form.current, {
-    //     publicKey: "i1eYRzEru3UMSm8qR",
-    //   })
-    //   .then(
-    //     () => {
-    //       console.log("SUCCESS!");
-    //       console.log(data);
-    //     },
-    //     (error) => {
-    //       console.log("FAILED...", error.text);
-    //     }
-    //   );
   };
 
   return (
@@ -206,9 +209,9 @@ function Volunteer() {
       <DefaultNavbar
         routes={routes}
         action={{
-          type: "external",
-          route: "https://www.creative-tim.com/product/material-kit-react",
-          label: "Donate Now",
+          type: "internal",
+          route: "/pages/landing-pages/donate",
+          label: donateBtn,
           color: "success",
         }}
         sticky
@@ -252,7 +255,7 @@ function Volunteer() {
             fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
             mb={{ xs: 1, sm: 0 }}
           >
-            Get Involved
+            {volunteerPage.tagLine}
           </MKTypography>
         </MKBox>
       </MKBox>
@@ -287,7 +290,7 @@ function Volunteer() {
                   sx={{ letterSpacing: "0.05rem", fontWeight: "500" }}
                   pb={{ xs: 2, sm: 4 }}
                 >
-                  Join us as a volunteer{" "}
+                  {volunteerPage.title}
                 </MKTypography>
                 <MKBox
                   component="img"
@@ -300,21 +303,10 @@ function Volunteer() {
                   }}
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
                   fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
-                  // sx={{
-                  //   letterSpacing: "0.05rem",
-                  //   paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
-                  // }}
                   my={2}
                 ></MKBox>
                 <MKTypography variant="body1" fontSize="0.9rem" pt={2}>
-                  Aadar foundation provides opportunities not only for homeless, helpless, and
-                  destitute individuals but also for those who wish to make a meaningful impact in
-                  the lives of others. It serves as a growing platform for volunteers dedicated to
-                  service. We are seeking proactive, enthusiastic, and hardworking volunteers to
-                  join us. Volunteers have played a vital role in Aadar Foundation’s work, and we
-                  always welcome fresh ideas and skills. To ensure the best match between our
-                  expectations and yours, we encourage interested individuals to apply and provide
-                  the necessary information.
+                  {volunteerPage.description}
                 </MKTypography>
               </Grid>
               <Grid container item xs={12} lg={7} sx={{ mx: "auto" }}>
@@ -331,23 +323,22 @@ function Volunteer() {
                   <MKBox py={3} px={0}>
                     <Grid container spacing={3}>
                       <Grid item xs={12} md={6}>
-                        <MKInput variant="outlined" label="Name *" name="name" fullWidth />
+                        <MKInput
+                          variant="outlined"
+                          label={volunteerPage.formLabels.name}
+                          InputLabelProps={{ shrink: true }}
+                          name="name"
+                          fullWidth
+                        />
                       </Grid>
-                      <Grid
-                        item
-                        xs={12}
-                        md={6}
-                        display="flex"
-                        alignItems={"center"}
-                        // justifyContent={"space-around"}
-                      >
+                      <Grid item xs={12} md={6} display="flex" alignItems={"center"}>
                         <MKTypography
                           fontSize="0.89rem"
                           sx={{ color: "#6c757d" }}
                           pl={1}
                           pr={{ xs: 2, sm: 3, md: 3, lg: 3 }}
                         >
-                          Gender
+                          {volunteerPage.formLabels.gender.label}
                         </MKTypography>
 
                         <MKBox display="flex" justifyContent="space-between">
@@ -372,7 +363,7 @@ function Volunteer() {
                                   }}
                                   sx={{ color: "#6c757d" }}
                                 >
-                                  Male
+                                  {volunteerPage.formLabels.gender.male}
                                 </MKTypography>
                               }
                             />
@@ -392,7 +383,7 @@ function Volunteer() {
                                   }}
                                   sx={{ color: "#6c757d" }}
                                 >
-                                  Female
+                                  {volunteerPage.formLabels.gender.female}
                                 </MKTypography>
                               }
                             />
@@ -404,7 +395,9 @@ function Volunteer() {
                           variant="outlined"
                           type="email"
                           name="email"
-                          label="Email *"
+                          InputLabelProps={{ shrink: true }}
+                          sx={{ verticalAlign: "middle" }}
+                          label={volunteerPage.formLabels.email}
                           onChange={(e) => validateEmail(e)}
                           fullWidth
                         />
@@ -434,7 +427,8 @@ function Volunteer() {
                         <MKInput
                           variant="outlined"
                           name="age"
-                          label="Age"
+                          InputLabelProps={{ shrink: true }}
+                          label={volunteerPage.formLabels.age}
                           type="number"
                           fullWidth
                         />
@@ -443,8 +437,9 @@ function Volunteer() {
                       <Grid item xs={12} md={6}>
                         <MKInput
                           variant="outlined"
+                          InputLabelProps={{ shrink: true }}
                           name="qualification"
-                          label="Qualification & Year *"
+                          label={volunteerPage.formLabels.qualification}
                           fullWidth
                         />
                       </Grid>
@@ -453,7 +448,8 @@ function Volunteer() {
                         <MKInput
                           variant="outlined"
                           name="college"
-                          label="College / University"
+                          InputLabelProps={{ shrink: true }}
+                          label={volunteerPage.formLabels.college}
                           fullWidth
                         />
                       </Grid>
@@ -462,7 +458,8 @@ function Volunteer() {
                         <MKInput
                           variant="outlined"
                           name="occupation"
-                          label="Present occupation"
+                          InputLabelProps={{ shrink: true }}
+                          label={volunteerPage.formLabels.occupation}
                           fullWidth
                         />
                       </Grid>
@@ -470,7 +467,8 @@ function Volunteer() {
                       <Grid item xs={12}>
                         <MKInput
                           variant="outlined"
-                          label="Address *"
+                          label={volunteerPage.formLabels.address}
+                          InputLabelProps={{ shrink: true }}
                           name="address"
                           multiline
                           fullWidth
@@ -478,15 +476,28 @@ function Volunteer() {
                         />
                       </Grid>
                       <Grid item xs={12} md={6}>
-                        <MKInput variant="outlined" name="city" label="City" fullWidth />
+                        <MKInput
+                          variant="outlined"
+                          InputLabelProps={{ shrink: true }}
+                          name="city"
+                          label={volunteerPage.formLabels.city}
+                          fullWidth
+                        />
                       </Grid>
                       <Grid item xs={12} md={6}>
-                        <MKInput variant="outlined" name="state" label="State" fullWidth />
+                        <MKInput
+                          variant="outlined"
+                          InputLabelProps={{ shrink: true }}
+                          name="state"
+                          label={volunteerPage.formLabels.state}
+                          fullWidth
+                        />
                       </Grid>
                       <Grid item xs={12}>
                         <MKInput
                           variant="outlined"
-                          label="Brief profile *"
+                          InputLabelProps={{ shrink: true }}
+                          label={volunteerPage.formLabels.profile}
                           name="profile"
                           multiline
                           fullWidth
@@ -495,7 +506,7 @@ function Volunteer() {
                       </Grid>
                       <Grid item xs={12}>
                         <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                          Areas of interests *
+                          {volunteerPage.formLabels.interests.label}
                         </MKTypography>
                         <MKBox
                           mt={2}
@@ -515,14 +526,7 @@ function Volunteer() {
                               }
                               label={
                                 <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                                  Activities volunteer{" "}
-                                  {/* <MKTypography
-                                    display={{ xs: "none", sm: "inline-block" }}
-                                    fontSize={{ sm: "0.75rem", md: "0.89rem" }}
-                                    sx={{ color: "#B5BABE", pl: 2 }}
-                                  >
-                                    Like conducting games, yoga, dance and others{" "}
-                                  </MKTypography> */}
+                                  {volunteerPage.formLabels.interests.interest1}{" "}
                                 </MKTypography>
                               }
                             />
@@ -537,7 +541,7 @@ function Volunteer() {
                               }
                               label={
                                 <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                                  Medical services
+                                  {volunteerPage.formLabels.interests.interest2}
                                 </MKTypography>
                               }
                               defaultChecked
@@ -552,7 +556,7 @@ function Volunteer() {
                               }
                               label={
                                 <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                                  Professionals
+                                  {volunteerPage.formLabels.interests.interest3}
                                 </MKTypography>
                               }
                             />
@@ -566,7 +570,7 @@ function Volunteer() {
                               }
                               label={
                                 <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                                  Management
+                                  {volunteerPage.formLabels.interests.interest4}
                                 </MKTypography>
                               }
                             />
@@ -580,7 +584,7 @@ function Volunteer() {
                               }
                               label={
                                 <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                                  Prabhuji seva
+                                  {volunteerPage.formLabels.interests.interest5}
                                 </MKTypography>
                               }
                             />
@@ -594,7 +598,7 @@ function Volunteer() {
                               }
                               label={
                                 <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                                  Education / Trainer
+                                  {volunteerPage.formLabels.interests.interest6}
                                 </MKTypography>
                               }
                             />
@@ -608,13 +612,15 @@ function Volunteer() {
                               }
                               label={
                                 <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
-                                  Counsellor
+                                  {volunteerPage.formLabels.interests.interest7}
                                 </MKTypography>
                               }
                             />
                           </FormGroup>
                         </MKBox>
+                        <MKProgress color="success" value={counter} />
                       </Grid>
+
                       {/* <Grid item xs={12}>
                         <MKTypography fontSize="0.89rem" sx={{ color: "#6c757d" }}>
                           Upload photo id
@@ -651,10 +657,17 @@ function Volunteer() {
                           </MKTypography>
                         </MKBox>
                       )}
+                      {errNotSentMsg && (
+                        <MKBox border="2px solid #F44335" borderRadius="5px" width="100%" pl={2}>
+                          <MKTypography color="error" fontSize="1rem">
+                            Could not send email, please try again later
+                          </MKTypography>
+                        </MKBox>
+                      )}
                       {successMsg && (
                         <MKBox border="2px solid #4CAF50" borderRadius="5px" width="100%" pl={2}>
                           <MKTypography color="success" fontSize="1rem">
-                            Request sent
+                            {volunteerPage.messages.success}
                           </MKTypography>
                         </MKBox>
                       )}
@@ -662,7 +675,7 @@ function Volunteer() {
 
                     <Grid container item justifyContent="center" xs={12} my={2} pt={2}>
                       <MKButton type="submit" variant="gradient" color="dark" fullWidth>
-                        Submit
+                        {volunteerPage.formLabels.btn}
                       </MKButton>
                     </Grid>
                   </MKBox>

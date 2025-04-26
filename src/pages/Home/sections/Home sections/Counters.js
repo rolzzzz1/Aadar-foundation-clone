@@ -1,12 +1,21 @@
+// @mui material components
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 
+// i18next imports
+import { useTranslation } from "react-i18next";
+
+// Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 
+// Material Kit 2 React examples
 import DefaultCounterCard from "examples/Cards/CounterCards/DefaultCounterCard";
 
 function Counters() {
+  const { t } = useTranslation();
+  const impactSection = t("homePage.impactSection");
+
   return (
     <MKBox component="section" pt={{ xs: 4, sm: 8 }} pb={2}>
       <Container>
@@ -19,15 +28,15 @@ function Counters() {
               sx={{ fontWeight: "500" }}
               mb={2}
             >
-              Our Impact
+              <b>{impactSection.title}</b>
             </MKTypography>
           </Grid>
           <Grid item xs={12} sm={6} md={6} lg={3}>
             <DefaultCounterCard
               count={9}
               separator=","
-              title="Years Since"
-              description="Serving the homeless, helpless, and destitute since 2015, providing support and relief during their most difficult times."
+              title={impactSection.impact1.title}
+              description={impactSection.impact1.description}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={6} lg={3}>
@@ -35,8 +44,8 @@ function Counters() {
               count={500}
               separator=","
               suffix="+"
-              title="People helped"
-              description="Providing support to those suffering from a lack of love, food, shelter, medical care, and family."
+              title={impactSection.impact2.title}
+              description={impactSection.impact2.description}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={6} lg={3}>
@@ -44,8 +53,8 @@ function Counters() {
               count={80}
               separator=","
               suffix="+"
-              title="Events"
-              description="We are actively engaged in our community, supporting residents and organizing various events to foster connection and well-being."
+              title={impactSection.impact3.title}
+              description={impactSection.impact3.description}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={6} lg={3}>
@@ -53,8 +62,8 @@ function Counters() {
               count={98}
               separator=","
               suffix="+"
-              title="People rehabilitated"
-              description="98 people till now have been reunited with their families by the efforts of Swarg sadan team."
+              title={impactSection.impact4.title}
+              description={impactSection.impact4.description}
             />
           </Grid>
         </Grid>

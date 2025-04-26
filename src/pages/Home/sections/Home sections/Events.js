@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react";
+
+// @mui material components
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-// import Carousel from "react-material-ui-carousel";
-// import { Paper, Button } from "@mui/material";
 
+// i18next imports
+import { useTranslation } from "react-i18next";
+
+// Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 import MKCarousel1 from "components/MKCarousel1";
 
-// import TransparentBlogCard from "examples/Cards/BlogCards/TransparentBlogCard";
-
+// Images
 import event1 from "assets/images/eventImages/event 1.jpg";
 import event2 from "assets/images/eventImages/event 2.jpg";
 import event3 from "assets/images/eventImages/event 3.jpg";
@@ -26,65 +29,56 @@ function Work() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const { t } = useTranslation();
+  const postsSection = t("homePage.postsSection");
+
   var items = [
     {
       id: 1,
-      name: "Swarg Sadan Ashram expansion",
+      name: `${postsSection.post1.title}`,
       imgUrl: event4,
-      description:
-        "Swarg Sadan Ashram will be expanded in 4 Bigha, thousands of homeless people will get benefit.",
+      description: `${postsSection.post1.description}`,
       postLink: "https://www.instagram.com/p/DFpBg91PI0y/",
     },
 
     {
       id: 2,
-      name: "ECS Bagless school visit",
+      name: `${postsSection.post2.title}`,
       imgUrl: event2,
-      description:
-        "Little children of ecs bagless school came and visited Ashram Swarg Sadan Gwalior.",
+      description: `${postsSection.post2.description}`,
       postLink: "https://www.instagram.com/reel/DEwauX0vLv-/",
     },
 
     {
       id: 3,
-      name: "Lost young boy went home",
+      name: `${postsSection.post3.title}`,
       imgUrl: event3,
-      description:
-        "A youth was found in a deranged condition whom the police kept in Swarg Sadan Ashram, left for his country Nepal.",
+      description: `${postsSection.post3.description}`,
       postLink: "https://www.instagram.com/reel/C71hSrStrAP/",
     },
 
     {
       id: 4,
-      name: "Old Newspapers Donation",
+      name: `${postsSection.post4.title}`,
       imgUrl: event1,
-      description:
-        "With your invaluable support, service work for the homeless and destitute victims is continuing in Ashram Swarg Sadan.",
+      description: `${postsSection.post4.description}`,
       postLink: "https://www.instagram.com/p/CjsCx57v_rL/",
     },
 
     {
       id: 5,
-      name: "Beautiful moment captured",
+      name: `${postsSection.post5.title}`,
       imgUrl: event5,
-      description:
-        "A beautiful moment captured at the ashram where a resident is helping the other with his lunch. ",
+      description: `${postsSection.post5.description}`,
       postLink: "https://www.instagram.com/p/C8r98U4oKwy/",
     },
     {
       id: 6,
-      name: "Blanket donation",
+      name: `${postsSection.post6.title}`,
       imgUrl: event6,
-      description: "Blanket distribution to the needy and homeless for this winter.",
+      description: `${postsSection.post6.description}`,
       postLink: "https://www.instagram.com/p/DEh-adYyD7C/",
     },
-    // {
-    //   id: 6,
-    //   name: "Blanket donation",
-    //   imgUrl: event6,
-    //   description: "Blanket distribution to the needy and homeless for this winter.",
-    //   postLink: "https://www.instagram.com/p/DEh-adYyD7C/",
-    // },
   ];
 
   var groupsCreatedOne = [];
@@ -109,7 +103,6 @@ function Work() {
       mt={2}
       py={4}
       pb={2}
-      // px={{ xs: 2, lg: 0 }}
       sx={{ backgroundColor: "#f0f2f5" }}
       borderRadius={"10px"}
       mx={-2}
@@ -132,11 +125,11 @@ function Work() {
               fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
               fontSize={{ xs: "1.5rem", sm: "1.5rem", md: "1.75rem", lg: "1.875rem" }}
             >
-              Instagram posts
+              <b>{postsSection.title}</b>
             </MKTypography>
           </Grid>
         </Grid>
-        <Grid container lg={12}>
+        <Grid item container lg={12}>
           {width < 768 ? (
             <MKBox pt={1} width="100%">
               <MKCarousel1 item={groupsCreatedTwo} navButtons={true} />
