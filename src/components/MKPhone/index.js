@@ -1,5 +1,7 @@
 import "react-international-phone/style.css";
 
+import { useTranslation } from "react-i18next";
+
 import { InputAdornment, MenuItem, Select, TextField, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import React from "react";
@@ -23,10 +25,13 @@ export const MKPhone = ({ value, onChange, ...restProps }) => {
     },
   });
 
+  const { t } = useTranslation();
+  const volunteerPage = t("volunteerPage");
+
   return (
     <TextField
       variant="outlined"
-      label="Phone number *"
+      label={volunteerPage.formLabels.phoneNumber}
       color="primary"
       placeholder="Phone number"
       value={inputValue}

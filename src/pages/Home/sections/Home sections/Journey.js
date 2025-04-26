@@ -1,10 +1,18 @@
+// i18next imports
+import { useTranslation } from "react-i18next";
+
+// @mui material components
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 
+// Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 
 function Journey() {
+  const { t } = useTranslation();
+  const homePage = t("homePage");
+
   return (
     <MKBox
       component="section"
@@ -38,7 +46,7 @@ function Journey() {
                   letterSpacing: "0.05rem",
                 }}
               >
-                A few words on our journey, by one of our founders.
+                {homePage.journeySection.description}
               </MKTypography>
               <MKTypography
                 sx={{
@@ -48,7 +56,7 @@ function Journey() {
                 }}
                 my={2}
               >
-                Mr. Vikas Goswami{" "}
+                {homePage.journeySection.founderName}
               </MKTypography>
             </MKBox>
           </Grid>
@@ -56,20 +64,19 @@ function Journey() {
             <MKBox position="relative">
               <MKBox
                 display="flex"
-                justifyCOntent="center"
+                justifyContent="center"
                 border="solid 2px #000000"
+                borderRadius="15px"
                 minHeight={{ xs: "140px", sm: "280px" }}
               >
                 <iframe
                   width="100%"
-                  // height="280"
                   src="https://www.youtube.com/embed/et_pTB-Vfs4?si=cP75J8JI23LzSfvE"
                   title="YouTube video player"
-                  frameBorder={0}
+                  style={{ border: "0px", borderRadius: "15px" }}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerPolicy="strict-origin-when-cross-origin"
-                  allowfullscreen
-                  autoPlay="true"
+                  autoPlay={true}
                 ></iframe>
               </MKBox>
             </MKBox>

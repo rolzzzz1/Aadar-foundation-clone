@@ -54,7 +54,7 @@ function DefaultNavbarDropdown({
     <>
       <MKBox
         {...rest}
-        mx={1}
+        mx={0.25}
         p={0.5}
         display="flex"
         alignItems="baseline"
@@ -118,7 +118,8 @@ DefaultNavbarDropdown.defaultProps = {
 // Typechecking props for the DefaultNavbarDropdown
 DefaultNavbarDropdown.propTypes = {
   name: PropTypes.string.isRequired,
-  icon: PropTypes.node.isRequired,
+  // icon: PropTypes.node.isRequired,
+  icon: PropTypes.node,
   children: PropTypes.node,
   collapseStatus: PropTypes.bool,
   light: PropTypes.bool,

@@ -15,6 +15,7 @@ import Home from "layouts/pages/home";
 import routes from "routes";
 
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 export default function App() {
   const { pathname } = useLocation();
@@ -47,6 +48,7 @@ export default function App() {
         <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
       <Analytics />
+      <SpeedInsights />
     </ThemeProvider>
   );
 }

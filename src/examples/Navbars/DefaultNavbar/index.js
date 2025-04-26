@@ -1,20 +1,6 @@
-/* eslint-disable no-param-reassign */
-/**
-=========================================================
-* Material Kit 2 React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-kit-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { Fragment, useState, useEffect } from "react";
+
+import { useTranslation } from "react-i18next";
 
 // react-router components
 import { Link } from "react-router-dom";
@@ -30,13 +16,12 @@ import Grow from "@mui/material/Grow";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import MuiLink from "@mui/material/Link";
-// import Button from "@mui/material/Button";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
-// import MKButton from "components/MKButton";
-// import MKAvatar from "components/MKAvatar";
+import MKButton from "components/MKButton";
+import LanguageSelector from "components/language-selector";
 
 // Material Kit 2 React example components
 import DefaultNavbarDropdown from "examples/Navbars/DefaultNavbar/DefaultNavbarDropdown";
@@ -46,17 +31,12 @@ import DefaultNavbarMobile from "examples/Navbars/DefaultNavbar/DefaultNavbarMob
 import breakpoints from "assets/theme/base/breakpoints";
 import aadarLogo from "assets/images/logos/logo-aadar.jpg";
 
-// import { grey } from "@mui/material/colors";
-
-// import CallRoundedIcon from "@mui/icons-material/CallRounded";
-// import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
-
 function DefaultNavbar({
-  brand,
+  // brand,
   routes,
   transparent,
   light,
-  // action,
+  action,
   sticky,
   relative,
   center,
@@ -72,6 +52,9 @@ function DefaultNavbar({
   const [mobileView, setMobileView] = useState(false);
 
   const openMobileNavbar = () => setMobileNavbar(!mobileNavbar);
+
+  const { t } = useTranslation();
+  const donateBtn = t("navbar.donateBtn");
 
   useEffect(() => {
     // A function that sets the display state for the DefaultNavbarMobile.
@@ -102,23 +85,26 @@ function DefaultNavbar({
     // return (
     if (name !== "Privacy policy" && name !== "Terms Conditions" && name !== "Donate") {
       return (
-        <DefaultNavbarDropdown
-          key={name}
-          name={name}
-          icon={icon}
-          href={href}
-          route={route}
-          collapse={Boolean(collapse)}
-          onMouseEnter={({ currentTarget }) => {
-            if (collapse) {
-              setDropdown(currentTarget);
-              setDropdownEl(currentTarget);
-              setDropdownName(name);
-            }
-          }}
-          onMouseLeave={() => collapse && setDropdown(null)}
-          light={light}
-        />
+        <>
+          <DefaultNavbarDropdown
+            key={name}
+            name={name}
+            // name={navbar.name}
+            icon={icon}
+            href={href}
+            route={route}
+            collapse={Boolean(collapse)}
+            onMouseEnter={({ currentTarget }) => {
+              if (collapse) {
+                setDropdown(currentTarget);
+                setDropdownEl(currentTarget);
+                setDropdownName(name);
+              }
+            }}
+            onMouseLeave={() => collapse && setDropdown(null)}
+            light={light}
+          />
+        </>
       );
     }
 
@@ -493,6 +479,8 @@ function DefaultNavbar({
     </Popper>
   );
 
+  const navbar = t("navbar");
+
   return (
     <Container
       sx={
@@ -532,18 +520,18 @@ function DefaultNavbar({
       >
         {/* <MKAvatar src={aadarLogo} alt="xl" size="xl" /> */}
         <MKBox
-          component={Link}
-          to="/"
+          // component={Link}
+          // to="/"
           lineHeight={1}
           // py={transparent ? 1.5 : 0.75}
-          pl={relative || transparent ? 0 : { xs: 0.5, sm: 0.5, md: 1.5, lg: 2.5 }}
+          pl={relative || transparent ? 0 : { xs: 1, sm: 1, md: 1.5, lg: 2.5 }}
           borderRadius="xl"
           display="flex"
         >
           <MKBox
             component="img"
             src={aadarLogo}
-            width={{ xs: "50px", sm: "70px", md: "80px", lg: "90px" }}
+            width={{ xs: "50px", sm: "70px", md: "80px", lg: "80px", xl: "90px" }}
             borderRadius="10px"
             my={1}
           />
@@ -580,7 +568,7 @@ function DefaultNavbar({
           // py={1}
           px={{ xs: 2, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
           my={relative ? 0 : 2}
-          mx={relative ? 0 : { xs: 1.5, md: 3 }}
+          mx={relative ? 0 : { xs: 1, sm: 1, md: 3 }}
           width={relative ? "95%" : "calc(95% - 48px)"}
           borderRadius="xl"
           shadow={transparent ? "none" : "md"}
@@ -596,23 +584,111 @@ function DefaultNavbar({
             backdropFilter: transparent ? "none" : `saturate(200%) blur(30px)`,
           })}
         >
+          <MKBox
+            sx={{ backgroundColor: "#f0f2f5" }}
+            width="100%"
+            display="flex"
+            justifyContent="end"
+            alignItems="center"
+            mx="auto"
+          >
+            {/* <MKTypography
+              component="a"
+              href={"https://www.youtube.com/@AadarFoundation/"}
+              target="_blank"
+              rel="noreferrer"
+              variant="h5"
+              // color="dark"
+              color="text"
+              opacity={0.8}
+              mr={2}
+              sx={{
+                "&:hover": {
+                  color: "#E7A232",
+                  textDecoration: "underline 2px",
+                },
+              }}
+              height="20px"
+            >
+              <YouTubeIcon />
+            </MKTypography>
+            <MKTypography
+              component="a"
+              href={"https://www.instagram.com/ashramswargsadangwalior/"}
+              target="_blank"
+              rel="noreferrer"
+              variant="h5"
+              // color="dark"
+              color="text"
+              opacity={0.8}
+              mr={2}
+              sx={{
+                "&:hover": {
+                  color: "#E7A232",
+                  textDecoration: "underline 2px",
+                },
+              }}
+              height="20px"
+            >
+              <InstagramIcon />
+            </MKTypography>
+            <MKTypography
+              component="a"
+              href={"https://www.facebook.com/AshramSwargSadanGwalior/"}
+              target="_blank"
+              rel="noreferrer"
+              variant="h5"
+              // color="dark"
+              color="text"
+              opacity={0.8}
+              mr={2}
+              sx={{
+                "&:hover": {
+                  color: "#E7A232",
+                  textDecoration: "underline 2px",
+                },
+              }}
+              height="20px"
+            >
+              <FacebookIcon />
+            </MKTypography> */}
+
+            <MKTypography
+              variant="button"
+              fontWeight="light"
+              lineHeight={1.25}
+              color={light ? "white" : "dark"}
+              display={{ xs: "inline", sm: "inline", md: "inline", lg: "inline" }}
+              fontSize={{
+                xs: "0.75rem",
+                sm: "0.68rem",
+                md: "0.75rem",
+                lg: "0.8rem",
+                xl: "0.8rem",
+              }}
+              pr={1}
+              pl={4}
+            >
+              <LanguageSelector />
+            </MKTypography>
+          </MKBox>
           <MKBox display="flex" justifyContent="space-between" alignItems="center">
             <MKBox
-              component={Link}
-              to="/"
+              // component={Link}
+              // to="/"
               lineHeight={1}
               py={transparent ? 1.5 : 0.75}
               pl={relative || transparent ? 0 : { xs: 0, lg: 1 }}
               display="flex"
               flexDirection="column"
-              maxWidth={{ lg: "180px", xl: "250px" }}
+              maxWidth={{ xs: "200px", md: "220px", lg: "200px", xl: "250px" }}
             >
               <MKTypography
                 variant="button"
                 fontWeight="bold"
                 color={light ? "white" : "dark"}
                 fontSize={{
-                  xs: "0.85rem",
+                  xs: "1rem",
                   sm: "1rem",
                   md: "1.125rem",
                   lg: "1.125rem",
@@ -620,7 +696,7 @@ function DefaultNavbar({
                 }}
                 lineHeight={1.25}
               >
-                {brand}
+                {navbar.title}
               </MKTypography>
 
               <MKTypography
@@ -628,17 +704,36 @@ function DefaultNavbar({
                 fontWeight="light"
                 lineHeight={1.25}
                 color={light ? "white" : "dark"}
-                display={{ xs: "none", sm: "inline", md: "inline", lg: "inline" }}
+                display={{ xs: "inline", sm: "inline", md: "inline", lg: "inline" }}
                 fontSize={{
-                  xs: "0.75rem",
-                  sm: "0.75rem",
+                  xs: "0.68rem",
+                  sm: "0.68rem",
                   md: "0.75rem",
                   lg: "0.8rem",
                   xl: "0.8rem",
                 }}
+                pt={0.25}
               >
-                A Home for Homeless & Unclaimed People
+                {navbar.subTitle}
               </MKTypography>
+
+              {/* <MKBox display="flex" alignItems="center">
+                <MKTypography
+                  variant="button"
+                  fontWeight="regular"
+                  textTransform="capitalize"
+                  color={light ? "light" : "dark"}
+                  sx={{
+                    fontSize: { sm: "0.8", md: "0.875rem", lg: "0.8rem", xl: "0.9rem" },
+                    fontWeight: "100%",
+                    mr: 0.8,
+                    ml: 2,
+                    // "&:hover": { color: "#E7A232", textDecoration: "underline 2px" },
+                  }}
+                >
+                  <LanguageSelector />
+                </MKTypography>
+              </MKBox> */}
             </MKBox>
 
             <MKBox
@@ -649,46 +744,61 @@ function DefaultNavbar({
             >
               {renderNavbarItems}
             </MKBox>
+            <MKBox
+              mx={1}
+              p={0.5}
+              display="flex"
+              alignItems="baseline"
+              color={light ? "light" : "dark"}
+              opacity={light ? 1 : 0.6}
+              sx={{
+                cursor: "pointer",
+                userSelect: "none",
+                "&: hover": { color: "#E7A232", textDecoration: "underline 2px" },
+              }}
+            >
+              {/* <MKTypography
+                  variant="body2"
+                  lineHeight={1}
+                  color="inherit"
+                  sx={{ alignSelf: "center", "& *": { verticalAlign: "middle" } }}
+                >
+                  {icon}
+                </MKTypography> */}
+              {/* <MKTypography
+                variant="button"
+                fontWeight="regular"
+                textTransform="capitalize"
+                color={light ? "light" : "dark"}
+                sx={{
+                  fontSize: { sm: "0.8", md: "0.875rem", lg: "0.8rem", xl: "0.9rem" },
+                  fontWeight: "100%",
+                  mr: 0.8,
+                  // "&:hover": { color: "#E7A232", textDecoration: "underline 2px" },
+                }}
+                width="100%"
+              >
+                <LanguageSelector />
+              </MKTypography> */}
+            </MKBox>
 
             {/* Donate button */}
-            {/* <MKBox ml={{ xs: "auto", lg: 0 }} display={{ xs: "none", sm: "none", md: "block" }}>
-              {action &&
-                (action.type === "internal" ? (
-                  <MKButton
-                    component={Link}
-                    // to={action.route}
-                    to=""
-                    variant={
-                      action.color === "white" || action.color === "default"
-                        ? "contained"
-                        : "gradient"
-                    }
-                    color={action.color ? action.color : "info"}
-                    size="small"
-                  >
-                    {action.label}
-                  </MKButton>
-                ) : (
-                  <MKButton
-                    component="a"
-                    // href={action.route}
-                    href=""
-                    // target="_blank"
-                    rel="noreferrer"
-                    variant={
-                      action.color === "white" || action.color === "default"
-                        ? "contained"
-                        : "gradient"
-                    }
-                    color={action.color ? action.color : "info"}
-                    size="small"
-                  >
-                    {action.label}
-                  </MKButton>
-                ))}
-            </MKBox> */}
-
             <MKBox display="flex" alignItems="center">
+              {/* <MKTypography
+                variant="button"
+                fontWeight="regular"
+                textTransform="capitalize"
+                color={light ? "light" : "dark"}
+                sx={{
+                  fontSize: { sm: "0.8", md: "0.875rem", lg: "0.8rem", xl: "0.9rem" },
+                  fontWeight: "100%",
+                  mr: 1.5,
+                  // "&:hover": { color: "#E7A232", textDecoration: "underline 2px" },
+                }}
+                width="100%"
+              >
+                <LanguageSelector />
+              </MKTypography> */}
               {/* <MKButton
                 component={Link}
                 to={"/pages/landing-pages/donate"}
@@ -700,7 +810,7 @@ function DefaultNavbar({
                 Donate
               </MKButton> */}
 
-              {/* <MKBox ml={{ xs: "auto", lg: 0 }}>
+              <MKBox ml={{ xs: "auto", lg: 0 }} display={{ xs: "none", sm: "block" }}>
                 {action &&
                   (action.type === "internal" ? (
                     <MKButton
@@ -733,8 +843,7 @@ function DefaultNavbar({
                       {action.label}
                     </MKButton>
                   ))}
-              </MKBox> */}
-              {/* <Button variant="contained">Donate</Button> */}
+              </MKBox>
 
               <MKBox
                 display={{ xs: "inline-block", lg: "none" }}
@@ -768,7 +877,18 @@ function DefaultNavbar({
             borderRadius="xl"
             px={transparent ? 2 : 0}
           >
-            {mobileView && <DefaultNavbarMobile routes={routes} open={mobileNavbar} />}
+            {mobileView && (
+              <DefaultNavbarMobile
+                routes={routes}
+                open={mobileNavbar}
+                action={{
+                  type: "internal",
+                  route: "/pages/landing-pages/donate",
+                  label: donateBtn,
+                  color: "success",
+                }}
+              />
+            )}
           </MKBox>
         </MKBox>
 

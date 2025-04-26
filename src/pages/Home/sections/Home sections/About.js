@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom";
 
+// i18next imports
+import { useTranslation } from "react-i18next";
+
 // @mui material components
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
+import Icon from "@mui/material/Icon";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
-// import MKButton from "components/MKButton";
-import Icon from "@mui/material/Icon";
 
 // Images
 import aboutImg from "assets/images/ourWorkImages/aboutImg.webp";
@@ -30,6 +32,9 @@ function About() {
         transform: `translateX(6px)`,
       },
   };
+
+  const { t } = useTranslation();
+  const homePage = t("homePage");
 
   return (
     <MKBox component="section" pt={2} my={{ xs: 0.5, sm: 2 }}>
@@ -67,10 +72,10 @@ function About() {
               sx={{
                 letterSpacing: "0.05rem",
                 fontSize: { xs: "1.3rem", sm: "1.3rem", md: "1.75rem", lg: "1.875rem" },
-                fontWeight: "500",
+                fontWeight: "600",
               }}
             >
-              About Aadar Foundation
+              {homePage.aboutSection.title}
             </MKTypography>
             <MKTypography
               variant="h5"
@@ -81,7 +86,7 @@ function About() {
                 fontWeight: "500",
               }}
             >
-              (Swarg Sadan Ashram)
+              {homePage.aboutSection.subTitle}
             </MKTypography>
             <MKTypography
               variant="body1"
@@ -92,13 +97,7 @@ function About() {
                 fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.85rem", lg: "0.87rem" },
               }}
             >
-              Founded in 2018 by Mr. Vikas Goswami and his dedicated team, Aadar Foundation (Swarg
-              Sadan Ashram) is a sanctuary for the homeless, abandoned, and critically ill in
-              Gwalior, Madhya Pradesh. Every day, we rescue individuals—elderly, injured, and
-              mentally or physically ill—left to suffer in public spaces without food, medical care,
-              or dignity. Many are on the brink of a lonely, painful death. At Aadar Foundation, we
-              provide shelter, medical aid, nourishment, and, most importantly, love—because every
-              life deserves care and respect. Together, we can give them a second chance.
+              {homePage.aboutSection.description1}
             </MKTypography>
             <MKTypography
               variant="body1"
@@ -111,28 +110,10 @@ function About() {
                 fontWeight: "500",
               }}
             >
-              At Aadar Foundation, we strive to rescue, rehabilitate, and restore hope, ensuring
-              that no one is left to suffer alone.
+              <b>{homePage.aboutSection.description2}</b>
             </MKTypography>
 
             <MKBox mt={2}>
-              {/* <MKButton
-                variant="outlined"
-                color="success"
-                size="small"
-                component={Link}
-                to={"/pages/landing-pages/about-us"}
-                sx={{
-                  "&:hover": {
-                    backgroundColor: "#4CAF50",
-                    color: "#ffffff",
-                  },
-                  textTransform: "capitalize",
-                }}
-              >
-                Read more ...
-              </MKButton> */}
-
               <MKTypography
                 component={Link}
                 to={"/pages/landing-pages/about-us"}
@@ -142,7 +123,7 @@ function About() {
                 textTransform="capitalize"
                 sx={cardActionStyles}
               >
-                Read more
+                {homePage.aboutSection.btn}
                 <Icon sx={{ fontWeight: "bold" }}>arrow_forward</Icon>
               </MKTypography>
             </MKBox>
