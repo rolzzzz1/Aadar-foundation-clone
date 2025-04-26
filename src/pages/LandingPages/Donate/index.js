@@ -1,5 +1,6 @@
 import React from "react";
 
+// i18next imports
 import { useTranslation, Trans } from "react-i18next";
 
 // @mui material components
@@ -8,23 +9,20 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Tooltip from "@mui/material/Tooltip";
 
-// import Switch from "@mui/material/Switch";
+// @mui icons-material components
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 // Material Kit 2 React examples
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import DefaultFooter from "examples/Footers/DefaultFooter";
-// import MKAlert from "components/MKAlert";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 
 // Routes
-// import routes from "routes";
 import getRoutes from "routes1";
-
 import getFooterRoutes from "footer.routes1";
-// import footerRoutes from "footer.routes";
 
 // Images
 import bgImage2 from "assets/images/mainThemeImages/swargSadanBlack.png";
@@ -32,8 +30,6 @@ import bgImage from "assets/images/mainThemeImages/smallBrushstroke2.svg";
 import scanner from "assets/images/scanner.jpg";
 import donateImg from "assets/images/donate-happy-faces.png";
 import MKButton from "components/MKButton";
-
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 function Donate() {
   const { t } = useTranslation();
@@ -140,8 +136,6 @@ function Donate() {
                     {i18n.language === "hi" ? "आपके आज के कार्य में" : "Your action today has"}{" "}
                     <br />
                     {i18n.language === "hi" ? "एक" : "the"}
-                    {/* Your action today has <br />
-                    the{" "} */}
                     <MKTypography
                       display="inline"
                       variant="h4"
@@ -167,10 +161,6 @@ function Donate() {
                       mr={{ xs: 2, sm: 6 }}
                     >
                       {donatePage.description}
-                      {/* We ensure that every donation is used with purpose and precision. Each
-                      decision we make is thoughtfully considered, and even the smallest
-                      contribution is directed toward initiatives where it will yield the greatest
-                      impact. */}
                     </MKTypography>
                   </MKTypography>
 
@@ -181,7 +171,6 @@ function Donate() {
                     borderRadius="xxl"
                     width="100%"
                     height="250px"
-                    // px={{ xs: -10 }}
                     sx={{ border: "10px solid #ECA533" }}
                     mt={{ xs: 4, sm: 5, md: 5, lg: 5, xl: 8 }}
                   ></MKBox>
@@ -193,13 +182,6 @@ function Donate() {
                   >
                     <i>{donatePage.imageTagLine}</i>
                   </MKTypography>
-                  {/* <MKBox border="2px solid #F44335" borderRadius="5px" width="100%" p={1} mt={11}>
-                    <MKTypography color="error" fontSize="1rem" textAlign="center">
-                      Please email your <b>name, mobile number and screenshot</b> of your
-                      transaction at <b>aadarfoundatio2018@gmail.com</b> to get receipt of your
-                      contribution.
-                    </MKTypography>
-                  </MKBox> */}
                 </MKBox>
               </Grid>
 
@@ -207,7 +189,6 @@ function Donate() {
                 <MKBox
                   border="2px solid #F44335"
                   borderRadius="5px"
-                  // width="80%"
                   p={1}
                   mx={{ xs: 0, sm: 4 }}
                   mb={4}
@@ -219,8 +200,6 @@ function Donate() {
                     fontSize={{ xs: "0.8rem", sm: "0.9rem", md: "1rem" }}
                   >
                     <Trans i18nKey={donatePage.emailMessage} components={{ 1: <b /> }} />
-                    {/* Please email your <b>name, mobile number and screenshot</b> of your transaction
-                    at <b>aadarfoundatio2018@gmail.com</b> to get receipt of your contribution. */}
                   </MKTypography>
                 </MKBox>
                 <MKBox display="flex" justifyContent="center" mt={{ md: 6 }}>
@@ -235,14 +214,6 @@ function Donate() {
                 </MKBox>
               </Grid>
             </Grid>
-            {/* <Grid container alignItems="flex-start" pt={6}>
-              <MKBox border="2px solid #F44335" borderRadius="5px" width="100%" p={1}>
-                <MKTypography color="error" fontSize="1rem" textAlign="center">
-                  Please email your <b>name, mobile number and screenshot</b> of your transaction at{" "}
-                  <b>aadarfoundatio2018@gmail.com</b> to get receipt of your contribution.
-                </MKTypography>
-              </MKBox>
-            </Grid> */}
             <Grid display={"flex"} flexDirection={"column"} alignItems={"center"}>
               <MKBox
                 sx={{ backgroundColor: "#fbecd4", borderRadius: "20px" }}
@@ -260,7 +231,6 @@ function Donate() {
                     letterSpacing: "0.05rem",
                   }}
                   variant="h4"
-                  // pt={8}
                   pb={4}
                 >
                   {donatePage.bankAccountDetails.title}
@@ -372,27 +342,16 @@ function Donate() {
               >
                 {donatePage.message80g} <br />
                 <b>{donatePage.panNo}</b>
-                {/* All donations to the Organisation are 50 % tax exempted under section 80 G of Income
-                Tax Act 1961. <br />
-                <b>PAN No - AAIAA2457N</b> */}
               </MKTypography>
             </MKBox>
-            {/* <MKBox m={2} px={20} py={10} textAlign={"center"}>
-              All donations to the Organisation are 50 % tax exempted under section 80 G of Income
-              Tax Act 1961. PAN No- AAAJM0891R
-            </MKBox> */}
             <MKBox
               component="section"
-              // mt={10}
               py={2}
               mb={2}
-              // mx={"auto"}
               mx={-2}
               sx={{
                 backgroundColor: "#fafafa",
                 borderRadius: "20px",
-                // width: { xs: "100%", sm: "100%" },
-                // marginTop: { xs: 2, sm: 4 },
               }}
             >
               <Grid
@@ -410,8 +369,6 @@ function Donate() {
                     fontWeight: "500",
                     color: "#ECA533",
                   }}
-
-                  // pb={2}
                 >
                   {donatePage.membershipSection.title}
                 </MKTypography>
@@ -422,7 +379,6 @@ function Donate() {
                     fontWeight: "500",
                   }}
                   pl={{ xs: 1, sm: 1, md: 4 }}
-                  // pt={{ sm: 1 }}
                   textAlign="center"
                 >
                   {donatePage.membershipSection.subTitle}
@@ -433,7 +389,6 @@ function Donate() {
                   container
                   display={"flex"}
                   flexDirection={"column"}
-                  // justifyContent={"center"}
                   alignItems={"center"}
                   pt={4}
                   lg={6}
@@ -456,12 +411,7 @@ function Donate() {
                     >
                       <b>{donatePage.membershipSection.membership.membership1.name} </b> Rs
                       100/200/500{" "}
-                      <MKTypography
-                        fontSize="0.9rem"
-                        // py={1}
-                        sx={{ letterSpacing: "0.05rem" }}
-                        // display="inline"
-                      >
+                      <MKTypography fontSize="0.9rem" sx={{ letterSpacing: "0.05rem" }}>
                         {donatePage.membershipSection.membership.membership1.time}
                       </MKTypography>
                     </MKTypography>
@@ -471,12 +421,7 @@ function Donate() {
                       sx={{ letterSpacing: "0.05rem" }}
                     >
                       <b>{donatePage.membershipSection.membership.membership2.name} </b>Rs 2600{" "}
-                      <MKTypography
-                        fontSize="0.9rem"
-                        // py={1}
-                        sx={{ letterSpacing: "0.05rem" }}
-                        // display="inline"
-                      >
+                      <MKTypography fontSize="0.9rem" sx={{ letterSpacing: "0.05rem" }}>
                         {donatePage.membershipSection.membership.membership2.time}
                       </MKTypography>
                     </MKTypography>
@@ -486,12 +431,7 @@ function Donate() {
                       sx={{ letterSpacing: "0.05rem" }}
                     >
                       <b>{donatePage.membershipSection.membership.membership3.name} </b>Rs 5100{" "}
-                      <MKTypography
-                        fontSize="0.9rem"
-                        // py={1}
-                        sx={{ letterSpacing: "0.05rem" }}
-                        // display="inline"
-                      >
+                      <MKTypography fontSize="0.9rem" sx={{ letterSpacing: "0.05rem" }}>
                         {donatePage.membershipSection.membership.membership3.time}
                       </MKTypography>
                     </MKTypography>
@@ -501,7 +441,6 @@ function Donate() {
                   container
                   display={"flex"}
                   flexDirection={"column"}
-                  // justifyContent={"center"}
                   alignItems={"center"}
                   pt={4}
                   lg={6}
@@ -555,7 +494,6 @@ function Donate() {
                 pt={{ xs: 4, sm: 4, md: 6, lg: 8 }}
                 display={"flex"}
                 flexDirection={"column"}
-                // justifyContent={"center"}
                 alignItems={"center"}
                 pb={4}
               >

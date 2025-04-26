@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+// i18next imports
 import { useTranslation } from "react-i18next";
 
 // @mui material components
@@ -19,11 +20,8 @@ import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 
 // Routes
-// import routes from "routes";
 import getRoutes from "routes1";
-
 import getFooterRoutes from "footer.routes1";
-// import footerRoutes from "footer.routes";
 
 // Images
 import bgImage2 from "assets/images/mainThemeImages/swargSadanBlack.png";
@@ -113,11 +111,9 @@ function Contact() {
                 md={12}
                 lg={4}
                 sx={{
-                  // ml: { xs: 0, lg: 3 },
                   mb: { xs: 8, md: 8, lg: 0 },
                 }}
               >
-                {/* <Container> */}
                 <MKTypography variant="h4" sx={{ fontWeight: "500" }} pb={4}>
                   {contactPage.title}
                 </MKTypography>
@@ -157,7 +153,6 @@ function Contact() {
                 <MKTypography variant="body1" fontSize="1rem">
                   aadarfoundatio2018@gmail.com
                 </MKTypography>
-                {/* </Container> */}
               </Grid>
               <Grid item xs={12} md={12} lg={8} sx={{ mx: "auto" }}>
                 <MKBox
