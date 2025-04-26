@@ -18,8 +18,6 @@ const LanguageSelector = () => {
     }
   }, [i18n, i18n.language]);
 
-  console.log(i18n.language);
-
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
   };
@@ -40,7 +38,7 @@ const LanguageSelector = () => {
     <MKBox className="btn-container" ml={-2}>
       <MKTypography
         variant="button"
-        fontWeight="700"
+        fontWeight="light"
         fontSize="0.7rem"
         ml={1}
         sx={{ cursor: "pointer", userSelect: "none", margin: 0, color: "#344767" }}
@@ -51,7 +49,7 @@ const LanguageSelector = () => {
       <Switch size="small" checked={checked} onChange={toggleSwitch} sx={{ py: 0.6 }} />
       <MKTypography
         variant="button"
-        fontWeight="700"
+        fontWeight="light"
         fontSize="0.7rem"
         ml={1}
         sx={{ cursor: "pointer", userSelect: "none", margin: 0, color: "#344767" }}

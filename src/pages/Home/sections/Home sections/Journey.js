@@ -64,7 +64,7 @@ function Journey() {
             <MKBox position="relative">
               <MKBox
                 display="flex"
-                justifyCOntent="center"
+                justifyContent="center"
                 border="solid 2px #000000"
                 borderRadius="15px"
                 minHeight={{ xs: "140px", sm: "280px" }}
@@ -76,8 +76,7 @@ function Journey() {
                   style={{ border: "0px", borderRadius: "15px" }}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerPolicy="strict-origin-when-cross-origin"
-                  allowfullscreen
-                  autoPlay="true"
+                  autoPlay={true}
                 ></iframe>
               </MKBox>
             </MKBox>

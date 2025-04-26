@@ -129,7 +129,7 @@ function Work() {
             </MKTypography>
           </Grid>
         </Grid>
-        <Grid container lg={12}>
+        <Grid item container lg={12}>
           {width < 768 ? (
             <MKBox pt={1} width="100%">
               <MKCarousel1 item={groupsCreatedTwo} navButtons={true} />

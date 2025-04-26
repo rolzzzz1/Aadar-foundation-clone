@@ -71,46 +71,55 @@ const routes = [
   //   component: <Home />,
   // },
   {
+    key: 1,
     name: "Home",
     href: "/",
   },
   {
+    key: 2,
     name: "About Us",
     route: "/pages/landing-pages/about-us",
     component: <About isWorkOn={false} />,
   },
 
   {
+    key: 3,
     name: "Our Work",
     route: "/pages/landing-pages/work",
     component: <Work isWorkOn={true} />,
   },
   {
+    key: 4,
     name: "Volunteer",
     route: "/pages/landing-pages/volunteer",
     component: <Volunteer />,
   },
   {
+    key: 5,
     name: "Donate",
     route: "/pages/landing-pages/donate",
     component: <Donate />,
   },
   {
+    key: 6,
     name: "Gallery",
     route: "/pages/landing-pages/gallery",
     component: <Gallery />,
   },
   {
+    key: 7,
     name: "Contact",
     route: "/pages/landing-pages/contact",
     component: <Contact />,
   },
   {
+    key: 8,
     name: "Privacy policy",
     route: "/pages/landing-pages/privacy-policy",
     component: <PrivacyPolicy />,
   },
   {
+    key: 9,
     name: "Terms Conditions",
     route: "/pages/landing-pages/terms-conditions",
     component: <TermsConditions />,

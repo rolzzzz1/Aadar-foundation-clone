@@ -15,7 +15,7 @@ import DefaultCounterCard from "examples/Cards/CounterCards/DefaultCounterCard";
 function Counters() {
   const { t } = useTranslation();
   const impactSection = t("homePage.impactSection");
-  console.log(impactSection.title);
+
   return (
     <MKBox component="section" pt={{ xs: 4, sm: 8 }} pb={2}>
       <Container>

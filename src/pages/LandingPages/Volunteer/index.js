@@ -160,16 +160,16 @@ function Volunteer() {
       // &&
       // fileValid
     ) {
-      //   // Sending email //Aadar emailjs
-      //   // emailjs
-      //   //   .sendForm("service_4a9mgcp", "template_ie847rr", form.current, {
-      //   //     publicKey: "41w8LwNiKZaoka4j-",
-      //   //   })
-
       // Sending email //Aishwarya emailjs
+      // emailjs
+      //   .sendForm("service_a7f8kvk", "template_kj0zzo9", form.current, {
+      //     publicKey: "i1eYRzEru3UMSm8qR",
+      //   })
+
+      // Sending email //Aadar emailjs
       emailjs
-        .sendForm("service_a7f8kvk", "template_kj0zzo9", form.current, {
-          publicKey: "i1eYRzEru3UMSm8qR",
+        .sendForm("service_4a9mgcp", "template_ie847rr", form.current, {
+          publicKey: "41w8LwNiKZaoka4j-",
         })
         .then(
           () => {
