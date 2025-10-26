@@ -117,9 +117,14 @@ export default {
                   padding: "5px 5px",
                 }}
               >
-                <MKTypography fontWeight="regular" fontSize="0.9rem" color="white">
-                  Aishx.dev ( Aishwarya )
-                </MKTypography>
+                <MKBox display="flex" flexDirection="column">
+                  <MKTypography fontWeight="regular" fontSize="0.9rem" color="white">
+                    Aishx.dev
+                  </MKTypography>
+                  <MKTypography fontWeight="light" fontSize="0.75rem" color="white">
+                    ( Aishwarya Sharma )
+                  </MKTypography>
+                </MKBox>
                 <MKBox
                   component="img"
                   src={logoME}
