@@ -184,7 +184,7 @@ function Home() {
           p: 2,
           pb: { xs: 4, sm: 8 },
           mx: { xs: 2, lg: 3 },
-          mt: { xs: -10, sm: -12, md: -14 },
+          mt: { xs: -14, sm: -16, md: -20 },
           mb: { xs: 2, sm: 4 },
           backgroundColor: ({ palette: { white }, functions: { rgba } }) => rgba(white.main, 0.8),
           backdropFilter: "saturate(200%) blur(30px)",
