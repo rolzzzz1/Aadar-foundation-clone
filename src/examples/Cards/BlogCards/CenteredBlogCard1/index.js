@@ -53,6 +53,7 @@ function CenteredBlogCard({ image, title, action, description }) {
         width="100%"
         position="relative"
         zIndex={1}
+        loading="lazy"
         // className="centerBlogImgs"
       />
       <MKBox
