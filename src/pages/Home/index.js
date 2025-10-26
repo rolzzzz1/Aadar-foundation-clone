@@ -35,7 +35,7 @@ import blackAndWhiteHero from "assets/images/mainThemeImages/aadar-main-black2.p
 import heroImage2 from "assets/images/aboutPageImages/main1.jpg";
 import heroImage3 from "assets/images/aboutPageImages/swargSadan.webp";
 
-function HeroSlide({ image, homePage }) {
+function HeroSlide({ image, homePage, isFirstSlide }) {
   return (
     <MKBox
       minHeight="100vh"
@@ -52,84 +52,88 @@ function HeroSlide({ image, homePage }) {
       }}
     >
       {/* Mobile view - centered */}
-      <MKBox
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        position="relative"
-        zIndex={2}
-      >
+      {isFirstSlide && (
         <MKBox
-          component="img"
-          src={aadarHindiYellow}
-          width={{ xs: "80px", sm: "100px", md: "120px", lg: "120px" }}
-          display={{ xs: "inline", sm: "none" }}
-          mb={2}
-          loading="eager"
-          fetchPriority="high"
-        />
-        <MKTypography
-          color="white"
-          textAlign="center"
-          fontSize="0.9rem"
-          mb={8}
-          px={1}
-          display={{ xs: "inline", sm: "none" }}
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
           position="relative"
           zIndex={2}
         >
-          A home for Hopeless, Homeless, Helpless and Unclaimed people
-        </MKTypography>
-      </MKBox>
-
-      {/* Desktop view - positioned on the right */}
-      <MKBox
-        color="white"
-        display={{ xs: "none", sm: "flex" }}
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        mr={6}
-        sx={{
-          backgroundImage: `url(${bgImage})`,
-          backgroundSize: "contain",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "left",
-          minHeight: "100vh",
-        }}
-        position="relative"
-        zIndex={2}
-      >
-        <MKTypography
-          variant="h2"
-          color="white"
-          textAlign="center"
-          ml={-2}
-          fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
-          sx={{ fontSize: { xs: "1.5rem", sm: "1.7rem", md: "2rem", lg: "2rem" } }}
-        >
           <MKBox
             component="img"
-            src={aadarHindiWhite}
+            src={aadarHindiYellow}
             width={{ xs: "80px", sm: "100px", md: "120px", lg: "120px" }}
-            my={1}
-            mb={-2}
+            display={{ xs: "inline", sm: "none" }}
+            mb={2}
+            loading="eager"
+            fetchPriority="high"
           />
-        </MKTypography>
-        <MKTypography
-          variant="body"
+          <MKTypography
+            color="white"
+            textAlign="center"
+            fontSize="0.9rem"
+            mb={8}
+            px={1}
+            display={{ xs: "inline", sm: "none" }}
+            position="relative"
+            zIndex={2}
+          >
+            A home for Hopeless, Homeless, Helpless and Unclaimed people
+          </MKTypography>
+        </MKBox>
+      )}
+
+      {/* Desktop view - positioned on the right */}
+      {isFirstSlide && (
+        <MKBox
           color="white"
-          textAlign="center"
-          mt={2}
-          ml={-2}
-          display="inline-block"
-          fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
-          sx={{ fontSize: { xs: "0.9rem", sm: "0.9rem", md: "1.1rem", lg: "1.3rem" } }}
+          display={{ xs: "none", sm: "flex" }}
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          mr={6}
+          sx={{
+            backgroundImage: `url(${bgImage})`,
+            backgroundSize: "contain",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "left",
+            minHeight: "100vh",
+          }}
+          position="relative"
+          zIndex={2}
         >
-          {homePage.tagLine1} <br /> {homePage.tagLine2}
-        </MKTypography>
-      </MKBox>
+          <MKTypography
+            variant="h2"
+            color="white"
+            textAlign="center"
+            ml={-2}
+            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            sx={{ fontSize: { xs: "1.5rem", sm: "1.7rem", md: "2rem", lg: "2rem" } }}
+          >
+            <MKBox
+              component="img"
+              src={aadarHindiWhite}
+              width={{ xs: "80px", sm: "100px", md: "120px", lg: "120px" }}
+              my={1}
+              mb={-2}
+            />
+          </MKTypography>
+          <MKTypography
+            variant="body"
+            color="white"
+            textAlign="center"
+            mt={2}
+            ml={-2}
+            display="inline-block"
+            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            sx={{ fontSize: { xs: "0.9rem", sm: "0.9rem", md: "1.1rem", lg: "1.3rem" } }}
+          >
+            {homePage.tagLine1} <br /> {homePage.tagLine2}
+          </MKTypography>
+        </MKBox>
+      )}
     </MKBox>
   );
 }
@@ -185,7 +189,12 @@ function Home() {
           PrevIcon={<span style={{ color: "white", fontSize: "1.5rem" }}>‹</span>}
         >
           {heroSlides.map((slide, index) => (
-            <HeroSlide key={index} image={slide.image} homePage={homePage} />
+            <HeroSlide
+              key={index}
+              image={slide.image}
+              homePage={homePage}
+              isFirstSlide={index === 0}
+            />
           ))}
         </Carousel>
       </MKBox>
@@ -231,6 +240,7 @@ function Home() {
 HeroSlide.propTypes = {
   image: PropTypes.string.isRequired,
   homePage: PropTypes.object.isRequired,
+  isFirstSlide: PropTypes.bool.isRequired,
 };
 
 export default Home;
