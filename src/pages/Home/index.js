@@ -161,7 +161,7 @@ function Home() {
       <MKBox>
         <Carousel
           animation="fade"
-          duration={500}
+          duration={600}
           indicators={true}
           navButtonsAlwaysVisible={false}
           navButtonsAlwaysInvisible={false}
@@ -169,7 +169,7 @@ function Home() {
           fullHeightHover={false}
           swipe={true}
           autoPlay={true}
-          interval={5000}
+          interval={7000}
           stopAutoPlayOnHover={true}
         >
           {heroSlides.map((slide, index) => (
