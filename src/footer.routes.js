@@ -106,7 +106,6 @@ export default {
                 sx={{
                   backgroundColor: "#575757",
                   backdropFilter: `saturate(200%) blur(30px)`,
-
                   color: "#ffffff",
                   textTransform: "capitalize",
                   border: "2px solid transparent",
@@ -115,6 +114,9 @@ export default {
                   },
                   marginLeft: "5px",
                   padding: "5px 5px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
                 }}
               >
                 <MKBox display="flex" flexDirection="column">
@@ -131,7 +133,6 @@ export default {
                   borderRadius="3px"
                   width="27px"
                   height="22px"
-                  ml={1}
                 ></MKBox>
               </MKButton>
             </MKTypography>
