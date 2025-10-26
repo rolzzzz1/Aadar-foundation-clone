@@ -111,10 +111,12 @@ const getFooterRoutes = (t) => [
                       border: "2px solid #FFFFFF",
                     },
                     marginLeft: "5px",
-                    padding: "5px 5px",
+                    padding: "3px 12px",
                     display: "flex",
                     alignItems: "center",
                     gap: "8px",
+                    height: "auto",
+                    minHeight: "auto",
                   }}
                 >
                   <MKBox display="flex" flexDirection="column">
