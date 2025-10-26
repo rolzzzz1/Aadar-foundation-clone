@@ -26,9 +26,9 @@ import getFooterRoutes from "footer.routes1";
 
 // Images
 import bgImage from "assets/images/mainThemeImages/brushstroke.svg";
-import bgImage2 from "assets/images/mainThemeImages/aadar-main-black2.png";
 import aadarHindiWhite from "assets/images/aadarHindiWhite.png";
 import aadarHindiYellow from "assets/images/aadarHindiYellow.png";
+import PropTypes from "prop-types";
 
 // Additional hero images for carousel
 import heroImage1 from "assets/images/mainThemeImages/aadar-main-black2.png";
@@ -52,10 +52,10 @@ function HeroSlide({ image, homePage }) {
       }}
     >
       {/* Mobile view - centered */}
-      <MKBox 
-        display="flex" 
-        flexDirection="column" 
-        justifyContent="center" 
+      <MKBox
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
         alignItems="center"
         position="relative"
         zIndex={2}
@@ -141,11 +141,7 @@ function Home() {
   const donateBtn = t("navbar.donateBtn");
   const homePage = t("homePage");
 
-  const heroSlides = [
-    { image: heroImage1 },
-    { image: heroImage2 },
-    { image: heroImage3 },
-  ];
+  const heroSlides = [{ image: heroImage1 }, { image: heroImage2 }, { image: heroImage3 }];
 
   return (
     <MKBox minWidth="320px">
@@ -218,5 +214,11 @@ function Home() {
     </MKBox>
   );
 }
+
+// Typechecking props for HeroSlide
+HeroSlide.propTypes = {
+  image: PropTypes.string.isRequired,
+  homePage: PropTypes.object.isRequired,
+};
 
 export default Home;
