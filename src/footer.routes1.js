@@ -104,7 +104,6 @@ const getFooterRoutes = (t) => [
                   sx={{
                     backgroundColor: "#575757",
                     backdropFilter: `saturate(200%) blur(30px)`,
-
                     color: "#ffffff",
                     textTransform: "capitalize",
                     border: "2px solid transparent",
@@ -113,19 +112,25 @@ const getFooterRoutes = (t) => [
                     },
                     marginLeft: "5px",
                     padding: "5px 5px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
                   }}
                 >
-                  <MKTypography fontWeight="regular" fontSize="0.9rem" color="white">
-                    {t("footer.developerName")}
-                  </MKTypography>
-                  &nbsp;
+                  <MKBox display="flex" flexDirection="column">
+                    <MKTypography fontWeight="regular" fontSize="0.9rem" color="white">
+                      Aishx.dev
+                    </MKTypography>
+                    <MKTypography fontWeight="light" fontSize="0.75rem" color="white">
+                      ( Aishwarya Sharma )
+                    </MKTypography>
+                  </MKBox>
                   <MKBox
                     component="img"
                     src={logoME}
                     borderRadius="3px"
                     width="27px"
                     height="22px"
-                    ml={1}
                   ></MKBox>
                 </MKButton>
               </MKTypography>
