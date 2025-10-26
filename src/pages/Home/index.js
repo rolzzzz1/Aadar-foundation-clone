@@ -44,25 +44,14 @@ function HeroSlide({ image, homePage }) {
         backgroundImage: `url(${image})`,
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
+        backgroundPosition: "top",
         display: "flex",
         justifyContent: { xs: "center", sm: "end" },
         alignItems: "end",
         position: "relative",
       }}
     >
-      <MKBox
-        position="absolute"
-        top={0}
-        left={0}
-        right={0}
-        bottom={0}
-        sx={{
-          background: "linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5))",
-        }}
-      />
-      
-      {/* Mobile view */}
+      {/* Mobile view - centered */}
       <MKBox 
         display="flex" 
         flexDirection="column" 
@@ -94,7 +83,7 @@ function HeroSlide({ image, homePage }) {
         </MKTypography>
       </MKBox>
 
-      {/* Desktop view */}
+      {/* Desktop view - positioned on the right */}
       <MKBox
         color="white"
         display={{ xs: "none", sm: "flex" }}
