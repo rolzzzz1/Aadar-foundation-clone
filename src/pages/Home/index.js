@@ -31,7 +31,7 @@ import aadarHindiYellow from "assets/images/aadarHindiYellow.png";
 import PropTypes from "prop-types";
 
 // Additional hero images for carousel
-import heroImage1 from "assets/images/mainThemeImages/aadar-main-black2.png";
+import blackAndWhiteHero from "assets/images/mainThemeImages/aadar-main-black2.png";
 import heroImage2 from "assets/images/aboutPageImages/main1.jpg";
 import heroImage3 from "assets/images/aboutPageImages/swargSadan.webp";
 
@@ -141,7 +141,7 @@ function Home() {
   const donateBtn = t("navbar.donateBtn");
   const homePage = t("homePage");
 
-  const heroSlides = [{ image: heroImage1 }, { image: heroImage2 }, { image: heroImage3 }];
+  const heroSlides = [{ image: blackAndWhiteHero }, { image: heroImage2 }, { image: heroImage3 }];
 
   return (
     <MKBox minWidth="320px">
