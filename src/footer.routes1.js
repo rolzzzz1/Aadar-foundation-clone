@@ -105,25 +105,29 @@ const getFooterRoutes = (t) => [
                     backgroundColor: "#575757",
                     backdropFilter: `saturate(200%) blur(30px)`,
                     color: "#ffffff",
-                    textTransform: "capitalize",
+                    textTransform: "none",
                     border: "2px solid transparent",
                     "&: hover": {
                       border: "2px solid #FFFFFF",
                     },
                     marginLeft: "5px",
-                    padding: "3px 12px",
+                    padding: "2px 8px",
                     display: "flex",
                     alignItems: "center",
-                    gap: "8px",
-                    height: "auto",
+                    gap: "6px",
                     minHeight: "auto",
+                    lineHeight: 1.2,
                   }}
                 >
-                  <MKBox display="flex" flexDirection="column">
-                    <MKTypography fontWeight="regular" fontSize="0.9rem" color="white">
+                  <MKBox display="flex" flexDirection="column" sx={{ lineHeight: 1 }}>
+                    <MKTypography fontWeight="bold" fontSize="0.85rem" color="white">
                       Aishx.dev
                     </MKTypography>
-                    <MKTypography fontWeight="light" fontSize="0.75rem" color="white">
+                    <MKTypography
+                      fontWeight="light"
+                      fontSize="0.65rem"
+                      color="rgba(255,255,255,0.8)"
+                    >
                       ( Aishwarya Sharma )
                     </MKTypography>
                   </MKBox>
@@ -131,8 +135,8 @@ const getFooterRoutes = (t) => [
                     component="img"
                     src={logoME}
                     borderRadius="3px"
-                    width="27px"
-                    height="22px"
+                    width="22px"
+                    height="18px"
                   ></MKBox>
                 </MKButton>
               </MKTypography>
