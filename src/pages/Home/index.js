@@ -163,7 +163,7 @@ function Home() {
           animation="fade"
           duration={600}
           indicators={true}
-          navButtonsAlwaysVisible={false}
+          navButtonsAlwaysVisible={true}
           navButtonsAlwaysInvisible={false}
           cycleNavigation={true}
           fullHeightHover={false}
@@ -171,6 +171,18 @@ function Home() {
           autoPlay={true}
           interval={7000}
           stopAutoPlayOnHover={true}
+          navButtonsProps={{
+            style: {
+              backgroundColor: "rgba(255, 255, 255, 0.3)",
+              backdropFilter: "blur(5px)",
+              opacity: 0.7,
+              borderRadius: "50%",
+              width: "40px",
+              height: "40px",
+            },
+          }}
+          NextIcon={<span style={{ color: "white", fontSize: "1.5rem" }}>›</span>}
+          PrevIcon={<span style={{ color: "white", fontSize: "1.5rem" }}>‹</span>}
         >
           {heroSlides.map((slide, index) => (
             <HeroSlide key={index} image={slide.image} homePage={homePage} />
