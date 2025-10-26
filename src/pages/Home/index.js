@@ -71,6 +71,8 @@ function Home() {
             width={{ xs: "80px", sm: "100px", md: "120px", lg: "120px" }}
             display={{ xs: "inline", sm: "none" }}
             mb={2}
+            loading="eager"
+            fetchPriority="high"
           />{" "}
           <MKTypography
             color="white"

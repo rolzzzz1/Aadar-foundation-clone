@@ -99,6 +99,7 @@ function Item(props) {
                     height="100%"
                     borderRadius="7px"
                     mx="auto"
+                    loading="lazy"
                     // className="eventsImgs"
                   ></MKBox>
                 </MKBox>
