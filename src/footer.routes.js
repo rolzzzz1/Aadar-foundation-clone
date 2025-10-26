@@ -118,9 +118,8 @@ export default {
                 }}
               >
                 <MKTypography fontWeight="regular" fontSize="0.9rem" color="white">
-                  Aishwarya Sharma
+                  Aishx.dev ( Aishwarya )
                 </MKTypography>
-                &nbsp;
                 <MKBox
                   component="img"
                   src={logoME}
