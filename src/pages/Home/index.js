@@ -91,10 +91,9 @@ function HeroSlide({ image, homePage, isFirstSlide }) {
           color="white"
           display={{ xs: "none", sm: "flex" }}
           flexDirection="column"
-          justifyContent="flex-end"
+          justifyContent="center"
           alignItems="center"
           mr={6}
-          mb={6}
           sx={{
             backgroundImage: `url(${bgImage})`,
             backgroundSize: "contain",
