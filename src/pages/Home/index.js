@@ -180,7 +180,7 @@ function Home() {
   const footerRoutes = getFooterRoutes(t);
   const donateBtn = t("navbar.donateBtn");
   const homePage = t("homePage");
-  const ctaButtonText = t("heroSection.ctaButton");
+  const ctaButtonText = t("homePage.heroSection.ctaButton");
 
   const heroSlides = [{ image: blackAndWhiteHero }, { image: heroImage2 }, { image: heroImage3 }];
 
