@@ -203,8 +203,12 @@ function Home() {
         <style>
           {`
             .MuiIconButton-root.carousel-nav-button:hover {
-              background-color: #4CAF50 !important;
+              background-color: rgba(255, 255, 255, 0.9) !important;
               opacity: 1 !important;
+              transition: all 0.3s ease !important;
+            }
+            .MuiIconButton-root.carousel-nav-button:hover span {
+              color: #4CAF50 !important;
               transition: all 0.3s ease !important;
             }
           `}
