@@ -200,19 +200,6 @@ function Home() {
 
       {/* Hero Carousel */}
       <MKBox>
-        <style>
-          {`
-            .MuiIconButton-root.carousel-nav-button:hover {
-              background-color: rgba(255, 255, 255, 0.9) !important;
-              opacity: 1 !important;
-              transition: all 0.3s ease !important;
-            }
-            .MuiIconButton-root.carousel-nav-button:hover span {
-              color: #4CAF50 !important;
-              transition: all 0.3s ease !important;
-            }
-          `}
-        </style>
         <Carousel
           animation="fade"
           duration={600}
@@ -226,7 +213,6 @@ function Home() {
           interval={7000}
           stopAutoPlayOnHover={true}
           navButtonsProps={{
-            className: "carousel-nav-button",
             style: {
               backgroundColor: "rgba(255, 255, 255, 0.3)",
               backdropFilter: "blur(5px)",
@@ -234,7 +220,6 @@ function Home() {
               borderRadius: "50%",
               width: "40px",
               height: "40px",
-              transition: "all 0.3s ease",
             },
           }}
           NextIcon={<span style={{ color: "white", fontSize: "1.5rem" }}>›</span>}

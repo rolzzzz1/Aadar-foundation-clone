@@ -300,7 +300,7 @@ function DefaultNavbarMobile({ routes, open, action }) {
                       textTransform: "none",
                       letterSpacing: "0.5px",
                       "&:hover": {
-                        backgroundColor: "#FFB300",
+                        backgroundColor: "#4CAF50",
                       },
                     }
                   : {}
@@ -333,7 +333,7 @@ function DefaultNavbarMobile({ routes, open, action }) {
                       textTransform: "none",
                       letterSpacing: "0.5px",
                       "&:hover": {
-                        backgroundColor: "#FFB300",
+                        backgroundColor: "#4CAF50",
                       },
                     }
                   : {}
