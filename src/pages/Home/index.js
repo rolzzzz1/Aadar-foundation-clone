@@ -76,7 +76,6 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText }) {
             color="white"
             textAlign="center"
             fontSize="0.9rem"
-            mb={8}
             px={1}
             display={{ xs: "inline", sm: "none" }}
             position="relative"
@@ -84,6 +83,33 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText }) {
           >
             A home for Hopeless, Homeless, Helpless and Unclaimed people
           </MKTypography>
+          <MKButton
+            variant="contained"
+            size="small"
+            sx={{
+              mt: 2,
+              px: { xs: 3 },
+              py: { xs: 0.5 },
+              fontWeight: "bold",
+              fontSize: "0.75rem",
+              textTransform: "capitalize",
+              borderRadius: "8px",
+              backgroundColor: "white",
+              color: "#FFC107",
+              boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
+              "&:hover": {
+                backgroundColor: "#f5f5f5",
+                transform: "translateY(-2px)",
+                boxShadow: "0 6px 20px rgba(0, 0, 0, 0.3)",
+              },
+              transition: "all 0.3s ease",
+            }}
+            component={Link}
+            to="/pages/landing-pages/donate"
+            display={{ xs: "inline", sm: "none" }}
+          >
+            {ctaButtonText}
+          </MKButton>
         </MKBox>
       )}
 
