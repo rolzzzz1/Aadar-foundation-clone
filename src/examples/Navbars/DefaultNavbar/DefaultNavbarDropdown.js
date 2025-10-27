@@ -63,7 +63,7 @@ function DefaultNavbarDropdown({
         sx={{
           cursor: "pointer",
           userSelect: "none",
-          "&: hover": { color: "#E7A232", textDecoration: "underline 2px" },
+          "&: hover": { color: "#4CAF50", textDecoration: "underline 2px" },
         }}
         {...(route && routeComponent)}
         {...(href && linkComponent)}
@@ -85,7 +85,7 @@ function DefaultNavbarDropdown({
             fontSize: { sm: "0.8", md: "0.875rem", lg: "0.8rem", xl: "0.9rem" },
             fontWeight: "100%",
             mr: 0.8,
-            "&:hover": { color: "#E7A232", textDecoration: "underline 2px" },
+            "&:hover": { color: "#4CAF50", textDecoration: "underline 2px" },
           }}
           width="100%"
         >
