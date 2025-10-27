@@ -1,6 +1,7 @@
 // @mui material components
 import Card from "@mui/material/Card";
 import Carousel from "react-material-ui-carousel";
+import { Link } from "react-router-dom";
 
 // i18next imports
 import { useTranslation } from "react-i18next";
@@ -162,8 +163,8 @@ function HeroSlide({ image, homePage, isFirstSlide }) {
               },
               transition: "all 0.3s ease",
             }}
-            component="a"
-            href="/pages/landing-pages/donate"
+            component={Link}
+            to="/pages/landing-pages/donate"
           >
             I want to help!
           </MKButton>
