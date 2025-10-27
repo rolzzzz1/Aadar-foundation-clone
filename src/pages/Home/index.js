@@ -106,20 +106,19 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           </MKBox>
         </MKBox>
 
-        {/* Vertical yellow paint patch divider */}
+        {/* Vertical yellow paint splash divider */}
         <MKBox
           position="absolute"
-          left={{ xs: "66.67%", md: "66.67%" }}
+          left={{ xs: "calc(66.67% - 25px)", md: "calc(66.67% - 30px)" }}
           top={{ xs: "70px", md: "80px" }}
           bottom={0}
-          width="20px"
+          width={{ xs: "50px", md: "60px" }}
           zIndex={10}
           sx={{
-            backgroundImage: `url(${bgImage})`,
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
-            transform: "rotate(180deg)",
+            background:
+              "linear-gradient(to bottom, #FFC107 0%, #FFD54F 25%, #FFC107 50%, #FFB300 75%, #FFC107 100%)",
+            clipPath:
+              "polygon(30% 0%, 70% 0%, 80% 10%, 70% 20%, 80% 30%, 70% 40%, 85% 50%, 70% 60%, 80% 70%, 75% 80%, 85% 90%, 70% 100%, 30% 100%, 20% 90%, 30% 80%, 15% 70%, 20% 60%, 15% 50%, 20% 40%, 15% 30%, 20% 20%, 15% 10%, 20% 0%)",
           }}
         />
 
