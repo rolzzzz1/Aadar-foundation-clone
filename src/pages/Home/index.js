@@ -45,92 +45,76 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
   if (slideIndex === 1) {
     return (
       <MKBox
+        display="flex"
+        flexDirection={{ xs: "column", md: "row" }}
         minHeight="100vh"
         width="100%"
-        sx={{
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-          position: "relative",
-          backgroundColor: "#f5f5f5",
-        }}
       >
+        {/* Video on left - 2/3 width */}
         <MKBox
-          display="flex"
-          flexDirection={{ xs: "column", md: "row" }}
-          minHeight="100vh"
-          alignItems="center"
-          justifyContent="center"
-          gap={{ md: 4 }}
-          px={{ xs: 2, md: 4 }}
+          flex={{ xs: 1, md: "0 0 66.67%" }}
+          width={{ xs: "100%", md: "66.67%" }}
+          height="100vh"
+          position="relative"
+          overflow="hidden"
         >
-          {/* Video on left */}
           <MKBox
-            flex={{ xs: 1, md: "0 0 50%" }}
-            width={{ xs: "100%", md: "50%" }}
-            display="flex"
-            justifyContent={{ xs: "center", md: "flex-end" }}
-            alignItems="center"
+            component="video"
+            autoPlay
+            loop
+            muted
+            playsInline
+            sx={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
           >
-            <MKBox
-              component="video"
-              autoPlay
-              loop
-              muted
-              playsInline
-              sx={{
-                width: { xs: "100%", md: "90%" },
-                maxWidth: "600px",
-                height: "auto",
-                borderRadius: "12px",
-                boxShadow: "0 10px 40px rgba(0, 0, 0, 0.2)",
-              }}
-            >
-              <source src={heroVideo} type="video/mp4" />
-              Your browser does not support the video tag.
-            </MKBox>
+            <source src={heroVideo} type="video/mp4" />
+            Your browser does not support the video tag.
           </MKBox>
+        </MKBox>
 
-          {/* Text on right */}
-          <MKBox
-            flex={{ xs: 1, md: "0 0 50%" }}
-            width={{ xs: "100%", md: "50%" }}
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-            alignItems={{ xs: "center", md: "flex-start" }}
-            pl={{ md: 4 }}
+        {/* Text on right - 1/3 width */}
+        <MKBox
+          flex={{ xs: 1, md: "0 0 33.33%" }}
+          width={{ xs: "100%", md: "33.33%" }}
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems={{ xs: "center", md: "flex-start" }}
+          px={{ xs: 2, md: 4 }}
+          backgroundColor={{ xs: "#f5f5f5", md: "white" }}
+        >
+          <MKTypography
+            variant="h2"
+            color="dark"
+            fontWeight="bold"
+            sx={{ fontSize: { xs: "2rem", md: "3rem" }, mb: 2 }}
           >
-            <MKTypography
-              variant="h2"
-              color="dark"
-              fontWeight="bold"
-              sx={{ fontSize: { xs: "2rem", md: "3rem" }, mb: 2 }}
-            >
-              Our Impact
-            </MKTypography>
-            <MKTypography
-              variant="body1"
-              color="text"
-              sx={{ fontSize: { xs: "1rem", md: "1.25rem" }, mb: 3 }}
-            >
-              Empowering communities and creating lasting change through dedicated service and
-              compassion.
-            </MKTypography>
-            <MKButton
-              variant="gradient"
-              color="success"
-              sx={{
-                px: { xs: 3, md: 4 },
-                py: { xs: 1, md: 1.5 },
-                fontSize: { xs: "0.9rem", md: "1rem" },
-              }}
-              component={Link}
-              to="/pages/landing-pages/donate"
-            >
-              Learn More
-            </MKButton>
-          </MKBox>
+            Our Impact
+          </MKTypography>
+          <MKTypography
+            variant="body1"
+            color="text"
+            sx={{ fontSize: { xs: "1rem", md: "1.25rem" }, mb: 3 }}
+          >
+            Empowering communities and creating lasting change through dedicated service and
+            compassion.
+          </MKTypography>
+          <MKButton
+            variant="gradient"
+            color="success"
+            sx={{
+              px: { xs: 3, md: 4 },
+              py: { xs: 1, md: 1.5 },
+              fontSize: { xs: "0.9rem", md: "1rem" },
+            }}
+            component={Link}
+            to="/pages/landing-pages/donate"
+          >
+            Learn More
+          </MKButton>
         </MKBox>
       </MKBox>
     );
