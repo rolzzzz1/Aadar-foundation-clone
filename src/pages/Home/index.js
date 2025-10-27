@@ -106,20 +106,22 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           </MKBox>
         </MKBox>
 
-        {/* Vertical yellow paint splash divider */}
+        {/* Vertical brush stroke divider */}
         <MKBox
           position="absolute"
-          left={{ xs: "calc(66.67% - 35px)", md: "calc(66.67% - 40px)" }}
+          left={{ xs: "calc(66.67% - 50px)", md: "calc(66.67% - 60px)" }}
           top={{ xs: "70px", md: "80px" }}
-          bottom={0}
-          width={{ xs: "70px", md: "80px" }}
+          height={{ xs: "calc(100vh - 70px)", md: "calc(100vh - 80px)" }}
+          width={{ xs: "100px", md: "120px" }}
           zIndex={10}
           sx={{
-            background:
-              "linear-gradient(to bottom, #FFB300 0%, #FFC107 8%, #FFD54F 15%, #FFC107 25%, #FFB300 35%, #FFC107 45%, #FFD54F 55%, #FFC107 65%, #FFB300 75%, #FFC107 85%, #FFD54F 95%, #FFC107 100%)",
-            clipPath:
-              "polygon(35% 0%, 65% 0%, 72% 2%, 68% 5%, 75% 8%, 62% 12%, 78% 15%, 65% 18%, 82% 22%, 58% 25%, 85% 28%, 62% 32%, 88% 35%, 65% 38%, 85% 42%, 62% 45%, 82% 48%, 65% 52%, 78% 55%, 62% 58%, 75% 62%, 68% 65%, 72% 68%, 65% 72%, 58% 75%, 68% 78%, 65% 82%, 72% 85%, 68% 88%, 75% 92%, 62% 95%, 65% 100%, 35% 100%, 28% 95%, 35% 92%, 32% 88%, 25% 85%, 38% 82%, 32% 78%, 42% 75%, 35% 72%, 28% 68%, 32% 65%, 25% 62%, 38% 58%, 32% 55%, 42% 52%, 35% 48%, 28% 45%, 35% 42%, 32% 38%, 42% 35%, 35% 32%, 28% 28%, 35% 25%, 38% 22%, 32% 18%, 42% 15%, 35% 12%, 32% 8%, 28% 5%, 35% 2%, 32% 0%)",
-            filter: "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1))",
+            backgroundImage: `url(${bgImage})`,
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+            transform: "rotate(90deg)",
+            filter: "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.15))",
+            pointerEvents: "none",
           }}
         />
 
