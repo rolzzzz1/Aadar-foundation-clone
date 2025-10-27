@@ -167,6 +167,33 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText }) {
           >
             {homePage.tagLine1} <br /> {homePage.tagLine2}
           </MKTypography>
+          <MKButton
+            variant="contained"
+            size="small"
+            sx={{
+              mt: 3,
+              ml: -2,
+              px: { xs: 3, sm: 3.5, md: 4 },
+              py: { xs: 0.5, sm: 0.65, md: 0.8 },
+              fontWeight: "bold",
+              fontSize: { xs: "0.75rem", sm: "0.85rem", md: "0.95rem" },
+              textTransform: "capitalize",
+              borderRadius: "8px",
+              backgroundColor: "white",
+              color: "#FFC107",
+              boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
+              "&:hover": {
+                backgroundColor: "#f5f5f5",
+                transform: "translateY(-2px)",
+                boxShadow: "0 6px 20px rgba(0, 0, 0, 0.3)",
+              },
+              transition: "all 0.3s ease",
+            }}
+            component={Link}
+            to="/pages/landing-pages/donate"
+          >
+            {ctaButtonText}
+          </MKButton>
         </MKBox>
       )}
     </MKBox>
