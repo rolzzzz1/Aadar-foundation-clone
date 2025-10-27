@@ -295,6 +295,10 @@ function DefaultNavbarMobile({ routes, open, action }) {
                   ? {
                       backgroundColor: "#FFC107",
                       color: "white",
+                      fontWeight: "bold",
+                      fontSize: "0.875rem",
+                      textTransform: "none",
+                      letterSpacing: "0.5px",
                       "&:hover": {
                         backgroundColor: "#FFB300",
                       },
@@ -324,6 +328,10 @@ function DefaultNavbarMobile({ routes, open, action }) {
                   ? {
                       backgroundColor: "#FFC107",
                       color: "white",
+                      fontWeight: "bold",
+                      fontSize: "0.875rem",
+                      textTransform: "none",
+                      letterSpacing: "0.5px",
                       "&:hover": {
                         backgroundColor: "#FFB300",
                       },
