@@ -56,7 +56,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText }) {
       {/* Mobile view - centered */}
       {isFirstSlide && (
         <MKBox
-          display="flex"
+          display={{ xs: "flex", sm: "none" }}
           flexDirection="column"
           justifyContent="center"
           alignItems="center"
