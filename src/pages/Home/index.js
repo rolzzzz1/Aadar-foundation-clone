@@ -54,9 +54,12 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
         <MKBox
           flex={{ xs: 1, md: "0 0 66.67%" }}
           width={{ xs: "100%", md: "66.67%" }}
-          height="100vh"
-          position="relative"
-          overflow="hidden"
+          sx={{
+            height: { xs: "calc(100vh - 70px)", md: "calc(100vh - 80px)" },
+            pt: { xs: "70px", md: "80px" },
+            position: "relative",
+            overflow: "hidden",
+          }}
         >
           <MKBox
             component="video"
@@ -170,6 +173,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             size="small"
             sx={{
               mt: 2,
+              mb: 3,
               px: { xs: 3 },
               py: { xs: 0.5 },
               fontWeight: "bold",
