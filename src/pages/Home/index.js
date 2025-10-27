@@ -147,8 +147,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText }) {
             sx={{
               mt: 3,
               ml: -2,
-              px: { xs: 2, sm: 2.5, md: 3 },
-              py: { xs: 1, sm: 1.25, md: 1.5 },
+              px: { xs: 1.5, sm: 2, md: 2.5 },
+              py: { xs: 0.75, sm: 1, md: 1.25 },
               fontWeight: "bold",
               fontSize: { xs: "0.75rem", sm: "0.85rem", md: "0.95rem" },
               textTransform: "capitalize",
