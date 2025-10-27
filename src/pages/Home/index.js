@@ -96,7 +96,7 @@ function HeroSlide({ image, homePage, isFirstSlide }) {
           alignItems="center"
           mr={6}
           mt={4}
-          mb={-2}
+          mb={-4}
           sx={{
             backgroundImage: `url(${bgImage})`,
             backgroundSize: { xs: "95%", sm: "100%", md: "105%", lg: "110%" },
