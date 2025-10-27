@@ -106,6 +106,23 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           </MKBox>
         </MKBox>
 
+        {/* Vertical yellow paint patch divider */}
+        <MKBox
+          position="absolute"
+          left={{ xs: "66.67%", md: "66.67%" }}
+          top={{ xs: "70px", md: "80px" }}
+          bottom={0}
+          width="20px"
+          zIndex={10}
+          sx={{
+            backgroundImage: `url(${bgImage})`,
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+            transform: "rotate(180deg)",
+          }}
+        />
+
         {/* Text on right - 1/3 width */}
         <MKBox
           flex={{ xs: 1, md: "0 0 33.33%" }}
