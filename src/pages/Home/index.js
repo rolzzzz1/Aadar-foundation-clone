@@ -60,6 +60,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             height: "100vh",
           }}
         >
+          {/* Main video */}
           <MKBox
             component="video"
             autoPlay
@@ -73,6 +74,29 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               width: "100%",
               height: { xs: "calc(100% - 70px)", md: "calc(100% - 80px)" },
               objectFit: "cover",
+            }}
+          >
+            <source src={heroVideo} type="video/mp4" />
+            Your browser does not support the video tag.
+          </MKBox>
+
+          {/* Blurred video in padding area */}
+          <MKBox
+            component="video"
+            autoPlay
+            loop
+            muted
+            playsInline
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: { xs: "70px", md: "80px" },
+              objectFit: "cover",
+              filter: "blur(8px)",
+              opacity: 0.7,
+              transform: "scale(1.1)",
             }}
           >
             <source src={heroVideo} type="video/mp4" />
