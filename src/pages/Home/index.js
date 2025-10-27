@@ -141,7 +141,8 @@ function HeroSlide({ image, homePage, isFirstSlide }) {
             {homePage.tagLine1} <br /> {homePage.tagLine2}
           </MKTypography>
           <MKButton
-            variant="contained"
+            variant="gradient"
+            color="success"
             size="small"
             sx={{
               mt: 3,
@@ -152,11 +153,8 @@ function HeroSlide({ image, homePage, isFirstSlide }) {
               fontSize: "0.85rem",
               textTransform: "capitalize",
               borderRadius: "8px",
-              backgroundColor: "white",
-              color: "#FFC107",
               boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
               "&:hover": {
-                backgroundColor: "#f5f5f5",
                 transform: "translateY(-2px)",
                 boxShadow: "0 6px 20px rgba(0, 0, 0, 0.3)",
               },
