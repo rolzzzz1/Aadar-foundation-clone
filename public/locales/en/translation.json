@@ -72,9 +72,9 @@
         "description": "98 people till now have been reunited with their families by the efforts of Swarg sadan team."
       }
     },
-    "heroSection": {
-      "ctaButton": "I want to help!"
-    },
+  "heroSection": {
+    "ctaButton": "Help Today"
+  },
     "postsSection": {
       "title": "Instagram Posts",
       "post1": {
