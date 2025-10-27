@@ -91,12 +91,14 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               position: "absolute",
               top: 0,
               left: 0,
-              width: "100%",
-              height: { xs: "70px", md: "80px" },
+              width: "110%",
+              height: { xs: "90px", md: "100px" },
               objectFit: "cover",
+              objectPosition: "center top",
               filter: "blur(8px)",
-              opacity: 0.7,
-              transform: "scale(1.1)",
+              opacity: 0.8,
+              transform: "translateY(-10px)",
+              zIndex: 1,
             }}
           >
             <source src={heroVideo} type="video/mp4" />
