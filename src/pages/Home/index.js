@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
+import MKButton from "components/MKButton";
 
 // Material Kit 2 React examples
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
@@ -74,7 +75,7 @@ function HeroSlide({ image, homePage, isFirstSlide }) {
             color="white"
             textAlign="center"
             fontSize="0.9rem"
-            mb={8}
+            mb={2}
             px={1}
             display={{ xs: "inline", sm: "none" }}
             position="relative"
@@ -82,6 +83,28 @@ function HeroSlide({ image, homePage, isFirstSlide }) {
           >
             A home for Hopeless, Homeless, Helpless and Unclaimed people
           </MKTypography>
+          <MKButton
+            variant="gradient"
+            color="warning"
+            size="small"
+            display={{ xs: "inline-flex", sm: "none" }}
+            sx={{
+              px: 2.5,
+              py: 1,
+              fontWeight: "bold",
+              textTransform: "capitalize",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+              "&:hover": {
+                transform: "translateY(-2px)",
+                boxShadow: "0 6px 16px rgba(0,0,0,0.4)",
+              },
+              transition: "all 0.3s ease",
+            }}
+            component="a"
+            href="/pages/landing-pages/donate"
+          >
+            I want to help!
+          </MKButton>
         </MKBox>
       )}
 
@@ -132,6 +155,29 @@ function HeroSlide({ image, homePage, isFirstSlide }) {
           >
             {homePage.tagLine1} <br /> {homePage.tagLine2}
           </MKTypography>
+          <MKButton
+            variant="gradient"
+            color="warning"
+            size="medium"
+            sx={{
+              mt: 3,
+              ml: -2,
+              px: 3,
+              py: 1.5,
+              fontWeight: "bold",
+              textTransform: "capitalize",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+              "&:hover": {
+                transform: "translateY(-2px)",
+                boxShadow: "0 6px 16px rgba(0,0,0,0.4)",
+              },
+              transition: "all 0.3s ease",
+            }}
+            component="a"
+            href="/pages/landing-pages/donate"
+          >
+            I want to help!
+          </MKButton>
         </MKBox>
       )}
     </MKBox>
