@@ -841,7 +841,7 @@ function DefaultNavbar({
                               textTransform: "none",
                               letterSpacing: "0.5px",
                               "&:hover": {
-                                backgroundColor: "#FFB300",
+                                backgroundColor: "#4CAF50",
                               },
                             }
                           : {}
@@ -880,7 +880,7 @@ function DefaultNavbar({
                               textTransform: "none",
                               letterSpacing: "0.5px",
                               "&:hover": {
-                                backgroundColor: "#FFB300",
+                                backgroundColor: "#4CAF50",
                               },
                             }
                           : {}
