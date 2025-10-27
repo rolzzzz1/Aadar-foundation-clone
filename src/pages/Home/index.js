@@ -100,7 +100,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText }) {
           mb={-4}
           sx={{
             backgroundImage: `url(${bgImage})`,
-            backgroundSize: { xs: "95%", sm: "100%", md: "105%", lg: "110%" },
+            backgroundSize: { xs: "95%", sm: "115%", md: "105%", lg: "110%" },
             backgroundRepeat: "no-repeat",
             backgroundPosition: {
               xs: "left 45%",
