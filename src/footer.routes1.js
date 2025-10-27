@@ -109,34 +109,32 @@ const getFooterRoutes = (t) => [
                     border: "2px solid transparent",
                     "&: hover": {
                       border: "2px solid #FFFFFF",
+                      backgroundColor: "#6a6a6a",
                     },
                     marginLeft: "5px",
-                    padding: "2px 8px",
+                    padding: "4px 12px",
                     display: "flex",
                     alignItems: "center",
-                    gap: "6px",
+                    gap: "8px",
                     minHeight: "auto",
-                    lineHeight: 1.2,
+                    borderRadius: "8px",
+                    transition: "all 0.3s ease",
                   }}
                 >
-                  <MKBox display="flex" flexDirection="column" sx={{ lineHeight: 1 }}>
-                    <MKTypography fontWeight="bold" fontSize="0.85rem" color="white">
-                      Aishx.dev
-                    </MKTypography>
-                    <MKTypography
-                      fontWeight="light"
-                      fontSize="0.65rem"
-                      color="rgba(255,255,255,0.8)"
-                    >
-                      ( Aishwarya Sharma )
-                    </MKTypography>
-                  </MKBox>
+                  <MKTypography
+                    fontWeight="bold"
+                    fontSize="0.9rem"
+                    color="white"
+                    letterSpacing="0.5px"
+                  >
+                    aishx.dev
+                  </MKTypography>
                   <MKBox
                     component="img"
                     src={logoME}
-                    borderRadius="3px"
-                    width="22px"
-                    height="18px"
+                    borderRadius="50%"
+                    width="20px"
+                    height="20px"
                   ></MKBox>
                 </MKButton>
               </MKTypography>
