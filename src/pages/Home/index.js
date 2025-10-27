@@ -75,7 +75,7 @@ function HeroSlide({ image, homePage, isFirstSlide }) {
             color="white"
             textAlign="center"
             fontSize="0.9rem"
-            mb={2}
+            mb={8}
             px={1}
             display={{ xs: "inline", sm: "none" }}
             position="relative"
@@ -83,28 +83,6 @@ function HeroSlide({ image, homePage, isFirstSlide }) {
           >
             A home for Hopeless, Homeless, Helpless and Unclaimed people
           </MKTypography>
-          <MKButton
-            variant="gradient"
-            color="warning"
-            size="small"
-            display={{ xs: "inline-flex", sm: "none" }}
-            sx={{
-              px: 2.5,
-              py: 1,
-              fontWeight: "bold",
-              textTransform: "capitalize",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
-              "&:hover": {
-                transform: "translateY(-2px)",
-                boxShadow: "0 6px 16px rgba(0,0,0,0.4)",
-              },
-              transition: "all 0.3s ease",
-            }}
-            component="a"
-            href="/pages/landing-pages/donate"
-          >
-            I want to help!
-          </MKButton>
         </MKBox>
       )}
 
@@ -157,19 +135,23 @@ function HeroSlide({ image, homePage, isFirstSlide }) {
           </MKTypography>
           <MKButton
             variant="gradient"
-            color="warning"
-            size="medium"
+            color="success"
+            size="large"
             sx={{
               mt: 3,
               ml: -2,
-              px: 3,
-              py: 1.5,
+              px: 4,
+              py: 2,
               fontWeight: "bold",
+              fontSize: "1rem",
               textTransform: "capitalize",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+              backgroundColor: "#28a745",
+              background: "linear-gradient(135deg, #28a745 0%, #20c997 100%)",
+              boxShadow: "0 6px 20px rgba(40, 167, 69, 0.5)",
               "&:hover": {
-                transform: "translateY(-2px)",
-                boxShadow: "0 6px 16px rgba(0,0,0,0.4)",
+                transform: "translateY(-3px)",
+                boxShadow: "0 8px 25px rgba(40, 167, 69, 0.6)",
+                background: "linear-gradient(135deg, #218838 0%, #1db385 100%)",
               },
               transition: "all 0.3s ease",
             }}
