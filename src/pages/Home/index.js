@@ -135,23 +135,21 @@ function HeroSlide({ image, homePage, isFirstSlide }) {
           </MKTypography>
           <MKButton
             variant="gradient"
-            color="success"
-            size="large"
+            color="warning"
+            size="medium"
             sx={{
               mt: 3,
               ml: -2,
-              px: 4,
-              py: 2,
+              px: 3.5,
+              py: 1.75,
               fontWeight: "bold",
-              fontSize: "1rem",
+              fontSize: "0.95rem",
               textTransform: "capitalize",
-              backgroundColor: "#28a745",
-              background: "linear-gradient(135deg, #28a745 0%, #20c997 100%)",
-              boxShadow: "0 6px 20px rgba(40, 167, 69, 0.5)",
+              borderRadius: "8px",
+              boxShadow: "0 4px 15px rgba(255, 193, 7, 0.4)",
               "&:hover": {
-                transform: "translateY(-3px)",
-                boxShadow: "0 8px 25px rgba(40, 167, 69, 0.6)",
-                background: "linear-gradient(135deg, #218838 0%, #1db385 100%)",
+                transform: "translateY(-2px)",
+                boxShadow: "0 6px 20px rgba(255, 193, 7, 0.5)",
               },
               transition: "all 0.3s ease",
             }}
