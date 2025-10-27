@@ -55,10 +55,9 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           flex={{ xs: 1, md: "0 0 66.67%" }}
           width={{ xs: "100%", md: "66.67%" }}
           sx={{
-            height: { xs: "calc(100vh - 70px)", md: "calc(100vh - 80px)" },
-            pt: { xs: "70px", md: "80px" },
             position: "relative",
             overflow: "hidden",
+            height: "100vh",
           }}
         >
           <MKBox
@@ -68,8 +67,11 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             muted
             playsInline
             sx={{
+              position: "absolute",
+              top: { xs: "70px", md: "80px" },
+              left: 0,
               width: "100%",
-              height: "100%",
+              height: { xs: "calc(100% - 70px)", md: "calc(100% - 80px)" },
               objectFit: "cover",
             }}
           >
