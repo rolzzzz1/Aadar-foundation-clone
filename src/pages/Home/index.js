@@ -88,7 +88,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             loop
             muted
             playsInline
-            preload="metadata"
+            preload="auto"
             sx={{
               position: "absolute",
               top: 0,
@@ -345,6 +345,23 @@ function Home() {
         }}
         sticky
       />
+
+      {/* Hidden video preloader - starts loading video immediately */}
+      <MKBox
+        component="video"
+        preload="auto"
+        style={{
+          position: "absolute",
+          top: "-9999px",
+          left: "-9999px",
+          width: "1px",
+          height: "1px",
+          opacity: 0,
+          pointerEvents: "none",
+        }}
+      >
+        <source src={heroVideo} type="video/mp4" />
+      </MKBox>
 
       {/* Hero Carousel */}
       <MKBox>
