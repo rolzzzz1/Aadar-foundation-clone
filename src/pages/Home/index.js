@@ -147,10 +147,10 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText }) {
             sx={{
               mt: 3,
               ml: -2,
-              px: 2.5,
-              py: 1.25,
+              px: { xs: 2, sm: 2.5, md: 3 },
+              py: { xs: 1, sm: 1.25, md: 1.5 },
               fontWeight: "bold",
-              fontSize: "0.85rem",
+              fontSize: { xs: "0.75rem", sm: "0.85rem", md: "0.95rem" },
               textTransform: "capitalize",
               borderRadius: "8px",
               backgroundColor: "white",
