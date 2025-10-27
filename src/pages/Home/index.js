@@ -37,7 +37,7 @@ import blackAndWhiteHero from "assets/images/mainThemeImages/aadar-main-black2.p
 import heroImage2 from "assets/images/aboutPageImages/main1.jpg";
 import heroImage3 from "assets/images/aboutPageImages/swargSadan.webp";
 
-function HeroSlide({ image, homePage, isFirstSlide }) {
+function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText }) {
   return (
     <MKBox
       minHeight="100vh"
@@ -166,7 +166,7 @@ function HeroSlide({ image, homePage, isFirstSlide }) {
             component={Link}
             to="/pages/landing-pages/donate"
           >
-            I want to help!
+            {ctaButtonText}
           </MKButton>
         </MKBox>
       )}
@@ -180,6 +180,7 @@ function Home() {
   const footerRoutes = getFooterRoutes(t);
   const donateBtn = t("navbar.donateBtn");
   const homePage = t("homePage");
+  const ctaButtonText = t("heroSection.ctaButton");
 
   const heroSlides = [{ image: blackAndWhiteHero }, { image: heroImage2 }, { image: heroImage3 }];
 
@@ -230,6 +231,7 @@ function Home() {
               image={slide.image}
               homePage={homePage}
               isFirstSlide={index === 0}
+              ctaButtonText={ctaButtonText}
             />
           ))}
         </Carousel>
@@ -277,6 +279,7 @@ HeroSlide.propTypes = {
   image: PropTypes.string.isRequired,
   homePage: PropTypes.object.isRequired,
   isFirstSlide: PropTypes.bool.isRequired,
+  ctaButtonText: PropTypes.string.isRequired,
 };
 
 export default Home;
