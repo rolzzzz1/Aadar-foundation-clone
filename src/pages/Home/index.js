@@ -67,6 +67,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             loop
             muted
             playsInline
+            preload="auto"
             sx={{
               position: "absolute",
               top: { xs: "70px", md: "80px" },
@@ -87,6 +88,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             loop
             muted
             playsInline
+            preload="metadata"
             sx={{
               position: "absolute",
               top: 0,
@@ -184,6 +186,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             mb={2}
             loading="eager"
             fetchPriority="high"
+            decoding="async"
+            alt="Aadar Foundation Logo"
           />
           <MKTypography
             color="white"
@@ -267,6 +271,10 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               width={{ xs: "80px", sm: "100px", md: "120px", lg: "120px" }}
               my={1}
               mb={-2}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+              alt="Aadar Foundation Logo"
             />
           </MKTypography>
           <MKTypography
