@@ -102,8 +102,8 @@ function HeroSlide({ image, homePage, isFirstSlide }) {
             backgroundPosition: {
               xs: "center center",
               sm: "center center",
-              md: "-20px center",
-              lg: "-30px center",
+              md: "5px center",
+              lg: "10px center",
             },
             minHeight: "100vh",
           }}
@@ -140,14 +140,14 @@ function HeroSlide({ image, homePage, isFirstSlide }) {
           </MKTypography>
           <MKButton
             variant="contained"
-            size="medium"
+            size="small"
             sx={{
               mt: 3,
               ml: -2,
-              px: 3.5,
-              py: 1.75,
+              px: 2.5,
+              py: 1.25,
               fontWeight: "bold",
-              fontSize: "0.95rem",
+              fontSize: "0.85rem",
               textTransform: "capitalize",
               borderRadius: "8px",
               backgroundColor: "white",
