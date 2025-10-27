@@ -67,15 +67,15 @@
         "title": "Events",
         "description": "We are actively engaged in our community, supporting residents and organizing various events to foster connection and well-being."
       },
-    "impact4": {
-      "title": "People rehabilitated",
-      "description": "98 people till now have been reunited with their families by the efforts of Swarg sadan team."
-    }
-  },
-  "heroSection": {
-    "ctaButton": "I want to help!"
-  },
-  "postsSection": {
+      "impact4": {
+        "title": "People rehabilitated",
+        "description": "98 people till now have been reunited with their families by the efforts of Swarg sadan team."
+      }
+    },
+    "heroSection": {
+      "ctaButton": "I want to help!"
+    },
+    "postsSection": {
       "title": "Instagram Posts",
       "post1": {
         "title": "Swarg Sadan Ashram expansion",
