@@ -282,10 +282,25 @@ function DefaultNavbarMobile({ routes, open, action }) {
               component={Link}
               to={action.route}
               variant={
-                action.color === "white" || action.color === "default" ? "contained" : "gradient"
+                action.color === "success"
+                  ? "contained"
+                  : action.color === "white" || action.color === "default"
+                  ? "contained"
+                  : "gradient"
               }
-              color={action.color ? action.color : "info"}
+              color={action.color === "success" ? "warning" : action.color ? action.color : "info"}
               size="small"
+              sx={
+                action.color === "success"
+                  ? {
+                      backgroundColor: "#FFC107",
+                      color: "white",
+                      "&:hover": {
+                        backgroundColor: "#FFB300",
+                      },
+                    }
+                  : {}
+              }
             >
               {action.label}
             </MKButton>
@@ -296,10 +311,25 @@ function DefaultNavbarMobile({ routes, open, action }) {
               target="_blank"
               rel="noreferrer"
               variant={
-                action.color === "white" || action.color === "default" ? "contained" : "gradient"
+                action.color === "success"
+                  ? "contained"
+                  : action.color === "white" || action.color === "default"
+                  ? "contained"
+                  : "gradient"
               }
-              color={action.color ? action.color : "info"}
+              color={action.color === "success" ? "warning" : action.color ? action.color : "info"}
               size="small"
+              sx={
+                action.color === "success"
+                  ? {
+                      backgroundColor: "#FFC107",
+                      color: "white",
+                      "&:hover": {
+                        backgroundColor: "#FFB300",
+                      },
+                    }
+                  : {}
+              }
             >
               {action.label}
             </MKButton>
