@@ -106,24 +106,6 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           </MKBox>
         </MKBox>
 
-        {/* Vertical brush stroke divider */}
-        <MKBox
-          position="absolute"
-          left={{ xs: "calc(66.67% - 40px)", md: "calc(66.67% - 50px)" }}
-          top={{ xs: "70px", md: "80px" }}
-          height={{ xs: "calc(100vh - 70px)", md: "calc(100vh - 80px)" }}
-          width={{ xs: "80px", md: "100px" }}
-          zIndex={10}
-          sx={{
-            background:
-              "linear-gradient(to bottom, #FFB300 0%, #FFC107 20%, #FFD54F 40%, #FFC107 60%, #FFB300 80%, #FFC107 100%)",
-            clipPath:
-              "polygon(20% 0%, 80% 0%, 85% 5%, 15% 10%, 90% 15%, 10% 20%, 85% 25%, 15% 30%, 90% 35%, 10% 40%, 85% 45%, 15% 50%, 90% 55%, 10% 60%, 85% 65%, 15% 70%, 90% 75%, 10% 80%, 85% 85%, 15% 90%, 80% 95%, 20% 100%, 15% 95%, 85% 90%, 10% 85%, 90% 80%, 15% 75%, 85% 70%, 10% 65%, 90% 60%, 15% 55%, 85% 50%, 10% 45%, 90% 40%, 15% 35%, 85% 30%, 10% 25%, 90% 20%, 15% 15%, 85% 10%, 15% 5%)",
-            filter: "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.15))",
-            pointerEvents: "none",
-          }}
-        />
-
         {/* Text on right - 1/3 width */}
         <MKBox
           flex={{ xs: 1, md: "0 0 33.33%" }}
