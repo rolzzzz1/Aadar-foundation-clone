@@ -67,6 +67,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             muted
             playsInline
             preload="auto"
+            poster={heroImage2}
             style={{
               position: "absolute",
               top: "80px",
@@ -74,6 +75,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               width: "100%",
               height: "calc(100% - 80px)",
               objectFit: "cover",
+              backgroundColor: "#000",
             }}
           >
             <source src={heroVideo} type="video/mp4" />
