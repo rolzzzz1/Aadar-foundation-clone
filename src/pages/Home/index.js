@@ -61,40 +61,38 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           }}
         >
           {/* Main video */}
-          <MKBox
-            component="video"
+          <video
             autoPlay
             loop
             muted
             playsInline
             preload="auto"
-            sx={{
+            style={{
               position: "absolute",
-              top: { xs: "70px", md: "80px" },
+              top: "80px",
               left: 0,
               width: "100%",
-              height: { xs: "calc(100% - 70px)", md: "calc(100% - 80px)" },
+              height: "calc(100% - 80px)",
               objectFit: "cover",
             }}
           >
             <source src={heroVideo} type="video/mp4" />
             Your browser does not support the video tag.
-          </MKBox>
+          </video>
 
           {/* Blurred video in padding area */}
-          <MKBox
-            component="video"
+          <video
             autoPlay
             loop
             muted
             playsInline
             preload="auto"
-            sx={{
+            style={{
               position: "absolute",
               top: 0,
               left: 0,
               width: "110%",
-              height: { xs: "90px", md: "100px" },
+              height: "100px",
               objectFit: "cover",
               objectPosition: "center top",
               filter: "blur(8px)",
@@ -105,7 +103,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           >
             <source src={heroVideo} type="video/mp4" />
             Your browser does not support the video tag.
-          </MKBox>
+          </video>
         </MKBox>
 
         {/* Text on right - 1/3 width */}
@@ -347,8 +345,7 @@ function Home() {
       />
 
       {/* Hidden video preloader - starts loading video immediately */}
-      <MKBox
-        component="video"
+      <video
         preload="auto"
         style={{
           position: "absolute",
@@ -361,7 +358,7 @@ function Home() {
         }}
       >
         <source src={heroVideo} type="video/mp4" />
-      </MKBox>
+      </video>
 
       {/* Hero Carousel */}
       <MKBox>
