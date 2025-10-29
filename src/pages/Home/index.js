@@ -64,7 +64,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             height: "100%",
             maxHeight: "100%",
             backgroundImage: `url(${bgImage2})`,
-            backgroundSize: { xs: "80% auto", sm: "90% auto", md: "100% auto", lg: "100% auto" },
+            backgroundSize: { xs: "60% auto", sm: "70% auto", md: "75% auto", lg: "75% auto" },
             backgroundRepeat: "no-repeat",
             backgroundPosition: "left 45%",
             filter: "blur(8px)",
