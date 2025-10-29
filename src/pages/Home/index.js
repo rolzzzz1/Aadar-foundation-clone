@@ -40,6 +40,9 @@ import heroImage3 from "assets/images/aboutPageImages/swargSadan.webp";
 // Video for slide 2
 import heroVideo from "assets/images/video1.mp4";
 
+// Paint patch for slide 2 (placeholder - update with actual filename)
+import slide2Paint from "assets/images/mainThemeImages/slide2-paint.png";
+
 function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex }) {
   // Slide 2 - Video on left, text on right
   if (slideIndex === 1) {
@@ -118,39 +121,62 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           alignItems={{ xs: "center", md: "flex-start" }}
           px={{ xs: 2, md: 4 }}
           sx={{
+            position: "relative",
             backdropFilter: "blur(4px)",
             backgroundColor: "#F0F2F5",
           }}
         >
-          <MKTypography
-            variant="h2"
-            color="dark"
-            fontWeight="bold"
-            sx={{ fontSize: { xs: "2rem", md: "3rem" }, mb: 2 }}
-          >
-            Our Impact
-          </MKTypography>
-          <MKTypography
-            variant="body1"
-            color="text"
-            sx={{ fontSize: { xs: "1rem", md: "1.25rem" }, mb: 3 }}
-          >
-            Empowering communities and creating lasting change through dedicated service and
-            compassion.
-          </MKTypography>
-          <MKButton
-            variant="gradient"
-            color="success"
+          {/* Rotated paint patch overlay - covers text area and overlaps video */}
+          <MKBox
+            component="img"
+            src={slide2Paint}
+            alt="Paint patch overlay"
             sx={{
-              px: { xs: 3, md: 4 },
-              py: { xs: 1, md: 1.5 },
-              fontSize: { xs: "0.9rem", md: "1rem" },
+              position: "absolute",
+              top: 0,
+              left: { xs: 0, md: "-15%" }, // Overlap onto video area
+              width: { xs: "100%", md: "115%" }, // Extend beyond text area
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "left center",
+              transform: "rotate(180deg)",
+              zIndex: 1,
+              pointerEvents: "none",
             }}
-            component={Link}
-            to="/pages/landing-pages/donate"
-          >
-            Learn More
-          </MKButton>
+          />
+          
+          {/* Text content - positioned above paint patch */}
+          <MKBox position="relative" zIndex={2}>
+            <MKTypography
+              variant="h2"
+              color="dark"
+              fontWeight="bold"
+              sx={{ fontSize: { xs: "2rem", md: "3rem" }, mb: 2 }}
+            >
+              Our Impact
+            </MKTypography>
+            <MKTypography
+              variant="body1"
+              color="text"
+              sx={{ fontSize: { xs: "1rem", md: "1.25rem" }, mb: 3 }}
+            >
+              Empowering communities and creating lasting change through dedicated service and
+              compassion.
+            </MKTypography>
+            <MKButton
+              variant="gradient"
+              color="success"
+              sx={{
+                px: { xs: 3, md: 4 },
+                py: { xs: 1, md: 1.5 },
+                fontSize: { xs: "0.9rem", md: "1rem" },
+              }}
+              component={Link}
+              to="/pages/landing-pages/donate"
+            >
+              Learn More
+            </MKButton>
+          </MKBox>
         </MKBox>
       </MKBox>
     );
