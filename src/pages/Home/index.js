@@ -128,9 +128,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             overflow: "hidden",
             height: "100vh",
             maxHeight: "100vh",
-            backgroundColor: "rgba(255, 193, 7, 0.1)",
-            background:
-              "linear-gradient(135deg, rgba(255, 193, 7, 0.15) 0%, rgba(255, 193, 7, 0.05) 100%)",
+            backgroundColor: "#F1BC66",
           }}
         >
           {/* Text content */}
