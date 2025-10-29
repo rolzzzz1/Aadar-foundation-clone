@@ -48,11 +48,13 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
       <MKBox
         display="flex"
         flexDirection={{ xs: "column", md: "row" }}
-        minHeight="100vh"
+        height="100vh"
+        maxHeight="100vh"
         width="100%"
         sx={{
           position: "relative",
           overflow: "hidden",
+          isolation: "isolate",
           "&::before": {
             content: '""',
             position: "absolute",
@@ -60,6 +62,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             left: { xs: 0, md: "calc(66.67% - 150px)" },
             width: { xs: "100%", md: "calc(33.33% + 300px)" },
             height: "100%",
+            maxHeight: "100%",
             backgroundImage: `url(${bgImage2})`,
             backgroundSize: { xs: "80% auto", sm: "90% auto", md: "100% auto", lg: "100% auto" },
             backgroundRepeat: "no-repeat",
@@ -141,7 +144,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           sx={{
             position: "relative",
             overflow: "hidden",
-            minHeight: "100vh",
+            height: "100vh",
+            maxHeight: "100vh",
           }}
         >
           {/* Text content */}
