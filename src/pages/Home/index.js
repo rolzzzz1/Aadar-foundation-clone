@@ -123,7 +123,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               right: 0,
               width: "150px",
               height: "calc(100% - 80px)",
-              background: "linear-gradient(to left, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4), transparent)",
+              background:
+                "linear-gradient(to left, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4), transparent)",
               zIndex: 2,
               pointerEvents: "none",
             }}
@@ -137,7 +138,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               left: 0,
               right: 0,
               height: "100px",
-              background: "linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.3), transparent)",
+              background:
+                "linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.3), transparent)",
               zIndex: 2,
               pointerEvents: "none",
             }}
@@ -151,7 +153,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               left: 0,
               right: 0,
               height: "150px",
-              background: "linear-gradient(to top, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3), transparent)",
+              background:
+                "linear-gradient(to top, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3), transparent)",
               zIndex: 2,
               pointerEvents: "none",
             }}
