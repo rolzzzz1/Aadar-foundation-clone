@@ -28,6 +28,7 @@ import getFooterRoutes from "footer.routes1";
 
 // Images
 import bgImage from "assets/images/mainThemeImages/brushstroke.svg";
+import bgImage2 from "assets/images/mainThemeImages/brushstroke2.svg";
 import aadarHindiWhite from "assets/images/aadarHindiWhite.png";
 import aadarHindiYellow from "assets/images/aadarHindiYellow.png";
 import PropTypes from "prop-types";
@@ -118,35 +119,20 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           alignItems={{ xs: "center", md: "flex-start" }}
           px={{ xs: 2, md: 4 }}
           sx={{
+            backgroundImage: `url(${bgImage2})`,
+            backgroundSize: { xs: "100%", sm: "115%", md: "110%", lg: "115%" },
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: {
+              xs: "left center",
+              sm: "left 45%",
+              md: "-30px 45%",
+              lg: "-50px 45%",
+            },
+            minHeight: "100vh",
             position: "relative",
-            "&::before": {
-              content: '""',
-              position: "absolute",
-              top: 0,
-              left: { xs: 0, md: "-30%" }, // Overlap onto video area
-              width: { xs: "100%", md: "130%" }, // Extend beyond text area
-              height: "100%",
-              backgroundImage: `url(${bgImage})`,
-              backgroundSize: { xs: "100%", md: "130%" },
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "left center",
-              opacity: 1,
-              zIndex: 1,
-            },
-            "&::after": {
-              content: '""',
-              position: "absolute",
-              top: 0,
-              left: { xs: 0, md: "-30%" }, // Match the splash area
-              width: { xs: "100%", md: "130%" }, // Match the splash area
-              height: "100%",
-              backgroundColor: "rgba(255, 255, 255, 0.25)",
-              backdropFilter: "none",
-              zIndex: 1,
-            },
           }}
         >
-          {/* Text content - positioned above background */}
+          {/* Text content */}
           <MKBox position="relative" zIndex={2}>
             <MKTypography
               variant="h2"
