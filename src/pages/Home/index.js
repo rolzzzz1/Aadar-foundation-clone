@@ -130,16 +130,16 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             }}
           />
 
-          {/* White fog overlay - top edge */}
+          {/* White fog overlay - top edge (thicker) */}
           <MKBox
             sx={{
               position: "absolute",
               top: "80px",
               left: 0,
               right: 0,
-              height: "100px",
+              height: "180px",
               background:
-                "linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.3), transparent)",
+                "linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.6), transparent)",
               zIndex: 2,
               pointerEvents: "none",
             }}
