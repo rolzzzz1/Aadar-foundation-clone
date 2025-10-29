@@ -130,8 +130,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               backgroundSize: { xs: "100%", md: "110%" },
               backgroundRepeat: "no-repeat",
               backgroundPosition: "left center",
-              filter: "blur(8px) brightness(0.85)",
-              opacity: 0.9,
+              filter: "blur(3px) brightness(1.1) saturate(1.2)",
+              opacity: 1,
               zIndex: 1,
             },
             "&::after": {
@@ -141,8 +141,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               left: 0,
               width: "100%",
               height: "100%",
-              backgroundColor: "rgba(255, 255, 255, 0.7)",
-              backdropFilter: "blur(10px)",
+              backgroundColor: "rgba(255, 255, 255, 0.25)",
+              backdropFilter: "blur(2px)",
               zIndex: 1,
             },
           }}
