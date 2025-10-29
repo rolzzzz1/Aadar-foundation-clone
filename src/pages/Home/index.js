@@ -122,7 +122,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           justifyContent="center"
           alignItems={{ xs: "center", md: "flex-start" }}
           px={{ xs: 2, md: 4 }}
-            sx={{
+          sx={{
             position: "relative",
             overflow: "hidden",
             "&::before": {
