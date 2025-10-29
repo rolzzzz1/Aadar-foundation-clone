@@ -123,11 +123,11 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               content: '""',
               position: "absolute",
               top: 0,
-              left: { xs: 0, md: "-15%" }, // Overlap onto video area
-              width: { xs: "100%", md: "115%" }, // Extend beyond text area
+              left: { xs: 0, md: "-30%" }, // Overlap onto video area
+              width: { xs: "100%", md: "130%" }, // Extend beyond text area
               height: "100%",
               backgroundImage: `url(${bgImage})`,
-              backgroundSize: { xs: "100%", md: "110%" },
+              backgroundSize: { xs: "100%", md: "130%" },
               backgroundRepeat: "no-repeat",
               backgroundPosition: "left center",
               filter: "blur(3px) brightness(1.1) saturate(1.2)",
@@ -138,8 +138,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               content: '""',
               position: "absolute",
               top: 0,
-              left: 0,
-              width: "100%",
+              left: { xs: 0, md: "-30%" }, // Match the blur area
+              width: { xs: "100%", md: "130%" }, // Match the blur area
               height: "100%",
               backgroundColor: "rgba(255, 255, 255, 0.25)",
               backdropFilter: "blur(2px)",
