@@ -210,51 +210,6 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               Learn More
             </MKButton>
           </MKBox>
-
-          {/* White fog overlay - left edge (towards video) */}
-          <MKBox
-            sx={{
-              position: "absolute",
-              top: "80px",
-              left: 0,
-              width: "150px",
-              height: "calc(100% - 80px)",
-              background:
-                "linear-gradient(to right, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4), transparent)",
-              zIndex: 20,
-              pointerEvents: "none",
-            }}
-          />
-
-          {/* White fog overlay - top edge */}
-          <MKBox
-            sx={{
-              position: "absolute",
-              top: "80px",
-              left: 0,
-              right: 0,
-              height: "100px",
-              background:
-                "linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.3), transparent)",
-              zIndex: 20,
-              pointerEvents: "none",
-            }}
-          />
-
-          {/* White fog overlay - bottom edge */}
-          <MKBox
-            sx={{
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: "150px",
-              background:
-                "linear-gradient(to top, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3), transparent)",
-              zIndex: 20,
-              pointerEvents: "none",
-            }}
-          />
         </MKBox>
       </MKBox>
     );
