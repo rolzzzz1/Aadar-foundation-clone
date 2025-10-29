@@ -40,9 +40,6 @@ import heroImage3 from "assets/images/aboutPageImages/swargSadan.webp";
 // Video for slide 2
 import heroVideo from "assets/images/video1.mp4";
 
-// Paint patch for slide 2 (placeholder - update with actual filename)
-import slide2Paint from "assets/images/mainThemeImages/slide2-paint.png";
-
 function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex }) {
   // Slide 2 - Video on left, text on right
   if (slideIndex === 1) {
@@ -122,30 +119,35 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           px={{ xs: 2, md: 4 }}
           sx={{
             position: "relative",
-            backdropFilter: "blur(4px)",
-            backgroundColor: "#F0F2F5",
-          }}
-        >
-          {/* Rotated paint patch overlay - covers text area and overlaps video */}
-          <MKBox
-            component="img"
-            src={slide2Paint}
-            alt="Paint patch overlay"
-            sx={{
+            "&::before": {
+              content: '""',
               position: "absolute",
               top: 0,
               left: { xs: 0, md: "-15%" }, // Overlap onto video area
               width: { xs: "100%", md: "115%" }, // Extend beyond text area
               height: "100%",
-              objectFit: "cover",
-              objectPosition: "left center",
-              transform: "rotate(180deg)",
+              backgroundImage: `url(${bgImage})`,
+              backgroundSize: { xs: "100%", md: "110%" },
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "left center",
+              filter: "blur(8px) brightness(0.85)",
+              opacity: 0.9,
               zIndex: 1,
-              pointerEvents: "none",
-            }}
-          />
-
-          {/* Text content - positioned above paint patch */}
+            },
+            "&::after": {
+              content: '""',
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(255, 255, 255, 0.7)",
+              backdropFilter: "blur(10px)",
+              zIndex: 1,
+            },
+          }}
+        >
+          {/* Text content - positioned above background */}
           <MKBox position="relative" zIndex={2}>
             <MKTypography
               variant="h2"
