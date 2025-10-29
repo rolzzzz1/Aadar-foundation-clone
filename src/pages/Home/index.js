@@ -53,6 +53,26 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
         sx={{
           position: "relative",
           overflow: "hidden",
+          "&::before": {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: { xs: 0, md: "calc(66.67% - 200px)" },
+            width: { xs: "100%", md: "calc(33.33% + 400px)" },
+            height: "100%",
+            backgroundImage: `url(${bgImage2})`,
+            backgroundSize: { xs: "95%", sm: "105%", md: "110%", lg: "115%" },
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: {
+              xs: "left center",
+              sm: "left 45%",
+              md: "left 45%",
+              lg: "left 45%",
+            },
+            filter: "blur(8px)",
+            zIndex: 10,
+            pointerEvents: "none",
+          },
         }}
       >
         {/* Video on left - 2/3 width */}
@@ -63,6 +83,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             position: "relative",
             overflow: "hidden",
             height: "100vh",
+            zIndex: 1,
           }}
         >
           {/* Main video */}
@@ -125,26 +146,6 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           sx={{
             position: "relative",
             overflow: "hidden",
-            "&::before": {
-              content: '""',
-              position: "absolute",
-              top: 0,
-              left: { xs: 0, md: "-200px" },
-              width: { xs: "100%", md: "calc(100% + 200px)" },
-              height: "100%",
-              backgroundImage: `url(${bgImage2})`,
-              backgroundSize: { xs: "95%", sm: "105%", md: "110%", lg: "115%" },
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: {
-                xs: "left center",
-                sm: "left 45%",
-                md: "left 45%",
-                lg: "left 45%",
-              },
-              filter: "blur(8px)",
-              zIndex: 5,
-              pointerEvents: "none",
-            },
             minHeight: "100vh",
           }}
         >
