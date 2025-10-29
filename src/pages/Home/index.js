@@ -121,10 +121,10 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               position: "absolute",
               top: "80px",
               right: 0,
-              width: "150px",
+              width: "250px",
               height: "calc(100% - 80px)",
               background:
-                "linear-gradient(to left, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4), transparent)",
+                "linear-gradient(to left, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.4), transparent)",
               zIndex: 2,
               pointerEvents: "none",
             }}
