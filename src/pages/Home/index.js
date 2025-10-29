@@ -115,6 +115,21 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             Your browser does not support the video tag.
           </video>
 
+          {/* White fog overlay - blurred padding area */}
+          <MKBox
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              height: "100px",
+              background:
+                "linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.5), transparent)",
+              zIndex: 3,
+              pointerEvents: "none",
+            }}
+          />
+
           {/* White fog overlay - right edge */}
           <MKBox
             sx={{
