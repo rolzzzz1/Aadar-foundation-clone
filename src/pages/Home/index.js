@@ -128,10 +128,10 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             "&::before": {
               content: '""',
               position: "absolute",
-              top: 0,
+              top: "80px", // Start below navbar
               left: { xs: 0, md: "-200px" },
               width: { xs: "100%", md: "calc(100% + 200px)" },
-              height: "100%",
+              height: "calc(100% - 80px)", // Adjust for navbar height
               backgroundImage: `url(${bgImage2})`,
               backgroundSize: { xs: "110%", sm: "130%", md: "140%", lg: "150%" },
               backgroundRepeat: "no-repeat",
@@ -141,14 +141,14 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 md: "left 45%",
                 lg: "left 45%",
               },
-              zIndex: 10,
+              zIndex: 5,
               pointerEvents: "none",
             },
             minHeight: "100vh",
           }}
         >
           {/* Text content */}
-          <MKBox position="relative" zIndex={2}>
+          <MKBox position="relative" zIndex={15}>
             <MKTypography
               variant="h2"
               color="dark"
