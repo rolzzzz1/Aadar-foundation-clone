@@ -52,7 +52,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
         width="100%"
         sx={{
           position: "relative",
-          overflow: { xs: "hidden", md: "visible" },
+          overflow: "hidden",
         }}
       >
         {/* Video on left - 2/3 width */}
@@ -122,9 +122,9 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           justifyContent="center"
           alignItems={{ xs: "center", md: "flex-start" }}
           px={{ xs: 2, md: 4 }}
-          sx={{
+            sx={{
             position: "relative",
-            overflow: { xs: "hidden", md: "visible" },
+            overflow: "hidden",
             "&::before": {
               content: '""',
               position: "absolute",
@@ -141,6 +141,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 md: "left 45%",
                 lg: "left 45%",
               },
+              filter: "blur(8px)",
               zIndex: 5,
               pointerEvents: "none",
             },
