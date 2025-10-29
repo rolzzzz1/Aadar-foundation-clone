@@ -117,8 +117,10 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           justifyContent="center"
           alignItems={{ xs: "center", md: "flex-start" }}
           px={{ xs: 2, md: 4 }}
-          backgroundColor={{ xs: "rgba(0, 0, 0, 0.55)", md: "rgba(0, 0, 0, 0.55)" }}
-          sx={{ backdropFilter: "blur(4px)" }}
+          sx={{
+            backdropFilter: "blur(4px)",
+            backgroundColor: ({ palette: { dark }, functions: { rgba } }) => rgba(dark.main, 0.55),
+          }}
         >
           <MKTypography
             variant="h2"
