@@ -124,7 +124,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               width: "250px",
               height: "calc(100% - 80px)",
               background:
-                "linear-gradient(to left, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.4), transparent)",
+                "linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.6), transparent)",
               zIndex: 2,
               pointerEvents: "none",
             }}
@@ -195,6 +195,21 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               Learn More
             </MKButton>
           </MKBox>
+
+          {/* White fog overlay - left edge (towards video) */}
+          <MKBox
+            sx={{
+              position: "absolute",
+              top: "80px",
+              left: 0,
+              width: "120px",
+              height: "calc(100% - 80px)",
+              background:
+                "linear-gradient(to right, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3), transparent)",
+              zIndex: 20,
+              pointerEvents: "none",
+            }}
+          />
         </MKBox>
       </MKBox>
     );
