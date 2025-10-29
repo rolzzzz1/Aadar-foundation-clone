@@ -144,7 +144,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               pointerEvents: "none",
             }}
           />
-          
+
           {/* Text content - positioned above paint patch */}
           <MKBox position="relative" zIndex={2}>
             <MKTypography
