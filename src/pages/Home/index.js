@@ -133,7 +133,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               width: { xs: "100%", md: "calc(100% + 200px)" },
               height: "100%",
               backgroundImage: `url(${bgImage2})`,
-              backgroundSize: { xs: "110%", sm: "130%", md: "140%", lg: "150%" },
+              backgroundSize: { xs: "105%", sm: "120%", md: "125%", lg: "130%" },
               backgroundRepeat: "no-repeat",
               backgroundPosition: {
                 xs: "left center",
