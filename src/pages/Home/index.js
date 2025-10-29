@@ -121,7 +121,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               position: "absolute",
               top: "80px",
               right: 0,
-              width: "250px",
+              width: "150px",
               height: "calc(100% - 80px)",
               background:
                 "linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.6), transparent)",
