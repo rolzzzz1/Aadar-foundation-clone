@@ -119,12 +119,12 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           px={{ xs: 2, md: 4 }}
           sx={{
             backdropFilter: "blur(4px)",
-            backgroundColor: ({ palette: { dark }, functions: { rgba } }) => rgba(dark.main, 0.55),
+            backgroundColor: "#F0F2F5",
           }}
         >
           <MKTypography
             variant="h2"
-            color="white"
+            color="dark"
             fontWeight="bold"
             sx={{ fontSize: { xs: "2rem", md: "3rem" }, mb: 2 }}
           >
@@ -132,7 +132,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           </MKTypography>
           <MKTypography
             variant="body1"
-            color="white"
+            color="text"
             sx={{ fontSize: { xs: "1rem", md: "1.25rem" }, mb: 3 }}
           >
             Empowering communities and creating lasting change through dedicated service and
