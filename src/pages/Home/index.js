@@ -130,7 +130,6 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               backgroundSize: { xs: "100%", md: "130%" },
               backgroundRepeat: "no-repeat",
               backgroundPosition: "left center",
-              filter: "blur(3px) brightness(1.1) saturate(1.2)",
               opacity: 1,
               zIndex: 1,
             },
@@ -138,11 +137,11 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               content: '""',
               position: "absolute",
               top: 0,
-              left: { xs: 0, md: "-30%" }, // Match the blur area
-              width: { xs: "100%", md: "130%" }, // Match the blur area
+              left: { xs: 0, md: "-30%" }, // Match the splash area
+              width: { xs: "100%", md: "130%" }, // Match the splash area
               height: "100%",
               backgroundColor: "rgba(255, 255, 255, 0.25)",
-              backdropFilter: "blur(2px)",
+              backdropFilter: "none",
               zIndex: 1,
             },
           }}
