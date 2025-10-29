@@ -28,7 +28,6 @@ import getFooterRoutes from "footer.routes1";
 
 // Images
 import bgImage from "assets/images/mainThemeImages/brushstroke.svg";
-import bgImage2 from "assets/images/mainThemeImages/brushstroke2.svg";
 import aadarHindiWhite from "assets/images/aadarHindiWhite.png";
 import aadarHindiYellow from "assets/images/aadarHindiYellow.png";
 import PropTypes from "prop-types";
@@ -130,7 +129,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             height: "100vh",
             maxHeight: "100vh",
             backgroundColor: "rgba(255, 193, 7, 0.1)",
-            background: "linear-gradient(135deg, rgba(255, 193, 7, 0.15) 0%, rgba(255, 193, 7, 0.05) 100%)",
+            background:
+              "linear-gradient(135deg, rgba(255, 193, 7, 0.15) 0%, rgba(255, 193, 7, 0.05) 100%)",
           }}
         >
           {/* Text content */}
