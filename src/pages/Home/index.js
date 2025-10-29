@@ -115,7 +115,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             Your browser does not support the video tag.
           </video>
 
-          {/* White fog overlay - blurred padding area */}
+          {/* Fog overlay - blurred padding area */}
           <MKBox
             sx={{
               position: "absolute",
@@ -124,13 +124,13 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               right: 0,
               height: "100px",
               background:
-                "linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.5), transparent)",
+                "linear-gradient(to bottom, rgba(241, 188, 102, 0.9), rgba(241, 188, 102, 0.7), rgba(241, 188, 102, 0.5), transparent)",
               zIndex: 3,
               pointerEvents: "none",
             }}
           />
 
-          {/* White fog overlay - right edge */}
+          {/* Fog overlay - right edge */}
           <MKBox
             sx={{
               position: "absolute",
@@ -139,7 +139,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               width: "150px",
               height: "calc(100% - 80px)",
               background:
-                "linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.6), transparent)",
+                "linear-gradient(to left, rgba(241, 188, 102, 1), rgba(241, 188, 102, 0.85), rgba(241, 188, 102, 0.6), transparent)",
               zIndex: 2,
               pointerEvents: "none",
             }}
@@ -197,7 +197,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             </MKButton>
           </MKBox>
 
-          {/* White fog overlay - left edge (towards video) */}
+          {/* Fog overlay - left edge (towards video) */}
           <MKBox
             sx={{
               position: "absolute",
@@ -206,7 +206,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               width: "60px",
               height: "calc(100% - 80px)",
               background:
-                "linear-gradient(to right, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3), transparent)",
+                "linear-gradient(to right, rgba(241, 188, 102, 0.5), rgba(241, 188, 102, 0.3), transparent)",
               zIndex: 20,
               pointerEvents: "none",
             }}
