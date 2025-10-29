@@ -53,26 +53,6 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
         sx={{
           position: "relative",
           overflow: "hidden",
-          "&::before": {
-            content: '""',
-            position: "absolute",
-            top: 0,
-            left: { xs: 0, md: "calc(66.67% - 150px)" },
-            width: { xs: "100%", md: "calc(33.33% + 300px)" },
-            height: "100%",
-            backgroundImage: `url(${bgImage2})`,
-            backgroundSize: { xs: "80%", sm: "95%", md: "100%", lg: "100%" },
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: {
-              xs: "left center",
-              sm: "left 45%",
-              md: "left 45%",
-              lg: "left 45%",
-            },
-            filter: "blur(8px)",
-            zIndex: 10,
-            pointerEvents: "none",
-          },
         }}
       >
         {/* Video on left - 2/3 width */}
@@ -84,6 +64,21 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             overflow: "hidden",
             height: "100vh",
             zIndex: 1,
+            "&::before": {
+              content: '""',
+              position: "absolute",
+              top: 0,
+              right: { xs: 0, md: "-120px" },
+              width: { xs: "75%", md: "420px" },
+              height: "100%",
+              backgroundImage: `url(${bgImage2})`,
+              backgroundSize: { xs: "80% auto", sm: "90% auto", md: "100% auto" },
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "left 45%",
+              filter: "blur(8px)",
+              zIndex: 2,
+              pointerEvents: "none",
+            },
           }}
         >
           {/* Main video */}
