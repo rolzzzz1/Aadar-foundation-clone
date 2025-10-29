@@ -155,6 +155,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           justifyContent="center"
           alignItems={{ xs: "center", md: "flex-start" }}
           px={{ xs: 2, md: 4 }}
+          pl={{ xs: 2, md: 6 }}
           sx={{
             position: "relative",
             overflow: "hidden",
@@ -202,7 +203,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               position: "absolute",
               top: "80px",
               left: 0,
-              width: "120px",
+              width: "60px",
               height: "calc(100% - 80px)",
               background:
                 "linear-gradient(to right, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3), transparent)",
