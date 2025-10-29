@@ -30,6 +30,7 @@ import getFooterRoutes from "footer.routes1";
 import bgImage from "assets/images/mainThemeImages/brushstroke.svg";
 import aadarHindiWhite from "assets/images/aadarHindiWhite.png";
 import aadarHindiYellow from "assets/images/aadarHindiYellow.png";
+import slide2TextBg from "assets/images/mainThemeImages/back-text.svg"; // SVG background for slide 2 text area
 import PropTypes from "prop-types";
 
 // Additional hero images for carousel
@@ -162,6 +163,10 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             height: "100vh",
             maxHeight: "100vh",
             backgroundColor: "#F1BC66",
+            backgroundImage: `url(${slide2TextBg})`,
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
           }}
         >
           {/* Text content */}
