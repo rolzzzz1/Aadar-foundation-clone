@@ -144,21 +144,6 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               pointerEvents: "none",
             }}
           />
-
-          {/* White fog overlay - bottom edge */}
-          <MKBox
-            sx={{
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: "150px",
-              background:
-                "linear-gradient(to top, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3), transparent)",
-              zIndex: 2,
-              pointerEvents: "none",
-            }}
-          />
         </MKBox>
 
         {/* Text on right - 1/3 width */}
