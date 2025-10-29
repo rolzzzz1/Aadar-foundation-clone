@@ -128,10 +128,10 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             "&::before": {
               content: '""',
               position: "absolute",
-              top: "80px", // Start below navbar
+              top: 0,
               left: { xs: 0, md: "-200px" },
               width: { xs: "100%", md: "calc(100% + 200px)" },
-              height: "calc(100% - 80px)", // Adjust for navbar height
+              height: "100%",
               backgroundImage: `url(${bgImage2})`,
               backgroundSize: { xs: "110%", sm: "130%", md: "140%", lg: "150%" },
               backgroundRepeat: "no-repeat",
