@@ -53,6 +53,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
         sx={{
           position: "relative",
           overflow: "hidden",
+          zIndex: 0,
         }}
       >
         {/* Video on left - 2/3 width */}
@@ -63,7 +64,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             position: "relative",
             overflow: "hidden",
             height: "100vh",
-            zIndex: 1,
+            maxHeight: "100vh",
+            zIndex: 0,
           }}
         >
           {/* Main video */}
@@ -425,6 +427,8 @@ function Home() {
           mx: { xs: 2, lg: 3 },
           mt: { xs: -4, sm: -6, md: -8 },
           mb: { xs: 2, sm: 4 },
+          position: "relative",
+          zIndex: 10,
           backgroundColor: ({ palette: { white }, functions: { rgba } }) => rgba(white.main, 0.8),
           backdropFilter: "saturate(200%) blur(30px)",
           boxShadow: ({ boxShadows: { xxl } }) => xxl,
