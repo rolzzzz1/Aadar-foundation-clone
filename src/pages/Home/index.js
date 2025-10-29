@@ -50,6 +50,10 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
         flexDirection={{ xs: "column", md: "row" }}
         minHeight="100vh"
         width="100%"
+        sx={{
+          position: "relative",
+          overflow: { xs: "hidden", md: "visible" },
+        }}
       >
         {/* Video on left - 2/3 width */}
         <MKBox
@@ -119,17 +123,28 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           alignItems={{ xs: "center", md: "flex-start" }}
           px={{ xs: 2, md: 4 }}
           sx={{
-            backgroundImage: `url(${bgImage2})`,
-            backgroundSize: { xs: "110%", sm: "130%", md: "140%", lg: "150%" },
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: {
-              xs: "left center",
-              sm: "left 45%",
-              md: "-80px 45%",
-              lg: "-120px 45%",
+            position: "relative",
+            overflow: { xs: "hidden", md: "visible" },
+            "&::before": {
+              content: '""',
+              position: "absolute",
+              top: 0,
+              left: { xs: 0, md: "-200px" },
+              width: { xs: "100%", md: "calc(100% + 200px)" },
+              height: "100%",
+              backgroundImage: `url(${bgImage2})`,
+              backgroundSize: { xs: "110%", sm: "130%", md: "140%", lg: "150%" },
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: {
+                xs: "left center",
+                sm: "left 45%",
+                md: "left 45%",
+                lg: "left 45%",
+              },
+              zIndex: 10,
+              pointerEvents: "none",
             },
             minHeight: "100vh",
-            position: "relative",
           }}
         >
           {/* Text content */}
