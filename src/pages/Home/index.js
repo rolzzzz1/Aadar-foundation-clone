@@ -46,6 +46,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
   // Slide 2 - Video on left, text on right
   if (slideIndex === 1 || slideIndex === 2) {
     const isSlide3 = slideIndex === 2;
+    const fogRgb = "104, 193, 109"; // #68C16D
     return (
       <MKBox
         display="flex"
@@ -141,8 +142,9 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               right: 0,
               width: "150px",
               height: "calc(100% - 80px)",
-              background:
-                "linear-gradient(to left, rgba(241, 188, 102, 1), rgba(241, 188, 102, 0.85), rgba(241, 188, 102, 0.6), transparent)",
+              background: isSlide3
+                ? `linear-gradient(to left, rgba(${fogRgb}, 1), rgba(${fogRgb}, 0.85), rgba(${fogRgb}, 0.6), transparent)`
+                : "linear-gradient(to left, rgba(241, 188, 102, 1), rgba(241, 188, 102, 0.85), rgba(241, 188, 102, 0.6), transparent)",
               zIndex: 2,
               pointerEvents: "none",
             }}
@@ -156,8 +158,9 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               left: 0,
               width: "120px",
               height: "calc(100% - 80px)",
-              background:
-                "linear-gradient(to right, rgba(241, 188, 102, 0.95), rgba(241, 188, 102, 0.7), rgba(241, 188, 102, 0.45), transparent)",
+              background: isSlide3
+                ? `linear-gradient(to right, rgba(${fogRgb}, 0.95), rgba(${fogRgb}, 0.7), rgba(${fogRgb}, 0.45), transparent)`
+                : "linear-gradient(to right, rgba(241, 188, 102, 0.95), rgba(241, 188, 102, 0.7), rgba(241, 188, 102, 0.45), transparent)",
               zIndex: 2,
               pointerEvents: "none",
             }}
@@ -171,8 +174,9 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               bottom: 0,
               width: "100%",
               height: "120px",
-              background:
-                "linear-gradient(to top, rgba(241, 188, 102, 0.95), rgba(241, 188, 102, 0.7), rgba(241, 188, 102, 0.45), transparent)",
+              background: isSlide3
+                ? `linear-gradient(to top, rgba(${fogRgb}, 0.95), rgba(${fogRgb}, 0.7), rgba(${fogRgb}, 0.45), transparent)`
+                : "linear-gradient(to top, rgba(241, 188, 102, 0.95), rgba(241, 188, 102, 0.7), rgba(241, 188, 102, 0.45), transparent)",
               zIndex: 2,
               pointerEvents: "none",
             }}
@@ -257,8 +261,9 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               left: 0,
               width: "60px",
               height: "calc(100% - 80px)",
-              background:
-                "linear-gradient(to right, rgba(241, 188, 102, 0.5), rgba(241, 188, 102, 0.3), transparent)",
+              background: isSlide3
+                ? `linear-gradient(to right, rgba(${fogRgb}, 0.5), rgba(${fogRgb}, 0.3), transparent)`
+                : "linear-gradient(to right, rgba(241, 188, 102, 0.5), rgba(241, 188, 102, 0.3), transparent)",
               zIndex: 20,
               pointerEvents: "none",
             }}
@@ -272,7 +277,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               left: "-20px",
               width: "40px",
               height: "calc(100% - 80px)",
-              backgroundColor: "#F1BC66",
+              backgroundColor: isSlide3 ? "#68C16D" : "#F1BC66",
               filter: "blur(12px)",
               opacity: 0.9,
               zIndex: 21,
