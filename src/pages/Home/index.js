@@ -46,7 +46,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
   // Slide 2 - Video on left, text on right
   if (slideIndex === 1 || slideIndex === 2) {
     const isSlide3 = slideIndex === 2;
-    const fogRgb = "178, 240, 181"; // #B2F0B5
+    const fogRgb = "103, 225, 109"; // #67E16D
     return (
       <MKBox
         display="flex"
@@ -127,8 +127,9 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               left: 0,
               right: 0,
               height: "100px",
-              background:
-                "linear-gradient(to bottom, rgba(241, 188, 102, 0.9), rgba(241, 188, 102, 0.7), rgba(241, 188, 102, 0.5), transparent)",
+              background: isSlide3
+                ? `linear-gradient(to bottom, rgba(${fogRgb}, 0.9), rgba(${fogRgb}, 0.7), rgba(${fogRgb}, 0.5), transparent)`
+                : "linear-gradient(to bottom, rgba(241, 188, 102, 0.9), rgba(241, 188, 102, 0.7), rgba(241, 188, 102, 0.5), transparent)",
               zIndex: 3,
               pointerEvents: "none",
             }}
@@ -277,7 +278,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               left: "-20px",
               width: "40px",
               height: "calc(100% - 80px)",
-              backgroundColor: isSlide3 ? "#B2F0B5" : "#F1BC66",
+              backgroundColor: isSlide3 ? "#67E16D" : "#F1BC66",
               filter: "blur(12px)",
               opacity: 0.9,
               zIndex: 21,
