@@ -210,7 +210,12 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             </MKTypography>
             <MKTypography
               variant="body1"
-              sx={{ fontSize: { xs: "1rem", md: "1.25rem" }, mb: 3, opacity: 0.95, color: "#f5f5f5" }}
+              sx={{
+                fontSize: { xs: "1rem", md: "1.25rem" },
+                mb: 3,
+                opacity: 0.95,
+                color: "#f5f5f5",
+              }}
             >
               Empowering communities and creating lasting change through dedicated service and
               compassion.
