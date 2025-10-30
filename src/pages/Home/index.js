@@ -205,7 +205,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             <MKTypography
               variant="h2"
               fontWeight="bold"
-              sx={{ fontSize: { xs: "2rem", md: "3rem" }, mb: 2, color: "#f5f5f5" }}
+              sx={{ fontSize: { xs: "1.6rem", md: "2.4rem" }, mb: 2, color: "#f5f5f5" }}
             >
               Our Impact
             </MKTypography>
