@@ -235,7 +235,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 color: "#2e7d32",
                 borderRadius: "10px",
                 boxShadow: "0 4px 14px rgba(0,0,0,0.18)",
-                '&:hover': {
+                "&:hover": {
                   backgroundColor: "#ffffff",
                   transform: "translateY(-1px)",
                   boxShadow: "0 6px 18px rgba(0,0,0,0.22)",
