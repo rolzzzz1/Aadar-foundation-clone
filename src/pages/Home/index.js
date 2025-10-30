@@ -332,6 +332,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           </MKTypography>
           <MKButton
             variant="contained"
+            color="success"
             size="small"
             sx={{
               mt: 2,
@@ -342,11 +343,11 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               fontSize: "0.75rem",
               textTransform: "capitalize",
               borderRadius: "8px",
-              backgroundColor: "white",
-              color: "#FFC107",
+              backgroundColor: "#2e7d32",
+              color: "white",
               boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
               "&:hover": {
-                backgroundColor: "#f5f5f5",
+                backgroundColor: "#1b5e20",
                 transform: "translateY(-2px)",
                 boxShadow: "0 6px 20px rgba(0, 0, 0, 0.3)",
               },
@@ -421,6 +422,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           </MKTypography>
           <MKButton
             variant="contained"
+            color="success"
             size="small"
             sx={{
               mt: 3,
@@ -431,11 +433,11 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               fontSize: { xs: "0.75rem", sm: "0.85rem", md: "0.95rem" },
               textTransform: "capitalize",
               borderRadius: "8px",
-              backgroundColor: "white",
-              color: "#FFC107",
+              backgroundColor: "#2e7d32",
+              color: "white",
               boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
               "&:hover": {
-                backgroundColor: "#f5f5f5",
+                backgroundColor: "#1b5e20",
                 transform: "translateY(-2px)",
                 boxShadow: "0 6px 20px rgba(0, 0, 0, 0.3)",
               },
