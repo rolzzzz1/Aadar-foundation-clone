@@ -229,7 +229,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               compassion.
             </MKTypography>
             <MKButton
-              variant="gradient"
+              variant={isSlide3 ? "contained" : "gradient"}
               color="success"
               sx={{
                 px: { xs: 2, md: 3 },
@@ -239,6 +239,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 fontWeight: 700,
                 letterSpacing: "0.2px",
                 backgroundColor: isSlide3 ? "#F1BC66" : "#FFC107",
+                backgroundImage: isSlide3 ? "none" : "none",
                 color: "white",
                 borderRadius: "10px",
                 boxShadow: "0 4px 14px rgba(0,0,0,0.18)",
