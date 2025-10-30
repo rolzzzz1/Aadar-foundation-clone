@@ -31,7 +31,7 @@ import bgImage from "assets/images/mainThemeImages/brushstroke.svg";
 import aadarHindiWhite from "assets/images/aadarHindiWhite.png";
 import aadarHindiYellow from "assets/images/aadarHindiYellow.png";
 import slide2TextBg from "assets/images/mainThemeImages/back-text.svg"; // SVG background for slide 2 text area
-import slide3TextBg from "assets/images/mainThemeImages/slide3-text-bg.svg"; // SVG background for slide 3 text area
+import slide3TextBg from "assets/images/mainThemeImages/slide3-svg.svg"; // SVG background for slide 3 text area
 import PropTypes from "prop-types";
 
 // Additional hero images for carousel
