@@ -831,9 +831,9 @@ function DefaultNavbar({
                         letterSpacing: "0.5px",
                         ...(action.color === "success"
                           ? {
-                              backgroundColor: "#FFC107",
+                              backgroundColor: "#ECA533",
                               color: "white",
-                              "&:hover": { backgroundColor: "#e0ac06" },
+                              "&:hover": { backgroundColor: "#d3952d" },
                             }
                           : {}),
                       }}
@@ -861,9 +861,9 @@ function DefaultNavbar({
                         letterSpacing: "0.5px",
                         ...(action.color === "success"
                           ? {
-                              backgroundColor: "#FFC107",
+                              backgroundColor: "#ECA533",
                               color: "white",
-                              "&:hover": { backgroundColor: "#e0ac06" },
+                              "&:hover": { backgroundColor: "#d3952d" },
                             }
                           : {}),
                       }}
