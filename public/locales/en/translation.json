@@ -73,7 +73,8 @@
       }
     },
   "heroSection": {
-    "ctaButton": "Help Today"
+    "ctaButton": "Help Today",
+    "ctaButtonSlide2": "Help create their story"
   },
     "postsSection": {
       "title": "Instagram Posts",
