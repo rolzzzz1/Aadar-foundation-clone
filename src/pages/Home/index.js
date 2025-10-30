@@ -44,7 +44,7 @@ import heroVideo from "assets/images/video1.mp4";
 function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex }) {
   const { t } = useTranslation();
   // Slide 2 - Video on left, text on right
-  if (slideIndex === 1) {
+  if (slideIndex === 1 || slideIndex === 2) {
     return (
       <MKBox
         display="flex"
