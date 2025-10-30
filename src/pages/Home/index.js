@@ -45,6 +45,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
   const { t } = useTranslation();
   // Slide 2 - Video on left, text on right
   if (slideIndex === 1 || slideIndex === 2) {
+    const isSlide3 = slideIndex === 2;
     return (
       <MKBox
         display="flex"
@@ -193,7 +194,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             overflow: "hidden",
             height: "100vh",
             maxHeight: "100vh",
-            backgroundColor: "#F1BC66",
+            backgroundColor: isSlide3 ? "#2e7d32" : "#F1BC66",
             backgroundImage: `url(${slide2TextBg})`,
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
