@@ -42,6 +42,7 @@ import heroImage3 from "assets/images/aboutPageImages/swargSadan.webp";
 import heroVideo from "assets/images/video1.mp4";
 
 function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex }) {
+  const { t } = useTranslation();
   // Slide 2 - Video on left, text on right
   if (slideIndex === 1) {
     return (
@@ -231,7 +232,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               component={Link}
               to="/pages/landing-pages/donate"
             >
-              Learn More
+              {t("homePage.heroSection.ctaButtonSlide2")}
             </MKButton>
           </MKBox>
 
