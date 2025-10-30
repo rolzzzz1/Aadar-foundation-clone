@@ -825,7 +825,18 @@ function DefaultNavbar({
                       }
                       color={action.color ? action.color : "info"}
                       size="small"
-                      sx={{ textTransform: "none", fontWeight: "bold", letterSpacing: "0.5px" }}
+                      sx={{
+                        textTransform: "none",
+                        fontWeight: "bold",
+                        letterSpacing: "0.5px",
+                        ...(action.color === "success"
+                          ? {
+                              backgroundColor: "#FFC107",
+                              color: "white",
+                              "&:hover": { backgroundColor: "#e0ac06" },
+                            }
+                          : {}),
+                      }}
                     >
                       {action.label}
                     </MKButton>
@@ -844,7 +855,18 @@ function DefaultNavbar({
                       }
                       color={action.color ? action.color : "info"}
                       size="small"
-                      sx={{ textTransform: "none", fontWeight: "bold", letterSpacing: "0.5px" }}
+                      sx={{
+                        textTransform: "none",
+                        fontWeight: "bold",
+                        letterSpacing: "0.5px",
+                        ...(action.color === "success"
+                          ? {
+                              backgroundColor: "#FFC107",
+                              color: "white",
+                              "&:hover": { backgroundColor: "#e0ac06" },
+                            }
+                          : {}),
+                      }}
                     >
                       {action.label}
                     </MKButton>
