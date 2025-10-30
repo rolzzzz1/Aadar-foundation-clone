@@ -46,7 +46,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
   // Slide 2 - Video on left, text on right
   if (slideIndex === 1 || slideIndex === 2) {
     const isSlide3 = slideIndex === 2;
-    const fogRgb = "104, 193, 109"; // #68C16D
+    const fogRgb = "178, 240, 181"; // #B2F0B5
     return (
       <MKBox
         display="flex"
@@ -198,7 +198,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             overflow: "hidden",
             height: "100vh",
             maxHeight: "100vh",
-            backgroundColor: isSlide3 ? "#68C16D" : "#F1BC66",
+            backgroundColor: isSlide3 ? "#B2F0B5" : "#F1BC66",
             backgroundImage: `url(${slide2TextBg})`,
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
@@ -277,7 +277,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               left: "-20px",
               width: "40px",
               height: "calc(100% - 80px)",
-              backgroundColor: isSlide3 ? "#68C16D" : "#F1BC66",
+              backgroundColor: isSlide3 ? "#B2F0B5" : "#F1BC66",
               filter: "blur(12px)",
               opacity: 0.9,
               zIndex: 21,
