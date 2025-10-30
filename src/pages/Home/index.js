@@ -203,16 +203,14 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           <MKBox position="relative" zIndex={15}>
             <MKTypography
               variant="h2"
-              color="dark"
               fontWeight="bold"
-              sx={{ fontSize: { xs: "2rem", md: "3rem" }, mb: 2 }}
+              sx={{ fontSize: { xs: "2rem", md: "3rem" }, mb: 2, color: "#f5f5f5" }}
             >
               Our Impact
             </MKTypography>
             <MKTypography
               variant="body1"
-              color="dark"
-              sx={{ fontSize: { xs: "1rem", md: "1.25rem" }, mb: 3, opacity: 0.8 }}
+              sx={{ fontSize: { xs: "1rem", md: "1.25rem" }, mb: 3, opacity: 0.95, color: "#f5f5f5" }}
             >
               Empowering communities and creating lasting change through dedicated service and
               compassion.
