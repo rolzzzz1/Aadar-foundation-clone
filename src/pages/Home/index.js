@@ -228,6 +228,18 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 px: { xs: 2, md: 3 },
                 py: { xs: 0.5, md: 0.9 },
                 fontSize: { xs: "0.8rem", md: "0.9rem" },
+                textTransform: "none",
+                fontWeight: 700,
+                letterSpacing: "0.2px",
+                backgroundColor: "rgba(255, 255, 255, 0.95)",
+                color: "#2e7d32",
+                borderRadius: "10px",
+                boxShadow: "0 4px 14px rgba(0,0,0,0.18)",
+                '&:hover': {
+                  backgroundColor: "#ffffff",
+                  transform: "translateY(-1px)",
+                  boxShadow: "0 6px 18px rgba(0,0,0,0.22)",
+                },
               }}
               component={Link}
               to="/pages/landing-pages/donate"
