@@ -225,9 +225,9 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               variant="gradient"
               color="success"
               sx={{
-                px: { xs: 3, md: 4 },
-                py: { xs: 1, md: 1.5 },
-                fontSize: { xs: "0.9rem", md: "1rem" },
+                px: { xs: 2, md: 3 },
+                py: { xs: 0.5, md: 0.9 },
+                fontSize: { xs: "0.8rem", md: "0.9rem" },
               }}
               component={Link}
               to="/pages/landing-pages/donate"
