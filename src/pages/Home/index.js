@@ -48,7 +48,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
   if (slideIndex === 1 || slideIndex === 2) {
     const isSlide3 = slideIndex === 2;
     const isSlide2 = slideIndex === 1;
-    const fogRgb = "96, 209, 102"; // #60D166
+    const fogRgb = "155, 206, 16"; // #9BCE10
     return (
       <MKBox
         display="flex"
