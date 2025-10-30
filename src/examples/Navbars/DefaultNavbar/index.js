@@ -485,7 +485,7 @@ function DefaultNavbar({
     <Container
       sx={
         sticky
-          ? { position: "sticky", top: 0, zIndex: 10, minWidth: "320px", margin: "auto" }
+          ? { position: "sticky", top: 0, zIndex: 2000, minWidth: "320px", margin: "auto" }
           : null
       }
     >
@@ -505,7 +505,7 @@ function DefaultNavbar({
         // position={"absolute"}
         // left={0}
         right={0}
-        zIndex={3}
+        zIndex={2001}
         sx={({ palette: { transparent: transparentColor, primary }, functions: { rgba } }) => ({
           backgroundColor: transparent ? transparentColor.main : rgba(primary.main, 0.8),
           backdropFilter: transparent ? "none" : `saturate(200%) blur(10px)`,
@@ -578,7 +578,7 @@ function DefaultNavbar({
           top={0}
           // left={0}
           right={0}
-          zIndex={3}
+          zIndex={2001}
           sx={({ palette: { transparent: transparentColor, grey } }) => ({
             backgroundColor: transparent ? transparentColor.main : grey[100],
             backdropFilter: transparent ? "none" : `saturate(200%) blur(30px)`,
