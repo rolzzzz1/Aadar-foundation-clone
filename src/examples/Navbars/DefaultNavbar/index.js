@@ -823,29 +823,9 @@ function DefaultNavbar({
                           ? "contained"
                           : "gradient"
                       }
-                      color={
-                        action.color === "success"
-                          ? "warning"
-                          : action.color
-                          ? action.color
-                          : "info"
-                      }
+                      color={action.color ? action.color : "info"}
                       size="small"
-                      sx={
-                        action.color === "success"
-                          ? {
-                              backgroundColor: "#FFC107",
-                              color: "white",
-                              fontWeight: "bold",
-                              fontSize: "0.875rem",
-                              textTransform: "none",
-                              letterSpacing: "0.5px",
-                              "&:hover": {
-                                backgroundColor: "#7FA80C",
-                              },
-                            }
-                          : {}
-                      }
+                      sx={{ textTransform: "none", fontWeight: "bold", letterSpacing: "0.5px" }}
                     >
                       {action.label}
                     </MKButton>
@@ -862,29 +842,9 @@ function DefaultNavbar({
                           ? "contained"
                           : "gradient"
                       }
-                      color={
-                        action.color === "success"
-                          ? "warning"
-                          : action.color
-                          ? action.color
-                          : "info"
-                      }
+                      color={action.color ? action.color : "info"}
                       size="small"
-                      sx={
-                        action.color === "success"
-                          ? {
-                              backgroundColor: "#FFC107",
-                              color: "white",
-                              fontWeight: "bold",
-                              fontSize: "0.875rem",
-                              textTransform: "none",
-                              letterSpacing: "0.5px",
-                              "&:hover": {
-                                backgroundColor: "#7FA80C",
-                              },
-                            }
-                          : {}
-                      }
+                      sx={{ textTransform: "none", fontWeight: "bold", letterSpacing: "0.5px" }}
                     >
                       {action.label}
                     </MKButton>
