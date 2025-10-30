@@ -216,6 +216,22 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               pointerEvents: "none",
             }}
           />
+
+          {/* Blurred overlay - soft left border into the video */}
+          <MKBox
+            sx={{
+              position: "absolute",
+              top: "80px",
+              left: "-20px",
+              width: "40px",
+              height: "calc(100% - 80px)",
+              backgroundColor: "#F1BC66",
+              filter: "blur(12px)",
+              opacity: 0.9,
+              zIndex: 21,
+              pointerEvents: "none",
+            }}
+          />
         </MKBox>
       </MKBox>
     );
