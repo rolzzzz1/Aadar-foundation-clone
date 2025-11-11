@@ -293,14 +293,18 @@ function DefaultNavbarMobile({ routes, open, action }) {
               sx={
                 action.color === "success"
                   ? {
-                      backgroundColor: "#FFC107",
+                      backgroundColor: "#4FA953",
                       color: "white",
                       fontWeight: "bold",
-                      fontSize: "0.875rem",
+                      fontSize: "0.95rem",
                       textTransform: "none",
                       letterSpacing: "0.5px",
+                      padding: "8px 20px",
+                      boxShadow: "0 4px 12px rgba(79, 169, 83, 0.4)",
                       "&:hover": {
-                        backgroundColor: "#7FA80C",
+                        backgroundColor: "#3d8a41",
+                        boxShadow: "0 6px 16px rgba(79, 169, 83, 0.5)",
+                        transform: "translateY(-1px)",
                       },
                     }
                   : {}
@@ -326,14 +330,18 @@ function DefaultNavbarMobile({ routes, open, action }) {
               sx={
                 action.color === "success"
                   ? {
-                      backgroundColor: "#FFC107",
+                      backgroundColor: "#4FA953",
                       color: "white",
                       fontWeight: "bold",
-                      fontSize: "0.875rem",
+                      fontSize: "0.95rem",
                       textTransform: "none",
                       letterSpacing: "0.5px",
+                      padding: "8px 20px",
+                      boxShadow: "0 4px 12px rgba(79, 169, 83, 0.4)",
                       "&:hover": {
-                        backgroundColor: "#7FA80C",
+                        backgroundColor: "#3d8a41",
+                        boxShadow: "0 6px 16px rgba(79, 169, 83, 0.5)",
+                        transform: "translateY(-1px)",
                       },
                     }
                   : {}

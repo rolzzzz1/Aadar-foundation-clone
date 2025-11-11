@@ -831,9 +831,16 @@ function DefaultNavbar({
                         letterSpacing: "0.5px",
                         ...(action.color === "success"
                           ? {
-                              backgroundColor: "#ECA533",
+                              backgroundColor: "#4FA953",
                               color: "white",
-                              "&:hover": { backgroundColor: "#d3952d" },
+                              padding: { xs: "6px 16px", md: "8px 20px", lg: "10px 24px" },
+                              fontSize: { xs: "0.875rem", md: "0.95rem", lg: "1rem" },
+                              boxShadow: "0 4px 12px rgba(79, 169, 83, 0.4)",
+                              "&:hover": {
+                                backgroundColor: "#3d8a41",
+                                boxShadow: "0 6px 16px rgba(79, 169, 83, 0.5)",
+                                transform: "translateY(-1px)",
+                              },
                             }
                           : {}),
                       }}
@@ -861,9 +868,16 @@ function DefaultNavbar({
                         letterSpacing: "0.5px",
                         ...(action.color === "success"
                           ? {
-                              backgroundColor: "#ECA533",
+                              backgroundColor: "#4FA953",
                               color: "white",
-                              "&:hover": { backgroundColor: "#d3952d" },
+                              padding: { xs: "6px 16px", md: "8px 20px", lg: "10px 24px" },
+                              fontSize: { xs: "0.875rem", md: "0.95rem", lg: "1rem" },
+                              boxShadow: "0 4px 12px rgba(79, 169, 83, 0.4)",
+                              "&:hover": {
+                                backgroundColor: "#3d8a41",
+                                boxShadow: "0 6px 16px rgba(79, 169, 83, 0.5)",
+                                transform: "translateY(-1px)",
+                              },
                             }
                           : {}),
                       }}

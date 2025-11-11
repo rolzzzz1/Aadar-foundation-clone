@@ -31,6 +31,7 @@ import bgImage from "assets/images/mainThemeImages/brushstroke.svg";
 import aadarHindiWhite from "assets/images/aadarHindiWhite.png";
 import aadarHindiYellow from "assets/images/aadarHindiYellow.png";
 import slide2TextBg from "assets/images/mainThemeImages/back-text.svg"; // SVG background for slide 2 text area
+// Paper background - using public folder to avoid SVG processing issues
 import PropTypes from "prop-types";
 
 // Additional hero images for carousel
@@ -58,66 +59,62 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           position: "relative",
           overflow: "hidden",
           zIndex: 0,
+          backgroundColor: isSlide3 ? "#F1BC66" : "transparent",
         }}
       >
         {/* Video on left - 2/3 width */}
         <MKBox
-          flex={{ xs: 1, md: isSlide3 ? "0 0 50%" : "0 0 66.67%" }}
-          width={{ xs: "100%", md: isSlide3 ? "50%" : "66.67%" }}
+          flex={{ xs: 1, md: isSlide3 ? "0 0 55%" : "0 0 66.67%" }}
+          width={{ xs: "100%", md: isSlide3 ? "55%" : "66.67%" }}
           sx={{
             position: "relative",
             overflow: "hidden",
             height: "100vh",
             maxHeight: "100vh",
             zIndex: 0,
+            paddingRight: isSlide3 ? "20px" : "0px",
+            paddingTop: isSlide3 ? { xs: "40px", md: "60px" } : "0px",
           }}
         >
           {/* Main video */}
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-            poster={heroImage2}
-            style={{
+          <MKBox
+            sx={{
               position: "absolute",
-              top: "80px",
-              left: 0,
-              width: "100%",
-              height: "calc(100% - 80px)",
-              objectFit: "cover",
-              backgroundColor: "#000",
+              top: isSlide3
+                ? {
+                    xs: "calc(120px + (100% - 120px) * 0.05)",
+                    md: "calc(140px + (100% - 140px) * 0.05)",
+                  }
+                : "calc(80px + (100% - 80px) * 0.1)",
+              left: "50%",
+              transform: "translateX(-50%)",
+              width: isSlide3 ? { xs: "90%", md: "80%" } : "60%",
+              height: isSlide3
+                ? { xs: "calc((100% - 120px) * 0.85)", md: "calc((100% - 140px) * 0.85)" }
+                : "calc((100% - 80px) * 0.7)",
+              borderRadius: { xs: "16px", md: "24px" },
+              overflow: "hidden",
+              border: isSlide3 ? "20px solid #E8E2CF" : "15px solid #E3E3E3",
             }}
           >
-            <source src={heroVideo} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-
-          {/* Blurred video in padding area */}
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "110%",
-              height: "100px",
-              objectFit: "cover",
-              objectPosition: "center top",
-              filter: "blur(8px)",
-              opacity: 0.8,
-              transform: "translateY(-10px)",
-              zIndex: 1,
-            }}
-          >
-            <source src={heroVideo} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              poster={heroImage2}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                backgroundColor: "#000",
+              }}
+            >
+              <source src={heroVideo} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </MKBox>
 
           {/* Fog overlay - blurred padding area */}
           {!isSlide3 && (
@@ -190,22 +187,34 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
 
         {/* Text on right - 1/3 width */}
         <MKBox
-          flex={{ xs: 1, md: isSlide3 ? "0 0 50%" : "0 0 33.33%" }}
-          width={{ xs: "100%", md: isSlide3 ? "50%" : "33.33%" }}
+          flex={{ xs: 1, md: isSlide3 ? "0 0 48%" : "0 0 33.33%" }}
+          width={{ xs: "100%", md: isSlide3 ? "48%" : "33.33%" }}
           display="flex"
           flexDirection="column"
           justifyContent="center"
-          alignItems={{ xs: "center", md: "flex-start" }}
+          alignItems={{ xs: "center", md: isSlide3 ? "flex-start" : "flex-start" }}
+          alignContent={{ xs: "center", md: isSlide3 ? "flex-start" : "flex-start" }}
           px={{ xs: 2, md: 4 }}
-          pl={{ xs: 2, md: 6 }}
+          pl={{ xs: 2, md: isSlide3 ? 10 : 6 }}
+          pr={{ xs: 2, md: isSlide3 ? 8 : 2 }}
+          pt={{ xs: 2, md: isSlide3 ? 4 : 2 }}
           sx={{
             position: "relative",
-            overflow: "hidden",
+            overflow: isSlide3 ? "visible" : "hidden",
             height: "100vh",
             maxHeight: "100vh",
             backgroundColor: isSlide3 ? "transparent" : "#F1BC66",
+            ...(isSlide3 && {
+              marginLeft: { xs: 0, md: "-40px" },
+              zIndex: 10,
+            }),
             ...(isSlide3
-              ? {}
+              ? {
+                  backgroundImage: "url(/paper-background.svg)",
+                  backgroundSize: "cover",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "left 70%",
+                }
               : {
                   backgroundImage: `url(${slide2TextBg})`,
                   backgroundSize: "cover",
@@ -222,8 +231,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               sx={{
                 fontSize: { xs: "1.6rem", md: "2.4rem" },
                 mb: 2,
-                color: isSlide3 ? "#333" : "#f5f5f5",
-                textShadow: isSlide3 ? "0 2px 4px rgba(255, 255, 255, 0.8)" : "none",
+                color: isSlide3 ? "#4A3728" : "#f5f5f5",
+                textShadow: isSlide3 ? "none" : "none",
               }}
             >
               Our Impact
@@ -234,8 +243,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 fontSize: { xs: "1rem", md: "1.25rem" },
                 mb: 3,
                 opacity: 0.95,
-                color: isSlide3 ? "#333" : "#f5f5f5",
-                textShadow: isSlide3 ? "0 1px 2px rgba(255, 255, 255, 0.8)" : "none",
+                color: isSlide3 ? "#4A3728" : "#f5f5f5",
+                textShadow: isSlide3 ? "none" : "none",
               }}
             >
               Empowering communities and creating lasting change through dedicated service and
@@ -245,20 +254,24 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               variant={isSlide3 ? "contained" : "gradient"}
               color="success"
               sx={{
-                px: { xs: 2, md: 3 },
-                py: { xs: 0.5, md: 0.9 },
-                fontSize: { xs: "0.8rem", md: "0.9rem" },
+                px: { xs: 2, md: isSlide3 ? 4 : 3 },
+                py: { xs: 0.5, md: isSlide3 ? 1.2 : 0.9 },
+                fontSize: { xs: "0.8rem", md: isSlide3 ? "1.1rem" : "0.9rem" },
                 textTransform: "none",
                 fontWeight: 700,
                 letterSpacing: "0.2px",
-                backgroundColor: isSlide3 ? "#F1BC66" : isSlide2 ? "#7FA707" : "#FFC107",
+                backgroundColor: isSlide3 ? "#4FA953" : isSlide2 ? "#7FA707" : "#FFC107",
                 color: "white",
                 borderRadius: "10px",
-                boxShadow: "0 4px 14px rgba(0,0,0,0.18)",
+                boxShadow: isSlide3
+                  ? "0 6px 20px rgba(79, 169, 83, 0.5)"
+                  : "0 4px 14px rgba(0,0,0,0.18)",
                 "&:hover": {
-                  backgroundColor: isSlide3 ? "#e7a232" : isSlide2 ? "#6d9006" : "#e0ac06",
-                  transform: "translateY(-1px)",
-                  boxShadow: "0 6px 18px rgba(0,0,0,0.22)",
+                  backgroundColor: isSlide3 ? "#3d8a41" : isSlide2 ? "#6d9006" : "#e0ac06",
+                  transform: "translateY(-2px)",
+                  boxShadow: isSlide3
+                    ? "0 8px 24px rgba(79, 169, 83, 0.6)"
+                    : "0 6px 18px rgba(0,0,0,0.22)",
                 },
               }}
               component={Link}
