@@ -64,8 +64,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
       >
         {/* Video on left - 2/3 width */}
         <MKBox
-          flex={{ xs: 1, md: "0 0 66.67%" }}
-          width={{ xs: "100%", md: "66.67%" }}
+          flex={{ xs: 1, md: isSlide3 ? "0 0 50%" : "0 0 66.67%" }}
+          width={{ xs: "100%", md: isSlide3 ? "50%" : "66.67%" }}
           sx={{
             position: "relative",
             overflow: "hidden",
@@ -122,74 +122,74 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           </video>
 
           {/* Fog overlay - blurred padding area */}
-          <MKBox
-            sx={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              height: "100px",
-              background: isSlide3
-                ? `linear-gradient(to bottom, rgba(${fogRgb}, 0.9), rgba(${fogRgb}, 0.7), rgba(${fogRgb}, 0.5), transparent)`
-                : "linear-gradient(to bottom, rgba(241, 188, 102, 0.9), rgba(241, 188, 102, 0.7), rgba(241, 188, 102, 0.5), transparent)",
-              zIndex: 3,
-              pointerEvents: "none",
-            }}
-          />
+          {!isSlide3 && (
+            <MKBox
+              sx={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                height: "100px",
+                background: "linear-gradient(to bottom, rgba(241, 188, 102, 0.9), rgba(241, 188, 102, 0.7), rgba(241, 188, 102, 0.5), transparent)",
+                zIndex: 3,
+                pointerEvents: "none",
+              }}
+            />
+          )}
 
           {/* Fog overlay - right edge */}
-          <MKBox
-            sx={{
-              position: "absolute",
-              top: "80px",
-              right: 0,
-              width: "150px",
-              height: "calc(100% - 80px)",
-              background: isSlide3
-                ? `linear-gradient(to left, rgba(${fogRgb}, 1), rgba(${fogRgb}, 0.85), rgba(${fogRgb}, 0.6), transparent)`
-                : "linear-gradient(to left, rgba(241, 188, 102, 1), rgba(241, 188, 102, 0.85), rgba(241, 188, 102, 0.6), transparent)",
-              zIndex: 2,
-              pointerEvents: "none",
-            }}
-          />
+          {!isSlide3 && (
+            <MKBox
+              sx={{
+                position: "absolute",
+                top: "80px",
+                right: 0,
+                width: "150px",
+                height: "calc(100% - 80px)",
+                background: "linear-gradient(to left, rgba(241, 188, 102, 1), rgba(241, 188, 102, 0.85), rgba(241, 188, 102, 0.6), transparent)",
+                zIndex: 2,
+                pointerEvents: "none",
+              }}
+            />
+          )}
 
           {/* Fog overlay - left edge */}
-          <MKBox
-            sx={{
-              position: "absolute",
-              top: "80px",
-              left: 0,
-              width: "120px",
-              height: "calc(100% - 80px)",
-              background: isSlide3
-                ? `linear-gradient(to right, rgba(${fogRgb}, 0.95), rgba(${fogRgb}, 0.7), rgba(${fogRgb}, 0.45), transparent)`
-                : "linear-gradient(to right, rgba(241, 188, 102, 0.95), rgba(241, 188, 102, 0.7), rgba(241, 188, 102, 0.45), transparent)",
-              zIndex: 2,
-              pointerEvents: "none",
-            }}
-          />
+          {!isSlide3 && (
+            <MKBox
+              sx={{
+                position: "absolute",
+                top: "80px",
+                left: 0,
+                width: "120px",
+                height: "calc(100% - 80px)",
+                background: "linear-gradient(to right, rgba(241, 188, 102, 0.95), rgba(241, 188, 102, 0.7), rgba(241, 188, 102, 0.45), transparent)",
+                zIndex: 2,
+                pointerEvents: "none",
+              }}
+            />
+          )}
 
           {/* Fog overlay - bottom edge */}
-          <MKBox
-            sx={{
-              position: "absolute",
-              left: 0,
-              bottom: 0,
-              width: "100%",
-              height: "120px",
-              background: isSlide3
-                ? `linear-gradient(to top, rgba(${fogRgb}, 0.95), rgba(${fogRgb}, 0.7), rgba(${fogRgb}, 0.45), transparent)`
-                : "linear-gradient(to top, rgba(241, 188, 102, 0.95), rgba(241, 188, 102, 0.7), rgba(241, 188, 102, 0.45), transparent)",
-              zIndex: 2,
-              pointerEvents: "none",
-            }}
-          />
+          {!isSlide3 && (
+            <MKBox
+              sx={{
+                position: "absolute",
+                left: 0,
+                bottom: 0,
+                width: "100%",
+                height: "120px",
+                background: "linear-gradient(to top, rgba(241, 188, 102, 0.95), rgba(241, 188, 102, 0.7), rgba(241, 188, 102, 0.45), transparent)",
+                zIndex: 2,
+                pointerEvents: "none",
+              }}
+            />
+          )}
         </MKBox>
 
         {/* Text on right - 1/3 width */}
         <MKBox
-          flex={{ xs: 1, md: "0 0 33.33%" }}
-          width={{ xs: "100%", md: "33.33%" }}
+          flex={{ xs: 1, md: isSlide3 ? "0 0 50%" : "0 0 33.33%" }}
+          width={{ xs: "100%", md: isSlide3 ? "50%" : "33.33%" }}
           display="flex"
           flexDirection="column"
           justifyContent="center"
@@ -201,8 +201,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             overflow: "hidden",
             height: "100vh",
             maxHeight: "100vh",
-            backgroundColor: isSlide3 ? "#B2F0B5" : "#F1BC66",
-            backgroundImage: isSlide3 ? `url(${slide3TextBg})` : `url(${slide2TextBg})`,
+            backgroundColor: isSlide3 ? "transparent" : "#F1BC66",
+            backgroundImage: isSlide3 ? "none" : `url(${slide2TextBg})`,
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center",
@@ -213,7 +213,12 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             <MKTypography
               variant="h2"
               fontWeight="bold"
-              sx={{ fontSize: { xs: "1.6rem", md: "2.4rem" }, mb: 2, color: "#f5f5f5" }}
+              sx={{ 
+                fontSize: { xs: "1.6rem", md: "2.4rem" }, 
+                mb: 2, 
+                color: isSlide3 ? "#333" : "#f5f5f5",
+                textShadow: isSlide3 ? "0 2px 4px rgba(255, 255, 255, 0.8)" : "none"
+              }}
             >
               Our Impact
             </MKTypography>
@@ -223,7 +228,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 fontSize: { xs: "1rem", md: "1.25rem" },
                 mb: 3,
                 opacity: 0.95,
-                color: "#f5f5f5",
+                color: isSlide3 ? "#333" : "#f5f5f5",
+                textShadow: isSlide3 ? "0 1px 2px rgba(255, 255, 255, 0.8)" : "none"
               }}
             >
               Empowering communities and creating lasting change through dedicated service and
@@ -258,36 +264,38 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           </MKBox>
 
           {/* Fog overlay - left edge (towards video) */}
-          <MKBox
-            sx={{
-              position: "absolute",
-              top: "80px",
-              left: 0,
-              width: "60px",
-              height: "calc(100% - 80px)",
-              background: isSlide3
-                ? `linear-gradient(to right, rgba(${fogRgb}, 0.5), rgba(${fogRgb}, 0.3), transparent)`
-                : "linear-gradient(to right, rgba(241, 188, 102, 0.5), rgba(241, 188, 102, 0.3), transparent)",
-              zIndex: 20,
-              pointerEvents: "none",
-            }}
-          />
+          {!isSlide3 && (
+            <MKBox
+              sx={{
+                position: "absolute",
+                top: "80px",
+                left: 0,
+                width: "60px",
+                height: "calc(100% - 80px)",
+                background: "linear-gradient(to right, rgba(241, 188, 102, 0.5), rgba(241, 188, 102, 0.3), transparent)",
+                zIndex: 20,
+                pointerEvents: "none",
+              }}
+            />
+          )}
 
           {/* Blurred overlay - soft left border into the video */}
-          <MKBox
-            sx={{
-              position: "absolute",
-              top: "80px",
-              left: "-20px",
-              width: "40px",
-              height: "calc(100% - 80px)",
-              backgroundColor: isSlide3 ? "#60D166" : "#F1BC66",
-              filter: "blur(12px)",
-              opacity: 0.9,
-              zIndex: 21,
-              pointerEvents: "none",
-            }}
-          />
+          {!isSlide3 && (
+            <MKBox
+              sx={{
+                position: "absolute",
+                top: "80px",
+                left: "-20px",
+                width: "40px",
+                height: "calc(100% - 80px)",
+                backgroundColor: "#F1BC66",
+                filter: "blur(12px)",
+                opacity: 0.9,
+                zIndex: 21,
+                pointerEvents: "none",
+              }}
+            />
+          )}
         </MKBox>
       </MKBox>
     );
