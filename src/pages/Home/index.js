@@ -31,7 +31,6 @@ import bgImage from "assets/images/mainThemeImages/brushstroke.svg";
 import aadarHindiWhite from "assets/images/aadarHindiWhite.png";
 import aadarHindiYellow from "assets/images/aadarHindiYellow.png";
 import slide2TextBg from "assets/images/mainThemeImages/back-text.svg"; // SVG background for slide 2 text area
-import slide3TextBg from "assets/images/mainThemeImages/slide3-svg.svg"; // SVG background for slide 3 text area
 import PropTypes from "prop-types";
 
 // Additional hero images for carousel
@@ -48,7 +47,6 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
   if (slideIndex === 1 || slideIndex === 2) {
     const isSlide3 = slideIndex === 2;
     const isSlide2 = slideIndex === 1;
-    const fogRgb = "155, 206, 16"; // #9BCE10
     return (
       <MKBox
         display="flex"
@@ -130,7 +128,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 left: 0,
                 right: 0,
                 height: "100px",
-                background: "linear-gradient(to bottom, rgba(241, 188, 102, 0.9), rgba(241, 188, 102, 0.7), rgba(241, 188, 102, 0.5), transparent)",
+                background:
+                  "linear-gradient(to bottom, rgba(241, 188, 102, 0.9), rgba(241, 188, 102, 0.7), rgba(241, 188, 102, 0.5), transparent)",
                 zIndex: 3,
                 pointerEvents: "none",
               }}
@@ -146,7 +145,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 right: 0,
                 width: "150px",
                 height: "calc(100% - 80px)",
-                background: "linear-gradient(to left, rgba(241, 188, 102, 1), rgba(241, 188, 102, 0.85), rgba(241, 188, 102, 0.6), transparent)",
+                background:
+                  "linear-gradient(to left, rgba(241, 188, 102, 1), rgba(241, 188, 102, 0.85), rgba(241, 188, 102, 0.6), transparent)",
                 zIndex: 2,
                 pointerEvents: "none",
               }}
@@ -162,7 +162,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 left: 0,
                 width: "120px",
                 height: "calc(100% - 80px)",
-                background: "linear-gradient(to right, rgba(241, 188, 102, 0.95), rgba(241, 188, 102, 0.7), rgba(241, 188, 102, 0.45), transparent)",
+                background:
+                  "linear-gradient(to right, rgba(241, 188, 102, 0.95), rgba(241, 188, 102, 0.7), rgba(241, 188, 102, 0.45), transparent)",
                 zIndex: 2,
                 pointerEvents: "none",
               }}
@@ -178,7 +179,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 bottom: 0,
                 width: "100%",
                 height: "120px",
-                background: "linear-gradient(to top, rgba(241, 188, 102, 0.95), rgba(241, 188, 102, 0.7), rgba(241, 188, 102, 0.45), transparent)",
+                background:
+                  "linear-gradient(to top, rgba(241, 188, 102, 0.95), rgba(241, 188, 102, 0.7), rgba(241, 188, 102, 0.45), transparent)",
                 zIndex: 2,
                 pointerEvents: "none",
               }}
@@ -202,10 +204,14 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             height: "100vh",
             maxHeight: "100vh",
             backgroundColor: isSlide3 ? "transparent" : "#F1BC66",
-            backgroundImage: isSlide3 ? "none" : `url(${slide2TextBg})`,
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
+            ...(isSlide3
+              ? {}
+              : {
+                  backgroundImage: `url(${slide2TextBg})`,
+                  backgroundSize: "cover",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "center",
+                }),
           }}
         >
           {/* Text content */}
@@ -213,11 +219,11 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             <MKTypography
               variant="h2"
               fontWeight="bold"
-              sx={{ 
-                fontSize: { xs: "1.6rem", md: "2.4rem" }, 
-                mb: 2, 
+              sx={{
+                fontSize: { xs: "1.6rem", md: "2.4rem" },
+                mb: 2,
                 color: isSlide3 ? "#333" : "#f5f5f5",
-                textShadow: isSlide3 ? "0 2px 4px rgba(255, 255, 255, 0.8)" : "none"
+                textShadow: isSlide3 ? "0 2px 4px rgba(255, 255, 255, 0.8)" : "none",
               }}
             >
               Our Impact
@@ -229,7 +235,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 mb: 3,
                 opacity: 0.95,
                 color: isSlide3 ? "#333" : "#f5f5f5",
-                textShadow: isSlide3 ? "0 1px 2px rgba(255, 255, 255, 0.8)" : "none"
+                textShadow: isSlide3 ? "0 1px 2px rgba(255, 255, 255, 0.8)" : "none",
               }}
             >
               Empowering communities and creating lasting change through dedicated service and
@@ -246,7 +252,6 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 fontWeight: 700,
                 letterSpacing: "0.2px",
                 backgroundColor: isSlide3 ? "#F1BC66" : isSlide2 ? "#7FA707" : "#FFC107",
-                backgroundImage: isSlide3 ? "none" : "none",
                 color: "white",
                 borderRadius: "10px",
                 boxShadow: "0 4px 14px rgba(0,0,0,0.18)",
@@ -272,7 +277,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 left: 0,
                 width: "60px",
                 height: "calc(100% - 80px)",
-                background: "linear-gradient(to right, rgba(241, 188, 102, 0.5), rgba(241, 188, 102, 0.3), transparent)",
+                background:
+                  "linear-gradient(to right, rgba(241, 188, 102, 0.5), rgba(241, 188, 102, 0.3), transparent)",
                 zIndex: 20,
                 pointerEvents: "none",
               }}
