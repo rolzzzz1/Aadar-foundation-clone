@@ -23,7 +23,8 @@
       "btn": "Read more"
     },
     "journeySection": {
-      "description": "A few words on our journey, by one of our founders.",
+      "title": "Our Story of Change",
+      "description": "A decade ago, Mr. Vikas Goswami, a young man from Gwalior, was moved by the suffering of the homeless and ailing people living on the streets and outside temples. From this compassion began the journey of Swarg Sadan Ashram — a place where hundreds of \"Prabhujans\" (divine souls) now live with love, care, and dignity. This is not just a story of service — it is the story of humanity's rebirth, led by Mr. Vikas Goswami and supported by society.",
       "founderName": "Mr. Vikas Goswami"
     },
     "workSection": {
@@ -74,7 +75,13 @@
     },
   "heroSection": {
     "ctaButton": "Help Today",
-    "ctaButtonSlide2": "Support a Story"
+    "ctaButtonSlide2": "Support a Story",
+    "slide3": {
+      "title": "Mother Who Got Lost at Kumbh",
+      "subtitle": "Reunited Through the Compassion of Aadar Foundation (Swarg Sadan Ashram) and the Community",
+      "paragraph": "During the Kumbh Mela in Prayagraj, 72-year-old Dadi Mayki got separated from her family and unknowingly reached Gwalior. There, the local Ghassmandi community and Aadar Foundation (Swarg Sadan Ashram) came together to care for her, offering medical help, shelter, and emotional warmth. With their dedicated efforts, she was finally reunited with her family — a moving reminder of how compassion and unity can bring hope back to life.",
+      "readMore": "Read More"
+    }
   },
     "postsSection": {
       "title": "Instagram Posts",
