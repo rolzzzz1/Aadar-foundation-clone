@@ -31,7 +31,7 @@ import bgImage from "assets/images/mainThemeImages/brushstroke.svg";
 import aadarHindiWhite from "assets/images/aadarHindiWhite.png";
 import aadarHindiYellow from "assets/images/aadarHindiYellow.png";
 import slide2TextBg from "assets/images/mainThemeImages/back-text.svg"; // SVG background for slide 2 text area
-// Paper background - using public folder to avoid SVG processing issues
+// Story back background - using public folder to avoid SVG processing issues
 import PropTypes from "prop-types";
 
 // Additional hero images for carousel
@@ -41,13 +41,14 @@ import heroImage3 from "assets/images/aboutPageImages/swargSadan.webp";
 
 // Video for slide 2
 import heroVideo from "assets/images/video1.mp4";
+// Video for slide 3
+import kumbhVideo from "assets/images/kumbh.mp4";
 
 function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex }) {
   const { t } = useTranslation();
   // Slide 2 - Video on left, text on right
   if (slideIndex === 1 || slideIndex === 2) {
-    const isSlide3 = slideIndex === 2;
-    const isSlide2 = slideIndex === 1;
+    const isSlide3 = slideIndex === 1 || slideIndex === 2; // Both slides use slide 3 styling
     return (
       <MKBox
         display="flex"
@@ -59,21 +60,31 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
           position: "relative",
           overflow: "hidden",
           zIndex: 0,
-          backgroundColor: isSlide3 ? "#F1BC66" : "transparent",
+          backgroundColor: isSlide3 ? "#E8E2CF" : "transparent",
         }}
       >
         {/* Video on left - 2/3 width */}
         <MKBox
-          flex={{ xs: 1, md: isSlide3 ? "0 0 55%" : "0 0 66.67%" }}
-          width={{ xs: "100%", md: isSlide3 ? "55%" : "66.67%" }}
+          flex={{
+            xs: 1,
+            sm: 1,
+            md: isSlide3 ? "0 0 55%" : "0 0 66.67%",
+            lg: isSlide3 ? "0 0 55%" : "0 0 66.67%",
+          }}
+          width={{
+            xs: "100%",
+            sm: "100%",
+            md: isSlide3 ? "55%" : "66.67%",
+            lg: isSlide3 ? "55%" : "66.67%",
+          }}
           sx={{
             position: "relative",
             overflow: "hidden",
-            height: "100vh",
+            height: { xs: "100vh", sm: "100vh", md: "100vh" },
             maxHeight: "100vh",
             zIndex: 0,
-            paddingRight: isSlide3 ? "20px" : "0px",
-            paddingTop: isSlide3 ? { xs: "40px", md: "60px" } : "0px",
+            paddingRight: isSlide3 ? "0px" : "0px",
+            paddingTop: isSlide3 ? { xs: "40px", sm: "50px", md: "60px", lg: "60px" } : "0px",
           }}
         >
           {/* Main video */}
@@ -83,18 +94,32 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               top: isSlide3
                 ? {
                     xs: "calc(120px + (100% - 120px) * 0.05)",
+                    sm: "calc(130px + (100% - 130px) * 0.05)",
                     md: "calc(140px + (100% - 140px) * 0.05)",
+                    lg: "calc(140px + (100% - 140px) * 0.05)",
                   }
                 : "calc(80px + (100% - 80px) * 0.1)",
               left: "50%",
               transform: "translateX(-50%)",
-              width: isSlide3 ? { xs: "90%", md: "80%" } : "60%",
+              width: isSlide3 ? { xs: "90%", sm: "85%", md: "80%", lg: "80%" } : "60%",
               height: isSlide3
-                ? { xs: "calc((100% - 120px) * 0.85)", md: "calc((100% - 140px) * 0.85)" }
+                ? {
+                    xs: "calc((100% - 120px) * 0.85)",
+                    sm: "calc((100% - 130px) * 0.85)",
+                    md: "calc((100% - 140px) * 0.85)",
+                    lg: "calc((100% - 140px) * 0.85)",
+                  }
                 : "calc((100% - 80px) * 0.7)",
-              borderRadius: { xs: "16px", md: "24px" },
+              borderRadius: { xs: "16px", sm: "18px", md: "24px", lg: "24px" },
               overflow: "hidden",
-              border: isSlide3 ? "20px solid #E8E2CF" : "15px solid #E3E3E3",
+              border: isSlide3
+                ? {
+                    xs: "15px solid #F1BC66",
+                    sm: "18px solid #F1BC66",
+                    md: "20px solid #F1BC66",
+                    lg: "20px solid #F1BC66",
+                  }
+                : "15px solid #E3E3E3",
             }}
           >
             <video
@@ -111,7 +136,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 backgroundColor: "#000",
               }}
             >
-              <source src={heroVideo} type="video/mp4" />
+              <source src={kumbhVideo} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </MKBox>
@@ -187,97 +212,233 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
 
         {/* Text on right - 1/3 width */}
         <MKBox
-          flex={{ xs: 1, md: isSlide3 ? "0 0 48%" : "0 0 33.33%" }}
-          width={{ xs: "100%", md: isSlide3 ? "48%" : "33.33%" }}
+          flex={{
+            xs: 1,
+            sm: 1,
+            md: isSlide3 ? "0 0 48%" : "0 0 33.33%",
+            lg: isSlide3 ? "0 0 48%" : "0 0 33.33%",
+          }}
+          width={{
+            xs: "100%",
+            sm: "100%",
+            md: isSlide3 ? "48%" : "33.33%",
+            lg: isSlide3 ? "48%" : "33.33%",
+          }}
           display="flex"
           flexDirection="column"
           justifyContent="center"
-          alignItems={{ xs: "center", md: isSlide3 ? "flex-start" : "flex-start" }}
-          alignContent={{ xs: "center", md: isSlide3 ? "flex-start" : "flex-start" }}
-          px={{ xs: 2, md: 4 }}
-          pl={{ xs: 2, md: isSlide3 ? 10 : 6 }}
-          pr={{ xs: 2, md: isSlide3 ? 8 : 2 }}
-          pt={{ xs: 2, md: isSlide3 ? 4 : 2 }}
+          alignItems={{
+            xs: "center",
+            sm: "center",
+            md: isSlide3 ? "flex-start" : "flex-start",
+            lg: isSlide3 ? "flex-start" : "flex-start",
+          }}
+          alignContent={{
+            xs: "center",
+            sm: "center",
+            md: isSlide3 ? "flex-start" : "flex-start",
+            lg: isSlide3 ? "flex-start" : "flex-start",
+          }}
+          px={{ xs: 2, sm: 2, md: isSlide3 ? 0 : 4, lg: isSlide3 ? 0 : 4 }}
+          pl={{ xs: 2, sm: 2, md: isSlide3 ? 0 : 6, lg: isSlide3 ? 0 : 6 }}
+          pr={{ xs: 2, sm: 2, md: isSlide3 ? 0 : 2, lg: isSlide3 ? 0 : 2 }}
+          pt={{
+            xs: 2,
+            sm: 2,
+            md: isSlide3 ? "60px" : 2,
+            lg: isSlide3 ? "60px" : 2,
+          }}
+          pb={{
+            xs: 2,
+            sm: 2,
+            md: isSlide3 ? "60px" : 2,
+            lg: isSlide3 ? "60px" : 2,
+          }}
           sx={{
             position: "relative",
-            overflow: isSlide3 ? "visible" : "hidden",
-            height: "100vh",
+            overflow: isSlide3 ? "hidden" : "hidden",
+            height: { xs: "100vh", sm: "100vh", md: "100vh" },
             maxHeight: "100vh",
             backgroundColor: isSlide3 ? "transparent" : "#F1BC66",
             ...(isSlide3 && {
-              marginLeft: { xs: 0, md: "-40px" },
+              marginLeft: { xs: 0, sm: 0, md: "-60px", lg: "-60px" },
               zIndex: 10,
             }),
-            ...(isSlide3
-              ? {
-                  backgroundImage: "url(/paper-background.svg)",
-                  backgroundSize: "cover",
-                  backgroundRepeat: "no-repeat",
-                  backgroundPosition: "left 70%",
-                }
-              : {
-                  backgroundImage: `url(${slide2TextBg})`,
-                  backgroundSize: "cover",
-                  backgroundRepeat: "no-repeat",
-                  backgroundPosition: "center",
-                }),
+            ...(!isSlide3 && {
+              backgroundImage: `url(${slide2TextBg})`,
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+            }),
           }}
         >
           {/* Text content */}
-          <MKBox position="relative" zIndex={15}>
-            <MKTypography
-              variant="h2"
-              fontWeight="bold"
-              sx={{
-                fontSize: { xs: "1.6rem", md: "2.4rem" },
-                mb: 2,
-                color: isSlide3 ? "#4A3728" : "#f5f5f5",
-                textShadow: isSlide3 ? "none" : "none",
-              }}
-            >
-              Our Impact
-            </MKTypography>
-            <MKTypography
-              variant="body1"
-              sx={{
-                fontSize: { xs: "1rem", md: "1.25rem" },
-                mb: 3,
-                opacity: 0.95,
-                color: isSlide3 ? "#4A3728" : "#f5f5f5",
-                textShadow: isSlide3 ? "none" : "none",
-              }}
-            >
-              Empowering communities and creating lasting change through dedicated service and
-              compassion.
-            </MKTypography>
+          <MKBox
+            position={isSlide3 ? "absolute" : "relative"}
+            zIndex={15}
+            sx={{
+              ...(isSlide3 && {
+                top: {
+                  xs: "calc(120px + (100% - 120px) * 0.05)",
+                  sm: "calc(130px + (100% - 130px) * 0.05)",
+                  md: "calc(140px + (100% - 140px) * 0.05)",
+                  lg: "calc(140px + (100% - 140px) * 0.05)",
+                },
+                left: { xs: "5%", sm: "5%", md: "5%", lg: "5%" },
+                width: {
+                  xs: "90%",
+                  sm: "90%",
+                  md: "90%",
+                  lg: "90%",
+                },
+                height: {
+                  xs: "calc((100% - 120px) * 0.85)",
+                  sm: "calc((100% - 130px) * 0.85)",
+                  md: "calc((100% - 140px) * 0.85)",
+                  lg: "calc((100% - 140px) * 0.85)",
+                },
+                overflowY: "hidden",
+                overflowX: "hidden",
+              }),
+              pl: {
+                xs: 3,
+                sm: 3,
+                md: isSlide3 ? 4 : 0,
+                lg: isSlide3 ? 4 : 0,
+              },
+              pr: {
+                xs: 3,
+                sm: 3,
+                md: isSlide3 ? 4 : 0,
+                lg: isSlide3 ? 4 : 0,
+              },
+              pt: {
+                xs: isSlide3 ? 3 : 3,
+                sm: isSlide3 ? 3.5 : 3,
+                md: isSlide3 ? 2 : 0,
+                lg: isSlide3 ? 2.5 : 0,
+              },
+              pb: {
+                xs: isSlide3 ? 2 : 3,
+                sm: isSlide3 ? 2 : 3,
+                md: isSlide3 ? 0 : 0,
+                lg: isSlide3 ? 0 : 0,
+              },
+              wordWrap: "break-word",
+              overflowWrap: "break-word",
+              maxWidth: "100%",
+            }}
+          >
+            <>
+              <MKTypography
+                variant="h2"
+                fontWeight="bold"
+                sx={{
+                  fontSize: {
+                    xs: "0.9rem",
+                    sm: "1.1rem",
+                    md: "1.4rem",
+                    lg: "1.6rem",
+                    xl: "1.8rem",
+                  },
+                  mb: { xs: 0.5, sm: 0.6, md: 0.75, lg: 1, xl: 1 },
+                  color: "#4A3728",
+                  textShadow: "none",
+                  wordWrap: "break-word",
+                  overflowWrap: "break-word",
+                  maxWidth: "100%",
+                }}
+              >
+                {homePage.heroSection.slide3.title}
+              </MKTypography>
+              <MKTypography
+                variant="h5"
+                sx={{
+                  fontSize: {
+                    xs: "0.65rem",
+                    sm: "0.7rem",
+                    md: "0.8rem",
+                    lg: "0.9rem",
+                    xl: "0.95rem",
+                  },
+                  mb: { xs: 1.25, sm: 1.5, md: 1.75, lg: 2, xl: 2.25 },
+                  opacity: 0.9,
+                  color: "#4A3728",
+                  textShadow: "none",
+                  fontWeight: "500",
+                  wordWrap: "break-word",
+                  overflowWrap: "break-word",
+                  maxWidth: "100%",
+                }}
+              >
+                {homePage.heroSection.slide3.subtitle}
+              </MKTypography>
+              <MKTypography
+                variant="body1"
+                sx={{
+                  fontSize: {
+                    xs: "0.7rem",
+                    sm: "0.75rem",
+                    md: "0.8rem",
+                    lg: "0.9rem",
+                    xl: "0.95rem",
+                  },
+                  mb: { xs: 1.5, sm: 2, md: 2.5, lg: 3, xl: 3 },
+                  opacity: 0.95,
+                  color: "#4A3728",
+                  textShadow: "none",
+                  lineHeight: { xs: 1.4, sm: 1.45, md: 1.5, lg: 1.55, xl: 1.6 },
+                  wordWrap: "break-word",
+                  overflowWrap: "break-word",
+                  maxWidth: "100%",
+                }}
+              >
+                {homePage.heroSection.slide3.paragraph}
+              </MKTypography>
+            </>
             <MKButton
-              variant={isSlide3 ? "contained" : "gradient"}
+              variant="contained"
               color="success"
               sx={{
-                px: { xs: 2, md: isSlide3 ? 4 : 3 },
-                py: { xs: 0.5, md: isSlide3 ? 1.2 : 0.9 },
-                fontSize: { xs: "0.8rem", md: isSlide3 ? "1.1rem" : "0.9rem" },
+                px: {
+                  xs: 2.5,
+                  sm: 3,
+                  md: 3.5,
+                  lg: 4,
+                  xl: 4.5,
+                },
+                py: {
+                  xs: 0.6,
+                  sm: 0.8,
+                  md: 1,
+                  lg: 1.2,
+                  xl: 1.3,
+                },
+                fontSize: {
+                  xs: "0.75rem",
+                  sm: "0.85rem",
+                  md: "0.95rem",
+                  lg: "1.05rem",
+                  xl: "1.1rem",
+                },
                 textTransform: "none",
                 fontWeight: 700,
                 letterSpacing: "0.2px",
-                backgroundColor: isSlide3 ? "#4FA953" : isSlide2 ? "#7FA707" : "#FFC107",
+                backgroundColor: "#4FA953",
                 color: "white",
                 borderRadius: "10px",
-                boxShadow: isSlide3
-                  ? "0 6px 20px rgba(79, 169, 83, 0.5)"
-                  : "0 4px 14px rgba(0,0,0,0.18)",
+                boxShadow: "0 6px 20px rgba(79, 169, 83, 0.5)",
                 "&:hover": {
-                  backgroundColor: isSlide3 ? "#3d8a41" : isSlide2 ? "#6d9006" : "#e0ac06",
+                  backgroundColor: "#3d8a41",
                   transform: "translateY(-2px)",
-                  boxShadow: isSlide3
-                    ? "0 8px 24px rgba(79, 169, 83, 0.6)"
-                    : "0 6px 18px rgba(0,0,0,0.22)",
+                  boxShadow: "0 8px 24px rgba(79, 169, 83, 0.6)",
                 },
               }}
               component={Link}
               to="/pages/landing-pages/donate"
             >
               {t("homePage.heroSection.ctaButtonSlide2")}
+              <span style={{ marginLeft: "1.5rem" }}>{" >>"}</span>
             </MKButton>
           </MKBox>
 
