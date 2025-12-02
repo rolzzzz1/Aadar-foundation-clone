@@ -29,5 +29,7 @@ commit.sh
 
 # Large video files
 src/assets/images/slide2.mp4
+src/assets/images/Mayki.mp4
+src/assets/images/Nirbhay.mp4
 # Local Netlify folder
 .netlify

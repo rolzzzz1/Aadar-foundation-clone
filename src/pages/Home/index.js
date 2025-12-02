@@ -44,10 +44,10 @@ import PropTypes from "prop-types";
 import blackAndWhiteHero from "assets/images/mainThemeImages/aadar-main-black2.png";
 import heroImage2 from "assets/images/aboutPageImages/main1.jpg";
 
-// Video for slide 2
-import heroVideo from "assets/images/video1.mp4";
-// Video for slide 3 / hero-style video
-import kumbhVideo from "assets/images/kumbh.mp4";
+// Video for slide 2 (Kumbh story - Dadi Mayki)
+import maykiVideo from "assets/images/Mayki.mp4";
+// Video for slide 3 (Nirbhay story)
+import nirbhayVideo from "assets/images/Nirbhay.mp4";
 
 function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex }) {
   const { t } = useTranslation();
@@ -198,7 +198,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 display: "block",
               }}
             >
-              <source src={kumbhVideo} type="video/mp4" />
+              <source src={slideIndex === 1 ? maykiVideo : nirbhayVideo} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
 
@@ -646,7 +646,7 @@ function Home() {
         sticky
       />
 
-      {/* Hidden video preloader - starts loading video immediately */}
+      {/* Hidden video preloader - starts loading videos immediately */}
       <video
         preload="auto"
         style={{
@@ -659,7 +659,21 @@ function Home() {
           pointerEvents: "none",
         }}
       >
-        <source src={heroVideo} type="video/mp4" />
+        <source src={maykiVideo} type="video/mp4" />
+      </video>
+      <video
+        preload="auto"
+        style={{
+          position: "absolute",
+          top: "-9999px",
+          left: "-9999px",
+          width: "1px",
+          height: "1px",
+          opacity: 0,
+          pointerEvents: "none",
+        }}
+      >
+        <source src={nirbhayVideo} type="video/mp4" />
       </video>
 
       {/* Hero Carousel */}
