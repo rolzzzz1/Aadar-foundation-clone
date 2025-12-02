@@ -44,10 +44,16 @@ import PropTypes from "prop-types";
 import blackAndWhiteHero from "assets/images/mainThemeImages/aadar-main-black2.png";
 import heroImage2 from "assets/images/aboutPageImages/main1.jpg";
 
-// Video for slide 2 (Kumbh story - Dadi Mayki)
-import maykiVideo from "assets/images/Mayki.mp4";
-// Video for slide 3 (Nirbhay story)
-import nirbhayVideo from "assets/images/Nirbhay.mp4";
+// Video for slide 2 (Kumbh story - Dadi Mayki) and slide 3 (Nirbhay story)
+// Videos are loaded from Cloudinary CDN or fallback to local paths
+// Set REACT_APP_MAYKI_VIDEO_URL and REACT_APP_NIRBHAY_VIDEO_URL in Netlify environment variables
+// Or update the URLs directly below
+const maykiVideo =
+  process.env.REACT_APP_MAYKI_VIDEO_URL ||
+  "https://res.cloudinary.com/YOUR_CLOUD_NAME/video/upload/v1234567890/Mayki.mp4";
+const nirbhayVideo =
+  process.env.REACT_APP_NIRBHAY_VIDEO_URL ||
+  "https://res.cloudinary.com/YOUR_CLOUD_NAME/video/upload/v1234567890/Nirbhay.mp4";
 
 function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex }) {
   const { t } = useTranslation();
@@ -196,6 +202,16 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 objectPosition: "center 15%",
                 backgroundColor: "#000",
                 display: "block",
+              }}
+              onError={(e) => {
+                // Fallback to image if video fails to load
+                e.target.style.display = "none";
+                const img = document.createElement("img");
+                img.src = heroImage2;
+                img.style.width = "100%";
+                img.style.height = "100%";
+                img.style.objectFit = "cover";
+                e.target.parentElement.appendChild(img);
               }}
             >
               <source src={slideIndex === 1 ? maykiVideo : nirbhayVideo} type="video/mp4" />
@@ -647,6 +663,7 @@ function Home() {
       />
 
       {/* Hidden video preloader - starts loading videos immediately */}
+      {/* Videos are loaded from public folder or CDN - may not be available in build */}
       <video
         preload="auto"
         style={{
