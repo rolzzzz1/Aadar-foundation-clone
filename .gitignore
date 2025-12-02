@@ -25,3 +25,6 @@ package-lock.json
 yarn.lock
 
 commit.sh
+
+# Large video files
+src/assets/images/slide2.mp4
