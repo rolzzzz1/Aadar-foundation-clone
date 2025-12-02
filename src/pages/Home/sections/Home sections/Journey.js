@@ -104,7 +104,7 @@ function Journey() {
           justifyContent="center"
           spacing={{ xs: 2, sm: 3, md: 4 }}
         >
-          <Grid item xs={12} sm={11} md={10} lg={10} xl={9} mx={"auto"}>
+          <Grid item xs={12} sm={11} md={11} lg={11} xl={10} mx={"auto"}>
             <MKBox mb={{ xs: 2, sm: 2.5, md: 3 }} px={{ xs: 1, sm: 2, md: 2 }}>
               <MKTypography
                 variant="h3"
@@ -143,11 +143,11 @@ function Journey() {
               </MKTypography>
             </MKBox>
           </Grid>
-          <Grid item xs={12} sm={11} md={9} lg={9} xl={8} mx={"auto"}>
+          <Grid item xs={12} sm={11} md={10} lg={10} xl={9} mx={"auto"}>
             <MKBox position="relative">
               <MKBox
                 display="flex"
-                justifyContent="center"
+                justifyContent={{ xs: "center", sm: "center", md: "flex-end" }}
                 sx={{
                   border: {
                     xs: "12px solid #000000",

@@ -158,18 +158,25 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               ml: { xs: 0, sm: 0, md: 4, lg: 5 },
               aspectRatio: { xs: "4/3", sm: "4/3", md: "16/9" },
               maxHeight: { xs: "260px", sm: "320px", md: "none" },
-              borderRadius: { xs: "16px", sm: "20px", md: "28px", lg: "32px" },
+              borderRadius: { xs: "18px", sm: "22px", md: "28px", lg: "32px" },
               overflow: "hidden",
-              boxShadow:
-                "0 30px 100px rgba(0, 0, 0, 0.7), 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 0 4px rgba(255, 255, 255, 0.5) inset, 0 0 0 2px rgba(0, 0, 0, 0.2)",
+              padding: { xs: "2px", sm: "3px", md: "4px", lg: "4px" },
+              background:
+                "linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(241, 188, 102, 0.9))",
+              boxShadow: "0 26px 80px rgba(0, 0, 0, 0.65), 0 14px 32px rgba(0, 0, 0, 0.6)",
               transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-              backgroundColor: "rgba(0, 0, 0, 0.2)",
-              border: "3px solid rgba(255, 255, 255, 0.5)",
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                inset: 0,
+                borderRadius: "inherit",
+                border: "1px solid rgba(255, 255, 255, 0.65)",
+                pointerEvents: "none",
+                zIndex: 2,
+              },
               "&:hover": {
                 transform: "translateY(-6px) scale(1.02)",
-                boxShadow:
-                  "0 40px 120px rgba(0, 0, 0, 0.8), 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 0 5px rgba(255, 255, 255, 0.6) inset, 0 0 0 3px rgba(0, 0, 0, 0.3)",
-                border: "3px solid rgba(255, 255, 255, 0.6)",
+                boxShadow: "0 34px 110px rgba(0, 0, 0, 0.8), 0 18px 44px rgba(0, 0, 0, 0.7)",
               },
             }}
           >
