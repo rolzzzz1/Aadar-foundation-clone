@@ -1,4 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
 
+/* Ensure consistent scaling across environments */
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
 
+body {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 

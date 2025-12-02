@@ -21,6 +21,12 @@ const { info, dark } = colors;
 export default {
   html: {
     scrollBehavior: "smooth",
+    fontSize: "16px", // Base font size for consistent rem calculations
+    WebkitTextSizeAdjust: "100%",
+    textSizeAdjust: "100%",
+  },
+  body: {
+    fontSize: "16px", // Ensure body also has explicit font size
   },
   "*, *::before, *::after": {
     margin: 0,
