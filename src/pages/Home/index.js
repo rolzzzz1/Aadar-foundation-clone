@@ -45,15 +45,9 @@ import blackAndWhiteHero from "assets/images/mainThemeImages/aadar-main-black2.p
 import heroImage2 from "assets/images/aboutPageImages/main1.jpg";
 
 // Video for slide 2 (Kumbh story - Dadi Mayki) and slide 3 (Nirbhay story)
-// Videos are loaded from Cloudinary CDN or fallback to local paths
-// Set REACT_APP_MAYKI_VIDEO_URL and REACT_APP_NIRBHAY_VIDEO_URL in Netlify environment variables
-// Or update the URLs directly below
-const maykiVideo =
-  process.env.REACT_APP_MAYKI_VIDEO_URL ||
-  "https://res.cloudinary.com/YOUR_CLOUD_NAME/video/upload/v1234567890/Mayki.mp4";
-const nirbhayVideo =
-  process.env.REACT_APP_NIRBHAY_VIDEO_URL ||
-  "https://res.cloudinary.com/YOUR_CLOUD_NAME/video/upload/v1234567890/Nirbhay.mp4";
+// Videos are loaded from Cloudinary CDN
+const maykiVideo = "https://res.cloudinary.com/ds07nbwgq/video/upload/v1764692316/Mayki_v8ewvq.mp4";
+const nirbhayVideo = "https://res.cloudinary.com/ds07nbwgq/video/upload/v1764692322/Nirbhay_ei8puy.mp4";
 
 function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex }) {
   const { t } = useTranslation();
@@ -187,36 +181,50 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               },
             }}
           >
-            <video
-              ref={videoRef}
-              autoPlay
-              loop
-              muted={isMuted}
-              playsInline
-              preload="auto"
-              poster={heroImage2}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                objectPosition: "center 15%",
-                backgroundColor: "#000",
-                display: "block",
-              }}
-              onError={(e) => {
-                // Fallback to image if video fails to load
-                e.target.style.display = "none";
-                const img = document.createElement("img");
-                img.src = heroImage2;
-                img.style.width = "100%";
-                img.style.height = "100%";
-                img.style.objectFit = "cover";
-                e.target.parentElement.appendChild(img);
-              }}
-            >
-              <source src={slideIndex === 1 ? maykiVideo : nirbhayVideo} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+            {(slideIndex === 1 ? maykiVideo : nirbhayVideo) ? (
+              <video
+                ref={videoRef}
+                autoPlay
+                loop
+                muted={isMuted}
+                playsInline
+                preload="auto"
+                poster={heroImage2}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  objectPosition: "center 15%",
+                  backgroundColor: "#000",
+                  display: "block",
+                }}
+                onError={(e) => {
+                  // Fallback to image if video fails to load
+                  e.target.style.display = "none";
+                  const img = document.createElement("img");
+                  img.src = heroImage2;
+                  img.style.width = "100%";
+                  img.style.height = "100%";
+                  img.style.objectFit = "cover";
+                  e.target.parentElement.appendChild(img);
+                }}
+              >
+                <source src={slideIndex === 1 ? maykiVideo : nirbhayVideo} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            ) : (
+              <MKBox
+                component="img"
+                src={heroImage2}
+                alt="Hero image"
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  objectPosition: "center 15%",
+                }}
+              />
+            )}
 
             {/* Bottom overlay to hide text */}
             <MKBox
