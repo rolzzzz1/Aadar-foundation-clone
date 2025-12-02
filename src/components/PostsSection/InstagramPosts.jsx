@@ -185,9 +185,14 @@ const InstagramPosts = ({ postsPerSlide = 3, totalPosts = 6, className = "" }) =
                         <div key={post.id} className="post-card">
                           <div className="post-media">
                             {post.media_type === "IMAGE" || post.media_type === "CAROUSEL_ALBUM" ? (
-                              <img src={post.media_url} alt={post.caption || "Instagram post"} />
+                              <img
+                                src={post.media_url}
+                                alt={post.caption || "Instagram post"}
+                                onContextMenu={(e) => e.preventDefault()}
+                                draggable="false"
+                              />
                             ) : post.media_type === "VIDEO" ? (
-                              <video controls>
+                              <video controls controlsList="nodownload">
                                 <source src={post.media_url} type="video/mp4" />
                                 Your browser does not support the video tag.
                               </video>
