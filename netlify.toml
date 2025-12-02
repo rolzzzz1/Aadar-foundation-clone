@@ -1,0 +1,9 @@
+[build]
+  command = "npm run build"
+  publish = "build"
+
+# Configure secret scanning to omit these keys
+# These are public Cloudinary URLs, not secrets
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "REACT_APP_MAYKI_VIDEO_URL,REACT_APP_NIRBHAY_VIDEO_URL"
+
