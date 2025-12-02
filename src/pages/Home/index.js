@@ -63,7 +63,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
     }
   };
 
-  if (slideIndex === 1) {
+  // Use the same special layout for slide 2 and slide 3 (duplicate of slide 2)
+  if (slideIndex === 1 || slideIndex === 2) {
     return (
       <MKBox
         display="flex"
@@ -299,6 +300,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               minHeight: { xs: "auto", sm: "auto", md: "fit-content" },
             }}
           >
+            {/* Heading for slide 2 uses translations; slide 3 uses custom story text */}
             <MKTypography
               variant="h2"
               fontWeight="bold"
@@ -341,7 +343,9 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 },
               }}
             >
-              {homePage.heroSection.slide3.title}
+              {slideIndex === 2
+                ? "A Lost Child, Found Through Compassion"
+                : homePage.heroSection.slide3.title}
             </MKTypography>
             <MKTypography
               variant="h5"
@@ -363,7 +367,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
               }}
             >
-              {homePage.heroSection.slide3.subtitle}
+              {slideIndex === 2 ? "Story of Nirbhay" : homePage.heroSection.slide3.subtitle}
             </MKTypography>
             <MKTypography
               variant="body1"
@@ -384,7 +388,9 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
               }}
             >
-              {homePage.heroSection.slide3.paragraph}
+              {slideIndex === 2
+                ? "After getting separated from his father in Gwalior, Nirbhay was rescued by the Child Welfare Committee and brought to Swarg Sadan Ashram, where he received safety and care. During a visit, DSP Shri Santosh Patel shared his video on social media, and his family recognized him. They immediately came to Gwalior and took him home — a beautiful reunion made possible by the ashram’s care and the DSP’s compassionate effort."
+                : homePage.heroSection.slide3.paragraph}
             </MKTypography>
             <MKButton
               variant="contained"
@@ -621,8 +627,8 @@ function Home() {
   const homePage = t("homePage");
   const ctaButtonText = t("homePage.heroSection.ctaButton");
 
-  // Temporarily hide slide 3 from the hero carousel
-  const heroSlides = [{ image: blackAndWhiteHero }, { image: heroImage2 }];
+  // Hero slides (slide 2 and slide 3 share the same special video layout)
+  const heroSlides = [{ image: blackAndWhiteHero }, { image: heroImage2 }, { image: heroImage2 }];
 
   return (
     <MKBox minWidth="320px">
