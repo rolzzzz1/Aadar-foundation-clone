@@ -181,50 +181,36 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               },
             }}
           >
-            {(slideIndex === 1 ? maykiVideo : nirbhayVideo) ? (
-              <video
-                ref={videoRef}
-                autoPlay
-                loop
-                muted={isMuted}
-                playsInline
-                preload="auto"
-                poster={heroImage2}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  objectPosition: "center 15%",
-                  backgroundColor: "#000",
-                  display: "block",
-                }}
-                onError={(e) => {
-                  // Fallback to image if video fails to load
-                  e.target.style.display = "none";
-                  const img = document.createElement("img");
-                  img.src = heroImage2;
-                  img.style.width = "100%";
-                  img.style.height = "100%";
-                  img.style.objectFit = "cover";
-                  e.target.parentElement.appendChild(img);
-                }}
-              >
-                <source src={slideIndex === 1 ? maykiVideo : nirbhayVideo} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            ) : (
-              <MKBox
-                component="img"
-                src={heroImage2}
-                alt="Hero image"
-                sx={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  objectPosition: "center 15%",
-                }}
-              />
-            )}
+            <video
+              ref={videoRef}
+              autoPlay
+              loop
+              muted={isMuted}
+              playsInline
+              preload="auto"
+              poster={heroImage2}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                objectPosition: "center 15%",
+                backgroundColor: "#000",
+                display: "block",
+              }}
+              onError={(e) => {
+                // Fallback to image if video fails to load
+                e.target.style.display = "none";
+                const img = document.createElement("img");
+                img.src = heroImage2;
+                img.style.width = "100%";
+                img.style.height = "100%";
+                img.style.objectFit = "cover";
+                e.target.parentElement.appendChild(img);
+              }}
+            >
+              <source src={slideIndex === 1 ? maykiVideo : nirbhayVideo} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
 
             {/* Bottom overlay to hide text */}
             <MKBox
