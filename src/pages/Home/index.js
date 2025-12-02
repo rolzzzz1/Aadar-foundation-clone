@@ -67,16 +67,17 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
     return (
       <MKBox
         display="flex"
-        flexDirection={{ xs: "column", md: "row" }}
-        height="100vh"
-        minHeight="100vh"
+        flexDirection={{ xs: "column", sm: "column", md: "row" }}
+        height={{ xs: "auto", sm: "auto", md: "100vh" }}
+        minHeight={{ xs: "100vh", sm: "100vh", md: "100vh" }}
         width="100%"
         sx={{
           position: "relative",
-          overflow: "hidden",
+          overflow: { xs: "auto", md: "hidden" },
           zIndex: 0,
-          paddingTop: { xs: "80px", sm: "90px", md: "100px", lg: "100px" },
-          gap: { xs: 0.5, sm: 1, md: 1.5, lg: 1.5 },
+          paddingTop: { xs: "64px", sm: "76px", md: "110px", lg: "120px" },
+          paddingBottom: { xs: 2.2, sm: 2.6, md: 0 },
+          gap: { xs: 1.2, sm: 1.5, md: 1.5, lg: 1.5 },
         }}
       >
         {/* Gradient / pattern background */}
@@ -135,8 +136,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
 
         {/* Video section - left */}
         <MKBox
-          flex={{ xs: 1, md: "0 0 50%" }}
-          width={{ xs: "100%", md: "50%" }}
+          flex={{ xs: "0 0 auto", sm: "0 0 auto", md: "0 0 55%" }}
+          width={{ xs: "100%", sm: "100%", md: "55%" }}
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -144,17 +145,20 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             position: "relative",
             zIndex: 5,
             padding: { xs: 1, sm: 1.5, md: 2, lg: 2.5 },
-            height: { xs: "auto", md: "calc(100vh - 100px)" },
+            paddingX: { xs: 1.4, sm: 2, md: 2, lg: 2.5 },
+            height: { xs: "auto", sm: "auto", md: "calc(100vh - 160px)" },
+            minHeight: { xs: "220px", sm: "280px", md: "auto" },
           }}
         >
           <MKBox
             sx={{
               position: "relative",
               width: "100%",
-              maxWidth: { xs: "100%", sm: "98%", md: "95%", lg: "92%" },
-              ml: { xs: 0, sm: 2, md: 4, lg: 5 },
-              aspectRatio: "16/9",
-              borderRadius: { xs: "20px", sm: "24px", md: "28px", lg: "32px" },
+              maxWidth: { xs: "92%", sm: "94%", md: "95%", lg: "92%" },
+              ml: { xs: 0, sm: 0, md: 4, lg: 5 },
+              aspectRatio: { xs: "4/3", sm: "4/3", md: "16/9" },
+              maxHeight: { xs: "260px", sm: "320px", md: "none" },
+              borderRadius: { xs: "16px", sm: "20px", md: "28px", lg: "32px" },
               overflow: "hidden",
               boxShadow:
                 "0 30px 100px rgba(0, 0, 0, 0.7), 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 0 4px rgba(255, 255, 255, 0.5) inset, 0 0 0 2px rgba(0, 0, 0, 0.2)",
@@ -197,7 +201,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 bottom: 0,
                 left: 0,
                 right: 0,
-                height: { xs: "25%", sm: "25%", md: "25%", lg: "25%" },
+                height: { xs: "20%", sm: "22%", md: "25%", lg: "25%" },
                 background:
                   "linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.95) 30%, rgba(0, 0, 0, 0.7) 60%, transparent)",
                 zIndex: 2,
@@ -247,34 +251,45 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
 
         {/* Text section - right */}
         <MKBox
-          flex={{ xs: 1, md: "0 0 50%" }}
-          width={{ xs: "100%", md: "50%" }}
+          flex={{ xs: "0 0 auto", sm: "0 0 auto", md: "0 0 45%" }}
+          width={{ xs: "100%", sm: "100%", md: "45%" }}
           display="flex"
           flexDirection="column"
           justifyContent="center"
-          alignItems={{ xs: "center", md: "flex-start" }}
+          alignItems={{ xs: "center", sm: "center", md: "flex-start" }}
           sx={{
             position: "relative",
             zIndex: 10,
-            padding: { xs: 1, sm: 1.5, md: 1.8, lg: 2 },
-            height: { xs: "auto", md: "calc(100vh - 100px)" },
-            maxHeight: { xs: "none", md: "calc(100vh - 100px)" },
+            padding: { xs: 1.1, sm: 1.5, md: 1.6, lg: 1.8 },
+            paddingX: { xs: 1.8, sm: 2.1, md: 1.8, lg: 2 },
+            height: { xs: "auto", sm: "auto", md: "calc(100vh - 160px)" },
+            maxHeight: { xs: "none", sm: "none", md: "none" },
+            minHeight: { xs: "auto", sm: "auto", md: "fit-content" },
+            overflow: { xs: "visible", sm: "visible", md: "visible" },
           }}
         >
           <MKBox
             sx={{
               position: "relative",
               zIndex: 10,
-              padding: { xs: 1.2, sm: 1.4, md: 1.6, lg: 1.8 },
-              borderRadius: { xs: "16px", sm: "20px", md: "24px", lg: "28px" },
+              padding: { xs: 1.3, sm: 1.7, md: 1.6, lg: 1.8 },
+              paddingTop: { xs: 1.6, sm: 2, md: 1.8, lg: 2 },
+              paddingBottom: { xs: 1.3, sm: 1.7, md: 1.6, lg: 1.8 },
+              borderRadius: { xs: "16px", sm: "18px", md: "24px", lg: "28px" },
               backgroundColor: "rgba(255, 255, 255, 0.95)",
               backdropFilter: "blur(30px)",
               boxShadow:
                 "0 20px 60px rgba(0, 0, 0, 0.2), 0 10px 30px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.95)",
-              border: "3px solid rgba(255, 255, 255, 0.9)",
-              maxWidth: { xs: "100%", sm: "96%", md: "92%", lg: "90%" },
-              mx: { xs: "auto", md: 0 },
+              border: {
+                xs: "2px solid rgba(255, 255, 255, 0.9)",
+                sm: "2px solid rgba(255, 255, 255, 0.9)",
+                md: "3px solid rgba(255, 255, 255, 0.9)",
+              },
+              maxWidth: { xs: "100%", sm: "95%", md: "92%", lg: "90%" },
+              mx: { xs: "auto", sm: "auto", md: 0 },
               width: "100%",
+              overflow: "visible",
+              minHeight: { xs: "auto", sm: "auto", md: "fit-content" },
             }}
           >
             <MKTypography
@@ -282,33 +297,38 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               fontWeight="bold"
               sx={{
                 fontSize: {
-                  xs: "1.25rem",
-                  sm: "1.45rem",
-                  md: "1.65rem",
-                  lg: "1.85rem",
-                  xl: "2rem",
+                  xs: "1.1rem",
+                  sm: "1.3rem",
+                  md: "1.5rem",
+                  lg: "1.7rem",
+                  xl: "1.9rem",
                 },
-                mb: { xs: 0.8, sm: 1, md: 1.2, lg: 1.4 },
+                mt: { xs: 0, sm: 0, md: 0 },
+                mb: { xs: 0.6, sm: 0.8, md: 1, lg: 1.2 },
                 color: "#1A1A1A",
-                lineHeight: { xs: 1.35, sm: 1.4, md: 1.45, lg: 1.5 },
+                lineHeight: { xs: 1.3, sm: 1.35, md: 1.4, lg: 1.45 },
                 wordWrap: "break-word",
                 overflowWrap: "break-word",
                 fontWeight: 500,
-                letterSpacing: { xs: "0.15px", sm: "0.2px", md: "0.25px", lg: "0.3px" },
+                letterSpacing: { xs: "0.1px", sm: "0.15px", md: "0.2px", lg: "0.25px" },
                 fontFamily: '"Pacifico", "Flix", "Roboto", "Helvetica", "Arial", sans-serif',
                 borderBottom: "3px solid #4FA953",
-                paddingBottom: { xs: 0.4, sm: 0.6, md: 0.8, lg: 1 },
+                paddingBottom: { xs: 0.3, sm: 0.5, md: 0.7, lg: 0.9 },
+                paddingTop: { xs: 0, sm: 0, md: 0 },
                 display: "inline-block",
                 width: "100%",
-                textAlign: { xs: "center", md: "left" },
+                textAlign: { xs: "center", sm: "center", md: "left" },
                 position: "relative",
+                overflow: "visible",
+                boxSizing: "border-box",
                 "&::after": {
                   content: '""',
                   position: "absolute",
                   bottom: "-4px",
-                  left: 0,
-                  width: "60px",
-                  height: "4px",
+                  left: { xs: "50%", sm: "50%", md: 0 },
+                  transform: { xs: "translateX(-50%)", sm: "translateX(-50%)", md: "none" },
+                  width: { xs: "80px", sm: "100px", md: "60px" },
+                  height: { xs: "3px", sm: "3px", md: "4px" },
                   backgroundColor: "#4FA953",
                   borderRadius: "2px",
                 },
@@ -320,18 +340,19 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               variant="h5"
               sx={{
                 fontSize: {
-                  xs: "0.82rem",
-                  sm: "0.9rem",
-                  md: "0.96rem",
-                  lg: "1.02rem",
-                  xl: "1.08rem",
+                  xs: "0.72rem",
+                  sm: "0.8rem",
+                  md: "0.88rem",
+                  lg: "0.95rem",
+                  xl: "1rem",
                 },
-                mb: { xs: 0.8, sm: 1, md: 1.2, lg: 1.4 },
+                mb: { xs: 0.55, sm: 0.8, md: 1, lg: 1.2 },
                 color: "#2A2A2A",
                 fontWeight: "600",
-                lineHeight: { xs: 1.5, sm: 1.6, md: 1.7 },
+                lineHeight: { xs: 1.35, sm: 1.45, md: 1.6 },
                 wordWrap: "break-word",
                 overflowWrap: "break-word",
+                textAlign: { xs: "center", sm: "center", md: "left" },
                 fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
               }}
             >
@@ -341,17 +362,18 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               variant="body1"
               sx={{
                 fontSize: {
-                  xs: "0.78rem",
-                  sm: "0.82rem",
-                  md: "0.88rem",
-                  lg: "0.94rem",
-                  xl: "0.98rem",
+                  xs: "0.7rem",
+                  sm: "0.76rem",
+                  md: "0.84rem",
+                  lg: "0.9rem",
+                  xl: "0.94rem",
                 },
-                mb: { xs: 1.2, sm: 1.5, md: 1.8, lg: 2 },
+                mb: { xs: 0.9, sm: 1.1, md: 1.4, lg: 1.6 },
                 color: "#333333",
-                lineHeight: { xs: 1.6, sm: 1.65, md: 1.7, lg: 1.75 },
+                lineHeight: { xs: 1.5, sm: 1.55, md: 1.65, lg: 1.7 },
                 wordWrap: "break-word",
                 overflowWrap: "break-word",
+                textAlign: { xs: "center", sm: "center", md: "left" },
                 fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
               }}
             >
@@ -360,11 +382,12 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             <MKButton
               variant="contained"
               color="success"
+              fullWidth={{ xs: true, sm: false, md: false }}
               sx={{
-                px: { xs: 2.2, sm: 2.6, md: 3, lg: 3.2 },
-                py: { xs: 0.7, sm: 0.9, md: 1.0, lg: 1.1 },
+                px: { xs: 3, sm: 2.6, md: 3, lg: 3.2 },
+                py: { xs: 1, sm: 0.9, md: 1.0, lg: 1.1 },
                 fontSize: {
-                  xs: "0.78rem",
+                  xs: "0.85rem",
                   sm: "0.82rem",
                   md: "0.88rem",
                   lg: "0.92rem",
@@ -374,14 +397,18 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 letterSpacing: "0.5px",
                 backgroundColor: "#4FA953",
                 color: "white",
-                borderRadius: "12px",
+                borderRadius: { xs: "10px", sm: "12px", md: "12px" },
                 boxShadow: "0 8px 24px rgba(79, 169, 83, 0.4), 0 4px 12px rgba(79, 169, 83, 0.25)",
                 "& > *": {
                   color: "white",
                 },
                 "&:hover": {
                   backgroundColor: "#3d8a41",
-                  transform: "translateY(-3px)",
+                  transform: {
+                    xs: "translateY(-2px)",
+                    sm: "translateY(-3px)",
+                    md: "translateY(-3px)",
+                  },
                   boxShadow:
                     "0 12px 32px rgba(79, 169, 83, 0.5), 0 6px 16px rgba(79, 169, 83, 0.35)",
                   "& > *": {
