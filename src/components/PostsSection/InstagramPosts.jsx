@@ -28,20 +28,41 @@ const InstagramPosts = ({ postsPerSlide = 3, totalPosts = 6, className = "" }) =
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        // Call the secure Netlify Function instead of Instagram API directly
-        const url = `/.netlify/functions/instagram-posts?limit=${totalPosts}`;
+        // Determine the correct function URL based on environment
+        // In local dev with netlify dev: http://localhost:8888/.netlify/functions/instagram-posts
+        // In production: /.netlify/functions/instagram-posts
+        const isLocalDev =
+          window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+        const functionUrl = isLocalDev
+          ? `http://localhost:8888/.netlify/functions/instagram-posts?limit=${totalPosts}`
+          : `/.netlify/functions/instagram-posts?limit=${totalPosts}`;
 
-        const response = await fetch(url, {
+        const response = await fetch(functionUrl, {
           method: "GET",
           headers: {
             Accept: "application/json",
           },
         });
 
+        // Check if response is actually JSON (not HTML error page)
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          await response.text(); // Consume the response to avoid memory leaks
+          throw new Error(
+            "Function not available. Please run 'netlify dev' instead of 'npm start' to test locally, or wait for deployment."
+          );
+        }
+
         const data = await response.json();
 
         if (data.error) {
-          setError(data.error.message || "Failed to fetch posts");
+          // Show more detailed error information
+          const errorMsg = data.error.message || "Failed to fetch posts";
+          const errorDetails = data.error.details
+            ? ` (Error Code: ${data.error.code || "unknown"})`
+            : "";
+          setError(`${errorMsg}${errorDetails}`);
+          console.error("Instagram API Error:", data.error);
           setPosts([]);
         } else if (data.data) {
           setPosts(data.data);
@@ -69,6 +90,44 @@ const InstagramPosts = ({ postsPerSlide = 3, totalPosts = 6, className = "" }) =
       month: "long",
       day: "numeric",
     });
+  };
+
+  // Format caption: bold text before @ and # terms
+  const formatCaption = (caption) => {
+    if (!caption) return "";
+
+    // Truncate if needed
+    const truncated = caption.length > 150 ? `${caption.substring(0, 150)}...` : caption;
+
+    // Find the first occurrence of @ or #
+    const atIndex = truncated.indexOf("@");
+    const hashIndex = truncated.indexOf("#");
+
+    // Find the earliest occurrence
+    let splitIndex = -1;
+    if (atIndex !== -1 && hashIndex !== -1) {
+      splitIndex = Math.min(atIndex, hashIndex);
+    } else if (atIndex !== -1) {
+      splitIndex = atIndex;
+    } else if (hashIndex !== -1) {
+      splitIndex = hashIndex;
+    }
+
+    // If no @ or # found, bold everything
+    if (splitIndex === -1) {
+      return <strong>{truncated}</strong>;
+    }
+
+    // Split at the first @ or #
+    const beforeText = truncated.substring(0, splitIndex).trim();
+    const afterText = truncated.substring(splitIndex);
+
+    return (
+      <>
+        {beforeText && <strong>{beforeText}</strong>}
+        {afterText}
+      </>
+    );
   };
 
   const totalSlides = postsPerSlide > 0 ? Math.ceil(posts.length / postsPerSlide) : 0;
@@ -138,11 +197,7 @@ const InstagramPosts = ({ postsPerSlide = 3, totalPosts = 6, className = "" }) =
                           </div>
                           <div className="post-content">
                             {post.caption && (
-                              <p className="post-caption">
-                                {post.caption.length > 150
-                                  ? `${post.caption.substring(0, 150)}...`
-                                  : post.caption}
-                              </p>
+                              <p className="post-caption">{formatCaption(post.caption)}</p>
                             )}
                             <div className="post-meta">
                               <span className="post-date">{formatDate(post.timestamp)}</span>

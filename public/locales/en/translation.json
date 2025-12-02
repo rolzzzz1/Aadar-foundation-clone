@@ -76,10 +76,16 @@
   "heroSection": {
     "ctaButton": "Help Today",
     "ctaButtonSlide2": "Support a Story",
-    "slide3": {
+    "slide2": {
       "title": "Mother Who Got Lost at Kumbh",
       "subtitle": "Reunited Through Compassion",
       "paragraph": "During the Kumbh Mela, 72-year-old Dadi Mayki was separated from her family and reached Gwalior. With the support of the Ghassmandi community and Aadar Foundation (Swarg Sadan Ashram), she received care and was finally reunited with her loved ones — a powerful reminder of hope and humanity.",
+      "readMore": "Read More"
+    },
+    "slide3": {
+      "title": "A Lost Child, Found Through Compassion",
+      "subtitle": "Story of Nirbhay",
+      "paragraph": "After getting separated from his father in Gwalior, Nirbhay was rescued by the Child Welfare Committee and brought to Swarg Sadan Ashram, where he received safety and care. During a visit, DSP Shri Santosh Patel shared his video on social media, and his family recognized him. They immediately came to Gwalior and took him home — a beautiful reunion made possible by the ashram's care and the DSP's compassionate effort.",
       "readMore": "Read More"
     }
   },

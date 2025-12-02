@@ -300,7 +300,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               minHeight: { xs: "auto", sm: "auto", md: "fit-content" },
             }}
           >
-            {/* Heading for slide 2 uses translations; slide 3 uses custom story text */}
+            {/* Slide 2 uses slide2 translations, Slide 3 uses slide3 translations */}
             <MKTypography
               variant="h2"
               fontWeight="bold"
@@ -343,8 +343,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 },
               }}
             >
-              {slideIndex === 2
-                ? "A Lost Child, Found Through Compassion"
+              {slideIndex === 1
+                ? homePage.heroSection.slide2.title
                 : homePage.heroSection.slide3.title}
             </MKTypography>
             <MKTypography
@@ -367,7 +367,9 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
               }}
             >
-              {slideIndex === 2 ? "Story of Nirbhay" : homePage.heroSection.slide3.subtitle}
+              {slideIndex === 1
+                ? homePage.heroSection.slide2.subtitle
+                : homePage.heroSection.slide3.subtitle}
             </MKTypography>
             <MKTypography
               variant="body1"
@@ -388,8 +390,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
               }}
             >
-              {slideIndex === 2
-                ? "After getting separated from his father in Gwalior, Nirbhay was rescued by the Child Welfare Committee and brought to Swarg Sadan Ashram, where he received safety and care. During a visit, DSP Shri Santosh Patel shared his video on social media, and his family recognized him. They immediately came to Gwalior and took him home — a beautiful reunion made possible by the ashram’s care and the DSP’s compassionate effort."
+              {slideIndex === 1
+                ? homePage.heroSection.slide2.paragraph
                 : homePage.heroSection.slide3.paragraph}
             </MKTypography>
             <MKButton
