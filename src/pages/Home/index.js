@@ -46,8 +46,10 @@ import heroImage2 from "assets/images/aboutPageImages/main1.jpg";
 
 // Video for slide 2 (Kumbh story - Dadi Mayki) and slide 3 (Nirbhay story)
 // Videos are loaded from Cloudinary CDN
-const maykiVideo = "https://res.cloudinary.com/ds07nbwgq/video/upload/v1764692316/Mayki_v8ewvq.mp4";
-const nirbhayVideo = "https://res.cloudinary.com/ds07nbwgq/video/upload/v1764692322/Nirbhay_ei8puy.mp4";
+const maykiVideo =
+  "https://res.cloudinary.com/ds07nbwgq/video/upload/v1764692316/Mayki_v8ewvq.mp4";
+const nirbhayVideo =
+  "https://res.cloudinary.com/ds07nbwgq/video/upload/v1764692322/Nirbhay_ei8puy.mp4";
 
 function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex }) {
   const { t } = useTranslation();
