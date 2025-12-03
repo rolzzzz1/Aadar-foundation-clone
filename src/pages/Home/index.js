@@ -62,6 +62,9 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
   const videoRef = useRef(null);
   const [isMuted, setIsMuted] = useState(true);
 
+  // Treat very small screens as mobile (we hide hero videos there)
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 576;
+
   const toggleMute = () => {
     if (videoRef.current) {
       videoRef.current.muted = !videoRef.current.muted;
@@ -74,6 +77,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
     if (
       !videoRef.current ||
       !isActive ||
+      isMobile ||
       !(slideIndex === 1 || slideIndex === 2 || slideIndex === 3)
     ) {
       return;
@@ -193,165 +197,170 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
           }}
         />
 
-        {/* Video section - left */}
-        <MKBox
-          flex={{ xs: "0 0 auto", sm: "0 0 auto", md: "0 0 55%" }}
-          width={{ xs: "100%", sm: "100%", md: "55%" }}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          sx={{
-            position: "relative",
-            zIndex: 5,
-            padding: { xs: 1, sm: 1.5, md: 2, lg: 2.5 },
-            paddingX: { xs: 1.4, sm: 2, md: 2, lg: 2.5 },
-            height: { xs: "auto", sm: "auto", md: "calc(100vh - 160px)" },
-            minHeight: { xs: "220px", sm: "280px", md: "auto" },
-          }}
-        >
+        {/* Video section - left (hidden on small screens) */}
+        {!isMobile && (
           <MKBox
+            flex={{ xs: "0 0 auto", sm: "0 0 auto", md: "0 0 55%" }}
+            width={{ xs: "100%", sm: "100%", md: "55%" }}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
             sx={{
               position: "relative",
-              width: "100%",
-              maxWidth: { xs: "92%", sm: "94%", md: "95%", lg: "92%" },
-              ml: { xs: 0, sm: 0, md: 4, lg: 5 },
-              aspectRatio: { xs: "4/3", sm: "4/3", md: "16/9" },
-              maxHeight: { xs: "260px", sm: "320px", md: "none" },
-              borderRadius: { xs: "18px", sm: "22px", md: "28px", lg: "32px" },
-              overflow: "hidden",
-              padding: { xs: "2px", sm: "3px", md: "4px", lg: "4px" },
-              background:
-                "linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(241, 188, 102, 0.9))",
-              boxShadow: "0 26px 80px rgba(0, 0, 0, 0.65), 0 14px 32px rgba(0, 0, 0, 0.6)",
-              transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-              "&::before": {
-                content: '""',
-                position: "absolute",
-                inset: 0,
-                borderRadius: "inherit",
-                border: "1px solid rgba(255, 255, 255, 0.65)",
-                pointerEvents: "none",
-                zIndex: 2,
-              },
-              "&:hover": {
-                transform: "translateY(-6px) scale(1.02)",
-                boxShadow: "0 34px 110px rgba(0, 0, 0, 0.8), 0 18px 44px rgba(0, 0, 0, 0.7)",
-              },
+              zIndex: 5,
+              padding: { xs: 1, sm: 1.2, md: 2, lg: 2.5 },
+              paddingX: { xs: 1.4, sm: 1.8, md: 2, lg: 2.5 },
+              height: { xs: "auto", sm: "auto", md: "calc(100vh - 160px)" },
+              minHeight: { xs: "220px", sm: "240px", md: "auto" },
             }}
           >
-            <video
-              key={`video-${slideIndex}`}
-              ref={videoRef}
-              autoPlay
-              loop
-              muted={isMuted}
-              playsInline
-              preload="auto"
-              poster={heroImage2}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                objectPosition: "center 15%",
-                backgroundColor: "#000",
-                display: "block",
-              }}
-              onError={(e) => {
-                // Fallback to image if video fails to load
-                e.target.style.display = "none";
-                const img = document.createElement("img");
-                img.src = heroImage2;
-                img.style.width = "100%";
-                img.style.height = "100%";
-                img.style.objectFit = "cover";
-                e.target.parentElement.appendChild(img);
-              }}
-            >
-              <source
-                src={
-                  slideIndex === 1
-                    ? maykiVideo
-                    : slideIndex === 2
-                    ? nirbhayVideo
-                    : slide4Video || nirbhayVideo
-                }
-                type="video/mp4"
-              />
-              Your browser does not support the video tag.
-            </video>
-
-            {/* Bottom overlay to hide text */}
             <MKBox
               sx={{
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                right: 0,
-                height: { xs: "20%", sm: "22%", md: "25%", lg: "25%" },
+                position: "relative",
+                width: "100%",
+                maxWidth: { xs: "92%", sm: "75%", md: "95%", lg: "92%" },
+                ml: { xs: 0, sm: 0, md: 4, lg: 5 },
+                aspectRatio: { xs: "4/3", sm: "4/3", md: "16/9" },
+                maxHeight: { xs: "260px", sm: "240px", md: "none" },
+                borderRadius: { xs: "18px", sm: "22px", md: "28px", lg: "32px" },
+                overflow: "hidden",
+                padding: { xs: "2px", sm: "2px", md: "4px", lg: "4px" },
                 background:
-                  "linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.95) 30%, rgba(0, 0, 0, 0.7) 60%, transparent)",
-                zIndex: 2,
-                pointerEvents: "none",
-              }}
-            />
-
-            <IconButton
-              onClick={toggleMute}
-              sx={{
-                position: "absolute",
-                bottom: { xs: "12px", sm: "16px", md: "20px", lg: "24px" },
-                right: { xs: "12px", sm: "16px", md: "20px", lg: "24px" },
-                backgroundColor: "rgba(0, 0, 0, 0.75)",
-                color: "white",
-                zIndex: 3,
-                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.5)",
-                backdropFilter: "blur(8px)",
-                "&:hover": {
-                  backgroundColor: "rgba(0, 0, 0, 0.9)",
-                  transform: "scale(1.1)",
+                  "linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(241, 188, 102, 0.9))",
+                boxShadow: "0 26px 80px rgba(0, 0, 0, 0.65), 0 14px 32px rgba(0, 0, 0, 0.6)",
+                transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                "&::before": {
+                  content: '""',
+                  position: "absolute",
+                  inset: 0,
+                  borderRadius: "inherit",
+                  border: "1px solid rgba(255, 255, 255, 0.65)",
+                  pointerEvents: "none",
+                  zIndex: 2,
                 },
-                width: { xs: "42px", sm: "46px", md: "50px", lg: "54px" },
-                height: { xs: "42px", sm: "46px", md: "50px", lg: "54px" },
-                transition: "all 0.3s ease",
+                "&:hover": {
+                  transform: "translateY(-6px) scale(1.02)",
+                  boxShadow: "0 34px 110px rgba(0, 0, 0, 0.8), 0 18px 44px rgba(0, 0, 0, 0.7)",
+                },
               }}
-              aria-label={isMuted ? "Unmute video" : "Mute video"}
             >
-              {isMuted ? (
-                <VolumeOffIcon
-                  sx={{
-                    fontSize: { xs: "24px", sm: "26px", md: "28px", lg: "30px" },
-                    color: "#FFFFFF",
-                  }}
+              <video
+                key={`video-${slideIndex}`}
+                ref={videoRef}
+                autoPlay
+                loop
+                muted={isMuted}
+                playsInline
+                preload="auto"
+                poster={heroImage2}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  objectPosition: "center 15%",
+                  backgroundColor: "#000",
+                  display: "block",
+                }}
+                onError={(e) => {
+                  // Fallback to image if video fails to load
+                  e.target.style.display = "none";
+                  const img = document.createElement("img");
+                  img.src = heroImage2;
+                  img.style.width = "100%";
+                  img.style.height = "100%";
+                  img.style.objectFit = "cover";
+                  e.target.parentElement.appendChild(img);
+                }}
+              >
+                <source
+                  src={
+                    slideIndex === 1
+                      ? maykiVideo
+                      : slideIndex === 2
+                      ? nirbhayVideo
+                      : slide4Video || nirbhayVideo
+                  }
+                  type="video/mp4"
                 />
-              ) : (
-                <VolumeUpIcon
-                  sx={{
-                    fontSize: { xs: "24px", sm: "26px", md: "28px", lg: "30px" },
-                    color: "#FFFFFF",
-                  }}
-                />
-              )}
-            </IconButton>
+                Your browser does not support the video tag.
+              </video>
+
+              {/* Bottom overlay to hide text */}
+              <MKBox
+                sx={{
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  height: { xs: "20%", sm: "22%", md: "25%", lg: "25%" },
+                  background:
+                    "linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.95) 30%, rgba(0, 0, 0, 0.7) 60%, transparent)",
+                  zIndex: 2,
+                  pointerEvents: "none",
+                }}
+              />
+
+              <IconButton
+                onClick={toggleMute}
+                sx={{
+                  position: "absolute",
+                  bottom: { xs: "12px", sm: "16px", md: "20px", lg: "24px" },
+                  right: { xs: "12px", sm: "16px", md: "20px", lg: "24px" },
+                  backgroundColor: "rgba(0, 0, 0, 0.75)",
+                  color: "white",
+                  zIndex: 3,
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.5)",
+                  backdropFilter: "blur(8px)",
+                  "&:hover": {
+                    backgroundColor: "rgba(0, 0, 0, 0.9)",
+                    transform: "scale(1.1)",
+                  },
+                  width: { xs: "42px", sm: "46px", md: "50px", lg: "54px" },
+                  height: { xs: "42px", sm: "46px", md: "50px", lg: "54px" },
+                  transition: "all 0.3s ease",
+                }}
+                aria-label={isMuted ? "Unmute video" : "Mute video"}
+              >
+                {isMuted ? (
+                  <VolumeOffIcon
+                    sx={{
+                      fontSize: { xs: "24px", sm: "26px", md: "28px", lg: "30px" },
+                      color: "#FFFFFF",
+                    }}
+                  />
+                ) : (
+                  <VolumeUpIcon
+                    sx={{
+                      fontSize: { xs: "24px", sm: "26px", md: "28px", lg: "30px" },
+                      color: "#FFFFFF",
+                    }}
+                  />
+                )}
+              </IconButton>
+            </MKBox>
           </MKBox>
-        </MKBox>
+        )}
 
         {/* Text section - right */}
         <MKBox
           flex={{ xs: "0 0 auto", sm: "0 0 auto", md: "0 0 45%" }}
-          width={{ xs: "100%", sm: "100%", md: "45%" }}
+          width={{ xs: "100%", sm: "80%", md: "45%" }}
           display="flex"
           flexDirection="column"
-          justifyContent="center"
+          justifyContent={isMobile ? "center" : { xs: "center", sm: "center", md: "center" }}
           alignItems={{ xs: "center", sm: "center", md: "flex-start" }}
           sx={{
             position: "relative",
             zIndex: 10,
             padding: { xs: 1.1, sm: 1.5, md: 1.6, lg: 1.8 },
             paddingX: { xs: 1.8, sm: 2.1, md: 1.8, lg: 2 },
-            height: { xs: "auto", sm: "auto", md: "calc(100vh - 160px)" },
+            paddingTop: { xs: isMobile ? 0 : 1.1, sm: 1.5, md: 1.6, lg: 1.8 },
+            height: { xs: isMobile ? "100vh" : "auto", sm: "auto", md: "calc(100vh - 160px)" },
             maxHeight: { xs: "none", sm: "none", md: "none" },
-            minHeight: { xs: "auto", sm: "auto", md: "fit-content" },
+            minHeight: { xs: isMobile ? "100vh" : "auto", sm: "auto", md: "fit-content" },
             overflow: { xs: "visible", sm: "visible", md: "visible" },
+            mx: { xs: "auto", sm: "auto", md: 0 },
+            mb: { xs: 0, sm: 3, md: 2, lg: 2.5 },
           }}
         >
           <MKBox
@@ -372,7 +381,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
                 sm: "2px solid rgba(255, 255, 255, 0.9)",
                 md: "3px solid rgba(255, 255, 255, 0.9)",
               },
-              maxWidth: { xs: "100%", sm: "95%", md: "92%", lg: "90%" },
+              maxWidth: { xs: "100%", sm: "85%", md: "92%", lg: "90%" },
               mx: { xs: "auto", sm: "auto", md: 0 },
               width: "100%",
               overflow: "visible",
@@ -385,48 +394,41 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
               (slideIndex === 3 &&
                 homePage.heroSection.slide4 &&
                 homePage.heroSection.slide4.youtubeUrl)) && (
-              <Tooltip title="Watch on YouTube" arrow placement="left">
-                <MKBox
-                  component="a"
-                  href={
-                    slideIndex === 1
-                      ? homePage.heroSection.slide2.youtubeUrl
-                      : slideIndex === 2
-                      ? homePage.heroSection.slide3.youtubeUrl
-                      : homePage.heroSection.slide4.youtubeUrl
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Watch on YouTube"
+              <MKBox
+                component="a"
+                href={
+                  slideIndex === 1
+                    ? homePage.heroSection.slide2.youtubeUrl
+                    : slideIndex === 2
+                    ? homePage.heroSection.slide3.youtubeUrl
+                    : homePage.heroSection.slide4.youtubeUrl
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Watch on YouTube"
+                sx={{
+                  position: "absolute",
+                  // Align vertically with the story heading
+                  top: { xs: "20px", sm: "22px", md: "24px", lg: "26px" },
+                  right: { xs: "10px", sm: "12px", md: "14px", lg: "16px" },
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#FF0000",
+                  textDecoration: "none",
+                  opacity: 0.9,
+                  zIndex: 50,
+                  pointerEvents: "auto",
+                }}
+              >
+                <YouTubeIcon
                   sx={{
-                    position: "absolute",
-                    // Align vertically with the story heading
-                    top: { xs: "20px", sm: "22px", md: "24px", lg: "26px" },
-                    right: { xs: "10px", sm: "12px", md: "14px", lg: "16px" },
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#FF0000",
-                    textDecoration: "none",
-                    opacity: 0.7,
-                    zIndex: 11,
-                    "&:hover": {
-                      color: "#CC0000",
-                      opacity: 1,
-                      transform: "scale(1.1)",
-                    },
-                    transition: "all 0.3s ease",
+                    fontSize: { xs: "22px", sm: "22px", md: "24px", lg: "26px" },
+                    width: { xs: "22px", sm: "22px", md: "24px", lg: "26px" },
+                    height: { xs: "22px", sm: "22px", md: "24px", lg: "26px" },
                   }}
-                >
-                  <YouTubeIcon
-                    sx={{
-                      fontSize: { xs: "20px", sm: "22px", md: "24px", lg: "26px" },
-                      width: { xs: "20px", sm: "22px", md: "24px", lg: "26px" },
-                      height: { xs: "20px", sm: "22px", md: "24px", lg: "26px" },
-                    }}
-                  />
-                </MKBox>
-              </Tooltip>
+                />
+              </MKBox>
             )}
             {/* Slide 2 uses slide2 translations, Slide 3 uses slide3 translations */}
             <MKTypography
@@ -434,11 +436,11 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
               fontWeight="bold"
               sx={{
                 fontSize: {
-                  xs: "0.95rem",
-                  sm: "1.1rem",
-                  md: "1.3rem",
-                  lg: "1.5rem",
-                  xl: "1.7rem",
+                  xs: "0.85rem",
+                  sm: "0.95rem",
+                  md: "1.1rem",
+                  lg: "1.25rem",
+                  xl: "1.4rem",
                 },
                 mt: { xs: 0, sm: 0, md: 0 },
                 mb: { xs: 0.6, sm: 0.8, md: 1, lg: 1.2 },
@@ -481,11 +483,11 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
               variant="h5"
               sx={{
                 fontSize: {
-                  xs: "0.72rem",
-                  sm: "0.8rem",
-                  md: "0.88rem",
-                  lg: "0.95rem",
-                  xl: "1rem",
+                  xs: "0.65rem",
+                  sm: "0.72rem",
+                  md: "0.78rem",
+                  lg: "0.85rem",
+                  xl: "0.9rem",
                 },
                 mb: { xs: 0.55, sm: 0.8, md: 1, lg: 1.2 },
                 color: "#2A2A2A",
@@ -646,6 +648,9 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
           alignItems="center"
           position="relative"
           zIndex={2}
+          sx={{
+            mb: { xs: 10, sm: 0 },
+          }}
         >
           <MKBox
             component="img"
@@ -896,6 +901,29 @@ function Home() {
 
       {/* Hero Carousel */}
       <MKBox sx={{ position: "relative" }}>
+        {/* Custom styles for carousel navigation arrows - blur on hover/click */}
+        <style>
+          {`
+            /* Target carousel navigation buttons */
+            .MuiIconButton-root[aria-label*="Next"]:hover,
+            .MuiIconButton-root[aria-label*="Previous"]:hover,
+            button[aria-label*="Next"]:hover,
+            button[aria-label*="Previous"]:hover {
+              background-color: rgba(255, 255, 255, 0.2) !important;
+              backdrop-filter: blur(8px) !important;
+              -webkit-backdrop-filter: blur(8px) !important;
+            }
+            .MuiIconButton-root[aria-label*="Next"]:active,
+            .MuiIconButton-root[aria-label*="Previous"]:active,
+            button[aria-label*="Next"]:active,
+            button[aria-label*="Previous"]:active {
+              background-color: rgba(255, 255, 255, 0.3) !important;
+              backdrop-filter: blur(10px) !important;
+              -webkit-backdrop-filter: blur(10px) !important;
+            }
+          `}
+        </style>
+
         {/* Pause/Play hero slider (small button near indicators) */}
         <Tooltip
           title={isCarouselPaused ? "Click for next story" : "Click to hold story"}
@@ -981,16 +1009,39 @@ function Home() {
           }}
           navButtonsProps={{
             style: {
-              backgroundColor: "rgba(255, 255, 255, 0.3)",
-              backdropFilter: "blur(5px)",
-              opacity: 0.7,
+              backgroundColor: "transparent",
+              backdropFilter: "none",
+              opacity: 0.9,
               borderRadius: "50%",
-              width: "40px",
-              height: "40px",
+              width: "44px",
+              height: "44px",
+              transition: "all 0.3s ease",
             },
           }}
-          NextIcon={<span style={{ color: "white", fontSize: "1.5rem" }}>›</span>}
-          PrevIcon={<span style={{ color: "white", fontSize: "1.5rem" }}>‹</span>}
+          NextIcon={
+            <span
+              style={{
+                color: "white",
+                fontSize: "1.9rem",
+                fontWeight: "700",
+                textShadow: "0 3px 10px rgba(0, 0, 0, 0.8)",
+              }}
+            >
+              ›
+            </span>
+          }
+          PrevIcon={
+            <span
+              style={{
+                color: "white",
+                fontSize: "1.9rem",
+                fontWeight: "700",
+                textShadow: "0 3px 10px rgba(0, 0, 0, 0.8)",
+              }}
+            >
+              ‹
+            </span>
+          }
         >
           {heroSlides.map((slide, index) => (
             <HeroSlide

@@ -27,8 +27,8 @@ function WhoWeAre() {
         variant="h3"
         py={5}
         fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
-        fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
-        sx={{ letterSpacing: "0.05rem" }}
+        fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+        sx={{ letterSpacing: "0.05rem", fontWeight: 500 }}
       >
         {aboutUsPage.whoWeAreSection.title}
       </MKTypography>

@@ -251,7 +251,7 @@ function Volunteer() {
             color="white"
             textAlign="center"
             ml={-2}
-            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
             fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
             mb={{ xs: 1, sm: 0 }}
           >

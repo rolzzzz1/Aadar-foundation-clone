@@ -83,10 +83,20 @@ function HorizontalTeamCard({
             pl={{ xs: 3, lg: 1 }}
             lineHeight={1}
           >
-            <MKTypography variant="h6" fontSize={{ xs: "0.8rem", sm: "1.1rem" }}>
+            <MKTypography
+              variant="h6"
+              fontSize={{ xs: "0.8rem", sm: "1.1rem" }}
+              fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+              sx={{ fontWeight: 500, letterSpacing: "0.05rem" }}
+            >
               {name.split(" ")[0]}
             </MKTypography>
-            <MKTypography variant="h6" fontSize={{ xs: "0.8rem", sm: "1.1rem" }}>
+            <MKTypography
+              variant="h6"
+              fontSize={{ xs: "0.8rem", sm: "1.1rem" }}
+              fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+              sx={{ fontWeight: 500, letterSpacing: "0.05rem" }}
+            >
               {name.split(" ")[1]}
             </MKTypography>
             <MKTypography
