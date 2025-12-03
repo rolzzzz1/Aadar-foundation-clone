@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 // react-router components
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
@@ -19,12 +20,18 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 
 export default function App() {
   const { pathname } = useLocation();
+  const { i18n } = useTranslation();
 
   // Setting page scroll to 0 when changing the route
   useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
+
+  // Set HTML lang attribute based on current language
+  useEffect(() => {
+    document.documentElement.lang = i18n.language || "en";
+  }, [i18n.language]);
 
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {

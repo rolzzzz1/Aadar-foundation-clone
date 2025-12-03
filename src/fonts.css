@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700;800&display=swap");
 
 /* Ensure consistent scaling across environments */
 html {
@@ -13,5 +14,16 @@ body {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Apply Mukta font for Hindi translations */
+html[lang="hi"] body {
+  font-family: '"Mukta", "Lato", "Helvetica", "Arial", sans-serif';
+}
+
+/* Apply Mukta to typography components for Hindi */
+html[lang="hi"] .MuiTypography-root,
+html[lang="hi"] .MKTypography-root {
+  font-family: '"Mukta", "Lato", "Helvetica", "Arial", sans-serif';
 }
 

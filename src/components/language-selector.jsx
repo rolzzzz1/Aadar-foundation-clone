@@ -13,8 +13,10 @@ const LanguageSelector = () => {
     // document.body.dir = i18n.dir();
     if (i18n.language === "hi") {
       setChecked(true);
+      document.documentElement.lang = "hi";
     } else {
       setChecked(false);
+      document.documentElement.lang = "en";
     }
   }, [i18n, i18n.language]);
 

@@ -26,9 +26,9 @@ function Work() {
       pb={2}
       sx={{ backgroundColor: "#f0f2f5" }}
       borderRadius={"10px"}
-      mx={-2}
+      mx={0}
     >
-      <Container my={0} py={0}>
+      <Container my={0} py={0} sx={{ px: { xs: 1, sm: 2, md: 2 } }}>
         <Grid container>
           <Grid
             item

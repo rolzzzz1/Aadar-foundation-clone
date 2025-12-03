@@ -1,7 +1,7 @@
 .instagram-posts-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 10px;
 }
 
 .config-section {
@@ -250,7 +250,7 @@
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 60px;
+  padding: 0 20px;
   box-sizing: border-box;
 }
 
@@ -440,11 +440,19 @@
   .carousel-slide {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .carousel-container {
+    padding: 0 15px;
+  }
 }
 
 @media (max-width: 768px) {
   .carousel-slide {
     grid-template-columns: 1fr;
+  }
+
+  .carousel-container {
+    padding: 0 10px;
   }
 
   .carousel-btn {
