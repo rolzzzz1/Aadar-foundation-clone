@@ -548,12 +548,13 @@ function About(props) {
               <MKTypography
                 mx="auto"
                 paddingTop="60px"
-                sx={{ letterSpacing: "0.05rem", fontWeight: "500" }}
+                fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                sx={{ letterSpacing: "0.05rem", fontWeight: 500 }}
                 width="80%"
                 textAlign="center"
                 fontSize={{ xs: "0.9rem", md: "1.1rem" }}
               >
-                <b>{aboutUsPage.ourWorkSection.keyAspectsSection.description3}</b>
+                {aboutUsPage.ourWorkSection.keyAspectsSection.description3}
               </MKTypography>
               <Grid container lg={12} mt={6} display="flex" justifyContent="center" my={4}>
                 <Grid sm={6} md={6} lg={4} px={2} display="flex" justifyContent="center">

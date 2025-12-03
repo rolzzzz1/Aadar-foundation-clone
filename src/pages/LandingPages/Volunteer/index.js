@@ -285,9 +285,9 @@ function Volunteer() {
               >
                 <MKTypography
                   variant="h3"
-                  fontSize={{ xs: "1.2rem", sm: "1.5rem" }}
-                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
-                  sx={{ letterSpacing: "0.05rem", fontWeight: "500" }}
+                  fontSize={{ xs: "1.5rem", sm: "1.75rem", md: "1.875rem", lg: "1.875rem" }}
+                  fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                  sx={{ letterSpacing: "0.05rem", fontWeight: 500 }}
                   pb={{ xs: 2, sm: 4 }}
                 >
                   {volunteerPage.title}

@@ -114,13 +114,20 @@ function Contact() {
                   mb: { xs: 8, md: 8, lg: 0 },
                 }}
               >
-                <MKTypography variant="h4" sx={{ fontWeight: "500" }} pb={4}>
+                <MKTypography
+                  variant="h4"
+                  fontSize={{ xs: "1.5rem", sm: "1.75rem", md: "1.875rem", lg: "1.875rem" }}
+                  fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                  sx={{ fontWeight: "500" }}
+                  pb={4}
+                >
                   {contactPage.title}
                 </MKTypography>
                 <MKTypography
                   variant="body1"
                   paddingTop="15px"
                   fontSize="1.2rem"
+                  fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
                   sx={{ fontWeight: "600" }}
                 >
                   {contactPage.address.label}
@@ -134,6 +141,7 @@ function Contact() {
                   variant="body1"
                   paddingTop="15px"
                   fontSize="1.2rem"
+                  fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
                   sx={{ fontWeight: "600" }}
                 >
                   {contactPage.phoneNumber.label}
@@ -146,6 +154,7 @@ function Contact() {
                   variant="body1"
                   paddingTop="15px"
                   fontSize="1.2rem"
+                  fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
                   sx={{ fontWeight: "600" }}
                 >
                   {contactPage.emailLabel}
@@ -166,6 +175,7 @@ function Contact() {
                   <MKTypography
                     fontSize="1.3rem"
                     textAlign={{ xs: "center", sm: "left" }}
+                    fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
                     sx={{ fontWeight: "600" }}
                   >
                     {contactPage.followUs}

@@ -114,13 +114,13 @@ function WhoWeAre() {
           <MKTypography
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
-            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
-            sx={{ letterSpacing: "0.05rem", fontWeight: "500" }}
+            fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+            sx={{ letterSpacing: "0.05rem", fontWeight: 500 }}
             textAlign="center"
             mx={"auto"}
             width="80%"
           >
-            <b>{aboutUsPage.whoWeAreSection.description5}</b>
+            {aboutUsPage.whoWeAreSection.description5}
           </MKTypography>
         </Grid>
       </Grid>
