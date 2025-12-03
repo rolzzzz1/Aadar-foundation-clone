@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 import "./InstagramPosts.css";
 
 /**
@@ -20,6 +21,7 @@ import "./InstagramPosts.css";
  * />
  */
 const InstagramPosts = ({ postsPerSlide = 3, totalPosts = 6, className = "" }) => {
+  const { t } = useTranslation();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -213,7 +215,7 @@ const InstagramPosts = ({ postsPerSlide = 3, totalPosts = 6, className = "" }) =
                                   rel="noopener noreferrer"
                                   className="post-link"
                                 >
-                                  View on Instagram →
+                                  {t("homePage.postsSection.viewOnInstagram")} →
                                 </a>
                               )}
                             </div>
