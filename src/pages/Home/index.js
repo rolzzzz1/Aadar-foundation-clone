@@ -1,5 +1,6 @@
 // @mui material components
 import Card from "@mui/material/Card";
+import Tooltip from "@mui/material/Tooltip";
 import Carousel from "react-material-ui-carousel";
 import { Link } from "react-router-dom";
 import { useState, useRef } from "react";
@@ -36,6 +37,7 @@ import aadarHindiYellow from "assets/images/aadarHindiYellow.png";
 import IconButton from "@mui/material/IconButton";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import YouTubeIcon from "@mui/icons-material/YouTube";
 
 // Story back background - using public folder to avoid SVG processing issues
 import PropTypes from "prop-types";
@@ -311,6 +313,49 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               minHeight: { xs: "auto", sm: "auto", md: "fit-content" },
             }}
           >
+            {/* YouTube icon link - positioned in top-right corner, for slide 2 and slide 3 */}
+            {((slideIndex === 1 && homePage.heroSection.slide2.youtubeUrl) ||
+              (slideIndex === 2 && homePage.heroSection.slide3.youtubeUrl)) && (
+              <Tooltip title="Watch on YouTube" arrow placement="left">
+                <MKBox
+                  component="a"
+                  href={
+                    slideIndex === 1
+                      ? homePage.heroSection.slide2.youtubeUrl
+                      : homePage.heroSection.slide3.youtubeUrl
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Watch on YouTube"
+                  sx={{
+                    position: "absolute",
+                    top: { xs: "8px", sm: "10px", md: "12px", lg: "14px" },
+                    right: { xs: "8px", sm: "10px", md: "12px", lg: "14px" },
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#FF0000",
+                    textDecoration: "none",
+                    opacity: 0.7,
+                    zIndex: 11,
+                    "&:hover": {
+                      color: "#CC0000",
+                      opacity: 1,
+                      transform: "scale(1.1)",
+                    },
+                    transition: "all 0.3s ease",
+                  }}
+                >
+                  <YouTubeIcon
+                    sx={{
+                      fontSize: { xs: "20px", sm: "22px", md: "24px", lg: "26px" },
+                      width: { xs: "20px", sm: "22px", md: "24px", lg: "26px" },
+                      height: { xs: "20px", sm: "22px", md: "24px", lg: "26px" },
+                    }}
+                  />
+                </MKBox>
+              </Tooltip>
+            )}
             {/* Slide 2 uses slide2 translations, Slide 3 uses slide3 translations */}
             <MKTypography
               variant="h2"
@@ -393,7 +438,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                   xl: "0.94rem",
                 },
                 mb: { xs: 0.9, sm: 1.1, md: 1.4, lg: 1.6 },
-                color: "#333333",
+                color: slideIndex === 1 ? "#555555" : "#333333",
                 lineHeight: { xs: 1.5, sm: 1.55, md: 1.65, lg: 1.7 },
                 wordWrap: "break-word",
                 overflowWrap: "break-word",
