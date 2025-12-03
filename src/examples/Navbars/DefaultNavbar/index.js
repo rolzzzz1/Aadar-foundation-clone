@@ -695,7 +695,7 @@ function DefaultNavbar({
                   xl: "1.25rem",
                 }}
                 lineHeight={1.25}
-                fontFamily='"Pacifico", "Flix", "Roboto", "Helvetica", "Arial", sans-serif'
+                fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
               >
                 {navbar.title}
               </MKTypography>
@@ -828,19 +828,42 @@ function DefaultNavbar({
                       size="small"
                       sx={{
                         textTransform: "none",
-                        fontWeight: "bold",
-                        letterSpacing: "0.5px",
+                        fontWeight: 700,
+                        letterSpacing: { xs: "0.3px", md: "0.5px", lg: "0.6px" },
+                        borderRadius: { xs: "10px", md: "12px", lg: "14px" },
+                        transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                        position: "relative",
+                        overflow: "hidden",
                         ...(action.color === "success"
                           ? {
                               backgroundColor: "#4FA953",
                               color: "white",
-                              padding: { xs: "6px 16px", md: "8px 20px", lg: "10px 24px" },
-                              fontSize: { xs: "0.875rem", md: "0.95rem", lg: "1rem" },
-                              boxShadow: "0 4px 12px rgba(79, 169, 83, 0.4)",
+                              padding: { xs: "6px 14px", md: "8px 20px", lg: "10px 24px" },
+                              fontSize: { xs: "0.8rem", md: "0.85rem", lg: "0.95rem" },
+                              boxShadow:
+                                "0 6px 20px rgba(79, 169, 83, 0.35), 0 3px 10px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+                              "&::before": {
+                                content: '""',
+                                position: "absolute",
+                                top: 0,
+                                left: "-100%",
+                                width: "100%",
+                                height: "100%",
+                                background:
+                                  "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)",
+                                transition: "left 0.5s ease",
+                              },
                               "&:hover": {
                                 backgroundColor: "#3d8a41",
-                                boxShadow: "0 6px 16px rgba(79, 169, 83, 0.5)",
-                                transform: "translateY(-1px)",
+                                boxShadow:
+                                  "0 10px 30px rgba(79, 169, 83, 0.5), 0 5px 15px rgba(79, 169, 83, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15)",
+                                transform: "translateY(-2px) scale(1.02)",
+                                "&::before": {
+                                  left: "100%",
+                                },
+                              },
+                              "&:active": {
+                                transform: "translateY(0px) scale(0.98)",
                               },
                             }
                           : {}),
@@ -865,19 +888,42 @@ function DefaultNavbar({
                       size="small"
                       sx={{
                         textTransform: "none",
-                        fontWeight: "bold",
-                        letterSpacing: "0.5px",
+                        fontWeight: 700,
+                        letterSpacing: { xs: "0.3px", md: "0.5px", lg: "0.6px" },
+                        borderRadius: { xs: "10px", md: "12px", lg: "14px" },
+                        transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                        position: "relative",
+                        overflow: "hidden",
                         ...(action.color === "success"
                           ? {
                               backgroundColor: "#4FA953",
                               color: "white",
-                              padding: { xs: "6px 16px", md: "8px 20px", lg: "10px 24px" },
-                              fontSize: { xs: "0.875rem", md: "0.95rem", lg: "1rem" },
-                              boxShadow: "0 4px 12px rgba(79, 169, 83, 0.4)",
+                              padding: { xs: "6px 14px", md: "8px 20px", lg: "10px 24px" },
+                              fontSize: { xs: "0.8rem", md: "0.85rem", lg: "0.95rem" },
+                              boxShadow:
+                                "0 6px 20px rgba(79, 169, 83, 0.35), 0 3px 10px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+                              "&::before": {
+                                content: '""',
+                                position: "absolute",
+                                top: 0,
+                                left: "-100%",
+                                width: "100%",
+                                height: "100%",
+                                background:
+                                  "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)",
+                                transition: "left 0.5s ease",
+                              },
                               "&:hover": {
                                 backgroundColor: "#3d8a41",
-                                boxShadow: "0 6px 16px rgba(79, 169, 83, 0.5)",
-                                transform: "translateY(-1px)",
+                                boxShadow:
+                                  "0 10px 30px rgba(79, 169, 83, 0.5), 0 5px 15px rgba(79, 169, 83, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15)",
+                                transform: "translateY(-2px) scale(1.02)",
+                                "&::before": {
+                                  left: "100%",
+                                },
+                              },
+                              "&:active": {
+                                transform: "translateY(0px) scale(0.98)",
                               },
                             }
                           : {}),

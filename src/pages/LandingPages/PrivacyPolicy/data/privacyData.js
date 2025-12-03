@@ -26,7 +26,7 @@ export default function privacyData() {
           mt={{ xs: 0, sm: 2 }}
           variant="body1"
           fontSize={{ xs: "0.8rem", md: "1rem" }}
-          fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+          fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
             paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
@@ -38,7 +38,7 @@ export default function privacyData() {
           mt={{ xs: 0, sm: 3 }}
           variant="body1"
           fontSize="1rem"
-          fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+          fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
             paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "0px" },
@@ -48,7 +48,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
               paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
@@ -62,7 +62,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "0.8rem", md: "1rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
             }}
@@ -73,7 +73,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "0.8rem", md: "1rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
             }}
@@ -84,7 +84,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "0.8rem", md: "1rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
             }}
@@ -96,7 +96,7 @@ export default function privacyData() {
           mt={3}
           variant="body1"
           fontSize="1rem"
-          fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+          fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
           }}
@@ -105,7 +105,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
               paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
@@ -118,7 +118,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "0.8rem", md: "1rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
             }}
@@ -139,7 +139,7 @@ export default function privacyData() {
           mt={3}
           variant="body1"
           fontSize={{ xs: "0.8rem", md: "1rem" }}
-          fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+          fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
           }}
@@ -148,7 +148,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
               paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
@@ -161,7 +161,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "0.8rem", md: "1rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
             }}
@@ -180,7 +180,7 @@ export default function privacyData() {
           mt={3}
           variant="body1"
           fontSize={{ xs: "0.8rem", md: "1rem" }}
-          fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+          fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
           }}
@@ -189,7 +189,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
               paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
@@ -202,7 +202,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "0.8rem", md: "1rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
             }}
@@ -214,7 +214,7 @@ export default function privacyData() {
           mt={3}
           variant="body1"
           fontSize="1rem"
-          fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+          fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
           }}
@@ -223,7 +223,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
               paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
@@ -236,7 +236,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "0.8rem", md: "1rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
             }}
@@ -247,7 +247,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "0.8rem", md: "1rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
             }}
@@ -258,7 +258,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "0.8rem", md: "1rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
             }}
@@ -269,7 +269,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "0.8rem", md: "1rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
             }}
@@ -281,7 +281,7 @@ export default function privacyData() {
           mt={3}
           variant="body1"
           fontSize="1rem"
-          fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+          fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
           }}
@@ -290,7 +290,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
               paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
@@ -303,7 +303,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "0.8rem", md: "1rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
             }}
@@ -315,7 +315,7 @@ export default function privacyData() {
           mt={3}
           variant="body1"
           fontSize="1rem"
-          fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+          fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
           }}
@@ -324,7 +324,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
               paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
@@ -337,7 +337,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "0.8rem", md: "1rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
             }}
@@ -348,7 +348,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "0.8rem", md: "1rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
             }}
@@ -359,7 +359,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "0.8rem", md: "1rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
             }}

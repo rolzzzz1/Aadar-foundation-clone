@@ -43,10 +43,10 @@ function Work() {
             <MKTypography
               variant="h3"
               sx={{ fontWeight: "500" }}
-              fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+              fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
               fontSize={{ xs: "1.5rem", sm: "1.5rem", md: "1.75rem", lg: "1.875rem" }}
             >
-              <b>{postsSection.title}</b>
+              {postsSection.title}
             </MKTypography>
           </Grid>
         </Grid>

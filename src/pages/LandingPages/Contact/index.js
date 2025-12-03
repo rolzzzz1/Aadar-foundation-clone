@@ -82,7 +82,7 @@ function Contact() {
             color="white"
             textAlign="center"
             ml={-2}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
             mb={{ xs: 1, sm: 0 }}
           >

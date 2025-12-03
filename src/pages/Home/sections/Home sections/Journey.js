@@ -108,7 +108,7 @@ function Journey() {
             <MKBox mb={{ xs: 2, sm: 2.5, md: 3 }} px={{ xs: 1, sm: 2, md: 2 }}>
               <MKTypography
                 variant="h3"
-                fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
                 sx={{
                   letterSpacing: "0.05rem",
                   fontSize: {

@@ -87,7 +87,7 @@ function Donate() {
             color="white"
             textAlign="center"
             ml={-2}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
             mb={{ xs: 1, sm: 0 }}
           >
@@ -152,7 +152,7 @@ function Donate() {
                     <MKTypography
                       variant="body1"
                       fontSize={{ xs: "0.8rem", md: "1rem" }}
-                      fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                      fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
                       sx={{
                         letterSpacing: "0.05rem",
                         paddingTop: { xs: "40px", sm: "40px", md: "20px", lg: "0px" },

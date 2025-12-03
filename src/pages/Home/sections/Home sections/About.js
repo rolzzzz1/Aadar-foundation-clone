@@ -16,23 +16,6 @@ import MKTypography from "components/MKTypography";
 import aboutImg from "assets/images/ourWorkImages/aboutImg.webp";
 
 function About() {
-  const cardActionStyles = {
-    display: "flex",
-    alignItems: "center",
-    width: "max-content",
-    fontSize: { md: "0.75rem", lg: "0.87rem" },
-
-    "& .material-icons, .material-icons-round,": {
-      transform: `translateX(2px)`,
-      transition: "transform 0.2s cubic-bezier(0.34,1.61,0.7,1.3)",
-    },
-
-    "&:hover .material-icons, &:focus .material-icons, &:hover .material-icons-round, &:focus .material-icons-round":
-      {
-        transform: `translateX(6px)`,
-      },
-  };
-
   const { t } = useTranslation();
   const homePage = t("homePage");
 
@@ -68,18 +51,18 @@ function About() {
           <Container sx={{ margin: "20px 1px", padding: "10px 20px" }}>
             <MKTypography
               variant="h3"
-              fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+              fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
               sx={{
                 letterSpacing: "0.05rem",
                 fontSize: { xs: "1.3rem", sm: "1.3rem", md: "1.75rem", lg: "1.875rem" },
-                fontWeight: "600",
+                fontWeight: "500",
               }}
             >
               {homePage.aboutSection.title}
             </MKTypography>
             <MKTypography
               variant="h5"
-              fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+              fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
               sx={{
                 letterSpacing: "0.05rem",
                 fontSize: { xs: "0.8rem", sm: "0.8rem", md: "1rem", lg: "1.25rem" },
@@ -113,18 +96,51 @@ function About() {
               <b>{homePage.aboutSection.description2}</b>
             </MKTypography>
 
-            <MKBox mt={2}>
+            <MKBox mt={2.5}>
               <MKTypography
                 component={Link}
                 to={"/pages/landing-pages/about-us"}
                 variant="body2"
-                fontWeight="regular"
-                color={"success"}
-                textTransform="capitalize"
-                sx={cardActionStyles}
+                fontWeight="700"
+                textTransform="none"
+                sx={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 0.75,
+                  color: "#4FA953",
+                  textDecoration: "none",
+                  fontSize: { xs: "0.9rem", sm: "0.95rem", md: "1rem", lg: "1.05rem" },
+                  fontWeight: "700",
+                  position: "relative",
+                  transition: "all 0.3s ease",
+                  "&::after": {
+                    content: '""',
+                    position: "absolute",
+                    bottom: "-2px",
+                    left: 0,
+                    width: "0%",
+                    height: "2px",
+                    backgroundColor: "#4FA953",
+                    transition: "width 0.3s ease",
+                  },
+                  "&:hover": {
+                    color: "#3d8a41",
+                    "&::after": {
+                      width: "100%",
+                    },
+                    "& .material-icons": {
+                      transform: "translateX(4px)",
+                    },
+                  },
+                  "& .material-icons": {
+                    fontSize: { xs: "1.2rem", sm: "1.3rem", md: "1.4rem" },
+                    transition: "transform 0.3s ease",
+                    marginLeft: "2px",
+                  },
+                }}
               >
                 {homePage.aboutSection.btn}
-                <Icon sx={{ fontWeight: "bold" }}>arrow_forward</Icon>
+                <Icon>arrow_forward</Icon>
               </MKTypography>
             </MKBox>
           </Container>

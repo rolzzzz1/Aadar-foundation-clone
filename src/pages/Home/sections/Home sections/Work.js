@@ -41,8 +41,8 @@ function Work() {
             <MKTypography
               variant="h3"
               fontSize={{ xs: "1.5rem", sm: "1.5rem", md: "1.75rem", lg: "1.875rem" }}
-              fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
-              sx={{ fontWeight: "600" }}
+              fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+              sx={{ fontWeight: "500" }}
             >
               {homePage.workSection.title}
             </MKTypography>

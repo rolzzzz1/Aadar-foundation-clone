@@ -26,7 +26,7 @@ export default function termsData() {
           mt={2}
           variant="body1"
           fontSize={{ xs: "0.8rem", md: "1rem" }}
-          fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+          fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
           }}
@@ -38,7 +38,7 @@ export default function termsData() {
             mt={2}
             variant="body1"
             fontSize={{ xs: "0.8rem", md: "1rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
             }}
@@ -49,7 +49,7 @@ export default function termsData() {
                   mt={1}
                   variant="body1"
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
-                  fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
                   sx={{
                     letterSpacing: "0.05rem",
                   }}
@@ -62,7 +62,7 @@ export default function termsData() {
                   mt={1}
                   variant="body1"
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
-                  fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
                   sx={{
                     letterSpacing: "0.05rem",
                   }}
@@ -75,7 +75,7 @@ export default function termsData() {
                   mt={1}
                   variant="body1"
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
-                  fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
                   sx={{
                     letterSpacing: "0.05rem",
                   }}
@@ -88,7 +88,7 @@ export default function termsData() {
                   mt={1}
                   variant="body1"
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
-                  fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
                   sx={{
                     letterSpacing: "0.05rem",
                   }}
@@ -101,7 +101,7 @@ export default function termsData() {
                   mt={1}
                   variant="body1"
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
-                  fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
                   sx={{
                     letterSpacing: "0.05rem",
                   }}
@@ -114,7 +114,7 @@ export default function termsData() {
                   mt={1}
                   variant="body1"
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
-                  fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
                   sx={{
                     letterSpacing: "0.05rem",
                   }}
@@ -127,7 +127,7 @@ export default function termsData() {
                   mt={1}
                   variant="body1"
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
-                  fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
                   sx={{
                     letterSpacing: "0.05rem",
                   }}
@@ -140,7 +140,7 @@ export default function termsData() {
                   mt={1}
                   variant="body1"
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
-                  fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
                   sx={{
                     letterSpacing: "0.05rem",
                   }}
@@ -153,7 +153,7 @@ export default function termsData() {
                   mt={1}
                   variant="body1"
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
-                  fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
                   sx={{
                     letterSpacing: "0.05rem",
                   }}
@@ -166,7 +166,7 @@ export default function termsData() {
                   mt={1}
                   variant="body1"
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
-                  fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
                   sx={{
                     letterSpacing: "0.05rem",
                   }}
@@ -179,7 +179,7 @@ export default function termsData() {
                   mt={1}
                   variant="body1"
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
-                  fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
                   sx={{
                     letterSpacing: "0.05rem",
                   }}
@@ -193,7 +193,7 @@ export default function termsData() {
             mt={2}
             variant="body1"
             fontSize={{ xs: "0.8rem", md: "1rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
             }}

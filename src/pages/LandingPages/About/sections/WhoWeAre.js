@@ -27,7 +27,7 @@ function WhoWeAre() {
         variant="h3"
         py={5}
         fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
-        fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+        fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
         sx={{ letterSpacing: "0.05rem" }}
       >
         {aboutUsPage.whoWeAreSection.title}
@@ -48,7 +48,7 @@ function WhoWeAre() {
           <MKTypography
             variant="body1"
             fontSize={{ xs: "0.8rem", md: "1rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
               paddingTop: { xs: "40px", sm: "40px", md: "40px", lg: "0px" },
@@ -61,7 +61,7 @@ function WhoWeAre() {
       <MKTypography
         variant="body1"
         fontSize={{ xs: "0.9rem", md: "1.1rem" }}
-        fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+        fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
         paddingTop="40px"
         paddingBottom="30px"
         sx={{ letterSpacing: "0.05rem" }}
@@ -77,7 +77,7 @@ function WhoWeAre() {
           <MKTypography
             variant="body1"
             fontSize={{ xs: "0.8rem", md: "1rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             paddingTop="10px"
             sx={{ letterSpacing: "0.05rem" }}
           >
@@ -86,7 +86,7 @@ function WhoWeAre() {
           <MKTypography
             variant="body1"
             fontSize={{ xs: "0.8rem", md: "1rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             paddingTop="10px"
             sx={{ letterSpacing: "0.05rem" }}
           >
@@ -114,7 +114,7 @@ function WhoWeAre() {
           <MKTypography
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{ letterSpacing: "0.05rem", fontWeight: "500" }}
             textAlign="center"
             mx={"auto"}

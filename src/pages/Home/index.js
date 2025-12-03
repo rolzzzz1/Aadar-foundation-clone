@@ -362,11 +362,11 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               fontWeight="bold"
               sx={{
                 fontSize: {
-                  xs: "1.1rem",
-                  sm: "1.3rem",
-                  md: "1.5rem",
-                  lg: "1.7rem",
-                  xl: "1.9rem",
+                  xs: "0.95rem",
+                  sm: "1.1rem",
+                  md: "1.3rem",
+                  lg: "1.5rem",
+                  xl: "1.7rem",
                 },
                 mt: { xs: 0, sm: 0, md: 0 },
                 mb: { xs: 0.6, sm: 0.8, md: 1, lg: 1.2 },
@@ -376,7 +376,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 overflowWrap: "break-word",
                 fontWeight: 500,
                 letterSpacing: { xs: "0.1px", sm: "0.15px", md: "0.2px", lg: "0.25px" },
-                fontFamily: '"Pacifico", "Flix", "Roboto", "Helvetica", "Arial", sans-serif',
+                fontFamily: '"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif',
                 borderBottom: "3px solid #4FA953",
                 paddingBottom: { xs: 0.3, sm: 0.5, md: 0.7, lg: 0.9 },
                 paddingTop: { xs: 0, sm: 0, md: 0 },
@@ -415,12 +415,13 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 },
                 mb: { xs: 0.55, sm: 0.8, md: 1, lg: 1.2 },
                 color: "#2A2A2A",
-                fontWeight: "600",
+                fontWeight: "500",
                 lineHeight: { xs: 1.35, sm: 1.45, md: 1.6 },
                 wordWrap: "break-word",
                 overflowWrap: "break-word",
                 textAlign: { xs: "center", sm: "center", md: "left" },
-                fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+                fontFamily: '"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif',
+                letterSpacing: { xs: "0.5px", sm: "0.7px", md: "0.9px", lg: "1.1px" },
               }}
             >
               {slideIndex === 1
@@ -438,12 +439,15 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                   xl: "0.94rem",
                 },
                 mb: { xs: 0.9, sm: 1.1, md: 1.4, lg: 1.6 },
-                color: slideIndex === 1 ? "#555555" : "#333333",
+                color: "#555555",
                 lineHeight: { xs: 1.5, sm: 1.55, md: 1.65, lg: 1.7 },
                 wordWrap: "break-word",
                 overflowWrap: "break-word",
                 textAlign: { xs: "center", sm: "center", md: "left" },
-                fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+                fontFamily:
+                  slideIndex === 1
+                    ? '"Lato", "Helvetica", "Arial", sans-serif'
+                    : '"Lato", "Helvetica", "Arial", sans-serif',
               }}
             >
               {slideIndex === 1
@@ -455,35 +459,65 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               color="success"
               fullWidth={{ xs: true, sm: false, md: false }}
               sx={{
-                px: { xs: 3, sm: 2.6, md: 3, lg: 3.2 },
-                py: { xs: 1, sm: 0.9, md: 1.0, lg: 1.1 },
+                px: { xs: 3.5, sm: 3.2, md: 3.5, lg: 4 },
+                py: { xs: 1.1, sm: 1, md: 1.2, lg: 1.3 },
                 fontSize: {
-                  xs: "0.85rem",
-                  sm: "0.82rem",
-                  md: "0.88rem",
-                  lg: "0.92rem",
+                  xs: "0.9rem",
+                  sm: "0.88rem",
+                  md: "0.95rem",
+                  lg: "1rem",
                 },
                 textTransform: "none",
                 fontWeight: 700,
-                letterSpacing: "0.5px",
+                letterSpacing: { xs: "0.3px", sm: "0.4px", md: "0.5px", lg: "0.6px" },
                 backgroundColor: "#4FA953",
                 color: "white",
-                borderRadius: { xs: "10px", sm: "12px", md: "12px" },
-                boxShadow: "0 8px 24px rgba(79, 169, 83, 0.4), 0 4px 12px rgba(79, 169, 83, 0.25)",
+                borderRadius: { xs: "12px", sm: "14px", md: "16px" },
+                boxShadow:
+                  "0 10px 30px rgba(79, 169, 83, 0.35), 0 5px 15px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                position: "relative",
+                overflow: "hidden",
+                "&::before": {
+                  content: '""',
+                  position: "absolute",
+                  top: 0,
+                  left: "-100%",
+                  width: "100%",
+                  height: "100%",
+                  background:
+                    "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)",
+                  transition: "left 0.5s ease",
+                },
                 "& > *": {
                   color: "white",
+                  position: "relative",
+                  zIndex: 1,
                 },
                 "&:hover": {
                   backgroundColor: "#3d8a41",
                   transform: {
-                    xs: "translateY(-2px)",
-                    sm: "translateY(-3px)",
-                    md: "translateY(-3px)",
+                    xs: "translateY(-3px) scale(1.02)",
+                    sm: "translateY(-4px) scale(1.02)",
+                    md: "translateY(-4px) scale(1.02)",
                   },
                   boxShadow:
-                    "0 12px 32px rgba(79, 169, 83, 0.5), 0 6px 16px rgba(79, 169, 83, 0.35)",
+                    "0 15px 40px rgba(79, 169, 83, 0.5), 0 8px 20px rgba(79, 169, 83, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15)",
+                  "&::before": {
+                    left: "100%",
+                  },
                   "& > *": {
                     color: "white",
+                  },
+                  "& .button-arrow": {
+                    transform: "translateX(4px)",
+                  },
+                },
+                "&:active": {
+                  transform: {
+                    xs: "translateY(-1px) scale(0.98)",
+                    sm: "translateY(-2px) scale(0.98)",
+                    md: "translateY(-2px) scale(0.98)",
                   },
                 },
               }}
@@ -497,7 +531,9 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                   display: "inline-block",
                   color: "white",
                   fontWeight: 700,
+                  transition: "transform 0.3s ease",
                 }}
+                className="button-arrow"
               >
                 {" >>"}
               </span>
@@ -617,7 +653,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             color="white"
             textAlign="center"
             ml={-2}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{ fontSize: { xs: "1.5rem", sm: "1.7rem", md: "2rem", lg: "2rem" } }}
           >
             <MKBox
@@ -639,7 +675,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             mt={2}
             ml={-2}
             display="inline-block"
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{ fontSize: { xs: "0.9rem", sm: "0.9rem", md: "1.1rem", lg: "1.3rem" } }}
           >
             {homePage.tagLine1} <br /> {homePage.tagLine2}

@@ -251,7 +251,7 @@ function Volunteer() {
             color="white"
             textAlign="center"
             ml={-2}
-            fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
             mb={{ xs: 1, sm: 0 }}
           >
@@ -286,7 +286,7 @@ function Volunteer() {
                 <MKTypography
                   variant="h3"
                   fontSize={{ xs: "1.2rem", sm: "1.5rem" }}
-                  fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
                   sx={{ letterSpacing: "0.05rem", fontWeight: "500" }}
                   pb={{ xs: 2, sm: 4 }}
                 >
@@ -302,7 +302,7 @@ function Volunteer() {
                     width: { xs: "100%", sm: "80%", md: "80%", lg: "100%" },
                   }}
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
-                  fontFamily='"Roboto", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
                   my={2}
                 ></MKBox>
                 <MKTypography variant="body1" fontSize="0.9rem" pt={2}>
