@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import Tooltip from "@mui/material/Tooltip";
 import Carousel from "react-material-ui-carousel";
 import { Link } from "react-router-dom";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 // i18next imports
 import { useTranslation } from "react-i18next";
@@ -38,6 +38,8 @@ import IconButton from "@mui/material/IconButton";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import YouTubeIcon from "@mui/icons-material/YouTube";
+import PauseIcon from "@mui/icons-material/Pause";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
 // Story back background - using public folder to avoid SVG processing issues
 import PropTypes from "prop-types";
@@ -46,11 +48,12 @@ import PropTypes from "prop-types";
 import blackAndWhiteHero from "assets/images/mainThemeImages/aadar-main-black2.png";
 import heroImage2 from "assets/images/aboutPageImages/main1.jpg";
 
-// Video for slide 2 (Kumbh story - Dadi Mayki) and slide 3 (Nirbhay story)
+// Video for slide 2 (Kumbh story - Dadi Mayki), slide 3 (Nirbhay story), and slide 4
 // Videos are loaded from Cloudinary CDN
 const maykiVideo = "https://res.cloudinary.com/ds07nbwgq/video/upload/v1764692316/Mayki_v8ewvq.mp4";
 const nirbhayVideo =
   "https://res.cloudinary.com/ds07nbwgq/video/upload/v1764692322/Nirbhay_ei8puy.mp4";
+const slide4Video = "https://res.cloudinary.com/ds07nbwgq/video/upload/v1764760343/Baba_p4tnj9.mp4"; // Add your video link here for slide 4
 
 function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex }) {
   const { t } = useTranslation();
@@ -65,6 +68,36 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
       setIsMuted(videoRef.current.muted);
     }
   };
+
+  // Ensure video plays when its slide becomes active
+  useEffect(() => {
+    if (!videoRef.current || !(slideIndex === 1 || slideIndex === 2 || slideIndex === 3)) return;
+
+    const video = videoRef.current;
+
+    const tryPlay = async () => {
+      try {
+        await video.play();
+      } catch (error) {
+        console.log("Video autoplay prevented:", error);
+      }
+    };
+
+    if (video.readyState >= 2) {
+      // Video has enough data to begin playback
+      tryPlay();
+    } else {
+      const handleLoadedData = () => {
+        tryPlay();
+      };
+
+      video.addEventListener("loadeddata", handleLoadedData, { once: true });
+
+      return () => {
+        video.removeEventListener("loadeddata", handleLoadedData);
+      };
+    }
+  }, [slideIndex]);
 
   // Use the same special layout for slide 2, slide 3, and slide 4
   if (slideIndex === 1 || slideIndex === 2 || slideIndex === 3) {
@@ -185,6 +218,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             }}
           >
             <video
+              key={`video-${slideIndex}`}
               ref={videoRef}
               autoPlay
               loop
@@ -211,7 +245,16 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                 e.target.parentElement.appendChild(img);
               }}
             >
-              <source src={slideIndex === 1 ? maykiVideo : nirbhayVideo} type="video/mp4" />
+              <source
+                src={
+                  slideIndex === 1
+                    ? maykiVideo
+                    : slideIndex === 2
+                    ? nirbhayVideo
+                    : slide4Video || nirbhayVideo
+                }
+                type="video/mp4"
+              />
               Your browser does not support the video tag.
             </video>
 
@@ -335,8 +378,9 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
                   aria-label="Watch on YouTube"
                   sx={{
                     position: "absolute",
-                    top: { xs: "8px", sm: "10px", md: "12px", lg: "14px" },
-                    right: { xs: "8px", sm: "10px", md: "12px", lg: "14px" },
+                    // Align vertically with the story heading
+                    top: { xs: "20px", sm: "22px", md: "24px", lg: "26px" },
+                    right: { xs: "10px", sm: "12px", md: "14px", lg: "16px" },
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -733,6 +777,28 @@ function Home() {
   const homePage = t("homePage");
   const ctaButtonText = t("homePage.heroSection.ctaButton");
 
+  // State to let user pause/resume hero slider
+  const [isCarouselPaused, setIsCarouselPaused] = useState(false);
+
+  // Refs for preloader videos
+  const maykiPreloaderRef = useRef(null);
+  const nirbhayPreloaderRef = useRef(null);
+  const slide4PreloaderRef = useRef(null);
+
+  // Force all videos to start loading immediately on mount
+  useEffect(() => {
+    // Force load all preloader videos
+    if (maykiPreloaderRef.current) {
+      maykiPreloaderRef.current.load();
+    }
+    if (nirbhayPreloaderRef.current) {
+      nirbhayPreloaderRef.current.load();
+    }
+    if (slide4PreloaderRef.current) {
+      slide4PreloaderRef.current.load();
+    }
+  }, []);
+
   // Hero slides (slide 2, slide 3, and slide 4 share the same special video layout)
   const heroSlides = [
     { image: blackAndWhiteHero },
@@ -758,6 +824,7 @@ function Home() {
       {/* Hidden video preloader - starts loading videos immediately */}
       {/* Videos are loaded from public folder or CDN - may not be available in build */}
       <video
+        ref={maykiPreloaderRef}
         preload="auto"
         style={{
           position: "absolute",
@@ -772,6 +839,7 @@ function Home() {
         <source src={maykiVideo} type="video/mp4" />
       </video>
       <video
+        ref={nirbhayPreloaderRef}
         preload="auto"
         style={{
           position: "absolute",
@@ -785,21 +853,108 @@ function Home() {
       >
         <source src={nirbhayVideo} type="video/mp4" />
       </video>
+      {slide4Video && (
+        <video
+          ref={slide4PreloaderRef}
+          preload="auto"
+          style={{
+            position: "absolute",
+            top: "-9999px",
+            left: "-9999px",
+            width: "1px",
+            height: "1px",
+            opacity: 0,
+            pointerEvents: "none",
+          }}
+        >
+          <source src={slide4Video} type="video/mp4" />
+        </video>
+      )}
 
       {/* Hero Carousel */}
-      <MKBox>
+      <MKBox sx={{ position: "relative" }}>
+        {/* Pause/Play hero slider (small button near indicators) */}
+        <Tooltip
+          title={isCarouselPaused ? "Click for next story" : "Click to hold story"}
+          arrow
+          placement="top"
+        >
+          <IconButton
+            onClick={() => setIsCarouselPaused((prev) => !prev)}
+            sx={{
+              position: "absolute",
+              bottom: "72px",
+              right: { xs: "16px", sm: "22px", md: "28px" },
+              zIndex: 6,
+              backgroundColor: "rgba(0, 0, 0, 0.28)",
+              color: "rgba(255, 255, 255, 0.6)",
+              backdropFilter: "blur(3px)",
+              boxShadow: "0 1px 4px rgba(0, 0, 0, 0.2)",
+              width: { xs: 26, sm: 28, md: 30 },
+              height: { xs: 26, sm: 28, md: 30 },
+              "&:hover": {
+                backgroundColor: "rgba(0, 0, 0, 0.6)",
+                color: "#ffffff",
+                transform: "scale(1.03)",
+              },
+              transition: "all 0.25s ease",
+            }}
+            aria-label={isCarouselPaused ? "Play slides" : "Pause slides"}
+          >
+            {isCarouselPaused ? (
+              <PlayArrowIcon sx={{ fontSize: { xs: 18, sm: 18, md: 20 } }} />
+            ) : (
+              <PauseIcon sx={{ fontSize: { xs: 18, sm: 18, md: 20 } }} />
+            )}
+          </IconButton>
+        </Tooltip>
+
         <Carousel
           animation="fade"
-          duration={600}
-          indicators={true}
+          duration={550}
+          indicators
           navButtonsAlwaysVisible={true}
           navButtonsAlwaysInvisible={false}
           cycleNavigation={true}
           fullHeightHover={false}
           swipe={true}
-          autoPlay={true}
-          interval={7000}
-          stopAutoPlayOnHover={true}
+          autoPlay={!isCarouselPaused}
+          interval={4500}
+          stopAutoPlayOnHover={false}
+          indicatorContainerProps={{
+            style: {
+              position: "absolute",
+              bottom: "72px",
+              left: "50%",
+              transform: "translateX(-50%)",
+              zIndex: 5,
+              display: "flex",
+              gap: 8,
+              paddingLeft: "24px",
+            },
+          }}
+          indicatorIconButtonProps={{
+            disableRipple: true,
+            style: {
+              padding: 4,
+              margin: 0,
+              color: "rgba(255, 255, 255, 0.45)",
+              border: "2px solid rgba(255, 255, 255, 0.45)",
+              width: 11,
+              height: 11,
+              opacity: 0.7,
+            },
+          }}
+          activeIndicatorIconButtonProps={{
+            style: {
+              color: "rgba(255, 255, 255, 0.9)",
+              backgroundColor: "rgba(255, 255, 255, 0.9)",
+              borderColor: "rgba(255, 255, 255, 0.9)",
+              width: 13,
+              height: 13,
+              opacity: 0.9,
+            },
+          }}
           navButtonsProps={{
             style: {
               backgroundColor: "rgba(255, 255, 255, 0.3)",
@@ -832,7 +987,7 @@ function Home() {
           p: 2,
           pb: { xs: 4, sm: 8 },
           mx: { xs: 2, lg: 3 },
-          mt: { xs: -4, sm: -6, md: -8 },
+          mt: { xs: -2, sm: -4, md: -6 },
           mb: { xs: 2, sm: 4 },
           position: "relative",
           zIndex: 10,
