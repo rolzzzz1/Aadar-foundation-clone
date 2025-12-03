@@ -77,7 +77,7 @@ export default {
       <MKTypography
         variant="button"
         fontWeight="regular"
-        fontSize="0.9rem"
+        fontSize="1rem"
         color="white"
         // width="55%"
         // sx={{ borderTop: "0.75px #A8A8A8 solid" }}
@@ -89,7 +89,7 @@ export default {
           <MKTypography
             variant="button"
             fontWeight="regular"
-            fontSize="0.9rem"
+            fontSize="1rem"
             color="white"
             pr={2}
           >

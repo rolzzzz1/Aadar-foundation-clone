@@ -77,7 +77,8 @@ function About() {
               mt={2}
               sx={{
                 letterSpacing: "0.05rem",
-                fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.85rem", lg: "0.87rem" },
+                fontSize: { xs: "0.8rem", sm: "0.85rem", md: "0.95rem", lg: "1rem" },
+                lineHeight: { xs: 1.6, sm: 1.65, md: 1.7, lg: 1.75 },
               }}
             >
               {homePage.aboutSection.description1}
@@ -86,11 +87,11 @@ function About() {
               variant="body1"
               paddingTop="10px"
               maxWidth="600px"
-              fontSize="0.9rem"
               sx={{
                 letterSpacing: "0.05rem",
-                fontSize: { md: "0.75rem", lg: "0.87rem" },
+                fontSize: { xs: "0.8rem", sm: "0.85rem", md: "0.95rem", lg: "1rem" },
                 fontWeight: "500",
+                lineHeight: { xs: 1.6, sm: 1.65, md: 1.7, lg: 1.75 },
               }}
             >
               <b>{homePage.aboutSection.description2}</b>

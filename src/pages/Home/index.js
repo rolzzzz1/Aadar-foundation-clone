@@ -66,8 +66,8 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
     }
   };
 
-  // Use the same special layout for slide 2 and slide 3 (duplicate of slide 2)
-  if (slideIndex === 1 || slideIndex === 2) {
+  // Use the same special layout for slide 2, slide 3, and slide 4
+  if (slideIndex === 1 || slideIndex === 2 || slideIndex === 3) {
     return (
       <MKBox
         display="flex"
@@ -294,8 +294,9 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               position: "relative",
               zIndex: 10,
               padding: { xs: 1.3, sm: 1.7, md: 1.6, lg: 1.8 },
-              paddingTop: { xs: 1.6, sm: 2, md: 1.8, lg: 2 },
+              paddingTop: { xs: 1.9, sm: 2.2, md: 2.1, lg: 2.3 },
               paddingBottom: { xs: 1.3, sm: 1.7, md: 1.6, lg: 1.8 },
+              paddingRight: { xs: 2.8, sm: 3.2, md: 3.4, lg: 3.6 },
               borderRadius: { xs: "16px", sm: "18px", md: "24px", lg: "28px" },
               backgroundColor: "rgba(255, 255, 255, 0.95)",
               backdropFilter: "blur(30px)",
@@ -313,16 +314,21 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
               minHeight: { xs: "auto", sm: "auto", md: "fit-content" },
             }}
           >
-            {/* YouTube icon link - positioned in top-right corner, for slide 2 and slide 3 */}
+            {/* YouTube icon link - positioned in top-right corner, for slide 2, slide 3, and slide 4 */}
             {((slideIndex === 1 && homePage.heroSection.slide2.youtubeUrl) ||
-              (slideIndex === 2 && homePage.heroSection.slide3.youtubeUrl)) && (
+              (slideIndex === 2 && homePage.heroSection.slide3.youtubeUrl) ||
+              (slideIndex === 3 &&
+                homePage.heroSection.slide4 &&
+                homePage.heroSection.slide4.youtubeUrl)) && (
               <Tooltip title="Watch on YouTube" arrow placement="left">
                 <MKBox
                   component="a"
                   href={
                     slideIndex === 1
                       ? homePage.heroSection.slide2.youtubeUrl
-                      : homePage.heroSection.slide3.youtubeUrl
+                      : slideIndex === 2
+                      ? homePage.heroSection.slide3.youtubeUrl
+                      : homePage.heroSection.slide4.youtubeUrl
                   }
                   target="_blank"
                   rel="noopener noreferrer"
@@ -401,7 +407,9 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             >
               {slideIndex === 1
                 ? homePage.heroSection.slide2.title
-                : homePage.heroSection.slide3.title}
+                : slideIndex === 2
+                ? homePage.heroSection.slide3.title
+                : homePage.heroSection.slide4.title}
             </MKTypography>
             <MKTypography
               variant="h5"
@@ -426,7 +434,9 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             >
               {slideIndex === 1
                 ? homePage.heroSection.slide2.subtitle
-                : homePage.heroSection.slide3.subtitle}
+                : slideIndex === 2
+                ? homePage.heroSection.slide3.subtitle
+                : homePage.heroSection.slide4.subtitle}
             </MKTypography>
             <MKTypography
               variant="body1"
@@ -452,7 +462,9 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
             >
               {slideIndex === 1
                 ? homePage.heroSection.slide2.paragraph
-                : homePage.heroSection.slide3.paragraph}
+                : slideIndex === 2
+                ? homePage.heroSection.slide3.paragraph
+                : homePage.heroSection.slide4.paragraph}
             </MKTypography>
             <MKButton
               variant="contained"
@@ -721,8 +733,13 @@ function Home() {
   const homePage = t("homePage");
   const ctaButtonText = t("homePage.heroSection.ctaButton");
 
-  // Hero slides (slide 2 and slide 3 share the same special video layout)
-  const heroSlides = [{ image: blackAndWhiteHero }, { image: heroImage2 }, { image: heroImage2 }];
+  // Hero slides (slide 2, slide 3, and slide 4 share the same special video layout)
+  const heroSlides = [
+    { image: blackAndWhiteHero },
+    { image: heroImage2 },
+    { image: heroImage2 },
+    { image: heroImage2 },
+  ];
 
   return (
     <MKBox minWidth="320px">

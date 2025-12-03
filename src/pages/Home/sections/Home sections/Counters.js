@@ -1,3 +1,6 @@
+// React imports
+import { useState, useEffect, useRef } from "react";
+
 // @mui material components
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
@@ -15,9 +18,39 @@ import DefaultCounterCard from "examples/Cards/CounterCards/DefaultCounterCard";
 function Counters() {
   const { t } = useTranslation();
   const impactSection = t("homePage.impactSection");
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef(null);
+  const yearsSinceStart = new Date().getFullYear() - 2015;
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            // Disconnect observer after first trigger
+            observer.disconnect();
+          }
+        });
+      },
+      {
+        threshold: 0.3, // Trigger when 30% of the section is visible
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
 
   return (
-    <MKBox component="section" pt={{ xs: 4, sm: 8 }} pb={2}>
+    <MKBox component="section" pt={{ xs: 4, sm: 8 }} pb={2} ref={sectionRef}>
       <Container>
         <Grid container justifyContent="center" sx={{ textAlign: "center" }}>
           <Grid item xs={12} md={12}>
@@ -33,7 +66,8 @@ function Counters() {
           </Grid>
           <Grid item xs={12} sm={6} md={6} lg={3}>
             <DefaultCounterCard
-              count={9}
+              key={`counter-1-${isVisible}`}
+              count={yearsSinceStart}
               separator=","
               title={impactSection.impact1.title}
               description={impactSection.impact1.description}
@@ -41,6 +75,7 @@ function Counters() {
           </Grid>
           <Grid item xs={12} sm={6} md={6} lg={3}>
             <DefaultCounterCard
+              key={`counter-2-${isVisible}`}
               count={500}
               separator=","
               suffix="+"
@@ -50,6 +85,7 @@ function Counters() {
           </Grid>
           <Grid item xs={12} sm={6} md={6} lg={3}>
             <DefaultCounterCard
+              key={`counter-3-${isVisible}`}
               count={80}
               separator=","
               suffix="+"
@@ -59,6 +95,7 @@ function Counters() {
           </Grid>
           <Grid item xs={12} sm={6} md={6} lg={3}>
             <DefaultCounterCard
+              key={`counter-4-${isVisible}`}
               count={98}
               separator=","
               suffix="+"

@@ -35,7 +35,14 @@ function DefaultCounterCard({ color, count, title, description, ...rest }) {
         <CountUp end={count} duration={1} {...rest} />
       </MKTypography>
       {title && (
-        <MKTypography variant="h5" fontSize={{ xs: "1.1rem", sm: "1.25rem" }} mt={2} mb={1}>
+        <MKTypography
+          variant="h5"
+          fontSize={{ xs: "1.1rem", sm: "1.25rem" }}
+          mt={2}
+          mb={1}
+          fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+          sx={{ fontWeight: "500" }}
+        >
           {title}
         </MKTypography>
       )}

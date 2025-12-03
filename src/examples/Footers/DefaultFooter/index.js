@@ -78,7 +78,11 @@ function DefaultFooter({ content }) {
                 mb={1}
                 sx={{ borderRadius: "10px" }}
               />
-              <MKTypography variant="h4" color="white">
+              <MKTypography
+                variant="h4"
+                color="white"
+                fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+              >
                 {brand.name}
               </MKTypography>
               {/* </Link> */}
@@ -132,7 +136,7 @@ function DefaultFooter({ content }) {
                 <MKTypography
                   display="block"
                   variant="button"
-                  sx={{ fontSize: { sm: "0.9rem", md: "1.1rem" } }}
+                  sx={{ fontSize: { sm: "1rem", md: "1.2rem" } }}
                   fontWeight="bold"
                   textTransform="capitalize"
                   color="white"
@@ -155,7 +159,7 @@ function DefaultFooter({ content }) {
                           fontWeight="regular"
                           textTransform="capitalize"
                           sx={{
-                            fontSize: { sm: "0.8rem", md: "0.9rem" },
+                            fontSize: { sm: "0.9rem", md: "1rem" },
                             "&:hover": {
                               color: "#E7A232",
                               textDecoration: "underline 2px",
@@ -174,7 +178,7 @@ function DefaultFooter({ content }) {
                           fontWeight="regular"
                           textTransform="capitalize"
                           sx={{
-                            fontSize: { sm: "0.8rem", md: "0.9rem" },
+                            fontSize: { sm: "0.9rem", md: "1rem" },
                             "&:hover": {
                               color: "#E7A232",
                               textDecoration: "underline 2px",
@@ -213,7 +217,7 @@ function DefaultFooter({ content }) {
               <MKTypography
                 // display="block"
                 variant="button"
-                sx={{ fontSize: { sm: "0.9rem", md: "1.1rem" } }}
+                sx={{ fontSize: { sm: "1rem", md: "1.2rem" } }}
                 fontWeight="bold"
                 textTransform="capitalize"
                 color="white"
@@ -229,13 +233,13 @@ function DefaultFooter({ content }) {
             >
               <MKTypography
                 sx={{
-                  fontSize: { xs: "0.8rem", sm: "0.8rem", md: "0.8rem", lg: "0.9rem" },
+                  fontSize: { xs: "0.9rem", sm: "0.9rem", md: "0.95rem", lg: "1rem" },
                   maxWidth: { xs: "200px", lg: "300px" },
                 }}
                 fontWeight="regular"
                 textTransform="capitalize"
                 color="white"
-                lineHeight="1.2rem"
+                lineHeight="1.3rem"
                 // maxWidth="200px"
                 // mx="auto"
                 mb={1}
@@ -258,7 +262,7 @@ function DefaultFooter({ content }) {
                   // sx={{ fontSize: { xs: "small", sm: "small", md: "medium", lg: "medium" } }}
                 />
                 <MKTypography
-                  sx={{ fontSize: { xs: "0.8rem", sm: "0.8rem", md: "0.8rem", lg: "0.9rem" } }}
+                  sx={{ fontSize: { xs: "0.9rem", sm: "0.9rem", md: "0.95rem", lg: "1rem" } }}
                   paddingLeft="10px"
                   color="white"
                 >
@@ -278,7 +282,7 @@ function DefaultFooter({ content }) {
               >
                 <EmailRoundedIcon fontSize="small" />
                 <MKTypography
-                  sx={{ fontSize: { xs: "0.8rem", sm: "0.8rem", md: "0.8rem", lg: "0.9rem" } }}
+                  sx={{ fontSize: { xs: "0.9rem", sm: "0.9rem", md: "0.95rem", lg: "1rem" } }}
                   paddingLeft="10px"
                   color="white"
                   // overflow="hidden"
@@ -287,7 +291,7 @@ function DefaultFooter({ content }) {
                   <br />
                   <MKTypography
                     color="white"
-                    sx={{ fontSize: { xs: "0.7rem", sm: "0.7rem", md: "0.7rem", lg: "0.8rem" } }}
+                    sx={{ fontSize: { xs: "0.8rem", sm: "0.8rem", md: "0.85rem", lg: "0.9rem" } }}
                   >
                     @gmail.com
                   </MKTypography>
