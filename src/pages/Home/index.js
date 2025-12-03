@@ -55,7 +55,7 @@ const nirbhayVideo =
   "https://res.cloudinary.com/ds07nbwgq/video/upload/v1764692322/Nirbhay_ei8puy.mp4";
 const slide4Video = "https://res.cloudinary.com/ds07nbwgq/video/upload/v1764760343/Baba_p4tnj9.mp4"; // Add your video link here for slide 4
 
-function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex }) {
+function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, isActive }) {
   const { t } = useTranslation();
 
   // Rebuild slide 2: video left + Pacifico heading + yellow/orange gradient background
@@ -69,35 +69,57 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex })
     }
   };
 
-  // Ensure video plays when its slide becomes active
+  // Ensure video plays when its slide is active
   useEffect(() => {
-    if (!videoRef.current || !(slideIndex === 1 || slideIndex === 2 || slideIndex === 3)) return;
+    if (
+      !videoRef.current ||
+      !isActive ||
+      !(slideIndex === 1 || slideIndex === 2 || slideIndex === 3)
+    ) {
+      return;
+    }
 
     const video = videoRef.current;
 
     const tryPlay = async () => {
       try {
+        // Ensure video is muted based on state
+        video.muted = isMuted;
         await video.play();
       } catch (error) {
         console.log("Video autoplay prevented:", error);
+        // Retry after a short delay
+        setTimeout(() => {
+          video.play().catch(() => {});
+        }, 100);
       }
     };
 
-    if (video.readyState >= 2) {
+    // Check if video is ready to play
+    if (video.readyState >= 3) {
+      // Video can play through
+      tryPlay();
+    } else if (video.readyState >= 2) {
       // Video has enough data to begin playback
       tryPlay();
     } else {
+      // Wait for video to load
+      const handleCanPlay = () => {
+        tryPlay();
+      };
       const handleLoadedData = () => {
         tryPlay();
       };
 
+      video.addEventListener("canplay", handleCanPlay, { once: true });
       video.addEventListener("loadeddata", handleLoadedData, { once: true });
 
       return () => {
+        video.removeEventListener("canplay", handleCanPlay);
         video.removeEventListener("loadeddata", handleLoadedData);
       };
     }
-  }, [slideIndex]);
+  }, [isActive, isMuted]);
 
   // Use the same special layout for slide 2, slide 3, and slide 4
   if (slideIndex === 1 || slideIndex === 2 || slideIndex === 3) {
@@ -779,6 +801,7 @@ function Home() {
 
   // State to let user pause/resume hero slider
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
+  const [activeSlide, setActiveSlide] = useState(0);
 
   // Refs for preloader videos
   const maykiPreloaderRef = useRef(null);
@@ -911,7 +934,7 @@ function Home() {
 
         <Carousel
           animation="fade"
-          duration={550}
+          duration={450}
           indicators
           navButtonsAlwaysVisible={true}
           navButtonsAlwaysInvisible={false}
@@ -919,6 +942,7 @@ function Home() {
           fullHeightHover={false}
           swipe={true}
           autoPlay={!isCarouselPaused}
+          onChange={(now) => setActiveSlide(now)}
           interval={4500}
           stopAutoPlayOnHover={false}
           indicatorContainerProps={{
@@ -976,6 +1000,7 @@ function Home() {
               isFirstSlide={index === 0}
               ctaButtonText={ctaButtonText}
               slideIndex={index}
+              isActive={activeSlide === index}
             />
           ))}
         </Carousel>
@@ -1027,6 +1052,7 @@ HeroSlide.propTypes = {
   isFirstSlide: PropTypes.bool.isRequired,
   ctaButtonText: PropTypes.string.isRequired,
   slideIndex: PropTypes.number.isRequired,
+  isActive: PropTypes.bool.isRequired,
 };
 
 export default Home;
