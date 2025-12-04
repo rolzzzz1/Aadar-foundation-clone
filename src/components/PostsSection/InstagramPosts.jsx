@@ -236,9 +236,16 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
                                 alt={post.caption || "Instagram post"}
                                 onContextMenu={(e) => e.preventDefault()}
                                 draggable="false"
+                                loading="lazy"
+                                decoding="async"
                               />
                             ) : post.media_type === "VIDEO" ? (
-                              <video controls controlsList="nodownload">
+                              <video
+                                controls
+                                controlsList="nodownload"
+                                preload="metadata"
+                                loading="lazy"
+                              >
                                 <source src={post.media_url} type="video/mp4" />
                                 Your browser does not support the video tag.
                               </video>

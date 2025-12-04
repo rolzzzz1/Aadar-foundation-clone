@@ -244,6 +244,8 @@ function About(props) {
                       minHeight={"180px"}
                       maxHeight={"180px"}
                       display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
+                      loading="lazy"
+                      decoding="async"
                     ></MKBox>
 
                     <MKBox
@@ -257,6 +259,8 @@ function About(props) {
                       minHeight={"180px"}
                       maxHeight={"180px"}
                       display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
+                      loading="lazy"
+                      decoding="async"
                     ></MKBox>
                     <MKBox
                       component="img"
@@ -312,6 +316,8 @@ function About(props) {
                       minHeight={"180px"}
                       maxHeight={"180px"}
                       display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
+                      loading="lazy"
+                      decoding="async"
                     ></MKBox>
                     <MKBox
                       component="img"
@@ -321,6 +327,8 @@ function About(props) {
                       borderRadius="10px"
                       minHeight={"180px"}
                       maxHeight={"180px"}
+                      loading="lazy"
+                      decoding="async"
                     ></MKBox>
                   </Grid>
                 </Grid>
@@ -364,6 +372,8 @@ function About(props) {
                       borderRadius="10px"
                       minHeight={"180px"}
                       maxHeight={"180px"}
+                      loading="lazy"
+                      decoding="async"
                     ></MKBox>
                     <MKBox
                       component="img"
@@ -374,6 +384,8 @@ function About(props) {
                       minHeight={"180px"}
                       maxHeight={"180px"}
                       display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
+                      loading="lazy"
+                      decoding="async"
                     ></MKBox>
                   </Grid>
                 </Grid>
@@ -418,6 +430,8 @@ function About(props) {
                       minHeight={"180px"}
                       maxHeight={"180px"}
                       display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
+                      loading="lazy"
+                      decoding="async"
                     ></MKBox>
                     <MKBox
                       component="img"
@@ -427,6 +441,8 @@ function About(props) {
                       borderRadius="10px"
                       minHeight={"180px"}
                       maxHeight={"180px"}
+                      loading="lazy"
+                      decoding="async"
                     ></MKBox>
                   </Grid>
                 </Grid>
@@ -470,6 +486,8 @@ function About(props) {
                       borderRadius="10px"
                       minHeight={"200px"}
                       maxHeight={"200px"}
+                      loading="lazy"
+                      decoding="async"
                     ></MKBox>
                   </Grid>
                 </Grid>
@@ -513,6 +531,8 @@ function About(props) {
                       borderRadius="10px"
                       minHeight={"200px"}
                       maxHeight={"200px"}
+                      loading="lazy"
+                      decoding="async"
                     ></MKBox>
 
                     <MKBox
@@ -524,6 +544,8 @@ function About(props) {
                       minHeight={"200px"}
                       maxHeight={"200px"}
                       display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
+                      loading="lazy"
+                      decoding="async"
                     ></MKBox>
                   </Grid>
                 </Grid>
@@ -568,6 +590,8 @@ function About(props) {
                       width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
                     }}
                     my={2}
+                    loading="lazy"
+                    decoding="async"
                   ></MKBox>
                 </Grid>
                 <Grid sm={6} md={6} lg={4} px={1} display="flex" justifyContent="center">
@@ -581,6 +605,8 @@ function About(props) {
                       width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
                     }}
                     my={2}
+                    loading="lazy"
+                    decoding="async"
                   ></MKBox>
                 </Grid>
                 <Grid sm={12} md={12} lg={4} px={2} display="flex" justifyContent="center">
@@ -594,6 +620,8 @@ function About(props) {
                       width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
                     }}
                     my={2}
+                    loading="lazy"
+                    decoding="async"
                   ></MKBox>
                 </Grid>
               </Grid>

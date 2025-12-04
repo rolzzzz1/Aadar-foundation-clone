@@ -77,8 +77,9 @@ function PrivacyPolicy() {
             color="white"
             textAlign="center"
             ml={-2}
-            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
-            fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
+            fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+            fontSize={{ xs: "1.5rem", sm: "1.75rem", md: "1.875rem", lg: "1.875rem" }}
+            fontWeight="500"
             mb={{ xs: 2, sm: 0 }}
           >
             {privacyPolicyPage.title}

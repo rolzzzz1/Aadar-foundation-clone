@@ -18,7 +18,8 @@ export default function termsData() {
           variant="h4"
           sx={{ fontWeight: "500" }}
           pb={4}
-          fontSize={{ xs: "1.2rem", md: "1.5rem" }}
+          fontSize={{ xs: "1.5rem", sm: "1.75rem", md: "1.875rem", lg: "1.875rem" }}
+          fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
         >
           {termsConditionsPage.title}
         </MKTypography>

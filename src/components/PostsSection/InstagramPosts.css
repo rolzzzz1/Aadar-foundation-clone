@@ -332,12 +332,29 @@
 .carousel-indicator {
   width: 12px;
   height: 12px;
+  min-width: 44px;
+  min-height: 44px;
   border-radius: 50%;
   border: 2px solid #E4405F;
   background: transparent;
   cursor: pointer;
   transition: all 0.3s;
   padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.carousel-indicator::before {
+  content: "";
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .carousel-indicator:hover {
@@ -488,8 +505,10 @@
   }
 
   .carousel-btn {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
     font-size: 24px;
   }
 
@@ -521,6 +540,7 @@
 @media (max-width: 576px) {
   .instagram-posts-container {
     padding: 5px;
+    max-width: 100%;
   }
 
   .carousel-container {
@@ -532,9 +552,11 @@
   }
 
   .carousel-btn {
-    width: 32px;
-    height: 32px;
-    font-size: 18px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    font-size: 20px;
   }
 
   .carousel-btn-prev {
@@ -547,6 +569,12 @@
 
   .post-card {
     border-radius: 8px;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .post-media {
+    max-height: 280px;
   }
 
   .post-content {
@@ -577,14 +605,17 @@
   }
 
   .carousel-indicator {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
+    min-width: 44px;
+    min-height: 44px;
   }
 }
 
 @media (max-width: 480px) {
   .instagram-posts-container {
     padding: 3px;
+    max-width: 100%;
   }
 
   .carousel-container {
@@ -596,13 +627,21 @@
   }
 
   .carousel-btn {
-    width: 28px;
-    height: 28px;
-    font-size: 16px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    font-size: 18px;
   }
 
   .post-card {
     border-radius: 6px;
+    max-width: 95%;
+    margin: 0 auto;
+  }
+
+  .post-media {
+    max-height: 240px;
   }
 
   .post-content {
@@ -631,8 +670,33 @@
   }
 
   .carousel-indicator {
-    width: 7px;
-    height: 7px;
+    width: 10px;
+    height: 10px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 360px) {
+  .post-card {
+    max-width: 90%;
+  }
+
+  .post-media {
+    max-height: 200px;
+  }
+
+  .post-content {
+    padding: 6px;
+  }
+
+  .post-caption {
+    font-size: 9px;
+  }
+
+  .post-date,
+  .post-link {
+    font-size: 8px;
   }
 }
 

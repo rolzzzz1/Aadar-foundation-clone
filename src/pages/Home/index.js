@@ -40,6 +40,7 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import PauseIcon from "@mui/icons-material/Pause";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 // Story back background - using public folder to avoid SVG processing issues
 import PropTypes from "prop-types";
@@ -50,10 +51,39 @@ import heroImage2 from "assets/images/aboutPageImages/main1.jpg";
 
 // Video for slide 2 (Kumbh story - Dadi Mayki), slide 3 (Nirbhay story), and slide 4
 // Videos are loaded from Cloudinary CDN
-const maykiVideo = "https://res.cloudinary.com/ds07nbwgq/video/upload/v1764692316/Mayki_v8ewvq.mp4";
-const nirbhayVideo =
+const maykiVideoBase =
+  "https://res.cloudinary.com/ds07nbwgq/video/upload/v1764692316/Mayki_v8ewvq.mp4";
+const nirbhayVideoBase =
   "https://res.cloudinary.com/ds07nbwgq/video/upload/v1764692322/Nirbhay_ei8puy.mp4";
-const slide4Video = "https://res.cloudinary.com/ds07nbwgq/video/upload/v1764760343/Baba_p4tnj9.mp4"; // Add your video link here for slide 4
+const slide4VideoBase =
+  "https://res.cloudinary.com/ds07nbwgq/video/upload/v1764760343/Baba_p4tnj9.mp4";
+
+// Helper function to get optimized video URL based on screen size
+// For mobile/tablet: lower quality, for desktop: higher quality
+const getOptimizedVideoUrl = (baseUrl, isMobile) => {
+  if (!baseUrl) return "";
+  // If it's a Cloudinary URL, add quality transformation
+  if (baseUrl.includes("cloudinary.com") && baseUrl.includes("/video/upload/")) {
+    // Check if URL already has transformations
+    const uploadIndex = baseUrl.indexOf("/video/upload/");
+    const afterUpload = baseUrl.substring(uploadIndex + "/video/upload/".length);
+
+    // If there are already transformations (contains '/'), use them, otherwise add new ones
+    if (afterUpload.includes("/")) {
+      // URL already has transformations, return as is or append
+      return baseUrl;
+    }
+
+    if (isMobile) {
+      // For mobile: lower quality (q_auto:low) and smaller resolution
+      return baseUrl.replace("/video/upload/", "/video/upload/q_auto:low,w_640,f_auto/");
+    }
+
+    // For desktop: auto quality with better settings
+    return baseUrl.replace("/video/upload/", "/video/upload/q_auto:good,w_1280,f_auto/");
+  }
+  return baseUrl;
+};
 
 function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, isActive }) {
   const { t } = useTranslation();
@@ -251,7 +281,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
                 loop
                 muted={isMuted}
                 playsInline
-                preload="auto"
+                preload={isMobile ? "metadata" : "auto"}
                 poster={heroImage2}
                 style={{
                   width: "100%",
@@ -273,13 +303,14 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
                 }}
               >
                 <source
-                  src={
+                  src={getOptimizedVideoUrl(
                     slideIndex === 1
-                      ? maykiVideo
+                      ? maykiVideoBase
                       : slideIndex === 2
-                      ? nirbhayVideo
-                      : slide4Video || nirbhayVideo
-                  }
+                      ? nirbhayVideoBase
+                      : slide4VideoBase || nirbhayVideoBase,
+                    isMobile
+                  )}
                   type="video/mp4"
                 />
                 Your browser does not support the video tag.
@@ -315,8 +346,10 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
                     backgroundColor: "rgba(0, 0, 0, 0.9)",
                     transform: "scale(1.1)",
                   },
-                  width: { xs: "42px", sm: "46px", md: "50px", lg: "54px" },
-                  height: { xs: "42px", sm: "46px", md: "50px", lg: "54px" },
+                  width: { xs: "44px", sm: "48px", md: "50px", lg: "54px" },
+                  height: { xs: "44px", sm: "48px", md: "50px", lg: "54px" },
+                  minWidth: { xs: "44px", sm: "48px", md: "50px", lg: "54px" },
+                  minHeight: { xs: "44px", sm: "48px", md: "50px", lg: "54px" },
                   transition: "all 0.3s ease",
                 }}
                 aria-label={isMuted ? "Unmute video" : "Mute video"}
@@ -681,26 +714,57 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
               mt: 2,
               mb: 3,
               px: { xs: 3 },
-              py: { xs: 0.5 },
-              fontWeight: "bold",
-              fontSize: "0.75rem",
+              py: { xs: 0.75 },
+              fontWeight: "700",
+              fontSize: { xs: "0.8rem", sm: "0.85rem" },
               textTransform: "capitalize",
-              borderRadius: "8px",
+              borderRadius: "10px",
               backgroundColor: "white",
               color: "#FFC107",
-              boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
-              "&:hover": {
-                backgroundColor: "#f5f5f5",
-                transform: "translateY(-2px)",
-                boxShadow: "0 6px 20px rgba(0, 0, 0, 0.3)",
+              boxShadow: "0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1)",
+              position: "relative",
+              overflow: "hidden",
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                top: 0,
+                left: "-100%",
+                width: "100%",
+                height: "100%",
+                background:
+                  "linear-gradient(90deg, transparent, rgba(255, 193, 7, 0.1), transparent)",
+                transition: "left 0.5s ease",
               },
-              transition: "all 0.3s ease",
+              "&:hover": {
+                backgroundColor: "#fafafa",
+                transform: "translateY(-3px) scale(1.05)",
+                boxShadow: "0 8px 25px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.15)",
+                "&::before": {
+                  left: "100%",
+                },
+                "& .arrow-icon": {
+                  transform: "translateX(4px)",
+                },
+              },
+              "&:active": {
+                transform: "translateY(-1px) scale(1.02)",
+              },
+              transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
             }}
             component={Link}
             to="/pages/landing-pages/donate"
-            display={{ xs: "inline", sm: "none" }}
+            display={{ xs: "inline-flex", sm: "none" }}
           >
             {ctaButtonText}
+            <ArrowForwardIcon
+              className="arrow-icon"
+              sx={{
+                ml: 0.75,
+                fontSize: { xs: "0.9rem", sm: "1rem" },
+                transition: "transform 0.3s ease",
+                color: "#FFC107",
+              }}
+            />
           </MKButton>
         </MKBox>
       )}
@@ -769,26 +833,57 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
             sx={{
               mt: 3,
               ml: -2,
-              px: { xs: 3, sm: 3.5, md: 4 },
-              py: { xs: 0.5, sm: 0.65, md: 0.8 },
-              fontWeight: "bold",
-              fontSize: { xs: "0.75rem", sm: "0.85rem", md: "0.95rem" },
+              px: { xs: 3.5, sm: 4, md: 4.5 },
+              py: { xs: 0.9, sm: 1, md: 1.2 },
+              fontWeight: "700",
+              fontSize: { xs: "0.85rem", sm: "0.95rem", md: "1rem" },
               textTransform: "capitalize",
-              borderRadius: "8px",
+              borderRadius: "10px",
               backgroundColor: "white",
               color: "#FFC107",
-              boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
-              "&:hover": {
-                backgroundColor: "#f5f5f5",
-                transform: "translateY(-2px)",
-                boxShadow: "0 6px 20px rgba(0, 0, 0, 0.3)",
+              boxShadow: "0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1)",
+              position: "relative",
+              overflow: "hidden",
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                top: 0,
+                left: "-100%",
+                width: "100%",
+                height: "100%",
+                background:
+                  "linear-gradient(90deg, transparent, rgba(255, 193, 7, 0.1), transparent)",
+                transition: "left 0.5s ease",
               },
-              transition: "all 0.3s ease",
+              "&:hover": {
+                backgroundColor: "#fafafa",
+                transform: "translateY(-3px) scale(1.05)",
+                boxShadow: "0 8px 25px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.15)",
+                "&::before": {
+                  left: "100%",
+                },
+                "& .arrow-icon": {
+                  transform: "translateX(4px)",
+                },
+              },
+              "&:active": {
+                transform: "translateY(-1px) scale(1.02)",
+              },
+              transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
             }}
             component={Link}
             to="/pages/landing-pages/donate"
           >
             {ctaButtonText}
+            <ArrowForwardIcon
+              className="arrow-icon"
+              sx={{
+                ml: 1,
+                fontSize: { xs: "1rem", sm: "1.1rem", md: "1.2rem" },
+                transition: "transform 0.3s ease",
+                color: "#FFC107",
+              }}
+            />
           </MKButton>
         </MKBox>
       )}
@@ -851,52 +946,57 @@ function Home() {
 
       {/* Hidden video preloader - starts loading videos immediately */}
       {/* Videos are loaded from public folder or CDN - may not be available in build */}
-      <video
-        ref={maykiPreloaderRef}
-        preload="auto"
-        style={{
-          position: "absolute",
-          top: "-9999px",
-          left: "-9999px",
-          width: "1px",
-          height: "1px",
-          opacity: 0,
-          pointerEvents: "none",
-        }}
-      >
-        <source src={maykiVideo} type="video/mp4" />
-      </video>
-      <video
-        ref={nirbhayPreloaderRef}
-        preload="auto"
-        style={{
-          position: "absolute",
-          top: "-9999px",
-          left: "-9999px",
-          width: "1px",
-          height: "1px",
-          opacity: 0,
-          pointerEvents: "none",
-        }}
-      >
-        <source src={nirbhayVideo} type="video/mp4" />
-      </video>
-      {slide4Video && (
-        <video
-          ref={slide4PreloaderRef}
-          preload="auto"
-          style={{
-            position: "absolute",
-            top: "-9999px",
-            left: "-9999px",
-            width: "1px",
-            height: "1px",
-            opacity: 0,
-            pointerEvents: "none",
-          }}
-        >
-          <source src={slide4Video} type="video/mp4" />
-        </video>
+      {/* Video preloaders - only preload on desktop, use metadata on mobile */}
+      {typeof window !== "undefined" && window.innerWidth >= 768 && (
+        <>
+          <video
+            ref={maykiPreloaderRef}
+            preload="metadata"
+            style={{
+              position: "absolute",
+              top: "-9999px",
+              left: "-9999px",
+              width: "1px",
+              height: "1px",
+              opacity: 0,
+              pointerEvents: "none",
+            }}
+          >
+            <source src={getOptimizedVideoUrl(maykiVideoBase, false)} type="video/mp4" />
+          </video>
+          <video
+            ref={nirbhayPreloaderRef}
+            preload="metadata"
+            style={{
+              position: "absolute",
+              top: "-9999px",
+              left: "-9999px",
+              width: "1px",
+              height: "1px",
+              opacity: 0,
+              pointerEvents: "none",
+            }}
+          >
+            <source src={getOptimizedVideoUrl(nirbhayVideoBase, false)} type="video/mp4" />
+          </video>
+          {slide4VideoBase && (
+            <video
+              ref={slide4PreloaderRef}
+              preload="metadata"
+              style={{
+                position: "absolute",
+                top: "-9999px",
+                left: "-9999px",
+                width: "1px",
+                height: "1px",
+                opacity: 0,
+                pointerEvents: "none",
+              }}
+            >
+              <source src={getOptimizedVideoUrl(slide4VideoBase, false)} type="video/mp4" />
+            </video>
+          )}
+        </>
       )}
 
       {/* Hero Carousel */}
@@ -941,8 +1041,10 @@ function Home() {
               color: "rgba(255, 255, 255, 0.6)",
               backdropFilter: "blur(3px)",
               boxShadow: "0 1px 4px rgba(0, 0, 0, 0.2)",
-              width: { xs: 26, sm: 28, md: 30 },
-              height: { xs: 26, sm: 28, md: 30 },
+              width: { xs: 44, sm: 44, md: 44 },
+              height: { xs: 44, sm: 44, md: 44 },
+              minWidth: { xs: 44, sm: 44, md: 44 },
+              minHeight: { xs: 44, sm: 44, md: 44 },
               "&:hover": {
                 backgroundColor: "rgba(0, 0, 0, 0.6)",
                 color: "#ffffff",

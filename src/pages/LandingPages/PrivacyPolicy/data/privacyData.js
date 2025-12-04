@@ -18,7 +18,8 @@ export default function privacyData() {
           variant="h4"
           sx={{ fontWeight: "500" }}
           pb={4}
-          fontSize={{ xs: "1.2rem", md: "1.5rem" }}
+          fontSize={{ xs: "1.5rem", sm: "1.75rem", md: "1.875rem", lg: "1.875rem" }}
+          fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
         >
           {privacyPolicyPage.title}
         </MKTypography>
@@ -48,7 +49,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
-            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
               paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
@@ -105,7 +106,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
-            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
               paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
@@ -148,7 +149,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
-            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
               paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
@@ -189,7 +190,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
-            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
               paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
@@ -223,7 +224,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
-            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
               paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
@@ -290,7 +291,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
-            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
               paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
@@ -324,7 +325,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
-            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
               paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },

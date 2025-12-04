@@ -42,6 +42,8 @@ function WhoWeAre() {
             borderRadius="xxl"
             width="90%"
             height="100%"
+            loading="lazy"
+            decoding="async"
           ></MKBox>
         </Grid>
         <Grid lg={6}>
@@ -105,6 +107,8 @@ function WhoWeAre() {
             alt={"Before after images"}
             borderRadius="xxl"
             width="100%"
+            loading="lazy"
+            decoding="async"
           ></MKBox>
         </Grid>
       </Grid>
@@ -136,6 +140,8 @@ function WhoWeAre() {
               width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
             }}
             my={2}
+            loading="lazy"
+            decoding="async"
           ></MKBox>
         </Grid>
         <Grid sm={6} md={6} lg={4} px={2} display="flex" justifyContent="center">
@@ -149,6 +155,8 @@ function WhoWeAre() {
               width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
             }}
             my={2}
+            loading="lazy"
+            decoding="async"
           ></MKBox>
         </Grid>
         <Grid sm={12} md={12} lg={4} px={1} display="flex" justifyContent="center">
@@ -162,6 +170,8 @@ function WhoWeAre() {
               width: { xs: "80%", sm: "80%", md: "80%", lg: "100%" },
             }}
             my={2}
+            loading="lazy"
+            decoding="async"
           ></MKBox>
         </Grid>
       </Grid>
