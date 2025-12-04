@@ -332,29 +332,14 @@
 .carousel-indicator {
   width: 12px;
   height: 12px;
-  min-width: 44px;
-  min-height: 44px;
   border-radius: 50%;
   border: 2px solid #E4405F;
   background: transparent;
   cursor: pointer;
   transition: all 0.3s;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 16px;
+  margin: -16px;
   position: relative;
-}
-
-.carousel-indicator::before {
-  content: "";
-  position: absolute;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 
 .carousel-indicator:hover {
@@ -607,8 +592,8 @@
   .carousel-indicator {
     width: 10px;
     height: 10px;
-    min-width: 44px;
-    min-height: 44px;
+    padding: 17px;
+    margin: -17px;
   }
 }
 
@@ -672,8 +657,8 @@
   .carousel-indicator {
     width: 10px;
     height: 10px;
-    min-width: 44px;
-    min-height: 44px;
+    padding: 17px;
+    margin: -17px;
   }
 }
 
