@@ -81,9 +81,12 @@
     "clickToHoldStory": "कहानी रोकने के लिए क्लिक करें",
     "unmuteVideo": "वीडियो अनम्यूट करें",
     "muteVideo": "वीडियो म्यूट करें",
+    "clickToMute": "म्यूट करने के लिए क्लिक करें",
+    "clickToUnmute": "अनम्यूट करने के लिए क्लिक करें",
     "playSlides": "स्लाइड्स चलाएं",
     "pauseSlides": "स्लाइड्स रोकें",
     "watchOnYouTube": "YouTube पर देखें",
+    "clickToWatchOnYouTube": "YouTube पर देखने के लिए क्लिक करें",
     "slide2": {
       "title": "कुंभ में खोई माँ",
       "subtitle": "करुणा ने मिलाया दोबारा",

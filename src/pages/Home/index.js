@@ -49,14 +49,14 @@ import PropTypes from "prop-types";
 import blackAndWhiteHero from "assets/images/mainThemeImages/aadar-main-black2.png";
 import heroImage2 from "assets/images/aboutPageImages/main1.jpg";
 
+// Video URLs configuration - import from config file
+import { VIDEO_URLS } from "../../config/videoUrls";
+
 // Video for slide 2 (Kumbh story - Dadi Mayki), slide 3 (Nirbhay story), and slide 4
 // Videos are loaded from Cloudinary CDN
-const maykiVideoBase =
-  "https://res.cloudinary.com/ds07nbwgq/video/upload/v1764692316/Mayki_v8ewvq.mp4";
-const nirbhayVideoBase =
-  "https://res.cloudinary.com/ds07nbwgq/video/upload/v1764692322/Nirbhay_ei8puy.mp4";
-const slide4VideoBase =
-  "https://res.cloudinary.com/ds07nbwgq/video/upload/v1764760343/Baba_p4tnj9.mp4";
+const maykiVideoBase = VIDEO_URLS.mayki;
+const nirbhayVideoBase = VIDEO_URLS.nirbhay;
+const slide4VideoBase = VIDEO_URLS.slide4;
 
 // Helper function to get optimized video URL based on screen size
 // For mobile/tablet: lower quality, for desktop: higher quality
@@ -331,49 +331,59 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
                 }}
               />
 
-              <IconButton
-                onClick={toggleMute}
-                sx={{
-                  position: "absolute",
-                  bottom: { xs: "12px", sm: "16px", md: "20px", lg: "24px" },
-                  right: { xs: "12px", sm: "16px", md: "20px", lg: "24px" },
-                  backgroundColor: "rgba(0, 0, 0, 0.75)",
-                  color: "white",
-                  zIndex: 3,
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.5)",
-                  backdropFilter: "blur(8px)",
-                  "&:hover": {
-                    backgroundColor: "rgba(0, 0, 0, 0.9)",
-                    transform: "scale(1.1)",
-                  },
-                  width: { xs: "44px", sm: "48px", md: "50px", lg: "54px" },
-                  height: { xs: "44px", sm: "48px", md: "50px", lg: "54px" },
-                  minWidth: { xs: "44px", sm: "48px", md: "50px", lg: "54px" },
-                  minHeight: { xs: "44px", sm: "48px", md: "50px", lg: "54px" },
-                  transition: "all 0.3s ease",
-                }}
-                aria-label={
+              <Tooltip
+                title={
                   isMuted
-                    ? t("homePage.heroSection.unmuteVideo")
-                    : t("homePage.heroSection.muteVideo")
+                    ? t("homePage.heroSection.clickToUnmute")
+                    : t("homePage.heroSection.clickToMute")
                 }
+                arrow
+                placement="top"
               >
-                {isMuted ? (
-                  <VolumeOffIcon
-                    sx={{
-                      fontSize: { xs: "24px", sm: "26px", md: "28px", lg: "30px" },
-                      color: "#FFFFFF",
-                    }}
-                  />
-                ) : (
-                  <VolumeUpIcon
-                    sx={{
-                      fontSize: { xs: "24px", sm: "26px", md: "28px", lg: "30px" },
-                      color: "#FFFFFF",
-                    }}
-                  />
-                )}
-              </IconButton>
+                <IconButton
+                  onClick={toggleMute}
+                  sx={{
+                    position: "absolute",
+                    bottom: { xs: "12px", sm: "16px", md: "20px", lg: "24px" },
+                    right: { xs: "12px", sm: "16px", md: "20px", lg: "24px" },
+                    backgroundColor: "rgba(0, 0, 0, 0.75)",
+                    color: "white",
+                    zIndex: 3,
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.5)",
+                    backdropFilter: "blur(8px)",
+                    "&:hover": {
+                      backgroundColor: "rgba(0, 0, 0, 0.9)",
+                      transform: "scale(1.1)",
+                    },
+                    width: { xs: "44px", sm: "48px", md: "50px", lg: "54px" },
+                    height: { xs: "44px", sm: "48px", md: "50px", lg: "54px" },
+                    minWidth: { xs: "44px", sm: "48px", md: "50px", lg: "54px" },
+                    minHeight: { xs: "44px", sm: "48px", md: "50px", lg: "54px" },
+                    transition: "all 0.3s ease",
+                  }}
+                  aria-label={
+                    isMuted
+                      ? t("homePage.heroSection.unmuteVideo")
+                      : t("homePage.heroSection.muteVideo")
+                  }
+                >
+                  {isMuted ? (
+                    <VolumeOffIcon
+                      sx={{
+                        fontSize: { xs: "24px", sm: "26px", md: "28px", lg: "30px" },
+                        color: "#FFFFFF",
+                      }}
+                    />
+                  ) : (
+                    <VolumeUpIcon
+                      sx={{
+                        fontSize: { xs: "24px", sm: "26px", md: "28px", lg: "30px" },
+                        color: "#FFFFFF",
+                      }}
+                    />
+                  )}
+                </IconButton>
+              </Tooltip>
             </MKBox>
           </MKBox>
         )}
@@ -431,41 +441,47 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
               (slideIndex === 3 &&
                 homePage.heroSection.slide4 &&
                 homePage.heroSection.slide4.youtubeUrl)) && (
-              <MKBox
-                component="a"
-                href={
-                  slideIndex === 1
-                    ? homePage.heroSection.slide2.youtubeUrl
-                    : slideIndex === 2
-                    ? homePage.heroSection.slide3.youtubeUrl
-                    : homePage.heroSection.slide4.youtubeUrl
-                }
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={t("homePage.heroSection.watchOnYouTube")}
-                sx={{
-                  position: "absolute",
-                  // Align vertically with the story heading
-                  top: { xs: "20px", sm: "22px", md: "24px", lg: "26px" },
-                  right: { xs: "10px", sm: "12px", md: "14px", lg: "16px" },
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "#FF0000",
-                  textDecoration: "none",
-                  opacity: 0.9,
-                  zIndex: 50,
-                  pointerEvents: "auto",
-                }}
+              <Tooltip
+                title={t("homePage.heroSection.clickToWatchOnYouTube")}
+                arrow
+                placement="left"
               >
-                <YouTubeIcon
+                <MKBox
+                  component="a"
+                  href={
+                    slideIndex === 1
+                      ? homePage.heroSection.slide2.youtubeUrl
+                      : slideIndex === 2
+                      ? homePage.heroSection.slide3.youtubeUrl
+                      : homePage.heroSection.slide4.youtubeUrl
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={t("homePage.heroSection.watchOnYouTube")}
                   sx={{
-                    fontSize: { xs: "22px", sm: "22px", md: "24px", lg: "26px" },
-                    width: { xs: "22px", sm: "22px", md: "24px", lg: "26px" },
-                    height: { xs: "22px", sm: "22px", md: "24px", lg: "26px" },
+                    position: "absolute",
+                    // Align vertically with the story heading
+                    top: { xs: "20px", sm: "22px", md: "24px", lg: "26px" },
+                    right: { xs: "10px", sm: "12px", md: "14px", lg: "16px" },
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#FF0000",
+                    textDecoration: "none",
+                    opacity: 0.9,
+                    zIndex: 50,
+                    pointerEvents: "auto",
                   }}
-                />
-              </MKBox>
+                >
+                  <YouTubeIcon
+                    sx={{
+                      fontSize: { xs: "22px", sm: "22px", md: "24px", lg: "26px" },
+                      width: { xs: "22px", sm: "22px", md: "24px", lg: "26px" },
+                      height: { xs: "22px", sm: "22px", md: "24px", lg: "26px" },
+                    }}
+                  />
+                </MKBox>
+              </Tooltip>
             )}
             {/* Slide 2 uses slide2 translations, Slide 3 uses slide3 translations */}
             <MKTypography
@@ -760,15 +776,63 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
             display={{ xs: "inline-flex", sm: "none" }}
           >
             {ctaButtonText}
-            <ArrowForwardIcon
-              className="arrow-icon"
+            <MKBox
               sx={{
                 ml: 0.75,
-                fontSize: { xs: "0.9rem", sm: "1rem" },
-                transition: "transform 0.3s ease",
-                color: "#FFC107",
+                position: "relative",
+                display: "inline-flex",
+                alignItems: "center",
               }}
-            />
+            >
+              <ArrowForwardIcon
+                className="arrow-icon"
+                sx={{
+                  fontSize: { xs: "1.1rem", sm: "1.2rem" },
+                  transition: "transform 0.3s ease",
+                  color: "#FFC107",
+                  position: "absolute",
+                  left: 0,
+                  top: 0,
+                  opacity: 0.85,
+                  filter: "blur(2px)",
+                }}
+              />
+              <ArrowForwardIcon
+                className="arrow-icon"
+                sx={{
+                  fontSize: { xs: "1.1rem", sm: "1.2rem" },
+                  transition: "transform 0.3s ease",
+                  color: "#FFC107",
+                  position: "absolute",
+                  left: 0,
+                  top: 0,
+                  opacity: 0.7,
+                  filter: "blur(1.4px)",
+                }}
+              />
+              <ArrowForwardIcon
+                className="arrow-icon"
+                sx={{
+                  fontSize: { xs: "1.1rem", sm: "1.2rem" },
+                  transition: "transform 0.3s ease",
+                  color: "#FFC107",
+                  position: "absolute",
+                  left: 0,
+                  top: 0,
+                  opacity: 0.6,
+                  filter: "blur(1px)",
+                }}
+              />
+              <ArrowForwardIcon
+                className="arrow-icon"
+                sx={{
+                  fontSize: { xs: "1.1rem", sm: "1.2rem" },
+                  transition: "transform 0.3s ease",
+                  color: "#FFC107",
+                  position: "relative",
+                }}
+              />
+            </MKBox>
           </MKButton>
         </MKBox>
       )}
@@ -879,15 +943,63 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
             to="/pages/landing-pages/donate"
           >
             {ctaButtonText}
-            <ArrowForwardIcon
-              className="arrow-icon"
+            <MKBox
               sx={{
                 ml: 1,
-                fontSize: { xs: "1rem", sm: "1.1rem", md: "1.2rem" },
-                transition: "transform 0.3s ease",
-                color: "#FFC107",
+                position: "relative",
+                display: "inline-flex",
+                alignItems: "center",
               }}
-            />
+            >
+              <ArrowForwardIcon
+                className="arrow-icon"
+                sx={{
+                  fontSize: { xs: "1.2rem", sm: "1.3rem", md: "1.4rem" },
+                  transition: "transform 0.3s ease",
+                  color: "#FFC107",
+                  position: "absolute",
+                  left: 0,
+                  top: 0,
+                  opacity: 0.85,
+                  filter: "blur(2px)",
+                }}
+              />
+              <ArrowForwardIcon
+                className="arrow-icon"
+                sx={{
+                  fontSize: { xs: "1.2rem", sm: "1.3rem", md: "1.4rem" },
+                  transition: "transform 0.3s ease",
+                  color: "#FFC107",
+                  position: "absolute",
+                  left: 0,
+                  top: 0,
+                  opacity: 0.7,
+                  filter: "blur(1.4px)",
+                }}
+              />
+              <ArrowForwardIcon
+                className="arrow-icon"
+                sx={{
+                  fontSize: { xs: "1.2rem", sm: "1.3rem", md: "1.4rem" },
+                  transition: "transform 0.3s ease",
+                  color: "#FFC107",
+                  position: "absolute",
+                  left: 0,
+                  top: 0,
+                  opacity: 0.6,
+                  filter: "blur(1px)",
+                }}
+              />
+              <ArrowForwardIcon
+                className="arrow-icon"
+                sx={{
+                  fontSize: { xs: "1.2rem", sm: "1.3rem", md: "1.4rem" },
+                  transition: "transform 0.3s ease",
+                  color: "#FFC107",
+                  position: "relative",
+                }}
+              />
+            </MKBox>
           </MKButton>
         </MKBox>
       )}
@@ -1084,7 +1196,9 @@ function Home() {
           fullHeightHover={false}
           swipe={true}
           autoPlay={!isCarouselPaused}
-          onChange={(now) => setActiveSlide(now)}
+          onChange={(now) => {
+            setActiveSlide(now);
+          }}
           interval={4500}
           stopAutoPlayOnHover={false}
           indicatorContainerProps={{

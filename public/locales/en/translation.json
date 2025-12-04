@@ -81,9 +81,12 @@
     "clickToHoldStory": "Click to hold story",
     "unmuteVideo": "Unmute video",
     "muteVideo": "Mute video",
+    "clickToMute": "Click to mute",
+    "clickToUnmute": "Click to unmute",
     "playSlides": "Play slides",
     "pauseSlides": "Pause slides",
     "watchOnYouTube": "Watch on YouTube",
+    "clickToWatchOnYouTube": "Click to watch on YouTube",
     "slide2": {
       "title": "Mother Who Got Lost at Kumbh",
       "subtitle": "Reunited Through Compassion",
