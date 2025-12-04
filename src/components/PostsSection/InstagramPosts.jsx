@@ -71,13 +71,13 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
     const fetchPosts = async () => {
       try {
         // Determine the correct function URL based on environment
-        // In local dev with netlify dev: http://localhost:8888/.netlify/functions/instagram-posts
-        // In production: /.netlify/functions/instagram-posts
+        // In local dev: http://localhost:3000/api/instagram-posts (if using Vercel dev)
+        // In production: /api/instagram-posts
         const isLocalDev =
           window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
         const functionUrl = isLocalDev
-          ? `http://localhost:8888/.netlify/functions/instagram-posts?limit=${totalPosts}`
-          : `/.netlify/functions/instagram-posts?limit=${totalPosts}`;
+          ? `http://localhost:3000/api/instagram-posts?limit=${totalPosts}`
+          : `/api/instagram-posts?limit=${totalPosts}`;
 
         const response = await fetch(functionUrl, {
           method: "GET",
@@ -91,7 +91,7 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
         if (!contentType || !contentType.includes("application/json")) {
           await response.text(); // Consume the response to avoid memory leaks
           throw new Error(
-            "Function not available. Please run 'netlify dev' instead of 'npm start' to test locally, or wait for deployment."
+            "Function not available. Please ensure the API route is deployed or check your deployment."
           );
         }
 
