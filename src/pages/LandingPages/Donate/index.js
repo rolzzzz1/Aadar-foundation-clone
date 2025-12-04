@@ -113,9 +113,10 @@ function Donate() {
             <Grid lg={12}>
               <MKTypography
                 variant="h4"
+                fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
                 sx={{
                   fontWeight: "500",
-                  fontSize: { xs: "1.2rem", sm: "1.5rem", md: "1.2rem", lg: "1.5rem" },
+                  fontSize: { xs: "1.5rem", sm: "1.75rem", md: "1.875rem", lg: "1.875rem" },
                 }}
                 pb={{ md: 3, lg: 5 }}
               >
@@ -127,6 +128,7 @@ function Donate() {
                 <MKBox>
                   <MKTypography
                     variant="h4"
+                    fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
                     sx={{
                       fontWeight: "500",
                       fontSize: { xs: "1.2rem", sm: "1.5rem", md: "1.2rem", lg: "1.5rem" },
@@ -139,6 +141,7 @@ function Donate() {
                     <MKTypography
                       display="inline"
                       variant="h4"
+                      fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
                       sx={{
                         fontSize: { xs: "1.5rem", sm: "1.7rem", md: "1.7rem", lg: "2rem" },
                         fontWeight: "700",
@@ -179,6 +182,7 @@ function Donate() {
                     variant="h5"
                     mt={1.5}
                     fontSize={{ xs: "1rem", md: "1.2rem" }}
+                    fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
                   >
                     <i>{donatePage.imageTagLine}</i>
                   </MKTypography>
@@ -225,6 +229,7 @@ function Donate() {
                 alignItems={"center"}
               >
                 <MKTypography
+                  fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
                   sx={{
                     fontSize: { xs: "1.2rem", sm: "1.4rem", md: "1.4rem", lg: "1.5rem" },
                     fontWeight: "500",
@@ -243,7 +248,7 @@ function Donate() {
                 >
                   <b>{donatePage.bankAccountDetails.acccountName.title} - </b>
                   {donatePage.bankAccountDetails.acccountName.value}
-                  <Tooltip title="Click to copy" placement="right">
+                  <Tooltip title={donatePage.clickToCopy} placement="right">
                     <MKButton
                       onClick={() => {
                         navigator.clipboard.writeText(
@@ -268,7 +273,7 @@ function Donate() {
                 >
                   <b>{donatePage.bankAccountDetails.bankName.title} - </b>
                   {donatePage.bankAccountDetails.bankName.value}{" "}
-                  <Tooltip title="Click to copy" placement="right">
+                  <Tooltip title={donatePage.clickToCopy} placement="right">
                     <MKButton
                       onClick={() => {
                         navigator.clipboard.writeText(donatePage.bankAccountDetails.bankName.value);
@@ -289,7 +294,7 @@ function Donate() {
                   sx={{ letterSpacing: "0.05rem" }}
                 >
                   <b>{donatePage.bankAccountDetails.ifscCode.title} - </b>BARB0VJCCGW{" "}
-                  <Tooltip title="Click to copy" placement="right">
+                  <Tooltip title={donatePage.clickToCopy} placement="right">
                     <MKButton
                       onClick={() => {
                         navigator.clipboard.writeText("BARB0VJCCGW");
@@ -310,7 +315,7 @@ function Donate() {
                   sx={{ letterSpacing: "0.05rem" }}
                 >
                   <b>{donatePage.bankAccountDetails.accountNo.title} - </b>67940100000154{" "}
-                  <Tooltip title="Click to copy" placement="right">
+                  <Tooltip title={donatePage.clickToCopy} placement="right">
                     <MKButton
                       onClick={() => {
                         navigator.clipboard.writeText("67940100000154");
@@ -364,6 +369,7 @@ function Donate() {
               >
                 <MKTypography
                   variant="h4"
+                  fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
                   sx={{
                     fontSize: { sm: "1.8rem", md: "1.8rem", lg: "2rem" },
                     fontWeight: "500",
@@ -374,6 +380,7 @@ function Donate() {
                 </MKTypography>
                 <MKTypography
                   variant="h4"
+                  fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
                   sx={{
                     fontSize: { xs: "1rem", sm: "1.2rem", md: "1.3rem", lg: "1.5rem" },
                     fontWeight: "500",
@@ -400,6 +407,7 @@ function Donate() {
                       fontWeight: "400",
                     }}
                     pb={2}
+                    fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
                   >
                     {donatePage.membershipSection.membership.title}
                   </MKTypography>
@@ -452,6 +460,7 @@ function Donate() {
                       fontWeight: "400",
                     }}
                     pb={2}
+                    fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
                   >
                     {donatePage.membershipSection.sponsorPrabhuji.title}
                   </MKTypography>
@@ -498,6 +507,7 @@ function Donate() {
                 pb={4}
               >
                 <MKTypography
+                  fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
                   sx={{
                     fontSize: { xs: "1.1rem", sm: "1.3rem", md: "1.3rem", lg: "1.5rem" },
                     fontWeight: "400",

@@ -99,7 +99,7 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
 
         if (data.error) {
           // Show more detailed error information
-          const errorMsg = data.error.message || "Failed to fetch posts";
+          const errorMsg = data.error.message || t("homePage.postsSection.failedToFetchPosts");
           const errorDetails = data.error.details
             ? ` (Error Code: ${data.error.code || "unknown"})`
             : "";
@@ -109,13 +109,11 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
         } else if (data.data) {
           setPosts(data.data);
         } else {
-          setError(
-            "No posts found. The account may not have any posts, or the account ID may be incorrect."
-          );
+          setError(t("homePage.postsSection.noPostsFound"));
           setPosts([]);
         }
       } catch (err) {
-        setError(err.message || "Error fetching posts. Please try again later.");
+        setError(err.message || t("homePage.postsSection.failedToFetchPosts"));
         setPosts([]);
       } finally {
         setLoading(false);
@@ -199,7 +197,7 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
       {loading && (
         <div className="loading">
           <div className="spinner" />
-          <p>Loading posts...</p>
+          <p>{t("homePage.postsSection.loadingPosts")}</p>
         </div>
       )}
 
@@ -209,7 +207,7 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
             <button
               className="carousel-btn carousel-btn-prev"
               onClick={prevSlide}
-              aria-label="Previous posts"
+              aria-label={t("homePage.postsSection.previousPosts")}
             >
               ‹
             </button>
@@ -281,7 +279,7 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
             <button
               className="carousel-btn carousel-btn-next"
               onClick={nextSlide}
-              aria-label="Next posts"
+              aria-label={t("homePage.postsSection.nextPosts")}
             >
               ›
             </button>
@@ -294,7 +292,7 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
                   key={index}
                   className={`carousel-indicator ${index === currentIndex ? "active" : ""}`}
                   onClick={() => goToSlide(index)}
-                  aria-label={`Go to slide ${index + 1}`}
+                  aria-label={`${t("homePage.postsSection.goToSlide")} ${index + 1}`}
                 />
               ))}
             </div>
@@ -304,7 +302,7 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
 
       {!loading && posts.length === 0 && !error && (
         <div className="empty-state">
-          <p>No posts found</p>
+          <p>{t("homePage.postsSection.noPostsFound")}</p>
         </div>
       )}
     </div>

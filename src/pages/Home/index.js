@@ -352,7 +352,11 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
                   minHeight: { xs: "44px", sm: "48px", md: "50px", lg: "54px" },
                   transition: "all 0.3s ease",
                 }}
-                aria-label={isMuted ? "Unmute video" : "Mute video"}
+                aria-label={
+                  isMuted
+                    ? t("homePage.heroSection.unmuteVideo")
+                    : t("homePage.heroSection.muteVideo")
+                }
               >
                 {isMuted ? (
                   <VolumeOffIcon
@@ -438,7 +442,7 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
                 }
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Watch on YouTube"
+                aria-label={t("homePage.heroSection.watchOnYouTube")}
                 sx={{
                   position: "absolute",
                   // Align vertically with the story heading
@@ -1026,7 +1030,11 @@ function Home() {
 
         {/* Pause/Play hero slider (small button near indicators) */}
         <Tooltip
-          title={isCarouselPaused ? "Click for next story" : "Click to hold story"}
+          title={
+            isCarouselPaused
+              ? t("homePage.heroSection.clickForNextStory")
+              : t("homePage.heroSection.clickToHoldStory")
+          }
           arrow
           placement="top"
         >
@@ -1052,7 +1060,11 @@ function Home() {
               },
               transition: "all 0.25s ease",
             }}
-            aria-label={isCarouselPaused ? "Play slides" : "Pause slides"}
+            aria-label={
+              isCarouselPaused
+                ? t("homePage.heroSection.playSlides")
+                : t("homePage.heroSection.pauseSlides")
+            }
           >
             {isCarouselPaused ? (
               <PlayArrowIcon sx={{ fontSize: { xs: 18, sm: 18, md: 20 } }} />
@@ -1177,14 +1189,14 @@ function Home() {
         {/* About section component */}
         <About />
 
+        {/* Counters section component */}
+        <Counters />
+
         {/* Journey video section component */}
         <Journey />
 
         {/* Our work section component */}
         <Work />
-
-        {/* Counters section component */}
-        <Counters />
 
         {/* Events section component */}
         <Events />

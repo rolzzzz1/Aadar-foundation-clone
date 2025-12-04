@@ -25,7 +25,8 @@
     "journeySection": {
       "title": "Our Story of Change",
       "description": "A decade ago, Mr. Vikas Goswami, a young man from Gwalior, was moved by the suffering of the homeless and ailing people living on the streets and outside temples. From this compassion began the journey of Swarg Sadan Ashram — a place where hundreds of \"Prabhujans\" (divine souls) now live with love, care, and dignity. This is not just a story of service — it is the story of humanity's rebirth, led by Mr. Vikas Goswami and supported by society.",
-      "founderName": "Mr. Vikas Goswami"
+      "founderName": "Mr. Vikas Goswami",
+      "youtubeVideoPlayer": "YouTube video player"
     },
     "workSection": {
       "title": "Our Work",
@@ -76,6 +77,13 @@
   "heroSection": {
     "ctaButton": "Help Today",
     "ctaButtonSlide2": "Support a Story",
+    "clickForNextStory": "Click for next story",
+    "clickToHoldStory": "Click to hold story",
+    "unmuteVideo": "Unmute video",
+    "muteVideo": "Mute video",
+    "playSlides": "Play slides",
+    "pauseSlides": "Pause slides",
+    "watchOnYouTube": "Watch on YouTube",
     "slide2": {
       "title": "Mother Who Got Lost at Kumbh",
       "subtitle": "Reunited Through Compassion",
@@ -101,6 +109,12 @@
     "postsSection": {
       "title": "Latest Updates",
       "viewOnInstagram": "View on Instagram",
+      "failedToFetchPosts": "Failed to fetch posts",
+      "loadingPosts": "Loading posts...",
+      "noPostsFound": "No posts found",
+      "previousPosts": "Previous posts",
+      "nextPosts": "Next posts",
+      "goToSlide": "Go to slide",
       "post1": {
         "title": "Swarg Sadan Ashram expansion",
         "description": "Swarg Sadan Ashram will be expanded in 4 Bigha, thousands of homeless people will get benefit."
@@ -349,6 +363,7 @@
     "tagLine": "Donate",
     "title": "Donate",
     "description": "We ensure that every donation is used with purpose and precision. Each decision we make is thoughtfully considered, and even the smallest contribution is directed toward initiatives where it will yield the greatest impact.",
+    "clickToCopy": "Click to copy",
     "emailMessage": "Please email your <1>name, mobile number and screenshot</1> of your transaction at <1>aadarfoundatio2018@gmail.com</1> to get receipt of your contribution.",
     "imageTagLine": "\" Help us increase number of these smiles \"",
     "bankAccountDetails": {

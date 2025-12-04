@@ -184,7 +184,7 @@ function Journey() {
                   width="100%"
                   height="100%"
                   src="https://www.youtube.com/embed/0jZWD7v2vOM"
-                  title="YouTube video player"
+                  title={homePage.journeySection.youtubeVideoPlayer}
                   style={{
                     border: "0px",
                     borderRadius: "0px",

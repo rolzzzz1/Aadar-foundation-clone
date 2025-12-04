@@ -83,61 +83,91 @@ const getFooterRoutes = (t) => [
         >
           {t("footer.copyright")}
           {/* Copyright &copy; {date} Aadar foundation - All rights reserved. */}
-          <MKBox display="flex" justifyContent="center" alignItems="center" m={1}>
+          <MKBox
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            m={{ xs: 0.5, sm: 1 }}
+            sx={{
+              flexWrap: "wrap",
+              rowGap: { xs: 0.5, sm: 1 },
+              columnGap: { xs: 1, sm: 1.5 },
+              textAlign: "center",
+            }}
+          >
             <MKTypography
               variant="button"
+              fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
               fontWeight="regular"
-              fontSize="0.9rem"
+              fontSize={{ xs: "0.85rem", sm: "0.95rem", md: "1.05rem" }}
               color="white"
-              pr={2}
             >
               {t("footer.designed by")}
-              <MKTypography
-                component="a"
-                href={"https://linktr.ee/Rolzzzz"}
-                target="_blank"
-                rel="noreferrer"
+            </MKTypography>
+            <MKTypography
+              component="a"
+              href={"https://linktr.ee/Rolzzzz"}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <MKButton
+                variant="text"
+                size="small"
+                sx={{
+                  background:
+                    "linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%)",
+                  backdropFilter: `saturate(200%) blur(30px)`,
+                  color: "#ffffff",
+                  textTransform: "none",
+                  borderRadius: { xs: "10px", sm: "12px", md: "14px" },
+                  borderWidth: { xs: "1px", sm: "1.5px" },
+                  borderStyle: "solid",
+                  borderColor: "rgba(255, 255, 255, 0.3)",
+                  "&:hover": {
+                    borderColor: "rgba(255, 255, 255, 0.6)",
+                    background:
+                      "linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%)",
+                    transform: "translateY(-2px)",
+                    boxShadow: "0 4px 14px rgba(0, 0, 0, 0.35)",
+                  },
+                  marginLeft: { xs: "4px", sm: "6px" },
+                  padding: { xs: "4px 10px", sm: "5px 12px", md: "6px 14px" },
+                  display: "flex",
+                  alignItems: "center",
+                  gap: { xs: "6px", sm: "8px", md: "8px" },
+                  minHeight: "auto",
+                  transition: "all 0.25s ease",
+                  boxShadow: "0 1px 6px rgba(0, 0, 0, 0.25)",
+                }}
               >
-                <MKButton
-                  variant="text"
-                  size="small"
+                <MKTypography
+                  fontWeight="700"
+                  fontSize={{ xs: "0.8rem", sm: "0.9rem", md: "1rem" }}
+                  color="white"
+                  letterSpacing={{ xs: "0.4px", sm: "0.6px", md: "0.8px" }}
                   sx={{
-                    backgroundColor: "#575757",
-                    backdropFilter: `saturate(200%) blur(30px)`,
-                    color: "#ffffff",
-                    textTransform: "none",
-                    border: "2px solid transparent",
-                    "&: hover": {
-                      border: "2px solid #FFFFFF",
-                      backgroundColor: "#6a6a6a",
-                    },
-                    marginLeft: "5px",
-                    padding: "4px 12px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    minHeight: "auto",
-                    borderRadius: "8px",
-                    transition: "all 0.3s ease",
+                    fontFamily: '"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif',
+                    textShadow: "0 1px 3px rgba(0, 0, 0, 0.3)",
+                    lineHeight: 1.3,
                   }}
                 >
-                  <MKTypography
-                    fontWeight="bold"
-                    fontSize="0.9rem"
-                    color="white"
-                    letterSpacing="0.5px"
-                  >
-                    aishx.dev
-                  </MKTypography>
-                  <MKBox
-                    component="img"
-                    src={logoME}
-                    borderRadius="50%"
-                    width="20px"
-                    height="20px"
-                  ></MKBox>
-                </MKButton>
-              </MKTypography>
+                  aishx.dev
+                </MKTypography>
+                <MKBox
+                  component="img"
+                  src={logoME}
+                  borderRadius="50%"
+                  width={{ xs: "16px", sm: "18px", md: "20px" }}
+                  height={{ xs: "16px", sm: "18px", md: "20px" }}
+                  sx={{
+                    borderWidth: { xs: "1px", sm: "1.5px" },
+                    borderStyle: "solid",
+                    borderColor: "rgba(255, 255, 255, 0.4)",
+                    transition: "all 0.25s ease",
+                    boxShadow: "0 1px 4px rgba(0, 0, 0, 0.3)",
+                  }}
+                ></MKBox>
+              </MKButton>
             </MKTypography>
           </MKBox>
         </MKTypography>
