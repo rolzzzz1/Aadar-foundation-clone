@@ -20,12 +20,52 @@ import "./InstagramPosts.css";
  *   totalPosts={6}
  * />
  */
-const InstagramPosts = ({ postsPerSlide = 3, totalPosts = 6, className = "" }) => {
+const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) => {
   const { t } = useTranslation();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [dynamicPostsPerSlide, setDynamicPostsPerSlide] = useState(3);
+
+  // Always fetch 6 posts
+  const totalPosts = 6;
+
+  // Calculate posts per slide based on screen size
+  useEffect(() => {
+    const calculatePostsPerSlide = () => {
+      const width = window.innerWidth;
+      let newPostsPerSlide;
+      if (width < 768) {
+        // Very small screens: 1 post per slide
+        newPostsPerSlide = 1;
+      } else if (width < 1025) {
+        // Middle screens: 2 posts per slide
+        newPostsPerSlide = 2;
+      } else {
+        // Large screens: 3 posts per slide
+        newPostsPerSlide = 3;
+      }
+
+      setDynamicPostsPerSlide((prev) => {
+        // Reset to first slide when posts per slide changes
+        if (prev !== newPostsPerSlide) {
+          setCurrentIndex(0);
+        }
+        return newPostsPerSlide;
+      });
+    };
+
+    // Calculate on mount
+    calculatePostsPerSlide();
+
+    // Add resize listener
+    window.addEventListener("resize", calculatePostsPerSlide);
+    return () => window.removeEventListener("resize", calculatePostsPerSlide);
+  }, []);
+
+  // Use prop if provided, otherwise use dynamic value
+  const postsPerSlide = propPostsPerSlide !== undefined ? propPostsPerSlide : dynamicPostsPerSlide;
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -180,7 +220,11 @@ const InstagramPosts = ({ postsPerSlide = 3, totalPosts = 6, className = "" }) =
                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
               >
                 {Array.from({ length: totalSlides }).map((_, slideIndex) => (
-                  <div key={slideIndex} className="carousel-slide">
+                  <div
+                    key={slideIndex}
+                    className="carousel-slide"
+                    style={{ gridTemplateColumns: `repeat(${postsPerSlide}, 1fr)` }}
+                  >
                     {posts
                       .slice(slideIndex * postsPerSlide, slideIndex * postsPerSlide + postsPerSlide)
                       .map((post) => (
