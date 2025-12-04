@@ -28,7 +28,7 @@ function Work() {
       borderRadius={"10px"}
       mx={0}
     >
-      <Container my={0} py={0} sx={{ px: { xs: 1, sm: 2, md: 2 } }}>
+      <Container my={0} py={0} sx={{ px: { xs: 0.5, sm: 2, md: 2, lg: 3 } }}>
         <Grid container>
           <Grid
             item

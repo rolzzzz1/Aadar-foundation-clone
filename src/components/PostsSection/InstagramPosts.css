@@ -2,6 +2,9 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .config-section {
@@ -257,7 +260,9 @@
 .carousel-wrapper {
   overflow: hidden;
   width: 100%;
+  max-width: 100%;
   position: relative;
+  box-sizing: border-box;
 }
 
 .carousel-track {
@@ -276,6 +281,12 @@
   flex-shrink: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+@media (max-width: 1200px) {
+  .carousel-slide {
+    gap: 20px;
+  }
 }
 
 .carousel-btn {
@@ -347,8 +358,10 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s, box-shadow 0.3s;
   width: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
 }
 
 .post-card:hover {
@@ -399,6 +412,8 @@
   line-height: 1.6;
   margin: 0 0 12px 0;
   word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .post-meta {
@@ -439,16 +454,36 @@
 @media (max-width: 1024px) {
   .carousel-slide {
     grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
   }
 
   .carousel-container {
     padding: 0 15px;
+  }
+
+  .post-card {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 900px) {
+  .carousel-slide {
+    gap: 16px;
+  }
+
+  .post-content {
+    padding: 12px;
+  }
+
+  .post-caption {
+    font-size: 13px;
   }
 }
 
 @media (max-width: 768px) {
   .carousel-slide {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
 
   .carousel-container {
@@ -462,11 +497,19 @@
   }
 
   .carousel-btn-prev {
-    left: 10px;
+    left: 5px;
   }
 
   .carousel-btn-next {
-    right: 10px;
+    right: 5px;
+  }
+
+  .post-card {
+    max-width: 100%;
+  }
+
+  .post-content {
+    padding: 14px;
   }
 
   .button-group {
@@ -475,6 +518,78 @@
 
   .btn {
     width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .instagram-posts-container {
+    padding: 5px;
+  }
+
+  .carousel-container {
+    padding: 0 5px;
+  }
+
+  .carousel-slide {
+    gap: 16px;
+  }
+
+  .carousel-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
+
+  .carousel-btn-prev {
+    left: 0;
+  }
+
+  .carousel-btn-next {
+    right: 0;
+  }
+
+  .post-content {
+    padding: 12px;
+  }
+
+  .post-caption {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .post-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .post-date,
+  .post-link {
+    font-size: 11px;
+  }
+
+  .carousel-indicators {
+    margin-top: 20px;
+    gap: 6px;
+  }
+
+  .carousel-indicator {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-slide {
+    gap: 12px;
+  }
+
+  .post-content {
+    padding: 10px;
+  }
+
+  .post-caption {
+    font-size: 11px;
   }
 }
 
