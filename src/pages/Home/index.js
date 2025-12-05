@@ -1018,6 +1018,20 @@ function Home() {
   // State to let user pause/resume hero slider
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
+  const [slideInterval, setSlideInterval] = useState(5000);
+
+  // Calculate interval based on current slide
+  // Slide 0->1 and 1->2: 4-6 seconds (using 5 seconds)
+  // Rest of slides: 6-8 seconds (using 7 seconds)
+  useEffect(() => {
+    if (activeSlide === 0 || activeSlide === 1) {
+      // Transition from slide 1 to 2, or from slide 2 to 3
+      setSlideInterval(5000); // 5 seconds (middle of 4-6 range)
+    } else {
+      // Rest of the slides
+      setSlideInterval(7000); // 7 seconds (middle of 6-8 range)
+    }
+  }, [activeSlide]);
 
   // Refs for preloader videos
   const maykiPreloaderRef = useRef(null);
@@ -1199,7 +1213,7 @@ function Home() {
           onChange={(now) => {
             setActiveSlide(now);
           }}
-          interval={4500}
+          interval={slideInterval}
           stopAutoPlayOnHover={false}
           indicatorContainerProps={{
             style: {
