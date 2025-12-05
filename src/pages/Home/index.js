@@ -93,6 +93,8 @@ function HeroSlide({
   slideIndex,
   isActive,
   shouldAnimate,
+  isCarouselPaused,
+  setIsCarouselPaused,
 }) {
   const { t } = useTranslation();
 
@@ -238,6 +240,9 @@ function HeroSlide({
         {/* Video section - left (hidden on small screens) */}
         {!isMobile && (
           <MKBox
+            className={
+              isActive ? `hero-slide-video-${slideIndex} active` : `hero-slide-video-${slideIndex}`
+            }
             flex={{ xs: "0 0 auto", sm: "0 0 auto", md: "0 0 55%" }}
             width={{ xs: "100%", sm: "100%", md: "55%" }}
             display="flex"
@@ -339,6 +344,74 @@ function HeroSlide({
                 }}
               />
 
+              {/* Pause/Play button for slides 2, 3, 4 - top left of video */}
+              <MKBox
+                sx={{
+                  position: "absolute",
+                  top: "8px",
+                  left: "8px",
+                  zIndex: 4,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: 0.5,
+                }}
+              >
+                <Tooltip
+                  title={
+                    isCarouselPaused
+                      ? t("homePage.heroSection.clickForNextStory")
+                      : t("homePage.heroSection.clickToHoldStory")
+                  }
+                  arrow
+                  placement="top"
+                >
+                  <IconButton
+                    onClick={() => setIsCarouselPaused((prev) => !prev)}
+                    sx={{
+                      backgroundColor: "rgba(0, 0, 0, 0.28)",
+                      color: "rgba(255, 255, 255, 0.6)",
+                      backdropFilter: "blur(3px)",
+                      boxShadow: "0 1px 4px rgba(0, 0, 0, 0.2)",
+                      width: { xs: 44, sm: 44, md: 44 },
+                      height: { xs: 44, sm: 44, md: 44 },
+                      minWidth: { xs: 44, sm: 44, md: 44 },
+                      minHeight: { xs: 44, sm: 44, md: 44 },
+                      "&:hover": {
+                        backgroundColor: "rgba(0, 0, 0, 0.6)",
+                        color: "#ffffff",
+                        transform: "scale(1.03)",
+                      },
+                      transition: "all 0.25s ease",
+                    }}
+                    aria-label={
+                      isCarouselPaused
+                        ? t("homePage.heroSection.playSlides")
+                        : t("homePage.heroSection.pauseSlides")
+                    }
+                  >
+                    {isCarouselPaused ? (
+                      <PlayArrowIcon sx={{ fontSize: { xs: 18, sm: 18, md: 20 } }} />
+                    ) : (
+                      <PauseIcon sx={{ fontSize: { xs: 18, sm: 18, md: 20 } }} />
+                    )}
+                  </IconButton>
+                </Tooltip>
+                <MKTypography
+                  sx={{
+                    fontSize: { xs: "0.65rem", sm: "0.7rem", md: "0.75rem" },
+                    color: "rgba(255, 255, 255, 0.7)",
+                    textAlign: "center",
+                    whiteSpace: "nowrap",
+                    fontWeight: 400,
+                    letterSpacing: "0.3px",
+                    textShadow: "0 1px 3px rgba(0, 0, 0, 0.5)",
+                  }}
+                >
+                  {t("homePage.heroSection.pausePlayHint")}
+                </MKTypography>
+              </MKBox>
+
               <Tooltip
                 title={
                   isMuted
@@ -419,6 +492,11 @@ function HeroSlide({
           }}
         >
           <MKBox
+            className={
+              isActive
+                ? `hero-slide-text-box-${slideIndex} active`
+                : `hero-slide-text-box-${slideIndex}`
+            }
             sx={{
               position: "relative",
               zIndex: 10,
@@ -493,6 +571,11 @@ function HeroSlide({
             )}
             {/* Slide 2 uses slide2 translations, Slide 3 uses slide3 translations */}
             <MKTypography
+              className={
+                isActive
+                  ? `hero-slide-title-${slideIndex} active`
+                  : `hero-slide-title-${slideIndex}`
+              }
               variant="h2"
               fontWeight="bold"
               sx={{
@@ -596,6 +679,11 @@ function HeroSlide({
                 : homePage.heroSection.slide4.paragraph}
             </MKTypography>
             <MKButton
+              className={
+                isActive
+                  ? `hero-slide-button-${slideIndex} active`
+                  : `hero-slide-button-${slideIndex}`
+              }
               variant="contained"
               color="success"
               fullWidth={{ xs: true, sm: false, md: false }}
@@ -1406,54 +1494,186 @@ function Home() {
               transform: translateX(0) scale(1) !important;
               animation: none !important;
             }
+            
+            /* Slides 2, 3, 4 - Improved Hero Effects */
+            @keyframes slideInFromLeft {
+              0% {
+                opacity: 0;
+                transform: translateX(-60px);
+              }
+              100% {
+                opacity: 1;
+                transform: translateX(0);
+              }
+            }
+            
+            @keyframes slideInFromRight {
+              0% {
+                opacity: 0;
+                transform: translateX(60px);
+              }
+              100% {
+                opacity: 1;
+                transform: translateX(0);
+              }
+            }
+            
+            @keyframes fadeInUp {
+              0% {
+                opacity: 0;
+                transform: translateY(20px);
+              }
+              100% {
+                opacity: 1;
+                transform: translateY(0);
+              }
+            }
+            
+            /* Video container animations for slides 2, 3, 4 */
+            .hero-slide-video-1.active,
+            .hero-slide-video-2.active,
+            .hero-slide-video-3.active {
+              animation: slideInFromLeft 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s forwards;
+            }
+            
+            .hero-slide-video-1:not(.active),
+            .hero-slide-video-2:not(.active),
+            .hero-slide-video-3:not(.active) {
+              opacity: 0;
+              transform: translateX(-60px);
+            }
+            
+            /* Text box animations for slides 2, 3, 4 */
+            .hero-slide-text-box-1.active,
+            .hero-slide-text-box-2.active,
+            .hero-slide-text-box-3.active {
+              animation: slideInFromRight 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards;
+            }
+            
+            .hero-slide-text-box-1:not(.active),
+            .hero-slide-text-box-2:not(.active),
+            .hero-slide-text-box-3:not(.active) {
+              opacity: 0;
+              transform: translateX(60px);
+            }
+            
+            /* Title animations for slides 2, 3, 4 */
+            .hero-slide-title-1.active,
+            .hero-slide-title-2.active,
+            .hero-slide-title-3.active {
+              animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s forwards;
+            }
+            
+            .hero-slide-title-1:not(.active),
+            .hero-slide-title-2:not(.active),
+            .hero-slide-title-3:not(.active) {
+              opacity: 0 !important;
+              transform: translateY(20px);
+              visibility: hidden;
+            }
+            
+            /* Ensure title is hidden before animation starts */
+            .hero-slide-title-1,
+            .hero-slide-title-2,
+            .hero-slide-title-3 {
+              opacity: 0;
+              transform: translateY(20px);
+            }
+            
+            /* Button animations for slides 2, 3, 4 */
+            .hero-slide-button-1.active,
+            .hero-slide-button-2.active,
+            .hero-slide-button-3.active {
+              animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.8s forwards;
+            }
+            
+            .hero-slide-button-1:not(.active),
+            .hero-slide-button-2:not(.active),
+            .hero-slide-button-3:not(.active) {
+              opacity: 0 !important;
+              transform: translateY(20px);
+              visibility: hidden;
+            }
+            
+            /* Ensure button is hidden before animation starts */
+            .hero-slide-button-1,
+            .hero-slide-button-2,
+            .hero-slide-button-3 {
+              opacity: 0;
+              transform: translateY(20px);
+            }
           `}
         </style>
 
-        {/* Pause/Play hero slider (small button near indicators) */}
-        <Tooltip
-          title={
-            isCarouselPaused
-              ? t("homePage.heroSection.clickForNextStory")
-              : t("homePage.heroSection.clickToHoldStory")
-          }
-          arrow
-          placement="top"
-        >
-          <IconButton
-            onClick={() => setIsCarouselPaused((prev) => !prev)}
+        {/* Pause/Play hero slider (small button near indicators) - only for slide 1 */}
+        {activeSlide === 0 && (
+          <MKBox
             sx={{
               position: "absolute",
               bottom: "72px",
               right: { xs: "16px", sm: "22px", md: "28px" },
               zIndex: 6,
-              backgroundColor: "rgba(0, 0, 0, 0.28)",
-              color: "rgba(255, 255, 255, 0.6)",
-              backdropFilter: "blur(3px)",
-              boxShadow: "0 1px 4px rgba(0, 0, 0, 0.2)",
-              width: { xs: 44, sm: 44, md: 44 },
-              height: { xs: 44, sm: 44, md: 44 },
-              minWidth: { xs: 44, sm: 44, md: 44 },
-              minHeight: { xs: 44, sm: 44, md: 44 },
-              "&:hover": {
-                backgroundColor: "rgba(0, 0, 0, 0.6)",
-                color: "#ffffff",
-                transform: "scale(1.03)",
-              },
-              transition: "all 0.25s ease",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 0.5,
             }}
-            aria-label={
-              isCarouselPaused
-                ? t("homePage.heroSection.playSlides")
-                : t("homePage.heroSection.pauseSlides")
-            }
           >
-            {isCarouselPaused ? (
-              <PlayArrowIcon sx={{ fontSize: { xs: 18, sm: 18, md: 20 } }} />
-            ) : (
-              <PauseIcon sx={{ fontSize: { xs: 18, sm: 18, md: 20 } }} />
-            )}
-          </IconButton>
-        </Tooltip>
+            <Tooltip
+              title={
+                isCarouselPaused
+                  ? t("homePage.heroSection.clickForNextStory")
+                  : t("homePage.heroSection.clickToHoldStory")
+              }
+              arrow
+              placement="top"
+            >
+              <IconButton
+                onClick={() => setIsCarouselPaused((prev) => !prev)}
+                sx={{
+                  backgroundColor: "rgba(0, 0, 0, 0.28)",
+                  color: "rgba(255, 255, 255, 0.6)",
+                  backdropFilter: "blur(3px)",
+                  boxShadow: "0 1px 4px rgba(0, 0, 0, 0.2)",
+                  width: { xs: 44, sm: 44, md: 44 },
+                  height: { xs: 44, sm: 44, md: 44 },
+                  minWidth: { xs: 44, sm: 44, md: 44 },
+                  minHeight: { xs: 44, sm: 44, md: 44 },
+                  "&:hover": {
+                    backgroundColor: "rgba(0, 0, 0, 0.6)",
+                    color: "#ffffff",
+                    transform: "scale(1.03)",
+                  },
+                  transition: "all 0.25s ease",
+                }}
+                aria-label={
+                  isCarouselPaused
+                    ? t("homePage.heroSection.playSlides")
+                    : t("homePage.heroSection.pauseSlides")
+                }
+              >
+                {isCarouselPaused ? (
+                  <PlayArrowIcon sx={{ fontSize: { xs: 18, sm: 18, md: 20 } }} />
+                ) : (
+                  <PauseIcon sx={{ fontSize: { xs: 18, sm: 18, md: 20 } }} />
+                )}
+              </IconButton>
+            </Tooltip>
+            <MKTypography
+              sx={{
+                fontSize: { xs: "0.65rem", sm: "0.7rem", md: "0.75rem" },
+                color: "rgba(255, 255, 255, 0.7)",
+                textAlign: "center",
+                whiteSpace: "nowrap",
+                fontWeight: 400,
+                letterSpacing: "0.3px",
+                textShadow: "0 1px 3px rgba(0, 0, 0, 0.5)",
+              }}
+            >
+              {t("homePage.heroSection.pausePlayHint")}
+            </MKTypography>
+          </MKBox>
+        )}
 
         <Carousel
           animation="fade"
@@ -1554,6 +1774,8 @@ function Home() {
               slideIndex={index}
               isActive={activeSlide === index}
               shouldAnimate={index === 0 && !hasPlayedSlide1Animation}
+              isCarouselPaused={isCarouselPaused}
+              setIsCarouselPaused={setIsCarouselPaused}
             />
           ))}
         </Carousel>
@@ -1607,6 +1829,8 @@ HeroSlide.propTypes = {
   slideIndex: PropTypes.number.isRequired,
   isActive: PropTypes.bool.isRequired,
   shouldAnimate: PropTypes.bool,
+  isCarouselPaused: PropTypes.bool.isRequired,
+  setIsCarouselPaused: PropTypes.func.isRequired,
 };
 
 export default Home;
