@@ -574,11 +574,36 @@ function HeroSlide({
                 >
                   <YouTubeIcon
                     sx={{
-                      fontSize: { xs: "36px !important", sm: "40px !important", md: "44px !important", lg: "48px !important" },
-                      width: { xs: "36px !important", sm: "40px !important", md: "44px !important", lg: "48px !important" },
-                      height: { xs: "36px !important", sm: "40px !important", md: "44px !important", lg: "48px !important" },
-                      minWidth: { xs: "36px !important", sm: "40px !important", md: "44px !important", lg: "48px !important" },
-                      minHeight: { xs: "36px !important", sm: "40px !important", md: "44px !important", lg: "48px !important" },
+                      fontSize: {
+                        xs: "36px !important",
+                        sm: "40px !important",
+                        md: "44px !important",
+                        lg: "48px !important",
+                      },
+                      width: {
+                        xs: "36px !important",
+                        sm: "40px !important",
+                        md: "44px !important",
+                        lg: "48px !important",
+                      },
+                      height: {
+                        xs: "36px !important",
+                        sm: "40px !important",
+                        md: "44px !important",
+                        lg: "48px !important",
+                      },
+                      minWidth: {
+                        xs: "36px !important",
+                        sm: "40px !important",
+                        md: "44px !important",
+                        lg: "48px !important",
+                      },
+                      minHeight: {
+                        xs: "36px !important",
+                        sm: "40px !important",
+                        md: "44px !important",
+                        lg: "48px !important",
+                      },
                     }}
                   />
                 </MKBox>
