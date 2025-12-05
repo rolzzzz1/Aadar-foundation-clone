@@ -294,7 +294,7 @@ function HeroSlide({
                 loop
                 muted={isMuted}
                 playsInline
-                preload={isMobile ? "metadata" : "auto"}
+                preload={isMobile ? "none" : "metadata"}
                 poster={heroImage2}
                 style={{
                   width: "100%",
@@ -1180,18 +1180,25 @@ function Home() {
   const nirbhayPreloaderRef = useRef(null);
   const slide4PreloaderRef = useRef(null);
 
-  // Force all videos to start loading immediately on mount
+  // Optimize video loading - only preload on desktop and after initial page load
   useEffect(() => {
-    // Force load all preloader videos
-    if (maykiPreloaderRef.current) {
-      maykiPreloaderRef.current.load();
-    }
-    if (nirbhayPreloaderRef.current) {
-      nirbhayPreloaderRef.current.load();
-    }
-    if (slide4PreloaderRef.current) {
-      slide4PreloaderRef.current.load();
-    }
+    // Delay video preloading to prioritize initial page render
+    const preloadTimer = setTimeout(() => {
+      if (typeof window !== "undefined" && window.innerWidth >= 768) {
+        // Only preload on desktop
+        if (maykiPreloaderRef.current) {
+          maykiPreloaderRef.current.load();
+        }
+        if (nirbhayPreloaderRef.current) {
+          nirbhayPreloaderRef.current.load();
+        }
+        if (slide4PreloaderRef.current) {
+          slide4PreloaderRef.current.load();
+        }
+      }
+    }, 1000); // Delay by 1 second to allow initial page load
+
+    return () => clearTimeout(preloadTimer);
   }, []);
 
   // Hero slides (slide 2, slide 3, and slide 4 share the same special video layout)
@@ -1216,14 +1223,14 @@ function Home() {
         sticky
       />
 
-      {/* Hidden video preloader - starts loading videos immediately */}
-      {/* Videos are loaded from public folder or CDN - may not be available in build */}
-      {/* Video preloaders - only preload on desktop, use metadata on mobile */}
+      {/* Hidden video preloader - optimized loading */}
+      {/* Videos are loaded from CDN - only preload on desktop after initial load */}
+      {/* Video preloaders - lazy load on mobile, preload on desktop after delay */}
       {typeof window !== "undefined" && window.innerWidth >= 768 && (
         <>
           <video
             ref={maykiPreloaderRef}
-            preload="metadata"
+            preload="none"
             style={{
               position: "absolute",
               top: "-9999px",
@@ -1238,7 +1245,7 @@ function Home() {
           </video>
           <video
             ref={nirbhayPreloaderRef}
-            preload="metadata"
+            preload="none"
             style={{
               position: "absolute",
               top: "-9999px",
@@ -1254,7 +1261,7 @@ function Home() {
           {slide4VideoBase && (
             <video
               ref={slide4PreloaderRef}
-              preload="metadata"
+              preload="none"
               style={{
                 position: "absolute",
                 top: "-9999px",
@@ -1675,11 +1682,11 @@ function Home() {
               }
             }
             
-            /* Video container animations for slides 2, 3, 4 - one unified wave */
+            /* Video container animations for slides 2, 3, 4 - one smooth wave */
             .hero-slide-video-1.active,
             .hero-slide-video-2.active,
             .hero-slide-video-3.active {
-              animation: slideInFromLeftEnhanced 1.5s cubic-bezier(0.23, 1, 0.32, 1) 0s forwards;
+              animation: slideInFromLeftEnhanced 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s both;
               will-change: transform, opacity, filter;
               transform-style: preserve-3d;
             }
@@ -1692,11 +1699,11 @@ function Home() {
               filter: blur(2.5px) brightness(0.8);
             }
             
-            /* Text box animations for slides 2, 3, 4 - one unified wave */
+            /* Text box animations for slides 2, 3, 4 - one smooth wave */
             .hero-slide-text-box-1.active,
             .hero-slide-text-box-2.active,
             .hero-slide-text-box-3.active {
-              animation: slideInFromRightEnhanced 1.5s cubic-bezier(0.23, 1, 0.32, 1) 0s forwards;
+              animation: slideInFromRightEnhanced 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s both;
               will-change: transform, opacity, filter;
               transform-style: preserve-3d;
             }
@@ -1709,18 +1716,18 @@ function Home() {
               filter: blur(2.5px) brightness(0.8);
             }
             
-            /* Title and button animations - one unified wave */
+            /* Title and button animations - one smooth wave */
             .hero-slide-title-1.active,
             .hero-slide-title-2.active,
             .hero-slide-title-3.active {
-              animation: fadeInUpEnhanced 1.5s cubic-bezier(0.23, 1, 0.32, 1) 0s forwards;
+              animation: fadeInUpEnhanced 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s both;
               will-change: transform, opacity, filter;
             }
             
             .hero-slide-button-1.active,
             .hero-slide-button-2.active,
             .hero-slide-button-3.active {
-              animation: fadeInUpEnhanced 1.5s cubic-bezier(0.23, 1, 0.32, 1) 0s forwards;
+              animation: fadeInUpEnhanced 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s both;
               will-change: transform, opacity, filter;
             }
             
@@ -1818,16 +1825,18 @@ function Home() {
             </Tooltip>
             <MKTypography
               sx={{
-                fontSize: { xs: "0.65rem", sm: "0.7rem", md: "0.75rem" },
+                fontSize: { xs: "0.55rem", sm: "0.6rem", md: "0.65rem" },
                 color: "rgba(255, 255, 255, 0.9)",
                 textAlign: "center",
-                whiteSpace: "nowrap",
+                whiteSpace: "normal",
+                maxWidth: { xs: "120px", sm: "140px", md: "160px" },
+                lineHeight: 1.3,
                 fontWeight: 400,
                 letterSpacing: "0.3px",
                 textShadow: "0 1px 3px rgba(0, 0, 0, 0.5)",
                 backgroundColor: "rgba(0, 0, 0, 0.4)",
                 backdropFilter: "blur(4px)",
-                padding: { xs: "4px 8px", sm: "4px 10px", md: "5px 12px" },
+                padding: { xs: "4px 6px", sm: "4px 8px", md: "5px 10px" },
                 borderRadius: "6px",
                 boxShadow: "0 2px 6px rgba(0, 0, 0, 0.3)",
               }}

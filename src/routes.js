@@ -30,14 +30,17 @@
 // Pages
 // import Home from "layouts/pages/home";
 
-import About from "layouts/pages/landing-pages/about-us";
-import Work from "layouts/pages/landing-pages/work";
-import Gallery from "layouts/pages/landing-pages/gallery";
-import Contact from "layouts/pages/landing-pages/contact";
-import Volunteer from "layouts/pages/landing-pages/volunteer";
-import Donate from "layouts/pages/landing-pages/donate";
-import PrivacyPolicy from "layouts/pages/landing-pages/privacy-policy";
-import TermsConditions from "layouts/pages/landing-pages/terms-conditions";
+// Lazy load routes for code splitting and faster initial load
+import { lazy } from "react";
+
+const About = lazy(() => import("layouts/pages/landing-pages/about-us"));
+const Work = lazy(() => import("layouts/pages/landing-pages/work"));
+const Gallery = lazy(() => import("layouts/pages/landing-pages/gallery"));
+const Contact = lazy(() => import("layouts/pages/landing-pages/contact"));
+const Volunteer = lazy(() => import("layouts/pages/landing-pages/volunteer"));
+const Donate = lazy(() => import("layouts/pages/landing-pages/donate"));
+const PrivacyPolicy = lazy(() => import("layouts/pages/landing-pages/privacy-policy"));
+const TermsConditions = lazy(() => import("layouts/pages/landing-pages/terms-conditions"));
 
 // import ContactUs from "layouts/pages/landing-pages/contact-us";
 // import Author from "layouts/pages/landing-pages/author";
@@ -63,6 +66,11 @@ import TermsConditions from "layouts/pages/landing-pages/terms-conditions";
 // import Toggles from "layouts/sections/elements/toggles";
 // import Typography from "layouts/sections/elements/typography";
 
+// Helper function to create lazy-loaded route components with props
+const createLazyRoute = (LazyComponent, props = {}) => {
+  return <LazyComponent {...props} />;
+};
+
 const routes = [
   // {
   //   name: "Home",
@@ -79,50 +87,50 @@ const routes = [
     key: 2,
     name: "About Us",
     route: "/pages/landing-pages/about-us",
-    component: <About isWorkOn={false} />,
+    component: createLazyRoute(About, { isWorkOn: false }),
   },
 
   {
     key: 3,
     name: "Our Work",
     route: "/pages/landing-pages/work",
-    component: <Work isWorkOn={true} />,
+    component: createLazyRoute(Work, { isWorkOn: true }),
   },
   {
     key: 4,
     name: "Volunteer",
     route: "/pages/landing-pages/volunteer",
-    component: <Volunteer />,
+    component: createLazyRoute(Volunteer),
   },
   {
     key: 5,
     name: "Donate",
     route: "/pages/landing-pages/donate",
-    component: <Donate />,
+    component: createLazyRoute(Donate),
   },
   {
     key: 6,
     name: "Gallery",
     route: "/pages/landing-pages/gallery",
-    component: <Gallery />,
+    component: createLazyRoute(Gallery),
   },
   {
     key: 7,
     name: "Contact",
     route: "/pages/landing-pages/contact",
-    component: <Contact />,
+    component: createLazyRoute(Contact),
   },
   {
     key: 8,
     name: "Privacy policy",
     route: "/pages/landing-pages/privacy-policy",
-    component: <PrivacyPolicy />,
+    component: createLazyRoute(PrivacyPolicy),
   },
   {
     key: 9,
     name: "Terms Conditions",
     route: "/pages/landing-pages/terms-conditions",
-    component: <TermsConditions />,
+    component: createLazyRoute(TermsConditions),
   },
 ];
 

@@ -13,25 +13,36 @@
     <link rel="apple-touch-icon" sizes="76x76" href="%PUBLIC_URL%/apple-icon1.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>Aadar foundation</title>
-    <!-- Preload critical images and video for faster initial load -->
+    <!-- Preload critical resources for faster initial load -->
     <link
       rel="preload"
       as="image"
       href="%PUBLIC_URL%/assets/images/mainThemeImages/aadar-main-black2.png"
+      fetchpriority="high"
     />
-    <link rel="preload" as="image" href="%PUBLIC_URL%/assets/images/aadarHindiYellow.png" />
-    <link rel="preload" as="image" href="%PUBLIC_URL%/assets/images/aadarHindiWhite.png" />
+    <link
+      rel="preload"
+      as="image"
+      href="%PUBLIC_URL%/assets/images/aadarHindiYellow.png"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="%PUBLIC_URL%/assets/images/aadarHindiWhite.png"
+    />
     <link
       rel="preload"
       as="image"
       href="%PUBLIC_URL%/assets/images/mainThemeImages/brushstroke.svg"
     />
-    <link rel="preload" as="video" href="%PUBLIC_URL%/assets/images/video1.mp4" fetchpriority="high" />
-    <link rel="prefetch" as="video" href="%PUBLIC_URL%/assets/images/video1.mp4" />
-    <link
-      rel="dns-prefetch"
-      href="https://fonts.googleapis.com"
-    />
+    <!-- DNS prefetch for external resources -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+    <link rel="dns-prefetch" href="https://www.youtube.com" />
+    <!-- Preconnect for critical external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900|Roboto+Slab:400,700"
