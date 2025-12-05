@@ -880,8 +880,8 @@ function DefaultNavbar({
                                 typeof window !== "undefined" && window.innerWidth < 600
                                   ? "6px 14px"
                                   : typeof window !== "undefined" && window.innerWidth < 960
-                                    ? "8px 20px"
-                                    : "10px 24px",
+                                  ? "8px 20px"
+                                  : "10px 24px",
                             }
                           : {}
                       }
@@ -996,8 +996,8 @@ function DefaultNavbar({
                                 typeof window !== "undefined" && window.innerWidth < 600
                                   ? "6px 14px"
                                   : typeof window !== "undefined" && window.innerWidth < 960
-                                    ? "8px 20px"
-                                    : "10px 24px",
+                                  ? "8px 20px"
+                                  : "10px 24px",
                             }
                           : {}
                       }
