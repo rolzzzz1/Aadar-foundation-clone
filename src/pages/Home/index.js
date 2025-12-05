@@ -1185,7 +1185,7 @@ function HeroSlide({
                 : {}),
             }}
             sx={{
-              mt: 3,
+              mt: { xs: 4, sm: 4.5, md: 5 },
               ml: -2,
               px: { xs: 3.5, sm: 4, md: 4.5 },
               py: { xs: 0.9, sm: 1, md: 1.2 },
