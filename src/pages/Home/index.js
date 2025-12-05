@@ -717,16 +717,16 @@ function HeroSlide({
                   element.style.setProperty("border-radius", "12px", "important");
                   element.style.setProperty("position", "relative", "important");
                   element.style.setProperty("overflow", "hidden", "important");
-                  // Set padding based on screen size
+                  // Set padding based on screen size (Material-UI spacing: 8px per unit)
                   const width = window.innerWidth;
                   if (width < 600) {
-                    element.style.setProperty("padding", "1.1rem 3.5rem", "important");
+                    element.style.setProperty("padding", "0.55rem 1.75rem", "important"); // py: 1.1, px: 3.5
                   } else if (width < 960) {
-                    element.style.setProperty("padding", "1rem 3.2rem", "important");
+                    element.style.setProperty("padding", "0.5rem 1.6rem", "important"); // py: 1, px: 3.2
                   } else if (width < 1280) {
-                    element.style.setProperty("padding", "1.2rem 3.5rem", "important");
+                    element.style.setProperty("padding", "0.6rem 1.75rem", "important"); // py: 1.2, px: 3.5
                   } else {
-                    element.style.setProperty("padding", "1.3rem 4rem", "important");
+                    element.style.setProperty("padding", "0.65rem 2rem", "important"); // py: 1.3, px: 4
                   }
                 }
               }}
@@ -746,14 +746,15 @@ function HeroSlide({
                 position: "relative",
                 overflow: "hidden",
                 // Base padding - responsive values will be applied via sx prop after Material-UI loads
+                // Material-UI spacing: 8px per unit
                 padding:
                   typeof window !== "undefined" && window.innerWidth < 600
-                    ? "1.1rem 3.5rem"
+                    ? "0.55rem 1.75rem"
                     : typeof window !== "undefined" && window.innerWidth < 960
-                    ? "1rem 3.2rem"
+                    ? "0.5rem 1.6rem"
                     : typeof window !== "undefined" && window.innerWidth < 1280
-                    ? "1.2rem 3.5rem"
-                    : "1.3rem 4rem",
+                    ? "0.6rem 1.75rem"
+                    : "0.65rem 2rem",
                 // Apply visibility and transform based on state
                 ...(isActive
                   ? {
@@ -1119,14 +1120,14 @@ function HeroSlide({
                 element.style.setProperty("font-weight", "700", "important");
                 element.style.setProperty("position", "relative", "important");
                 element.style.setProperty("overflow", "hidden", "important");
-                // Set padding based on screen size
+                // Set padding based on screen size (Material-UI spacing: 8px per unit)
                 const width = window.innerWidth;
                 if (width < 600) {
-                  element.style.setProperty("padding", "0.9rem 3.5rem", "important");
+                  element.style.setProperty("padding", "0.45rem 1.75rem", "important"); // py: 0.9, px: 3.5
                 } else if (width < 960) {
-                  element.style.setProperty("padding", "1rem 4rem", "important");
+                  element.style.setProperty("padding", "0.5rem 2rem", "important"); // py: 1, px: 4
                 } else {
-                  element.style.setProperty("padding", "1.2rem 4.5rem", "important");
+                  element.style.setProperty("padding", "0.6rem 2.25rem", "important"); // py: 1.2, px: 4.5
                 }
               }
             }}
@@ -1146,12 +1147,13 @@ function HeroSlide({
               position: "relative",
               overflow: "hidden",
               // Base padding - responsive values will be applied via sx prop after Material-UI loads
+              // Material-UI spacing: 8px per unit, so px: 3.5 = 28px ≈ 1.75rem, py: 0.9 = 7.2px ≈ 0.45rem
               padding:
                 typeof window !== "undefined" && window.innerWidth < 600
-                  ? "0.9rem 3.5rem"
+                  ? "0.45rem 1.75rem"
                   : typeof window !== "undefined" && window.innerWidth < 960
-                  ? "1rem 4rem"
-                  : "1.2rem 4.5rem",
+                  ? "0.5rem 2rem"
+                  : "0.6rem 2.25rem",
               // Apply visibility and transform based on state
               ...(isActive && isFirstSlide && !shouldAnimate
                 ? {
@@ -1521,14 +1523,14 @@ function Home() {
             "0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1)",
             "important"
           );
-          // Set padding based on screen size
+          // Set padding based on screen size (Material-UI spacing: 8px per unit)
           const width = window.innerWidth;
           if (width < 600) {
-            btn.style.setProperty("padding", "0.9rem 3.5rem", "important");
+            btn.style.setProperty("padding", "0.45rem 1.75rem", "important"); // py: 0.9, px: 3.5
           } else if (width < 960) {
-            btn.style.setProperty("padding", "1rem 4rem", "important");
+            btn.style.setProperty("padding", "0.5rem 2rem", "important"); // py: 1, px: 4
           } else {
-            btn.style.setProperty("padding", "1.2rem 4.5rem", "important");
+            btn.style.setProperty("padding", "0.6rem 2.25rem", "important"); // py: 1.2, px: 4.5
           }
         }
       });
@@ -1551,16 +1553,16 @@ function Home() {
             "0 10px 30px rgba(79, 169, 83, 0.35), 0 5px 15px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
             "important"
           );
-          // Set padding based on screen size
+          // Set padding based on screen size (Material-UI spacing: 8px per unit)
           const width2 = window.innerWidth;
           if (width2 < 600) {
-            btn.style.setProperty("padding", "1.1rem 3.5rem", "important");
+            btn.style.setProperty("padding", "0.55rem 1.75rem", "important"); // py: 1.1, px: 3.5
           } else if (width2 < 960) {
-            btn.style.setProperty("padding", "1rem 3.2rem", "important");
+            btn.style.setProperty("padding", "0.5rem 1.6rem", "important"); // py: 1, px: 3.2
           } else if (width2 < 1280) {
-            btn.style.setProperty("padding", "1.2rem 3.5rem", "important");
+            btn.style.setProperty("padding", "0.6rem 1.75rem", "important"); // py: 1.2, px: 3.5
           } else {
-            btn.style.setProperty("padding", "1.3rem 4rem", "important");
+            btn.style.setProperty("padding", "0.65rem 2rem", "important"); // py: 1.3, px: 4
           }
         }
       });
