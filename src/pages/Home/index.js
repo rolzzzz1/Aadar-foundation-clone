@@ -1434,6 +1434,61 @@ function Home() {
           overflow: hidden !important;
           box-shadow: 0 10px 30px rgba(79, 169, 83, 0.35), 0 5px 15px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
         }
+        
+        /* Critical CSS for footer aishx.dev button */
+        [data-footer-button="aishx"],
+        [data-footer-button="aishx"].MuiButton-root,
+        button[data-footer-button="aishx"],
+        a[data-footer-button="aishx"] {
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%) !important;
+          backdrop-filter: saturate(200%) blur(30px) !important;
+          color: #ffffff !important;
+          display: flex !important;
+          align-items: center !important;
+          border-style: solid !important;
+          border-color: rgba(255, 255, 255, 0.3) !important;
+          box-shadow: 0 1px 6px rgba(0, 0, 0, 0.25) !important;
+          text-transform: none !important;
+          min-height: auto !important;
+          transition: all 0.25s ease !important;
+        }
+        
+        @media (max-width: 599px) {
+          [data-footer-button="aishx"],
+          [data-footer-button="aishx"].MuiButton-root,
+          button[data-footer-button="aishx"],
+          a[data-footer-button="aishx"] {
+            border-radius: 10px !important;
+            border-width: 1px !important;
+            padding: 4px 10px !important;
+            gap: 6px !important;
+            margin-left: 4px !important;
+          }
+        }
+        @media (min-width: 600px) and (max-width: 959px) {
+          [data-footer-button="aishx"],
+          [data-footer-button="aishx"].MuiButton-root,
+          button[data-footer-button="aishx"],
+          a[data-footer-button="aishx"] {
+            border-radius: 12px !important;
+            border-width: 1.5px !important;
+            padding: 5px 12px !important;
+            gap: 8px !important;
+            margin-left: 6px !important;
+          }
+        }
+        @media (min-width: 960px) {
+          [data-footer-button="aishx"],
+          [data-footer-button="aishx"].MuiButton-root,
+          button[data-footer-button="aishx"],
+          a[data-footer-button="aishx"] {
+            border-radius: 14px !important;
+            border-width: 1.5px !important;
+            padding: 6px 14px !important;
+            gap: 8px !important;
+            margin-left: 6px !important;
+          }
+        }
       `;
       // Append to end of head to ensure it loads after Material-UI styles
       document.head.appendChild(style);
@@ -1546,6 +1601,10 @@ function Home() {
       const navbarButtons = document.querySelectorAll(
         '[data-navbar-button="donate"], button[data-navbar-button="donate"], a[data-navbar-button="donate"]'
       );
+      // Find footer aishx.dev buttons
+      const footerButtons = document.querySelectorAll(
+        '[data-footer-button="aishx"], button[data-footer-button="aishx"], a[data-footer-button="aishx"]'
+      );
 
       // Force styles on slide 1 button
       slide1Buttons.forEach((btn) => {
@@ -1639,6 +1698,45 @@ function Home() {
             btn.style.setProperty("padding", "8px 20px", "important");
           } else {
             btn.style.setProperty("padding", "10px 24px", "important");
+          }
+        }
+      });
+
+      // Force styles on footer aishx.dev buttons
+      footerButtons.forEach((btn) => {
+        if (btn && btn.style) {
+          btn.style.setProperty(
+            "background",
+            "linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%)",
+            "important"
+          );
+          btn.style.setProperty("backdrop-filter", "saturate(200%) blur(30px)", "important");
+          btn.style.setProperty("color", "#ffffff", "important");
+          btn.style.setProperty("display", "flex", "important");
+          btn.style.setProperty("align-items", "center", "important");
+          btn.style.setProperty("border-style", "solid", "important");
+          btn.style.setProperty("border-color", "rgba(255, 255, 255, 0.3)", "important");
+          btn.style.setProperty("box-shadow", "0 1px 6px rgba(0, 0, 0, 0.25)", "important");
+          // Set responsive styles based on screen size
+          const width4 = window.innerWidth;
+          if (width4 < 600) {
+            btn.style.setProperty("border-radius", "10px", "important");
+            btn.style.setProperty("border-width", "1px", "important");
+            btn.style.setProperty("padding", "4px 10px", "important");
+            btn.style.setProperty("gap", "6px", "important");
+            btn.style.setProperty("margin-left", "4px", "important");
+          } else if (width4 < 960) {
+            btn.style.setProperty("border-radius", "12px", "important");
+            btn.style.setProperty("border-width", "1.5px", "important");
+            btn.style.setProperty("padding", "5px 12px", "important");
+            btn.style.setProperty("gap", "8px", "important");
+            btn.style.setProperty("margin-left", "6px", "important");
+          } else {
+            btn.style.setProperty("border-radius", "14px", "important");
+            btn.style.setProperty("border-width", "1.5px", "important");
+            btn.style.setProperty("padding", "6px 14px", "important");
+            btn.style.setProperty("gap", "8px", "important");
+            btn.style.setProperty("margin-left", "6px", "important");
           }
         }
       });
@@ -1901,6 +1999,61 @@ function Home() {
               position: relative !important;
               overflow: hidden !important;
               box-shadow: 0 10px 30px rgba(79, 169, 83, 0.35), 0 5px 15px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+            }
+            
+            /* Critical CSS for footer aishx.dev button */
+            [data-footer-button="aishx"],
+            [data-footer-button="aishx"].MuiButton-root,
+            button[data-footer-button="aishx"],
+            a[data-footer-button="aishx"] {
+              background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%) !important;
+              backdrop-filter: saturate(200%) blur(30px) !important;
+              color: #ffffff !important;
+              display: flex !important;
+              align-items: center !important;
+              border-style: solid !important;
+              border-color: rgba(255, 255, 255, 0.3) !important;
+              box-shadow: 0 1px 6px rgba(0, 0, 0, 0.25) !important;
+              text-transform: none !important;
+              min-height: auto !important;
+              transition: all 0.25s ease !important;
+            }
+            
+            @media (max-width: 599px) {
+              [data-footer-button="aishx"],
+              [data-footer-button="aishx"].MuiButton-root,
+              button[data-footer-button="aishx"],
+              a[data-footer-button="aishx"] {
+                border-radius: 10px !important;
+                border-width: 1px !important;
+                padding: 4px 10px !important;
+                gap: 6px !important;
+                margin-left: 4px !important;
+              }
+            }
+            @media (min-width: 600px) and (max-width: 959px) {
+              [data-footer-button="aishx"],
+              [data-footer-button="aishx"].MuiButton-root,
+              button[data-footer-button="aishx"],
+              a[data-footer-button="aishx"] {
+                border-radius: 12px !important;
+                border-width: 1.5px !important;
+                padding: 5px 12px !important;
+                gap: 8px !important;
+                margin-left: 6px !important;
+              }
+            }
+            @media (min-width: 960px) {
+              [data-footer-button="aishx"],
+              [data-footer-button="aishx"].MuiButton-root,
+              button[data-footer-button="aishx"],
+              a[data-footer-button="aishx"] {
+                border-radius: 14px !important;
+                border-width: 1.5px !important;
+                padding: 6px 14px !important;
+                gap: 8px !important;
+                margin-left: 6px !important;
+              }
             }
             
             /* Target carousel navigation buttons */

@@ -113,6 +113,82 @@ const getFooterRoutes = (t) => [
               <MKButton
                 variant="text"
                 size="small"
+                data-footer-button="aishx"
+                ref={(el) => {
+                  if (el && typeof window !== "undefined") {
+                    const element = el;
+                    element.style.setProperty(
+                      "background",
+                      "linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%)",
+                      "important"
+                    );
+                    element.style.setProperty("backdrop-filter", "saturate(200%) blur(30px)", "important");
+                    element.style.setProperty("color", "#ffffff", "important");
+                    element.style.setProperty("display", "flex", "important");
+                    element.style.setProperty("align-items", "center", "important");
+                    const width = window.innerWidth;
+                    if (width < 600) {
+                      element.style.setProperty("border-radius", "10px", "important");
+                      element.style.setProperty("border-width", "1px", "important");
+                      element.style.setProperty("padding", "4px 10px", "important");
+                      element.style.setProperty("gap", "6px", "important");
+                      element.style.setProperty("margin-left", "4px", "important");
+                    } else if (width < 960) {
+                      element.style.setProperty("border-radius", "12px", "important");
+                      element.style.setProperty("border-width", "1.5px", "important");
+                      element.style.setProperty("padding", "5px 12px", "important");
+                      element.style.setProperty("gap", "8px", "important");
+                      element.style.setProperty("margin-left", "6px", "important");
+                    } else {
+                      element.style.setProperty("border-radius", "14px", "important");
+                      element.style.setProperty("border-width", "1.5px", "important");
+                      element.style.setProperty("padding", "6px 14px", "important");
+                      element.style.setProperty("gap", "8px", "important");
+                      element.style.setProperty("margin-left", "6px", "important");
+                    }
+                    element.style.setProperty("border-style", "solid", "important");
+                    element.style.setProperty("border-color", "rgba(255, 255, 255, 0.3)", "important");
+                    element.style.setProperty("box-shadow", "0 1px 6px rgba(0, 0, 0, 0.25)", "important");
+                  }
+                }}
+                style={{
+                  background:
+                    "linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%)",
+                  backdropFilter: "saturate(200%) blur(30px)",
+                  color: "#ffffff",
+                  textTransform: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  borderStyle: "solid",
+                  borderColor: "rgba(255, 255, 255, 0.3)",
+                  boxShadow: "0 1px 6px rgba(0, 0, 0, 0.25)",
+                  borderRadius:
+                    typeof window !== "undefined" && window.innerWidth < 600
+                      ? "10px"
+                      : typeof window !== "undefined" && window.innerWidth < 960
+                      ? "12px"
+                      : "14px",
+                  borderWidth:
+                    typeof window !== "undefined" && window.innerWidth < 600
+                      ? "1px"
+                      : "1.5px",
+                  padding:
+                    typeof window !== "undefined" && window.innerWidth < 600
+                      ? "4px 10px"
+                      : typeof window !== "undefined" && window.innerWidth < 960
+                      ? "5px 12px"
+                      : "6px 14px",
+                  gap:
+                    typeof window !== "undefined" && window.innerWidth < 600
+                      ? "6px"
+                      : "8px",
+                  marginLeft:
+                    typeof window !== "undefined" && window.innerWidth < 600
+                      ? "4px"
+                      : "6px",
+                  minHeight: "auto",
+                  transition: "all 0.25s ease",
+                }}
                 sx={{
                   background:
                     "linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%)",
