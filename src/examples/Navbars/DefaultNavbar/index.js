@@ -826,6 +826,49 @@ function DefaultNavbar({
                       }
                       color={action.color ? action.color : "info"}
                       size="small"
+                      data-navbar-button="donate"
+                      ref={(el) => {
+                        // Directly set styles on DOM element immediately when created
+                        // This happens before Material-UI can override them
+                        if (el && typeof window !== "undefined" && action.color === "success") {
+                          const element = el;
+                          // Use setProperty with important flag to override any existing styles
+                          element.style.setProperty("background-color", "#4FA953", "important");
+                          element.style.setProperty("color", "white", "important");
+                          element.style.setProperty(
+                            "box-shadow",
+                            "0 6px 20px rgba(79, 169, 83, 0.35), 0 3px 10px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+                            "important"
+                          );
+                          element.style.setProperty("display", "inline-flex", "important");
+                          element.style.setProperty("align-items", "center", "important");
+                          element.style.setProperty("justify-content", "center", "important");
+                          element.style.setProperty("cursor", "pointer", "important");
+                          element.style.setProperty("font-weight", "700", "important");
+                          element.style.setProperty("border-radius", "12px", "important");
+                          element.style.setProperty("position", "relative", "important");
+                          element.style.setProperty("overflow", "hidden", "important");
+                        }
+                      }}
+                      style={
+                        action.color === "success"
+                          ? {
+                              // Critical inline styles that must load immediately (before CSS)
+                              backgroundColor: "#4FA953",
+                              color: "white",
+                              boxShadow:
+                                "0 6px 20px rgba(79, 169, 83, 0.35), 0 3px 10px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+                              display: "inline-flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              cursor: "pointer",
+                              fontWeight: "700",
+                              borderRadius: "12px",
+                              position: "relative",
+                              overflow: "hidden",
+                            }
+                          : {}
+                      }
                       sx={{
                         textTransform: "none",
                         fontWeight: 700,
@@ -836,12 +879,9 @@ function DefaultNavbar({
                         overflow: "hidden",
                         ...(action.color === "success"
                           ? {
-                              backgroundColor: "#4FA953",
-                              color: "white",
+                              // Removed backgroundColor, color, boxShadow from sx to prevent Material-UI from overriding inline styles
                               padding: { xs: "6px 14px", md: "8px 20px", lg: "10px 24px" },
                               fontSize: { xs: "0.8rem", md: "0.85rem", lg: "0.95rem" },
-                              boxShadow:
-                                "0 6px 20px rgba(79, 169, 83, 0.35), 0 3px 10px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
                               "&::before": {
                                 content: '""',
                                 position: "absolute",
@@ -886,6 +926,49 @@ function DefaultNavbar({
                       }
                       color={action.color ? action.color : "info"}
                       size="small"
+                      data-navbar-button="donate"
+                      ref={(el) => {
+                        // Directly set styles on DOM element immediately when created
+                        // This happens before Material-UI can override them
+                        if (el && typeof window !== "undefined" && action.color === "success") {
+                          const element = el;
+                          // Use setProperty with important flag to override any existing styles
+                          element.style.setProperty("background-color", "#4FA953", "important");
+                          element.style.setProperty("color", "white", "important");
+                          element.style.setProperty(
+                            "box-shadow",
+                            "0 6px 20px rgba(79, 169, 83, 0.35), 0 3px 10px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+                            "important"
+                          );
+                          element.style.setProperty("display", "inline-flex", "important");
+                          element.style.setProperty("align-items", "center", "important");
+                          element.style.setProperty("justify-content", "center", "important");
+                          element.style.setProperty("cursor", "pointer", "important");
+                          element.style.setProperty("font-weight", "700", "important");
+                          element.style.setProperty("border-radius", "12px", "important");
+                          element.style.setProperty("position", "relative", "important");
+                          element.style.setProperty("overflow", "hidden", "important");
+                        }
+                      }}
+                      style={
+                        action.color === "success"
+                          ? {
+                              // Critical inline styles that must load immediately (before CSS)
+                              backgroundColor: "#4FA953",
+                              color: "white",
+                              boxShadow:
+                                "0 6px 20px rgba(79, 169, 83, 0.35), 0 3px 10px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+                              display: "inline-flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              cursor: "pointer",
+                              fontWeight: "700",
+                              borderRadius: "12px",
+                              position: "relative",
+                              overflow: "hidden",
+                            }
+                          : {}
+                      }
                       sx={{
                         textTransform: "none",
                         fontWeight: 700,
@@ -896,12 +979,9 @@ function DefaultNavbar({
                         overflow: "hidden",
                         ...(action.color === "success"
                           ? {
-                              backgroundColor: "#4FA953",
-                              color: "white",
+                              // Removed backgroundColor, color, boxShadow from sx to prevent Material-UI from overriding inline styles
                               padding: { xs: "6px 14px", md: "8px 20px", lg: "10px 24px" },
                               fontSize: { xs: "0.8rem", md: "0.85rem", lg: "0.95rem" },
-                              boxShadow:
-                                "0 6px 20px rgba(79, 169, 83, 0.35), 0 3px 10px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
                               "&::before": {
                                 content: '""',
                                 position: "absolute",

@@ -1461,6 +1461,14 @@ function Home() {
       const slide234Buttons = document.querySelectorAll(
         '[data-hero-button="slide2"], [data-hero-button="slide3"], [data-hero-button="slide4"], .hero-slide-button-1, .hero-slide-button-2, .hero-slide-button-3, button.hero-slide-button-1, button.hero-slide-button-2, button.hero-slide-button-3, a.hero-slide-button-1, a.hero-slide-button-2, a.hero-slide-button-3'
       );
+      // Find navbar donate buttons
+      const navbarButtons = document.querySelectorAll(
+        '[data-navbar-button="donate"], button[data-navbar-button="donate"], a[data-navbar-button="donate"]'
+      );
+      // Find navbar donate buttons
+      const navbarButtons = document.querySelectorAll(
+        '[data-navbar-button="donate"], button[data-navbar-button="donate"], a[data-navbar-button="donate"]'
+      );
 
       // Force styles on slide 1 button
       slide1Buttons.forEach((btn) => {
@@ -1500,6 +1508,27 @@ function Home() {
           btn.style.setProperty(
             "box-shadow",
             "0 10px 30px rgba(79, 169, 83, 0.35), 0 5px 15px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+            "important"
+          );
+        }
+      });
+
+      // Force styles on navbar donate buttons
+      navbarButtons.forEach((btn) => {
+        if (btn && btn.style) {
+          btn.style.setProperty("background-color", "#4FA953", "important");
+          btn.style.setProperty("color", "white", "important");
+          btn.style.setProperty("display", "inline-flex", "important");
+          btn.style.setProperty("align-items", "center", "important");
+          btn.style.setProperty("justify-content", "center", "important");
+          btn.style.setProperty("cursor", "pointer", "important");
+          btn.style.setProperty("font-weight", "700", "important");
+          btn.style.setProperty("border-radius", "12px", "important");
+          btn.style.setProperty("position", "relative", "important");
+          btn.style.setProperty("overflow", "hidden", "important");
+          btn.style.setProperty(
+            "box-shadow",
+            "0 6px 20px rgba(79, 169, 83, 0.35), 0 3px 10px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
             "important"
           );
         }

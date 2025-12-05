@@ -119,6 +119,24 @@
         overflow: hidden !important;
         box-shadow: 0 10px 30px rgba(79, 169, 83, 0.35), 0 5px 15px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
       }
+      
+      /* Critical CSS for navbar donate button */
+      [data-navbar-button="donate"],
+      [data-navbar-button="donate"].MuiButton-root,
+      button[data-navbar-button="donate"],
+      a[data-navbar-button="donate"] {
+        background-color: #4FA953 !important;
+        color: white !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+        font-weight: 700 !important;
+        position: relative !important;
+        overflow: hidden !important;
+        border-radius: 12px !important;
+        box-shadow: 0 6px 20px rgba(79, 169, 83, 0.35), 0 3px 10px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      }
     </style>
     <!-- Script to apply styles immediately when buttons are created (before React hydration) -->
     <script>
