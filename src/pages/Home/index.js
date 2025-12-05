@@ -694,6 +694,7 @@ function HeroSlide({
               fullWidth={{ xs: true, sm: false, md: false }}
               style={{
                 // Critical inline styles that must load immediately (before CSS)
+                // Always apply base styles regardless of active state for first load
                 backgroundColor: "#4FA953",
                 color: "white",
                 boxShadow:
@@ -702,6 +703,10 @@ function HeroSlide({
                 alignItems: "center",
                 justifyContent: "center",
                 cursor: "pointer",
+                fontWeight: "700",
+                position: "relative",
+                overflow: "hidden",
+                // Apply visibility and transform based on state
                 ...(isActive
                   ? {
                       opacity: 1,
@@ -713,6 +718,7 @@ function HeroSlide({
                       opacity: 0,
                       transform: "translateY(22px) scale(0.93)",
                       filter: "blur(1.2px)",
+                      visibility: "hidden",
                     }),
               }}
               sx={{
@@ -1048,6 +1054,7 @@ function HeroSlide({
             }
             style={{
               // Critical inline styles that must load immediately (before CSS)
+              // Always apply base styles regardless of active state for first load
               backgroundColor: "white",
               color: "#FFC107",
               boxShadow: "0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1)",
@@ -1056,6 +1063,11 @@ function HeroSlide({
               justifyContent: "center",
               cursor: "pointer",
               textDecoration: "none",
+              borderRadius: "10px",
+              fontWeight: "700",
+              position: "relative",
+              overflow: "hidden",
+              // Apply visibility and transform based on state
               ...(isActive && isFirstSlide && !shouldAnimate
                 ? {
                     opacity: 1,
@@ -1081,6 +1093,7 @@ function HeroSlide({
                 ? {
                     opacity: 0,
                     transform: "translateX(-180px) scale(0.96)",
+                    visibility: "hidden",
                   }
                 : {}),
             }}
@@ -1207,6 +1220,72 @@ function Home() {
   const [slideInterval, setSlideInterval] = useState(8000);
   const [hasPlayedSlide1Animation, setHasPlayedSlide1Animation] = useState(false);
   const animationTimerRef = useRef(null);
+
+  // Inject critical CSS for CTA buttons into document head on mount
+  // This ensures buttons are styled correctly on first load, even before React fully hydrates
+  useEffect(() => {
+    const styleId = "hero-cta-buttons-critical-css";
+    // Check if style already exists
+    if (document.getElementById(styleId)) {
+      return;
+    }
+
+    const style = document.createElement("style");
+    style.id = styleId;
+    style.textContent = `
+      /* Critical CSS for CTA buttons - injected on mount */
+      /* Use high specificity to override Material-UI styles */
+      button.hero-slide-1-button,
+      button.hero-slide-1-button.active,
+      a.hero-slide-1-button,
+      a.hero-slide-1-button.active {
+        background-color: white !important;
+        color: #FFC107 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+        border-radius: 10px !important;
+        font-weight: 700 !important;
+        position: relative !important;
+        overflow: hidden !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+      }
+      
+      button.hero-slide-button-1,
+      button.hero-slide-button-2,
+      button.hero-slide-button-3,
+      button.hero-slide-button-1.active,
+      button.hero-slide-button-2.active,
+      button.hero-slide-button-3.active,
+      a.hero-slide-button-1,
+      a.hero-slide-button-2,
+      a.hero-slide-button-3,
+      a.hero-slide-button-1.active,
+      a.hero-slide-button-2.active,
+      a.hero-slide-button-3.active {
+        background-color: #4FA953 !important;
+        color: white !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+        font-weight: 700 !important;
+        position: relative !important;
+        overflow: hidden !important;
+        box-shadow: 0 10px 30px rgba(79, 169, 83, 0.35), 0 5px 15px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      // Cleanup on unmount
+      const existingStyle = document.getElementById(styleId);
+      if (existingStyle) {
+        existingStyle.remove();
+      }
+    };
+  }, []);
 
   // Set animation flag when slide 1 first becomes active (initial load)
   useEffect(() => {
@@ -1350,24 +1429,46 @@ function Home() {
         <style>
           {`
             /* Critical CSS for CTA buttons - must load first for Vercel */
-            .hero-slide-1-button {
+            /* Use high specificity to override Material-UI styles */
+            button.hero-slide-1-button,
+            button.hero-slide-1-button.active,
+            a.hero-slide-1-button,
+            a.hero-slide-1-button.active {
               background-color: white !important;
               color: #FFC107 !important;
               display: inline-flex !important;
               align-items: center !important;
               justify-content: center !important;
               cursor: pointer !important;
+              border-radius: 10px !important;
+              font-weight: 700 !important;
+              position: relative !important;
+              overflow: hidden !important;
+              box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1) !important;
             }
             
-            .hero-slide-button-1,
-            .hero-slide-button-2,
-            .hero-slide-button-3 {
+            button.hero-slide-button-1,
+            button.hero-slide-button-2,
+            button.hero-slide-button-3,
+            button.hero-slide-button-1.active,
+            button.hero-slide-button-2.active,
+            button.hero-slide-button-3.active,
+            a.hero-slide-button-1,
+            a.hero-slide-button-2,
+            a.hero-slide-button-3,
+            a.hero-slide-button-1.active,
+            a.hero-slide-button-2.active,
+            a.hero-slide-button-3.active {
               background-color: #4FA953 !important;
               color: white !important;
               display: inline-flex !important;
               align-items: center !important;
               justify-content: center !important;
               cursor: pointer !important;
+              font-weight: 700 !important;
+              position: relative !important;
+              overflow: hidden !important;
+              box-shadow: 0 10px 30px rgba(79, 169, 83, 0.35), 0 5px 15px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
             }
             
             /* Target carousel navigation buttons */
