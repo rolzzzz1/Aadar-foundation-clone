@@ -746,13 +746,14 @@ function HeroSlide({
                 position: "relative",
                 overflow: "hidden",
                 // Base padding - responsive values will be applied via sx prop after Material-UI loads
-                padding: typeof window !== "undefined" && window.innerWidth < 600
-                  ? "1.1rem 3.5rem"
-                  : typeof window !== "undefined" && window.innerWidth < 960
-                  ? "1rem 3.2rem"
-                  : typeof window !== "undefined" && window.innerWidth < 1280
-                  ? "1.2rem 3.5rem"
-                  : "1.3rem 4rem",
+                padding:
+                  typeof window !== "undefined" && window.innerWidth < 600
+                    ? "1.1rem 3.5rem"
+                    : typeof window !== "undefined" && window.innerWidth < 960
+                      ? "1rem 3.2rem"
+                      : typeof window !== "undefined" && window.innerWidth < 1280
+                        ? "1.2rem 3.5rem"
+                        : "1.3rem 4rem",
                 // Apply visibility and transform based on state
                 ...(isActive
                   ? {
@@ -1145,11 +1146,12 @@ function HeroSlide({
               position: "relative",
               overflow: "hidden",
               // Base padding - responsive values will be applied via sx prop after Material-UI loads
-              padding: typeof window !== "undefined" && window.innerWidth < 600 
-                ? "0.9rem 3.5rem" 
-                : typeof window !== "undefined" && window.innerWidth < 960
-                ? "1rem 4rem"
-                : "1.2rem 4.5rem",
+              padding:
+                typeof window !== "undefined" && window.innerWidth < 600
+                  ? "0.9rem 3.5rem"
+                  : typeof window !== "undefined" && window.innerWidth < 960
+                    ? "1rem 4rem"
+                    : "1.2rem 4.5rem",
               // Apply visibility and transform based on state
               ...(isActive && isFirstSlide && !shouldAnimate
                 ? {
