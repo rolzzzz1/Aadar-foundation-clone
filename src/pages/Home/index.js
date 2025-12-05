@@ -1420,11 +1420,7 @@ function Home() {
       slide1Buttons.forEach((btn) => {
         if (btn && btn.style) {
           // Use setProperty with important flag
-          btn.style.setProperty(
-            "background-color",
-            "white",
-            "important"
-          );
+          btn.style.setProperty("background-color", "white", "important");
           btn.style.setProperty("color", "#FFC107", "important");
           btn.style.setProperty("display", "inline-flex", "important");
           btn.style.setProperty("align-items", "center", "important");
