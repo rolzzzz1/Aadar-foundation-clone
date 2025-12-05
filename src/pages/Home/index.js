@@ -85,7 +85,17 @@ const getOptimizedVideoUrl = (baseUrl, isMobile) => {
   return baseUrl;
 };
 
-function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, isActive }) {
+function HeroSlide({
+  image,
+  homePage,
+  isFirstSlide,
+  ctaButtonText,
+  slideIndex,
+  isActive,
+  shouldAnimate,
+  isCarouselPaused,
+  setIsCarouselPaused,
+}) {
   const { t } = useTranslation();
 
   // Rebuild slide 2: video left + Pacifico heading + yellow/orange gradient background
@@ -230,6 +240,9 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
         {/* Video section - left (hidden on small screens) */}
         {!isMobile && (
           <MKBox
+            className={
+              isActive ? `hero-slide-video-${slideIndex} active` : `hero-slide-video-${slideIndex}`
+            }
             flex={{ xs: "0 0 auto", sm: "0 0 auto", md: "0 0 55%" }}
             width={{ xs: "100%", sm: "100%", md: "55%" }}
             display="flex"
@@ -331,6 +344,79 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
                 }}
               />
 
+              {/* Pause/Play button for slides 2, 3, 4 - top left of video */}
+              <MKBox
+                sx={{
+                  position: "absolute",
+                  top: "8px",
+                  left: "8px",
+                  zIndex: 4,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: 0.5,
+                }}
+              >
+                <Tooltip
+                  title={
+                    isCarouselPaused
+                      ? t("homePage.heroSection.clickForNextStory")
+                      : t("homePage.heroSection.clickToHoldStory")
+                  }
+                  arrow
+                  placement="right"
+                >
+                  <IconButton
+                    onClick={() => setIsCarouselPaused((prev) => !prev)}
+                    sx={{
+                      backgroundColor: "rgba(0, 0, 0, 0.28)",
+                      color: "rgba(255, 255, 255, 0.6)",
+                      backdropFilter: "blur(3px)",
+                      boxShadow: "0 1px 4px rgba(0, 0, 0, 0.2)",
+                      width: { xs: 44, sm: 44, md: 44 },
+                      height: { xs: 44, sm: 44, md: 44 },
+                      minWidth: { xs: 44, sm: 44, md: 44 },
+                      minHeight: { xs: 44, sm: 44, md: 44 },
+                      "&:hover": {
+                        backgroundColor: "rgba(0, 0, 0, 0.6)",
+                        color: "#ffffff",
+                        transform: "scale(1.03)",
+                      },
+                      transition: "all 0.25s ease",
+                    }}
+                    aria-label={
+                      isCarouselPaused
+                        ? t("homePage.heroSection.playSlides")
+                        : t("homePage.heroSection.pauseSlides")
+                    }
+                  >
+                    {isCarouselPaused ? (
+                      <PlayArrowIcon sx={{ fontSize: { xs: 18, sm: 18, md: 20 } }} />
+                    ) : (
+                      <PauseIcon sx={{ fontSize: { xs: 18, sm: 18, md: 20 } }} />
+                    )}
+                  </IconButton>
+                </Tooltip>
+                <MKTypography
+                  sx={{
+                    fontSize: { xs: "0.65rem", sm: "0.7rem", md: "0.75rem" },
+                    color: "rgba(255, 255, 255, 0.9)",
+                    textAlign: "center",
+                    whiteSpace: "nowrap",
+                    fontWeight: 400,
+                    letterSpacing: "0.3px",
+                    textShadow: "0 1px 3px rgba(0, 0, 0, 0.5)",
+                    backgroundColor: "rgba(0, 0, 0, 0.4)",
+                    backdropFilter: "blur(4px)",
+                    padding: { xs: "4px 8px", sm: "4px 10px", md: "5px 12px" },
+                    borderRadius: "6px",
+                    boxShadow: "0 2px 6px rgba(0, 0, 0, 0.3)",
+                  }}
+                >
+                  {t("homePage.heroSection.pausePlayHint")}
+                </MKTypography>
+              </MKBox>
+
               <Tooltip
                 title={
                   isMuted
@@ -411,6 +497,11 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
           }}
         >
           <MKBox
+            className={
+              isActive
+                ? `hero-slide-text-box-${slideIndex} active`
+                : `hero-slide-text-box-${slideIndex}`
+            }
             sx={{
               position: "relative",
               zIndex: 10,
@@ -485,6 +576,11 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
             )}
             {/* Slide 2 uses slide2 translations, Slide 3 uses slide3 translations */}
             <MKTypography
+              className={
+                isActive
+                  ? `hero-slide-title-${slideIndex} active`
+                  : `hero-slide-title-${slideIndex}`
+              }
               variant="h2"
               fontWeight="bold"
               sx={{
@@ -588,6 +684,11 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
                 : homePage.heroSection.slide4.paragraph}
             </MKTypography>
             <MKButton
+              className={
+                isActive
+                  ? `hero-slide-button-${slideIndex} active`
+                  : `hero-slide-button-${slideIndex}`
+              }
               variant="contained"
               color="success"
               fullWidth={{ xs: true, sm: false, md: false }}
@@ -848,6 +949,11 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
           mr={6}
           mt={4}
           mb={-4}
+          className={
+            isActive && isFirstSlide
+              ? `hero-slide-1-paint-patch active${shouldAnimate ? " should-animate" : ""}`
+              : ""
+          }
           sx={{
             backgroundImage: `url(${bgImage})`,
             backgroundSize: { xs: "95%", sm: "115%", md: "105%", lg: "110%" },
@@ -868,6 +974,11 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
             color="white"
             textAlign="center"
             ml={-2}
+            className={
+              isActive && isFirstSlide
+                ? `hero-slide-1-text active${shouldAnimate ? " should-animate" : ""}`
+                : ""
+            }
             fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{ fontSize: { xs: "1.5rem", sm: "1.7rem", md: "2rem", lg: "2rem" } }}
           >
@@ -890,6 +1001,11 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
             mt={2}
             ml={-2}
             display="inline-block"
+            className={
+              isActive && isFirstSlide
+                ? `hero-slide-1-text active${shouldAnimate ? " should-animate" : ""}`
+                : ""
+            }
             fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{ fontSize: { xs: "0.9rem", sm: "0.9rem", md: "1.1rem", lg: "1.3rem" } }}
           >
@@ -898,6 +1014,11 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
           <MKButton
             variant="contained"
             size="small"
+            className={
+              isActive && isFirstSlide
+                ? `hero-slide-1-button active${shouldAnimate ? " should-animate" : ""}`
+                : ""
+            }
             sx={{
               mt: 3,
               ml: -2,
@@ -1018,6 +1139,41 @@ function Home() {
   // State to let user pause/resume hero slider
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
+  const [slideInterval, setSlideInterval] = useState(5000);
+  const [hasPlayedSlide1Animation, setHasPlayedSlide1Animation] = useState(false);
+  const animationTimerRef = useRef(null);
+
+  // Set animation flag when slide 1 first becomes active (initial load)
+  useEffect(() => {
+    if (activeSlide === 0 && !hasPlayedSlide1Animation) {
+      // Clear any existing timer
+      if (animationTimerRef.current) {
+        clearTimeout(animationTimerRef.current);
+      }
+      // Set flag after animation completes (0.5s delay + 4.2s duration + buffer)
+      animationTimerRef.current = setTimeout(() => {
+        setHasPlayedSlide1Animation(true);
+      }, 5000);
+    }
+    return () => {
+      if (animationTimerRef.current) {
+        clearTimeout(animationTimerRef.current);
+      }
+    };
+  }, [activeSlide, hasPlayedSlide1Animation]);
+
+  // Calculate interval based on current slide
+  // Slide 0->1 and 1->2: 4-6 seconds (using 5 seconds)
+  // Rest of slides: 8 seconds
+  useEffect(() => {
+    if (activeSlide === 0 || activeSlide === 1) {
+      // Transition from slide 1 to 2, or from slide 2 to 3
+      setSlideInterval(5000); // 5 seconds (middle of 4-6 range)
+    } else {
+      // Rest of the slides (slides 2, 3, 4)
+      setSlideInterval(8000); // 8 seconds
+    }
+  }, [activeSlide]);
 
   // Refs for preloader videos
   const maykiPreloaderRef = useRef(null);
@@ -1137,54 +1293,526 @@ function Home() {
               backdrop-filter: blur(10px) !important;
               -webkit-backdrop-filter: blur(10px) !important;
             }
+            
+            /* Hero Section Transition Animations */
+            @keyframes heroFadeIn {
+              0% {
+                opacity: 0;
+                transform: scale(1.08) translateY(30px);
+                filter: blur(8px);
+              }
+              50% {
+                opacity: 0.6;
+                transform: scale(1.02) translateY(10px);
+                filter: blur(3px);
+              }
+              100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+                filter: blur(0);
+              }
+            }
+            
+            @keyframes heroFadeOut {
+              0% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+                filter: blur(0);
+              }
+              50% {
+                opacity: 0.4;
+                transform: scale(0.98) translateY(-10px);
+                filter: blur(3px);
+              }
+              100% {
+                opacity: 0;
+                transform: scale(0.92) translateY(-30px);
+                filter: blur(8px);
+              }
+            }
+            
+            @keyframes heroSlideIn {
+              from {
+                opacity: 0;
+                transform: translateX(50px) scale(0.95);
+                filter: brightness(0.7) blur(5px);
+              }
+              to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+                filter: brightness(1) blur(0);
+              }
+            }
+            
+            @keyframes heroSlideOut {
+              from {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+                filter: brightness(1) blur(0);
+              }
+              to {
+                opacity: 0;
+                transform: translateX(-50px) scale(0.95);
+                filter: brightness(0.7) blur(5px);
+              }
+            }
+            
+            /* Apply smooth transitions to carousel container */
+            .react-material-ui-carousel {
+              overflow: hidden;
+              position: relative;
+            }
+            
+            /* Enhanced fade transition with depth effect */
+            .react-material-ui-carousel .MuiPaper-root {
+              transition: opacity 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                          transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                          filter 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+              will-change: opacity, transform, filter;
+            }
+            
+            /* Incoming slide animation */
+            .react-material-ui-carousel .MuiPaper-root[class*="active"] {
+              animation: heroFadeIn 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            }
+            
+            /* Outgoing slide animation */
+            .react-material-ui-carousel .MuiPaper-root:not([class*="active"]) {
+              animation: heroFadeOut 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            }
+            
+            /* Smooth transitions for all carousel children */
+            .react-material-ui-carousel > div {
+              transition: opacity 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                          transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            }
+            
+            /* Ensure video elements transition smoothly */
+            .react-material-ui-carousel video {
+              transition: opacity 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                          transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            }
+            
+            /* Smooth image transitions */
+            .react-material-ui-carousel img {
+              transition: opacity 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                          transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            }
+            
+            /* Slide 1 - Smooth Left to Right Animations */
+            @keyframes slideInFromLeftSmooth {
+              0% {
+                opacity: 0;
+                transform: translateX(-200px);
+              }
+              100% {
+                opacity: 1;
+                transform: translateX(0);
+              }
+            }
+            
+            @keyframes slideInFromLeftText {
+              0% {
+                opacity: 0;
+                transform: translateX(-180px);
+              }
+              100% {
+                opacity: 1;
+                transform: translateX(0);
+              }
+            }
+            
+            @keyframes slideInFromLeftButton {
+              0% {
+                opacity: 0;
+                transform: translateX(-180px) scale(0.96);
+              }
+              100% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+              }
+            }
+            
+            /* Apply animations to slide 1 elements when active and should animate - 3x slower, more from left, with reduced delay */
+            .hero-slide-1-paint-patch.active.should-animate {
+              animation: slideInFromLeftSmooth 4.2s cubic-bezier(0.23, 1, 0.32, 1) 0.3s forwards !important;
+              opacity: 1 !important;
+            }
+            
+            .hero-slide-1-text.active.should-animate {
+              animation: slideInFromLeftText 4.2s cubic-bezier(0.23, 1, 0.32, 1) 0.32s forwards !important;
+              opacity: 1 !important;
+            }
+            
+            .hero-slide-1-button.active.should-animate {
+              animation: slideInFromLeftButton 4.2s cubic-bezier(0.23, 1, 0.32, 1) 0.5s forwards !important;
+              opacity: 1 !important;
+            }
+            
+            /* Initial state - elements start completely hidden and far to the left */
+            .hero-slide-1-paint-patch:not(.active) {
+              opacity: 0;
+              transform: translateX(-200px);
+            }
+            
+            .hero-slide-1-text:not(.active) {
+              opacity: 0;
+              transform: translateX(-180px);
+            }
+            
+            .hero-slide-1-button:not(.active) {
+              opacity: 0;
+              transform: translateX(-180px) scale(0.96);
+            }
+            
+            /* Ensure elements are hidden on initial load (before animation) */
+            .hero-slide-1-paint-patch {
+              opacity: 0;
+              transform: translateX(-200px);
+            }
+            
+            .hero-slide-1-text {
+              opacity: 0;
+              transform: translateX(-180px);
+            }
+            
+            .hero-slide-1-button {
+              opacity: 0;
+              transform: translateX(-180px) scale(0.96);
+            }
+            
+            /* When slide is active but animation shouldn't play (returning to slide 1), show elements immediately */
+            .hero-slide-1-paint-patch.active:not(.should-animate) {
+              opacity: 1 !important;
+              transform: translateX(0) !important;
+              animation: none !important;
+            }
+            
+            .hero-slide-1-text.active:not(.should-animate) {
+              opacity: 1 !important;
+              transform: translateX(0) !important;
+              animation: none !important;
+            }
+            
+            .hero-slide-1-button.active:not(.should-animate) {
+              opacity: 1 !important;
+              transform: translateX(0) scale(1) !important;
+              animation: none !important;
+            }
+            
+            /* Slides 2, 3, 4 - Ultra Smooth Hero Effects */
+            @keyframes slideInFromLeftEnhanced {
+              0% {
+                opacity: 0;
+                transform: translateX(-40px) translateY(6px) scale(0.97) rotateY(-3deg);
+                filter: blur(2.5px) brightness(0.8);
+              }
+              8% {
+                opacity: 0.15;
+                transform: translateX(-30px) translateY(4.5px) scale(0.975) rotateY(-2.3deg);
+                filter: blur(2.2px) brightness(0.82);
+              }
+              16% {
+                opacity: 0.28;
+                transform: translateX(-22px) translateY(3.2px) scale(0.98) rotateY(-1.7deg);
+                filter: blur(1.9px) brightness(0.84);
+              }
+              24% {
+                opacity: 0.42;
+                transform: translateX(-16px) translateY(2.2px) scale(0.985) rotateY(-1.2deg);
+                filter: blur(1.6px) brightness(0.86);
+              }
+              32% {
+                opacity: 0.55;
+                transform: translateX(-11px) translateY(1.5px) scale(0.988) rotateY(-0.8deg);
+                filter: blur(1.3px) brightness(0.88);
+              }
+              42% {
+                opacity: 0.68;
+                transform: translateX(-7px) translateY(1px) scale(0.992) rotateY(-0.5deg);
+                filter: blur(1px) brightness(0.9);
+              }
+              52% {
+                opacity: 0.78;
+                transform: translateX(-4px) translateY(0.6px) scale(0.995) rotateY(-0.3deg);
+                filter: blur(0.7px) brightness(0.92);
+              }
+              64% {
+                opacity: 0.86;
+                transform: translateX(-2px) translateY(0.3px) scale(0.997) rotateY(-0.15deg);
+                filter: blur(0.4px) brightness(0.94);
+              }
+              76% {
+                opacity: 0.92;
+                transform: translateX(-0.8px) translateY(0.15px) scale(0.9985) rotateY(-0.08deg);
+                filter: blur(0.25px) brightness(0.96);
+              }
+              88% {
+                opacity: 0.97;
+                transform: translateX(-0.3px) translateY(0.05px) scale(0.9995) rotateY(-0.03deg);
+                filter: blur(0.1px) brightness(0.98);
+              }
+              100% {
+                opacity: 1;
+                transform: translateX(0) translateY(0) scale(1) rotateY(0deg);
+                filter: blur(0) brightness(1);
+              }
+            }
+            
+            @keyframes slideInFromRightEnhanced {
+              0% {
+                opacity: 0;
+                transform: translateX(40px) translateY(6px) scale(0.97) rotateY(3deg);
+                filter: blur(2.5px) brightness(0.8);
+              }
+              8% {
+                opacity: 0.15;
+                transform: translateX(30px) translateY(4.5px) scale(0.975) rotateY(2.3deg);
+                filter: blur(2.2px) brightness(0.82);
+              }
+              16% {
+                opacity: 0.28;
+                transform: translateX(22px) translateY(3.2px) scale(0.98) rotateY(1.7deg);
+                filter: blur(1.9px) brightness(0.84);
+              }
+              24% {
+                opacity: 0.42;
+                transform: translateX(16px) translateY(2.2px) scale(0.985) rotateY(1.2deg);
+                filter: blur(1.6px) brightness(0.86);
+              }
+              32% {
+                opacity: 0.55;
+                transform: translateX(11px) translateY(1.5px) scale(0.988) rotateY(0.8deg);
+                filter: blur(1.3px) brightness(0.88);
+              }
+              42% {
+                opacity: 0.68;
+                transform: translateX(7px) translateY(1px) scale(0.992) rotateY(0.5deg);
+                filter: blur(1px) brightness(0.9);
+              }
+              52% {
+                opacity: 0.78;
+                transform: translateX(4px) translateY(0.6px) scale(0.995) rotateY(0.3deg);
+                filter: blur(0.7px) brightness(0.92);
+              }
+              64% {
+                opacity: 0.86;
+                transform: translateX(2px) translateY(0.3px) scale(0.997) rotateY(0.15deg);
+                filter: blur(0.4px) brightness(0.94);
+              }
+              76% {
+                opacity: 0.92;
+                transform: translateX(0.8px) translateY(0.15px) scale(0.9985) rotateY(0.08deg);
+                filter: blur(0.25px) brightness(0.96);
+              }
+              88% {
+                opacity: 0.97;
+                transform: translateX(0.3px) translateY(0.05px) scale(0.9995) rotateY(0.03deg);
+                filter: blur(0.1px) brightness(0.98);
+              }
+              100% {
+                opacity: 1;
+                transform: translateX(0) translateY(0) scale(1) rotateY(0deg);
+                filter: blur(0) brightness(1);
+              }
+            }
+            
+            @keyframes fadeInUpEnhanced {
+              0% {
+                opacity: 0;
+                transform: translateY(22px) scale(0.93);
+                filter: blur(1.2px);
+              }
+              20% {
+                opacity: 0.3;
+                transform: translateY(16px) scale(0.94);
+                filter: blur(1px);
+              }
+              40% {
+                opacity: 0.55;
+                transform: translateY(10px) scale(0.95);
+                filter: blur(0.7px);
+              }
+              60% {
+                opacity: 0.75;
+                transform: translateY(5px) scale(0.97);
+                filter: blur(0.4px);
+              }
+              80% {
+                opacity: 0.9;
+                transform: translateY(1.5px) scale(0.99);
+                filter: blur(0.15px);
+              }
+              100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+              }
+            }
+            
+            /* Video container animations for slides 2, 3, 4 - smooth 2s */
+            .hero-slide-video-1.active,
+            .hero-slide-video-2.active,
+            .hero-slide-video-3.active {
+              animation: slideInFromLeftEnhanced 2s cubic-bezier(0.25, 0.1, 0.25, 1) 0s forwards;
+              will-change: transform, opacity, filter;
+              transform-style: preserve-3d;
+            }
+            
+            .hero-slide-video-1:not(.active),
+            .hero-slide-video-2:not(.active),
+            .hero-slide-video-3:not(.active) {
+              opacity: 0;
+              transform: translateX(-40px) translateY(6px) scale(0.97) rotateY(-3deg);
+              filter: blur(2.5px) brightness(0.8);
+            }
+            
+            /* Text box animations for slides 2, 3, 4 - smooth 2s */
+            .hero-slide-text-box-1.active,
+            .hero-slide-text-box-2.active,
+            .hero-slide-text-box-3.active {
+              animation: slideInFromRightEnhanced 2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.05s forwards;
+              will-change: transform, opacity, filter;
+              transform-style: preserve-3d;
+            }
+            
+            .hero-slide-text-box-1:not(.active),
+            .hero-slide-text-box-2:not(.active),
+            .hero-slide-text-box-3:not(.active) {
+              opacity: 0;
+              transform: translateX(40px) translateY(6px) scale(0.97) rotateY(3deg);
+              filter: blur(2.5px) brightness(0.8);
+            }
+            
+            /* Title and button animations - smooth 2s */
+            .hero-slide-title-1.active,
+            .hero-slide-title-2.active,
+            .hero-slide-title-3.active {
+              animation: fadeInUpEnhanced 2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.1s forwards;
+              will-change: transform, opacity, filter;
+            }
+            
+            .hero-slide-button-1.active,
+            .hero-slide-button-2.active,
+            .hero-slide-button-3.active {
+              animation: fadeInUpEnhanced 2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.15s forwards;
+              will-change: transform, opacity, filter;
+            }
+            
+            /* Title initial states for slides 2, 3, 4 */
+            .hero-slide-title-1:not(.active),
+            .hero-slide-title-2:not(.active),
+            .hero-slide-title-3:not(.active) {
+              opacity: 0 !important;
+              transform: translateY(30px) scale(0.9);
+              visibility: hidden;
+              filter: blur(2px);
+            }
+            
+            /* Ensure title is hidden before animation starts */
+            .hero-slide-title-1,
+            .hero-slide-title-2,
+            .hero-slide-title-3 {
+              opacity: 0;
+              transform: translateY(30px) scale(0.9);
+              filter: blur(2px);
+            }
+            
+            /* Button initial states for slides 2, 3, 4 */
+            .hero-slide-button-1:not(.active),
+            .hero-slide-button-2:not(.active),
+            .hero-slide-button-3:not(.active) {
+              opacity: 0 !important;
+              transform: translateY(30px) scale(0.9);
+              visibility: hidden;
+              filter: blur(2px);
+            }
+            
+            /* Ensure button is hidden before animation starts */
+            .hero-slide-button-1,
+            .hero-slide-button-2,
+            .hero-slide-button-3 {
+              opacity: 0;
+              transform: translateY(30px) scale(0.9);
+              filter: blur(2px);
+            }
           `}
         </style>
 
-        {/* Pause/Play hero slider (small button near indicators) */}
-        <Tooltip
-          title={
-            isCarouselPaused
-              ? t("homePage.heroSection.clickForNextStory")
-              : t("homePage.heroSection.clickToHoldStory")
-          }
-          arrow
-          placement="top"
-        >
-          <IconButton
-            onClick={() => setIsCarouselPaused((prev) => !prev)}
+        {/* Pause/Play hero slider (small button near indicators) - only for slide 1 */}
+        {activeSlide === 0 && (
+          <MKBox
             sx={{
               position: "absolute",
               bottom: "72px",
               right: { xs: "16px", sm: "22px", md: "28px" },
               zIndex: 6,
-              backgroundColor: "rgba(0, 0, 0, 0.28)",
-              color: "rgba(255, 255, 255, 0.6)",
-              backdropFilter: "blur(3px)",
-              boxShadow: "0 1px 4px rgba(0, 0, 0, 0.2)",
-              width: { xs: 44, sm: 44, md: 44 },
-              height: { xs: 44, sm: 44, md: 44 },
-              minWidth: { xs: 44, sm: 44, md: 44 },
-              minHeight: { xs: 44, sm: 44, md: 44 },
-              "&:hover": {
-                backgroundColor: "rgba(0, 0, 0, 0.6)",
-                color: "#ffffff",
-                transform: "scale(1.03)",
-              },
-              transition: "all 0.25s ease",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 0.5,
             }}
-            aria-label={
-              isCarouselPaused
-                ? t("homePage.heroSection.playSlides")
-                : t("homePage.heroSection.pauseSlides")
-            }
           >
-            {isCarouselPaused ? (
-              <PlayArrowIcon sx={{ fontSize: { xs: 18, sm: 18, md: 20 } }} />
-            ) : (
-              <PauseIcon sx={{ fontSize: { xs: 18, sm: 18, md: 20 } }} />
-            )}
-          </IconButton>
-        </Tooltip>
+            <Tooltip
+              title={
+                isCarouselPaused
+                  ? t("homePage.heroSection.clickForNextStory")
+                  : t("homePage.heroSection.clickToHoldStory")
+              }
+              arrow
+              placement="top"
+            >
+              <IconButton
+                onClick={() => setIsCarouselPaused((prev) => !prev)}
+                sx={{
+                  backgroundColor: "rgba(0, 0, 0, 0.28)",
+                  color: "rgba(255, 255, 255, 0.6)",
+                  backdropFilter: "blur(3px)",
+                  boxShadow: "0 1px 4px rgba(0, 0, 0, 0.2)",
+                  width: { xs: 44, sm: 44, md: 44 },
+                  height: { xs: 44, sm: 44, md: 44 },
+                  minWidth: { xs: 44, sm: 44, md: 44 },
+                  minHeight: { xs: 44, sm: 44, md: 44 },
+                  "&:hover": {
+                    backgroundColor: "rgba(0, 0, 0, 0.6)",
+                    color: "#ffffff",
+                    transform: "scale(1.03)",
+                  },
+                  transition: "all 0.25s ease",
+                }}
+                aria-label={
+                  isCarouselPaused
+                    ? t("homePage.heroSection.playSlides")
+                    : t("homePage.heroSection.pauseSlides")
+                }
+              >
+                {isCarouselPaused ? (
+                  <PlayArrowIcon sx={{ fontSize: { xs: 18, sm: 18, md: 20 } }} />
+                ) : (
+                  <PauseIcon sx={{ fontSize: { xs: 18, sm: 18, md: 20 } }} />
+                )}
+              </IconButton>
+            </Tooltip>
+            <MKTypography
+              sx={{
+                fontSize: { xs: "0.65rem", sm: "0.7rem", md: "0.75rem" },
+                color: "rgba(255, 255, 255, 0.9)",
+                textAlign: "center",
+                whiteSpace: "nowrap",
+                fontWeight: 400,
+                letterSpacing: "0.3px",
+                textShadow: "0 1px 3px rgba(0, 0, 0, 0.5)",
+                backgroundColor: "rgba(0, 0, 0, 0.4)",
+                backdropFilter: "blur(4px)",
+                padding: { xs: "4px 8px", sm: "4px 10px", md: "5px 12px" },
+                borderRadius: "6px",
+                boxShadow: "0 2px 6px rgba(0, 0, 0, 0.3)",
+              }}
+            >
+              {t("homePage.heroSection.pausePlayHint")}
+            </MKTypography>
+          </MKBox>
+        )}
 
         <Carousel
           animation="fade"
@@ -1198,8 +1826,12 @@ function Home() {
           autoPlay={!isCarouselPaused}
           onChange={(now) => {
             setActiveSlide(now);
+            // Track first time slide 1 is shown (only on initial page load)
+            if (now === 0 && !hasPlayedSlide1Animation) {
+              setHasPlayedSlide1Animation(true);
+            }
           }}
-          interval={4500}
+          interval={slideInterval}
           stopAutoPlayOnHover={false}
           indicatorContainerProps={{
             style: {
@@ -1280,6 +1912,9 @@ function Home() {
               ctaButtonText={ctaButtonText}
               slideIndex={index}
               isActive={activeSlide === index}
+              shouldAnimate={index === 0 && !hasPlayedSlide1Animation}
+              isCarouselPaused={isCarouselPaused}
+              setIsCarouselPaused={setIsCarouselPaused}
             />
           ))}
         </Carousel>
@@ -1332,6 +1967,9 @@ HeroSlide.propTypes = {
   ctaButtonText: PropTypes.string.isRequired,
   slideIndex: PropTypes.number.isRequired,
   isActive: PropTypes.bool.isRequired,
+  shouldAnimate: PropTypes.bool,
+  isCarouselPaused: PropTypes.bool.isRequired,
+  setIsCarouselPaused: PropTypes.func.isRequired,
 };
 
 export default Home;

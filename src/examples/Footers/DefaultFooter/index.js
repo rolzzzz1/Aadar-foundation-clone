@@ -32,6 +32,7 @@ import MKTypography from "components/MKTypography";
 
 import CallRoundedIcon from "@mui/icons-material/CallRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 function DefaultFooter({ content }) {
   const { brand, socials, menus, copyright } = content[0];
@@ -160,13 +161,23 @@ function DefaultFooter({ content }) {
                           textTransform="capitalize"
                           sx={{
                             fontSize: { sm: "0.9rem", md: "1rem" },
+                            color: "white !important",
+                            textDecoration: "underline",
+                            textUnderlineOffset: "4px",
+                            textDecorationThickness: "2px",
+                            textDecorationColor: "white",
+                            fontWeight: "500",
+                            cursor: "pointer",
+                            transition: "all 0.2s ease",
+                            display: "inline-block",
                             "&:hover": {
-                              color: "#E7A232",
-                              textDecoration: "underline 2px",
+                              color: "#E7A232 !important",
+                              textDecoration: "underline",
+                              textDecorationThickness: "2.5px",
+                              textDecorationColor: "#E7A232",
+                              transform: "translateX(3px)",
                             },
                           }}
-                          // fontSize={"0.9rem"}
-                          color="white"
                         >
                           {name}
                         </MKTypography>
@@ -179,13 +190,23 @@ function DefaultFooter({ content }) {
                           textTransform="capitalize"
                           sx={{
                             fontSize: { sm: "0.9rem", md: "1rem" },
+                            color: "white !important",
+                            textDecoration: "underline",
+                            textUnderlineOffset: "4px",
+                            textDecorationThickness: "2px",
+                            textDecorationColor: "white",
+                            fontWeight: "500",
+                            cursor: "pointer",
+                            transition: "all 0.2s ease",
+                            display: "inline-block",
                             "&:hover": {
-                              color: "#E7A232",
-                              textDecoration: "underline 2px",
+                              color: "#E7A232 !important",
+                              textDecoration: "underline",
+                              textDecorationThickness: "2.5px",
+                              textDecorationColor: "#E7A232",
+                              transform: "translateX(3px)",
                             },
                           }}
-                          // fontSize={"0.9rem"}
-                          color="white"
                         >
                           {name}
                         </MKTypography>
@@ -295,6 +316,45 @@ function DefaultFooter({ content }) {
                   >
                     @gmail.com
                   </MKTypography>
+                </MKTypography>
+              </MKBox>
+              <MKBox
+                fontWeight="regular"
+                paddingTop="8px"
+                color="white"
+                display="flex"
+                justifyContent="left"
+                alignItems="center"
+                gap="5px"
+              >
+                <LocationOnIcon fontSize="small" />
+                <MKTypography
+                  component="a"
+                  href="https://maps.google.com/?q=Swarg+sadan+ashram+-+Sarkari+Malti,+Behind+Muktidham,+Guda+Gudi+Ka+Naka,+Gwalior,+India,+474001"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  sx={{
+                    fontSize: { xs: "0.9rem", sm: "0.9rem", md: "0.95rem", lg: "1rem" },
+                    paddingLeft: "10px",
+                    color: "white !important",
+                    textDecoration: "underline",
+                    textUnderlineOffset: "4px",
+                    textDecorationThickness: "2px",
+                    textDecorationColor: "white",
+                    fontWeight: "500",
+                    cursor: "pointer",
+                    transition: "all 0.2s ease",
+                    display: "inline-block",
+                    "&:hover": {
+                      color: "#E7A232 !important",
+                      textDecoration: "underline",
+                      textDecorationThickness: "2.5px",
+                      textDecorationColor: "#E7A232",
+                      transform: "translateX(3px)",
+                    },
+                  }}
+                >
+                  {contactInfo.viewOnGoogleMaps}
                 </MKTypography>
               </MKBox>
             </MKBox>

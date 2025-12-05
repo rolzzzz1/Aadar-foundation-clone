@@ -79,6 +79,7 @@
     "ctaButtonSlide2": "Support a Story",
     "clickForNextStory": "Click for next story",
     "clickToHoldStory": "Click to hold story",
+    "pausePlayHint": "Click to hold and play stories",
     "unmuteVideo": "Unmute video",
     "muteVideo": "Mute video",
     "clickToMute": "Click to mute",
@@ -449,7 +450,8 @@
     },
     "contactInfo": {
       "title": "contact",
-      "address": "Swarg sadan ashram - Sarkari Malti, Behind Muktidham, Guda Gudi Ka Naka, Gwalior, India, 474001"
+      "address": "Swarg sadan ashram - Sarkari Malti, Behind Muktidham, Guda Gudi Ka Naka, Gwalior, India, 474001",
+      "viewOnGoogleMaps": "View on Google Maps"
     },
     "copyright": "Copyright © 2025 Aadar foundation - All rights reserved.",
     "designed by": "Designed by",

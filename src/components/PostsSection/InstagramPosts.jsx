@@ -27,6 +27,7 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
   const [error, setError] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [dynamicPostsPerSlide, setDynamicPostsPerSlide] = useState(3);
+  const [isAutoPlayPaused, setIsAutoPlayPaused] = useState(false);
 
   // Always fetch 6 posts
   const totalPosts = 6;
@@ -174,17 +175,49 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
 
   const nextSlide = () => {
     if (totalSlides === 0) return;
+    setIsAutoPlayPaused(true);
     setCurrentIndex((prev) => (prev + 1) % totalSlides);
+    // Resume auto-play after 3 seconds
+    setTimeout(() => setIsAutoPlayPaused(false), 3000);
   };
 
   const prevSlide = () => {
     if (totalSlides === 0) return;
+    setIsAutoPlayPaused(true);
     setCurrentIndex((prev) => (prev - 1 + totalSlides) % totalSlides);
+    // Resume auto-play after 3 seconds
+    setTimeout(() => setIsAutoPlayPaused(false), 3000);
   };
 
   const goToSlide = (index) => {
+    setIsAutoPlayPaused(true);
     setCurrentIndex(index);
+    // Resume auto-play after 3 seconds
+    setTimeout(() => setIsAutoPlayPaused(false), 3000);
   };
+
+  // Auto-play carousel with 4-6 second interval
+  useEffect(() => {
+    if (totalSlides <= 1 || isAutoPlayPaused) return;
+
+    let timeoutId;
+
+    const scheduleNextSlide = () => {
+      // Random interval between 4000ms (4s) and 6000ms (6s)
+      const randomInterval = Math.floor(Math.random() * 2000) + 4000;
+
+      timeoutId = setTimeout(() => {
+        setCurrentIndex((prev) => (prev + 1) % totalSlides);
+        scheduleNextSlide(); // Schedule the next slide
+      }, randomInterval);
+    };
+
+    scheduleNextSlide();
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [totalSlides, isAutoPlayPaused, currentIndex]);
 
   return (
     <div className={`instagram-posts-container ${className}`}>
@@ -212,7 +245,11 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
               ‹
             </button>
 
-            <div className="carousel-wrapper">
+            <div
+              className="carousel-wrapper"
+              onMouseEnter={() => setIsAutoPlayPaused(true)}
+              onMouseLeave={() => setIsAutoPlayPaused(false)}
+            >
               <div
                 className="carousel-track"
                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
