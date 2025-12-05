@@ -684,6 +684,7 @@ function HeroSlide({
                 : homePage.heroSection.slide4.paragraph}
             </MKTypography>
             <MKButton
+              data-hero-button={`slide${slideIndex + 1}`}
               className={
                 isActive
                   ? `hero-slide-button-${slideIndex} active`
@@ -1047,6 +1048,7 @@ function HeroSlide({
           <MKButton
             variant="contained"
             size="small"
+            data-hero-button="slide1"
             className={
               isActive && isFirstSlide
                 ? `hero-slide-1-button active${shouldAnimate ? " should-animate" : ""}`
@@ -1236,7 +1238,9 @@ function Home() {
       style.id = styleId;
       style.textContent = `
         /* Critical CSS for CTA buttons - injected after Material-UI to override */
-        /* Use maximum specificity to override Material-UI styles */
+        /* Target by data attributes first (set immediately), then by classes */
+        [data-hero-button="slide1"],
+        [data-hero-button="slide1"].MuiButton-root,
         button.hero-slide-1-button.MuiButton-root,
         button.hero-slide-1-button.active.MuiButton-root,
         a.hero-slide-1-button.MuiButton-root,
@@ -1258,6 +1262,12 @@ function Home() {
           box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1) !important;
         }
         
+        [data-hero-button="slide2"],
+        [data-hero-button="slide3"],
+        [data-hero-button="slide4"],
+        [data-hero-button="slide2"].MuiButton-root,
+        [data-hero-button="slide3"].MuiButton-root,
+        [data-hero-button="slide4"].MuiButton-root,
         button.hero-slide-button-1.MuiButton-root,
         button.hero-slide-button-2.MuiButton-root,
         button.hero-slide-button-3.MuiButton-root,
@@ -1527,7 +1537,9 @@ function Home() {
         <style>
           {`
             /* Critical CSS for CTA buttons - must load first for Vercel */
-            /* Use maximum specificity including Material-UI classes to override */
+            /* Target by data attributes first (set immediately), then by classes */
+            [data-hero-button="slide1"],
+            [data-hero-button="slide1"].MuiButton-root,
             button.hero-slide-1-button.MuiButton-root,
             button.hero-slide-1-button.active.MuiButton-root,
             a.hero-slide-1-button.MuiButton-root,
@@ -1549,6 +1561,12 @@ function Home() {
               box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1) !important;
             }
             
+            [data-hero-button="slide2"],
+            [data-hero-button="slide3"],
+            [data-hero-button="slide4"],
+            [data-hero-button="slide2"].MuiButton-root,
+            [data-hero-button="slide3"].MuiButton-root,
+            [data-hero-button="slide4"].MuiButton-root,
             button.hero-slide-button-1.MuiButton-root,
             button.hero-slide-button-2.MuiButton-root,
             button.hero-slide-button-3.MuiButton-root,
