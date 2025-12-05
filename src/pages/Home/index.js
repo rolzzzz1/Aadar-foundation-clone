@@ -1479,21 +1479,29 @@ function Home() {
     // Also use requestAnimationFrame for immediate next frame
     let raf1Id = null;
     let raf2Id = null;
-    raf1Id = requestAnimationFrame(() => {
-      forceButtonStyles();
-      raf2Id = requestAnimationFrame(forceButtonStyles);
-    });
+    if (typeof requestAnimationFrame !== 'undefined') {
+      raf1Id = requestAnimationFrame(() => {
+        forceButtonStyles();
+        if (typeof requestAnimationFrame !== 'undefined') {
+          raf2Id = requestAnimationFrame(forceButtonStyles);
+        }
+      });
+    }
 
     return () => {
       clearTimeout(timeout1);
       clearTimeout(timeout2);
       clearTimeout(timeout3);
       clearTimeout(timeout4);
-      if (raf1Id !== null) cancelAnimationFrame(raf1Id);
-      if (raf2Id !== null) cancelAnimationFrame(raf2Id);
+      if (raf1Id !== null && typeof cancelAnimationFrame !== 'undefined') {
+        cancelAnimationFrame(raf1Id);
+      }
+      if (raf2Id !== null && typeof cancelAnimationFrame !== 'undefined') {
+        cancelAnimationFrame(raf2Id);
+      }
       observer.disconnect();
     };
-  });
+  }, []);
 
   // Set animation flag when slide 1 first becomes active (initial load)
   useEffect(() => {
