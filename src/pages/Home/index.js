@@ -1026,7 +1026,7 @@ function HeroSlide({
           justifyContent="center"
           alignItems="center"
           mr={6}
-          mt={4}
+          mt={{ xs: 5, sm: 5.5, md: 6 }}
           mb={-4}
           className={
             isActive && isFirstSlide
@@ -1165,7 +1165,7 @@ function HeroSlide({
               ...(isActive && isFirstSlide && shouldAnimate
                 ? {
                     opacity: 0,
-                    transform: "translateX(-180px) scale(0.96)",
+                    transform: "translateX(-180px)",
                     visibility: "visible",
                   }
                 : {}),
@@ -1179,7 +1179,7 @@ function HeroSlide({
               ...(!isActive
                 ? {
                     opacity: 0,
-                    transform: "translateX(-180px) scale(0.96)",
+                    transform: "translateX(-180px)",
                     visibility: "hidden",
                   }
                 : {}),
@@ -2045,7 +2045,7 @@ function Home() {
             
             .hero-slide-1-button:not(.active) {
               opacity: 0;
-              transform: translateX(-180px) scale(0.96);
+              transform: translateX(-180px);
             }
             
             /* When slide is active but animation shouldn't play (returning to slide 1), show elements immediately */
@@ -2123,16 +2123,14 @@ function Home() {
             
             /* For button with initial animation - start continuous animations after slide-in */
             .hero-slide-1-button.active.should-animate {
-              /* Set initial state to match animation keyframe 0% */
+              /* Set initial state to match animation keyframe 0% - same as text */
               opacity: 0 !important;
-              transform: translateX(-180px) scale(0.96) translateY(0) !important;
-              /* Animation will handle the transition from initial to final state */
-              /* Reduced delay from 0.5s to 0.35s to make button appear sooner */
-              /* Slide-in includes a small float at the end, then continuous animations take over */
-              animation: slideInFromLeftButton 4.2s cubic-bezier(0.23, 1, 0.32, 1) 0.35s forwards,
-                         buttonPulse 3s ease-in-out infinite 4.55s,
-                         buttonGlow 2.5s ease-in-out infinite 4.55s,
-                         buttonFloat 3s ease-in-out infinite 4.55s !important;
+              transform: translateX(-180px) !important;
+              /* Use same animation as text for synchronized appearance */
+              animation: slideInFromLeftText 4.2s cubic-bezier(0.23, 1, 0.32, 1) 0.32s forwards,
+                         buttonPulse 3s ease-in-out infinite 4.52s,
+                         buttonGlow 2.5s ease-in-out infinite 4.52s,
+                         buttonFloat 3s ease-in-out infinite 4.52s !important;
             }
             
             /* Arrow animation for Help Today button - starts after slide-in completes */
@@ -2141,7 +2139,7 @@ function Home() {
             }
             
             .hero-slide-1-button.active.should-animate .arrow-icon {
-              animation: arrowMove 2s ease-in-out infinite 4.55s;
+              animation: arrowMove 2s ease-in-out infinite 4.52s;
             }
             
             /* Slides 2, 3, 4 - Ultra Smooth Hero Effects */
