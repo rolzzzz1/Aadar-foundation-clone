@@ -816,7 +816,11 @@ function HeroSlide({
                 letterSpacing: { xs: "0.3px", sm: "0.4px", md: "0.5px", lg: "0.6px" },
                 // Removed backgroundColor, color, boxShadow from sx to prevent Material-UI from overriding inline styles
                 borderRadius: { xs: "12px", sm: "14px", md: "16px" },
-                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                transition: "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
+                "&::after": {
+                  opacity: 0,
+                  transition: "opacity 0.4s ease",
+                },
                 position: "relative",
                 overflow: "hidden",
                 display: "inline-flex",
@@ -876,7 +880,7 @@ function HeroSlide({
                   display: "inline-block",
                   color: "white",
                   fontWeight: 700,
-                  transition: "transform 0.3s ease",
+                  transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.4s ease",
                 }}
                 className="button-arrow"
               >
@@ -968,20 +972,44 @@ function HeroSlide({
                 transition: "left 0.5s ease",
               },
               "&:hover": {
-                backgroundColor: "#fafafa",
-                transform: "translateY(-3px) scale(1.05)",
-                boxShadow: "0 8px 25px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.15)",
+                backgroundColor: "#fffef5",
+                transform: "translateY(-6px) scale(1.12)",
+                boxShadow:
+                  "0 20px 50px rgba(255, 193, 7, 0.6), 0 10px 30px rgba(255, 193, 7, 0.4), 0 6px 20px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2)",
+                border: "2px solid rgba(255, 193, 7, 0.5)",
                 "&::before": {
                   left: "100%",
+                  background:
+                    "linear-gradient(90deg, transparent, rgba(255, 193, 7, 0.4), transparent)",
+                },
+                "&::after": {
+                  content: '""',
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  borderRadius: "10px",
+                  background:
+                    "linear-gradient(135deg, rgba(255, 193, 7, 0.15) 0%, rgba(255, 235, 59, 0.15) 100%)",
+                  pointerEvents: "none",
+                  opacity: 1,
                 },
                 "& .arrow-icon": {
-                  transform: "translateX(4px)",
+                  transform: "translateX(8px) scale(1.1)",
+                  color: "#FFA000",
                 },
+                color: "#FFA000",
+                fontWeight: "800",
               },
               "&:active": {
                 transform: "translateY(-1px) scale(1.02)",
               },
-              transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+              transition: "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
+              "&::after": {
+                opacity: 0,
+                transition: "opacity 0.4s ease",
+              },
             }}
             component={Link}
             to="/pages/landing-pages/donate"
@@ -1000,7 +1028,7 @@ function HeroSlide({
                 className="arrow-icon"
                 sx={{
                   fontSize: { xs: "1.1rem", sm: "1.2rem" },
-                  transition: "transform 0.3s ease",
+                  transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.4s ease",
                   color: "#FFC107",
                   position: "absolute",
                   left: 0,
@@ -1013,7 +1041,7 @@ function HeroSlide({
                 className="arrow-icon"
                 sx={{
                   fontSize: { xs: "1.1rem", sm: "1.2rem" },
-                  transition: "transform 0.3s ease",
+                  transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.4s ease",
                   color: "#FFC107",
                   position: "absolute",
                   left: 0,
@@ -1026,7 +1054,7 @@ function HeroSlide({
                 className="arrow-icon"
                 sx={{
                   fontSize: { xs: "1.1rem", sm: "1.2rem" },
-                  transition: "transform 0.3s ease",
+                  transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.4s ease",
                   color: "#FFC107",
                   position: "absolute",
                   left: 0,
@@ -1039,7 +1067,7 @@ function HeroSlide({
                 className="arrow-icon"
                 sx={{
                   fontSize: { xs: "1.1rem", sm: "1.2rem" },
-                  transition: "transform 0.3s ease",
+                  transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.4s ease",
                   color: "#FFC107",
                   position: "relative",
                 }}
@@ -1251,20 +1279,44 @@ function HeroSlide({
                 transition: "left 0.5s ease",
               },
               "&:hover": {
-                backgroundColor: "#fafafa",
-                transform: "translateY(-3px) scale(1.05)",
-                boxShadow: "0 8px 25px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.15)",
+                backgroundColor: "#fffef5",
+                transform: "translateY(-6px) scale(1.12)",
+                boxShadow:
+                  "0 20px 50px rgba(255, 193, 7, 0.6), 0 10px 30px rgba(255, 193, 7, 0.4), 0 6px 20px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2)",
+                border: "2px solid rgba(255, 193, 7, 0.5)",
                 "&::before": {
                   left: "100%",
+                  background:
+                    "linear-gradient(90deg, transparent, rgba(255, 193, 7, 0.4), transparent)",
+                },
+                "&::after": {
+                  content: '""',
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  borderRadius: "10px",
+                  background:
+                    "linear-gradient(135deg, rgba(255, 193, 7, 0.15) 0%, rgba(255, 235, 59, 0.15) 100%)",
+                  pointerEvents: "none",
+                  opacity: 1,
                 },
                 "& .arrow-icon": {
-                  transform: "translateX(4px)",
+                  transform: "translateX(8px) scale(1.1)",
+                  color: "#FFA000",
                 },
+                color: "#FFA000",
+                fontWeight: "800",
               },
               "&:active": {
                 transform: "translateY(-1px) scale(1.02)",
               },
-              transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+              transition: "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
+              "&::after": {
+                opacity: 0,
+                transition: "opacity 0.4s ease",
+              },
             }}
             component={Link}
             to="/pages/landing-pages/donate"
@@ -1282,7 +1334,7 @@ function HeroSlide({
                 className="arrow-icon"
                 sx={{
                   fontSize: { xs: "1.2rem", sm: "1.3rem", md: "1.4rem" },
-                  transition: "transform 0.3s ease",
+                  transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.4s ease",
                   color: "#FFC107",
                   position: "absolute",
                   left: 0,
@@ -1295,7 +1347,7 @@ function HeroSlide({
                 className="arrow-icon"
                 sx={{
                   fontSize: { xs: "1.2rem", sm: "1.3rem", md: "1.4rem" },
-                  transition: "transform 0.3s ease",
+                  transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.4s ease",
                   color: "#FFC107",
                   position: "absolute",
                   left: 0,
@@ -1308,7 +1360,7 @@ function HeroSlide({
                 className="arrow-icon"
                 sx={{
                   fontSize: { xs: "1.2rem", sm: "1.3rem", md: "1.4rem" },
-                  transition: "transform 0.3s ease",
+                  transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.4s ease",
                   color: "#FFC107",
                   position: "absolute",
                   left: 0,
@@ -1321,7 +1373,7 @@ function HeroSlide({
                 className="arrow-icon"
                 sx={{
                   fontSize: { xs: "1.2rem", sm: "1.3rem", md: "1.4rem" },
-                  transition: "transform 0.3s ease",
+                  transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.4s ease",
                   color: "#FFC107",
                   position: "relative",
                 }}
@@ -2703,8 +2755,8 @@ function Home() {
               <IconButton
                 onClick={() => setIsCarouselPaused((prev) => !prev)}
                 sx={{
-                  backgroundColor: "rgba(0, 0, 0, 0.35)",
-                  color: "rgba(255, 255, 255, 0.7)",
+                  backgroundColor: "rgba(0, 0, 0, 0.2)",
+                  color: "rgba(255, 255, 255, 0.4)",
                   backdropFilter: "blur(3px)",
                   boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
                   width: { xs: 48, sm: 50, md: 52 },
@@ -2712,8 +2764,8 @@ function Home() {
                   minWidth: { xs: 48, sm: 50, md: 52 },
                   minHeight: { xs: 48, sm: 50, md: 52 },
                   "&:hover": {
-                    backgroundColor: "rgba(0, 0, 0, 0.6)",
-                    color: "rgba(255, 255, 255, 0.9)",
+                    backgroundColor: "rgba(0, 0, 0, 0.5)",
+                    color: "rgba(255, 255, 255, 0.8)",
                     transform: "scale(1.05)",
                     boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
                   },
@@ -2735,7 +2787,7 @@ function Home() {
             <MKTypography
               sx={{
                 fontSize: { xs: "0.55rem", sm: "0.6rem", md: "0.65rem" },
-                color: "rgba(255, 255, 255, 0.6)",
+                color: "rgba(255, 255, 255, 0.35)",
                 textAlign: "center",
                 whiteSpace: "normal",
                 maxWidth: { xs: "120px", sm: "140px", md: "160px" },
@@ -2743,7 +2795,7 @@ function Home() {
                 fontWeight: 400,
                 letterSpacing: "0.3px",
                 textShadow: "0 1px 3px rgba(0, 0, 0, 0.5)",
-                backgroundColor: "rgba(0, 0, 0, 0.3)",
+                backgroundColor: "rgba(0, 0, 0, 0.2)",
                 backdropFilter: "blur(3px)",
                 padding: { xs: "4px 6px", sm: "4px 8px", md: "5px 10px" },
                 borderRadius: "6px",
