@@ -1165,6 +1165,7 @@ function HeroSlide({
                   ? "1.25rem"
                   : "1.5rem",
               // Apply visibility and transform based on state
+              // Note: When shouldAnimate is true, let CSS animation handle transform completely
               ...(isActive && isFirstSlide && !shouldAnimate
                 ? {
                     opacity: 1,
@@ -1174,8 +1175,8 @@ function HeroSlide({
                 : {}),
               ...(isActive && isFirstSlide && shouldAnimate
                 ? {
-                    opacity: 0,
-                    transform: "translateX(-180px)",
+                    // Don't set transform here - let CSS animation handle it
+                    // Initial opacity and visibility set, but transform is controlled by CSS
                     visibility: "visible",
                   }
                 : {}),
@@ -2148,9 +2149,21 @@ function Home() {
             /* For button with initial animation - start continuous animations after slide-in */
             .hero-slide-1-button.active.should-animate {
               /* Set initial state to match animation keyframe 0% - same as text */
+              /* Use !important to override any inline styles */
               opacity: 0 !important;
               transform: translateX(-180px) !important;
+              visibility: visible !important;
+              will-change: transform, opacity !important;
               /* Use same animation as text for synchronized appearance */
+              /* animation-fill-mode: forwards ensures final state is maintained */
+              animation: slideInFromLeftText 4.2s cubic-bezier(0.23, 1, 0.32, 1) 0.32s forwards,
+                         buttonPulse 3s ease-in-out infinite 4.52s,
+                         buttonGlow 2.5s ease-in-out infinite 4.52s,
+                         buttonFloat 3s ease-in-out infinite 4.52s !important;
+            }
+            
+            /* Force animation to override inline styles during animation */
+            .hero-slide-1-button.active.should-animate[style] {
               animation: slideInFromLeftText 4.2s cubic-bezier(0.23, 1, 0.32, 1) 0.32s forwards,
                          buttonPulse 3s ease-in-out infinite 4.52s,
                          buttonGlow 2.5s ease-in-out infinite 4.52s,
