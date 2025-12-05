@@ -570,9 +570,9 @@ function HeroSlide({
                 >
                   <YouTubeIcon
                     sx={{
-                      fontSize: { xs: "28px", sm: "30px", md: "32px", lg: "34px" },
-                      width: { xs: "28px", sm: "30px", md: "32px", lg: "34px" },
-                      height: { xs: "28px", sm: "30px", md: "32px", lg: "34px" },
+                      fontSize: { xs: "36px", sm: "40px", md: "44px", lg: "48px" },
+                      width: { xs: "36px", sm: "40px", md: "44px", lg: "48px" },
+                      height: { xs: "36px", sm: "40px", md: "44px", lg: "48px" },
                     }}
                   />
                 </MKBox>
