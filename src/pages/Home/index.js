@@ -364,7 +364,7 @@ function HeroSlide({
                       : t("homePage.heroSection.clickToHoldStory")
                   }
                   arrow
-                  placement="top"
+                  placement="right"
                 >
                   <IconButton
                     onClick={() => setIsCarouselPaused((prev) => !prev)}
@@ -400,12 +400,17 @@ function HeroSlide({
                 <MKTypography
                   sx={{
                     fontSize: { xs: "0.65rem", sm: "0.7rem", md: "0.75rem" },
-                    color: "rgba(255, 255, 255, 0.7)",
+                    color: "rgba(255, 255, 255, 0.9)",
                     textAlign: "center",
                     whiteSpace: "nowrap",
                     fontWeight: 400,
                     letterSpacing: "0.3px",
                     textShadow: "0 1px 3px rgba(0, 0, 0, 0.5)",
+                    backgroundColor: "rgba(0, 0, 0, 0.4)",
+                    backdropFilter: "blur(4px)",
+                    padding: { xs: "4px 8px", sm: "4px 10px", md: "5px 12px" },
+                    borderRadius: "6px",
+                    boxShadow: "0 2px 6px rgba(0, 0, 0, 0.3)",
                   }}
                 >
                   {t("homePage.heroSection.pausePlayHint")}
@@ -1159,14 +1164,14 @@ function Home() {
 
   // Calculate interval based on current slide
   // Slide 0->1 and 1->2: 4-6 seconds (using 5 seconds)
-  // Rest of slides: 6-8 seconds (using 7 seconds)
+  // Rest of slides: 8 seconds
   useEffect(() => {
     if (activeSlide === 0 || activeSlide === 1) {
       // Transition from slide 1 to 2, or from slide 2 to 3
       setSlideInterval(5000); // 5 seconds (middle of 4-6 range)
     } else {
-      // Rest of the slides
-      setSlideInterval(7000); // 7 seconds (middle of 6-8 range)
+      // Rest of the slides (slides 2, 3, 4)
+      setSlideInterval(8000); // 8 seconds
     }
   }, [activeSlide]);
 
@@ -1495,81 +1500,213 @@ function Home() {
               animation: none !important;
             }
             
-            /* Slides 2, 3, 4 - Improved Hero Effects */
-            @keyframes slideInFromLeft {
+            /* Slides 2, 3, 4 - Ultra Smooth Hero Effects */
+            @keyframes slideInFromLeftEnhanced {
               0% {
                 opacity: 0;
-                transform: translateX(-60px);
+                transform: translateX(-40px) translateY(6px) scale(0.97) rotateY(-3deg);
+                filter: blur(2.5px) brightness(0.8);
+              }
+              8% {
+                opacity: 0.15;
+                transform: translateX(-30px) translateY(4.5px) scale(0.975) rotateY(-2.3deg);
+                filter: blur(2.2px) brightness(0.82);
+              }
+              16% {
+                opacity: 0.28;
+                transform: translateX(-22px) translateY(3.2px) scale(0.98) rotateY(-1.7deg);
+                filter: blur(1.9px) brightness(0.84);
+              }
+              24% {
+                opacity: 0.42;
+                transform: translateX(-16px) translateY(2.2px) scale(0.985) rotateY(-1.2deg);
+                filter: blur(1.6px) brightness(0.86);
+              }
+              32% {
+                opacity: 0.55;
+                transform: translateX(-11px) translateY(1.5px) scale(0.988) rotateY(-0.8deg);
+                filter: blur(1.3px) brightness(0.88);
+              }
+              42% {
+                opacity: 0.68;
+                transform: translateX(-7px) translateY(1px) scale(0.992) rotateY(-0.5deg);
+                filter: blur(1px) brightness(0.9);
+              }
+              52% {
+                opacity: 0.78;
+                transform: translateX(-4px) translateY(0.6px) scale(0.995) rotateY(-0.3deg);
+                filter: blur(0.7px) brightness(0.92);
+              }
+              64% {
+                opacity: 0.86;
+                transform: translateX(-2px) translateY(0.3px) scale(0.997) rotateY(-0.15deg);
+                filter: blur(0.4px) brightness(0.94);
+              }
+              76% {
+                opacity: 0.92;
+                transform: translateX(-0.8px) translateY(0.15px) scale(0.9985) rotateY(-0.08deg);
+                filter: blur(0.25px) brightness(0.96);
+              }
+              88% {
+                opacity: 0.97;
+                transform: translateX(-0.3px) translateY(0.05px) scale(0.9995) rotateY(-0.03deg);
+                filter: blur(0.1px) brightness(0.98);
               }
               100% {
                 opacity: 1;
-                transform: translateX(0);
+                transform: translateX(0) translateY(0) scale(1) rotateY(0deg);
+                filter: blur(0) brightness(1);
               }
             }
             
-            @keyframes slideInFromRight {
+            @keyframes slideInFromRightEnhanced {
               0% {
                 opacity: 0;
-                transform: translateX(60px);
+                transform: translateX(40px) translateY(6px) scale(0.97) rotateY(3deg);
+                filter: blur(2.5px) brightness(0.8);
+              }
+              8% {
+                opacity: 0.15;
+                transform: translateX(30px) translateY(4.5px) scale(0.975) rotateY(2.3deg);
+                filter: blur(2.2px) brightness(0.82);
+              }
+              16% {
+                opacity: 0.28;
+                transform: translateX(22px) translateY(3.2px) scale(0.98) rotateY(1.7deg);
+                filter: blur(1.9px) brightness(0.84);
+              }
+              24% {
+                opacity: 0.42;
+                transform: translateX(16px) translateY(2.2px) scale(0.985) rotateY(1.2deg);
+                filter: blur(1.6px) brightness(0.86);
+              }
+              32% {
+                opacity: 0.55;
+                transform: translateX(11px) translateY(1.5px) scale(0.988) rotateY(0.8deg);
+                filter: blur(1.3px) brightness(0.88);
+              }
+              42% {
+                opacity: 0.68;
+                transform: translateX(7px) translateY(1px) scale(0.992) rotateY(0.5deg);
+                filter: blur(1px) brightness(0.9);
+              }
+              52% {
+                opacity: 0.78;
+                transform: translateX(4px) translateY(0.6px) scale(0.995) rotateY(0.3deg);
+                filter: blur(0.7px) brightness(0.92);
+              }
+              64% {
+                opacity: 0.86;
+                transform: translateX(2px) translateY(0.3px) scale(0.997) rotateY(0.15deg);
+                filter: blur(0.4px) brightness(0.94);
+              }
+              76% {
+                opacity: 0.92;
+                transform: translateX(0.8px) translateY(0.15px) scale(0.9985) rotateY(0.08deg);
+                filter: blur(0.25px) brightness(0.96);
+              }
+              88% {
+                opacity: 0.97;
+                transform: translateX(0.3px) translateY(0.05px) scale(0.9995) rotateY(0.03deg);
+                filter: blur(0.1px) brightness(0.98);
               }
               100% {
                 opacity: 1;
-                transform: translateX(0);
+                transform: translateX(0) translateY(0) scale(1) rotateY(0deg);
+                filter: blur(0) brightness(1);
               }
             }
             
-            @keyframes fadeInUp {
+            @keyframes fadeInUpEnhanced {
               0% {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(22px) scale(0.93);
+                filter: blur(1.2px);
+              }
+              20% {
+                opacity: 0.3;
+                transform: translateY(16px) scale(0.94);
+                filter: blur(1px);
+              }
+              40% {
+                opacity: 0.55;
+                transform: translateY(10px) scale(0.95);
+                filter: blur(0.7px);
+              }
+              60% {
+                opacity: 0.75;
+                transform: translateY(5px) scale(0.97);
+                filter: blur(0.4px);
+              }
+              80% {
+                opacity: 0.9;
+                transform: translateY(1.5px) scale(0.99);
+                filter: blur(0.15px);
               }
               100% {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
+                filter: blur(0);
               }
             }
             
-            /* Video container animations for slides 2, 3, 4 */
+            /* Video container animations for slides 2, 3, 4 - smooth 2s */
             .hero-slide-video-1.active,
             .hero-slide-video-2.active,
             .hero-slide-video-3.active {
-              animation: slideInFromLeft 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s forwards;
+              animation: slideInFromLeftEnhanced 2s cubic-bezier(0.25, 0.1, 0.25, 1) 0s forwards;
+              will-change: transform, opacity, filter;
+              transform-style: preserve-3d;
             }
             
             .hero-slide-video-1:not(.active),
             .hero-slide-video-2:not(.active),
             .hero-slide-video-3:not(.active) {
               opacity: 0;
-              transform: translateX(-60px);
+              transform: translateX(-40px) translateY(6px) scale(0.97) rotateY(-3deg);
+              filter: blur(2.5px) brightness(0.8);
             }
             
-            /* Text box animations for slides 2, 3, 4 */
+            /* Text box animations for slides 2, 3, 4 - smooth 2s */
             .hero-slide-text-box-1.active,
             .hero-slide-text-box-2.active,
             .hero-slide-text-box-3.active {
-              animation: slideInFromRight 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards;
+              animation: slideInFromRightEnhanced 2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.05s forwards;
+              will-change: transform, opacity, filter;
+              transform-style: preserve-3d;
             }
             
             .hero-slide-text-box-1:not(.active),
             .hero-slide-text-box-2:not(.active),
             .hero-slide-text-box-3:not(.active) {
               opacity: 0;
-              transform: translateX(60px);
+              transform: translateX(40px) translateY(6px) scale(0.97) rotateY(3deg);
+              filter: blur(2.5px) brightness(0.8);
             }
             
-            /* Title animations for slides 2, 3, 4 */
+            /* Title and button animations - smooth 2s */
             .hero-slide-title-1.active,
             .hero-slide-title-2.active,
             .hero-slide-title-3.active {
-              animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s forwards;
+              animation: fadeInUpEnhanced 2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.1s forwards;
+              will-change: transform, opacity, filter;
             }
             
+            .hero-slide-button-1.active,
+            .hero-slide-button-2.active,
+            .hero-slide-button-3.active {
+              animation: fadeInUpEnhanced 2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.15s forwards;
+              will-change: transform, opacity, filter;
+            }
+            
+            /* Title initial states for slides 2, 3, 4 */
             .hero-slide-title-1:not(.active),
             .hero-slide-title-2:not(.active),
             .hero-slide-title-3:not(.active) {
               opacity: 0 !important;
-              transform: translateY(20px);
+              transform: translateY(30px) scale(0.9);
               visibility: hidden;
+              filter: blur(2px);
             }
             
             /* Ensure title is hidden before animation starts */
@@ -1577,22 +1714,18 @@ function Home() {
             .hero-slide-title-2,
             .hero-slide-title-3 {
               opacity: 0;
-              transform: translateY(20px);
+              transform: translateY(30px) scale(0.9);
+              filter: blur(2px);
             }
             
-            /* Button animations for slides 2, 3, 4 */
-            .hero-slide-button-1.active,
-            .hero-slide-button-2.active,
-            .hero-slide-button-3.active {
-              animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.8s forwards;
-            }
-            
+            /* Button initial states for slides 2, 3, 4 */
             .hero-slide-button-1:not(.active),
             .hero-slide-button-2:not(.active),
             .hero-slide-button-3:not(.active) {
               opacity: 0 !important;
-              transform: translateY(20px);
+              transform: translateY(30px) scale(0.9);
               visibility: hidden;
+              filter: blur(2px);
             }
             
             /* Ensure button is hidden before animation starts */
@@ -1600,7 +1733,8 @@ function Home() {
             .hero-slide-button-2,
             .hero-slide-button-3 {
               opacity: 0;
-              transform: translateY(20px);
+              transform: translateY(30px) scale(0.9);
+              filter: blur(2px);
             }
           `}
         </style>
@@ -1662,12 +1796,17 @@ function Home() {
             <MKTypography
               sx={{
                 fontSize: { xs: "0.65rem", sm: "0.7rem", md: "0.75rem" },
-                color: "rgba(255, 255, 255, 0.7)",
+                color: "rgba(255, 255, 255, 0.9)",
                 textAlign: "center",
                 whiteSpace: "nowrap",
                 fontWeight: 400,
                 letterSpacing: "0.3px",
                 textShadow: "0 1px 3px rgba(0, 0, 0, 0.5)",
+                backgroundColor: "rgba(0, 0, 0, 0.4)",
+                backdropFilter: "blur(4px)",
+                padding: { xs: "4px 8px", sm: "4px 10px", md: "5px 12px" },
+                borderRadius: "6px",
+                boxShadow: "0 2px 6px rgba(0, 0, 0, 0.3)",
               }}
             >
               {t("homePage.heroSection.pausePlayHint")}
