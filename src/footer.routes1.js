@@ -122,7 +122,11 @@ const getFooterRoutes = (t) => [
                       "linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%)",
                       "important"
                     );
-                    element.style.setProperty("backdrop-filter", "saturate(200%) blur(30px)", "important");
+                    element.style.setProperty(
+                      "backdrop-filter",
+                      "saturate(200%) blur(30px)",
+                      "important"
+                    );
                     element.style.setProperty("color", "#ffffff", "important");
                     element.style.setProperty("display", "flex", "important");
                     element.style.setProperty("align-items", "center", "important");
@@ -147,8 +151,16 @@ const getFooterRoutes = (t) => [
                       element.style.setProperty("margin-left", "6px", "important");
                     }
                     element.style.setProperty("border-style", "solid", "important");
-                    element.style.setProperty("border-color", "rgba(255, 255, 255, 0.3)", "important");
-                    element.style.setProperty("box-shadow", "0 1px 6px rgba(0, 0, 0, 0.25)", "important");
+                    element.style.setProperty(
+                      "border-color",
+                      "rgba(255, 255, 255, 0.3)",
+                      "important"
+                    );
+                    element.style.setProperty(
+                      "box-shadow",
+                      "0 1px 6px rgba(0, 0, 0, 0.25)",
+                      "important"
+                    );
                   }
                 }}
                 style={{
@@ -169,23 +181,16 @@ const getFooterRoutes = (t) => [
                       ? "12px"
                       : "14px",
                   borderWidth:
-                    typeof window !== "undefined" && window.innerWidth < 600
-                      ? "1px"
-                      : "1.5px",
+                    typeof window !== "undefined" && window.innerWidth < 600 ? "1px" : "1.5px",
                   padding:
                     typeof window !== "undefined" && window.innerWidth < 600
                       ? "4px 10px"
                       : typeof window !== "undefined" && window.innerWidth < 960
                       ? "5px 12px"
                       : "6px 14px",
-                  gap:
-                    typeof window !== "undefined" && window.innerWidth < 600
-                      ? "6px"
-                      : "8px",
+                  gap: typeof window !== "undefined" && window.innerWidth < 600 ? "6px" : "8px",
                   marginLeft:
-                    typeof window !== "undefined" && window.innerWidth < 600
-                      ? "4px"
-                      : "6px",
+                    typeof window !== "undefined" && window.innerWidth < 600 ? "4px" : "6px",
                   minHeight: "auto",
                   transition: "all 0.25s ease",
                 }}
@@ -222,7 +227,7 @@ const getFooterRoutes = (t) => [
                   color="white"
                   letterSpacing={{ xs: "0.4px", sm: "0.6px", md: "0.8px" }}
                   sx={{
-                    fontFamily: '"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif',
+                    fontFamily: '"Lato", "Helvetica", "Arial", sans-serif',
                     textShadow: "0 1px 3px rgba(0, 0, 0, 0.3)",
                     lineHeight: 1.3,
                   }}
