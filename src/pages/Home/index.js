@@ -1623,25 +1623,50 @@ function Home() {
                 transform: translateY(22px) scale(0.93);
                 filter: blur(1.2px);
               }
-              20% {
-                opacity: 0.3;
-                transform: translateY(16px) scale(0.94);
+              8% {
+                opacity: 0.15;
+                transform: translateY(18px) scale(0.935);
                 filter: blur(1px);
               }
-              40% {
-                opacity: 0.55;
-                transform: translateY(10px) scale(0.95);
+              16% {
+                opacity: 0.28;
+                transform: translateY(14px) scale(0.94);
+                filter: blur(0.85px);
+              }
+              24% {
+                opacity: 0.42;
+                transform: translateY(11px) scale(0.945);
                 filter: blur(0.7px);
               }
-              60% {
-                opacity: 0.75;
-                transform: translateY(5px) scale(0.97);
-                filter: blur(0.4px);
+              32% {
+                opacity: 0.55;
+                transform: translateY(8px) scale(0.95);
+                filter: blur(0.6px);
               }
-              80% {
-                opacity: 0.9;
-                transform: translateY(1.5px) scale(0.99);
-                filter: blur(0.15px);
+              42% {
+                opacity: 0.68;
+                transform: translateY(5px) scale(0.96);
+                filter: blur(0.45px);
+              }
+              52% {
+                opacity: 0.78;
+                transform: translateY(3px) scale(0.97);
+                filter: blur(0.3px);
+              }
+              64% {
+                opacity: 0.86;
+                transform: translateY(1.5px) scale(0.985);
+                filter: blur(0.2px);
+              }
+              76% {
+                opacity: 0.92;
+                transform: translateY(0.6px) scale(0.992);
+                filter: blur(0.1px);
+              }
+              88% {
+                opacity: 0.97;
+                transform: translateY(0.2px) scale(0.996);
+                filter: blur(0.05px);
               }
               100% {
                 opacity: 1;
@@ -1650,11 +1675,11 @@ function Home() {
               }
             }
             
-            /* Video container animations for slides 2, 3, 4 - smooth 2s */
+            /* Video container animations for slides 2, 3, 4 - one unified wave */
             .hero-slide-video-1.active,
             .hero-slide-video-2.active,
             .hero-slide-video-3.active {
-              animation: slideInFromLeftEnhanced 2s cubic-bezier(0.25, 0.1, 0.25, 1) 0s forwards;
+              animation: slideInFromLeftEnhanced 1.5s cubic-bezier(0.23, 1, 0.32, 1) 0s forwards;
               will-change: transform, opacity, filter;
               transform-style: preserve-3d;
             }
@@ -1667,11 +1692,11 @@ function Home() {
               filter: blur(2.5px) brightness(0.8);
             }
             
-            /* Text box animations for slides 2, 3, 4 - smooth 2s */
+            /* Text box animations for slides 2, 3, 4 - one unified wave */
             .hero-slide-text-box-1.active,
             .hero-slide-text-box-2.active,
             .hero-slide-text-box-3.active {
-              animation: slideInFromRightEnhanced 2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.05s forwards;
+              animation: slideInFromRightEnhanced 1.5s cubic-bezier(0.23, 1, 0.32, 1) 0s forwards;
               will-change: transform, opacity, filter;
               transform-style: preserve-3d;
             }
@@ -1684,18 +1709,18 @@ function Home() {
               filter: blur(2.5px) brightness(0.8);
             }
             
-            /* Title and button animations - smooth 2s */
+            /* Title and button animations - one unified wave */
             .hero-slide-title-1.active,
             .hero-slide-title-2.active,
             .hero-slide-title-3.active {
-              animation: fadeInUpEnhanced 2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.1s forwards;
+              animation: fadeInUpEnhanced 1.5s cubic-bezier(0.23, 1, 0.32, 1) 0s forwards;
               will-change: transform, opacity, filter;
             }
             
             .hero-slide-button-1.active,
             .hero-slide-button-2.active,
             .hero-slide-button-3.active {
-              animation: fadeInUpEnhanced 2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.15s forwards;
+              animation: fadeInUpEnhanced 1.5s cubic-bezier(0.23, 1, 0.32, 1) 0s forwards;
               will-change: transform, opacity, filter;
             }
             
@@ -1703,10 +1728,9 @@ function Home() {
             .hero-slide-title-1:not(.active),
             .hero-slide-title-2:not(.active),
             .hero-slide-title-3:not(.active) {
-              opacity: 0 !important;
-              transform: translateY(30px) scale(0.9);
-              visibility: hidden;
-              filter: blur(2px);
+              opacity: 0;
+              transform: translateY(22px) scale(0.93);
+              filter: blur(1.2px);
             }
             
             /* Ensure title is hidden before animation starts */
@@ -1714,18 +1738,17 @@ function Home() {
             .hero-slide-title-2,
             .hero-slide-title-3 {
               opacity: 0;
-              transform: translateY(30px) scale(0.9);
-              filter: blur(2px);
+              transform: translateY(22px) scale(0.93);
+              filter: blur(1.2px);
             }
             
             /* Button initial states for slides 2, 3, 4 */
             .hero-slide-button-1:not(.active),
             .hero-slide-button-2:not(.active),
             .hero-slide-button-3:not(.active) {
-              opacity: 0 !important;
-              transform: translateY(30px) scale(0.9);
-              visibility: hidden;
-              filter: blur(2px);
+              opacity: 0;
+              transform: translateY(22px) scale(0.93);
+              filter: blur(1.2px);
             }
             
             /* Ensure button is hidden before animation starts */
@@ -1733,8 +1756,8 @@ function Home() {
             .hero-slide-button-2,
             .hero-slide-button-3 {
               opacity: 0;
-              transform: translateY(30px) scale(0.9);
-              filter: blur(2px);
+              transform: translateY(22px) scale(0.93);
+              filter: blur(1.2px);
             }
           `}
         </style>
