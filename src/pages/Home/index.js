@@ -1465,10 +1465,6 @@ function Home() {
       const navbarButtons = document.querySelectorAll(
         '[data-navbar-button="donate"], button[data-navbar-button="donate"], a[data-navbar-button="donate"]'
       );
-      // Find navbar donate buttons
-      const navbarButtons = document.querySelectorAll(
-        '[data-navbar-button="donate"], button[data-navbar-button="donate"], a[data-navbar-button="donate"]'
-      );
 
       // Force styles on slide 1 button
       slide1Buttons.forEach((btn) => {
