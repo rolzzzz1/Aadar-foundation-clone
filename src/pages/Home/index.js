@@ -1223,6 +1223,7 @@ function Home() {
 
   // Inject critical CSS for CTA buttons into document head on mount
   // This ensures buttons are styled correctly on first load, even before React fully hydrates
+  // Inject after Material-UI styles to ensure our styles override them
   useEffect(() => {
     const styleId = "hero-cta-buttons-critical-css";
     // Check if style already exists
@@ -1230,55 +1231,152 @@ function Home() {
       return;
     }
 
-    const style = document.createElement("style");
-    style.id = styleId;
-    style.textContent = `
-      /* Critical CSS for CTA buttons - injected on mount */
-      /* Use high specificity to override Material-UI styles */
-      button.hero-slide-1-button,
-      button.hero-slide-1-button.active,
-      a.hero-slide-1-button,
-      a.hero-slide-1-button.active {
-        background-color: white !important;
-        color: #FFC107 !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        cursor: pointer !important;
-        border-radius: 10px !important;
-        font-weight: 700 !important;
-        position: relative !important;
-        overflow: hidden !important;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    const injectCriticalCSS = () => {
+      const style = document.createElement("style");
+      style.id = styleId;
+      style.textContent = `
+        /* Critical CSS for CTA buttons - injected after Material-UI to override */
+        /* Use maximum specificity to override Material-UI styles */
+        button.hero-slide-1-button.MuiButton-root,
+        button.hero-slide-1-button.active.MuiButton-root,
+        a.hero-slide-1-button.MuiButton-root,
+        a.hero-slide-1-button.active.MuiButton-root,
+        button.hero-slide-1-button,
+        button.hero-slide-1-button.active,
+        a.hero-slide-1-button,
+        a.hero-slide-1-button.active {
+          background-color: white !important;
+          color: #FFC107 !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          cursor: pointer !important;
+          border-radius: 10px !important;
+          font-weight: 700 !important;
+          position: relative !important;
+          overflow: hidden !important;
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        button.hero-slide-button-1.MuiButton-root,
+        button.hero-slide-button-2.MuiButton-root,
+        button.hero-slide-button-3.MuiButton-root,
+        button.hero-slide-button-1.active.MuiButton-root,
+        button.hero-slide-button-2.active.MuiButton-root,
+        button.hero-slide-button-3.active.MuiButton-root,
+        a.hero-slide-button-1.MuiButton-root,
+        a.hero-slide-button-2.MuiButton-root,
+        a.hero-slide-button-3.MuiButton-root,
+        a.hero-slide-button-1.active.MuiButton-root,
+        a.hero-slide-button-2.active.MuiButton-root,
+        a.hero-slide-button-3.active.MuiButton-root,
+        button.hero-slide-button-1,
+        button.hero-slide-button-2,
+        button.hero-slide-button-3,
+        button.hero-slide-button-1.active,
+        button.hero-slide-button-2.active,
+        button.hero-slide-button-3.active,
+        a.hero-slide-button-1,
+        a.hero-slide-button-2,
+        a.hero-slide-button-3,
+        a.hero-slide-button-1.active,
+        a.hero-slide-button-2.active,
+        a.hero-slide-button-3.active {
+          background-color: #4FA953 !important;
+          color: white !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          cursor: pointer !important;
+          font-weight: 700 !important;
+          position: relative !important;
+          overflow: hidden !important;
+          box-shadow: 0 10px 30px rgba(79, 169, 83, 0.35), 0 5px 15px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+        }
+      `;
+      // Append to end of head to ensure it loads after Material-UI styles
+      document.head.appendChild(style);
+    };
+
+    // Try to inject immediately
+    injectCriticalCSS();
+
+    // Watch for Material-UI style injection and inject our CSS after
+    const observer = new MutationObserver((mutations) => {
+      let materialUIStylesInjected = false;
+      mutations.forEach((mutation) => {
+        if (mutation.type === "childList") {
+          mutation.addedNodes.forEach((node) => {
+            if (
+              node.nodeType === 1 &&
+              (node.tagName === "STYLE" || node.tagName === "LINK") &&
+              (node.getAttribute("data-emotion") ||
+                node.getAttribute("data-jss") ||
+                node.id?.includes("mui") ||
+                node.href?.includes("mui"))
+            ) {
+              materialUIStylesInjected = true;
+            }
+          });
+        }
+      });
+
+      if (materialUIStylesInjected) {
+        // Material-UI styles detected, inject our CSS after them
+        setTimeout(() => {
+          if (!document.getElementById(styleId)) {
+            injectCriticalCSS();
+          } else {
+            // Move existing style to end of head to ensure it's after Material-UI
+            const existingStyle = document.getElementById(styleId);
+            if (existingStyle && existingStyle.parentNode) {
+              existingStyle.parentNode.removeChild(existingStyle);
+              document.head.appendChild(existingStyle);
+            }
+          }
+        }, 50);
       }
-      
-      button.hero-slide-button-1,
-      button.hero-slide-button-2,
-      button.hero-slide-button-3,
-      button.hero-slide-button-1.active,
-      button.hero-slide-button-2.active,
-      button.hero-slide-button-3.active,
-      a.hero-slide-button-1,
-      a.hero-slide-button-2,
-      a.hero-slide-button-3,
-      a.hero-slide-button-1.active,
-      a.hero-slide-button-2.active,
-      a.hero-slide-button-3.active {
-        background-color: #4FA953 !important;
-        color: white !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        cursor: pointer !important;
-        font-weight: 700 !important;
-        position: relative !important;
-        overflow: hidden !important;
-        box-shadow: 0 10px 30px rgba(79, 169, 83, 0.35), 0 5px 15px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    });
+
+    // Observe head for style/link additions
+    observer.observe(document.head, {
+      childList: true,
+      subtree: false,
+    });
+
+    // Also inject after a short delay to ensure Material-UI styles are loaded
+    const timeoutId = setTimeout(() => {
+      if (!document.getElementById(styleId)) {
+        injectCriticalCSS();
+      } else {
+        // Move to end of head
+        const existingStyle = document.getElementById(styleId);
+        if (existingStyle && existingStyle.parentNode) {
+          existingStyle.parentNode.removeChild(existingStyle);
+          document.head.appendChild(existingStyle);
+        }
       }
-    `;
-    document.head.appendChild(style);
+    }, 200);
+
+    // Use requestAnimationFrame to inject after next paint (after Material-UI)
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        if (!document.getElementById(styleId)) {
+          injectCriticalCSS();
+        } else {
+          // Move to end of head
+          const existingStyle = document.getElementById(styleId);
+          if (existingStyle && existingStyle.parentNode) {
+            existingStyle.parentNode.removeChild(existingStyle);
+            document.head.appendChild(existingStyle);
+          }
+        }
+      }, 50);
+    });
 
     return () => {
+      clearTimeout(timeoutId);
+      observer.disconnect();
       // Cleanup on unmount
       const existingStyle = document.getElementById(styleId);
       if (existingStyle) {
@@ -1429,7 +1527,11 @@ function Home() {
         <style>
           {`
             /* Critical CSS for CTA buttons - must load first for Vercel */
-            /* Use high specificity to override Material-UI styles */
+            /* Use maximum specificity including Material-UI classes to override */
+            button.hero-slide-1-button.MuiButton-root,
+            button.hero-slide-1-button.active.MuiButton-root,
+            a.hero-slide-1-button.MuiButton-root,
+            a.hero-slide-1-button.active.MuiButton-root,
             button.hero-slide-1-button,
             button.hero-slide-1-button.active,
             a.hero-slide-1-button,
@@ -1447,6 +1549,18 @@ function Home() {
               box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1) !important;
             }
             
+            button.hero-slide-button-1.MuiButton-root,
+            button.hero-slide-button-2.MuiButton-root,
+            button.hero-slide-button-3.MuiButton-root,
+            button.hero-slide-button-1.active.MuiButton-root,
+            button.hero-slide-button-2.active.MuiButton-root,
+            button.hero-slide-button-3.active.MuiButton-root,
+            a.hero-slide-button-1.MuiButton-root,
+            a.hero-slide-button-2.MuiButton-root,
+            a.hero-slide-button-3.MuiButton-root,
+            a.hero-slide-button-1.active.MuiButton-root,
+            a.hero-slide-button-2.active.MuiButton-root,
+            a.hero-slide-button-3.active.MuiButton-root,
             button.hero-slide-button-1,
             button.hero-slide-button-2,
             button.hero-slide-button-3,
