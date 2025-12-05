@@ -372,18 +372,19 @@ function HeroSlide({
                   <IconButton
                     onClick={() => setIsCarouselPaused((prev) => !prev)}
                     sx={{
-                      backgroundColor: "rgba(0, 0, 0, 0.28)",
-                      color: "rgba(255, 255, 255, 0.6)",
-                      backdropFilter: "blur(3px)",
-                      boxShadow: "0 1px 4px rgba(0, 0, 0, 0.2)",
-                      width: { xs: 44, sm: 44, md: 44 },
-                      height: { xs: 44, sm: 44, md: 44 },
-                      minWidth: { xs: 44, sm: 44, md: 44 },
-                      minHeight: { xs: 44, sm: 44, md: 44 },
+                      backgroundColor: "rgba(0, 0, 0, 0.5)",
+                      color: "rgba(255, 255, 255, 0.95)",
+                      backdropFilter: "blur(4px)",
+                      boxShadow: "0 2px 8px rgba(0, 0, 0, 0.35)",
+                      width: { xs: 48, sm: 50, md: 52 },
+                      height: { xs: 48, sm: 50, md: 52 },
+                      minWidth: { xs: 48, sm: 50, md: 52 },
+                      minHeight: { xs: 48, sm: 50, md: 52 },
                       "&:hover": {
-                        backgroundColor: "rgba(0, 0, 0, 0.6)",
+                        backgroundColor: "rgba(0, 0, 0, 0.75)",
                         color: "#ffffff",
-                        transform: "scale(1.03)",
+                        transform: "scale(1.05)",
+                        boxShadow: "0 3px 12px rgba(0, 0, 0, 0.5)",
                       },
                       transition: "all 0.25s ease",
                     }}
@@ -394,9 +395,9 @@ function HeroSlide({
                     }
                   >
                     {isCarouselPaused ? (
-                      <PlayArrowIcon sx={{ fontSize: { xs: 18, sm: 18, md: 20 } }} />
+                      <PlayArrowIcon sx={{ fontSize: { xs: 20, sm: 22, md: 24 } }} />
                     ) : (
-                      <PauseIcon sx={{ fontSize: { xs: 18, sm: 18, md: 20 } }} />
+                      <PauseIcon sx={{ fontSize: { xs: 20, sm: 22, md: 24 } }} />
                     )}
                   </IconButton>
                 </Tooltip>
@@ -569,9 +570,9 @@ function HeroSlide({
                 >
                   <YouTubeIcon
                     sx={{
-                      fontSize: { xs: "22px", sm: "22px", md: "24px", lg: "26px" },
-                      width: { xs: "22px", sm: "22px", md: "24px", lg: "26px" },
-                      height: { xs: "22px", sm: "22px", md: "24px", lg: "26px" },
+                      fontSize: { xs: "28px", sm: "30px", md: "32px", lg: "34px" },
+                      width: { xs: "28px", sm: "30px", md: "32px", lg: "34px" },
+                      height: { xs: "28px", sm: "30px", md: "32px", lg: "34px" },
                     }}
                   />
                 </MKBox>
@@ -2453,18 +2454,19 @@ function Home() {
               <IconButton
                 onClick={() => setIsCarouselPaused((prev) => !prev)}
                 sx={{
-                  backgroundColor: "rgba(0, 0, 0, 0.28)",
-                  color: "rgba(255, 255, 255, 0.6)",
-                  backdropFilter: "blur(3px)",
-                  boxShadow: "0 1px 4px rgba(0, 0, 0, 0.2)",
-                  width: { xs: 44, sm: 44, md: 44 },
-                  height: { xs: 44, sm: 44, md: 44 },
-                  minWidth: { xs: 44, sm: 44, md: 44 },
-                  minHeight: { xs: 44, sm: 44, md: 44 },
+                  backgroundColor: "rgba(0, 0, 0, 0.5)",
+                  color: "rgba(255, 255, 255, 0.95)",
+                  backdropFilter: "blur(4px)",
+                  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.35)",
+                  width: { xs: 48, sm: 50, md: 52 },
+                  height: { xs: 48, sm: 50, md: 52 },
+                  minWidth: { xs: 48, sm: 50, md: 52 },
+                  minHeight: { xs: 48, sm: 50, md: 52 },
                   "&:hover": {
-                    backgroundColor: "rgba(0, 0, 0, 0.6)",
+                    backgroundColor: "rgba(0, 0, 0, 0.75)",
                     color: "#ffffff",
-                    transform: "scale(1.03)",
+                    transform: "scale(1.05)",
+                    boxShadow: "0 3px 12px rgba(0, 0, 0, 0.5)",
                   },
                   transition: "all 0.25s ease",
                 }}
@@ -2475,9 +2477,9 @@ function Home() {
                 }
               >
                 {isCarouselPaused ? (
-                  <PlayArrowIcon sx={{ fontSize: { xs: 18, sm: 18, md: 20 } }} />
+                  <PlayArrowIcon sx={{ fontSize: { xs: 20, sm: 22, md: 24 } }} />
                 ) : (
-                  <PauseIcon sx={{ fontSize: { xs: 18, sm: 18, md: 20 } }} />
+                  <PauseIcon sx={{ fontSize: { xs: 20, sm: 22, md: 24 } }} />
                 )}
               </IconButton>
             </Tooltip>
