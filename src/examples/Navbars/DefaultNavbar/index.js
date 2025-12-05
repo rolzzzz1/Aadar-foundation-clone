@@ -848,6 +848,15 @@ function DefaultNavbar({
                           element.style.setProperty("border-radius", "12px", "important");
                           element.style.setProperty("position", "relative", "important");
                           element.style.setProperty("overflow", "hidden", "important");
+                          // Set padding based on screen size
+                          const width = window.innerWidth;
+                          if (width < 600) {
+                            element.style.setProperty("padding", "6px 14px", "important");
+                          } else if (width < 960) {
+                            element.style.setProperty("padding", "8px 20px", "important");
+                          } else {
+                            element.style.setProperty("padding", "10px 24px", "important");
+                          }
                         }
                       }}
                       style={
@@ -866,6 +875,12 @@ function DefaultNavbar({
                               borderRadius: "12px",
                               position: "relative",
                               overflow: "hidden",
+                              // Base padding - responsive values will be applied via sx prop after Material-UI loads
+                              padding: typeof window !== "undefined" && window.innerWidth < 600
+                                ? "6px 14px"
+                                : typeof window !== "undefined" && window.innerWidth < 960
+                                ? "8px 20px"
+                                : "10px 24px",
                             }
                           : {}
                       }
@@ -948,6 +963,15 @@ function DefaultNavbar({
                           element.style.setProperty("border-radius", "12px", "important");
                           element.style.setProperty("position", "relative", "important");
                           element.style.setProperty("overflow", "hidden", "important");
+                          // Set padding based on screen size
+                          const width = window.innerWidth;
+                          if (width < 600) {
+                            element.style.setProperty("padding", "6px 14px", "important");
+                          } else if (width < 960) {
+                            element.style.setProperty("padding", "8px 20px", "important");
+                          } else {
+                            element.style.setProperty("padding", "10px 24px", "important");
+                          }
                         }
                       }}
                       style={
@@ -966,6 +990,12 @@ function DefaultNavbar({
                               borderRadius: "12px",
                               position: "relative",
                               overflow: "hidden",
+                              // Base padding - responsive values will be applied via sx prop after Material-UI loads
+                              padding: typeof window !== "undefined" && window.innerWidth < 600
+                                ? "6px 14px"
+                                : typeof window !== "undefined" && window.innerWidth < 960
+                                ? "8px 20px"
+                                : "10px 24px",
                             }
                           : {}
                       }
