@@ -1086,7 +1086,11 @@ function HeroSlide({
                 // Use setProperty with important flag to override any existing styles
                 element.style.setProperty("background-color", "white", "important");
                 element.style.setProperty("color", "#FFC107", "important");
-                element.style.setProperty("box-shadow", "0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1)", "important");
+                element.style.setProperty(
+                  "box-shadow",
+                  "0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1)",
+                  "important"
+                );
                 element.style.setProperty("display", "inline-flex", "important");
                 element.style.setProperty("align-items", "center", "important");
                 element.style.setProperty("justify-content", "center", "important");
