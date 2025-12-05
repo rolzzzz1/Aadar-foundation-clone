@@ -712,6 +712,19 @@ function HeroSlide({
                 transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                 position: "relative",
                 overflow: "hidden",
+                // Ensure button is visible when active (fallback for CSS loading timing)
+                ...(isActive
+                  ? {
+                      opacity: 1,
+                      transform: "translateY(0) scale(1)",
+                      visibility: "visible",
+                      filter: "blur(0)",
+                    }
+                  : {
+                      opacity: 0,
+                      transform: "translateY(22px) scale(0.93)",
+                      filter: "blur(1.2px)",
+                    }),
                 "&::before": {
                   content: '""',
                   position: "absolute",
@@ -1033,6 +1046,30 @@ function HeroSlide({
               boxShadow: "0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1)",
               position: "relative",
               overflow: "hidden",
+              // Ensure button is visible on first load when active (without animation)
+              ...(isActive && isFirstSlide && !shouldAnimate
+                ? {
+                    opacity: 1,
+                    transform: "translateX(0) scale(1)",
+                    visibility: "visible",
+                  }
+                : {}),
+              // Initial state for animation (only when shouldAnimate is true)
+              ...(isActive && isFirstSlide && shouldAnimate
+                ? {
+                    opacity: 0,
+                    transform: "translateX(-180px) scale(0.96)",
+                    visibility: "visible",
+                  }
+                : {}),
+              // Default: ensure button is visible if active but not first slide
+              ...(isActive && !isFirstSlide
+                ? {
+                    opacity: 1,
+                    transform: "translateX(0) scale(1)",
+                    visibility: "visible",
+                  }
+                : {}),
               "&::before": {
                 content: '""',
                 position: "absolute",
@@ -1507,6 +1544,13 @@ function Home() {
               animation: none !important;
             }
             
+            /* Ensure button is visible when active (fallback for first load CSS timing) */
+            /* This will be overridden by should-animate if animation should play */
+            .hero-slide-1-button.active {
+              opacity: 1 !important;
+              transform: translateX(0) scale(1) !important;
+            }
+            
             /* Slides 2, 3, 4 - Ultra Smooth Hero Effects */
             @keyframes slideInFromLeftEnhanced {
               0% {
@@ -1729,6 +1773,8 @@ function Home() {
             .hero-slide-button-3.active {
               animation: fadeInUpEnhanced 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s both;
               will-change: transform, opacity, filter;
+              /* Animation handles the transition, this ensures visibility after animation completes */
+              /* The 'both' fill-mode ensures the final state (opacity: 1) is maintained */
             }
             
             /* Title initial states for slides 2, 3, 4 */
@@ -1758,10 +1804,10 @@ function Home() {
               filter: blur(1.2px);
             }
             
-            /* Ensure button is hidden before animation starts */
-            .hero-slide-button-1,
-            .hero-slide-button-2,
-            .hero-slide-button-3 {
+            /* Ensure button is hidden before animation starts (only when not active) */
+            .hero-slide-button-1:not(.active),
+            .hero-slide-button-2:not(.active),
+            .hero-slide-button-3:not(.active) {
               opacity: 0;
               transform: translateY(22px) scale(0.93);
               filter: blur(1.2px);
