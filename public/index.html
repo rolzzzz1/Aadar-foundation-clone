@@ -54,7 +54,11 @@
     <!-- Critical CSS for CTA buttons - must load before React to prevent FOUC -->
     <style>
       /* Critical CSS for CTA buttons - loads immediately on first page load */
-      /* Use high specificity to override Material-UI styles */
+      /* Use maximum specificity including Material-UI classes to override */
+      button.hero-slide-1-button.MuiButton-root,
+      button.hero-slide-1-button.active.MuiButton-root,
+      a.hero-slide-1-button.MuiButton-root,
+      a.hero-slide-1-button.active.MuiButton-root,
       button.hero-slide-1-button,
       button.hero-slide-1-button.active,
       a.hero-slide-1-button,
@@ -72,6 +76,18 @@
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1) !important;
       }
       
+      button.hero-slide-button-1.MuiButton-root,
+      button.hero-slide-button-2.MuiButton-root,
+      button.hero-slide-button-3.MuiButton-root,
+      button.hero-slide-button-1.active.MuiButton-root,
+      button.hero-slide-button-2.active.MuiButton-root,
+      button.hero-slide-button-3.active.MuiButton-root,
+      a.hero-slide-button-1.MuiButton-root,
+      a.hero-slide-button-2.MuiButton-root,
+      a.hero-slide-button-3.MuiButton-root,
+      a.hero-slide-button-1.active.MuiButton-root,
+      a.hero-slide-button-2.active.MuiButton-root,
+      a.hero-slide-button-3.active.MuiButton-root,
       button.hero-slide-button-1,
       button.hero-slide-button-2,
       button.hero-slide-button-3,
