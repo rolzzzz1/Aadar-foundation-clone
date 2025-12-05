@@ -10,6 +10,7 @@ import Card from "@mui/material/Card";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import YouTubeIcon from "@mui/icons-material/YouTube";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 // Material Kit 2 React examples
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
@@ -136,6 +137,43 @@ function Contact() {
                   <b>{contactPage.address.title}</b> <br />
                   {contactPage.address.address}
                 </MKTypography>
+                <MKBox
+                  display="flex"
+                  alignItems="center"
+                  gap={1}
+                  mt={2}
+                  sx={{
+                    cursor: "pointer",
+                    transition: "all 0.2s ease",
+                    "&:hover": {
+                      transform: "translateX(3px)",
+                    },
+                  }}
+                >
+                  <LocationOnIcon sx={{ color: "#ECA533", fontSize: "1.5rem" }} />
+                  <MKTypography
+                    component="a"
+                    href="https://maps.google.com/?q=Swarg+sadan+ashram+-+Sarkari+Malti,+Behind+Muktidham,+Guda+Gudi+Ka+Naka,+Gwalior,+India,+474001"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="body1"
+                    fontSize="1rem"
+                    sx={{
+                      color: "#ECA533",
+                      textDecoration: "underline",
+                      textUnderlineOffset: "4px",
+                      textDecorationThickness: "2px",
+                      textDecorationColor: "#ECA533",
+                      fontWeight: "500",
+                      "&:hover": {
+                        color: "#FFC107",
+                        textDecorationColor: "#FFC107",
+                      },
+                    }}
+                  >
+                    {t("footer.contactInfo.viewOnGoogleMaps")}
+                  </MKTypography>
+                </MKBox>
 
                 <MKTypography
                   variant="body1"
