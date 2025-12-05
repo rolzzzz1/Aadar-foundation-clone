@@ -1026,7 +1026,7 @@ function HeroSlide({
           justifyContent="center"
           alignItems="center"
           mr={6}
-          mt={{ xs: 5, sm: 5.5, md: 6 }}
+          mt={{ xs: 3, sm: 3.5, md: 4 }}
           mb={-4}
           className={
             isActive && isFirstSlide
@@ -1185,7 +1185,7 @@ function HeroSlide({
                 : {}),
             }}
             sx={{
-              mt: { xs: 4, sm: 4.5, md: 5 },
+              mt: { xs: 2, sm: 2.5, md: 3 },
               ml: -2,
               px: { xs: 3.5, sm: 4, md: 4.5 },
               py: { xs: 0.9, sm: 1, md: 1.2 },
