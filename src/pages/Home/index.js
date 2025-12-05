@@ -705,6 +705,7 @@ function HeroSlide({
                 justifyContent: "center",
                 cursor: "pointer",
                 fontWeight: "700",
+                borderRadius: "12px",
                 position: "relative",
                 overflow: "hidden",
                 // Apply visibility and transform based on state
@@ -734,11 +735,8 @@ function HeroSlide({
                 textTransform: "none",
                 fontWeight: 700,
                 letterSpacing: { xs: "0.3px", sm: "0.4px", md: "0.5px", lg: "0.6px" },
-                backgroundColor: "#4FA953",
-                color: "white",
+                // Removed backgroundColor, color, boxShadow from sx to prevent Material-UI from overriding inline styles
                 borderRadius: { xs: "12px", sm: "14px", md: "16px" },
-                boxShadow:
-                  "0 10px 30px rgba(79, 169, 83, 0.35), 0 5px 15px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
                 transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                 position: "relative",
                 overflow: "hidden",
@@ -1108,9 +1106,7 @@ function HeroSlide({
               fontSize: { xs: "0.85rem", sm: "0.95rem", md: "1rem" },
               textTransform: "capitalize",
               borderRadius: "10px",
-              backgroundColor: "white",
-              color: "#FFC107",
-              boxShadow: "0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1)",
+              // Removed backgroundColor, color, boxShadow from sx to prevent Material-UI from overriding inline styles
               position: "relative",
               overflow: "hidden",
               "&::before": {
@@ -1394,6 +1390,95 @@ function Home() {
       }
     };
   }, []);
+
+  // Aggressive DOM manipulation to force button styles after Material-UI loads
+  // This runs after every render to ensure styles are always correct
+  useEffect(() => {
+    const forceButtonStyles = () => {
+      // Find all hero buttons by data attribute or class
+      const slide1Buttons = document.querySelectorAll(
+        '[data-hero-button="slide1"], .hero-slide-1-button, button.hero-slide-1-button, a.hero-slide-1-button'
+      );
+      const slide234Buttons = document.querySelectorAll(
+        '[data-hero-button="slide2"], [data-hero-button="slide3"], [data-hero-button="slide4"], .hero-slide-button-1, .hero-slide-button-2, .hero-slide-button-3, button.hero-slide-button-1, button.hero-slide-button-2, button.hero-slide-button-3, a.hero-slide-button-1, a.hero-slide-button-2, a.hero-slide-button-3'
+      );
+
+      // Force styles on slide 1 button
+      slide1Buttons.forEach((btn) => {
+        if (btn && btn.style) {
+          // Use setProperty with important flag
+          btn.style.setProperty('background-color', 'white', 'important');
+          btn.style.setProperty('color', '#FFC107', 'important');
+          btn.style.setProperty('display', 'inline-flex', 'important');
+          btn.style.setProperty('align-items', 'center', 'important');
+          btn.style.setProperty('justify-content', 'center', 'important');
+          btn.style.setProperty('cursor', 'pointer', 'important');
+          btn.style.setProperty('border-radius', '10px', 'important');
+          btn.style.setProperty('font-weight', '700', 'important');
+          btn.style.setProperty('position', 'relative', 'important');
+          btn.style.setProperty('overflow', 'hidden', 'important');
+          btn.style.setProperty('box-shadow', '0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1)', 'important');
+        }
+      });
+
+      // Force styles on slides 2, 3, 4 buttons
+      slide234Buttons.forEach((btn) => {
+        if (btn && btn.style) {
+          btn.style.setProperty('background-color', '#4FA953', 'important');
+          btn.style.setProperty('color', 'white', 'important');
+          btn.style.setProperty('display', 'inline-flex', 'important');
+          btn.style.setProperty('align-items', 'center', 'important');
+          btn.style.setProperty('justify-content', 'center', 'important');
+          btn.style.setProperty('cursor', 'pointer', 'important');
+          btn.style.setProperty('font-weight', '700', 'important');
+          btn.style.setProperty('border-radius', '12px', 'important');
+          btn.style.setProperty('position', 'relative', 'important');
+          btn.style.setProperty('overflow', 'hidden', 'important');
+          btn.style.setProperty('box-shadow', '0 10px 30px rgba(79, 169, 83, 0.35), 0 5px 15px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)', 'important');
+        }
+      });
+    };
+
+    // Run immediately
+    forceButtonStyles();
+
+    // Run after delays to catch Material-UI style injection
+    const timeout1 = setTimeout(forceButtonStyles, 100);
+    const timeout2 = setTimeout(forceButtonStyles, 300);
+    const timeout3 = setTimeout(forceButtonStyles, 500);
+    const timeout4 = setTimeout(forceButtonStyles, 1000);
+
+    // Use MutationObserver to watch for button changes
+    const observer = new MutationObserver(() => {
+      forceButtonStyles();
+    });
+
+    // Observe the entire document for changes
+    if (document.body) {
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['class', 'style'],
+      });
+    }
+
+    // Also use requestAnimationFrame for immediate next frame
+    const raf1 = requestAnimationFrame(() => {
+      forceButtonStyles();
+      const raf2 = requestAnimationFrame(forceButtonStyles);
+      return raf2;
+    });
+
+    return () => {
+      clearTimeout(timeout1);
+      clearTimeout(timeout2);
+      clearTimeout(timeout3);
+      clearTimeout(timeout4);
+      if (raf1) cancelAnimationFrame(raf1);
+      observer.disconnect();
+    };
+  });
 
   // Set animation flag when slide 1 first becomes active (initial load)
   useEffect(() => {
