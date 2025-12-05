@@ -876,11 +876,12 @@ function DefaultNavbar({
                               position: "relative",
                               overflow: "hidden",
                               // Base padding - responsive values will be applied via sx prop after Material-UI loads
-                              padding: typeof window !== "undefined" && window.innerWidth < 600
-                                ? "6px 14px"
-                                : typeof window !== "undefined" && window.innerWidth < 960
-                                ? "8px 20px"
-                                : "10px 24px",
+                              padding:
+                                typeof window !== "undefined" && window.innerWidth < 600
+                                  ? "6px 14px"
+                                  : typeof window !== "undefined" && window.innerWidth < 960
+                                    ? "8px 20px"
+                                    : "10px 24px",
                             }
                           : {}
                       }
@@ -991,11 +992,12 @@ function DefaultNavbar({
                               position: "relative",
                               overflow: "hidden",
                               // Base padding - responsive values will be applied via sx prop after Material-UI loads
-                              padding: typeof window !== "undefined" && window.innerWidth < 600
-                                ? "6px 14px"
-                                : typeof window !== "undefined" && window.innerWidth < 960
-                                ? "8px 20px"
-                                : "10px 24px",
+                              padding:
+                                typeof window !== "undefined" && window.innerWidth < 600
+                                  ? "6px 14px"
+                                  : typeof window !== "undefined" && window.innerWidth < 960
+                                    ? "8px 20px"
+                                    : "10px 24px",
                             }
                           : {}
                       }
