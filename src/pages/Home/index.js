@@ -1124,10 +1124,13 @@ function HeroSlide({
                 const width = window.innerWidth;
                 if (width < 600) {
                   element.style.setProperty("padding", "0.45rem 1.75rem", "important"); // py: 0.9, px: 3.5
+                  element.style.setProperty("margin-top", "1rem", "important"); // mt: 2 = 16px = 1rem
                 } else if (width < 960) {
                   element.style.setProperty("padding", "0.5rem 2rem", "important"); // py: 1, px: 4
+                  element.style.setProperty("margin-top", "1.25rem", "important"); // mt: 2.5 = 20px = 1.25rem
                 } else {
                   element.style.setProperty("padding", "0.6rem 2.25rem", "important"); // py: 1.2, px: 4.5
+                  element.style.setProperty("margin-top", "1.5rem", "important"); // mt: 3 = 24px = 1.5rem
                 }
               }
             }}
@@ -1154,6 +1157,13 @@ function HeroSlide({
                   : typeof window !== "undefined" && window.innerWidth < 960
                   ? "0.5rem 2rem"
                   : "0.6rem 2.25rem",
+              // Margin-top: mt: 2 = 16px = 1rem, mt: 2.5 = 20px = 1.25rem, mt: 3 = 24px = 1.5rem
+              marginTop:
+                typeof window !== "undefined" && window.innerWidth < 600
+                  ? "1rem"
+                  : typeof window !== "undefined" && window.innerWidth < 960
+                  ? "1.25rem"
+                  : "1.5rem",
               // Apply visibility and transform based on state
               ...(isActive && isFirstSlide && !shouldAnimate
                 ? {
@@ -1527,10 +1537,13 @@ function Home() {
           const width = window.innerWidth;
           if (width < 600) {
             btn.style.setProperty("padding", "0.45rem 1.75rem", "important"); // py: 0.9, px: 3.5
+            btn.style.setProperty("margin-top", "1rem", "important"); // mt: 2 = 16px = 1rem
           } else if (width < 960) {
             btn.style.setProperty("padding", "0.5rem 2rem", "important"); // py: 1, px: 4
+            btn.style.setProperty("margin-top", "1.25rem", "important"); // mt: 2.5 = 20px = 1.25rem
           } else {
             btn.style.setProperty("padding", "0.6rem 2.25rem", "important"); // py: 1.2, px: 4.5
+            btn.style.setProperty("margin-top", "1.5rem", "important"); // mt: 3 = 24px = 1.5rem
           }
         }
       });

@@ -78,6 +78,32 @@
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1) !important;
       }
       
+      /* Responsive margin-top for slide 1 button */
+      @media (max-width: 599px) {
+        [data-hero-button="slide1"],
+        [data-hero-button="slide1"].MuiButton-root,
+        button.hero-slide-1-button,
+        a.hero-slide-1-button {
+          margin-top: 1rem !important;
+        }
+      }
+      @media (min-width: 600px) and (max-width: 959px) {
+        [data-hero-button="slide1"],
+        [data-hero-button="slide1"].MuiButton-root,
+        button.hero-slide-1-button,
+        a.hero-slide-1-button {
+          margin-top: 1.25rem !important;
+        }
+      }
+      @media (min-width: 960px) {
+        [data-hero-button="slide1"],
+        [data-hero-button="slide1"].MuiButton-root,
+        button.hero-slide-1-button,
+        a.hero-slide-1-button {
+          margin-top: 1.5rem !important;
+        }
+      }
+      
       [data-hero-button="slide2"],
       [data-hero-button="slide3"],
       [data-hero-button="slide4"],
@@ -162,6 +188,15 @@
               btn.style.setProperty('position', 'relative', 'important');
               btn.style.setProperty('overflow', 'hidden', 'important');
               btn.style.setProperty('box-shadow', '0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1)', 'important');
+              // Set responsive margin-top
+              var width = window.innerWidth;
+              if (width < 600) {
+                btn.style.setProperty('margin-top', '1rem', 'important');
+              } else if (width < 960) {
+                btn.style.setProperty('margin-top', '1.25rem', 'important');
+              } else {
+                btn.style.setProperty('margin-top', '1.5rem', 'important');
+              }
             }
           });
           
