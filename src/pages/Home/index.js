@@ -1223,6 +1223,11 @@ function Home() {
   // This ensures buttons are styled correctly on first load, even before React fully hydrates
   // Inject after Material-UI styles to ensure our styles override them
   useEffect(() => {
+    // Only run in browser (not during SSR)
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return;
+    }
+
     const styleId = "hero-cta-buttons-critical-css";
     // Check if style already exists
     if (document.getElementById(styleId)) {
@@ -1394,6 +1399,11 @@ function Home() {
   // Aggressive DOM manipulation to force button styles after Material-UI loads
   // This runs after every render to ensure styles are always correct
   useEffect(() => {
+    // Only run in browser (not during SSR)
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return;
+    }
+
     const forceButtonStyles = () => {
       // Find all hero buttons by data attribute or class
       const slide1Buttons = document.querySelectorAll(
@@ -1464,10 +1474,11 @@ function Home() {
     }
 
     // Also use requestAnimationFrame for immediate next frame
-    const raf1 = requestAnimationFrame(() => {
+    let raf1Id = null;
+    let raf2Id = null;
+    raf1Id = requestAnimationFrame(() => {
       forceButtonStyles();
-      const raf2 = requestAnimationFrame(forceButtonStyles);
-      return raf2;
+      raf2Id = requestAnimationFrame(forceButtonStyles);
     });
 
     return () => {
@@ -1475,7 +1486,8 @@ function Home() {
       clearTimeout(timeout2);
       clearTimeout(timeout3);
       clearTimeout(timeout4);
-      if (raf1) cancelAnimationFrame(raf1);
+      if (raf1Id !== null) cancelAnimationFrame(raf1Id);
+      if (raf2Id !== null) cancelAnimationFrame(raf2Id);
       observer.disconnect();
     };
   });
