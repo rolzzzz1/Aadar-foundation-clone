@@ -404,17 +404,17 @@ function HeroSlide({
                 <MKTypography
                   sx={{
                     fontSize: { xs: "0.65rem", sm: "0.7rem", md: "0.75rem" },
-                    color: "rgba(255, 255, 255, 0.9)",
+                    color: "rgba(255, 255, 255, 0.6)",
                     textAlign: "center",
                     whiteSpace: "nowrap",
                     fontWeight: 400,
                     letterSpacing: "0.3px",
                     textShadow: "0 1px 3px rgba(0, 0, 0, 0.5)",
-                    backgroundColor: "rgba(0, 0, 0, 0.4)",
-                    backdropFilter: "blur(4px)",
+                    backgroundColor: "rgba(0, 0, 0, 0.3)",
+                    backdropFilter: "blur(3px)",
                     padding: { xs: "4px 8px", sm: "4px 10px", md: "5px 12px" },
                     borderRadius: "6px",
-                    boxShadow: "0 2px 6px rgba(0, 0, 0, 0.3)",
+                    boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
                   }}
                 >
                   {t("homePage.heroSection.pausePlayHint")}
@@ -556,7 +556,7 @@ function HeroSlide({
                   sx={{
                     position: "absolute",
                     // Align vertically with the story heading
-                    top: { xs: "20px", sm: "22px", md: "24px", lg: "26px" },
+                    top: { xs: "8px", sm: "10px", md: "12px", lg: "14px" },
                     right: { xs: "10px", sm: "12px", md: "14px", lg: "16px" },
                     display: "flex",
                     alignItems: "center",
@@ -566,43 +566,43 @@ function HeroSlide({
                     opacity: 0.9,
                     zIndex: 50,
                     pointerEvents: "auto",
-                    width: { xs: "36px", sm: "40px", md: "44px", lg: "48px" },
-                    height: { xs: "36px", sm: "40px", md: "44px", lg: "48px" },
-                    minWidth: { xs: "36px", sm: "40px", md: "44px", lg: "48px" },
-                    minHeight: { xs: "36px", sm: "40px", md: "44px", lg: "48px" },
+                    width: { xs: "24px", sm: "26px", md: "28px", lg: "30px" },
+                    height: { xs: "24px", sm: "26px", md: "28px", lg: "30px" },
+                    minWidth: { xs: "24px", sm: "26px", md: "28px", lg: "30px" },
+                    minHeight: { xs: "24px", sm: "26px", md: "28px", lg: "30px" },
                   }}
                 >
                   <YouTubeIcon
                     sx={{
                       fontSize: {
-                        xs: "36px !important",
-                        sm: "40px !important",
-                        md: "44px !important",
-                        lg: "48px !important",
+                        xs: "24px !important",
+                        sm: "26px !important",
+                        md: "28px !important",
+                        lg: "30px !important",
                       },
                       width: {
-                        xs: "36px !important",
-                        sm: "40px !important",
-                        md: "44px !important",
-                        lg: "48px !important",
+                        xs: "24px !important",
+                        sm: "26px !important",
+                        md: "28px !important",
+                        lg: "30px !important",
                       },
                       height: {
-                        xs: "36px !important",
-                        sm: "40px !important",
-                        md: "44px !important",
-                        lg: "48px !important",
+                        xs: "24px !important",
+                        sm: "26px !important",
+                        md: "28px !important",
+                        lg: "30px !important",
                       },
                       minWidth: {
-                        xs: "36px !important",
-                        sm: "40px !important",
-                        md: "44px !important",
-                        lg: "48px !important",
+                        xs: "24px !important",
+                        sm: "26px !important",
+                        md: "28px !important",
+                        lg: "30px !important",
                       },
                       minHeight: {
-                        xs: "36px !important",
-                        sm: "40px !important",
-                        md: "44px !important",
-                        lg: "48px !important",
+                        xs: "24px !important",
+                        sm: "26px !important",
+                        md: "28px !important",
+                        lg: "30px !important",
                       },
                     }}
                   />
@@ -2189,11 +2189,11 @@ function Home() {
             /* Also target by parent slide container */
             [class*="hero-slide"] a[aria-label*="YouTube"] svg,
             [class*="hero-slide"] svg[data-testid="YouTubeIcon"] {
-              font-size: 36px !important;
-              width: 36px !important;
-              height: 36px !important;
-              min-width: 36px !important;
-              min-height: 36px !important;
+              font-size: 24px !important;
+              width: 24px !important;
+              height: 24px !important;
+              min-width: 24px !important;
+              min-height: 24px !important;
             }
             @media (min-width: 600px) {
               .hero-slide-video-1 svg.MuiSvgIcon-root[data-testid="YouTubeIcon"],
@@ -2204,11 +2204,11 @@ function Home() {
               .hero-slide-video-3 a[aria-label*="YouTube"] svg,
               [class*="hero-slide"] a[aria-label*="YouTube"] svg,
               [class*="hero-slide"] svg[data-testid="YouTubeIcon"] {
-                font-size: 40px !important;
-                width: 40px !important;
-                height: 40px !important;
-                min-width: 40px !important;
-                min-height: 40px !important;
+                font-size: 26px !important;
+                width: 26px !important;
+                height: 26px !important;
+                min-width: 26px !important;
+                min-height: 26px !important;
               }
             }
             @media (min-width: 900px) {
@@ -2220,11 +2220,11 @@ function Home() {
               .hero-slide-video-3 a[aria-label*="YouTube"] svg,
               [class*="hero-slide"] a[aria-label*="YouTube"] svg,
               [class*="hero-slide"] svg[data-testid="YouTubeIcon"] {
-                font-size: 44px !important;
-                width: 44px !important;
-                height: 44px !important;
-                min-width: 44px !important;
-                min-height: 44px !important;
+                font-size: 28px !important;
+                width: 28px !important;
+                height: 28px !important;
+                min-width: 28px !important;
+                min-height: 28px !important;
               }
             }
             @media (min-width: 1200px) {
@@ -2236,11 +2236,11 @@ function Home() {
               .hero-slide-video-3 a[aria-label*="YouTube"] svg,
               [class*="hero-slide"] a[aria-label*="YouTube"] svg,
               [class*="hero-slide"] svg[data-testid="YouTubeIcon"] {
-                font-size: 48px !important;
-                width: 48px !important;
-                height: 48px !important;
-                min-width: 48px !important;
-                min-height: 48px !important;
+                font-size: 30px !important;
+                width: 30px !important;
+                height: 30px !important;
+                min-width: 30px !important;
+                min-height: 30px !important;
               }
             }
             
@@ -2582,7 +2582,7 @@ function Home() {
             <MKTypography
               sx={{
                 fontSize: { xs: "0.55rem", sm: "0.6rem", md: "0.65rem" },
-                color: "rgba(255, 255, 255, 0.9)",
+                color: "rgba(255, 255, 255, 0.6)",
                 textAlign: "center",
                 whiteSpace: "normal",
                 maxWidth: { xs: "120px", sm: "140px", md: "160px" },
@@ -2590,11 +2590,11 @@ function Home() {
                 fontWeight: 400,
                 letterSpacing: "0.3px",
                 textShadow: "0 1px 3px rgba(0, 0, 0, 0.5)",
-                backgroundColor: "rgba(0, 0, 0, 0.4)",
-                backdropFilter: "blur(4px)",
+                backgroundColor: "rgba(0, 0, 0, 0.3)",
+                backdropFilter: "blur(3px)",
                 padding: { xs: "4px 6px", sm: "4px 8px", md: "5px 10px" },
                 borderRadius: "6px",
-                boxShadow: "0 2px 6px rgba(0, 0, 0, 0.3)",
+                boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
               }}
             >
               {t("homePage.heroSection.pausePlayHint")}
