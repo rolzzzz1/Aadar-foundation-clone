@@ -306,13 +306,16 @@ function HeroSlide({
                 }}
                 onError={(e) => {
                   // Fallback to image if video fails to load
+                  if (typeof document === 'undefined') return;
                   e.target.style.display = "none";
                   const img = document.createElement("img");
                   img.src = heroImage2;
                   img.style.width = "100%";
                   img.style.height = "100%";
                   img.style.objectFit = "cover";
-                  e.target.parentElement.appendChild(img);
+                  if (e.target.parentElement) {
+                    e.target.parentElement.appendChild(img);
+                  }
                 }}
               >
                 <source
