@@ -1175,7 +1175,7 @@ function HeroSlide({
               ...(isActive && isFirstSlide && shouldAnimate
                 ? {
                     opacity: 0,
-                    transform: "translateY(60px)",
+                    transform: "translateX(-180px)",
                     visibility: "visible",
                   }
                 : {}),
@@ -1189,7 +1189,7 @@ function HeroSlide({
               ...(!isActive
                 ? {
                     opacity: 0,
-                    transform: "translateY(60px)",
+                    transform: "translateX(-180px)",
                     visibility: "hidden",
                   }
                 : {}),
@@ -2069,7 +2069,7 @@ function Home() {
             
             .hero-slide-1-button:not(.active) {
               opacity: 0;
-              transform: translateY(60px);
+              transform: translateX(-180px);
             }
             
             /* When slide is active but animation shouldn't play (returning to slide 1), show elements immediately */
@@ -2147,14 +2147,14 @@ function Home() {
             
             /* For button with initial animation - start continuous animations after slide-in */
             .hero-slide-1-button.active.should-animate {
-              /* Set initial state to match animation keyframe 0% - bottom to top */
+              /* Set initial state to match animation keyframe 0% - same as text */
               opacity: 0 !important;
-              transform: translateY(60px) !important;
-              /* Use bottom-to-top animation for button appearance - slower and smoother */
-              animation: slideInFromBottom 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.32s forwards,
-                         buttonPulse 3s ease-in-out infinite 2.32s,
-                         buttonGlow 2.5s ease-in-out infinite 2.32s,
-                         buttonFloat 3s ease-in-out infinite 2.32s !important;
+              transform: translateX(-180px) !important;
+              /* Use same animation as text for synchronized appearance */
+              animation: slideInFromLeftText 4.2s cubic-bezier(0.23, 1, 0.32, 1) 0.32s forwards,
+                         buttonPulse 3s ease-in-out infinite 4.52s,
+                         buttonGlow 2.5s ease-in-out infinite 4.52s,
+                         buttonFloat 3s ease-in-out infinite 4.52s !important;
             }
             
             /* Arrow animation for Help Today button - starts after slide-in completes */
@@ -2163,7 +2163,7 @@ function Home() {
             }
             
             .hero-slide-1-button.active.should-animate .arrow-icon {
-              animation: arrowMove 2s ease-in-out infinite 2.32s;
+              animation: arrowMove 2s ease-in-out infinite 4.52s;
             }
             
             /* Slides 2, 3, 4 - Ultra Smooth Hero Effects */
