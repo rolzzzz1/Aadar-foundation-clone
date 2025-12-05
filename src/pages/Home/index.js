@@ -306,7 +306,7 @@ function HeroSlide({
                 }}
                 onError={(e) => {
                   // Fallback to image if video fails to load
-                  if (typeof document === 'undefined') return;
+                  if (typeof document === "undefined") return;
                   e.target.style.display = "none";
                   const img = document.createElement("img");
                   img.src = heroImage2;
@@ -1227,7 +1227,7 @@ function Home() {
   // Inject after Material-UI styles to ensure our styles override them
   useEffect(() => {
     // Only run in browser (not during SSR)
-    if (typeof window === 'undefined' || typeof document === 'undefined') {
+    if (typeof window === "undefined" || typeof document === "undefined") {
       return;
     }
 
@@ -1403,7 +1403,7 @@ function Home() {
   // This runs after every render to ensure styles are always correct
   useEffect(() => {
     // Only run in browser (not during SSR)
-    if (typeof window === 'undefined' || typeof document === 'undefined') {
+    if (typeof window === "undefined" || typeof document === "undefined") {
       return;
     }
 
@@ -1420,34 +1420,46 @@ function Home() {
       slide1Buttons.forEach((btn) => {
         if (btn && btn.style) {
           // Use setProperty with important flag
-          btn.style.setProperty('background-color', 'white', 'important');
-          btn.style.setProperty('color', '#FFC107', 'important');
-          btn.style.setProperty('display', 'inline-flex', 'important');
-          btn.style.setProperty('align-items', 'center', 'important');
-          btn.style.setProperty('justify-content', 'center', 'important');
-          btn.style.setProperty('cursor', 'pointer', 'important');
-          btn.style.setProperty('border-radius', '10px', 'important');
-          btn.style.setProperty('font-weight', '700', 'important');
-          btn.style.setProperty('position', 'relative', 'important');
-          btn.style.setProperty('overflow', 'hidden', 'important');
-          btn.style.setProperty('box-shadow', '0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1)', 'important');
+          btn.style.setProperty(
+            "background-color",
+            "white",
+            "important"
+          );
+          btn.style.setProperty("color", "#FFC107", "important");
+          btn.style.setProperty("display", "inline-flex", "important");
+          btn.style.setProperty("align-items", "center", "important");
+          btn.style.setProperty("justify-content", "center", "important");
+          btn.style.setProperty("cursor", "pointer", "important");
+          btn.style.setProperty("border-radius", "10px", "important");
+          btn.style.setProperty("font-weight", "700", "important");
+          btn.style.setProperty("position", "relative", "important");
+          btn.style.setProperty("overflow", "hidden", "important");
+          btn.style.setProperty(
+            "box-shadow",
+            "0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1)",
+            "important"
+          );
         }
       });
 
       // Force styles on slides 2, 3, 4 buttons
       slide234Buttons.forEach((btn) => {
         if (btn && btn.style) {
-          btn.style.setProperty('background-color', '#4FA953', 'important');
-          btn.style.setProperty('color', 'white', 'important');
-          btn.style.setProperty('display', 'inline-flex', 'important');
-          btn.style.setProperty('align-items', 'center', 'important');
-          btn.style.setProperty('justify-content', 'center', 'important');
-          btn.style.setProperty('cursor', 'pointer', 'important');
-          btn.style.setProperty('font-weight', '700', 'important');
-          btn.style.setProperty('border-radius', '12px', 'important');
-          btn.style.setProperty('position', 'relative', 'important');
-          btn.style.setProperty('overflow', 'hidden', 'important');
-          btn.style.setProperty('box-shadow', '0 10px 30px rgba(79, 169, 83, 0.35), 0 5px 15px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)', 'important');
+          btn.style.setProperty("background-color", "#4FA953", "important");
+          btn.style.setProperty("color", "white", "important");
+          btn.style.setProperty("display", "inline-flex", "important");
+          btn.style.setProperty("align-items", "center", "important");
+          btn.style.setProperty("justify-content", "center", "important");
+          btn.style.setProperty("cursor", "pointer", "important");
+          btn.style.setProperty("font-weight", "700", "important");
+          btn.style.setProperty("border-radius", "12px", "important");
+          btn.style.setProperty("position", "relative", "important");
+          btn.style.setProperty("overflow", "hidden", "important");
+          btn.style.setProperty(
+            "box-shadow",
+            "0 10px 30px rgba(79, 169, 83, 0.35), 0 5px 15px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+            "important"
+          );
         }
       });
     };
@@ -1472,17 +1484,17 @@ function Home() {
         childList: true,
         subtree: true,
         attributes: true,
-        attributeFilter: ['class', 'style'],
+        attributeFilter: ["class", "style"],
       });
     }
 
     // Also use requestAnimationFrame for immediate next frame
     let raf1Id = null;
     let raf2Id = null;
-    if (typeof requestAnimationFrame !== 'undefined') {
+    if (typeof requestAnimationFrame !== "undefined") {
       raf1Id = requestAnimationFrame(() => {
         forceButtonStyles();
-        if (typeof requestAnimationFrame !== 'undefined') {
+        if (typeof requestAnimationFrame !== "undefined") {
           raf2Id = requestAnimationFrame(forceButtonStyles);
         }
       });
@@ -1493,10 +1505,10 @@ function Home() {
       clearTimeout(timeout2);
       clearTimeout(timeout3);
       clearTimeout(timeout4);
-      if (raf1Id !== null && typeof cancelAnimationFrame !== 'undefined') {
+      if (raf1Id !== null && typeof cancelAnimationFrame !== "undefined") {
         cancelAnimationFrame(raf1Id);
       }
-      if (raf2Id !== null && typeof cancelAnimationFrame !== 'undefined') {
+      if (raf2Id !== null && typeof cancelAnimationFrame !== "undefined") {
         cancelAnimationFrame(raf2Id);
       }
       observer.disconnect();
