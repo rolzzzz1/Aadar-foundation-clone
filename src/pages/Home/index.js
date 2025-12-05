@@ -2148,26 +2148,13 @@ function Home() {
             
             /* For button with initial animation - start continuous animations after slide-in */
             .hero-slide-1-button.active.should-animate {
-              /* Set initial state to match animation keyframe 0% - same as text */
-              /* Use !important to override any inline styles */
-              opacity: 0 !important;
-              transform: translateX(-180px) !important;
-              visibility: visible !important;
-              will-change: transform, opacity !important;
-              /* Use same animation as text for synchronized appearance */
-              /* animation-fill-mode: forwards ensures final state is maintained */
+              /* Match text animation exactly - same as .hero-slide-1-text.active.should-animate */
+              /* Use same animation with same timing as text */
               animation: slideInFromLeftText 4.2s cubic-bezier(0.23, 1, 0.32, 1) 0.32s forwards,
                          buttonPulse 3s ease-in-out infinite 4.52s,
                          buttonGlow 2.5s ease-in-out infinite 4.52s,
                          buttonFloat 3s ease-in-out infinite 4.52s !important;
-            }
-            
-            /* Force animation to override inline styles during animation */
-            .hero-slide-1-button.active.should-animate[style] {
-              animation: slideInFromLeftText 4.2s cubic-bezier(0.23, 1, 0.32, 1) 0.32s forwards,
-                         buttonPulse 3s ease-in-out infinite 4.52s,
-                         buttonGlow 2.5s ease-in-out infinite 4.52s,
-                         buttonFloat 3s ease-in-out infinite 4.52s !important;
+              opacity: 1 !important;
             }
             
             /* Arrow animation for Help Today button - starts after slide-in completes */
