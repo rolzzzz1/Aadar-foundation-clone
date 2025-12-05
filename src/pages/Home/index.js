@@ -717,6 +717,17 @@ function HeroSlide({
                   element.style.setProperty("border-radius", "12px", "important");
                   element.style.setProperty("position", "relative", "important");
                   element.style.setProperty("overflow", "hidden", "important");
+                  // Set padding based on screen size
+                  const width = window.innerWidth;
+                  if (width < 600) {
+                    element.style.setProperty("padding", "1.1rem 3.5rem", "important");
+                  } else if (width < 960) {
+                    element.style.setProperty("padding", "1rem 3.2rem", "important");
+                  } else if (width < 1280) {
+                    element.style.setProperty("padding", "1.2rem 3.5rem", "important");
+                  } else {
+                    element.style.setProperty("padding", "1.3rem 4rem", "important");
+                  }
                 }
               }}
               style={{
@@ -734,6 +745,14 @@ function HeroSlide({
                 borderRadius: "12px",
                 position: "relative",
                 overflow: "hidden",
+                // Base padding - responsive values will be applied via sx prop after Material-UI loads
+                padding: typeof window !== "undefined" && window.innerWidth < 600
+                  ? "1.1rem 3.5rem"
+                  : typeof window !== "undefined" && window.innerWidth < 960
+                  ? "1rem 3.2rem"
+                  : typeof window !== "undefined" && window.innerWidth < 1280
+                  ? "1.2rem 3.5rem"
+                  : "1.3rem 4rem",
                 // Apply visibility and transform based on state
                 ...(isActive
                   ? {
@@ -1099,6 +1118,15 @@ function HeroSlide({
                 element.style.setProperty("font-weight", "700", "important");
                 element.style.setProperty("position", "relative", "important");
                 element.style.setProperty("overflow", "hidden", "important");
+                // Set padding based on screen size
+                const width = window.innerWidth;
+                if (width < 600) {
+                  element.style.setProperty("padding", "0.9rem 3.5rem", "important");
+                } else if (width < 960) {
+                  element.style.setProperty("padding", "1rem 4rem", "important");
+                } else {
+                  element.style.setProperty("padding", "1.2rem 4.5rem", "important");
+                }
               }
             }}
             style={{
@@ -1116,6 +1144,12 @@ function HeroSlide({
               fontWeight: "700",
               position: "relative",
               overflow: "hidden",
+              // Base padding - responsive values will be applied via sx prop after Material-UI loads
+              padding: typeof window !== "undefined" && window.innerWidth < 600 
+                ? "0.9rem 3.5rem" 
+                : typeof window !== "undefined" && window.innerWidth < 960
+                ? "1rem 4rem"
+                : "1.2rem 4.5rem",
               // Apply visibility and transform based on state
               ...(isActive && isFirstSlide && !shouldAnimate
                 ? {
@@ -1485,6 +1519,15 @@ function Home() {
             "0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1)",
             "important"
           );
+          // Set padding based on screen size
+          const width = window.innerWidth;
+          if (width < 600) {
+            btn.style.setProperty("padding", "0.9rem 3.5rem", "important");
+          } else if (width < 960) {
+            btn.style.setProperty("padding", "1rem 4rem", "important");
+          } else {
+            btn.style.setProperty("padding", "1.2rem 4.5rem", "important");
+          }
         }
       });
 
@@ -1506,6 +1549,17 @@ function Home() {
             "0 10px 30px rgba(79, 169, 83, 0.35), 0 5px 15px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
             "important"
           );
+          // Set padding based on screen size
+          const width2 = window.innerWidth;
+          if (width2 < 600) {
+            btn.style.setProperty("padding", "1.1rem 3.5rem", "important");
+          } else if (width2 < 960) {
+            btn.style.setProperty("padding", "1rem 3.2rem", "important");
+          } else if (width2 < 1280) {
+            btn.style.setProperty("padding", "1.2rem 3.5rem", "important");
+          } else {
+            btn.style.setProperty("padding", "1.3rem 4rem", "important");
+          }
         }
       });
 
@@ -1527,6 +1581,15 @@ function Home() {
             "0 6px 20px rgba(79, 169, 83, 0.35), 0 3px 10px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
             "important"
           );
+          // Set padding based on screen size
+          const width3 = window.innerWidth;
+          if (width3 < 600) {
+            btn.style.setProperty("padding", "6px 14px", "important");
+          } else if (width3 < 960) {
+            btn.style.setProperty("padding", "8px 20px", "important");
+          } else {
+            btn.style.setProperty("padding", "10px 24px", "important");
+          }
         }
       });
     };
