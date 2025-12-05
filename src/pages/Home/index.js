@@ -372,19 +372,19 @@ function HeroSlide({
                   <IconButton
                     onClick={() => setIsCarouselPaused((prev) => !prev)}
                     sx={{
-                      backgroundColor: "rgba(0, 0, 0, 0.5)",
-                      color: "rgba(255, 255, 255, 0.95)",
-                      backdropFilter: "blur(4px)",
-                      boxShadow: "0 2px 8px rgba(0, 0, 0, 0.35)",
+                      backgroundColor: "rgba(0, 0, 0, 0.35)",
+                      color: "rgba(255, 255, 255, 0.7)",
+                      backdropFilter: "blur(3px)",
+                      boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
                       width: { xs: 48, sm: 50, md: 52 },
                       height: { xs: 48, sm: 50, md: 52 },
                       minWidth: { xs: 48, sm: 50, md: 52 },
                       minHeight: { xs: 48, sm: 50, md: 52 },
                       "&:hover": {
-                        backgroundColor: "rgba(0, 0, 0, 0.75)",
-                        color: "#ffffff",
+                        backgroundColor: "rgba(0, 0, 0, 0.6)",
+                        color: "rgba(255, 255, 255, 0.9)",
                         transform: "scale(1.05)",
-                        boxShadow: "0 3px 12px rgba(0, 0, 0, 0.5)",
+                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
                       },
                       transition: "all 0.25s ease",
                     }}
@@ -2550,19 +2550,19 @@ function Home() {
               <IconButton
                 onClick={() => setIsCarouselPaused((prev) => !prev)}
                 sx={{
-                  backgroundColor: "rgba(0, 0, 0, 0.5)",
-                  color: "rgba(255, 255, 255, 0.95)",
-                  backdropFilter: "blur(4px)",
-                  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.35)",
+                  backgroundColor: "rgba(0, 0, 0, 0.35)",
+                  color: "rgba(255, 255, 255, 0.7)",
+                  backdropFilter: "blur(3px)",
+                  boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
                   width: { xs: 48, sm: 50, md: 52 },
                   height: { xs: 48, sm: 50, md: 52 },
                   minWidth: { xs: 48, sm: 50, md: 52 },
                   minHeight: { xs: 48, sm: 50, md: 52 },
                   "&:hover": {
-                    backgroundColor: "rgba(0, 0, 0, 0.75)",
-                    color: "#ffffff",
+                    backgroundColor: "rgba(0, 0, 0, 0.6)",
+                    color: "rgba(255, 255, 255, 0.9)",
                     transform: "scale(1.05)",
-                    boxShadow: "0 3px 12px rgba(0, 0, 0, 0.5)",
+                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
                   },
                   transition: "all 0.25s ease",
                 }}
