@@ -566,13 +566,19 @@ function HeroSlide({
                     opacity: 0.9,
                     zIndex: 50,
                     pointerEvents: "auto",
+                    width: { xs: "36px", sm: "40px", md: "44px", lg: "48px" },
+                    height: { xs: "36px", sm: "40px", md: "44px", lg: "48px" },
+                    minWidth: { xs: "36px", sm: "40px", md: "44px", lg: "48px" },
+                    minHeight: { xs: "36px", sm: "40px", md: "44px", lg: "48px" },
                   }}
                 >
                   <YouTubeIcon
                     sx={{
-                      fontSize: { xs: "36px", sm: "40px", md: "44px", lg: "48px" },
-                      width: { xs: "36px", sm: "40px", md: "44px", lg: "48px" },
-                      height: { xs: "36px", sm: "40px", md: "44px", lg: "48px" },
+                      fontSize: { xs: "36px !important", sm: "40px !important", md: "44px !important", lg: "48px !important" },
+                      width: { xs: "36px !important", sm: "40px !important", md: "44px !important", lg: "48px !important" },
+                      height: { xs: "36px !important", sm: "40px !important", md: "44px !important", lg: "48px !important" },
+                      minWidth: { xs: "36px !important", sm: "40px !important", md: "44px !important", lg: "48px !important" },
+                      minHeight: { xs: "36px !important", sm: "40px !important", md: "44px !important", lg: "48px !important" },
                     }}
                   />
                 </MKBox>
@@ -2148,6 +2154,71 @@ function Home() {
             }
             
             /* For button with initial animation - start continuous animations after slide-in */
+            /* Force YouTube icon size in slides 2, 3, 4 - target by video container classes and general selectors */
+            .hero-slide-video-1 svg.MuiSvgIcon-root[data-testid="YouTubeIcon"],
+            .hero-slide-video-2 svg.MuiSvgIcon-root[data-testid="YouTubeIcon"],
+            .hero-slide-video-3 svg.MuiSvgIcon-root[data-testid="YouTubeIcon"],
+            .hero-slide-video-1 a[aria-label*="YouTube"] svg,
+            .hero-slide-video-2 a[aria-label*="YouTube"] svg,
+            .hero-slide-video-3 a[aria-label*="YouTube"] svg,
+            /* Also target by parent slide container */
+            [class*="hero-slide"] a[aria-label*="YouTube"] svg,
+            [class*="hero-slide"] svg[data-testid="YouTubeIcon"] {
+              font-size: 36px !important;
+              width: 36px !important;
+              height: 36px !important;
+              min-width: 36px !important;
+              min-height: 36px !important;
+            }
+            @media (min-width: 600px) {
+              .hero-slide-video-1 svg.MuiSvgIcon-root[data-testid="YouTubeIcon"],
+              .hero-slide-video-2 svg.MuiSvgIcon-root[data-testid="YouTubeIcon"],
+              .hero-slide-video-3 svg.MuiSvgIcon-root[data-testid="YouTubeIcon"],
+              .hero-slide-video-1 a[aria-label*="YouTube"] svg,
+              .hero-slide-video-2 a[aria-label*="YouTube"] svg,
+              .hero-slide-video-3 a[aria-label*="YouTube"] svg,
+              [class*="hero-slide"] a[aria-label*="YouTube"] svg,
+              [class*="hero-slide"] svg[data-testid="YouTubeIcon"] {
+                font-size: 40px !important;
+                width: 40px !important;
+                height: 40px !important;
+                min-width: 40px !important;
+                min-height: 40px !important;
+              }
+            }
+            @media (min-width: 900px) {
+              .hero-slide-video-1 svg.MuiSvgIcon-root[data-testid="YouTubeIcon"],
+              .hero-slide-video-2 svg.MuiSvgIcon-root[data-testid="YouTubeIcon"],
+              .hero-slide-video-3 svg.MuiSvgIcon-root[data-testid="YouTubeIcon"],
+              .hero-slide-video-1 a[aria-label*="YouTube"] svg,
+              .hero-slide-video-2 a[aria-label*="YouTube"] svg,
+              .hero-slide-video-3 a[aria-label*="YouTube"] svg,
+              [class*="hero-slide"] a[aria-label*="YouTube"] svg,
+              [class*="hero-slide"] svg[data-testid="YouTubeIcon"] {
+                font-size: 44px !important;
+                width: 44px !important;
+                height: 44px !important;
+                min-width: 44px !important;
+                min-height: 44px !important;
+              }
+            }
+            @media (min-width: 1200px) {
+              .hero-slide-video-1 svg.MuiSvgIcon-root[data-testid="YouTubeIcon"],
+              .hero-slide-video-2 svg.MuiSvgIcon-root[data-testid="YouTubeIcon"],
+              .hero-slide-video-3 svg.MuiSvgIcon-root[data-testid="YouTubeIcon"],
+              .hero-slide-video-1 a[aria-label*="YouTube"] svg,
+              .hero-slide-video-2 a[aria-label*="YouTube"] svg,
+              .hero-slide-video-3 a[aria-label*="YouTube"] svg,
+              [class*="hero-slide"] a[aria-label*="YouTube"] svg,
+              [class*="hero-slide"] svg[data-testid="YouTubeIcon"] {
+                font-size: 48px !important;
+                width: 48px !important;
+                height: 48px !important;
+                min-width: 48px !important;
+                min-height: 48px !important;
+              }
+            }
+            
             .hero-slide-1-button.active.should-animate {
               /* Match text animation exactly - same as .hero-slide-1-text.active.should-animate */
               /* Use same animation with same timing as text */
