@@ -1188,7 +1188,7 @@ function Home() {
 
         <Carousel
           animation="fade"
-          duration={450}
+          duration={650}
           indicators
           navButtonsAlwaysVisible={true}
           navButtonsAlwaysInvisible={false}
