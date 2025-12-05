@@ -704,26 +704,30 @@ function HeroSlide({
                 textTransform: "none",
                 fontWeight: 700,
                 letterSpacing: { xs: "0.3px", sm: "0.4px", md: "0.5px", lg: "0.6px" },
-                backgroundColor: "#4FA953",
-                color: "white",
+                backgroundColor: "#4FA953 !important", // Ensure background is always green
+                color: "white !important", // Ensure text color is always white
                 borderRadius: { xs: "12px", sm: "14px", md: "16px" },
                 boxShadow:
-                  "0 10px 30px rgba(79, 169, 83, 0.35), 0 5px 15px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+                  "0 10px 30px rgba(79, 169, 83, 0.35), 0 5px 15px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important",
                 transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                 position: "relative",
                 overflow: "hidden",
+                display: "inline-flex", // Ensure button displays properly
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
                 // Ensure button is visible when active (fallback for CSS loading timing)
                 ...(isActive
                   ? {
-                      opacity: 1,
-                      transform: "translateY(0) scale(1)",
-                      visibility: "visible",
-                      filter: "blur(0)",
+                      opacity: "1 !important",
+                      transform: "translateY(0) scale(1) !important",
+                      visibility: "visible !important",
+                      filter: "blur(0) !important",
                     }
                   : {
-                      opacity: 0,
-                      transform: "translateY(22px) scale(0.93)",
-                      filter: "blur(1.2px)",
+                      opacity: "0 !important",
+                      transform: "translateY(22px) scale(0.93) !important",
+                      filter: "blur(1.2px) !important",
                     }),
                 "&::before": {
                   content: '""',
@@ -1041,33 +1045,45 @@ function HeroSlide({
               fontSize: { xs: "0.85rem", sm: "0.95rem", md: "1rem" },
               textTransform: "capitalize",
               borderRadius: "10px",
-              backgroundColor: "white",
-              color: "#FFC107",
-              boxShadow: "0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1)",
+              backgroundColor: "white !important", // Ensure background is always white
+              color: "#FFC107 !important", // Ensure text color is always yellow
+              boxShadow: "0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1) !important",
               position: "relative",
               overflow: "hidden",
+              display: "inline-flex", // Ensure button displays properly
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              textDecoration: "none",
               // Ensure button is visible on first load when active (without animation)
               ...(isActive && isFirstSlide && !shouldAnimate
                 ? {
-                    opacity: 1,
-                    transform: "translateX(0) scale(1)",
-                    visibility: "visible",
+                    opacity: "1 !important",
+                    transform: "translateX(0) scale(1) !important",
+                    visibility: "visible !important",
                   }
                 : {}),
               // Initial state for animation (only when shouldAnimate is true)
               ...(isActive && isFirstSlide && shouldAnimate
                 ? {
-                    opacity: 0,
-                    transform: "translateX(-180px) scale(0.96)",
-                    visibility: "visible",
+                    opacity: "0 !important",
+                    transform: "translateX(-180px) scale(0.96) !important",
+                    visibility: "visible !important",
                   }
                 : {}),
               // Default: ensure button is visible if active but not first slide
               ...(isActive && !isFirstSlide
                 ? {
-                    opacity: 1,
-                    transform: "translateX(0) scale(1)",
-                    visibility: "visible",
+                    opacity: "1 !important",
+                    transform: "translateX(0) scale(1) !important",
+                    visibility: "visible !important",
+                  }
+                : {}),
+              // Fallback: if not active, ensure it's hidden
+              ...(!isActive
+                ? {
+                    opacity: "0 !important",
+                    transform: "translateX(-180px) scale(0.96) !important",
                   }
                 : {}),
               "&::before": {
