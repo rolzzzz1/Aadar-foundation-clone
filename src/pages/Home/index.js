@@ -694,6 +694,7 @@ function HeroSlide({
               fullWidth={{ xs: true, sm: false, md: false }}
               style={{
                 // Critical inline styles that must load immediately (before CSS)
+                // Always apply base styles regardless of active state for first load
                 backgroundColor: "#4FA953",
                 color: "white",
                 boxShadow:
@@ -702,6 +703,10 @@ function HeroSlide({
                 alignItems: "center",
                 justifyContent: "center",
                 cursor: "pointer",
+                fontWeight: "700",
+                position: "relative",
+                overflow: "hidden",
+                // Apply visibility and transform based on state
                 ...(isActive
                   ? {
                       opacity: 1,
@@ -713,6 +718,7 @@ function HeroSlide({
                       opacity: 0,
                       transform: "translateY(22px) scale(0.93)",
                       filter: "blur(1.2px)",
+                      visibility: "hidden",
                     }),
               }}
               sx={{
@@ -1048,6 +1054,7 @@ function HeroSlide({
             }
             style={{
               // Critical inline styles that must load immediately (before CSS)
+              // Always apply base styles regardless of active state for first load
               backgroundColor: "white",
               color: "#FFC107",
               boxShadow: "0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1)",
@@ -1056,6 +1063,11 @@ function HeroSlide({
               justifyContent: "center",
               cursor: "pointer",
               textDecoration: "none",
+              borderRadius: "10px",
+              fontWeight: "700",
+              position: "relative",
+              overflow: "hidden",
+              // Apply visibility and transform based on state
               ...(isActive && isFirstSlide && !shouldAnimate
                 ? {
                     opacity: 1,
@@ -1081,6 +1093,7 @@ function HeroSlide({
                 ? {
                     opacity: 0,
                     transform: "translateX(-180px) scale(0.96)",
+                    visibility: "hidden",
                   }
                 : {}),
             }}
@@ -1350,24 +1363,38 @@ function Home() {
         <style>
           {`
             /* Critical CSS for CTA buttons - must load first for Vercel */
-            .hero-slide-1-button {
+            /* Apply base styles even without active class for first load */
+            .hero-slide-1-button,
+            .hero-slide-1-button.active {
               background-color: white !important;
               color: #FFC107 !important;
               display: inline-flex !important;
               align-items: center !important;
               justify-content: center !important;
               cursor: pointer !important;
+              border-radius: 10px !important;
+              font-weight: 700 !important;
+              position: relative !important;
+              overflow: hidden !important;
+              box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1) !important;
             }
             
             .hero-slide-button-1,
             .hero-slide-button-2,
-            .hero-slide-button-3 {
+            .hero-slide-button-3,
+            .hero-slide-button-1.active,
+            .hero-slide-button-2.active,
+            .hero-slide-button-3.active {
               background-color: #4FA953 !important;
               color: white !important;
               display: inline-flex !important;
               align-items: center !important;
               justify-content: center !important;
               cursor: pointer !important;
+              font-weight: 700 !important;
+              position: relative !important;
+              overflow: hidden !important;
+              box-shadow: 0 10px 30px rgba(79, 169, 83, 0.35), 0 5px 15px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
             }
             
             /* Target carousel navigation buttons */
