@@ -692,6 +692,29 @@ function HeroSlide({
               variant="contained"
               color="success"
               fullWidth={{ xs: true, sm: false, md: false }}
+              style={{
+                // Critical inline styles that must load immediately (before CSS)
+                backgroundColor: "#4FA953",
+                color: "white",
+                boxShadow:
+                  "0 10px 30px rgba(79, 169, 83, 0.35), 0 5px 15px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                ...(isActive
+                  ? {
+                      opacity: 1,
+                      transform: "translateY(0) scale(1)",
+                      visibility: "visible",
+                      filter: "blur(0)",
+                    }
+                  : {
+                      opacity: 0,
+                      transform: "translateY(22px) scale(0.93)",
+                      filter: "blur(1.2px)",
+                    }),
+              }}
               sx={{
                 px: { xs: 3.5, sm: 3.2, md: 3.5, lg: 4 },
                 py: { xs: 1.1, sm: 1, md: 1.2, lg: 1.3 },
@@ -712,6 +735,10 @@ function HeroSlide({
                 transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                 position: "relative",
                 overflow: "hidden",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
                 "&::before": {
                   content: '""',
                   position: "absolute",
@@ -1019,6 +1046,44 @@ function HeroSlide({
                 ? `hero-slide-1-button active${shouldAnimate ? " should-animate" : ""}`
                 : ""
             }
+            style={{
+              // Critical inline styles that must load immediately (before CSS)
+              backgroundColor: "white",
+              color: "#FFC107",
+              boxShadow: "0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1)",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              textDecoration: "none",
+              ...(isActive && isFirstSlide && !shouldAnimate
+                ? {
+                    opacity: 1,
+                    transform: "translateX(0) scale(1)",
+                    visibility: "visible",
+                  }
+                : {}),
+              ...(isActive && isFirstSlide && shouldAnimate
+                ? {
+                    opacity: 0,
+                    transform: "translateX(-180px) scale(0.96)",
+                    visibility: "visible",
+                  }
+                : {}),
+              ...(isActive && !isFirstSlide
+                ? {
+                    opacity: 1,
+                    transform: "translateX(0) scale(1)",
+                    visibility: "visible",
+                  }
+                : {}),
+              ...(!isActive
+                ? {
+                    opacity: 0,
+                    transform: "translateX(-180px) scale(0.96)",
+                  }
+                : {}),
+            }}
             sx={{
               mt: 3,
               ml: -2,
@@ -1139,7 +1204,7 @@ function Home() {
   // State to let user pause/resume hero slider
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
-  const [slideInterval, setSlideInterval] = useState(5000);
+  const [slideInterval, setSlideInterval] = useState(8000);
   const [hasPlayedSlide1Animation, setHasPlayedSlide1Animation] = useState(false);
   const animationTimerRef = useRef(null);
 
@@ -1163,14 +1228,15 @@ function Home() {
   }, [activeSlide, hasPlayedSlide1Animation]);
 
   // Calculate interval based on current slide
-  // Slide 0->1 and 1->2: 4-6 seconds (using 5 seconds)
+  // Slide 1->2: 8 seconds
+  // Slide 2->3: 5 seconds (4-6 range)
   // Rest of slides: 8 seconds
   useEffect(() => {
-    if (activeSlide === 0 || activeSlide === 1) {
-      // Transition from slide 1 to 2, or from slide 2 to 3
+    if (activeSlide === 1) {
+      // Transition from slide 2 to 3
       setSlideInterval(5000); // 5 seconds (middle of 4-6 range)
     } else {
-      // Rest of the slides (slides 2, 3, 4)
+      // Slide 1->2 and rest of the slides: 8 seconds
       setSlideInterval(8000); // 8 seconds
     }
   }, [activeSlide]);
@@ -1283,6 +1349,27 @@ function Home() {
         {/* Custom styles for carousel navigation arrows - blur on hover/click */}
         <style>
           {`
+            /* Critical CSS for CTA buttons - must load first for Vercel */
+            .hero-slide-1-button {
+              background-color: white !important;
+              color: #FFC107 !important;
+              display: inline-flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+              cursor: pointer !important;
+            }
+            
+            .hero-slide-button-1,
+            .hero-slide-button-2,
+            .hero-slide-button-3 {
+              background-color: #4FA953 !important;
+              color: white !important;
+              display: inline-flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+              cursor: pointer !important;
+            }
+            
             /* Target carousel navigation buttons */
             .MuiIconButton-root[aria-label*="Next"]:hover,
             .MuiIconButton-root[aria-label*="Previous"]:hover,
@@ -1432,11 +1519,18 @@ function Home() {
             @keyframes slideInFromLeftButton {
               0% {
                 opacity: 0;
-                transform: translateX(-180px) scale(0.96);
+                transform: translateX(-180px) scale(0.96) translateY(0);
+              }
+              85% {
+                opacity: 1;
+                transform: translateX(0) scale(1) translateY(0);
+              }
+              92.5% {
+                transform: translateX(0) scale(1) translateY(-4px);
               }
               100% {
                 opacity: 1;
-                transform: translateX(0) scale(1);
+                transform: translateX(0) scale(1) translateY(0);
               }
             }
             
@@ -1448,11 +1542,6 @@ function Home() {
             
             .hero-slide-1-text.active.should-animate {
               animation: slideInFromLeftText 4.2s cubic-bezier(0.23, 1, 0.32, 1) 0.32s forwards !important;
-              opacity: 1 !important;
-            }
-            
-            .hero-slide-1-button.active.should-animate {
-              animation: slideInFromLeftButton 4.2s cubic-bezier(0.23, 1, 0.32, 1) 0.5s forwards !important;
               opacity: 1 !important;
             }
             
@@ -1468,22 +1557,6 @@ function Home() {
             }
             
             .hero-slide-1-button:not(.active) {
-              opacity: 0;
-              transform: translateX(-180px) scale(0.96);
-            }
-            
-            /* Ensure elements are hidden on initial load (before animation) */
-            .hero-slide-1-paint-patch {
-              opacity: 0;
-              transform: translateX(-200px);
-            }
-            
-            .hero-slide-1-text {
-              opacity: 0;
-              transform: translateX(-180px);
-            }
-            
-            .hero-slide-1-button {
               opacity: 0;
               transform: translateX(-180px) scale(0.96);
             }
@@ -1504,7 +1577,84 @@ function Home() {
             .hero-slide-1-button.active:not(.should-animate) {
               opacity: 1 !important;
               transform: translateX(0) scale(1) !important;
-              animation: none !important;
+              /* Animation will be applied by the rule below */
+            }
+            
+            /* Ensure button is visible when active (fallback for first load CSS timing) */
+            /* This ensures visibility even if animation hasn't started yet */
+            /* The should-animate rule will override this to start the animation */
+            /* Don't set transform here as it conflicts with animations */
+            .hero-slide-1-button.active {
+              opacity: 1 !important;
+              visibility: visible !important;
+            }
+            
+            /* Help Today Button Continuous Animations */
+            @keyframes buttonPulse {
+              0%, 100% {
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1), 0 0 0 0 rgba(255, 193, 7, 0.4);
+              }
+              50% {
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.15), 0 0 0 8px rgba(255, 193, 7, 0);
+              }
+            }
+            
+            @keyframes arrowMove {
+              0%, 100% {
+                transform: translateX(0);
+              }
+              50% {
+                transform: translateX(3px);
+              }
+            }
+            
+            @keyframes buttonGlow {
+              0%, 100% {
+                filter: drop-shadow(0 0 0 rgba(255, 193, 7, 0));
+              }
+              50% {
+                filter: drop-shadow(0 0 8px rgba(255, 193, 7, 0.6));
+              }
+            }
+            
+            @keyframes buttonFloat {
+              0%, 100% {
+                transform: translateX(0) translateY(0) scale(1);
+              }
+              50% {
+                transform: translateX(0) translateY(-12px) scale(1);
+              }
+            }
+            
+            /* Apply continuous animations after slide-in animation completes */
+            /* For button without initial animation (returning to slide 1) */
+            .hero-slide-1-button.active:not(.should-animate) {
+              animation: buttonPulse 3s ease-in-out infinite, 
+                         buttonGlow 2.5s ease-in-out infinite,
+                         buttonFloat 3s ease-in-out infinite !important;
+            }
+            
+            /* For button with initial animation - start continuous animations after slide-in */
+            .hero-slide-1-button.active.should-animate {
+              /* Set initial state to match animation keyframe 0% */
+              opacity: 0 !important;
+              transform: translateX(-180px) scale(0.96) translateY(0) !important;
+              /* Animation will handle the transition from initial to final state */
+              /* Reduced delay from 0.5s to 0.35s to make button appear sooner */
+              /* Slide-in includes a small float at the end, then continuous animations take over */
+              animation: slideInFromLeftButton 4.2s cubic-bezier(0.23, 1, 0.32, 1) 0.35s forwards,
+                         buttonPulse 3s ease-in-out infinite 4.55s,
+                         buttonGlow 2.5s ease-in-out infinite 4.55s,
+                         buttonFloat 3s ease-in-out infinite 4.55s !important;
+            }
+            
+            /* Arrow animation for Help Today button - starts after slide-in completes */
+            .hero-slide-1-button.active .arrow-icon {
+              animation: arrowMove 2s ease-in-out infinite;
+            }
+            
+            .hero-slide-1-button.active.should-animate .arrow-icon {
+              animation: arrowMove 2s ease-in-out infinite 4.55s;
             }
             
             /* Slides 2, 3, 4 - Ultra Smooth Hero Effects */
@@ -1722,6 +1872,8 @@ function Home() {
             .hero-slide-title-3.active {
               animation: fadeInUpEnhanced 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s both;
               will-change: transform, opacity, filter;
+              /* Animation handles the transition - 'both' fill-mode ensures final state is maintained */
+              /* Inline styles in sx prop ensure visibility before CSS loads */
             }
             
             .hero-slide-button-1.active,
@@ -1729,6 +1881,8 @@ function Home() {
             .hero-slide-button-3.active {
               animation: fadeInUpEnhanced 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s both;
               will-change: transform, opacity, filter;
+              /* Animation handles the transition, this ensures visibility after animation completes */
+              /* The 'both' fill-mode ensures the final state (opacity: 1) is maintained */
             }
             
             /* Title initial states for slides 2, 3, 4 */
@@ -1740,16 +1894,16 @@ function Home() {
               filter: blur(1.2px);
             }
             
-            /* Ensure title is hidden before animation starts */
-            .hero-slide-title-1,
-            .hero-slide-title-2,
-            .hero-slide-title-3 {
+            /* Ensure title is hidden before animation starts (only when not active) */
+            .hero-slide-title-1:not(.active),
+            .hero-slide-title-2:not(.active),
+            .hero-slide-title-3:not(.active) {
               opacity: 0;
               transform: translateY(22px) scale(0.93);
               filter: blur(1.2px);
             }
             
-            /* Button initial states for slides 2, 3, 4 */
+            /* Button initial states for slides 2, 3, 4 - only when not active */
             .hero-slide-button-1:not(.active),
             .hero-slide-button-2:not(.active),
             .hero-slide-button-3:not(.active) {
@@ -1758,14 +1912,9 @@ function Home() {
               filter: blur(1.2px);
             }
             
-            /* Ensure button is hidden before animation starts */
-            .hero-slide-button-1,
-            .hero-slide-button-2,
-            .hero-slide-button-3 {
-              opacity: 0;
-              transform: translateY(22px) scale(0.93);
-              filter: blur(1.2px);
-            }
+            /* Button active state - animation handles the transition */
+            /* Inline styles in sx prop ensure visibility before CSS loads */
+            /* The animation rule above handles the transition with 'both' fill-mode */
           `}
         </style>
 
