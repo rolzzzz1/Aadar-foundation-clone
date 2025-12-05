@@ -85,7 +85,15 @@ const getOptimizedVideoUrl = (baseUrl, isMobile) => {
   return baseUrl;
 };
 
-function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, isActive }) {
+function HeroSlide({
+  image,
+  homePage,
+  isFirstSlide,
+  ctaButtonText,
+  slideIndex,
+  isActive,
+  shouldAnimate,
+}) {
   const { t } = useTranslation();
 
   // Rebuild slide 2: video left + Pacifico heading + yellow/orange gradient background
@@ -848,6 +856,11 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
           mr={6}
           mt={4}
           mb={-4}
+          className={
+            isActive && isFirstSlide
+              ? `hero-slide-1-paint-patch active${shouldAnimate ? " should-animate" : ""}`
+              : ""
+          }
           sx={{
             backgroundImage: `url(${bgImage})`,
             backgroundSize: { xs: "95%", sm: "115%", md: "105%", lg: "110%" },
@@ -868,6 +881,11 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
             color="white"
             textAlign="center"
             ml={-2}
+            className={
+              isActive && isFirstSlide
+                ? `hero-slide-1-text active${shouldAnimate ? " should-animate" : ""}`
+                : ""
+            }
             fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{ fontSize: { xs: "1.5rem", sm: "1.7rem", md: "2rem", lg: "2rem" } }}
           >
@@ -890,6 +908,11 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
             mt={2}
             ml={-2}
             display="inline-block"
+            className={
+              isActive && isFirstSlide
+                ? `hero-slide-1-text active${shouldAnimate ? " should-animate" : ""}`
+                : ""
+            }
             fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{ fontSize: { xs: "0.9rem", sm: "0.9rem", md: "1.1rem", lg: "1.3rem" } }}
           >
@@ -898,6 +921,11 @@ function HeroSlide({ image, homePage, isFirstSlide, ctaButtonText, slideIndex, i
           <MKButton
             variant="contained"
             size="small"
+            className={
+              isActive && isFirstSlide
+                ? `hero-slide-1-button active${shouldAnimate ? " should-animate" : ""}`
+                : ""
+            }
             sx={{
               mt: 3,
               ml: -2,
@@ -1019,6 +1047,27 @@ function Home() {
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const [slideInterval, setSlideInterval] = useState(5000);
+  const [hasPlayedSlide1Animation, setHasPlayedSlide1Animation] = useState(false);
+  const animationTimerRef = useRef(null);
+
+  // Set animation flag when slide 1 first becomes active (initial load)
+  useEffect(() => {
+    if (activeSlide === 0 && !hasPlayedSlide1Animation) {
+      // Clear any existing timer
+      if (animationTimerRef.current) {
+        clearTimeout(animationTimerRef.current);
+      }
+      // Set flag after animation completes (0.5s delay + 4.2s duration + buffer)
+      animationTimerRef.current = setTimeout(() => {
+        setHasPlayedSlide1Animation(true);
+      }, 5000);
+    }
+    return () => {
+      if (animationTimerRef.current) {
+        clearTimeout(animationTimerRef.current);
+      }
+    };
+  }, [activeSlide, hasPlayedSlide1Animation]);
 
   // Calculate interval based on current slide
   // Slide 0->1 and 1->2: 4-6 seconds (using 5 seconds)
@@ -1151,6 +1200,212 @@ function Home() {
               backdrop-filter: blur(10px) !important;
               -webkit-backdrop-filter: blur(10px) !important;
             }
+            
+            /* Hero Section Transition Animations */
+            @keyframes heroFadeIn {
+              0% {
+                opacity: 0;
+                transform: scale(1.08) translateY(30px);
+                filter: blur(8px);
+              }
+              50% {
+                opacity: 0.6;
+                transform: scale(1.02) translateY(10px);
+                filter: blur(3px);
+              }
+              100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+                filter: blur(0);
+              }
+            }
+            
+            @keyframes heroFadeOut {
+              0% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+                filter: blur(0);
+              }
+              50% {
+                opacity: 0.4;
+                transform: scale(0.98) translateY(-10px);
+                filter: blur(3px);
+              }
+              100% {
+                opacity: 0;
+                transform: scale(0.92) translateY(-30px);
+                filter: blur(8px);
+              }
+            }
+            
+            @keyframes heroSlideIn {
+              from {
+                opacity: 0;
+                transform: translateX(50px) scale(0.95);
+                filter: brightness(0.7) blur(5px);
+              }
+              to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+                filter: brightness(1) blur(0);
+              }
+            }
+            
+            @keyframes heroSlideOut {
+              from {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+                filter: brightness(1) blur(0);
+              }
+              to {
+                opacity: 0;
+                transform: translateX(-50px) scale(0.95);
+                filter: brightness(0.7) blur(5px);
+              }
+            }
+            
+            /* Apply smooth transitions to carousel container */
+            .react-material-ui-carousel {
+              overflow: hidden;
+              position: relative;
+            }
+            
+            /* Enhanced fade transition with depth effect */
+            .react-material-ui-carousel .MuiPaper-root {
+              transition: opacity 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                          transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                          filter 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+              will-change: opacity, transform, filter;
+            }
+            
+            /* Incoming slide animation */
+            .react-material-ui-carousel .MuiPaper-root[class*="active"] {
+              animation: heroFadeIn 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            }
+            
+            /* Outgoing slide animation */
+            .react-material-ui-carousel .MuiPaper-root:not([class*="active"]) {
+              animation: heroFadeOut 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            }
+            
+            /* Smooth transitions for all carousel children */
+            .react-material-ui-carousel > div {
+              transition: opacity 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                          transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            }
+            
+            /* Ensure video elements transition smoothly */
+            .react-material-ui-carousel video {
+              transition: opacity 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                          transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            }
+            
+            /* Smooth image transitions */
+            .react-material-ui-carousel img {
+              transition: opacity 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                          transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            }
+            
+            /* Slide 1 - Smooth Left to Right Animations */
+            @keyframes slideInFromLeftSmooth {
+              0% {
+                opacity: 0;
+                transform: translateX(-200px);
+              }
+              100% {
+                opacity: 1;
+                transform: translateX(0);
+              }
+            }
+            
+            @keyframes slideInFromLeftText {
+              0% {
+                opacity: 0;
+                transform: translateX(-180px);
+              }
+              100% {
+                opacity: 1;
+                transform: translateX(0);
+              }
+            }
+            
+            @keyframes slideInFromLeftButton {
+              0% {
+                opacity: 0;
+                transform: translateX(-180px) scale(0.96);
+              }
+              100% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+              }
+            }
+            
+            /* Apply animations to slide 1 elements when active and should animate - 3x slower, more from left, with reduced delay */
+            .hero-slide-1-paint-patch.active.should-animate {
+              animation: slideInFromLeftSmooth 4.2s cubic-bezier(0.23, 1, 0.32, 1) 0.3s forwards !important;
+              opacity: 1 !important;
+            }
+            
+            .hero-slide-1-text.active.should-animate {
+              animation: slideInFromLeftText 4.2s cubic-bezier(0.23, 1, 0.32, 1) 0.32s forwards !important;
+              opacity: 1 !important;
+            }
+            
+            .hero-slide-1-button.active.should-animate {
+              animation: slideInFromLeftButton 4.2s cubic-bezier(0.23, 1, 0.32, 1) 0.5s forwards !important;
+              opacity: 1 !important;
+            }
+            
+            /* Initial state - elements start completely hidden and far to the left */
+            .hero-slide-1-paint-patch:not(.active) {
+              opacity: 0;
+              transform: translateX(-200px);
+            }
+            
+            .hero-slide-1-text:not(.active) {
+              opacity: 0;
+              transform: translateX(-180px);
+            }
+            
+            .hero-slide-1-button:not(.active) {
+              opacity: 0;
+              transform: translateX(-180px) scale(0.96);
+            }
+            
+            /* Ensure elements are hidden on initial load (before animation) */
+            .hero-slide-1-paint-patch {
+              opacity: 0;
+              transform: translateX(-200px);
+            }
+            
+            .hero-slide-1-text {
+              opacity: 0;
+              transform: translateX(-180px);
+            }
+            
+            .hero-slide-1-button {
+              opacity: 0;
+              transform: translateX(-180px) scale(0.96);
+            }
+            
+            /* When slide is active but animation shouldn't play (returning to slide 1), show elements immediately */
+            .hero-slide-1-paint-patch.active:not(.should-animate) {
+              opacity: 1 !important;
+              transform: translateX(0) !important;
+              animation: none !important;
+            }
+            
+            .hero-slide-1-text.active:not(.should-animate) {
+              opacity: 1 !important;
+              transform: translateX(0) !important;
+              animation: none !important;
+            }
+            
+            .hero-slide-1-button.active:not(.should-animate) {
+              opacity: 1 !important;
+              transform: translateX(0) scale(1) !important;
+              animation: none !important;
+            }
           `}
         </style>
 
@@ -1212,6 +1467,10 @@ function Home() {
           autoPlay={!isCarouselPaused}
           onChange={(now) => {
             setActiveSlide(now);
+            // Track first time slide 1 is shown (only on initial page load)
+            if (now === 0 && !hasPlayedSlide1Animation) {
+              setHasPlayedSlide1Animation(true);
+            }
           }}
           interval={slideInterval}
           stopAutoPlayOnHover={false}
@@ -1294,6 +1553,7 @@ function Home() {
               ctaButtonText={ctaButtonText}
               slideIndex={index}
               isActive={activeSlide === index}
+              shouldAnimate={index === 0 && !hasPlayedSlide1Animation}
             />
           ))}
         </Carousel>
@@ -1346,6 +1606,7 @@ HeroSlide.propTypes = {
   ctaButtonText: PropTypes.string.isRequired,
   slideIndex: PropTypes.number.isRequired,
   isActive: PropTypes.bool.isRequired,
+  shouldAnimate: PropTypes.bool,
 };
 
 export default Home;
