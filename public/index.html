@@ -330,12 +330,34 @@
           });
         }
         
-        // Run immediately
+        // Run immediately and multiple times to catch buttons that load at different times
         applyButtonStyles();
+        
+        // Run again after a short delay to catch buttons that load slightly later
+        setTimeout(applyButtonStyles, 0);
+        setTimeout(applyButtonStyles, 50);
+        setTimeout(applyButtonStyles, 100);
+        setTimeout(applyButtonStyles, 200);
+        
+        // Use requestAnimationFrame to run after DOM is ready
+        if (window.requestAnimationFrame) {
+          requestAnimationFrame(function() {
+            applyButtonStyles();
+            requestAnimationFrame(applyButtonStyles);
+          });
+        }
         
         // Watch for new buttons being added to DOM
         if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', applyButtonStyles);
+          document.addEventListener('DOMContentLoaded', function() {
+            applyButtonStyles();
+            setTimeout(applyButtonStyles, 0);
+            setTimeout(applyButtonStyles, 100);
+          });
+        } else {
+          // DOM already loaded, run immediately
+          setTimeout(applyButtonStyles, 0);
+          setTimeout(applyButtonStyles, 100);
         }
         
         // Use MutationObserver to watch for buttons being added
