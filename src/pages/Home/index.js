@@ -1556,7 +1556,7 @@ function Home() {
           }
         }
         
-        /* Critical CSS for navbar donate button */
+        /* Critical CSS for navbar donate button - defaults to mobile for smallest screens */
         [data-navbar-button="donate"],
         [data-navbar-button="donate"].MuiButton-root,
         button[data-navbar-button="donate"],
@@ -1570,8 +1570,9 @@ function Home() {
           font-weight: 700 !important;
           position: relative !important;
           overflow: hidden !important;
-          border-radius: 12px !important;
-          font-size: 0.85rem !important;
+          border-radius: 10px !important;
+          font-size: 0.8rem !important;
+          padding: 6px 14px !important;
           box-shadow: 0 6px 20px rgba(79, 169, 83, 0.35), 0 3px 10px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
         }
         

@@ -845,17 +845,22 @@ function DefaultNavbar({
                           element.style.setProperty("justify-content", "center", "important");
                           element.style.setProperty("cursor", "pointer", "important");
                           element.style.setProperty("font-weight", "700", "important");
-                          element.style.setProperty("border-radius", "12px", "important");
                           element.style.setProperty("position", "relative", "important");
                           element.style.setProperty("overflow", "hidden", "important");
-                          // Set padding based on screen size
+                          // Set responsive padding, font-size, and border-radius based on screen size
                           const width = window.innerWidth;
                           if (width < 600) {
                             element.style.setProperty("padding", "6px 14px", "important");
+                            element.style.setProperty("font-size", "0.8rem", "important");
+                            element.style.setProperty("border-radius", "10px", "important");
                           } else if (width < 960) {
                             element.style.setProperty("padding", "8px 20px", "important");
+                            element.style.setProperty("font-size", "0.85rem", "important");
+                            element.style.setProperty("border-radius", "12px", "important");
                           } else {
                             element.style.setProperty("padding", "10px 24px", "important");
+                            element.style.setProperty("font-size", "0.95rem", "important");
+                            element.style.setProperty("border-radius", "14px", "important");
                           }
                         }
                       }}
@@ -872,16 +877,27 @@ function DefaultNavbar({
                               justifyContent: "center",
                               cursor: "pointer",
                               fontWeight: "700",
-                              borderRadius: "12px",
                               position: "relative",
                               overflow: "hidden",
-                              // Base padding - responsive values will be applied via sx prop after Material-UI loads
+                              // Base padding, font-size, and border-radius - responsive values will be applied via sx prop after Material-UI loads
                               padding:
                                 typeof window !== "undefined" && window.innerWidth < 600
                                   ? "6px 14px"
                                   : typeof window !== "undefined" && window.innerWidth < 960
                                   ? "8px 20px"
                                   : "10px 24px",
+                              fontSize:
+                                typeof window !== "undefined" && window.innerWidth < 600
+                                  ? "0.8rem"
+                                  : typeof window !== "undefined" && window.innerWidth < 960
+                                  ? "0.85rem"
+                                  : "0.95rem",
+                              borderRadius:
+                                typeof window !== "undefined" && window.innerWidth < 600
+                                  ? "10px"
+                                  : typeof window !== "undefined" && window.innerWidth < 960
+                                  ? "12px"
+                                  : "14px",
                             }
                           : {}
                       }
@@ -961,17 +977,22 @@ function DefaultNavbar({
                           element.style.setProperty("justify-content", "center", "important");
                           element.style.setProperty("cursor", "pointer", "important");
                           element.style.setProperty("font-weight", "700", "important");
-                          element.style.setProperty("border-radius", "12px", "important");
                           element.style.setProperty("position", "relative", "important");
                           element.style.setProperty("overflow", "hidden", "important");
-                          // Set padding based on screen size
+                          // Set responsive padding, font-size, and border-radius based on screen size
                           const width = window.innerWidth;
                           if (width < 600) {
                             element.style.setProperty("padding", "6px 14px", "important");
+                            element.style.setProperty("font-size", "0.8rem", "important");
+                            element.style.setProperty("border-radius", "10px", "important");
                           } else if (width < 960) {
                             element.style.setProperty("padding", "8px 20px", "important");
+                            element.style.setProperty("font-size", "0.85rem", "important");
+                            element.style.setProperty("border-radius", "12px", "important");
                           } else {
                             element.style.setProperty("padding", "10px 24px", "important");
+                            element.style.setProperty("font-size", "0.95rem", "important");
+                            element.style.setProperty("border-radius", "14px", "important");
                           }
                         }
                       }}
@@ -988,16 +1009,27 @@ function DefaultNavbar({
                               justifyContent: "center",
                               cursor: "pointer",
                               fontWeight: "700",
-                              borderRadius: "12px",
                               position: "relative",
                               overflow: "hidden",
-                              // Base padding - responsive values will be applied via sx prop after Material-UI loads
+                              // Base padding, font-size, and border-radius - responsive values will be applied via sx prop after Material-UI loads
                               padding:
                                 typeof window !== "undefined" && window.innerWidth < 600
                                   ? "6px 14px"
                                   : typeof window !== "undefined" && window.innerWidth < 960
                                   ? "8px 20px"
                                   : "10px 24px",
+                              fontSize:
+                                typeof window !== "undefined" && window.innerWidth < 600
+                                  ? "0.8rem"
+                                  : typeof window !== "undefined" && window.innerWidth < 960
+                                  ? "0.85rem"
+                                  : "0.95rem",
+                              borderRadius:
+                                typeof window !== "undefined" && window.innerWidth < 600
+                                  ? "10px"
+                                  : typeof window !== "undefined" && window.innerWidth < 960
+                                  ? "12px"
+                                  : "14px",
                             }
                           : {}
                       }
