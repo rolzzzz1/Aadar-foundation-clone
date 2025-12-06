@@ -6,6 +6,270 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
     />
     <meta charset="utf-8" />
+    <!-- CRITICAL CSS - Must load FIRST before any other styles -->
+    <style id="critical-toggle-css">
+      /* Ultra-high priority CSS for language selector toggle - loads before everything */
+      /* Maximum specificity to override Material-UI */
+      div.btn-container,
+      div.btn-container.MKBox-root,
+      div.btn-container.MuiBox-root,
+      div.btn-container.MKBox-root.MuiBox-root,
+      div[class*="btn-container"],
+      div[class*="btn-container"].MKBox-root,
+      div[class*="btn-container"].MuiBox-root,
+      div[class*="btn-container"].MKBox-root.MuiBox-root,
+      div[data-language-selector="true"],
+      div[data-language-selector="true"].MKBox-root,
+      div[data-language-selector="true"].MuiBox-root,
+      div[data-language-selector="true"].MKBox-root.MuiBox-root,
+      div[data-language-selector="true"][class*="btn-container"],
+      div[data-language-selector="true"][class*="btn-container"].MKBox-root,
+      div[data-language-selector="true"][class*="btn-container"].MuiBox-root,
+      div[data-language-selector="true"][class*="btn-container"].MKBox-root.MuiBox-root,
+      .btn-container,
+      .btn-container.MKBox-root,
+      .btn-container.MuiBox-root,
+      .btn-container.MKBox-root.MuiBox-root,
+      [class*="btn-container"],
+      [class*="btn-container"].MKBox-root,
+      [class*="btn-container"].MuiBox-root,
+      [class*="btn-container"].MKBox-root.MuiBox-root,
+      [data-language-selector="true"],
+      [data-language-selector="true"].MKBox-root,
+      [data-language-selector="true"].MuiBox-root,
+      [data-language-selector="true"].MKBox-root.MuiBox-root,
+      [data-language-selector="true"][class*="btn-container"],
+      [data-language-selector="true"][class*="btn-container"].MKBox-root,
+      [data-language-selector="true"][class*="btn-container"].MuiBox-root,
+      [data-language-selector="true"][class*="btn-container"].MKBox-root.MuiBox-root {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        padding: 4px 8px !important;
+        transition: all 0.3s ease !important;
+        margin-left: -16px !important;
+        box-sizing: border-box !important;
+      }
+      @media (min-width: 600px) {
+        div.btn-container,
+        div.btn-container.MKBox-root,
+        div.btn-container.MuiBox-root,
+        div.btn-container.MKBox-root.MuiBox-root,
+        div[class*="btn-container"],
+        div[class*="btn-container"].MKBox-root,
+        div[class*="btn-container"].MuiBox-root,
+        div[class*="btn-container"].MKBox-root.MuiBox-root,
+        div[data-language-selector="true"],
+        div[data-language-selector="true"].MKBox-root,
+        div[data-language-selector="true"].MuiBox-root,
+        div[data-language-selector="true"].MKBox-root.MuiBox-root,
+        div[data-language-selector="true"][class*="btn-container"],
+        div[data-language-selector="true"][class*="btn-container"].MKBox-root,
+        div[data-language-selector="true"][class*="btn-container"].MuiBox-root,
+        div[data-language-selector="true"][class*="btn-container"].MKBox-root.MuiBox-root,
+        .btn-container,
+        .btn-container.MKBox-root,
+        .btn-container.MuiBox-root,
+        .btn-container.MKBox-root.MuiBox-root,
+        [class*="btn-container"],
+        [class*="btn-container"].MKBox-root,
+        [class*="btn-container"].MuiBox-root,
+        [class*="btn-container"].MKBox-root.MuiBox-root,
+        [data-language-selector="true"],
+        [data-language-selector="true"].MKBox-root,
+        [data-language-selector="true"].MuiBox-root,
+        [data-language-selector="true"].MKBox-root.MuiBox-root,
+        [data-language-selector="true"][class*="btn-container"],
+        [data-language-selector="true"][class*="btn-container"].MKBox-root,
+        [data-language-selector="true"][class*="btn-container"].MuiBox-root,
+        [data-language-selector="true"][class*="btn-container"].MKBox-root.MuiBox-root {
+          gap: 0.75rem !important;
+          padding: 4px 10px !important;
+        }
+      }
+      @media (min-width: 960px) {
+        div.btn-container,
+        div.btn-container.MKBox-root,
+        div.btn-container.MuiBox-root,
+        div.btn-container.MKBox-root.MuiBox-root,
+        div[class*="btn-container"],
+        div[class*="btn-container"].MKBox-root,
+        div[class*="btn-container"].MuiBox-root,
+        div[class*="btn-container"].MKBox-root.MuiBox-root,
+        div[data-language-selector="true"],
+        div[data-language-selector="true"].MKBox-root,
+        div[data-language-selector="true"].MuiBox-root,
+        div[data-language-selector="true"].MKBox-root.MuiBox-root,
+        div[data-language-selector="true"][class*="btn-container"],
+        div[data-language-selector="true"][class*="btn-container"].MKBox-root,
+        div[data-language-selector="true"][class*="btn-container"].MuiBox-root,
+        div[data-language-selector="true"][class*="btn-container"].MKBox-root.MuiBox-root,
+        .btn-container,
+        .btn-container.MKBox-root,
+        .btn-container.MuiBox-root,
+        .btn-container.MKBox-root.MuiBox-root,
+        [class*="btn-container"],
+        [class*="btn-container"].MKBox-root,
+        [class*="btn-container"].MuiBox-root,
+        [class*="btn-container"].MKBox-root.MuiBox-root,
+        [data-language-selector="true"],
+        [data-language-selector="true"].MKBox-root,
+        [data-language-selector="true"].MuiBox-root,
+        [data-language-selector="true"].MKBox-root.MuiBox-root,
+        [data-language-selector="true"][class*="btn-container"],
+        [data-language-selector="true"][class*="btn-container"].MKBox-root,
+        [data-language-selector="true"][class*="btn-container"].MuiBox-root,
+        [data-language-selector="true"][class*="btn-container"].MKBox-root.MuiBox-root {
+          gap: 1rem !important;
+          padding: 6px 12px !important;
+        }
+      }
+    </style>
+    <!-- Blocking script to apply styles immediately and watch for Material-UI injection -->
+    <script>
+      (function() {
+        'use strict';
+        // Function to force apply styles to toggle button
+        function forceApplyToggleStyles() {
+          var selectors = [
+            '.btn-container',
+            '[data-language-selector="true"]',
+            'div.btn-container',
+            'div[data-language-selector="true"]'
+          ];
+          
+          selectors.forEach(function(selector) {
+            try {
+              var elements = document.querySelectorAll(selector);
+              elements.forEach(function(el) {
+                if (el && el.style) {
+                  var width = window.innerWidth || (window.screen && window.screen.width) || 1920;
+                  el.style.setProperty('display', 'flex', 'important');
+                  el.style.setProperty('align-items', 'center', 'important');
+                  el.style.setProperty('transition', 'all 0.3s ease', 'important');
+                  el.style.setProperty('margin-left', '-16px', 'important');
+                  el.style.setProperty('box-sizing', 'border-box', 'important');
+                  
+                  if (width < 600) {
+                    el.style.setProperty('gap', '0.5rem', 'important');
+                    el.style.setProperty('padding', '4px 8px', 'important');
+                  } else if (width < 960) {
+                    el.style.setProperty('gap', '0.75rem', 'important');
+                    el.style.setProperty('padding', '4px 10px', 'important');
+                  } else {
+                    el.style.setProperty('gap', '1rem', 'important');
+                    el.style.setProperty('padding', '6px 12px', 'important');
+                  }
+                }
+              });
+            } catch(e) {}
+          });
+        }
+        
+        // Watch for Material-UI style injection in head and immediately re-apply
+        if (document.head) {
+          var headObserver = new MutationObserver(function() {
+            forceApplyToggleStyles();
+          });
+          headObserver.observe(document.head, {
+            childList: true,
+            subtree: false
+          });
+        }
+        
+        // Watch document body for new elements and style changes
+        function startBodyObserver() {
+          var body = document.body || document.documentElement;
+          if (body) {
+            var bodyObserver = new MutationObserver(function(mutations) {
+              var shouldApply = false;
+              mutations.forEach(function(mutation) {
+                // Check for added nodes
+                mutation.addedNodes.forEach(function(node) {
+                  if (node.nodeType === 1) {
+                    if (node.matches && (
+                      node.matches('.btn-container') ||
+                      node.matches('[data-language-selector="true"]') ||
+                      (node.querySelector && (
+                        node.querySelector('.btn-container') ||
+                        node.querySelector('[data-language-selector="true"]')
+                      ))
+                    )) {
+                      shouldApply = true;
+                    }
+                  }
+                });
+                // Check for attribute changes (style, class) on target
+                if (mutation.type === 'attributes' && mutation.target) {
+                  var target = mutation.target;
+                  if ((target.matches && (
+                    target.matches('.btn-container') ||
+                    target.matches('[data-language-selector="true"]')
+                  )) || target.classList.contains('btn-container') || target.hasAttribute('data-language-selector')) {
+                    shouldApply = true;
+                  }
+                }
+              });
+              if (shouldApply) {
+                forceApplyToggleStyles();
+                setTimeout(forceApplyToggleStyles, 0);
+                setTimeout(forceApplyToggleStyles, 10);
+              }
+            });
+            bodyObserver.observe(body, {
+              childList: true,
+              subtree: true,
+              attributes: true,
+              attributeFilter: ['style', 'class']
+            });
+            
+            // Also watch each toggle button element individually for style changes
+            function watchToggleElements() {
+              var elements = document.querySelectorAll('.btn-container, [data-language-selector="true"]');
+              elements.forEach(function(el) {
+                if (el && !el._toggleWatcher) {
+                  el._toggleWatcher = true;
+                  var elementObserver = new MutationObserver(function() {
+                    forceApplyToggleStyles();
+                  });
+                  elementObserver.observe(el, {
+                    attributes: true,
+                    attributeFilter: ['style', 'class'],
+                    childList: false,
+                    subtree: false
+                  });
+                }
+              });
+            }
+            
+            // Watch for new elements periodically
+            var watchInterval = setInterval(function() {
+              watchToggleElements();
+            }, 100);
+            
+            // Initial watch
+            watchToggleElements();
+            
+            // Stop watching after 10 seconds (elements should be stable by then)
+            setTimeout(function() {
+              clearInterval(watchInterval);
+            }, 10000);
+          } else {
+            setTimeout(startBodyObserver, 10);
+          }
+        }
+        startBodyObserver();
+        
+        // Apply immediately and continuously
+        forceApplyToggleStyles();
+        var interval = setInterval(function() {
+          forceApplyToggleStyles();
+        }, 50);
+        setTimeout(function() {
+          clearInterval(interval);
+        }, 5000);
+      })();
+    </script>
     <link rel="icon" href="apple-icon1.png" />
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1" /> -->

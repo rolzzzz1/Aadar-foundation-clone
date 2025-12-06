@@ -714,6 +714,7 @@ function DefaultNavbar({
                   xl: "0.8rem",
                 }}
                 pt={0.25}
+                className="navbar-subtitle"
               >
                 {navbar.subTitle}
               </MKTypography>

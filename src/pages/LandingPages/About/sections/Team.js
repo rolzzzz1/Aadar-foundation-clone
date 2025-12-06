@@ -62,6 +62,8 @@ function Team() {
               <MKTypography
                 variant="h4"
                 pt={1}
+                mb={2}
+                className="team-section-title"
                 sx={{
                   fontSize: { xs: "1rem", sm: "1.2rem", md: "1.4rem", lg: "1.4rem" },
                   fontFamily: '"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif',
