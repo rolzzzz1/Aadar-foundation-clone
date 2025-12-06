@@ -281,6 +281,7 @@ function DefaultNavbarMobile({ routes, open, action }) {
             <MKButton
               component={Link}
               to={action.route}
+              data-navbar-button="donate"
               variant={
                 action.color === "success"
                   ? "contained"
@@ -290,16 +291,90 @@ function DefaultNavbarMobile({ routes, open, action }) {
               }
               color={action.color === "success" ? "warning" : action.color ? action.color : "info"}
               size="small"
+              ref={(el) => {
+                // Directly set styles on DOM element immediately when created
+                // This happens before Material-UI can override them
+                if (el && typeof window !== "undefined" && action.color === "success") {
+                  const element = el;
+                  // Use setProperty with important flag to override any existing styles
+                  element.style.setProperty("background-color", "#4FA953", "important");
+                  element.style.setProperty("color", "white", "important");
+                  element.style.setProperty(
+                    "box-shadow",
+                    "0 6px 20px rgba(79, 169, 83, 0.35), 0 3px 10px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+                    "important"
+                  );
+                  element.style.setProperty("display", "inline-flex", "important");
+                  element.style.setProperty("align-items", "center", "important");
+                  element.style.setProperty("justify-content", "center", "important");
+                  element.style.setProperty("cursor", "pointer", "important");
+                  element.style.setProperty("font-weight", "700", "important");
+                  element.style.setProperty("position", "relative", "important");
+                  element.style.setProperty("overflow", "hidden", "important");
+                  // Set responsive padding, font-size, and border-radius based on screen size
+                  const width = window.innerWidth;
+                  if (width < 600) {
+                    element.style.setProperty("padding", "6px 14px", "important");
+                    element.style.setProperty("font-size", "0.8rem", "important");
+                    element.style.setProperty("border-radius", "10px", "important");
+                  } else if (width < 960) {
+                    element.style.setProperty("padding", "8px 20px", "important");
+                    element.style.setProperty("font-size", "0.85rem", "important");
+                    element.style.setProperty("border-radius", "12px", "important");
+                  } else {
+                    element.style.setProperty("padding", "10px 24px", "important");
+                    element.style.setProperty("font-size", "0.95rem", "important");
+                    element.style.setProperty("border-radius", "14px", "important");
+                  }
+                }
+              }}
+              style={
+                action.color === "success"
+                  ? {
+                      // Critical inline styles that must load immediately (before CSS)
+                      backgroundColor: "#4FA953",
+                      color: "white",
+                      boxShadow:
+                        "0 6px 20px rgba(79, 169, 83, 0.35), 0 3px 10px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      fontWeight: "700",
+                      position: "relative",
+                      overflow: "hidden",
+                      // Base padding, font-size, and border-radius - responsive values will be applied via sx prop after Material-UI loads
+                      padding:
+                        typeof window !== "undefined" && window.innerWidth < 600
+                          ? "6px 14px"
+                          : typeof window !== "undefined" && window.innerWidth < 960
+                          ? "8px 20px"
+                          : "10px 24px",
+                      fontSize:
+                        typeof window !== "undefined" && window.innerWidth < 600
+                          ? "0.8rem"
+                          : typeof window !== "undefined" && window.innerWidth < 960
+                          ? "0.85rem"
+                          : "0.95rem",
+                      borderRadius:
+                        typeof window !== "undefined" && window.innerWidth < 600
+                          ? "10px"
+                          : typeof window !== "undefined" && window.innerWidth < 960
+                          ? "12px"
+                          : "14px",
+                    }
+                  : {}
+              }
               sx={
                 action.color === "success"
                   ? {
-                      backgroundColor: "#4FA953",
-                      color: "white",
+                      // Removed backgroundColor, color, boxShadow from sx to prevent Material-UI from overriding inline styles
                       fontWeight: "bold",
-                      fontSize: "0.95rem",
                       textTransform: "none",
                       letterSpacing: "0.5px",
-                      padding: "8px 20px",
+                      padding: { xs: "6px 14px", md: "8px 20px", lg: "10px 24px" },
+                      fontSize: { xs: "0.8rem", md: "0.85rem", lg: "0.95rem" },
+                      borderRadius: { xs: "10px", md: "12px", lg: "14px" },
                       boxShadow: "0 4px 12px rgba(79, 169, 83, 0.4)",
                       "&:hover": {
                         backgroundColor: "#3d8a41",
