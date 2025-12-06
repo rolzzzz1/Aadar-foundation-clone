@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Switch from "@mui/material/Switch";
 
@@ -8,6 +8,47 @@ import MKBox from "components/MKBox";
 
 const LanguageSelector = () => {
   const { i18n } = useTranslation();
+
+  // Inject critical CSS into document head immediately (runs before render)
+  useLayoutEffect(() => {
+    if (typeof document !== "undefined") {
+      // Check if style already exists
+      const existingStyle = document.getElementById("language-selector-critical-css");
+      if (existingStyle) {
+        return;
+      }
+
+      const style = document.createElement("style");
+      style.id = "language-selector-critical-css";
+      style.textContent = `
+        .btn-container,
+        [data-language-selector="true"] {
+          display: flex !important;
+          align-items: center !important;
+          gap: 0.5rem !important;
+          padding: 4px 8px !important;
+          transition: all 0.3s ease !important;
+          margin-left: -16px !important;
+        }
+        @media (min-width: 600px) {
+          .btn-container,
+          [data-language-selector="true"] {
+            gap: 0.75rem !important;
+            padding: 4px 10px !important;
+          }
+        }
+        @media (min-width: 960px) {
+          .btn-container,
+          [data-language-selector="true"] {
+            gap: 1rem !important;
+            padding: 6px 12px !important;
+          }
+        }
+      `;
+      // Insert at the beginning of head to ensure it loads first
+      document.head.insertBefore(style, document.head.firstChild);
+    }
+  }, []);
 
   useEffect(() => {
     // document.body.dir = i18n.dir();
@@ -20,7 +61,36 @@ const LanguageSelector = () => {
     }
   }, [i18n, i18n.language]);
 
-  // Re-apply critical styles after mount to ensure they're not overridden
+  // Re-apply critical styles synchronously before paint (useLayoutEffect runs before useEffect)
+  useLayoutEffect(() => {
+    const applyStyles = () => {
+      const container = document.querySelector(".btn-container, [data-language-selector='true']");
+      if (container && typeof window !== "undefined") {
+        const width = window.innerWidth;
+        // Use CSSStyleDeclaration.setProperty with important flag
+        container.style.setProperty("display", "flex", "important");
+        container.style.setProperty("align-items", "center", "important");
+        container.style.setProperty("transition", "all 0.3s ease", "important");
+        container.style.setProperty("margin-left", "-16px", "important");
+
+        if (width < 600) {
+          container.style.setProperty("gap", "0.5rem", "important");
+          container.style.setProperty("padding", "4px 8px", "important");
+        } else if (width < 960) {
+          container.style.setProperty("gap", "0.75rem", "important");
+          container.style.setProperty("padding", "4px 10px", "important");
+        } else {
+          container.style.setProperty("gap", "1rem", "important");
+          container.style.setProperty("padding", "6px 12px", "important");
+        }
+      }
+    };
+
+    // Apply immediately (synchronously before paint)
+    applyStyles();
+  }, []);
+
+  // Also use useEffect for additional re-application after paint
   useEffect(() => {
     const applyStyles = () => {
       const container = document.querySelector(".btn-container, [data-language-selector='true']");
@@ -43,6 +113,19 @@ const LanguageSelector = () => {
         }
       }
     };
+
+    // Watch for Material-UI JSS style injections and re-apply our styles
+    const styleObserver = new MutationObserver(() => {
+      applyStyles();
+    });
+
+    // Watch the document head for new style tags (Material-UI injects JSS here)
+    if (document.head) {
+      styleObserver.observe(document.head, {
+        childList: true,
+        subtree: false,
+      });
+    }
 
     // Apply immediately
     applyStyles();
@@ -112,6 +195,7 @@ const LanguageSelector = () => {
       clearInterval(interval);
       window.removeEventListener("resize", handleResize);
       observer.disconnect();
+      styleObserver.disconnect();
     };
   }, []);
 
@@ -144,6 +228,8 @@ const LanguageSelector = () => {
           // Use setProperty with important flag to override any existing styles
           element.style.setProperty("display", "flex", "important");
           element.style.setProperty("align-items", "center", "important");
+          element.style.setProperty("margin-left", "-16px", "important");
+          element.style.setProperty("transition", "all 0.3s ease", "important");
           // Set responsive gap and padding based on screen size
           const width = window.innerWidth;
           if (width < 600) {
@@ -156,7 +242,14 @@ const LanguageSelector = () => {
             element.style.setProperty("gap", "1rem", "important");
             element.style.setProperty("padding", "6px 12px", "important");
           }
-          element.style.setProperty("transition", "all 0.3s ease", "important");
+          // Re-apply after a microtask to ensure it sticks
+          Promise.resolve().then(() => {
+            if (element && element.parentNode) {
+              element.style.setProperty("display", "flex", "important");
+              element.style.setProperty("align-items", "center", "important");
+              element.style.setProperty("margin-left", "-16px", "important");
+            }
+          });
         }
       }}
       style={{
