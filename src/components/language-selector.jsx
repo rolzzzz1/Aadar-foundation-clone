@@ -12,7 +12,7 @@ const LanguageSelector = () => {
   // Watch for Material-UI style injection and immediately re-apply our styles
   useLayoutEffect(() => {
     if (typeof document === "undefined") return;
-    
+
     const applyStyles = () => {
       const container = document.querySelector(".btn-container, [data-language-selector='true']");
       if (container && typeof window !== "undefined") {
@@ -41,17 +41,17 @@ const LanguageSelector = () => {
     const headObserver = new MutationObserver(() => {
       applyStyles();
     });
-    
+
     if (document.head) {
       headObserver.observe(document.head, {
         childList: true,
-        subtree: false
+        subtree: false,
       });
     }
 
     // Apply immediately
     applyStyles();
-    
+
     // Apply multiple times to catch timing issues
     const timeouts = [
       setTimeout(applyStyles, 0),
@@ -282,9 +282,9 @@ const LanguageSelector = () => {
             });
             attrObserver.observe(element, {
               attributes: true,
-              attributeFilter: ['style', 'class'],
+              attributeFilter: ["style", "class"],
               childList: false,
-              subtree: false
+              subtree: false,
             });
           }
 

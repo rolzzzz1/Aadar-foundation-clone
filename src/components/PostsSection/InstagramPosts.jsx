@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 import "./InstagramPosts.css";
@@ -28,6 +28,7 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
   const [currentIndex, setCurrentIndex] = useState(0);
   const [dynamicPostsPerSlide, setDynamicPostsPerSlide] = useState(3);
   const [isAutoPlayPaused, setIsAutoPlayPaused] = useState(false);
+  const videoRefs = useRef({}); // Store refs to all video elements
 
   // Always fetch 6 posts
   const totalPosts = 6;
@@ -173,27 +174,93 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
 
   const totalSlides = postsPerSlide > 0 ? Math.ceil(posts.length / postsPerSlide) : 0;
 
+  // Check if any video in current slide is playing
+  const checkVideosPlaying = () => {
+    const currentSlideStart = currentIndex * postsPerSlide;
+    const currentSlideEnd = currentSlideStart + postsPerSlide;
+    const currentSlidePosts = posts.slice(currentSlideStart, currentSlideEnd);
+
+    // Check if any video in the current slide is playing
+    for (const post of currentSlidePosts) {
+      if (post.media_type === "VIDEO") {
+        const videoRef = videoRefs.current[post.id];
+        if (videoRef && !videoRef.paused && !videoRef.ended) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
   const nextSlide = () => {
     if (totalSlides === 0) return;
     setIsAutoPlayPaused(true);
-    setCurrentIndex((prev) => (prev + 1) % totalSlides);
-    // Resume auto-play after 3 seconds
-    setTimeout(() => setIsAutoPlayPaused(false), 3000);
+    setCurrentIndex((prev) => {
+      const newIndex = (prev + 1) % totalSlides;
+      // Check videos in the new slide after state update
+      setTimeout(() => {
+        const newSlideStart = newIndex * postsPerSlide;
+        const newSlideEnd = newSlideStart + postsPerSlide;
+        const newSlidePosts = posts.slice(newSlideStart, newSlideEnd);
+        const anyVideoPlaying = newSlidePosts.some((p) => {
+          if (p.media_type === "VIDEO") {
+            const videoRef = videoRefs.current[p.id];
+            return videoRef && !videoRef.paused && !videoRef.ended;
+          }
+          return false;
+        });
+        if (!anyVideoPlaying) {
+          setIsAutoPlayPaused(false);
+        }
+      }, 3000);
+      return newIndex;
+    });
   };
 
   const prevSlide = () => {
     if (totalSlides === 0) return;
     setIsAutoPlayPaused(true);
-    setCurrentIndex((prev) => (prev - 1 + totalSlides) % totalSlides);
-    // Resume auto-play after 3 seconds
-    setTimeout(() => setIsAutoPlayPaused(false), 3000);
+    setCurrentIndex((prev) => {
+      const newIndex = (prev - 1 + totalSlides) % totalSlides;
+      // Check videos in the new slide after state update
+      setTimeout(() => {
+        const newSlideStart = newIndex * postsPerSlide;
+        const newSlideEnd = newSlideStart + postsPerSlide;
+        const newSlidePosts = posts.slice(newSlideStart, newSlideEnd);
+        const anyVideoPlaying = newSlidePosts.some((p) => {
+          if (p.media_type === "VIDEO") {
+            const videoRef = videoRefs.current[p.id];
+            return videoRef && !videoRef.paused && !videoRef.ended;
+          }
+          return false;
+        });
+        if (!anyVideoPlaying) {
+          setIsAutoPlayPaused(false);
+        }
+      }, 3000);
+      return newIndex;
+    });
   };
 
   const goToSlide = (index) => {
     setIsAutoPlayPaused(true);
     setCurrentIndex(index);
-    // Resume auto-play after 3 seconds
-    setTimeout(() => setIsAutoPlayPaused(false), 3000);
+    // Check videos in the new slide after state update
+    setTimeout(() => {
+      const newSlideStart = index * postsPerSlide;
+      const newSlideEnd = newSlideStart + postsPerSlide;
+      const newSlidePosts = posts.slice(newSlideStart, newSlideEnd);
+      const anyVideoPlaying = newSlidePosts.some((p) => {
+        if (p.media_type === "VIDEO") {
+          const videoRef = videoRefs.current[p.id];
+          return videoRef && !videoRef.paused && !videoRef.ended;
+        }
+        return false;
+      });
+      if (!anyVideoPlaying) {
+        setIsAutoPlayPaused(false);
+      }
+    }, 3000);
   };
 
   // Auto-play carousel with 4-6 second interval
@@ -203,11 +270,21 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
     let timeoutId;
 
     const scheduleNextSlide = () => {
+      // Check if any video is playing before scheduling next slide
+      if (checkVideosPlaying()) {
+        // If video is playing, check again in 1 second
+        timeoutId = setTimeout(scheduleNextSlide, 1000);
+        return;
+      }
+
       // Random interval between 4000ms (4s) and 6000ms (6s)
       const randomInterval = Math.floor(Math.random() * 2000) + 4000;
 
       timeoutId = setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % totalSlides);
+        // Double-check video is not playing before advancing
+        if (!checkVideosPlaying()) {
+          setCurrentIndex((prev) => (prev + 1) % totalSlides);
+        }
         scheduleNextSlide(); // Schedule the next slide
       }, randomInterval);
     };
@@ -217,7 +294,7 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
     return () => {
       if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [totalSlides, isAutoPlayPaused, currentIndex]);
+  }, [totalSlides, isAutoPlayPaused, currentIndex, posts, postsPerSlide]);
 
   return (
     <div className={`instagram-posts-container ${className}`}>
@@ -276,10 +353,63 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
                               />
                             ) : post.media_type === "VIDEO" ? (
                               <video
+                                ref={(el) => {
+                                  if (el) {
+                                    videoRefs.current[post.id] = el;
+                                  }
+                                }}
                                 controls
                                 controlsList="nodownload"
                                 preload="metadata"
                                 loading="lazy"
+                                onPlay={() => {
+                                  // Pause auto-play when video starts playing
+                                  setIsAutoPlayPaused(true);
+                                }}
+                                onPause={() => {
+                                  // Resume auto-play when video is paused (after a short delay)
+                                  // Check if any video in current slide is still playing
+                                  setTimeout(() => {
+                                    const currentSlideStart = currentIndex * postsPerSlide;
+                                    const currentSlideEnd = currentSlideStart + postsPerSlide;
+                                    const currentSlidePosts = posts.slice(
+                                      currentSlideStart,
+                                      currentSlideEnd
+                                    );
+                                    const anyVideoPlaying = currentSlidePosts.some((p) => {
+                                      if (p.media_type === "VIDEO") {
+                                        const videoRef = videoRefs.current[p.id];
+                                        return videoRef && !videoRef.paused && !videoRef.ended;
+                                      }
+                                      return false;
+                                    });
+                                    if (!anyVideoPlaying) {
+                                      setIsAutoPlayPaused(false);
+                                    }
+                                  }, 500);
+                                }}
+                                onEnded={() => {
+                                  // Resume auto-play when video ends
+                                  // Check if any video in current slide is still playing
+                                  setTimeout(() => {
+                                    const currentSlideStart = currentIndex * postsPerSlide;
+                                    const currentSlideEnd = currentSlideStart + postsPerSlide;
+                                    const currentSlidePosts = posts.slice(
+                                      currentSlideStart,
+                                      currentSlideEnd
+                                    );
+                                    const anyVideoPlaying = currentSlidePosts.some((p) => {
+                                      if (p.media_type === "VIDEO") {
+                                        const videoRef = videoRefs.current[p.id];
+                                        return videoRef && !videoRef.paused && !videoRef.ended;
+                                      }
+                                      return false;
+                                    });
+                                    if (!anyVideoPlaying) {
+                                      setIsAutoPlayPaused(false);
+                                    }
+                                  }, 500);
+                                }}
                               >
                                 <source src={post.media_url} type="video/mp4" />
                                 Your browser does not support the video tag.
