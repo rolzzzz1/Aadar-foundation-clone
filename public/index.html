@@ -210,7 +210,11 @@
       div.btn-container,
       div.btn-container.MKBox-root,
       [class*="btn-container"],
-      [class*="btn-container"].MKBox-root {
+      [class*="btn-container"].MKBox-root,
+      [data-language-selector="true"],
+      [data-language-selector="true"].MKBox-root,
+      div[data-language-selector="true"],
+      div[data-language-selector="true"].MKBox-root {
         display: flex !important;
         align-items: center !important;
         gap: 0.5rem !important;
@@ -225,7 +229,11 @@
         div.btn-container,
         div.btn-container.MKBox-root,
         [class*="btn-container"],
-        [class*="btn-container"].MKBox-root {
+        [class*="btn-container"].MKBox-root,
+        [data-language-selector="true"],
+        [data-language-selector="true"].MKBox-root,
+        div[data-language-selector="true"],
+        div[data-language-selector="true"].MKBox-root {
           gap: 0.75rem !important;
           padding: 4px 10px !important;
         }
@@ -237,7 +245,11 @@
         div.btn-container,
         div.btn-container.MKBox-root,
         [class*="btn-container"],
-        [class*="btn-container"].MKBox-root {
+        [class*="btn-container"].MKBox-root,
+        [data-language-selector="true"],
+        [data-language-selector="true"].MKBox-root,
+        div[data-language-selector="true"],
+        div[data-language-selector="true"].MKBox-root {
           gap: 1rem !important;
           padding: 6px 12px !important;
         }
@@ -337,11 +349,13 @@
           });
           
           // Apply styles to language selector toggle button
-          const languageSelectors = document.querySelectorAll('.btn-container');
+          const languageSelectors = document.querySelectorAll('.btn-container, [data-language-selector="true"]');
           languageSelectors.forEach(function(container) {
             if (container && container.style) {
               container.style.setProperty('display', 'flex', 'important');
               container.style.setProperty('align-items', 'center', 'important');
+              container.style.setProperty('transition', 'all 0.3s ease', 'important');
+              container.style.setProperty('margin-left', '-16px', 'important');
               // Set responsive gap and padding
               var width = window.innerWidth;
               if (width < 600) {
@@ -434,7 +448,10 @@
                   node.matches('.hero-slide-button-1') ||
                   node.matches('.hero-slide-button-2') ||
                   node.matches('.hero-slide-button-3') ||
-                  node.matches('.btn-container')
+                  node.matches('.btn-container') ||
+                  node.matches('[data-language-selector="true"]') ||
+                  (node.querySelector && node.querySelector('.btn-container')) ||
+                  (node.querySelector && node.querySelector('[data-language-selector="true"]'))
                 )) {
                   shouldApply = true;
                 }

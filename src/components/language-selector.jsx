@@ -20,6 +20,98 @@ const LanguageSelector = () => {
     }
   }, [i18n, i18n.language]);
 
+  // Re-apply critical styles after mount to ensure they're not overridden
+  useEffect(() => {
+    const applyStyles = () => {
+      const container = document.querySelector(".btn-container, [data-language-selector='true']");
+      if (container && typeof window !== "undefined") {
+        const width = window.innerWidth;
+        container.style.setProperty("display", "flex", "important");
+        container.style.setProperty("align-items", "center", "important");
+        container.style.setProperty("transition", "all 0.3s ease", "important");
+        container.style.setProperty("margin-left", "-16px", "important");
+        
+        if (width < 600) {
+          container.style.setProperty("gap", "0.5rem", "important");
+          container.style.setProperty("padding", "4px 8px", "important");
+        } else if (width < 960) {
+          container.style.setProperty("gap", "0.75rem", "important");
+          container.style.setProperty("padding", "4px 10px", "important");
+        } else {
+          container.style.setProperty("gap", "1rem", "important");
+          container.style.setProperty("padding", "6px 12px", "important");
+        }
+      }
+    };
+
+    // Apply immediately
+    applyStyles();
+    
+    // Apply multiple times to catch any timing issues
+    const timeouts = [
+      setTimeout(applyStyles, 0),
+      setTimeout(applyStyles, 50),
+      setTimeout(applyStyles, 100),
+      setTimeout(applyStyles, 200),
+      setTimeout(applyStyles, 500),
+      setTimeout(applyStyles, 1000),
+    ];
+    
+    // Use requestAnimationFrame multiple times
+    if (window.requestAnimationFrame) {
+      requestAnimationFrame(() => {
+        applyStyles();
+        requestAnimationFrame(() => {
+          applyStyles();
+          requestAnimationFrame(applyStyles);
+        });
+      });
+    }
+
+    // Aggressively re-apply styles for the first 2 seconds after mount
+    const interval = setInterval(applyStyles, 100);
+    const clearIntervalTimeout = setTimeout(() => {
+      clearInterval(interval);
+    }, 2000);
+
+    // Watch for window resize
+    const handleResize = () => {
+      applyStyles();
+    };
+    window.addEventListener("resize", handleResize);
+
+    // Use MutationObserver to watch for style changes and re-apply
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === "attributes" && (mutation.attributeName === "style" || mutation.attributeName === "class")) {
+          applyStyles();
+        }
+        // Also watch for child nodes being added
+        if (mutation.type === "childList") {
+          applyStyles();
+        }
+      });
+    });
+
+    const container = document.querySelector(".btn-container, [data-language-selector='true']");
+    if (container) {
+      observer.observe(container, {
+        attributes: true,
+        attributeFilter: ["style", "class"],
+        childList: true,
+        subtree: false,
+      });
+    }
+
+    return () => {
+      timeouts.forEach(clearTimeout);
+      clearTimeout(clearIntervalTimeout);
+      clearInterval(interval);
+      window.removeEventListener("resize", handleResize);
+      observer.disconnect();
+    };
+  }, []);
+
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
   };
@@ -39,6 +131,7 @@ const LanguageSelector = () => {
   return (
     <MKBox
       className="btn-container"
+      data-language-selector="true"
       ml={-2}
       ref={(el) => {
         // Directly set styles on DOM element immediately when created

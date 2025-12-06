@@ -1614,7 +1614,11 @@ function Home() {
         div.btn-container,
         div.btn-container.MKBox-root,
         [class*="btn-container"],
-        [class*="btn-container"].MKBox-root {
+        [class*="btn-container"].MKBox-root,
+        [data-language-selector="true"],
+        [data-language-selector="true"].MKBox-root,
+        div[data-language-selector="true"],
+        div[data-language-selector="true"].MKBox-root {
           display: flex !important;
           align-items: center !important;
           gap: 0.5rem !important;
@@ -1629,7 +1633,11 @@ function Home() {
           div.btn-container,
           div.btn-container.MKBox-root,
           [class*="btn-container"],
-          [class*="btn-container"].MKBox-root {
+          [class*="btn-container"].MKBox-root,
+          [data-language-selector="true"],
+          [data-language-selector="true"].MKBox-root,
+          div[data-language-selector="true"],
+          div[data-language-selector="true"].MKBox-root {
             gap: 0.75rem !important;
             padding: 4px 10px !important;
           }
@@ -1641,7 +1649,11 @@ function Home() {
           div.btn-container,
           div.btn-container.MKBox-root,
           [class*="btn-container"],
-          [class*="btn-container"].MKBox-root {
+          [class*="btn-container"].MKBox-root,
+          [data-language-selector="true"],
+          [data-language-selector="true"].MKBox-root,
+          div[data-language-selector="true"],
+          div[data-language-selector="true"].MKBox-root {
             gap: 1rem !important;
             padding: 6px 12px !important;
           }
