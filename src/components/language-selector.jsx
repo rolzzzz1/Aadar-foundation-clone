@@ -37,7 +37,11 @@ const LanguageSelector = () => {
   };
 
   return (
-    <MKBox className="btn-container" ml={-2} sx={{ display: "flex", alignItems: "center", gap: { xs: 0.5, sm: 0.75, md: 1 } }}>
+    <MKBox
+      className="btn-container"
+      ml={-2}
+      sx={{ display: "flex", alignItems: "center", gap: { xs: 0.5, sm: 0.75, md: 1 } }}
+    >
       <MKTypography
         variant="button"
         fontWeight={{ xs: "500", sm: "500", md: "400" }}
