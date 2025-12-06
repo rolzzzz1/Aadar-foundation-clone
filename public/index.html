@@ -45,7 +45,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900|Roboto+Slab:400,700"
+      href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900|Roboto+Slab:400,700|Hind:300,400,500,600,700"
     />
     <link
       href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
@@ -204,23 +204,30 @@
         }
       }
       
-      /* Critical CSS for language selector toggle button */
+      /* Critical CSS for language selector toggle button - HIGHEST PRIORITY */
+      /* Target all possible combinations to ensure styles apply on first load */
       .btn-container,
       .btn-container.MKBox-root,
       div.btn-container,
       div.btn-container.MKBox-root,
+      div[class*="btn-container"],
+      div[class*="btn-container"].MKBox-root,
       [class*="btn-container"],
       [class*="btn-container"].MKBox-root,
       [data-language-selector="true"],
       [data-language-selector="true"].MKBox-root,
       div[data-language-selector="true"],
-      div[data-language-selector="true"].MKBox-root {
+      div[data-language-selector="true"].MKBox-root,
+      div[data-language-selector="true"].MKBox-root.MuiBox-root,
+      .btn-container.MuiBox-root,
+      div.btn-container.MuiBox-root {
         display: flex !important;
         align-items: center !important;
         gap: 0.5rem !important;
         padding: 4px 8px !important;
         transition: all 0.3s ease !important;
         margin-left: -16px !important;
+        box-sizing: border-box !important;
       }
       
       @media (min-width: 600px) {
@@ -228,12 +235,17 @@
         .btn-container.MKBox-root,
         div.btn-container,
         div.btn-container.MKBox-root,
+        div[class*="btn-container"],
+        div[class*="btn-container"].MKBox-root,
         [class*="btn-container"],
         [class*="btn-container"].MKBox-root,
         [data-language-selector="true"],
         [data-language-selector="true"].MKBox-root,
         div[data-language-selector="true"],
-        div[data-language-selector="true"].MKBox-root {
+        div[data-language-selector="true"].MKBox-root,
+        div[data-language-selector="true"].MKBox-root.MuiBox-root,
+        .btn-container.MuiBox-root,
+        div.btn-container.MuiBox-root {
           gap: 0.75rem !important;
           padding: 4px 10px !important;
         }
@@ -244,12 +256,17 @@
         .btn-container.MKBox-root,
         div.btn-container,
         div.btn-container.MKBox-root,
+        div[class*="btn-container"],
+        div[class*="btn-container"].MKBox-root,
         [class*="btn-container"],
         [class*="btn-container"].MKBox-root,
         [data-language-selector="true"],
         [data-language-selector="true"].MKBox-root,
         div[data-language-selector="true"],
-        div[data-language-selector="true"].MKBox-root {
+        div[data-language-selector="true"].MKBox-root,
+        div[data-language-selector="true"].MKBox-root.MuiBox-root,
+        .btn-container.MuiBox-root,
+        div.btn-container.MuiBox-root {
           gap: 1rem !important;
           padding: 6px 12px !important;
         }
@@ -348,16 +365,17 @@
             }
           });
           
-          // Apply styles to language selector toggle button
-          const languageSelectors = document.querySelectorAll('.btn-container, [data-language-selector="true"]');
+          // Apply styles to language selector toggle button - PRIORITY FIX
+          const languageSelectors = document.querySelectorAll('.btn-container, [data-language-selector="true"], div.btn-container, div[data-language-selector="true"]');
           languageSelectors.forEach(function(container) {
             if (container && container.style) {
+              // Force all critical styles immediately
               container.style.setProperty('display', 'flex', 'important');
               container.style.setProperty('align-items', 'center', 'important');
               container.style.setProperty('transition', 'all 0.3s ease', 'important');
               container.style.setProperty('margin-left', '-16px', 'important');
               // Set responsive gap and padding
-              var width = window.innerWidth;
+              var width = window.innerWidth || (window.screen && window.screen.width) || 1920;
               if (width < 600) {
                 container.style.setProperty('gap', '0.5rem', 'important');
                 container.style.setProperty('padding', '4px 8px', 'important');
@@ -404,40 +422,56 @@
           });
         }
         
-        // Run immediately and multiple times to catch buttons that load at different times
-        applyButtonStyles();
+        // Run immediately when script loads (before DOM is ready)
+        if (document.readyState === 'loading') {
+          // Script is loading, DOM not ready yet - run as soon as possible
+          applyButtonStyles();
+        } else {
+          // DOM already loading or loaded
+          applyButtonStyles();
+        }
         
-        // Run again after a short delay to catch buttons that load slightly later
+        // Run multiple times immediately with different timing strategies
         setTimeout(applyButtonStyles, 0);
+        setTimeout(applyButtonStyles, 1);
+        setTimeout(applyButtonStyles, 5);
         setTimeout(applyButtonStyles, 10);
+        setTimeout(applyButtonStyles, 25);
         setTimeout(applyButtonStyles, 50);
         setTimeout(applyButtonStyles, 100);
         setTimeout(applyButtonStyles, 200);
         setTimeout(applyButtonStyles, 500);
         setTimeout(applyButtonStyles, 1000);
         
-        // Use requestAnimationFrame to run after DOM is ready
+        // Use requestAnimationFrame multiple times
         if (window.requestAnimationFrame) {
           requestAnimationFrame(function() {
             applyButtonStyles();
-            requestAnimationFrame(applyButtonStyles);
+            requestAnimationFrame(function() {
+              applyButtonStyles();
+              requestAnimationFrame(applyButtonStyles);
+            });
           });
         }
         
-        // Watch for new buttons being added to DOM
+        // Watch for DOM ready state
         if (document.readyState === 'loading') {
           document.addEventListener('DOMContentLoaded', function() {
             applyButtonStyles();
             setTimeout(applyButtonStyles, 0);
+            setTimeout(applyButtonStyles, 10);
+            setTimeout(applyButtonStyles, 50);
             setTimeout(applyButtonStyles, 100);
           });
         } else {
-          // DOM already loaded, run immediately
+          // DOM already loaded or interactive
           setTimeout(applyButtonStyles, 0);
+          setTimeout(applyButtonStyles, 10);
+          setTimeout(applyButtonStyles, 50);
           setTimeout(applyButtonStyles, 100);
         }
         
-        // Use MutationObserver to watch for buttons being added
+        // Use MutationObserver to watch for buttons being added - with immediate callback
         var observer = new MutationObserver(function(mutations) {
           var shouldApply = false;
           mutations.forEach(function(mutation) {
@@ -469,25 +503,46 @@
             });
           });
           if (shouldApply) {
+            // Apply immediately when detected
+            applyButtonStyles();
             setTimeout(applyButtonStyles, 0);
+            setTimeout(applyButtonStyles, 10);
           }
         });
         
-        // Start observing
-        observer.observe(document.body || document.documentElement, {
-          childList: true,
-          subtree: true
-        });
+        // Start observing as soon as body or root element is available
+        function startObserving() {
+          var target = document.body || document.documentElement || document;
+          if (target) {
+            observer.observe(target, {
+              childList: true,
+              subtree: true,
+              attributes: false
+            });
+          } else {
+            // Retry if not ready yet
+            setTimeout(startObserving, 10);
+          }
+        }
+        startObserving();
         
-        // Fallback: apply styles periodically for first few seconds
+        // Aggressive polling for first 5 seconds - especially for toggle button
         var attempts = 0;
-        var interval = setInterval(function() {
+        var aggressiveInterval = setInterval(function() {
           applyButtonStyles();
           attempts++;
-          if (attempts >= 20) { // Stop after 2 seconds (20 * 100ms)
-            clearInterval(interval);
+          if (attempts >= 50) { // Stop after 5 seconds (50 * 100ms)
+            clearInterval(aggressiveInterval);
           }
         }, 100);
+        
+        // Also run on window load as final fallback
+        window.addEventListener('load', function() {
+          applyButtonStyles();
+          setTimeout(applyButtonStyles, 0);
+          setTimeout(applyButtonStyles, 100);
+          setTimeout(applyButtonStyles, 500);
+        });
       })();
     </script>
     <!-- <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script> -->
