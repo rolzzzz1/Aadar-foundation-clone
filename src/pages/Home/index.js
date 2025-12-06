@@ -941,7 +941,7 @@ function HeroSlide({
             position="relative"
             zIndex={2}
           >
-            A home for Hopeless, Homeless, Helpless and Unclaimed people
+            {homePage.tagLine1} {homePage.tagLine2}
           </MKTypography>
           <MKButton
             variant="contained"
@@ -1605,6 +1605,57 @@ function Home() {
             padding: 10px 24px !important;
             font-size: 0.95rem !important;
             border-radius: 14px !important;
+          }
+        }
+        
+        /* Critical CSS for language selector toggle button */
+        .btn-container,
+        .btn-container.MKBox-root,
+        div.btn-container,
+        div.btn-container.MKBox-root,
+        [class*="btn-container"],
+        [class*="btn-container"].MKBox-root,
+        [data-language-selector="true"],
+        [data-language-selector="true"].MKBox-root,
+        div[data-language-selector="true"],
+        div[data-language-selector="true"].MKBox-root {
+          display: flex !important;
+          align-items: center !important;
+          gap: 0.5rem !important;
+          padding: 4px 8px !important;
+          transition: all 0.3s ease !important;
+          margin-left: -16px !important;
+        }
+        
+        @media (min-width: 600px) {
+          .btn-container,
+          .btn-container.MKBox-root,
+          div.btn-container,
+          div.btn-container.MKBox-root,
+          [class*="btn-container"],
+          [class*="btn-container"].MKBox-root,
+          [data-language-selector="true"],
+          [data-language-selector="true"].MKBox-root,
+          div[data-language-selector="true"],
+          div[data-language-selector="true"].MKBox-root {
+            gap: 0.75rem !important;
+            padding: 4px 10px !important;
+          }
+        }
+        
+        @media (min-width: 960px) {
+          .btn-container,
+          .btn-container.MKBox-root,
+          div.btn-container,
+          div.btn-container.MKBox-root,
+          [class*="btn-container"],
+          [class*="btn-container"].MKBox-root,
+          [data-language-selector="true"],
+          [data-language-selector="true"].MKBox-root,
+          div[data-language-selector="true"],
+          div[data-language-selector="true"].MKBox-root {
+            gap: 1rem !important;
+            padding: 6px 12px !important;
           }
         }
       `;
@@ -2825,10 +2876,10 @@ function Home() {
                   color: "rgba(255, 255, 255, 0.4)",
                   backdropFilter: "blur(3px)",
                   boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
-                  width: { xs: 48, sm: 50, md: 52 },
-                  height: { xs: 48, sm: 50, md: 52 },
-                  minWidth: { xs: 48, sm: 50, md: 52 },
-                  minHeight: { xs: 48, sm: 50, md: 52 },
+                  width: { xs: 28, sm: 32, md: 36 },
+                  height: { xs: 28, sm: 32, md: 36 },
+                  minWidth: { xs: 28, sm: 32, md: 36 },
+                  minHeight: { xs: 28, sm: 32, md: 36 },
                   "&:hover": {
                     backgroundColor: "rgba(0, 0, 0, 0.5)",
                     color: "rgba(255, 255, 255, 0.8)",
@@ -2844,26 +2895,26 @@ function Home() {
                 }
               >
                 {isCarouselPaused ? (
-                  <PlayArrowIcon sx={{ fontSize: { xs: 20, sm: 22, md: 24 } }} />
+                  <PlayArrowIcon sx={{ fontSize: { xs: 14, sm: 16, md: 18 } }} />
                 ) : (
-                  <PauseIcon sx={{ fontSize: { xs: 20, sm: 22, md: 24 } }} />
+                  <PauseIcon sx={{ fontSize: { xs: 14, sm: 16, md: 18 } }} />
                 )}
               </IconButton>
             </Tooltip>
             <MKTypography
               sx={{
-                fontSize: { xs: "0.55rem", sm: "0.6rem", md: "0.65rem" },
+                fontSize: { xs: "0.4rem", sm: "0.45rem", md: "0.5rem" },
                 color: "rgba(255, 255, 255, 0.35)",
                 textAlign: "center",
                 whiteSpace: "normal",
-                maxWidth: { xs: "120px", sm: "140px", md: "160px" },
+                maxWidth: { xs: "90px", sm: "100px", md: "120px" },
                 lineHeight: 1.3,
                 fontWeight: 400,
                 letterSpacing: "0.3px",
                 textShadow: "0 1px 3px rgba(0, 0, 0, 0.5)",
                 backgroundColor: "rgba(0, 0, 0, 0.2)",
                 backdropFilter: "blur(3px)",
-                padding: { xs: "4px 6px", sm: "4px 8px", md: "5px 10px" },
+                padding: { xs: "3px 5px", sm: "3px 6px", md: "4px 8px" },
                 borderRadius: "6px",
                 boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
               }}
