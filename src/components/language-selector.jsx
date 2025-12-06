@@ -41,20 +41,50 @@ const LanguageSelector = () => {
       <MKTypography
         variant="button"
         fontWeight="light"
-        fontSize="0.7rem"
+        fontSize={{ xs: "0.75rem", sm: "0.7rem", md: "0.7rem" }}
         ml={1}
-        sx={{ cursor: "pointer", userSelect: "none", margin: 0, color: "#344767" }}
+        sx={{
+          cursor: "pointer",
+          userSelect: "none",
+          margin: 0,
+          color: "#344767",
+          "@media (max-width: 600px)": {
+            fontSize: "0.8rem",
+            fontWeight: "600",
+            color: "#1a237e",
+          },
+        }}
         onClick={toggleSwitch}
       >
         English
       </MKTypography>
-      <Switch size="small" checked={checked} onChange={toggleSwitch} sx={{ py: 0.6 }} />
+      <Switch
+        size="small"
+        checked={checked}
+        onChange={toggleSwitch}
+        sx={{
+          py: 0.6,
+          "@media (max-width: 600px)": {
+            transform: "scale(1.1)",
+          },
+        }}
+      />
       <MKTypography
         variant="button"
         fontWeight="light"
-        fontSize="0.7rem"
+        fontSize={{ xs: "0.75rem", sm: "0.7rem", md: "0.7rem" }}
         ml={1}
-        sx={{ cursor: "pointer", userSelect: "none", margin: 0, color: "#344767" }}
+        sx={{
+          cursor: "pointer",
+          userSelect: "none",
+          margin: 0,
+          color: "#344767",
+          "@media (max-width: 600px)": {
+            fontSize: "0.8rem",
+            fontWeight: "600",
+            color: "#1a237e",
+          },
+        }}
         onClick={toggleSwitch}
       >
         हिन्दी

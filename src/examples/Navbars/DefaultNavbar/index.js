@@ -660,8 +660,8 @@ function DefaultNavbar({
               color={light ? "white" : "dark"}
               display={{ xs: "inline", sm: "inline", md: "inline", lg: "inline" }}
               fontSize={{
-                xs: "0.75rem",
-                sm: "0.68rem",
+                xs: "0.85rem",
+                sm: "0.75rem",
                 md: "0.75rem",
                 lg: "0.8rem",
                 xl: "0.8rem",

@@ -941,7 +941,7 @@ function HeroSlide({
             position="relative"
             zIndex={2}
           >
-            A home for Hopeless, Homeless, Helpless and Unclaimed people
+            {homePage.tagLine1} {homePage.tagLine2}
           </MKTypography>
           <MKButton
             variant="contained"
@@ -2825,10 +2825,10 @@ function Home() {
                   color: "rgba(255, 255, 255, 0.4)",
                   backdropFilter: "blur(3px)",
                   boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
-                  width: { xs: 48, sm: 50, md: 52 },
-                  height: { xs: 48, sm: 50, md: 52 },
-                  minWidth: { xs: 48, sm: 50, md: 52 },
-                  minHeight: { xs: 48, sm: 50, md: 52 },
+                  width: { xs: 36, sm: 40, md: 44 },
+                  height: { xs: 36, sm: 40, md: 44 },
+                  minWidth: { xs: 36, sm: 40, md: 44 },
+                  minHeight: { xs: 36, sm: 40, md: 44 },
                   "&:hover": {
                     backgroundColor: "rgba(0, 0, 0, 0.5)",
                     color: "rgba(255, 255, 255, 0.8)",
@@ -2844,19 +2844,19 @@ function Home() {
                 }
               >
                 {isCarouselPaused ? (
-                  <PlayArrowIcon sx={{ fontSize: { xs: 20, sm: 22, md: 24 } }} />
+                  <PlayArrowIcon sx={{ fontSize: { xs: 16, sm: 18, md: 20 } }} />
                 ) : (
-                  <PauseIcon sx={{ fontSize: { xs: 20, sm: 22, md: 24 } }} />
+                  <PauseIcon sx={{ fontSize: { xs: 16, sm: 18, md: 20 } }} />
                 )}
               </IconButton>
             </Tooltip>
             <MKTypography
               sx={{
-                fontSize: { xs: "0.55rem", sm: "0.6rem", md: "0.65rem" },
+                fontSize: { xs: "0.45rem", sm: "0.5rem", md: "0.55rem" },
                 color: "rgba(255, 255, 255, 0.35)",
                 textAlign: "center",
                 whiteSpace: "normal",
-                maxWidth: { xs: "120px", sm: "140px", md: "160px" },
+                maxWidth: { xs: "100px", sm: "120px", md: "140px" },
                 lineHeight: 1.3,
                 fontWeight: 400,
                 letterSpacing: "0.3px",
