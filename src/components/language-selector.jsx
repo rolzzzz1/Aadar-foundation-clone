@@ -9,45 +9,70 @@ import MKBox from "components/MKBox";
 const LanguageSelector = () => {
   const { i18n } = useTranslation();
 
-  // Inject critical CSS into document head immediately (runs before render)
+  // Watch for Material-UI style injection and immediately re-apply our styles
   useLayoutEffect(() => {
-    if (typeof document !== "undefined") {
-      // Check if style already exists
-      const existingStyle = document.getElementById("language-selector-critical-css");
-      if (existingStyle) {
-        return;
-      }
+    if (typeof document === "undefined") return;
+    
+    const applyStyles = () => {
+      const container = document.querySelector(".btn-container, [data-language-selector='true']");
+      if (container && typeof window !== "undefined") {
+        const width = window.innerWidth;
+        // Force apply with highest priority
+        container.style.setProperty("display", "flex", "important");
+        container.style.setProperty("align-items", "center", "important");
+        container.style.setProperty("transition", "all 0.3s ease", "important");
+        container.style.setProperty("margin-left", "-16px", "important");
+        container.style.setProperty("box-sizing", "border-box", "important");
 
-      const style = document.createElement("style");
-      style.id = "language-selector-critical-css";
-      style.textContent = `
-        .btn-container,
-        [data-language-selector="true"] {
-          display: flex !important;
-          align-items: center !important;
-          gap: 0.5rem !important;
-          padding: 4px 8px !important;
-          transition: all 0.3s ease !important;
-          margin-left: -16px !important;
+        if (width < 600) {
+          container.style.setProperty("gap", "0.5rem", "important");
+          container.style.setProperty("padding", "4px 8px", "important");
+        } else if (width < 960) {
+          container.style.setProperty("gap", "0.75rem", "important");
+          container.style.setProperty("padding", "4px 10px", "important");
+        } else {
+          container.style.setProperty("gap", "1rem", "important");
+          container.style.setProperty("padding", "6px 12px", "important");
         }
-        @media (min-width: 600px) {
-          .btn-container,
-          [data-language-selector="true"] {
-            gap: 0.75rem !important;
-            padding: 4px 10px !important;
-          }
-        }
-        @media (min-width: 960px) {
-          .btn-container,
-          [data-language-selector="true"] {
-            gap: 1rem !important;
-            padding: 6px 12px !important;
-          }
-        }
-      `;
-      // Insert at the beginning of head to ensure it loads first
-      document.head.insertBefore(style, document.head.firstChild);
+      }
+    };
+
+    // Watch document head for Material-UI style injection
+    const headObserver = new MutationObserver(() => {
+      applyStyles();
+    });
+    
+    if (document.head) {
+      headObserver.observe(document.head, {
+        childList: true,
+        subtree: false
+      });
     }
+
+    // Apply immediately
+    applyStyles();
+    
+    // Apply multiple times to catch timing issues
+    const timeouts = [
+      setTimeout(applyStyles, 0),
+      setTimeout(applyStyles, 1),
+      setTimeout(applyStyles, 5),
+      setTimeout(applyStyles, 10),
+      setTimeout(applyStyles, 50),
+      setTimeout(applyStyles, 100),
+    ];
+
+    if (window.requestAnimationFrame) {
+      requestAnimationFrame(() => {
+        applyStyles();
+        requestAnimationFrame(applyStyles);
+      });
+    }
+
+    return () => {
+      timeouts.forEach(clearTimeout);
+      headObserver.disconnect();
+    };
   }, []);
 
   useEffect(() => {
@@ -222,17 +247,18 @@ const LanguageSelector = () => {
       ml={-2}
       ref={(el) => {
         // Directly set styles on DOM element immediately when created
-        // This happens before Material-UI can override them
+        // This happens synchronously before Material-UI can override them
         if (el && typeof window !== "undefined") {
           const element = el;
           const applyRefStyles = () => {
-            if (!element || !element.parentNode) return;
-            const width = window.innerWidth;
+            if (!element) return;
+            const width = window.innerWidth || (window.screen && window.screen.width) || 1920;
             // Use setProperty with important flag to override any existing styles
             element.style.setProperty("display", "flex", "important");
             element.style.setProperty("align-items", "center", "important");
             element.style.setProperty("margin-left", "-16px", "important");
             element.style.setProperty("transition", "all 0.3s ease", "important");
+            element.style.setProperty("box-sizing", "border-box", "important");
             // Set responsive gap and padding based on screen size
             if (width < 600) {
               element.style.setProperty("gap", "0.5rem", "important");
@@ -246,11 +272,26 @@ const LanguageSelector = () => {
             }
           };
 
-          // Apply immediately
+          // Apply immediately (synchronously)
           applyRefStyles();
+
+          // Watch for style changes on this element
+          if (element) {
+            const attrObserver = new MutationObserver(() => {
+              applyRefStyles();
+            });
+            attrObserver.observe(element, {
+              attributes: true,
+              attributeFilter: ['style', 'class'],
+              childList: false,
+              subtree: false
+            });
+          }
 
           // Apply multiple times with different timing strategies
           setTimeout(applyRefStyles, 0);
+          setTimeout(applyRefStyles, 1);
+          setTimeout(applyRefStyles, 5);
           setTimeout(applyRefStyles, 10);
           setTimeout(applyRefStyles, 50);
           setTimeout(applyRefStyles, 100);
@@ -259,17 +300,20 @@ const LanguageSelector = () => {
 
           // Use requestAnimationFrame
           if (window.requestAnimationFrame) {
-            requestAnimationFrame(applyRefStyles);
             requestAnimationFrame(() => {
-              requestAnimationFrame(applyRefStyles);
+              applyRefStyles();
+              requestAnimationFrame(() => {
+                applyRefStyles();
+                requestAnimationFrame(applyRefStyles);
+              });
             });
           }
 
-          // Continuously re-apply for first 3 seconds
+          // Continuously re-apply for first 5 seconds
           const refInterval = setInterval(applyRefStyles, 50);
           setTimeout(() => {
             clearInterval(refInterval);
-          }, 3000);
+          }, 5000);
 
           // Re-apply after microtasks
           Promise.resolve().then(applyRefStyles);
