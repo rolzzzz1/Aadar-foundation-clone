@@ -171,8 +171,8 @@ function HeroSlide({
       <MKBox
         display="flex"
         flexDirection={{ xs: "column", sm: "column", md: "row" }}
-        height={{ xs: "100vh", sm: "100vh", md: "100vh" }}
-        minHeight={{ xs: "100vh", sm: "100vh", md: "100vh" }}
+        height={{ xs: "85vh", sm: "100vh", md: "100vh" }}
+        minHeight={{ xs: "85vh", sm: "100vh", md: "100vh" }}
         width="100%"
         sx={{
           position: "relative",
@@ -494,9 +494,9 @@ function HeroSlide({
             padding: { xs: 1.1, sm: 1.5, md: 1.6, lg: 1.8 },
             paddingX: { xs: 1.8, sm: 2.1, md: 1.8, lg: 2 },
             paddingTop: { xs: isMobile ? 0 : 1.1, sm: 1.5, md: 1.6, lg: 1.8 },
-            height: { xs: isMobile ? "100vh" : "auto", sm: "auto", md: "calc(100vh - 160px)" },
+            height: { xs: isMobile ? "85vh" : "auto", sm: "auto", md: "calc(100vh - 160px)" },
             maxHeight: { xs: "none", sm: "none", md: "none" },
-            minHeight: { xs: isMobile ? "100vh" : "auto", sm: "auto", md: "fit-content" },
+            minHeight: { xs: isMobile ? "85vh" : "auto", sm: "auto", md: "fit-content" },
             overflow: { xs: "visible", sm: "visible", md: "visible" },
             mx: { xs: "auto", sm: "auto", md: 0 },
             mb: { xs: 0, sm: 3, md: 2, lg: 2.5 },
@@ -974,7 +974,7 @@ function HeroSlide({
 
   return (
     <MKBox
-      minHeight="100vh"
+      minHeight={{ xs: "85vh", sm: "100vh", md: "100vh" }}
       width="100%"
       sx={{
         backgroundImage: `url(${image})`,
@@ -1183,7 +1183,7 @@ function HeroSlide({
               md: "-5px 45%",
               lg: "-10px 45%",
             },
-            minHeight: "100vh",
+            minHeight: { xs: "85vh", sm: "100vh", md: "100vh" },
           }}
           position="relative"
           zIndex={2}
