@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500;600;700&display=swap");
 
 /* Ensure consistent scaling across environments */
 html {
@@ -16,14 +17,38 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Apply Mukta font for Hindi translations */
+/* Apply Hind font for Hindi translations - softer and more elegant */
 html[lang="hi"] body {
-  font-family: '"Mukta", "Lato", "Helvetica", "Arial", sans-serif';
+  font-family: '"Hind", "Mukta", "Lato", "Helvetica", "Arial", sans-serif';
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-/* Apply Mukta to typography components for Hindi */
+/* Apply Hind to typography components for Hindi with lighter weight */
 html[lang="hi"] .MuiTypography-root,
 html[lang="hi"] .MKTypography-root {
-  font-family: '"Mukta", "Lato", "Helvetica", "Arial", sans-serif';
+  font-family: '"Hind", "Mukta", "Lato", "Helvetica", "Arial", sans-serif';
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Override font-weight for headings in Hindi to maintain hierarchy but keep softer */
+html[lang="hi"] .MuiTypography-h1,
+html[lang="hi"] .MuiTypography-h2,
+html[lang="hi"] .MuiTypography-h3,
+html[lang="hi"] .MuiTypography-h4,
+html[lang="hi"] .MuiTypography-h5,
+html[lang="hi"] .MuiTypography-h6,
+html[lang="hi"] .MKTypography-h1,
+html[lang="hi"] .MKTypography-h2,
+html[lang="hi"] .MKTypography-h3,
+html[lang="hi"] .MKTypography-h4,
+html[lang="hi"] .MKTypography-h5,
+html[lang="hi"] .MKTypography-h6 {
+  font-weight: 400;
 }
 
