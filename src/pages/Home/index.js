@@ -1610,17 +1610,26 @@ function Home() {
         
         /* Critical CSS for language selector toggle button */
         .btn-container,
-        .btn-container.MKBox-root {
+        .btn-container.MKBox-root,
+        div.btn-container,
+        div.btn-container.MKBox-root,
+        [class*="btn-container"],
+        [class*="btn-container"].MKBox-root {
           display: flex !important;
           align-items: center !important;
           gap: 0.5rem !important;
           padding: 4px 8px !important;
           transition: all 0.3s ease !important;
+          margin-left: -16px !important;
         }
         
         @media (min-width: 600px) {
           .btn-container,
-          .btn-container.MKBox-root {
+          .btn-container.MKBox-root,
+          div.btn-container,
+          div.btn-container.MKBox-root,
+          [class*="btn-container"],
+          [class*="btn-container"].MKBox-root {
             gap: 0.75rem !important;
             padding: 4px 10px !important;
           }
@@ -1628,7 +1637,11 @@ function Home() {
         
         @media (min-width: 960px) {
           .btn-container,
-          .btn-container.MKBox-root {
+          .btn-container.MKBox-root,
+          div.btn-container,
+          div.btn-container.MKBox-root,
+          [class*="btn-container"],
+          [class*="btn-container"].MKBox-root {
             gap: 1rem !important;
             padding: 6px 12px !important;
           }

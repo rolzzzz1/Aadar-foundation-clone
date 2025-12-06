@@ -40,6 +40,29 @@ const LanguageSelector = () => {
     <MKBox
       className="btn-container"
       ml={-2}
+      ref={(el) => {
+        // Directly set styles on DOM element immediately when created
+        // This happens before Material-UI can override them
+        if (el && typeof window !== "undefined") {
+          const element = el;
+          // Use setProperty with important flag to override any existing styles
+          element.style.setProperty("display", "flex", "important");
+          element.style.setProperty("align-items", "center", "important");
+          // Set responsive gap and padding based on screen size
+          const width = window.innerWidth;
+          if (width < 600) {
+            element.style.setProperty("gap", "0.5rem", "important");
+            element.style.setProperty("padding", "4px 8px", "important");
+          } else if (width < 960) {
+            element.style.setProperty("gap", "0.75rem", "important");
+            element.style.setProperty("padding", "4px 10px", "important");
+          } else {
+            element.style.setProperty("gap", "1rem", "important");
+            element.style.setProperty("padding", "6px 12px", "important");
+          }
+          element.style.setProperty("transition", "all 0.3s ease", "important");
+        }
+      }}
       style={{
         display: "flex",
         alignItems: "center",
