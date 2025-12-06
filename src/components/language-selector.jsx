@@ -46,13 +46,15 @@ const LanguageSelector = () => {
         gap: { xs: 0.5, sm: 0.75, md: 1 },
         padding: { xs: "4px 8px", sm: "4px 10px", md: "6px 12px" },
         borderRadius: "8px",
-        backgroundColor: "rgba(255, 255, 255, 0.9)",
+        backgroundColor: "#ffffff",
+        border: "1.5px solid rgba(79, 169, 83, 0.3)",
         backdropFilter: "blur(10px)",
         boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
         transition: "all 0.3s ease",
         "&:hover": {
           boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
-          backgroundColor: "rgba(255, 255, 255, 1)",
+          borderColor: "rgba(79, 169, 83, 0.5)",
+          backgroundColor: "#ffffff",
         },
       }}
     >
