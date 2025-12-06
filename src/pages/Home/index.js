@@ -946,6 +946,7 @@ function HeroSlide({
           <MKButton
             variant="contained"
             size="small"
+            data-hero-button="slide1-mobile"
             sx={{
               mt: 2,
               mb: 3,
@@ -1423,7 +1424,9 @@ function Home() {
         /* Critical CSS for CTA buttons - injected after Material-UI to override */
         /* Target by data attributes first (set immediately), then by classes */
         [data-hero-button="slide1"],
+        [data-hero-button="slide1-mobile"],
         [data-hero-button="slide1"].MuiButton-root,
+        [data-hero-button="slide1-mobile"].MuiButton-root,
         button.hero-slide-1-button.MuiButton-root,
         button.hero-slide-1-button.active.MuiButton-root,
         a.hero-slide-1-button.MuiButton-root,
@@ -1443,6 +1446,17 @@ function Home() {
           position: relative !important;
           overflow: hidden !important;
           box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        /* Responsive styles for mobile Help Today button */
+        @media (max-width: 599px) {
+          [data-hero-button="slide1-mobile"],
+          [data-hero-button="slide1-mobile"].MuiButton-root {
+            padding: 0.75rem 1.5rem !important;
+            font-size: 0.8rem !important;
+            margin-top: 1rem !important;
+            margin-bottom: 1.5rem !important;
+          }
         }
         
         [data-hero-button="slide2"],
@@ -1539,6 +1553,50 @@ function Home() {
             padding: 6px 14px !important;
             gap: 8px !important;
             margin-left: 6px !important;
+          }
+        }
+        
+        /* Critical CSS for navbar donate button */
+        [data-navbar-button="donate"],
+        [data-navbar-button="donate"].MuiButton-root,
+        button[data-navbar-button="donate"],
+        a[data-navbar-button="donate"] {
+          background-color: #4FA953 !important;
+          color: white !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          cursor: pointer !important;
+          font-weight: 700 !important;
+          position: relative !important;
+          overflow: hidden !important;
+          border-radius: 12px !important;
+          box-shadow: 0 6px 20px rgba(79, 169, 83, 0.35), 0 3px 10px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        /* Responsive padding for donate button */
+        @media (max-width: 599px) {
+          [data-navbar-button="donate"],
+          [data-navbar-button="donate"].MuiButton-root,
+          button[data-navbar-button="donate"],
+          a[data-navbar-button="donate"] {
+            padding: 6px 14px !important;
+          }
+        }
+        @media (min-width: 600px) and (max-width: 959px) {
+          [data-navbar-button="donate"],
+          [data-navbar-button="donate"].MuiButton-root,
+          button[data-navbar-button="donate"],
+          a[data-navbar-button="donate"] {
+            padding: 8px 20px !important;
+          }
+        }
+        @media (min-width: 960px) {
+          [data-navbar-button="donate"],
+          [data-navbar-button="donate"].MuiButton-root,
+          button[data-navbar-button="donate"],
+          a[data-navbar-button="donate"] {
+            padding: 10px 24px !important;
           }
         }
       `;
