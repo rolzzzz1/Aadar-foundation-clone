@@ -30,7 +30,7 @@ const LanguageSelector = () => {
         container.style.setProperty("align-items", "center", "important");
         container.style.setProperty("transition", "all 0.3s ease", "important");
         container.style.setProperty("margin-left", "-16px", "important");
-        
+
         if (width < 600) {
           container.style.setProperty("gap", "0.5rem", "important");
           container.style.setProperty("padding", "4px 8px", "important");
@@ -46,7 +46,7 @@ const LanguageSelector = () => {
 
     // Apply immediately
     applyStyles();
-    
+
     // Apply multiple times to catch any timing issues
     const timeouts = [
       setTimeout(applyStyles, 0),
@@ -56,7 +56,7 @@ const LanguageSelector = () => {
       setTimeout(applyStyles, 500),
       setTimeout(applyStyles, 1000),
     ];
-    
+
     // Use requestAnimationFrame multiple times
     if (window.requestAnimationFrame) {
       requestAnimationFrame(() => {
@@ -83,7 +83,10 @@ const LanguageSelector = () => {
     // Use MutationObserver to watch for style changes and re-apply
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
-        if (mutation.type === "attributes" && (mutation.attributeName === "style" || mutation.attributeName === "class")) {
+        if (
+          mutation.type === "attributes" &&
+          (mutation.attributeName === "style" || mutation.attributeName === "class")
+        ) {
           applyStyles();
         }
         // Also watch for child nodes being added
