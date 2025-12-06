@@ -45,17 +45,7 @@ const LanguageSelector = () => {
         alignItems: "center",
         gap: { xs: 0.5, sm: 0.75, md: 1 },
         padding: { xs: "4px 8px", sm: "4px 10px", md: "6px 12px" },
-        borderRadius: "8px",
-        backgroundColor: "#ffffff !important",
-        border: "2px solid #4FA953 !important",
-        backdropFilter: "blur(10px)",
-        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(79, 169, 83, 0.2) !important",
         transition: "all 0.3s ease",
-        "&:hover": {
-          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(79, 169, 83, 0.4) !important",
-          borderColor: "#4FA953 !important",
-          backgroundColor: "#ffffff !important",
-        },
       }}
     >
       <MKTypography
