@@ -50,6 +50,7 @@ export default function privacyData() {
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
             fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+            className="privacy-section-heading"
             sx={{
               letterSpacing: "0.05rem",
               paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
@@ -107,6 +108,7 @@ export default function privacyData() {
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
             fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+            className="privacy-section-heading"
             sx={{
               letterSpacing: "0.05rem",
               paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
@@ -150,6 +152,7 @@ export default function privacyData() {
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
             fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+            className="privacy-section-heading"
             sx={{
               letterSpacing: "0.05rem",
               paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
@@ -191,6 +194,7 @@ export default function privacyData() {
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
             fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+            className="privacy-section-heading"
             sx={{
               letterSpacing: "0.05rem",
               paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
@@ -225,6 +229,7 @@ export default function privacyData() {
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
             fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+            className="privacy-section-heading"
             sx={{
               letterSpacing: "0.05rem",
               paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
@@ -292,6 +297,7 @@ export default function privacyData() {
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
             fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+            className="privacy-section-heading"
             sx={{
               letterSpacing: "0.05rem",
               paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },
@@ -326,6 +332,7 @@ export default function privacyData() {
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
             fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+            className="privacy-section-heading"
             sx={{
               letterSpacing: "0.05rem",
               paddingTop: { xs: "20px", sm: "20px", md: "20px", lg: "20px" },

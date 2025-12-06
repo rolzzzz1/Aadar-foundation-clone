@@ -31,6 +31,14 @@ function DefaultCounterCard({ color, count, title, description, ...rest }) {
         fontSize={{ xs: "2.5rem", sm: "2.5rem", md: "3rem" }}
         color={color}
         textGradient
+        sx={{
+          fontFamily: '"Roboto Slab", "Lato", "Helvetica", "Arial", sans-serif',
+          fontWeight: 700,
+          "& *": {
+            fontFamily: '"Roboto Slab", "Lato", "Helvetica", "Arial", sans-serif',
+            fontWeight: 700,
+          },
+        }}
       >
         <CountUp end={count} duration={1} {...rest} />
       </MKTypography>

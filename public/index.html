@@ -9,25 +9,39 @@
     <!-- CRITICAL CSS - Must load FIRST before any other styles -->
     <style id="critical-toggle-css">
       /* Ultra-high priority CSS for language selector toggle - loads before everything */
-      .btn-container,
-      .btn-container.MKBox-root,
-      .btn-container.MuiBox-root,
+      /* Maximum specificity to override Material-UI */
       div.btn-container,
       div.btn-container.MKBox-root,
       div.btn-container.MuiBox-root,
+      div.btn-container.MKBox-root.MuiBox-root,
       div[class*="btn-container"],
       div[class*="btn-container"].MKBox-root,
       div[class*="btn-container"].MuiBox-root,
-      [class*="btn-container"],
-      [class*="btn-container"].MKBox-root,
-      [class*="btn-container"].MuiBox-root,
-      [data-language-selector="true"],
-      [data-language-selector="true"].MKBox-root,
-      [data-language-selector="true"].MuiBox-root,
+      div[class*="btn-container"].MKBox-root.MuiBox-root,
       div[data-language-selector="true"],
       div[data-language-selector="true"].MKBox-root,
       div[data-language-selector="true"].MuiBox-root,
-      div[data-language-selector="true"].MKBox-root.MuiBox-root {
+      div[data-language-selector="true"].MKBox-root.MuiBox-root,
+      div[data-language-selector="true"][class*="btn-container"],
+      div[data-language-selector="true"][class*="btn-container"].MKBox-root,
+      div[data-language-selector="true"][class*="btn-container"].MuiBox-root,
+      div[data-language-selector="true"][class*="btn-container"].MKBox-root.MuiBox-root,
+      .btn-container,
+      .btn-container.MKBox-root,
+      .btn-container.MuiBox-root,
+      .btn-container.MKBox-root.MuiBox-root,
+      [class*="btn-container"],
+      [class*="btn-container"].MKBox-root,
+      [class*="btn-container"].MuiBox-root,
+      [class*="btn-container"].MKBox-root.MuiBox-root,
+      [data-language-selector="true"],
+      [data-language-selector="true"].MKBox-root,
+      [data-language-selector="true"].MuiBox-root,
+      [data-language-selector="true"].MKBox-root.MuiBox-root,
+      [data-language-selector="true"][class*="btn-container"],
+      [data-language-selector="true"][class*="btn-container"].MKBox-root,
+      [data-language-selector="true"][class*="btn-container"].MuiBox-root,
+      [data-language-selector="true"][class*="btn-container"].MKBox-root.MuiBox-root {
         display: flex !important;
         align-items: center !important;
         gap: 0.5rem !important;
@@ -37,49 +51,75 @@
         box-sizing: border-box !important;
       }
       @media (min-width: 600px) {
-        .btn-container,
-        .btn-container.MKBox-root,
-        .btn-container.MuiBox-root,
         div.btn-container,
         div.btn-container.MKBox-root,
         div.btn-container.MuiBox-root,
+        div.btn-container.MKBox-root.MuiBox-root,
         div[class*="btn-container"],
         div[class*="btn-container"].MKBox-root,
         div[class*="btn-container"].MuiBox-root,
-        [class*="btn-container"],
-        [class*="btn-container"].MKBox-root,
-        [class*="btn-container"].MuiBox-root,
-        [data-language-selector="true"],
-        [data-language-selector="true"].MKBox-root,
-        [data-language-selector="true"].MuiBox-root,
+        div[class*="btn-container"].MKBox-root.MuiBox-root,
         div[data-language-selector="true"],
         div[data-language-selector="true"].MKBox-root,
         div[data-language-selector="true"].MuiBox-root,
-        div[data-language-selector="true"].MKBox-root.MuiBox-root {
+        div[data-language-selector="true"].MKBox-root.MuiBox-root,
+        div[data-language-selector="true"][class*="btn-container"],
+        div[data-language-selector="true"][class*="btn-container"].MKBox-root,
+        div[data-language-selector="true"][class*="btn-container"].MuiBox-root,
+        div[data-language-selector="true"][class*="btn-container"].MKBox-root.MuiBox-root,
+        .btn-container,
+        .btn-container.MKBox-root,
+        .btn-container.MuiBox-root,
+        .btn-container.MKBox-root.MuiBox-root,
+        [class*="btn-container"],
+        [class*="btn-container"].MKBox-root,
+        [class*="btn-container"].MuiBox-root,
+        [class*="btn-container"].MKBox-root.MuiBox-root,
+        [data-language-selector="true"],
+        [data-language-selector="true"].MKBox-root,
+        [data-language-selector="true"].MuiBox-root,
+        [data-language-selector="true"].MKBox-root.MuiBox-root,
+        [data-language-selector="true"][class*="btn-container"],
+        [data-language-selector="true"][class*="btn-container"].MKBox-root,
+        [data-language-selector="true"][class*="btn-container"].MuiBox-root,
+        [data-language-selector="true"][class*="btn-container"].MKBox-root.MuiBox-root {
           gap: 0.75rem !important;
           padding: 4px 10px !important;
         }
       }
       @media (min-width: 960px) {
-        .btn-container,
-        .btn-container.MKBox-root,
-        .btn-container.MuiBox-root,
         div.btn-container,
         div.btn-container.MKBox-root,
         div.btn-container.MuiBox-root,
+        div.btn-container.MKBox-root.MuiBox-root,
         div[class*="btn-container"],
         div[class*="btn-container"].MKBox-root,
         div[class*="btn-container"].MuiBox-root,
-        [class*="btn-container"],
-        [class*="btn-container"].MKBox-root,
-        [class*="btn-container"].MuiBox-root,
-        [data-language-selector="true"],
-        [data-language-selector="true"].MKBox-root,
-        [data-language-selector="true"].MuiBox-root,
+        div[class*="btn-container"].MKBox-root.MuiBox-root,
         div[data-language-selector="true"],
         div[data-language-selector="true"].MKBox-root,
         div[data-language-selector="true"].MuiBox-root,
-        div[data-language-selector="true"].MKBox-root.MuiBox-root {
+        div[data-language-selector="true"].MKBox-root.MuiBox-root,
+        div[data-language-selector="true"][class*="btn-container"],
+        div[data-language-selector="true"][class*="btn-container"].MKBox-root,
+        div[data-language-selector="true"][class*="btn-container"].MuiBox-root,
+        div[data-language-selector="true"][class*="btn-container"].MKBox-root.MuiBox-root,
+        .btn-container,
+        .btn-container.MKBox-root,
+        .btn-container.MuiBox-root,
+        .btn-container.MKBox-root.MuiBox-root,
+        [class*="btn-container"],
+        [class*="btn-container"].MKBox-root,
+        [class*="btn-container"].MuiBox-root,
+        [class*="btn-container"].MKBox-root.MuiBox-root,
+        [data-language-selector="true"],
+        [data-language-selector="true"].MKBox-root,
+        [data-language-selector="true"].MuiBox-root,
+        [data-language-selector="true"].MKBox-root.MuiBox-root,
+        [data-language-selector="true"][class*="btn-container"],
+        [data-language-selector="true"][class*="btn-container"].MKBox-root,
+        [data-language-selector="true"][class*="btn-container"].MuiBox-root,
+        [data-language-selector="true"][class*="btn-container"].MKBox-root.MuiBox-root {
           gap: 1rem !important;
           padding: 6px 12px !important;
         }
@@ -137,13 +177,14 @@
           });
         }
         
-        // Watch document body for new elements
+        // Watch document body for new elements and style changes
         function startBodyObserver() {
           var body = document.body || document.documentElement;
           if (body) {
             var bodyObserver = new MutationObserver(function(mutations) {
               var shouldApply = false;
               mutations.forEach(function(mutation) {
+                // Check for added nodes
                 mutation.addedNodes.forEach(function(node) {
                   if (node.nodeType === 1) {
                     if (node.matches && (
@@ -158,6 +199,16 @@
                     }
                   }
                 });
+                // Check for attribute changes (style, class) on target
+                if (mutation.type === 'attributes' && mutation.target) {
+                  var target = mutation.target;
+                  if ((target.matches && (
+                    target.matches('.btn-container') ||
+                    target.matches('[data-language-selector="true"]')
+                  )) || target.classList.contains('btn-container') || target.hasAttribute('data-language-selector')) {
+                    shouldApply = true;
+                  }
+                }
               });
               if (shouldApply) {
                 forceApplyToggleStyles();
@@ -167,8 +218,42 @@
             });
             bodyObserver.observe(body, {
               childList: true,
-              subtree: true
+              subtree: true,
+              attributes: true,
+              attributeFilter: ['style', 'class']
             });
+            
+            // Also watch each toggle button element individually for style changes
+            function watchToggleElements() {
+              var elements = document.querySelectorAll('.btn-container, [data-language-selector="true"]');
+              elements.forEach(function(el) {
+                if (el && !el._toggleWatcher) {
+                  el._toggleWatcher = true;
+                  var elementObserver = new MutationObserver(function() {
+                    forceApplyToggleStyles();
+                  });
+                  elementObserver.observe(el, {
+                    attributes: true,
+                    attributeFilter: ['style', 'class'],
+                    childList: false,
+                    subtree: false
+                  });
+                }
+              });
+            }
+            
+            // Watch for new elements periodically
+            var watchInterval = setInterval(function() {
+              watchToggleElements();
+            }, 100);
+            
+            // Initial watch
+            watchToggleElements();
+            
+            // Stop watching after 10 seconds (elements should be stable by then)
+            setTimeout(function() {
+              clearInterval(watchInterval);
+            }, 10000);
           } else {
             setTimeout(startBodyObserver, 10);
           }

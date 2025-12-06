@@ -81,6 +81,7 @@ function DefaultNavbarDropdown({
           fontWeight="regular"
           textTransform="capitalize"
           color={light ? "light" : "dark"}
+          className="navbar-link"
           sx={{
             fontSize: { sm: "0.8", md: "0.875rem", lg: "0.8rem", xl: "0.9rem" },
             fontWeight: "100%",

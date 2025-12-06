@@ -159,6 +159,7 @@ function DefaultFooter({ content }) {
                           variant="button"
                           fontWeight="regular"
                           textTransform="capitalize"
+                          className="footer-link"
                           sx={{
                             fontSize: { sm: "0.9rem", md: "1rem" },
                             color: "white !important",
@@ -188,6 +189,7 @@ function DefaultFooter({ content }) {
                           variant="button"
                           fontWeight="regular"
                           textTransform="capitalize"
+                          className="footer-link"
                           sx={{
                             fontSize: { sm: "0.9rem", md: "1rem" },
                             color: "white !important",

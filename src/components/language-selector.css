@@ -1,0 +1,118 @@
+/* Critical CSS for language selector toggle - highest priority */
+.btn-container,
+.btn-container.MKBox-root,
+.btn-container.MuiBox-root,
+.btn-container.MKBox-root.MuiBox-root,
+div.btn-container,
+div.btn-container.MKBox-root,
+div.btn-container.MuiBox-root,
+div.btn-container.MKBox-root.MuiBox-root,
+div[class*="btn-container"],
+div[class*="btn-container"].MKBox-root,
+div[class*="btn-container"].MuiBox-root,
+div[class*="btn-container"].MKBox-root.MuiBox-root,
+div[data-language-selector="true"],
+div[data-language-selector="true"].MKBox-root,
+div[data-language-selector="true"].MuiBox-root,
+div[data-language-selector="true"].MKBox-root.MuiBox-root,
+div[data-language-selector="true"][class*="btn-container"],
+div[data-language-selector="true"][class*="btn-container"].MKBox-root,
+div[data-language-selector="true"][class*="btn-container"].MuiBox-root,
+div[data-language-selector="true"][class*="btn-container"].MKBox-root.MuiBox-root,
+[class*="btn-container"],
+[class*="btn-container"].MKBox-root,
+[class*="btn-container"].MuiBox-root,
+[class*="btn-container"].MKBox-root.MuiBox-root,
+[data-language-selector="true"],
+[data-language-selector="true"].MKBox-root,
+[data-language-selector="true"].MuiBox-root,
+[data-language-selector="true"].MKBox-root.MuiBox-root,
+[data-language-selector="true"][class*="btn-container"],
+[data-language-selector="true"][class*="btn-container"].MKBox-root,
+[data-language-selector="true"][class*="btn-container"].MuiBox-root,
+[data-language-selector="true"][class*="btn-container"].MKBox-root.MuiBox-root {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  padding: 0px 8px !important;
+  transition: all 0.3s ease !important;
+  margin-left: -16px !important;
+  box-sizing: border-box !important;
+}
+
+@media (min-width: 600px) {
+  .btn-container,
+  .btn-container.MKBox-root,
+  .btn-container.MuiBox-root,
+  .btn-container.MKBox-root.MuiBox-root,
+  div.btn-container,
+  div.btn-container.MKBox-root,
+  div.btn-container.MuiBox-root,
+  div.btn-container.MKBox-root.MuiBox-root,
+  div[class*="btn-container"],
+  div[class*="btn-container"].MKBox-root,
+  div[class*="btn-container"].MuiBox-root,
+  div[class*="btn-container"].MKBox-root.MuiBox-root,
+  div[data-language-selector="true"],
+  div[data-language-selector="true"].MKBox-root,
+  div[data-language-selector="true"].MuiBox-root,
+  div[data-language-selector="true"].MKBox-root.MuiBox-root,
+  div[data-language-selector="true"][class*="btn-container"],
+  div[data-language-selector="true"][class*="btn-container"].MKBox-root,
+  div[data-language-selector="true"][class*="btn-container"].MuiBox-root,
+  div[data-language-selector="true"][class*="btn-container"].MKBox-root.MuiBox-root,
+  [class*="btn-container"],
+  [class*="btn-container"].MKBox-root,
+  [class*="btn-container"].MuiBox-root,
+  [class*="btn-container"].MKBox-root.MuiBox-root,
+  [data-language-selector="true"],
+  [data-language-selector="true"].MKBox-root,
+  [data-language-selector="true"].MuiBox-root,
+  [data-language-selector="true"].MKBox-root.MuiBox-root,
+  [data-language-selector="true"][class*="btn-container"],
+  [data-language-selector="true"][class*="btn-container"].MKBox-root,
+  [data-language-selector="true"][class*="btn-container"].MuiBox-root,
+  [data-language-selector="true"][class*="btn-container"].MKBox-root.MuiBox-root {
+    gap: 0.5rem !important;
+    padding: 0px 10px !important;
+  }
+}
+
+@media (min-width: 960px) {
+  .btn-container,
+  .btn-container.MKBox-root,
+  .btn-container.MuiBox-root,
+  .btn-container.MKBox-root.MuiBox-root,
+  div.btn-container,
+  div.btn-container.MKBox-root,
+  div.btn-container.MuiBox-root,
+  div.btn-container.MKBox-root.MuiBox-root,
+  div[class*="btn-container"],
+  div[class*="btn-container"].MKBox-root,
+  div[class*="btn-container"].MuiBox-root,
+  div[class*="btn-container"].MKBox-root.MuiBox-root,
+  div[data-language-selector="true"],
+  div[data-language-selector="true"].MKBox-root,
+  div[data-language-selector="true"].MuiBox-root,
+  div[data-language-selector="true"].MKBox-root.MuiBox-root,
+  div[data-language-selector="true"][class*="btn-container"],
+  div[data-language-selector="true"][class*="btn-container"].MKBox-root,
+  div[data-language-selector="true"][class*="btn-container"].MuiBox-root,
+  div[data-language-selector="true"][class*="btn-container"].MKBox-root.MuiBox-root,
+  [class*="btn-container"],
+  [class*="btn-container"].MKBox-root,
+  [class*="btn-container"].MuiBox-root,
+  [class*="btn-container"].MKBox-root.MuiBox-root,
+  [data-language-selector="true"],
+  [data-language-selector="true"].MKBox-root,
+  [data-language-selector="true"].MuiBox-root,
+  [data-language-selector="true"].MKBox-root.MuiBox-root,
+  [data-language-selector="true"][class*="btn-container"],
+  [data-language-selector="true"][class*="btn-container"].MKBox-root,
+  [data-language-selector="true"][class*="btn-container"].MuiBox-root,
+  [data-language-selector="true"][class*="btn-container"].MKBox-root.MuiBox-root {
+    gap: 0.65rem !important;
+    padding: 1px 12px !important;
+  }
+}
+

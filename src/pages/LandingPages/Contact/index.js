@@ -129,6 +129,7 @@ function Contact() {
                   paddingTop="15px"
                   fontSize="1.2rem"
                   fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                  className="contact-label-address"
                   sx={{ fontWeight: "600" }}
                 >
                   {contactPage.address.label}
@@ -180,6 +181,7 @@ function Contact() {
                   paddingTop="15px"
                   fontSize="1.2rem"
                   fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                  className="contact-label-phone"
                   sx={{ fontWeight: "600" }}
                 >
                   {contactPage.phoneNumber.label}
@@ -193,6 +195,7 @@ function Contact() {
                   paddingTop="15px"
                   fontSize="1.2rem"
                   fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                  className="contact-label-email"
                   sx={{ fontWeight: "600" }}
                 >
                   {contactPage.emailLabel}
@@ -214,6 +217,7 @@ function Contact() {
                     fontSize="1.3rem"
                     textAlign={{ xs: "center", sm: "left" }}
                     fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                    className="contact-label-follow"
                     sx={{ fontWeight: "600" }}
                   >
                     {contactPage.followUs}

@@ -20,35 +20,251 @@ body {
 /* Apply Hind font for Hindi translations - softer and more elegant */
 html[lang="hi"] body {
   font-family: '"Hind", "Mukta", "Lato", "Helvetica", "Arial", sans-serif';
-  font-weight: 300;
+  font-weight: 600;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
-/* Apply Hind to typography components for Hindi with lighter weight */
+/* Apply Hind to typography components for Hindi with increased weight */
 html[lang="hi"] .MuiTypography-root,
 html[lang="hi"] .MKTypography-root {
   font-family: '"Hind", "Mukta", "Lato", "Helvetica", "Arial", sans-serif';
-  font-weight: 300;
+  font-weight: 600;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
-/* Override font-weight for headings in Hindi to maintain hierarchy but keep softer */
-html[lang="hi"] .MuiTypography-h1,
+/* Override font-weight for headings in Hindi to maintain hierarchy with increased weight */
+/* EXCEPT h1 which is used for counter numbers - those need to match English exactly */
 html[lang="hi"] .MuiTypography-h2,
 html[lang="hi"] .MuiTypography-h3,
 html[lang="hi"] .MuiTypography-h4,
 html[lang="hi"] .MuiTypography-h5,
 html[lang="hi"] .MuiTypography-h6,
-html[lang="hi"] .MKTypography-h1,
 html[lang="hi"] .MKTypography-h2,
 html[lang="hi"] .MKTypography-h3,
 html[lang="hi"] .MKTypography-h4,
 html[lang="hi"] .MKTypography-h5,
 html[lang="hi"] .MKTypography-h6 {
-  font-weight: 400;
+  font-weight: 600;
+}
+
+/* Exclude button text from increased font weight - keep original button font weight */
+html[lang="hi"] .MuiButton-root,
+html[lang="hi"] .MKButton-root,
+html[lang="hi"] button,
+html[lang="hi"] .MuiButton-root .MuiTypography-root,
+html[lang="hi"] .MKButton-root .MKTypography-root,
+html[lang="hi"] .MuiButton-root *,
+html[lang="hi"] .MKButton-root * {
+  font-weight: inherit !important;
+}
+
+/* Increase font weight for Aadar Foundation text in navbar for Hindi */
+/* Target navbar title (button variant typography) - this will affect navbar title */
+html[lang="hi"] .MuiTypography-button,
+html[lang="hi"] .MKTypography-button {
+  font-weight: 600 !important;
+}
+
+/* Reduce font weight for navbar subtitle in Hindi (has fontWeight="light" which is 300) */
+/* This needs to come after the general rule to override it */
+html[lang="hi"] .navbar-subtitle,
+html[lang="hi"] .navbar-subtitle.MuiTypography-button,
+html[lang="hi"] .navbar-subtitle.MKTypography-button,
+html[lang="hi"] .MuiTypography-button[style*="font-weight: 300"],
+html[lang="hi"] .MKTypography-button[style*="font-weight: 300"],
+html[lang="hi"] .MuiTypography-root[style*="font-weight: 300"],
+html[lang="hi"] .MKTypography-root[style*="font-weight: 300"],
+html[lang="hi"] .MuiTypography-button[style*="fontWeight: 300"],
+html[lang="hi"] .MKTypography-button[style*="fontWeight: 300"] {
+  font-weight: 300 !important;
+}
+
+/* But exclude actual button text - keep button font weight as is (this overrides the above) */
+html[lang="hi"] .MuiButton-root .MuiTypography-button,
+html[lang="hi"] .MKButton-root .MKTypography-button,
+html[lang="hi"] .MuiButton-root .MKTypography-button,
+html[lang="hi"] .MKButton-root .MuiTypography-button,
+html[lang="hi"] .MuiButton-root .MuiTypography-root,
+html[lang="hi"] .MKButton-root .MKTypography-root {
+  font-weight: inherit !important;
+}
+
+/* Reduce font weight for navbar links in Hindi, but exclude donate button */
+html[lang="hi"] .navbar-link,
+html[lang="hi"] .navbar-link.MuiTypography-button,
+html[lang="hi"] .navbar-link.MKTypography-button {
+  font-weight: 400 !important;
+}
+
+/* Exclude donate button from reduced font weight */
+html[lang="hi"] [data-navbar-button="donate"] .MuiTypography-button,
+html[lang="hi"] [data-navbar-button="donate"] .MKTypography-button,
+html[lang="hi"] [data-navbar-button="donate"] .MuiTypography-root,
+html[lang="hi"] [data-navbar-button="donate"] .MKTypography-root,
+html[lang="hi"] [data-navbar-button="donate"] {
+  font-weight: inherit !important;
+}
+
+/* Reduce font weight for footer links in Hindi */
+html[lang="hi"] .footer-link,
+html[lang="hi"] .footer-link.MuiTypography-button,
+html[lang="hi"] .footer-link.MKTypography-button,
+html[lang="hi"] footer .footer-link {
+  font-weight: 400 !important;
+}
+
+/* Increase font weight for headings in slides 2, 3, 4 in Hindi */
+html[lang="hi"] .hero-slide-title-1,
+html[lang="hi"] .hero-slide-title-2,
+html[lang="hi"] .hero-slide-title-3,
+html[lang="hi"] .hero-slide-title-1.MuiTypography-h2,
+html[lang="hi"] .hero-slide-title-2.MuiTypography-h2,
+html[lang="hi"] .hero-slide-title-3.MuiTypography-h2,
+html[lang="hi"] .hero-slide-title-1.MKTypography-h2,
+html[lang="hi"] .hero-slide-title-2.MKTypography-h2,
+html[lang="hi"] .hero-slide-title-3.MKTypography-h2 {
+  font-weight: 700 !important;
+}
+
+/* Increase font weight for privacy policy section headings in Hindi */
+html[lang="hi"] .privacy-section-heading,
+html[lang="hi"] .privacy-section-heading.MuiTypography-body1,
+html[lang="hi"] .privacy-section-heading.MKTypography-body1 {
+  font-weight: 700 !important;
+}
+
+/* Increase font size for contact page labels in Hindi */
+html[lang="hi"] .contact-label-address,
+html[lang="hi"] .contact-label-phone,
+html[lang="hi"] .contact-label-email,
+html[lang="hi"] .contact-label-follow,
+html[lang="hi"] .contact-label-address.MuiTypography-body1,
+html[lang="hi"] .contact-label-phone.MuiTypography-body1,
+html[lang="hi"] .contact-label-email.MuiTypography-body1,
+html[lang="hi"] .contact-label-follow {
+  font-size: 1.5rem !important;
+}
+
+@media (max-width: 599px) {
+  html[lang="hi"] .contact-label-address,
+  html[lang="hi"] .contact-label-phone,
+  html[lang="hi"] .contact-label-email,
+  html[lang="hi"] .contact-label-follow,
+  html[lang="hi"] .contact-label-address.MuiTypography-body1,
+  html[lang="hi"] .contact-label-phone.MuiTypography-body1,
+  html[lang="hi"] .contact-label-email.MuiTypography-body1,
+  html[lang="hi"] .contact-label-follow {
+    font-size: 1.3rem !important;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 959px) {
+  html[lang="hi"] .contact-label-address,
+  html[lang="hi"] .contact-label-phone,
+  html[lang="hi"] .contact-label-email,
+  html[lang="hi"] .contact-label-follow,
+  html[lang="hi"] .contact-label-address.MuiTypography-body1,
+  html[lang="hi"] .contact-label-phone.MuiTypography-body1,
+  html[lang="hi"] .contact-label-email.MuiTypography-body1,
+  html[lang="hi"] .contact-label-follow {
+    font-size: 1.4rem !important;
+  }
+}
+
+@media (min-width: 960px) {
+  html[lang="hi"] .contact-label-address,
+  html[lang="hi"] .contact-label-phone,
+  html[lang="hi"] .contact-label-email,
+  html[lang="hi"] .contact-label-follow,
+  html[lang="hi"] .contact-label-address.MuiTypography-body1,
+  html[lang="hi"] .contact-label-phone.MuiTypography-body1,
+  html[lang="hi"] .contact-label-email.MuiTypography-body1,
+  html[lang="hi"] .contact-label-follow {
+    font-size: 1.5rem !important;
+  }
+}
+
+/* Set font size for team section title in Hindi ("आदर फाउंडेशन (स्वर्ग सदन आश्रम)") */
+html[lang="hi"] .team-section-title,
+html[lang="hi"] .team-section-title.MuiTypography-h4,
+html[lang="hi"] .team-section-title.MKTypography-h4 {
+  font-size: 30px !important;
+}
+
+@media (max-width: 599px) {
+  html[lang="hi"] .team-section-title,
+  html[lang="hi"] .team-section-title.MuiTypography-h4,
+  html[lang="hi"] .team-section-title.MKTypography-h4 {
+    font-size: 24px !important;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 959px) {
+  html[lang="hi"] .team-section-title,
+  html[lang="hi"] .team-section-title.MuiTypography-h4,
+  html[lang="hi"] .team-section-title.MKTypography-h4 {
+    font-size: 28px !important;
+  }
+}
+
+@media (min-width: 960px) and (max-width: 1279px) {
+  html[lang="hi"] .team-section-title,
+  html[lang="hi"] .team-section-title.MuiTypography-h4,
+  html[lang="hi"] .team-section-title.MKTypography-h4 {
+    font-size: 30px !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  html[lang="hi"] .team-section-title,
+  html[lang="hi"] .team-section-title.MuiTypography-h4,
+  html[lang="hi"] .team-section-title.MKTypography-h4 {
+    font-size: 32px !important;
+  }
+}
+
+/* Counter numbers (h1) - MUST match English exactly - override ALL Hindi font rules */
+html[lang="hi"] .MuiTypography-h1,
+html[lang="hi"] .MKTypography-h1,
+html[lang="hi"] .MuiTypography-root.MuiTypography-h1,
+html[lang="hi"] .MKTypography-root.MKTypography-h1 {
+  font-family: '"Roboto Slab", "Lato", "Helvetica", "Arial", sans-serif' !important;
+  font-weight: 700 !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  letter-spacing: normal !important;
+  line-height: 1.25 !important;
+  font-style: normal !important;
+  font-stretch: normal !important;
+  font-variant: normal !important;
+}
+
+/* Ensure ALL elements inside h1 (including CountUp numbers and any nested elements) use EXACT same font as English */
+html[lang="hi"] .MuiTypography-h1 *,
+html[lang="hi"] .MKTypography-h1 *,
+html[lang="hi"] .MuiTypography-h1 span,
+html[lang="hi"] .MKTypography-h1 span,
+html[lang="hi"] .MuiTypography-h1 > *,
+html[lang="hi"] .MKTypography-h1 > *,
+html[lang="hi"] .MuiTypography-h1 > span,
+html[lang="hi"] .MKTypography-h1 > span,
+html[lang="hi"] .MuiTypography-h1 div,
+html[lang="hi"] .MKTypography-h1 div,
+html[lang="hi"] .MuiTypography-root.MuiTypography-h1 *,
+html[lang="hi"] .MKTypography-root.MKTypography-h1 * {
+  font-family: '"Roboto Slab", "Lato", "Helvetica", "Arial", sans-serif' !important;
+  font-weight: 700 !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  letter-spacing: inherit !important;
+  font-style: inherit !important;
+  font-stretch: inherit !important;
+  font-variant: inherit !important;
 }
 
