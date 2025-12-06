@@ -40,22 +40,39 @@ const LanguageSelector = () => {
     <MKBox
       className="btn-container"
       ml={-2}
-      sx={{ display: "flex", alignItems: "center", gap: { xs: 0.5, sm: 0.75, md: 1 } }}
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: { xs: 0.5, sm: 0.75, md: 1 },
+        padding: { xs: "4px 8px", sm: "4px 10px", md: "6px 12px" },
+        borderRadius: "8px",
+        backgroundColor: "rgba(255, 255, 255, 0.9)",
+        backdropFilter: "blur(10px)",
+        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+        transition: "all 0.3s ease",
+        "&:hover": {
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+          backgroundColor: "rgba(255, 255, 255, 1)",
+        },
+      }}
     >
       <MKTypography
         variant="button"
-        fontWeight={{ xs: "500", sm: "500", md: "400" }}
+        fontWeight={!checked ? "600" : "400"}
         fontSize={{ xs: "0.8rem", sm: "0.75rem", md: "0.75rem", lg: "0.8rem" }}
         ml={1}
         sx={{
           cursor: "pointer",
           userSelect: "none",
           margin: 0,
-          color: "#1a237e",
-          transition: "all 0.2s ease",
+          color: !checked ? "#4FA953" : "#757575",
+          transition: "all 0.3s ease",
+          padding: { xs: "2px 4px", sm: "2px 6px", md: "3px 8px" },
+          borderRadius: "4px",
+          backgroundColor: !checked ? "rgba(79, 169, 83, 0.1)" : "transparent",
           "&:hover": {
-            color: "#0d47a1",
-            fontWeight: "600",
+            color: !checked ? "#3d8a41" : "#424242",
+            backgroundColor: !checked ? "rgba(79, 169, 83, 0.15)" : "rgba(0, 0, 0, 0.05)",
           },
         }}
         onClick={toggleSwitch}
@@ -72,30 +89,44 @@ const LanguageSelector = () => {
           "& .MuiSwitch-switchBase": {
             "&.Mui-checked": {
               color: "#4FA953",
+              "&:hover": {
+                backgroundColor: "rgba(79, 169, 83, 0.1)",
+              },
             },
+            "&:hover": {
+              backgroundColor: "rgba(0, 0, 0, 0.05)",
+            },
+          },
+          "& .MuiSwitch-thumb": {
+            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
           },
           "& .MuiSwitch-track": {
             backgroundColor: "#bdbdbd",
+            opacity: 1,
             "&.Mui-checked": {
               backgroundColor: "#4FA953",
+              opacity: 1,
             },
           },
         }}
       />
       <MKTypography
         variant="button"
-        fontWeight={{ xs: "500", sm: "500", md: "400" }}
+        fontWeight={checked ? "600" : "400"}
         fontSize={{ xs: "0.8rem", sm: "0.75rem", md: "0.75rem", lg: "0.8rem" }}
         ml={1}
         sx={{
           cursor: "pointer",
           userSelect: "none",
           margin: 0,
-          color: "#1a237e",
-          transition: "all 0.2s ease",
+          color: checked ? "#4FA953" : "#757575",
+          transition: "all 0.3s ease",
+          padding: { xs: "2px 4px", sm: "2px 6px", md: "3px 8px" },
+          borderRadius: "4px",
+          backgroundColor: checked ? "rgba(79, 169, 83, 0.1)" : "transparent",
           "&:hover": {
-            color: "#0d47a1",
-            fontWeight: "600",
+            color: checked ? "#3d8a41" : "#424242",
+            backgroundColor: checked ? "rgba(79, 169, 83, 0.15)" : "rgba(0, 0, 0, 0.05)",
           },
         }}
         onClick={toggleSwitch}
