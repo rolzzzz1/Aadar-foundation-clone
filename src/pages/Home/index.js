@@ -2825,10 +2825,10 @@ function Home() {
                   color: "rgba(255, 255, 255, 0.4)",
                   backdropFilter: "blur(3px)",
                   boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
-                  width: { xs: 36, sm: 40, md: 44 },
-                  height: { xs: 36, sm: 40, md: 44 },
-                  minWidth: { xs: 36, sm: 40, md: 44 },
-                  minHeight: { xs: 36, sm: 40, md: 44 },
+                  width: { xs: 28, sm: 32, md: 36 },
+                  height: { xs: 28, sm: 32, md: 36 },
+                  minWidth: { xs: 28, sm: 32, md: 36 },
+                  minHeight: { xs: 28, sm: 32, md: 36 },
                   "&:hover": {
                     backgroundColor: "rgba(0, 0, 0, 0.5)",
                     color: "rgba(255, 255, 255, 0.8)",
@@ -2844,26 +2844,26 @@ function Home() {
                 }
               >
                 {isCarouselPaused ? (
-                  <PlayArrowIcon sx={{ fontSize: { xs: 16, sm: 18, md: 20 } }} />
+                  <PlayArrowIcon sx={{ fontSize: { xs: 14, sm: 16, md: 18 } }} />
                 ) : (
-                  <PauseIcon sx={{ fontSize: { xs: 16, sm: 18, md: 20 } }} />
+                  <PauseIcon sx={{ fontSize: { xs: 14, sm: 16, md: 18 } }} />
                 )}
               </IconButton>
             </Tooltip>
             <MKTypography
               sx={{
-                fontSize: { xs: "0.45rem", sm: "0.5rem", md: "0.55rem" },
+                fontSize: { xs: "0.4rem", sm: "0.45rem", md: "0.5rem" },
                 color: "rgba(255, 255, 255, 0.35)",
                 textAlign: "center",
                 whiteSpace: "normal",
-                maxWidth: { xs: "100px", sm: "120px", md: "140px" },
+                maxWidth: { xs: "90px", sm: "100px", md: "120px" },
                 lineHeight: 1.3,
                 fontWeight: 400,
                 letterSpacing: "0.3px",
                 textShadow: "0 1px 3px rgba(0, 0, 0, 0.5)",
                 backgroundColor: "rgba(0, 0, 0, 0.2)",
                 backdropFilter: "blur(3px)",
-                padding: { xs: "4px 6px", sm: "4px 8px", md: "5px 10px" },
+                padding: { xs: "3px 5px", sm: "3px 6px", md: "4px 8px" },
                 borderRadius: "6px",
                 boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
               }}
