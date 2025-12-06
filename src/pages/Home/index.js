@@ -1571,16 +1571,19 @@ function Home() {
           position: relative !important;
           overflow: hidden !important;
           border-radius: 12px !important;
+          font-size: 0.85rem !important;
           box-shadow: 0 6px 20px rgba(79, 169, 83, 0.35), 0 3px 10px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
         }
         
-        /* Responsive padding for donate button */
+        /* Responsive styles for donate button */
         @media (max-width: 599px) {
           [data-navbar-button="donate"],
           [data-navbar-button="donate"].MuiButton-root,
           button[data-navbar-button="donate"],
           a[data-navbar-button="donate"] {
             padding: 6px 14px !important;
+            font-size: 0.8rem !important;
+            border-radius: 10px !important;
           }
         }
         @media (min-width: 600px) and (max-width: 959px) {
@@ -1589,6 +1592,8 @@ function Home() {
           button[data-navbar-button="donate"],
           a[data-navbar-button="donate"] {
             padding: 8px 20px !important;
+            font-size: 0.85rem !important;
+            border-radius: 12px !important;
           }
         }
         @media (min-width: 960px) {
@@ -1597,6 +1602,8 @@ function Home() {
           button[data-navbar-button="donate"],
           a[data-navbar-button="donate"] {
             padding: 10px 24px !important;
+            font-size: 0.95rem !important;
+            border-radius: 14px !important;
           }
         }
       `;
