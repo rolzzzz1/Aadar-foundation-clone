@@ -95,6 +95,8 @@ function HeroSlide({
   shouldAnimate,
   isCarouselPaused,
   setIsCarouselPaused,
+  activeSlide,
+  totalSlides,
 }) {
   const { t } = useTranslation();
 
@@ -104,6 +106,11 @@ function HeroSlide({
 
   // Treat very small screens as mobile (we hide hero videos there)
   const isMobile = typeof window !== "undefined" && window.innerWidth < 576;
+  // Hide video for screens between 576px and 767px, show for >= 768px
+  const showVideo = typeof window !== "undefined" && window.innerWidth >= 768;
+  // Check if screen is between 576px and 767px
+  const isTabletRange =
+    typeof window !== "undefined" && window.innerWidth >= 576 && window.innerWidth < 768;
 
   const toggleMute = () => {
     if (videoRef.current) {
@@ -117,7 +124,7 @@ function HeroSlide({
     if (
       !videoRef.current ||
       !isActive ||
-      isMobile ||
+      !showVideo ||
       !(slideIndex === 1 || slideIndex === 2 || slideIndex === 3)
     ) {
       return;
@@ -171,8 +178,8 @@ function HeroSlide({
       <MKBox
         display="flex"
         flexDirection={{ xs: "column", sm: "column", md: "row" }}
-        height={{ xs: "85vh", sm: "100vh", md: "100vh" }}
-        minHeight={{ xs: "85vh", sm: "100vh", md: "100vh" }}
+        height={{ xs: "100vh", sm: "100vh", md: "100vh" }}
+        minHeight={{ xs: "100vh", sm: "100vh", md: "100vh" }}
         width="100%"
         sx={{
           position: "relative",
@@ -237,8 +244,8 @@ function HeroSlide({
           }}
         />
 
-        {/* Video section - left (hidden on small screens) */}
-        {!isMobile && (
+        {/* Video section - left (hidden on small screens and 576-767px) */}
+        {showVideo && (
           <MKBox
             className={
               isActive ? `hero-slide-video-${slideIndex} active` : `hero-slide-video-${slideIndex}`
@@ -348,7 +355,7 @@ function HeroSlide({
               />
 
               {/* Pause/Play button for slides 2, 3, 4 - top left of video (desktop only) */}
-              {!isMobile && (
+              {showVideo && (
                 <MKBox
                   sx={{
                     position: "absolute",
@@ -486,7 +493,13 @@ function HeroSlide({
           width={{ xs: "100%", sm: "80%", md: "45%" }}
           display="flex"
           flexDirection="column"
-          justifyContent={isMobile ? "center" : { xs: "center", sm: "center", md: "center" }}
+          justifyContent={
+            isMobile
+              ? "center"
+              : isTabletRange
+              ? "center"
+              : { xs: "center", sm: "center", md: "center" }
+          }
           alignItems={{ xs: "center", sm: "center", md: "flex-start" }}
           sx={{
             position: "relative",
@@ -494,9 +507,18 @@ function HeroSlide({
             padding: { xs: 1.1, sm: 1.5, md: 1.6, lg: 1.8 },
             paddingX: { xs: 1.8, sm: 2.1, md: 1.8, lg: 2 },
             paddingTop: { xs: isMobile ? 0 : 1.1, sm: 1.5, md: 1.6, lg: 1.8 },
-            height: { xs: isMobile ? "85vh" : "auto", sm: "auto", md: "calc(100vh - 160px)" },
+            marginTop: isTabletRange ? -4 : isMobile ? 6 : 0,
+            height: {
+              xs: isMobile ? "85vh" : "auto",
+              sm: isTabletRange ? "100vh" : "auto",
+              md: "calc(100vh - 160px)",
+            },
             maxHeight: { xs: "none", sm: "none", md: "none" },
-            minHeight: { xs: isMobile ? "85vh" : "auto", sm: "auto", md: "fit-content" },
+            minHeight: {
+              xs: isMobile ? "85vh" : "auto",
+              sm: isTabletRange ? "100vh" : "auto",
+              md: "fit-content",
+            },
             overflow: { xs: "visible", sm: "visible", md: "visible" },
             mx: { xs: "auto", sm: "auto", md: 0 },
             mb: { xs: 0, sm: 3, md: 2, lg: 2.5 },
@@ -890,91 +912,271 @@ function HeroSlide({
               </span>
             </MKButton>
           </MKBox>
-        </MKBox>
 
-        {/* Pause/Play button for slides 2, 3, 4 - mobile only (positioned on slide) */}
-        {isMobile && (
-          <MKBox
-            sx={{
-              position: "absolute",
-              bottom: { xs: "24px", sm: "24px" },
-              right: { xs: "16px", sm: "20px" },
-              zIndex: 25,
-              display: "flex",
-              flexDirection: { xs: "row", sm: "row" },
-              alignItems: "center",
-              gap: { xs: 0.75, sm: 1 },
-              pointerEvents: "auto",
-            }}
-          >
-            <MKTypography
+          {/* Indicators and Pause button for mobile - positioned below text section */}
+          {isMobile && slideIndex !== 0 && (
+            <MKBox
               sx={{
-                fontSize: { xs: "0.6rem", sm: "0.65rem" },
-                color: "rgba(255, 255, 255, 0.6)",
-                textAlign: "center",
-                whiteSpace: "nowrap",
-                fontWeight: 400,
-                letterSpacing: "0.3px",
-                textShadow: "0 1px 3px rgba(0, 0, 0, 0.5)",
-                backgroundColor: "rgba(0, 0, 0, 0.3)",
-                backdropFilter: "blur(3px)",
-                padding: { xs: "4px 8px", sm: "4px 10px" },
-                borderRadius: "6px",
-                boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: { xs: 1, sm: 1.2 },
+                mt: { xs: 2, sm: 2.5 },
+                mb: { xs: 1, sm: 1.5 },
+                width: "100%",
+                zIndex: 25,
+                pointerEvents: "auto",
               }}
             >
-              {t("homePage.heroSection.pausePlayHint")}
-            </MKTypography>
-            <Tooltip
-              title={
-                isCarouselPaused
-                  ? t("homePage.heroSection.clickForNextStory")
-                  : t("homePage.heroSection.clickToHoldStory")
-              }
-              arrow
-              placement="left"
-            >
-              <IconButton
-                onClick={() => setIsCarouselPaused((prev) => !prev)}
+              {/* Indicators container - left */}
+              <MKBox
                 sx={{
-                  backgroundColor: "rgba(0, 0, 0, 0.35)",
-                  color: "rgba(255, 255, 255, 0.7)",
-                  backdropFilter: "blur(3px)",
-                  boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
-                  width: { xs: 40, sm: 44 },
-                  height: { xs: 40, sm: 44 },
-                  minWidth: { xs: 40, sm: 44 },
-                  minHeight: { xs: 40, sm: 44 },
-                  "&:hover": {
-                    backgroundColor: "rgba(0, 0, 0, 0.6)",
-                    color: "rgba(255, 255, 255, 0.9)",
-                    transform: "scale(1.05)",
-                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
-                  },
-                  transition: "all 0.25s ease",
+                  display: "flex",
+                  gap: 1,
+                  alignItems: "center",
+                  justifyContent: "flex-start",
                 }}
-                aria-label={
-                  isCarouselPaused
-                    ? t("homePage.heroSection.playSlides")
-                    : t("homePage.heroSection.pauseSlides")
-                }
               >
-                {isCarouselPaused ? (
-                  <PlayArrowIcon sx={{ fontSize: { xs: 18, sm: 20 } }} />
-                ) : (
-                  <PauseIcon sx={{ fontSize: { xs: 18, sm: 20 } }} />
-                )}
-              </IconButton>
-            </Tooltip>
-          </MKBox>
-        )}
+                {Array.from({ length: totalSlides }).map((_, index) => (
+                  <MKBox
+                    key={index}
+                    onClick={() => {
+                      // Navigation is handled by Carousel, this is just visual
+                      // The actual navigation happens through Carousel's built-in controls
+                    }}
+                    sx={{
+                      width: activeSlide === index ? 13 : 11,
+                      height: activeSlide === index ? 13 : 11,
+                      borderRadius: "50%",
+                      border: "2px solid",
+                      borderColor:
+                        activeSlide === index
+                          ? "rgba(255, 255, 255, 0.9)"
+                          : "rgba(255, 255, 255, 0.45)",
+                      backgroundColor:
+                        activeSlide === index ? "rgba(255, 255, 255, 0.9)" : "transparent",
+                      opacity: activeSlide === index ? 0.9 : 0.7,
+                      cursor: "pointer",
+                      transition: "all 0.3s ease",
+                      "&:hover": {
+                        opacity: 1,
+                        transform: "scale(1.1)",
+                      },
+                    }}
+                  />
+                ))}
+              </MKBox>
+
+              {/* Pause/Play button - right */}
+              <MKBox
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: { xs: 0.75, sm: 1 },
+                  justifyContent: "flex-end",
+                }}
+              >
+                <MKTypography
+                  sx={{
+                    fontSize: { xs: "0.6rem", sm: "0.65rem" },
+                    color: "rgba(255, 255, 255, 0.6)",
+                    textAlign: "center",
+                    whiteSpace: "nowrap",
+                    fontWeight: 400,
+                    letterSpacing: "0.3px",
+                    textShadow: "0 1px 3px rgba(0, 0, 0, 0.5)",
+                    backgroundColor: "rgba(0, 0, 0, 0.3)",
+                    backdropFilter: "blur(3px)",
+                    padding: { xs: "4px 8px", sm: "4px 10px" },
+                    borderRadius: "6px",
+                    boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
+                  }}
+                >
+                  {t("homePage.heroSection.pausePlayHint")}
+                </MKTypography>
+                <Tooltip
+                  title={
+                    isCarouselPaused
+                      ? t("homePage.heroSection.clickForNextStory")
+                      : t("homePage.heroSection.clickToHoldStory")
+                  }
+                  arrow
+                  placement="top"
+                >
+                  <IconButton
+                    onClick={() => setIsCarouselPaused((prev) => !prev)}
+                    sx={{
+                      backgroundColor: "rgba(0, 0, 0, 0.35)",
+                      color: "rgba(255, 255, 255, 0.7)",
+                      backdropFilter: "blur(3px)",
+                      boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
+                      width: { xs: 40, sm: 44 },
+                      height: { xs: 40, sm: 44 },
+                      minWidth: { xs: 40, sm: 44 },
+                      minHeight: { xs: 40, sm: 44 },
+                      "&:hover": {
+                        backgroundColor: "rgba(0, 0, 0, 0.6)",
+                        color: "rgba(255, 255, 255, 0.9)",
+                        transform: "scale(1.05)",
+                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
+                      },
+                      transition: "all 0.25s ease",
+                    }}
+                    aria-label={
+                      isCarouselPaused
+                        ? t("homePage.heroSection.playSlides")
+                        : t("homePage.heroSection.pauseSlides")
+                    }
+                  >
+                    {isCarouselPaused ? (
+                      <PlayArrowIcon sx={{ fontSize: { xs: 18, sm: 20 } }} />
+                    ) : (
+                      <PauseIcon sx={{ fontSize: { xs: 18, sm: 20 } }} />
+                    )}
+                  </IconButton>
+                </Tooltip>
+              </MKBox>
+            </MKBox>
+          )}
+
+          {/* Indicators and Pause button for tablet range (576-767px) - positioned below text section */}
+          {isTabletRange && slideIndex !== 0 && (
+            <MKBox
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 1,
+                mt: 2,
+                mb: 1.5,
+                width: "100%",
+                zIndex: 25,
+                pointerEvents: "auto",
+              }}
+            >
+              {/* Indicators container - left */}
+              <MKBox
+                sx={{
+                  display: "flex",
+                  gap: 1,
+                  alignItems: "center",
+                  justifyContent: "flex-start",
+                }}
+              >
+                {Array.from({ length: totalSlides }).map((_, index) => (
+                  <MKBox
+                    key={index}
+                    onClick={() => {
+                      // Navigation is handled by Carousel, this is just visual
+                      // The actual navigation happens through Carousel's built-in controls
+                    }}
+                    sx={{
+                      width: activeSlide === index ? 13 : 11,
+                      height: activeSlide === index ? 13 : 11,
+                      borderRadius: "50%",
+                      border: "2px solid",
+                      borderColor:
+                        activeSlide === index
+                          ? "rgba(255, 255, 255, 0.9)"
+                          : "rgba(255, 255, 255, 0.45)",
+                      backgroundColor:
+                        activeSlide === index ? "rgba(255, 255, 255, 0.9)" : "transparent",
+                      opacity: activeSlide === index ? 0.9 : 0.7,
+                      cursor: "pointer",
+                      transition: "all 0.3s ease",
+                      "&:hover": {
+                        opacity: 1,
+                        transform: "scale(1.1)",
+                      },
+                    }}
+                  />
+                ))}
+              </MKBox>
+
+              {/* Pause/Play button - right */}
+              <MKBox
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 1,
+                  justifyContent: "flex-end",
+                }}
+              >
+                <MKTypography
+                  sx={{
+                    fontSize: "0.65rem",
+                    color: "rgba(255, 255, 255, 0.6)",
+                    textAlign: "center",
+                    whiteSpace: "nowrap",
+                    fontWeight: 400,
+                    letterSpacing: "0.3px",
+                    textShadow: "0 1px 3px rgba(0, 0, 0, 0.5)",
+                    backgroundColor: "rgba(0, 0, 0, 0.3)",
+                    backdropFilter: "blur(3px)",
+                    padding: "4px 10px",
+                    borderRadius: "6px",
+                    boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
+                  }}
+                >
+                  {t("homePage.heroSection.pausePlayHint")}
+                </MKTypography>
+                <Tooltip
+                  title={
+                    isCarouselPaused
+                      ? t("homePage.heroSection.clickForNextStory")
+                      : t("homePage.heroSection.clickToHoldStory")
+                  }
+                  arrow
+                  placement="top"
+                >
+                  <IconButton
+                    onClick={() => setIsCarouselPaused((prev) => !prev)}
+                    sx={{
+                      backgroundColor: "rgba(0, 0, 0, 0.35)",
+                      color: "rgba(255, 255, 255, 0.7)",
+                      backdropFilter: "blur(3px)",
+                      boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
+                      width: 44,
+                      height: 44,
+                      minWidth: 44,
+                      minHeight: 44,
+                      "&:hover": {
+                        backgroundColor: "rgba(0, 0, 0, 0.6)",
+                        color: "rgba(255, 255, 255, 0.9)",
+                        transform: "scale(1.05)",
+                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
+                      },
+                      transition: "all 0.25s ease",
+                    }}
+                    aria-label={
+                      isCarouselPaused
+                        ? t("homePage.heroSection.playSlides")
+                        : t("homePage.heroSection.pauseSlides")
+                    }
+                  >
+                    {isCarouselPaused ? (
+                      <PlayArrowIcon sx={{ fontSize: 20 }} />
+                    ) : (
+                      <PauseIcon sx={{ fontSize: 20 }} />
+                    )}
+                  </IconButton>
+                </Tooltip>
+              </MKBox>
+            </MKBox>
+          )}
+        </MKBox>
       </MKBox>
     );
   }
 
   return (
     <MKBox
-      minHeight={{ xs: "85vh", sm: "100vh", md: "100vh" }}
+      minHeight={{ xs: "100vh", sm: "100vh", md: "100vh" }}
+      height={{ xs: "100vh", sm: "100vh", md: "100vh" }}
       width="100%"
       sx={{
         backgroundImage: `url(${image})`,
@@ -1485,11 +1687,16 @@ function Home() {
   const [isMobile, setIsMobile] = useState(
     typeof window !== "undefined" && window.innerWidth < 576
   );
+  // Check if screen is between 576px and 767px (tablet range)
+  const [isTabletRange, setIsTabletRange] = useState(
+    typeof window !== "undefined" && window.innerWidth >= 576 && window.innerWidth < 768
+  );
 
-  // Update isMobile on window resize
+  // Update isMobile and isTabletRange on window resize
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 576);
+      setIsTabletRange(window.innerWidth >= 576 && window.innerWidth < 768);
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -3021,7 +3228,7 @@ function Home() {
         <Carousel
           animation="fade"
           duration={650}
-          indicators={!isMobile || activeSlide !== 0}
+          indicators={!isMobile && !isTabletRange}
           navButtonsAlwaysVisible={true}
           navButtonsAlwaysInvisible={false}
           cycleNavigation={true}
@@ -3040,8 +3247,8 @@ function Home() {
           indicatorContainerProps={{
             style: {
               position: "absolute",
-              bottom: isMobile ? "24px" : "72px",
-              left: isMobile ? "16px" : "16px",
+              bottom: "72px",
+              left: "16px",
               transform: "none",
               zIndex: 5,
               display: "flex",
@@ -3122,6 +3329,8 @@ function Home() {
               shouldAnimate={index === 0 && !hasPlayedSlide1Animation}
               isCarouselPaused={isCarouselPaused}
               setIsCarouselPaused={setIsCarouselPaused}
+              activeSlide={activeSlide}
+              totalSlides={heroSlides.length}
             />
           ))}
         </Carousel>
@@ -3177,6 +3386,8 @@ HeroSlide.propTypes = {
   shouldAnimate: PropTypes.bool,
   isCarouselPaused: PropTypes.bool.isRequired,
   setIsCarouselPaused: PropTypes.func.isRequired,
+  activeSlide: PropTypes.number.isRequired,
+  totalSlides: PropTypes.number.isRequired,
 };
 
 export default Home;
