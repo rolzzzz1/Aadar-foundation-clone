@@ -203,6 +203,32 @@
           border-radius: 14px !important;
         }
       }
+      
+      /* Critical CSS for language selector toggle button */
+      .btn-container,
+      .btn-container.MKBox-root {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        padding: 4px 8px !important;
+        transition: all 0.3s ease !important;
+      }
+      
+      @media (min-width: 600px) {
+        .btn-container,
+        .btn-container.MKBox-root {
+          gap: 0.75rem !important;
+          padding: 4px 10px !important;
+        }
+      }
+      
+      @media (min-width: 960px) {
+        .btn-container,
+        .btn-container.MKBox-root {
+          gap: 1rem !important;
+          padding: 6px 12px !important;
+        }
+      }
     </style>
     <!-- Script to apply styles immediately when buttons are created (before React hydration) -->
     <script>
@@ -297,6 +323,27 @@
             }
           });
           
+          // Apply styles to language selector toggle button
+          const languageSelectors = document.querySelectorAll('.btn-container');
+          languageSelectors.forEach(function(container) {
+            if (container && container.style) {
+              container.style.setProperty('display', 'flex', 'important');
+              container.style.setProperty('align-items', 'center', 'important');
+              // Set responsive gap and padding
+              var width = window.innerWidth;
+              if (width < 600) {
+                container.style.setProperty('gap', '0.5rem', 'important');
+                container.style.setProperty('padding', '4px 8px', 'important');
+              } else if (width < 960) {
+                container.style.setProperty('gap', '0.75rem', 'important');
+                container.style.setProperty('padding', '4px 10px', 'important');
+              } else {
+                container.style.setProperty('gap', '1rem', 'important');
+                container.style.setProperty('padding', '6px 12px', 'important');
+              }
+            }
+          });
+          
           // Apply styles to navbar donate button
           const donateButtons = document.querySelectorAll('[data-navbar-button="donate"]');
           donateButtons.forEach(function(btn) {
@@ -373,13 +420,14 @@
                   node.matches('.hero-slide-1-button') ||
                   node.matches('.hero-slide-button-1') ||
                   node.matches('.hero-slide-button-2') ||
-                  node.matches('.hero-slide-button-3')
+                  node.matches('.hero-slide-button-3') ||
+                  node.matches('.btn-container')
                 )) {
                   shouldApply = true;
                 }
                 // Also check children
                 if (node.querySelectorAll) {
-                  var buttons = node.querySelectorAll('[data-hero-button], [data-navbar-button], [data-footer-button], .hero-slide-1-button, .hero-slide-button-1, .hero-slide-button-2, .hero-slide-button-3');
+                  var buttons = node.querySelectorAll('[data-hero-button], [data-navbar-button], [data-footer-button], .hero-slide-1-button, .hero-slide-button-1, .hero-slide-button-2, .hero-slide-button-3, .btn-container');
                   if (buttons.length > 0) {
                     shouldApply = true;
                   }

@@ -40,6 +40,23 @@ const LanguageSelector = () => {
     <MKBox
       className="btn-container"
       ml={-2}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap:
+          typeof window !== "undefined" && window.innerWidth < 600
+            ? "0.5rem"
+            : typeof window !== "undefined" && window.innerWidth < 960
+            ? "0.75rem"
+            : "1rem",
+        padding:
+          typeof window !== "undefined" && window.innerWidth < 600
+            ? "4px 8px"
+            : typeof window !== "undefined" && window.innerWidth < 960
+            ? "4px 10px"
+            : "6px 12px",
+        transition: "all 0.3s ease",
+      }}
       sx={{
         display: "flex",
         alignItems: "center",
