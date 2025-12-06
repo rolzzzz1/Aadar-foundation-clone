@@ -409,9 +409,12 @@
         
         // Run again after a short delay to catch buttons that load slightly later
         setTimeout(applyButtonStyles, 0);
+        setTimeout(applyButtonStyles, 10);
         setTimeout(applyButtonStyles, 50);
         setTimeout(applyButtonStyles, 100);
         setTimeout(applyButtonStyles, 200);
+        setTimeout(applyButtonStyles, 500);
+        setTimeout(applyButtonStyles, 1000);
         
         // Use requestAnimationFrame to run after DOM is ready
         if (window.requestAnimationFrame) {
@@ -457,7 +460,7 @@
                 }
                 // Also check children
                 if (node.querySelectorAll) {
-                  var buttons = node.querySelectorAll('[data-hero-button], [data-navbar-button], [data-footer-button], .hero-slide-1-button, .hero-slide-button-1, .hero-slide-button-2, .hero-slide-button-3, .btn-container');
+                  var buttons = node.querySelectorAll('[data-hero-button], [data-navbar-button], [data-footer-button], .hero-slide-1-button, .hero-slide-button-1, .hero-slide-button-2, .hero-slide-button-3, .btn-container, [data-language-selector="true"]');
                   if (buttons.length > 0) {
                     shouldApply = true;
                   }

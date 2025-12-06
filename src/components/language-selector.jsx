@@ -225,31 +225,57 @@ const LanguageSelector = () => {
         // This happens before Material-UI can override them
         if (el && typeof window !== "undefined") {
           const element = el;
-          // Use setProperty with important flag to override any existing styles
-          element.style.setProperty("display", "flex", "important");
-          element.style.setProperty("align-items", "center", "important");
-          element.style.setProperty("margin-left", "-16px", "important");
-          element.style.setProperty("transition", "all 0.3s ease", "important");
-          // Set responsive gap and padding based on screen size
-          const width = window.innerWidth;
-          if (width < 600) {
-            element.style.setProperty("gap", "0.5rem", "important");
-            element.style.setProperty("padding", "4px 8px", "important");
-          } else if (width < 960) {
-            element.style.setProperty("gap", "0.75rem", "important");
-            element.style.setProperty("padding", "4px 10px", "important");
-          } else {
-            element.style.setProperty("gap", "1rem", "important");
-            element.style.setProperty("padding", "6px 12px", "important");
-          }
-          // Re-apply after a microtask to ensure it sticks
-          Promise.resolve().then(() => {
-            if (element && element.parentNode) {
-              element.style.setProperty("display", "flex", "important");
-              element.style.setProperty("align-items", "center", "important");
-              element.style.setProperty("margin-left", "-16px", "important");
+          const applyRefStyles = () => {
+            if (!element || !element.parentNode) return;
+            const width = window.innerWidth;
+            // Use setProperty with important flag to override any existing styles
+            element.style.setProperty("display", "flex", "important");
+            element.style.setProperty("align-items", "center", "important");
+            element.style.setProperty("margin-left", "-16px", "important");
+            element.style.setProperty("transition", "all 0.3s ease", "important");
+            // Set responsive gap and padding based on screen size
+            if (width < 600) {
+              element.style.setProperty("gap", "0.5rem", "important");
+              element.style.setProperty("padding", "4px 8px", "important");
+            } else if (width < 960) {
+              element.style.setProperty("gap", "0.75rem", "important");
+              element.style.setProperty("padding", "4px 10px", "important");
+            } else {
+              element.style.setProperty("gap", "1rem", "important");
+              element.style.setProperty("padding", "6px 12px", "important");
             }
-          });
+          };
+
+          // Apply immediately
+          applyRefStyles();
+
+          // Apply multiple times with different timing strategies
+          setTimeout(applyRefStyles, 0);
+          setTimeout(applyRefStyles, 10);
+          setTimeout(applyRefStyles, 50);
+          setTimeout(applyRefStyles, 100);
+          setTimeout(applyRefStyles, 200);
+          setTimeout(applyRefStyles, 500);
+
+          // Use requestAnimationFrame
+          if (window.requestAnimationFrame) {
+            requestAnimationFrame(applyRefStyles);
+            requestAnimationFrame(() => {
+              requestAnimationFrame(applyRefStyles);
+            });
+          }
+
+          // Continuously re-apply for first 3 seconds
+          const refInterval = setInterval(applyRefStyles, 50);
+          setTimeout(() => {
+            clearInterval(refInterval);
+          }, 3000);
+
+          // Re-apply after microtasks
+          Promise.resolve().then(applyRefStyles);
+          Promise.resolve()
+            .then(() => Promise.resolve())
+            .then(applyRefStyles);
         }
       }}
       style={{
@@ -268,13 +294,7 @@ const LanguageSelector = () => {
             ? "4px 10px"
             : "6px 12px",
         transition: "all 0.3s ease",
-      }}
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        gap: { xs: 0.5, sm: 0.75, md: 1 },
-        padding: { xs: "4px 8px", sm: "4px 10px", md: "6px 12px" },
-        transition: "all 0.3s ease",
+        marginLeft: "-16px",
       }}
     >
       <MKTypography
