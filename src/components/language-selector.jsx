@@ -21,7 +21,14 @@ const LanguageSelector = () => {
   };
 
   return (
-    <MKBox>
+    <MKBox
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        height: { xs: "24px", sm: "26px", md: "28px" },
+        lineHeight: 1,
+      }}
+    >
       <Button
         onClick={handleToggle}
         variant="outlined"
