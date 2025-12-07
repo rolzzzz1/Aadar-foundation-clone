@@ -1,4 +1,4 @@
-import { useEffect, Suspense, lazy } from "react";
+import React, { useEffect, Suspense, lazy } from "react";
 import { useTranslation } from "react-i18next";
 
 // react-router components
@@ -21,6 +21,7 @@ import routes from "routes";
 
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import Typography from "@mui/material/Typography";
 
 // Loading component
 const LoadingFallback = () => (
@@ -36,6 +37,49 @@ const LoadingFallback = () => (
     <CircularProgress />
   </Box>
 );
+
+// Error boundary component
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("Error caught by boundary:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "100vh",
+            backgroundColor: "#f5f5f5",
+            padding: 3,
+          }}
+        >
+          <Typography variant="h5" gutterBottom>
+            Something went wrong
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {this.state.error?.message || "An unexpected error occurred"}
+          </Typography>
+        </Box>
+      );
+    }
+
+    return this.props.children;
+  }
+}
 
 export default function App() {
   const { pathname } = useLocation();
@@ -66,17 +110,19 @@ export default function App() {
     });
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Suspense fallback={<LoadingFallback />}>
-        <Routes>
-          {getRoutes(routes)}
-          <Route path="/home" element={<Home />} />
-          <Route path="*" element={<Navigate to="/home" />} />
-        </Routes>
-      </Suspense>
-      <Analytics />
-      <SpeedInsights />
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Suspense fallback={<LoadingFallback />}>
+          <Routes>
+            {getRoutes(routes)}
+            <Route path="/home" element={<Home />} />
+            <Route path="*" element={<Navigate to="/home" />} />
+          </Routes>
+        </Suspense>
+        <Analytics />
+        <SpeedInsights />
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
