@@ -113,9 +113,7 @@ const LanguageSelector = () => {
                 color: currentLanguage === language.code ? "#4FA953" : "inherit",
               }}
             >
-              {currentLanguage === language.code && (
-                <CheckIcon sx={{ fontSize: "1.2rem" }} />
-              )}
+              {currentLanguage === language.code && <CheckIcon sx={{ fontSize: "1.2rem" }} />}
             </ListItemIcon>
             <ListItemText
               primary={language.nativeLabel}
