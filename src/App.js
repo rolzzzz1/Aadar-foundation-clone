@@ -82,6 +82,10 @@ class ErrorBoundary extends React.Component {
   }
 }
 
+ErrorBoundary.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
 export default function App() {
   const { pathname } = useLocation();
   const { i18n } = useTranslation();
