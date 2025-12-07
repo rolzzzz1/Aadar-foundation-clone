@@ -2282,15 +2282,15 @@ function Home() {
   }, [activeSlide, hasPlayedSlide1Animation]);
 
   // Calculate interval based on current slide
-  // Slide 1->2: 8 seconds
+  // Slide 1->2: 5 seconds
   // Slide 2->3: 5 seconds (4-6 range)
   // Rest of slides: 8 seconds
   useEffect(() => {
-    if (activeSlide === 1) {
-      // Transition from slide 2 to 3
-      setSlideInterval(5000); // 5 seconds (middle of 4-6 range)
+    if (activeSlide === 0 || activeSlide === 1) {
+      // Transition from slide 1 to 2, or slide 2 to 3
+      setSlideInterval(5000); // 5 seconds
     } else {
-      // Slide 1->2 and rest of the slides: 8 seconds
+      // Rest of the slides: 8 seconds
       setSlideInterval(8000); // 8 seconds
     }
   }, [activeSlide]);
