@@ -42,7 +42,7 @@ const LanguageSelector = () => {
           textTransform: "none",
           borderRadius: 0,
           border: "none",
-          color: "rgba(0, 0, 0, 0.5) !important",
+          color: "rgba(0, 0, 0, 0.35) !important",
           backgroundColor: "transparent !important",
           display: "flex",
           alignItems: "center",
@@ -50,11 +50,11 @@ const LanguageSelector = () => {
           transition: "all 0.2s ease",
           "&:hover": {
             backgroundColor: "transparent !important",
-            color: "rgba(0, 0, 0, 0.7) !important",
+            color: "rgba(0, 0, 0, 0.5) !important",
             opacity: 1,
           },
           "&.MuiButton-root": {
-            color: "rgba(0, 0, 0, 0.5) !important",
+            color: "rgba(0, 0, 0, 0.35) !important",
           },
         }}
       >
