@@ -42,7 +42,7 @@ const LanguageSelector = () => {
           textTransform: "none",
           borderRadius: 0,
           border: "none",
-          color: "inherit",
+          color: "rgba(0, 0, 0, 0.5)",
           backgroundColor: "transparent",
           display: "flex",
           alignItems: "center",
@@ -50,7 +50,8 @@ const LanguageSelector = () => {
           transition: "all 0.2s ease",
           "&:hover": {
             backgroundColor: "transparent",
-            opacity: 0.8,
+            color: "rgba(0, 0, 0, 0.7)",
+            opacity: 1,
           },
         }}
       >
