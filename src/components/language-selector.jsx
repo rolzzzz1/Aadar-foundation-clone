@@ -31,23 +31,26 @@ const LanguageSelector = () => {
     >
       <Button
         onClick={handleToggle}
-        variant="outlined"
+        variant="text"
         sx={{
-          minWidth: { xs: "100px", sm: "110px", md: "120px" },
-          height: { xs: "18px", sm: "20px", md: "22px" },
-          padding: { xs: "0px 8px", sm: "1px 10px", md: "1px 12px" },
-          fontSize: { xs: "0.5rem", sm: "0.55rem", md: "0.6rem" },
-          fontWeight: 600,
+          minWidth: "auto",
+          height: "auto",
+          padding: { xs: "2px 4px", sm: "2px 6px", md: "4px 8px" },
+          fontSize: { xs: "0.65rem", sm: "0.7rem", md: "0.75rem" },
+          fontWeight: 400,
           textTransform: "none",
-          borderRadius: "12px",
-          borderColor: "#4FA953",
-          color: currentLanguage === "en" ? "#4FA953" : "#fff",
-          backgroundColor: currentLanguage === "en" ? "transparent" : "#4FA953",
-          transition: "all 0.3s ease",
+          borderRadius: 0,
+          border: "none",
+          color: "inherit",
+          backgroundColor: "transparent",
+          textDecoration: "underline",
+          textDecorationColor: "rgba(0, 0, 0, 0.4)",
+          textUnderlineOffset: "3px",
+          transition: "all 0.2s ease",
           "&:hover": {
-            borderColor: currentLanguage === "en" ? "#3d8a41" : "#3d8a41",
-            backgroundColor: currentLanguage === "en" ? "rgba(79, 169, 83, 0.1)" : "#3d8a41",
-            color: currentLanguage === "en" ? "#3d8a41" : "#fff",
+            backgroundColor: "transparent",
+            textDecorationColor: "currentColor",
+            opacity: 0.8,
           },
         }}
       >
