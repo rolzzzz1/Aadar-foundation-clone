@@ -35,10 +35,10 @@ const LanguageSelector = () => {
         variant="text"
         disableRipple
         disableFocusRipple
-        sx={{
+          sx={{
           minWidth: "auto",
           height: "auto",
-          padding: { xs: "1px 4px", sm: "2px 5px", md: "2px 6px" },
+          padding: { xs: "4px 4px", sm: "5px 5px", md: "6px 6px" },
           fontSize: { xs: "0.65rem", sm: "0.7rem", md: "0.75rem" },
           fontWeight: 400,
           textTransform: "none",
@@ -50,7 +50,7 @@ const LanguageSelector = () => {
           alignItems: "center",
           gap: { xs: "4px", sm: "5px", md: "6px" },
           transition: "all 0.2s ease",
-          "&:hover": {
+            "&:hover": {
             backgroundColor: "transparent !important",
             color: "rgba(0, 0, 0, 0.5) !important",
             opacity: 1,
@@ -78,7 +78,7 @@ const LanguageSelector = () => {
         />
         {currentLanguage === "en" ? "हिन्दी" : "English"}
       </Button>
-    </MKBox>
+      </MKBox>
   );
 };
 
