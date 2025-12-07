@@ -25,7 +25,7 @@ const LanguageSelector = () => {
       sx={{
         display: "flex",
         alignItems: "center",
-        height: { xs: "24px", sm: "26px", md: "28px" },
+        height: { xs: "22px", sm: "24px", md: "26px" },
         lineHeight: 1,
       }}
     >
@@ -33,13 +33,13 @@ const LanguageSelector = () => {
         onClick={handleToggle}
         variant="outlined"
         sx={{
-          minWidth: { xs: "80px", sm: "85px", md: "90px" },
-          height: { xs: "24px", sm: "26px", md: "28px" },
-          padding: { xs: "2px 8px", sm: "2px 10px", md: "3px 12px" },
+          minWidth: { xs: "75px", sm: "80px", md: "85px" },
+          height: { xs: "22px", sm: "24px", md: "26px" },
+          padding: { xs: "1px 8px", sm: "2px 10px", md: "2px 12px" },
           fontSize: { xs: "0.55rem", sm: "0.6rem", md: "0.65rem" },
           fontWeight: 600,
           textTransform: "none",
-          borderRadius: "30px",
+          borderRadius: "12px",
           borderColor: "#4FA953",
           color: currentLanguage === "en" ? "#4FA953" : "#fff",
           backgroundColor: currentLanguage === "en" ? "transparent" : "#4FA953",
