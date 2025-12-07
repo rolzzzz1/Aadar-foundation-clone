@@ -32,7 +32,7 @@ const LanguageSelector = () => {
       <Button
         onClick={handleToggle}
         variant="text"
-          sx={{
+        sx={{
           minWidth: "auto",
           height: "auto",
           padding: { xs: "2px 4px", sm: "2px 6px", md: "4px 8px" },
@@ -47,7 +47,7 @@ const LanguageSelector = () => {
           textDecorationColor: "rgba(0, 0, 0, 0.4)",
           textUnderlineOffset: "3px",
           transition: "all 0.2s ease",
-            "&:hover": {
+          "&:hover": {
             backgroundColor: "transparent",
             textDecorationColor: "currentColor",
             opacity: 0.8,
@@ -56,7 +56,7 @@ const LanguageSelector = () => {
       >
         {currentLanguage === "en" ? "हिन्दी" : "English"}
       </Button>
-      </MKBox>
+    </MKBox>
   );
 };
 
