@@ -33,6 +33,8 @@ const LanguageSelector = () => {
       <Button
         onClick={handleToggle}
         variant="text"
+        disableRipple
+        disableFocusRipple
         sx={{
           minWidth: "auto",
           height: "auto",
@@ -53,8 +55,19 @@ const LanguageSelector = () => {
             color: "rgba(0, 0, 0, 0.5) !important",
             opacity: 1,
           },
+          "&:active": {
+            backgroundColor: "transparent !important",
+            transform: "none",
+          },
+          "&:focus": {
+            outline: "none",
+            boxShadow: "none",
+          },
           "&.MuiButton-root": {
             color: "rgba(0, 0, 0, 0.35) !important",
+          },
+          "& .MuiTouchRipple-root": {
+            display: "none",
           },
         }}
       >
