@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Button from "@mui/material/Button";
+import LanguageIcon from "@mui/icons-material/Language";
 
 import MKBox from "components/MKBox";
 
@@ -32,7 +33,7 @@ const LanguageSelector = () => {
       <Button
         onClick={handleToggle}
         variant="text"
-        sx={{
+          sx={{
           minWidth: "auto",
           height: "auto",
           padding: { xs: "2px 4px", sm: "2px 6px", md: "4px 8px" },
@@ -43,20 +44,24 @@ const LanguageSelector = () => {
           border: "none",
           color: "inherit",
           backgroundColor: "transparent",
-          textDecoration: "underline",
-          textDecorationColor: "rgba(0, 0, 0, 0.4)",
-          textUnderlineOffset: "3px",
+          display: "flex",
+          alignItems: "center",
+          gap: { xs: "4px", sm: "5px", md: "6px" },
           transition: "all 0.2s ease",
-          "&:hover": {
+            "&:hover": {
             backgroundColor: "transparent",
-            textDecorationColor: "currentColor",
             opacity: 0.8,
           },
         }}
       >
+        <LanguageIcon
+          sx={{
+            fontSize: { xs: "0.9rem", sm: "1rem", md: "1.1rem" },
+          }}
+        />
         {currentLanguage === "en" ? "हिन्दी" : "English"}
       </Button>
-    </MKBox>
+      </MKBox>
   );
 };
 
