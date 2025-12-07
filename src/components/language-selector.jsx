@@ -26,13 +26,13 @@ const LanguageSelector = () => {
         onClick={handleToggle}
         variant="outlined"
         sx={{
-          minWidth: { xs: "85px", sm: "90px", md: "95px" },
-          height: { xs: "26px", sm: "28px", md: "30px" },
-          padding: { xs: "2px 10px", sm: "3px 12px", md: "4px 14px" },
-          fontSize: { xs: "0.6rem", sm: "0.65rem", md: "0.7rem" },
+          minWidth: { xs: "80px", sm: "85px", md: "90px" },
+          height: { xs: "24px", sm: "26px", md: "28px" },
+          padding: { xs: "2px 8px", sm: "2px 10px", md: "3px 12px" },
+          fontSize: { xs: "0.55rem", sm: "0.6rem", md: "0.65rem" },
           fontWeight: 600,
           textTransform: "none",
-          borderRadius: "25px",
+          borderRadius: "30px",
           borderColor: "#4FA953",
           color: currentLanguage === "en" ? "#4FA953" : "#fff",
           backgroundColor: currentLanguage === "en" ? "transparent" : "#4FA953",
