@@ -343,11 +343,14 @@ const LanguageSelector = () => {
           const applyStyles = () => {
             if (!el) return;
             const width = window.innerWidth || (window.screen && window.screen.width) || 1920;
+
+            // Use setProperty with important flag to override Material-UI
             el.style.setProperty("display", "flex", "important");
             el.style.setProperty("align-items", "center", "important");
             el.style.setProperty("margin-left", "-16px", "important");
             el.style.setProperty("transition", "all 0.3s ease", "important");
             el.style.setProperty("box-sizing", "border-box", "important");
+
             if (width < 600) {
               el.style.setProperty("gap", "0.35rem", "important");
               el.style.setProperty("padding", "0px 8px", "important");
@@ -360,41 +363,112 @@ const LanguageSelector = () => {
             }
           };
 
-          // Apply immediately
+          // Apply immediately (synchronously before paint)
           applyStyles();
 
-          // Watch for style changes
+          // Watch for style changes and re-apply
           const observer = new MutationObserver(() => {
             applyStyles();
           });
           observer.observe(el, {
             attributes: true,
             attributeFilter: ["style", "class"],
-            childList: false,
+            childList: true,
             subtree: false,
           });
 
-          // Apply multiple times
+          // Apply multiple times to catch timing issues
           setTimeout(applyStyles, 0);
           setTimeout(applyStyles, 10);
           setTimeout(applyStyles, 50);
           setTimeout(applyStyles, 100);
+          setTimeout(applyStyles, 200);
           setTimeout(applyStyles, 500);
+          setTimeout(applyStyles, 1000);
 
           // Continuous monitoring for first 5 seconds
-          const interval = setInterval(applyStyles, 100);
+          const interval = setInterval(applyStyles, 50);
           setTimeout(() => clearInterval(interval), 5000);
 
+          // Use requestAnimationFrame for immediate next frame
           if (window.requestAnimationFrame) {
             requestAnimationFrame(() => {
               applyStyles();
-              requestAnimationFrame(applyStyles);
+              requestAnimationFrame(() => {
+                applyStyles();
+                requestAnimationFrame(applyStyles);
+              });
             });
           }
         }
       }}
     >
-      <MKBox className="btn-container" data-language-selector="true" ml={-2}>
+      <MKBox
+        className="btn-container"
+        data-language-selector="true"
+        ml={-2}
+        ref={(el) => {
+          if (el && typeof window !== "undefined") {
+            // Apply styles immediately and synchronously before paint
+            const applyStyles = () => {
+              if (!el) return;
+              const width = window.innerWidth || (window.screen && window.screen.width) || 1920;
+
+              // Use setProperty with important flag to override Material-UI
+              el.style.setProperty("display", "flex", "important");
+              el.style.setProperty("align-items", "center", "important");
+              el.style.setProperty("margin-left", "-16px", "important");
+              el.style.setProperty("transition", "all 0.3s ease", "important");
+              el.style.setProperty("box-sizing", "border-box", "important");
+
+              if (width < 600) {
+                el.style.setProperty("gap", "0.5rem", "important");
+                el.style.setProperty("padding", "4px 8px", "important");
+              } else if (width < 960) {
+                el.style.setProperty("gap", "0.75rem", "important");
+                el.style.setProperty("padding", "4px 10px", "important");
+              } else {
+                el.style.setProperty("gap", "1rem", "important");
+                el.style.setProperty("padding", "6px 12px", "important");
+              }
+            };
+
+            // Apply immediately (synchronously)
+            applyStyles();
+
+            // Watch for style changes and re-apply
+            const observer = new MutationObserver(() => {
+              applyStyles();
+            });
+            observer.observe(el, {
+              attributes: true,
+              attributeFilter: ["style", "class"],
+              childList: false,
+              subtree: false,
+            });
+
+            // Apply multiple times to catch timing issues
+            setTimeout(applyStyles, 0);
+            setTimeout(applyStyles, 10);
+            setTimeout(applyStyles, 50);
+            setTimeout(applyStyles, 100);
+            setTimeout(applyStyles, 200);
+            setTimeout(applyStyles, 500);
+
+            // Continuous monitoring for first 3 seconds
+            const interval = setInterval(applyStyles, 50);
+            setTimeout(() => clearInterval(interval), 3000);
+
+            // Use requestAnimationFrame for immediate next frame
+            if (window.requestAnimationFrame) {
+              requestAnimationFrame(() => {
+                applyStyles();
+                requestAnimationFrame(applyStyles);
+              });
+            }
+          }
+        }}
+      >
         <MKTypography
           variant="button"
           fontWeight={!checked ? "600" : "400"}
