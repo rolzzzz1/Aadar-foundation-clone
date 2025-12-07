@@ -490,7 +490,7 @@ function HeroSlide({
         {/* Text section - right */}
         <MKBox
           flex={{ xs: "0 0 auto", sm: "0 0 auto", md: "0 0 45%" }}
-          width={{ xs: "90%", sm: "80%", md: "45%" }}
+          width={{ xs: "100%", sm: "80%", md: "45%" }}
           display="flex"
           flexDirection="column"
           justifyContent={
@@ -509,24 +509,19 @@ function HeroSlide({
             paddingTop: { xs: isMobile ? 0 : 1.1, sm: 1.5, md: 1.6, lg: 1.8 },
             marginTop: isTabletRange ? -4 : isMobile ? 6 : 0,
             height: {
-              xs: isMobile ? "95vh" : "auto",
+              xs: isMobile ? "85vh" : "auto",
               sm: isTabletRange ? "100vh" : "auto",
               md: "calc(100vh - 160px)",
             },
             maxHeight: { xs: "none", sm: "none", md: "none" },
             minHeight: {
-              xs: isMobile ? "95vh" : "auto",
+              xs: isMobile ? "85vh" : "auto",
               sm: isTabletRange ? "100vh" : "auto",
               md: "fit-content",
             },
             overflow: { xs: "visible", sm: "visible", md: "visible" },
             mx: { xs: "auto", sm: "auto", md: 0 },
             mb: { xs: 0, sm: 3, md: 2, lg: 2.5 },
-            "@media (max-width: 575px)": {
-              width: "85%",
-              height: "95vh",
-              minHeight: "95vh",
-            },
           }}
         >
           <MKBox
@@ -552,14 +547,11 @@ function HeroSlide({
                 sm: "2px solid rgba(255, 255, 255, 0.9)",
                 md: "3px solid rgba(255, 255, 255, 0.9)",
               },
-              maxWidth: { xs: "90%", sm: "85%", md: "92%", lg: "90%" },
+              maxWidth: { xs: "100%", sm: "85%", md: "92%", lg: "90%" },
               mx: { xs: "auto", sm: "auto", md: 0 },
               width: "100%",
               overflow: "visible",
               minHeight: { xs: "auto", sm: "auto", md: "fit-content" },
-              "@media (max-width: 575px)": {
-                maxWidth: "85%",
-              },
             }}
           >
             {/* YouTube icon link - positioned in top-right corner, for slide 2, slide 3, and slide 4 */}
