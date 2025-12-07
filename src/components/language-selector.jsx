@@ -26,7 +26,7 @@ const LanguageSelector = () => {
       sx={{
         display: "flex",
         alignItems: "center",
-        height: { xs: "18px", sm: "20px", md: "22px" },
+        height: { xs: "16px", sm: "18px", md: "20px" },
         lineHeight: 1,
       }}
     >
@@ -36,7 +36,7 @@ const LanguageSelector = () => {
         sx={{
           minWidth: "auto",
           height: "auto",
-          padding: { xs: "2px 4px", sm: "2px 6px", md: "4px 8px" },
+          padding: { xs: "1px 4px", sm: "2px 5px", md: "2px 6px" },
           fontSize: { xs: "0.65rem", sm: "0.7rem", md: "0.75rem" },
           fontWeight: 400,
           textTransform: "none",
