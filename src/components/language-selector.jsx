@@ -25,7 +25,7 @@ const LanguageSelector = () => {
       sx={{
         display: "flex",
         alignItems: "center",
-        height: { xs: "22px", sm: "24px", md: "26px" },
+        height: { xs: "18px", sm: "20px", md: "22px" },
         lineHeight: 1,
       }}
     >
@@ -33,10 +33,10 @@ const LanguageSelector = () => {
         onClick={handleToggle}
         variant="outlined"
         sx={{
-          minWidth: { xs: "75px", sm: "80px", md: "85px" },
-          height: { xs: "22px", sm: "24px", md: "26px" },
-          padding: { xs: "1px 8px", sm: "2px 10px", md: "2px 12px" },
-          fontSize: { xs: "0.55rem", sm: "0.6rem", md: "0.65rem" },
+          minWidth: { xs: "100px", sm: "110px", md: "120px" },
+          height: { xs: "18px", sm: "20px", md: "22px" },
+          padding: { xs: "0px 8px", sm: "1px 10px", md: "1px 12px" },
+          fontSize: { xs: "0.5rem", sm: "0.55rem", md: "0.6rem" },
           fontWeight: 600,
           textTransform: "none",
           borderRadius: "12px",
@@ -51,7 +51,7 @@ const LanguageSelector = () => {
           },
         }}
       >
-        {currentLanguage === "en" ? "English" : "हिन्दी"}
+        English - हिन्दी
       </Button>
     </MKBox>
   );
