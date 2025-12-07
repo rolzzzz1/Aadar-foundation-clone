@@ -26,7 +26,7 @@ const LanguageSelector = () => {
       sx={{
         display: "flex",
         alignItems: "center",
-        height: { xs: "16px", sm: "18px", md: "20px" },
+        height: { xs: "20px", sm: "22px", md: "24px" },
         lineHeight: 1,
       }}
     >
