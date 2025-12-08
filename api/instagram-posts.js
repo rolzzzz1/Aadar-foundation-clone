@@ -7,7 +7,12 @@ export default async function handler(req, res) {
     console.log("Function called - Token exists:", !!accessToken, "Account ID:", accountId);
 
     if (!accessToken || !accountId) {
-      console.error("Missing environment variables - Token:", !!accessToken, "Account ID:", !!accountId);
+      console.error(
+        "Missing environment variables - Token:",
+        !!accessToken,
+        "Account ID:",
+        !!accountId
+      );
       return res.status(500).json({
         error: "Instagram token or account ID missing from server environment",
         details: {
@@ -53,4 +58,3 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: err.message || "Error fetching posts" });
   }
 }
-

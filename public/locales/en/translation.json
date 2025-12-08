@@ -74,42 +74,42 @@
         "description": "98 people till now have been reunited with their families by the efforts of Swarg sadan team."
       }
     },
-  "heroSection": {
-    "ctaButton": "Help Today",
-    "ctaButtonSlide2": "Support a Story",
-    "clickForNextStory": "Click for next story",
-    "clickToHoldStory": "Click to hold story",
-    "pausePlayHint": "Click to hold and play stories",
-    "unmuteVideo": "Unmute video",
-    "muteVideo": "Mute video",
-    "clickToMute": "Click to mute",
-    "clickToUnmute": "Click to unmute",
-    "playSlides": "Play slides",
-    "pauseSlides": "Pause slides",
-    "watchOnYouTube": "Watch on YouTube",
-    "clickToWatchOnYouTube": "Click to watch on YouTube",
-    "slide2": {
-      "title": "Mother Who Got Lost at Kumbh",
-      "subtitle": "Reunited Through Compassion",
-      "paragraph": "During the Kumbh Mela, 72-year-old Dadi Mayki was separated from her family and reached Gwalior. With the support of the Ghassmandi community and Aadar Foundation (Swarg Sadan Ashram), she received care and was finally reunited with her loved ones — a powerful reminder of hope and humanity.",
-      "readMore": "Read More",
-      "youtubeUrl": "https://www.youtube.com/@AadarFoundation/"
+    "heroSection": {
+      "ctaButton": "Help Today",
+      "ctaButtonSlide2": "Support a Story",
+      "clickForNextStory": "Click for next story",
+      "clickToHoldStory": "Click to hold story",
+      "pausePlayHint": "Click to hold and play stories",
+      "unmuteVideo": "Unmute video",
+      "muteVideo": "Mute video",
+      "clickToMute": "Click to mute",
+      "clickToUnmute": "Click to unmute",
+      "playSlides": "Play slides",
+      "pauseSlides": "Pause slides",
+      "watchOnYouTube": "Watch on YouTube",
+      "clickToWatchOnYouTube": "Click to watch on YouTube",
+      "slide2": {
+        "title": "Mother Who Got Lost at Kumbh",
+        "subtitle": "Reunited Through Compassion",
+        "paragraph": "During the Kumbh Mela, 72-year-old Dadi Mayki was separated from her family and reached Gwalior. With the support of the Ghassmandi community and Aadar Foundation (Swarg Sadan Ashram), she received care and was finally reunited with her loved ones — a powerful reminder of hope and humanity.",
+        "readMore": "Read More",
+        "youtubeUrl": "https://www.youtube.com/@AadarFoundation/"
+      },
+      "slide3": {
+        "title": "A Lost Child, Found Through Compassion",
+        "subtitle": "Story of Nirbhay",
+        "paragraph": "Separated from his father in Gwalior, Nirbhay was rescued by the Child Welfare Committee and sheltered at Swarg Sadan Ashram. When DSP Shri Santosh Patel shared his video online, his family recognized him and came to take him home — a touching reunion made possible by the ashram and the DSP.",
+        "readMore": "Read More",
+        "youtubeUrl": "https://www.youtube.com/watch?v=spVhHKQK16A"
+      },
+      "slide4": {
+        "title": "A Home, A Smile, A New Beginning",
+        "subtitle": "Baba’s Story",
+        "paragraph": "An elderly Baba, found alone and helpless on the streets of Gwalior, finally found a safe home and a reason to smile again. His story of abandonment turned into a moving example of compassion when kind people offered him shelter and dignity. His smile reminds us that humanity still lives among us — and even a small act of kindness can change a life.",
+        "readMore": "Read More",
+        "youtubeUrl": "https://www.youtube.com/watch?v=rZrTwz2RpD0"
+      }
     },
-    "slide3": {
-      "title": "A Lost Child, Found Through Compassion",
-      "subtitle": "Story of Nirbhay",
-      "paragraph": "Separated from his father in Gwalior, Nirbhay was rescued by the Child Welfare Committee and sheltered at Swarg Sadan Ashram. When DSP Shri Santosh Patel shared his video online, his family recognized him and came to take him home — a touching reunion made possible by the ashram and the DSP.",
-      "readMore": "Read More",
-      "youtubeUrl": "https://www.youtube.com/watch?v=spVhHKQK16A"
-    },
-    "slide4": {
-      "title": "A Home, A Smile, A New Beginning",
-      "subtitle": "Baba’s Story",
-      "paragraph": "An elderly Baba, found alone and helpless on the streets of Gwalior, finally found a safe home and a reason to smile again. His story of abandonment turned into a moving example of compassion when kind people offered him shelter and dignity. His smile reminds us that humanity still lives among us — and even a small act of kindness can change a life.",
-      "readMore": "Read More",
-      "youtubeUrl": "https://www.youtube.com/watch?v=rZrTwz2RpD0"
-    }
-  },
     "postsSection": {
       "title": "Latest Updates",
       "viewOnInstagram": "View on Instagram",

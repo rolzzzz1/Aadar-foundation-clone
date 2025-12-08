@@ -48,6 +48,9 @@ import PropTypes from "prop-types";
 // Additional hero images for carousel
 import blackAndWhiteHero from "assets/images/mainThemeImages/aadar-main-black2.png";
 import heroImage2 from "assets/images/aboutPageImages/main1.jpg";
+import slide2MobileBg from "assets/images/mainThemeImages/slide2-mobile-bg.png";
+import slide3MobileBg from "assets/images/mainThemeImages/slide3-mobile-bg.png";
+import slide4MobileBg from "assets/images/mainThemeImages/slide4-mobile-bg.png";
 
 // Video URLs configuration - import from config file
 import { VIDEO_URLS } from "../../config/videoUrls";
@@ -490,7 +493,7 @@ function HeroSlide({
         {/* Text section - right */}
         <MKBox
           flex={{ xs: "0 0 auto", sm: "0 0 auto", md: "0 0 45%" }}
-          width={{ xs: "100%", sm: "80%", md: "45%" }}
+          width={{ xs: "80%", sm: "80%", md: "45%" }}
           display="flex"
           flexDirection="column"
           justifyContent={
@@ -504,26 +507,188 @@ function HeroSlide({
           sx={{
             position: "relative",
             zIndex: 10,
-            padding: { xs: 1.1, sm: 1.5, md: 1.6, lg: 1.8 },
-            paddingX: { xs: 1.8, sm: 2.1, md: 1.8, lg: 2 },
-            paddingTop: { xs: isMobile ? 0 : 1.1, sm: 1.5, md: 1.6, lg: 1.8 },
-            marginTop: isTabletRange ? -4 : isMobile ? 6 : 0,
+            padding: { xs: 1.1, sm: 1.1, md: 1.6, lg: 1.8 },
+            paddingX: { xs: 1.8, sm: 1.8, md: 1.8, lg: 2 },
+            paddingTop: { xs: isMobile ? 0 : 1.1, sm: isTabletRange ? 0 : 1.1, md: 1.6, lg: 1.8 },
+            marginTop: isTabletRange ? 6 : isMobile ? 6 : 0,
             height: {
               xs: isMobile ? "85vh" : "auto",
-              sm: isTabletRange ? "100vh" : "auto",
+              sm: isTabletRange ? "85vh" : "auto",
               md: "calc(100vh - 160px)",
             },
             maxHeight: { xs: "none", sm: "none", md: "none" },
             minHeight: {
               xs: isMobile ? "85vh" : "auto",
-              sm: isTabletRange ? "100vh" : "auto",
+              sm: isTabletRange ? "85vh" : "auto",
               md: "fit-content",
             },
             overflow: { xs: "visible", sm: "visible", md: "visible" },
             mx: { xs: "auto", sm: "auto", md: 0 },
-            mb: { xs: 0, sm: 3, md: 2, lg: 2.5 },
+            mb: { xs: 0, sm: 0, md: 2, lg: 2.5 },
           }}
         >
+          {/* Horizontal rectangular image for slide 2 - positioned above text box (on xs and sm screens) */}
+          {slideIndex === 1 && (
+            <MKBox
+              sx={{
+                width: { xs: "320px", sm: "320px", md: 0 },
+                height: { xs: "160px", sm: "160px", md: 0 },
+                borderRadius: { xs: "16px", sm: "16px", md: 0 },
+                overflow: "hidden",
+                padding: { xs: "5px", sm: "5px", md: 0 },
+                background:
+                  "linear-gradient(135deg, #4FA953 0%, #ECA533 25%, #FFD757 50%, #ECA533 75%, #4FA953 100%)",
+                boxShadow:
+                  "0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(255, 255, 255, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.5)",
+                mb: { xs: -5, sm: -5, md: 0 },
+                mt: { xs: -2, sm: -2, md: 0 },
+                position: "relative",
+                zIndex: 12,
+                display: { xs: "flex", sm: "flex", md: "none" },
+                alignItems: "center",
+                justifyContent: "center",
+                "&::before": {
+                  content: '""',
+                  position: "absolute",
+                  inset: { xs: "5px", sm: "5px", md: 0 },
+                  borderRadius: { xs: "12px", sm: "12px", md: 0 },
+                  border: {
+                    xs: "2px solid rgba(255, 255, 255, 0.9)",
+                    sm: "2px solid rgba(255, 255, 255, 0.9)",
+                    md: "none",
+                  },
+                  zIndex: 1,
+                  pointerEvents: "none",
+                  backgroundColor: "transparent",
+                },
+              }}
+            >
+              <MKBox
+                component="img"
+                src={slide2MobileBg}
+                alt="Aadar Foundation"
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  objectPosition: { xs: "center 40%", sm: "center 40%", md: "center" },
+                  borderRadius: { xs: "16px", sm: "16px", md: 0 },
+                  position: "relative",
+                  zIndex: 2,
+                  backgroundColor: "transparent",
+                  display: "block",
+                }}
+              />
+            </MKBox>
+          )}
+          {/* Horizontal rectangular image for slide 3 - positioned above text box (on xs and sm screens) */}
+          {slideIndex === 2 && (
+            <MKBox
+              sx={{
+                width: { xs: "320px", sm: "320px", md: 0 },
+                height: { xs: "160px", sm: "160px", md: 0 },
+                borderRadius: { xs: "16px", sm: "16px", md: 0 },
+                overflow: "hidden",
+                padding: { xs: "5px", sm: "5px", md: 0 },
+                background:
+                  "linear-gradient(135deg, #4FA953 0%, #ECA533 25%, #FFD757 50%, #ECA533 75%, #4FA953 100%)",
+                boxShadow:
+                  "0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(255, 255, 255, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.5)",
+                mb: { xs: -5, sm: -5, md: 0 },
+                mt: { xs: -2, sm: -2, md: 0 },
+                position: "relative",
+                zIndex: 12,
+                display: { xs: "flex", sm: "flex", md: "none" },
+                alignItems: "center",
+                justifyContent: "center",
+                "&::before": {
+                  content: '""',
+                  position: "absolute",
+                  inset: { xs: "5px", sm: "5px", md: 0 },
+                  borderRadius: { xs: "12px", sm: "12px", md: 0 },
+                  border: {
+                    xs: "2px solid rgba(255, 255, 255, 0.9)",
+                    sm: "2px solid rgba(255, 255, 255, 0.9)",
+                    md: "none",
+                  },
+                  zIndex: 1,
+                  pointerEvents: "none",
+                  backgroundColor: "transparent",
+                },
+              }}
+            >
+              <MKBox
+                component="img"
+                src={slide3MobileBg}
+                alt="Aadar Foundation"
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  objectPosition: { xs: "center 40%", sm: "center 40%", md: "center" },
+                  borderRadius: { xs: "16px", sm: "16px", md: 0 },
+                  position: "relative",
+                  zIndex: 2,
+                  backgroundColor: "transparent",
+                  display: "block",
+                }}
+              />
+            </MKBox>
+          )}
+          {/* Horizontal rectangular image for slide 4 - positioned above text box (on xs and sm screens) */}
+          {slideIndex === 3 && (
+            <MKBox
+              sx={{
+                width: { xs: "320px", sm: "320px", md: 0 },
+                height: { xs: "160px", sm: "160px", md: 0 },
+                borderRadius: { xs: "16px", sm: "16px", md: 0 },
+                overflow: "hidden",
+                padding: { xs: "5px", sm: "5px", md: 0 },
+                background:
+                  "linear-gradient(135deg, #4FA953 0%, #ECA533 25%, #FFD757 50%, #ECA533 75%, #4FA953 100%)",
+                boxShadow:
+                  "0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(255, 255, 255, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.5)",
+                mb: { xs: -5, sm: -5, md: 0 },
+                mt: { xs: -2, sm: -2, md: 0 },
+                position: "relative",
+                zIndex: 12,
+                display: { xs: "flex", sm: "flex", md: "none" },
+                alignItems: "center",
+                justifyContent: "center",
+                "&::before": {
+                  content: '""',
+                  position: "absolute",
+                  inset: { xs: "5px", sm: "5px", md: 0 },
+                  borderRadius: { xs: "12px", sm: "12px", md: 0 },
+                  border: {
+                    xs: "2px solid rgba(255, 255, 255, 0.9)",
+                    sm: "2px solid rgba(255, 255, 255, 0.9)",
+                    md: "none",
+                  },
+                  zIndex: 1,
+                  pointerEvents: "none",
+                  backgroundColor: "transparent",
+                },
+              }}
+            >
+              <MKBox
+                component="img"
+                src={slide4MobileBg}
+                alt="Aadar Foundation"
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  objectPosition: { xs: "center 40%", sm: "center 40%", md: "center" },
+                  borderRadius: { xs: "16px", sm: "16px", md: 0 },
+                  position: "relative",
+                  zIndex: 2,
+                  backgroundColor: "transparent",
+                  display: "block",
+                }}
+              />
+            </MKBox>
+          )}
           <MKBox
             className={
               isActive
@@ -532,12 +697,19 @@ function HeroSlide({
             }
             sx={{
               position: "relative",
-              zIndex: 10,
-              padding: { xs: 1.3, sm: 1.7, md: 1.6, lg: 1.8 },
-              paddingTop: { xs: 1.9, sm: 2.2, md: 2.1, lg: 2.3 },
-              paddingBottom: { xs: 1.3, sm: 1.7, md: 1.6, lg: 1.8 },
-              paddingRight: { xs: 2.8, sm: 3.2, md: 3.4, lg: 3.6 },
-              borderRadius: { xs: "16px", sm: "18px", md: "24px", lg: "28px" },
+              zIndex:
+                slideIndex === 1 || slideIndex === 2 || slideIndex === 3
+                  ? { xs: 13, sm: 13, md: 10 }
+                  : 10,
+              marginTop:
+                slideIndex === 1 || slideIndex === 2 || slideIndex === 3
+                  ? { xs: 0, sm: 0, md: 0 }
+                  : 0,
+              padding: { xs: 1.3, sm: 1.3, md: 1.6, lg: 1.8 },
+              paddingTop: { xs: 1.9, sm: 1.9, md: 2.1, lg: 2.3 },
+              paddingBottom: { xs: 1.3, sm: 1.3, md: 1.6, lg: 1.8 },
+              paddingRight: { xs: 2.8, sm: 2.8, md: 3.4, lg: 3.6 },
+              borderRadius: { xs: "16px", sm: "16px", md: "24px", lg: "28px" },
               backgroundColor: "rgba(255, 255, 255, 0.95)",
               backdropFilter: "blur(30px)",
               boxShadow:
@@ -547,7 +719,7 @@ function HeroSlide({
                 sm: "2px solid rgba(255, 255, 255, 0.9)",
                 md: "3px solid rgba(255, 255, 255, 0.9)",
               },
-              maxWidth: { xs: "100%", sm: "85%", md: "92%", lg: "90%" },
+              maxWidth: { xs: "100%", sm: "100%", md: "92%", lg: "90%" },
               mx: { xs: "auto", sm: "auto", md: 0 },
               width: "100%",
               overflow: "visible",

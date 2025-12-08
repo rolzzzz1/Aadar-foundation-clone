@@ -49,7 +49,7 @@
 
 .input-group input:focus {
   outline: none;
-  border-color: #E4405F;
+  border-color: #e4405f;
 }
 
 .input-hint {
@@ -77,7 +77,7 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #E4405F 0%, #C13584 100%);
+  background: linear-gradient(135deg, #e4405f 0%, #c13584 100%);
   color: white;
 }
 
@@ -142,7 +142,7 @@
 }
 
 .error-help a {
-  color: #E4405F;
+  color: #e4405f;
   text-decoration: underline;
 }
 
@@ -224,7 +224,7 @@
 
 .spinner {
   border: 4px solid #f3f3f3;
-  border-top: 4px solid #E4405F;
+  border-top: 4px solid #e4405f;
   border-radius: 50%;
   width: 50px;
   height: 50px;
@@ -233,8 +233,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .posts-section {
@@ -293,12 +297,12 @@
   top: 50%;
   transform: translateY(-50%);
   background: rgba(255, 255, 255, 0.9);
-  border: 2px solid #E4405F;
+  border: 2px solid #e4405f;
   border-radius: 50%;
   width: 50px;
   height: 50px;
   font-size: 32px;
-  color: #E4405F;
+  color: #e4405f;
   cursor: pointer;
   z-index: 10;
   display: flex;
@@ -309,7 +313,7 @@
 }
 
 .carousel-btn:hover {
-  background: #E4405F;
+  background: #e4405f;
   color: white;
   transform: translateY(-50%) scale(1.1);
 }
@@ -333,7 +337,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  border: 2px solid #E4405F;
+  border: 2px solid #e4405f;
   background: transparent;
   cursor: pointer;
   transition: all 0.3s;
@@ -345,7 +349,7 @@
 }
 
 .carousel-indicator.active {
-  background: #E4405F;
+  background: #e4405f;
 }
 
 .post-card {
@@ -429,7 +433,7 @@
 }
 
 .post-link {
-  color: #E4405F;
+  color: #e4405f;
   text-decoration: none;
   font-size: 12px;
   font-weight: 600;
@@ -437,7 +441,7 @@
 }
 
 .post-link:hover {
-  color: #C13584;
+  color: #c13584;
   text-decoration: underline;
 }
 
@@ -676,4 +680,3 @@
     font-size: 8px;
   }
 }
-

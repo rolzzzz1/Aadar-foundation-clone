@@ -14,6 +14,11 @@ import Box from "@mui/material/Box";
 // Material Kit 2 React themes
 import theme from "assets/theme";
 
+// Image protection utilities
+import { setupImageProtection, addImageProtectionCSS } from "utils/imageProtection";
+// Image watermarking
+import { watermarkAllImages, setupWatermarkObserver } from "utils/imageWatermark";
+
 // Lazy load routes for code splitting
 const Home = lazy(() => import("layouts/pages/home"));
 
@@ -100,6 +105,53 @@ export default function App() {
   useEffect(() => {
     document.documentElement.lang = i18n.language || "en";
   }, [i18n.language]);
+
+  // Setup image protection
+  useEffect(() => {
+    // Add CSS protection
+    addImageProtectionCSS();
+
+    // Setup event listeners for image protection
+    const cleanup = setupImageProtection();
+
+    // Cleanup on unmount
+    return cleanup;
+  }, []);
+
+  // Apply watermarks to all images
+  useEffect(() => {
+    const watermarkOptions = {
+      opacity: 0.05, // Very low opacity for invisible watermark
+      scale: 0.25, // 25% of image size
+      position: "center", // Center position
+      repeat: false, // Single watermark
+    };
+
+    // Setup observer for dynamically added images
+    const cleanupObserver = setupWatermarkObserver(watermarkOptions);
+
+    // Apply watermarks to existing images
+    const applyWatermarks = async () => {
+      // Wait for images to load
+      if (document.readyState === "complete") {
+        // Small delay to ensure all images are rendered
+        setTimeout(() => {
+          watermarkAllImages(watermarkOptions);
+        }, 1500);
+      } else {
+        window.addEventListener("load", () => {
+          setTimeout(() => {
+            watermarkAllImages(watermarkOptions);
+          }, 1500);
+        });
+      }
+    };
+
+    applyWatermarks();
+
+    // Cleanup observer on unmount
+    return cleanupObserver;
+  }, [pathname]);
 
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
