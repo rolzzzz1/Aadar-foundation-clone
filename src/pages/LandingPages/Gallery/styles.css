@@ -51,3 +51,16 @@
     column-gap: 10px;
   }
 }
+
+/* Ensure LightGallery modal appears above navbar */
+.lg-backdrop {
+  z-index: 3000 !important;
+}
+
+.lg-container {
+  z-index: 3001 !important;
+}
+
+.lg-outer {
+  z-index: 3000 !important;
+}

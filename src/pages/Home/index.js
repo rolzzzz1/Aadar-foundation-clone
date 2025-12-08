@@ -1694,8 +1694,7 @@ function HeroSlide({
                 : {}),
               ...(isActive && isFirstSlide && shouldAnimate
                 ? {
-                    // Don't set transform here - let CSS animation handle it
-                    // Initial opacity and visibility set, but transform is controlled by CSS
+                    // Don't set transform/opacity inline - let CSS animation handle it completely
                     visibility: "visible",
                   }
                 : {}),
@@ -2446,10 +2445,10 @@ function Home() {
       if (animationTimerRef.current) {
         clearTimeout(animationTimerRef.current);
       }
-      // Set flag after animation completes (0.5s delay + 4.2s duration + buffer)
+      // Set flag after animation completes (0.12s delay + 2.5s duration + buffer)
       animationTimerRef.current = setTimeout(() => {
         setHasPlayedSlide1Animation(true);
-      }, 5000);
+      }, 3000);
     }
     return () => {
       if (animationTimerRef.current) {
@@ -2831,6 +2830,9 @@ function Home() {
                 opacity: 0;
                 transform: translateX(-200px);
               }
+              15% {
+                opacity: 0.3;
+              }
               100% {
                 opacity: 1;
                 transform: translateX(0);
@@ -2841,6 +2843,9 @@ function Home() {
               0% {
                 opacity: 0;
                 transform: translateX(-180px);
+              }
+              15% {
+                opacity: 0.3;
               }
               100% {
                 opacity: 1;
@@ -2862,46 +2867,68 @@ function Home() {
             @keyframes slideInFromLeftButton {
               0% {
                 opacity: 0;
-                transform: translateX(-180px) scale(0.96) translateY(0);
+                transform: translateX(-180px) scale(0.96);
               }
-              85% {
-                opacity: 1;
-                transform: translateX(0) scale(1) translateY(0);
-              }
-              92.5% {
-                transform: translateX(0) scale(1) translateY(-4px);
+              15% {
+                opacity: 0.3;
               }
               100% {
                 opacity: 1;
-                transform: translateX(0) scale(1) translateY(0);
+                transform: translateX(0) scale(1);
               }
             }
             
-            /* Apply animations to slide 1 elements when active and should animate - 3x slower, more from left, with reduced delay */
+            /* Apply animations to slide 1 elements when active and should animate - smooth continuous motion */
             .hero-slide-1-paint-patch.active.should-animate {
-              animation: slideInFromLeftSmooth 4.2s cubic-bezier(0.23, 1, 0.32, 1) 0.3s forwards !important;
-              opacity: 1 !important;
+              animation: slideInFromLeftSmooth 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s forwards !important;
+              will-change: transform, opacity;
+            }
+            
+            /* Ensure paint patch animation works on small screens */
+            @media (max-width: 767px) {
+              .hero-slide-1-paint-patch.active.should-animate {
+                animation: slideInFromLeftSmooth 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s forwards !important;
+                will-change: transform, opacity;
+              }
             }
             
             .hero-slide-1-text.active.should-animate {
-              animation: slideInFromLeftText 4.2s cubic-bezier(0.23, 1, 0.32, 1) 0.32s forwards !important;
-              opacity: 1 !important;
+              animation: slideInFromLeftText 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.12s forwards !important;
+              will-change: transform, opacity;
+            }
+            
+            /* Ensure animation works on all screen sizes including small screens */
+            @media (max-width: 767px) {
+              .hero-slide-1-text.active.should-animate {
+                animation: slideInFromLeftText 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.12s forwards !important;
+                will-change: transform, opacity;
+              }
+            }
+            
+            @media (max-width: 575px) {
+              .hero-slide-1-text.active.should-animate {
+                animation: slideInFromLeftText 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.12s forwards !important;
+                will-change: transform, opacity;
+              }
             }
             
             /* Initial state - elements start completely hidden and far to the left */
             .hero-slide-1-paint-patch:not(.active) {
               opacity: 0;
               transform: translateX(-200px);
+              transition: none;
             }
             
             .hero-slide-1-text:not(.active) {
               opacity: 0;
               transform: translateX(-180px);
+              transition: none;
             }
             
             .hero-slide-1-button:not(.active) {
               opacity: 0;
-              transform: translateX(-180px);
+              transform: translateX(-180px) scale(0.96);
+              transition: none;
             }
             
             /* When slide is active but animation shouldn't play (returning to slide 1), show elements immediately */
@@ -2920,16 +2947,7 @@ function Home() {
             .hero-slide-1-button.active:not(.should-animate) {
               opacity: 1 !important;
               transform: translateX(0) scale(1) !important;
-              /* Animation will be applied by the rule below */
-            }
-            
-            /* Ensure button is visible when active (fallback for first load CSS timing) */
-            /* This ensures visibility even if animation hasn't started yet */
-            /* The should-animate rule will override this to start the animation */
-            /* Don't set transform here as it conflicts with animations */
-            .hero-slide-1-button.active {
-              opacity: 1 !important;
-              visibility: visible !important;
+              animation: none !important;
             }
             
             /* Help Today Button Continuous Animations */
@@ -3044,13 +3062,26 @@ function Home() {
             }
             
             .hero-slide-1-button.active.should-animate {
-              /* Match text animation exactly - same as .hero-slide-1-text.active.should-animate */
-              /* Use same animation with same timing as text */
-              animation: slideInFromLeftText 4.2s cubic-bezier(0.23, 1, 0.32, 1) 0.32s forwards,
-                         buttonPulse 3s ease-in-out infinite 4.52s,
-                         buttonGlow 2.5s ease-in-out infinite 4.52s,
-                         buttonFloat 3s ease-in-out infinite 4.52s !important;
-              opacity: 1 !important;
+              /* Use exact same animation as text for perfect synchronization */
+              opacity: 0 !important;
+              transform: translateX(-180px) !important;
+              transition: none !important;
+              visibility: visible !important;
+              animation: slideInFromLeftText 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.12s forwards,
+                         buttonPulse 3s ease-in-out infinite 2.62s,
+                         buttonGlow 2.5s ease-in-out infinite 2.62s,
+                         buttonFloat 3s ease-in-out infinite 2.62s !important;
+              will-change: transform, opacity;
+            }
+            
+            /* Ensure button animation works on small screens */
+            @media (max-width: 767px) {
+              .hero-slide-1-button.active.should-animate {
+                animation: slideInFromLeftText 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.12s forwards,
+                           buttonPulse 3s ease-in-out infinite 2.62s,
+                           buttonGlow 2.5s ease-in-out infinite 2.62s,
+                           buttonFloat 3s ease-in-out infinite 2.62s !important;
+              }
             }
             
             /* Arrow animation for Help Today button - starts after slide-in completes */
@@ -3059,7 +3090,7 @@ function Home() {
             }
             
             .hero-slide-1-button.active.should-animate .arrow-icon {
-              animation: arrowMove 2s ease-in-out infinite 4.52s;
+              animation: arrowMove 2s ease-in-out infinite 2.62s;
             }
             
             /* Slides 2, 3, 4 - Ultra Smooth Hero Effects */
