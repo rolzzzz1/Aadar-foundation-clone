@@ -189,7 +189,7 @@ function HeroSlide({
           overflow: { xs: "hidden", md: "hidden" },
           zIndex: 0,
           paddingTop: { xs: "64px", sm: "76px", md: "110px", lg: "120px" },
-          paddingBottom: { xs: 2.2, sm: 2.6, md: 0 },
+          paddingBottom: { xs: 8, sm: 8, md: 0 },
           gap: { xs: 1.2, sm: 1.5, md: 1.5, lg: 1.5 },
         }}
       >
@@ -493,7 +493,7 @@ function HeroSlide({
         {/* Text section - right */}
         <MKBox
           flex={{ xs: "0 0 auto", sm: "0 0 auto", md: "0 0 45%" }}
-          width={{ xs: "80%", sm: "80%", md: "45%" }}
+          width={{ xs: "90%", sm: "80%", md: "45%" }}
           display="flex"
           flexDirection="column"
           justifyContent={
@@ -510,16 +510,21 @@ function HeroSlide({
             padding: { xs: 1.1, sm: 1.1, md: 1.6, lg: 1.8 },
             paddingX: { xs: 1.8, sm: 1.8, md: 1.8, lg: 2 },
             paddingTop: { xs: isMobile ? 0 : 1.1, sm: isTabletRange ? 0 : 1.1, md: 1.6, lg: 1.8 },
-            marginTop: isTabletRange ? 6 : isMobile ? 6 : 0,
+            paddingBottom: { xs: 0, sm: 0, md: 0 },
+            marginTop: isTabletRange ? 10 : isMobile ? 10 : 0,
             height: {
-              xs: isMobile ? "85vh" : "auto",
-              sm: isTabletRange ? "85vh" : "auto",
+              xs: isMobile ? "auto" : "auto",
+              sm: isTabletRange ? "auto" : "auto",
               md: "calc(100vh - 160px)",
             },
-            maxHeight: { xs: "none", sm: "none", md: "none" },
+            maxHeight: {
+              xs: isMobile ? "70vh" : "none",
+              sm: isTabletRange ? "70vh" : "none",
+              md: "none",
+            },
             minHeight: {
-              xs: isMobile ? "85vh" : "auto",
-              sm: isTabletRange ? "85vh" : "auto",
+              xs: isMobile ? "auto" : "auto",
+              sm: isTabletRange ? "auto" : "auto",
               md: "fit-content",
             },
             overflow: { xs: "visible", sm: "visible", md: "visible" },
@@ -531,8 +536,8 @@ function HeroSlide({
           {slideIndex === 1 && (
             <MKBox
               sx={{
-                width: { xs: "320px", sm: "320px", md: 0 },
-                height: { xs: "160px", sm: "160px", md: 0 },
+                width: { xs: "280px", sm: "280px", md: 0 },
+                height: { xs: "140px", sm: "140px", md: 0 },
                 borderRadius: { xs: "16px", sm: "16px", md: 0 },
                 overflow: "hidden",
                 padding: { xs: "5px", sm: "5px", md: 0 },
@@ -541,7 +546,7 @@ function HeroSlide({
                 boxShadow:
                   "0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(255, 255, 255, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.5)",
                 mb: { xs: -5, sm: -5, md: 0 },
-                mt: { xs: -2, sm: -2, md: 0 },
+                mt: { xs: 2, sm: 2, md: 0 },
                 position: "relative",
                 zIndex: 12,
                 display: { xs: "flex", sm: "flex", md: "none" },
@@ -585,8 +590,8 @@ function HeroSlide({
           {slideIndex === 2 && (
             <MKBox
               sx={{
-                width: { xs: "320px", sm: "320px", md: 0 },
-                height: { xs: "160px", sm: "160px", md: 0 },
+                width: { xs: "280px", sm: "280px", md: 0 },
+                height: { xs: "140px", sm: "140px", md: 0 },
                 borderRadius: { xs: "16px", sm: "16px", md: 0 },
                 overflow: "hidden",
                 padding: { xs: "5px", sm: "5px", md: 0 },
@@ -595,7 +600,7 @@ function HeroSlide({
                 boxShadow:
                   "0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(255, 255, 255, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.5)",
                 mb: { xs: -5, sm: -5, md: 0 },
-                mt: { xs: -2, sm: -2, md: 0 },
+                mt: { xs: 2, sm: 2, md: 0 },
                 position: "relative",
                 zIndex: 12,
                 display: { xs: "flex", sm: "flex", md: "none" },
@@ -639,8 +644,8 @@ function HeroSlide({
           {slideIndex === 3 && (
             <MKBox
               sx={{
-                width: { xs: "320px", sm: "320px", md: 0 },
-                height: { xs: "160px", sm: "160px", md: 0 },
+                width: { xs: "280px", sm: "280px", md: 0 },
+                height: { xs: "140px", sm: "140px", md: 0 },
                 borderRadius: { xs: "16px", sm: "16px", md: 0 },
                 overflow: "hidden",
                 padding: { xs: "5px", sm: "5px", md: 0 },
@@ -649,7 +654,7 @@ function HeroSlide({
                 boxShadow:
                   "0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(255, 255, 255, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.5)",
                 mb: { xs: -5, sm: -5, md: 0 },
-                mt: { xs: -2, sm: -2, md: 0 },
+                mt: { xs: 2, sm: 2, md: 0 },
                 position: "relative",
                 zIndex: 12,
                 display: { xs: "flex", sm: "flex", md: "none" },
@@ -707,7 +712,7 @@ function HeroSlide({
                   : 0,
               padding: { xs: 1.3, sm: 1.3, md: 1.6, lg: 1.8 },
               paddingTop: { xs: 1.9, sm: 1.9, md: 2.1, lg: 2.3 },
-              paddingBottom: { xs: 1.3, sm: 1.3, md: 1.6, lg: 1.8 },
+              paddingBottom: { xs: 1, sm: 1, md: 1.6, lg: 1.8 },
               paddingRight: { xs: 2.8, sm: 2.8, md: 3.4, lg: 3.6 },
               borderRadius: { xs: "16px", sm: "16px", md: "24px", lg: "28px" },
               backgroundColor: "rgba(255, 255, 255, 0.95)",
