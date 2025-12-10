@@ -106,6 +106,7 @@ function HeroSlide({
   // Rebuild slide 2: video left + Pacifico heading + yellow/orange gradient background
   const videoRef = useRef(null);
   const [isMuted, setIsMuted] = useState(true);
+  const [isParagraphExpanded, setIsParagraphExpanded] = useState(false);
 
   // Treat very small screens as mobile (we hide hero videos there)
   const isMobile = typeof window !== "undefined" && window.innerWidth < 576;
@@ -507,19 +508,34 @@ function HeroSlide({
           sx={{
             position: "relative",
             zIndex: 10,
-            padding: { xs: 1.1, sm: 1.1, md: 1.6, lg: 1.8 },
-            paddingX: { xs: 1.8, sm: 1.8, md: 1.8, lg: 2 },
-            paddingTop: { xs: isMobile ? 0 : 1.1, sm: isTabletRange ? 0 : 1.1, md: 1.6, lg: 1.8 },
+            padding: { xs: 0.8, sm: 0.8, md: 1.6, lg: 1.8 },
+            paddingX: { xs: 1.5, sm: 1.5, md: 1.8, lg: 2 },
+            paddingTop: { xs: isMobile ? 0 : 0.8, sm: isTabletRange ? 0 : 0.8, md: 1.6, lg: 1.8 },
             paddingBottom: { xs: 0, sm: 0, md: 0 },
-            marginTop: isTabletRange ? 10 : isMobile ? 10 : 0,
+            marginTop:
+              slideIndex === 1 || slideIndex === 2 || slideIndex === 3
+                ? isTabletRange
+                  ? isParagraphExpanded
+                    ? 14
+                    : 2
+                  : isMobile
+                  ? isParagraphExpanded
+                    ? 14
+                    : 2
+                  : 0
+                : isTabletRange
+                ? 2
+                : isMobile
+                ? 2
+                : 0,
             height: {
               xs: isMobile ? "auto" : "auto",
               sm: isTabletRange ? "auto" : "auto",
               md: "calc(100vh - 160px)",
             },
             maxHeight: {
-              xs: isMobile ? "70vh" : "none",
-              sm: isTabletRange ? "70vh" : "none",
+              xs: isMobile ? "50vh" : "none",
+              sm: isTabletRange ? "50vh" : "none",
               md: "none",
             },
             minHeight: {
@@ -536,8 +552,10 @@ function HeroSlide({
           {slideIndex === 1 && (
             <MKBox
               sx={{
-                width: { xs: "280px", sm: "280px", md: 0 },
-                height: { xs: "140px", sm: "140px", md: 0 },
+                width: { xs: "90%", sm: "85%", md: 0 },
+                maxWidth: { xs: "320px", sm: "400px", md: 0 },
+                height: { xs: "200px", sm: "220px", md: 0 },
+                minHeight: { xs: "200px", sm: "220px", md: 0 },
                 borderRadius: { xs: "16px", sm: "16px", md: 0 },
                 overflow: "hidden",
                 padding: { xs: "5px", sm: "5px", md: 0 },
@@ -545,13 +563,16 @@ function HeroSlide({
                   "linear-gradient(135deg, #4FA953 0%, #ECA533 25%, #FFD757 50%, #ECA533 75%, #4FA953 100%)",
                 boxShadow:
                   "0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(255, 255, 255, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.5)",
-                mb: { xs: -5, sm: -5, md: 0 },
-                mt: { xs: 2, sm: 2, md: 0 },
+                mb: { xs: 0, sm: 0, md: 0 },
+                mt: { xs: 18, sm: 18, md: 0 },
+                mx: { xs: "auto", sm: "auto", md: 0 },
                 position: "relative",
                 zIndex: 12,
-                display: { xs: "flex", sm: "flex", md: "none" },
-                alignItems: "center",
-                justifyContent: "center",
+                display: {
+                  xs: isParagraphExpanded ? "none" : "block",
+                  sm: isParagraphExpanded ? "none" : "block",
+                  md: "none",
+                },
                 "&::before": {
                   content: '""',
                   position: "absolute",
@@ -572,14 +593,17 @@ function HeroSlide({
                 component="img"
                 src={slide2MobileBg}
                 alt="Aadar Foundation"
+                width="100%"
+                height="100%"
                 sx={{
-                  width: "100%",
-                  height: "100%",
+                  width: "calc(100% - 10px)",
+                  height: "calc(100% - 10px)",
+                  margin: "5px",
                   objectFit: "cover",
                   objectPosition: { xs: "center 40%", sm: "center 40%", md: "center" },
-                  borderRadius: { xs: "16px", sm: "16px", md: 0 },
+                  borderRadius: { xs: "12px", sm: "12px", md: 0 },
                   position: "relative",
-                  zIndex: 2,
+                  zIndex: 10,
                   backgroundColor: "transparent",
                   display: "block",
                 }}
@@ -590,8 +614,10 @@ function HeroSlide({
           {slideIndex === 2 && (
             <MKBox
               sx={{
-                width: { xs: "280px", sm: "280px", md: 0 },
-                height: { xs: "140px", sm: "140px", md: 0 },
+                width: { xs: "90%", sm: "85%", md: 0 },
+                maxWidth: { xs: "320px", sm: "400px", md: 0 },
+                height: { xs: "200px", sm: "220px", md: 0 },
+                minHeight: { xs: "200px", sm: "220px", md: 0 },
                 borderRadius: { xs: "16px", sm: "16px", md: 0 },
                 overflow: "hidden",
                 padding: { xs: "5px", sm: "5px", md: 0 },
@@ -599,13 +625,16 @@ function HeroSlide({
                   "linear-gradient(135deg, #4FA953 0%, #ECA533 25%, #FFD757 50%, #ECA533 75%, #4FA953 100%)",
                 boxShadow:
                   "0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(255, 255, 255, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.5)",
-                mb: { xs: -5, sm: -5, md: 0 },
-                mt: { xs: 2, sm: 2, md: 0 },
+                mb: { xs: 0, sm: 0, md: 0 },
+                mt: { xs: 18, sm: 18, md: 0 },
+                mx: { xs: "auto", sm: "auto", md: 0 },
                 position: "relative",
                 zIndex: 12,
-                display: { xs: "flex", sm: "flex", md: "none" },
-                alignItems: "center",
-                justifyContent: "center",
+                display: {
+                  xs: isParagraphExpanded ? "none" : "block",
+                  sm: isParagraphExpanded ? "none" : "block",
+                  md: "none",
+                },
                 "&::before": {
                   content: '""',
                   position: "absolute",
@@ -626,14 +655,17 @@ function HeroSlide({
                 component="img"
                 src={slide3MobileBg}
                 alt="Aadar Foundation"
+                width="100%"
+                height="100%"
                 sx={{
-                  width: "100%",
-                  height: "100%",
+                  width: "calc(100% - 10px)",
+                  height: "calc(100% - 10px)",
+                  margin: "5px",
                   objectFit: "cover",
                   objectPosition: { xs: "center 40%", sm: "center 40%", md: "center" },
-                  borderRadius: { xs: "16px", sm: "16px", md: 0 },
+                  borderRadius: { xs: "12px", sm: "12px", md: 0 },
                   position: "relative",
-                  zIndex: 2,
+                  zIndex: 10,
                   backgroundColor: "transparent",
                   display: "block",
                 }}
@@ -644,8 +676,10 @@ function HeroSlide({
           {slideIndex === 3 && (
             <MKBox
               sx={{
-                width: { xs: "280px", sm: "280px", md: 0 },
-                height: { xs: "140px", sm: "140px", md: 0 },
+                width: { xs: "90%", sm: "85%", md: 0 },
+                maxWidth: { xs: "320px", sm: "400px", md: 0 },
+                height: { xs: "200px", sm: "220px", md: 0 },
+                minHeight: { xs: "200px", sm: "220px", md: 0 },
                 borderRadius: { xs: "16px", sm: "16px", md: 0 },
                 overflow: "hidden",
                 padding: { xs: "5px", sm: "5px", md: 0 },
@@ -653,13 +687,16 @@ function HeroSlide({
                   "linear-gradient(135deg, #4FA953 0%, #ECA533 25%, #FFD757 50%, #ECA533 75%, #4FA953 100%)",
                 boxShadow:
                   "0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(255, 255, 255, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.5)",
-                mb: { xs: -5, sm: -5, md: 0 },
-                mt: { xs: 2, sm: 2, md: 0 },
+                mb: { xs: 0, sm: 0, md: 0 },
+                mt: { xs: 18, sm: 18, md: 0 },
+                mx: { xs: "auto", sm: "auto", md: 0 },
                 position: "relative",
                 zIndex: 12,
-                display: { xs: "flex", sm: "flex", md: "none" },
-                alignItems: "center",
-                justifyContent: "center",
+                display: {
+                  xs: isParagraphExpanded ? "none" : "block",
+                  sm: isParagraphExpanded ? "none" : "block",
+                  md: "none",
+                },
                 "&::before": {
                   content: '""',
                   position: "absolute",
@@ -680,14 +717,17 @@ function HeroSlide({
                 component="img"
                 src={slide4MobileBg}
                 alt="Aadar Foundation"
+                width="100%"
+                height="100%"
                 sx={{
-                  width: "100%",
-                  height: "100%",
+                  width: "calc(100% - 10px)",
+                  height: "calc(100% - 10px)",
+                  margin: "5px",
                   objectFit: "cover",
                   objectPosition: { xs: "center 40%", sm: "center 40%", md: "center" },
-                  borderRadius: { xs: "16px", sm: "16px", md: 0 },
+                  borderRadius: { xs: "12px", sm: "12px", md: 0 },
                   position: "relative",
-                  zIndex: 2,
+                  zIndex: 10,
                   backgroundColor: "transparent",
                   display: "block",
                 }}
@@ -708,11 +748,15 @@ function HeroSlide({
                   : 10,
               marginTop:
                 slideIndex === 1 || slideIndex === 2 || slideIndex === 3
-                  ? { xs: 0, sm: 0, md: 0 }
+                  ? {
+                      xs: isParagraphExpanded ? "0" : "-80px",
+                      sm: isParagraphExpanded ? "0" : "-88px",
+                      md: 0,
+                    }
                   : 0,
-              padding: { xs: 1.3, sm: 1.3, md: 1.6, lg: 1.8 },
-              paddingTop: { xs: 1.9, sm: 1.9, md: 2.1, lg: 2.3 },
-              paddingBottom: { xs: 1, sm: 1, md: 1.6, lg: 1.8 },
+              padding: { xs: 1, sm: 1, md: 1.6, lg: 1.8 },
+              paddingTop: { xs: 1.5, sm: 1.5, md: 2.1, lg: 2.3 },
+              paddingBottom: { xs: 0.8, sm: 0.8, md: 1.6, lg: 1.8 },
               paddingRight: { xs: 2.8, sm: 2.8, md: 3.4, lg: 3.6 },
               borderRadius: { xs: "16px", sm: "16px", md: "24px", lg: "28px" },
               backgroundColor: "rgba(255, 255, 255, 0.95)",
@@ -901,9 +945,11 @@ function HeroSlide({
                   lg: "0.9rem",
                   xl: "0.94rem",
                 },
-                mb: { xs: 0.9, sm: 1.1, md: 1.4, lg: 1.6 },
+                mb:
+                  slideIndex === 1 || slideIndex === 2 || slideIndex === 3
+                    ? { xs: 0.1, sm: 0.1, md: 1.4, lg: 1.6 }
+                    : { xs: 0.9, sm: 1.1, md: 1.4, lg: 1.6 },
                 color: "#555555",
-                lineHeight: { xs: 1.5, sm: 1.55, md: 1.65, lg: 1.7 },
                 wordWrap: "break-word",
                 overflowWrap: "break-word",
                 textAlign: { xs: "center", sm: "center", md: "left" },
@@ -911,6 +957,40 @@ function HeroSlide({
                   slideIndex === 1
                     ? '"Lato", "Helvetica", "Arial", sans-serif'
                     : '"Lato", "Helvetica", "Arial", sans-serif',
+                whiteSpace:
+                  slideIndex === 1 || slideIndex === 2 || slideIndex === 3
+                    ? {
+                        xs: isParagraphExpanded ? "normal" : "nowrap",
+                        sm: isParagraphExpanded ? "normal" : "nowrap",
+                        md: "normal",
+                      }
+                    : "normal",
+                overflow:
+                  slideIndex === 1 || slideIndex === 2 || slideIndex === 3
+                    ? {
+                        xs: isParagraphExpanded ? "visible" : "hidden",
+                        sm: isParagraphExpanded ? "visible" : "hidden",
+                        md: "visible",
+                      }
+                    : "visible",
+                textOverflow:
+                  slideIndex === 1 || slideIndex === 2 || slideIndex === 3
+                    ? {
+                        xs: isParagraphExpanded ? "clip" : "ellipsis",
+                        sm: isParagraphExpanded ? "clip" : "ellipsis",
+                        md: "clip",
+                      }
+                    : "clip",
+                lineHeight:
+                  slideIndex === 1 || slideIndex === 2 || slideIndex === 3
+                    ? {
+                        xs: isParagraphExpanded ? 1.5 : 1.2,
+                        sm: isParagraphExpanded ? 1.55 : 1.2,
+                        md: 1.65,
+                      }
+                    : { xs: 1.5, sm: 1.55, md: 1.65, lg: 1.7 },
+                width: "100%",
+                maxWidth: "100%",
               }}
             >
               {slideIndex === 1
@@ -919,6 +999,46 @@ function HeroSlide({
                 ? homePage.heroSection.slide3.paragraph
                 : homePage.heroSection.slide4.paragraph}
             </MKTypography>
+            {(slideIndex === 1 || slideIndex === 2 || slideIndex === 3) && (
+              <MKTypography
+                component="button"
+                onClick={() => setIsParagraphExpanded(!isParagraphExpanded)}
+                sx={{
+                  display: { xs: "inline-block", sm: "inline-block", md: "none" },
+                  fontSize: { xs: "0.65rem", sm: "0.7rem" },
+                  color: "#4FA953",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  textDecoration: "none",
+                  backgroundColor: "transparent !important",
+                  border: "none !important",
+                  boxShadow: "none !important",
+                  padding: 0,
+                  marginTop: { xs: 0.1, sm: 0.1 },
+                  marginBottom: { xs: 1, sm: 1 },
+                  lineHeight: 1.2,
+                  textAlign: { xs: "center", sm: "center", md: "left" },
+                  width: { xs: "100%", sm: "100%", md: "auto" },
+                  "&:hover": {
+                    color: "#3d8a41",
+                    textDecoration: "none",
+                    backgroundColor: "transparent !important",
+                    boxShadow: "none !important",
+                  },
+                  "&:active": {
+                    backgroundColor: "transparent !important",
+                    boxShadow: "none !important",
+                  },
+                  "&:focus": {
+                    backgroundColor: "transparent !important",
+                    outline: "none",
+                    boxShadow: "none !important",
+                  },
+                }}
+              >
+                {isParagraphExpanded ? "Read less" : "Read more"}
+              </MKTypography>
+            )}
             <MKButton
               data-hero-button={`slide${slideIndex + 1}`}
               className={
@@ -953,7 +1073,9 @@ function HeroSlide({
                   // Set padding based on screen size (Material-UI spacing: 8px per unit)
                   const width = window.innerWidth;
                   if (width < 600) {
-                    element.style.setProperty("padding", "0.55rem 1.75rem", "important"); // py: 1.1, px: 3.5
+                    element.style.setProperty("padding", "0.4rem 1.25rem", "important"); // py: 0.8, px: 2.5
+                  } else if (width < 768) {
+                    element.style.setProperty("padding", "0.4rem 1.25rem", "important"); // py: 0.8, px: 2.5
                   } else if (width < 960) {
                     element.style.setProperty("padding", "0.5rem 1.6rem", "important"); // py: 1, px: 3.2
                   } else if (width < 1280) {
@@ -981,8 +1103,8 @@ function HeroSlide({
                 // Base padding - responsive values will be applied via sx prop after Material-UI loads
                 // Material-UI spacing: 8px per unit
                 padding:
-                  typeof window !== "undefined" && window.innerWidth < 600
-                    ? "0.55rem 1.75rem"
+                  typeof window !== "undefined" && window.innerWidth < 768
+                    ? "0.4rem 1.25rem"
                     : typeof window !== "undefined" && window.innerWidth < 960
                     ? "0.5rem 1.6rem"
                     : typeof window !== "undefined" && window.innerWidth < 1280
@@ -1004,11 +1126,11 @@ function HeroSlide({
                     }),
               }}
               sx={{
-                px: { xs: 3.5, sm: 3.2, md: 3.5, lg: 4 },
-                py: { xs: 1.1, sm: 1, md: 1.2, lg: 1.3 },
+                px: { xs: 2.5, sm: 2.5, md: 3.5, lg: 4 },
+                py: { xs: 0.8, sm: 0.8, md: 1.2, lg: 1.3 },
                 fontSize: {
-                  xs: "0.9rem",
-                  sm: "0.88rem",
+                  xs: "0.8rem",
+                  sm: "0.8rem",
                   md: "0.95rem",
                   lg: "1rem",
                 },
@@ -1382,13 +1504,16 @@ function HeroSlide({
           <MKBox
             component="img"
             src={aadarHindiYellow}
-            width={{ xs: "80px", sm: "100px", md: "120px", lg: "120px" }}
+            width={{ xs: "120px", sm: "100px", md: "120px", lg: "120px" }}
             display={{ xs: "inline", sm: "none" }}
             mb={2}
             loading="eager"
             fetchPriority="high"
             decoding="async"
             alt="Aadar Foundation Logo"
+            sx={{
+              filter: { xs: "drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))", sm: "none" },
+            }}
           />
           <MKTypography
             color="white"
