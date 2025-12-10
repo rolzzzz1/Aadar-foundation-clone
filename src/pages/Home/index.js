@@ -514,33 +514,21 @@ function HeroSlide({
             paddingBottom: { xs: 0, sm: 0, md: 0 },
             marginTop:
               slideIndex === 1 || slideIndex === 2 || slideIndex === 3
-                ? isTabletRange
-                  ? isParagraphExpanded
-                    ? 14
-                    : 2
-                  : isMobile
-                  ? isParagraphExpanded
-                    ? 14
-                    : 2
-                  : 0
-                : isTabletRange
-                ? 2
-                : isMobile
-                ? 2
-                : 0,
+                ? { xs: 10, sm: 10, md: 0 }
+                : { xs: 10, sm: 10, md: 0 },
             height: {
               xs: isMobile ? "auto" : "auto",
               sm: isTabletRange ? "auto" : "auto",
               md: "calc(100vh - 160px)",
             },
             maxHeight: {
-              xs: isMobile ? "50vh" : "none",
-              sm: isTabletRange ? "50vh" : "none",
+              xs: isMobile ? "none" : "none",
+              sm: isTabletRange ? "none" : "none",
               md: "none",
             },
             minHeight: {
-              xs: isMobile ? "auto" : "auto",
-              sm: isTabletRange ? "auto" : "auto",
+              xs: isMobile ? "calc(100vh - 80px)" : "calc(100vh - 80px)",
+              sm: isTabletRange ? "calc(100vh - 80px)" : "calc(100vh - 80px)",
               md: "fit-content",
             },
             overflow: { xs: "visible", sm: "visible", md: "visible" },
@@ -563,8 +551,8 @@ function HeroSlide({
                   "linear-gradient(135deg, #4FA953 0%, #ECA533 25%, #FFD757 50%, #ECA533 75%, #4FA953 100%)",
                 boxShadow:
                   "0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(255, 255, 255, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.5)",
-                mb: { xs: 0, sm: 0, md: 0 },
-                mt: { xs: 18, sm: 18, md: 0 },
+                mb: { xs: 2, sm: 2, md: 0 },
+                mt: { xs: 0, sm: 0, md: 0 },
                 mx: { xs: "auto", sm: "auto", md: 0 },
                 position: "relative",
                 zIndex: 12,
@@ -625,8 +613,8 @@ function HeroSlide({
                   "linear-gradient(135deg, #4FA953 0%, #ECA533 25%, #FFD757 50%, #ECA533 75%, #4FA953 100%)",
                 boxShadow:
                   "0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(255, 255, 255, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.5)",
-                mb: { xs: 0, sm: 0, md: 0 },
-                mt: { xs: 18, sm: 18, md: 0 },
+                mb: { xs: 2, sm: 2, md: 0 },
+                mt: { xs: 0, sm: 0, md: 0 },
                 mx: { xs: "auto", sm: "auto", md: 0 },
                 position: "relative",
                 zIndex: 12,
@@ -687,8 +675,8 @@ function HeroSlide({
                   "linear-gradient(135deg, #4FA953 0%, #ECA533 25%, #FFD757 50%, #ECA533 75%, #4FA953 100%)",
                 boxShadow:
                   "0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(255, 255, 255, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.5)",
-                mb: { xs: 0, sm: 0, md: 0 },
-                mt: { xs: 18, sm: 18, md: 0 },
+                mb: { xs: 2, sm: 2, md: 0 },
+                mt: { xs: 0, sm: 0, md: 0 },
                 mx: { xs: "auto", sm: "auto", md: 0 },
                 position: "relative",
                 zIndex: 12,
@@ -749,8 +737,8 @@ function HeroSlide({
               marginTop:
                 slideIndex === 1 || slideIndex === 2 || slideIndex === 3
                   ? {
-                      xs: isParagraphExpanded ? "0" : "-80px",
-                      sm: isParagraphExpanded ? "0" : "-88px",
+                      xs: isParagraphExpanded ? 0 : 0,
+                      sm: isParagraphExpanded ? 0 : 0,
                       md: 0,
                     }
                   : 0,
