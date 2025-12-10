@@ -771,8 +771,17 @@ function HeroSlide({
               maxWidth: { xs: "100%", sm: "100%", md: "92%", lg: "90%" },
               mx: { xs: "auto", sm: "auto", md: 0 },
               width: "100%",
-              overflow: "visible",
+              overflow:
+                slideIndex === 1 || slideIndex === 2 || slideIndex === 3
+                  ? { md: "hidden", lg: "hidden" }
+                  : "visible",
               minHeight: { xs: "auto", sm: "auto", md: "fit-content" },
+              maxHeight:
+                slideIndex === 1 || slideIndex === 2 || slideIndex === 3
+                  ? { md: "calc(100vh - 200px)", lg: "calc(100vh - 220px)" }
+                  : "none",
+              display: "flex",
+              flexDirection: "column",
             }}
           >
             {/* YouTube icon link - positioned in top-right corner, for slide 2, slide 3, and slide 4 */}
@@ -970,7 +979,7 @@ function HeroSlide({
                     ? {
                         xs: isParagraphExpanded ? "visible" : "hidden",
                         sm: isParagraphExpanded ? "visible" : "hidden",
-                        md: "visible",
+                        md: "auto",
                       }
                     : "visible",
                 textOverflow:
@@ -991,6 +1000,12 @@ function HeroSlide({
                     : { xs: 1.5, sm: 1.55, md: 1.65, lg: 1.7 },
                 width: "100%",
                 maxWidth: "100%",
+                flex: "1 1 auto",
+                overflowY:
+                  slideIndex === 1 || slideIndex === 2 || slideIndex === 3
+                    ? { md: "auto", lg: "auto" }
+                    : "visible",
+                minHeight: 0,
               }}
             >
               {slideIndex === 1
@@ -1150,6 +1165,12 @@ function HeroSlide({
                 alignItems: "center",
                 justifyContent: "center",
                 cursor: "pointer",
+                flexShrink:
+                  slideIndex === 1 || slideIndex === 2 || slideIndex === 3 ? { md: 0, lg: 0 } : 0,
+                marginTop:
+                  slideIndex === 1 || slideIndex === 2 || slideIndex === 3
+                    ? { md: "auto", lg: "auto" }
+                    : 0,
                 "&::before": {
                   content: '""',
                   position: "absolute",
@@ -1730,7 +1751,7 @@ function HeroSlide({
                 : ""
             }
             fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
-            sx={{ fontSize: { xs: "0.9rem", sm: "0.9rem", md: "1.1rem", lg: "1.3rem" } }}
+            sx={{ fontSize: { xs: "0.9rem", sm: "1.05rem", md: "1.1rem", lg: "1.3rem" } }}
           >
             {homePage.tagLine1} <br /> {homePage.tagLine2}
           </MKTypography>
@@ -1766,9 +1787,12 @@ function HeroSlide({
                 element.style.setProperty("overflow", "hidden", "important");
                 // Set padding based on screen size (Material-UI spacing: 8px per unit)
                 const width = window.innerWidth;
-                if (width < 600) {
+                if (width < 576) {
                   element.style.setProperty("padding", "0.45rem 1.75rem", "important"); // py: 0.9, px: 3.5
                   element.style.setProperty("margin-top", "1rem", "important"); // mt: 2 = 16px = 1rem
+                } else if (width < 768) {
+                  element.style.setProperty("padding", "0.4rem 1.5rem", "important"); // py: 0.8, px: 3
+                  element.style.setProperty("margin-top", "1.25rem", "important"); // mt: 2.5 = 20px = 1.25rem
                 } else if (width < 960) {
                   element.style.setProperty("padding", "0.5rem 2rem", "important"); // py: 1, px: 4
                   element.style.setProperty("margin-top", "1.25rem", "important"); // mt: 2.5 = 20px = 1.25rem
@@ -1796,14 +1820,16 @@ function HeroSlide({
               // Base padding - responsive values will be applied via sx prop after Material-UI loads
               // Material-UI spacing: 8px per unit, so px: 3.5 = 28px ≈ 1.75rem, py: 0.9 = 7.2px ≈ 0.45rem
               padding:
-                typeof window !== "undefined" && window.innerWidth < 600
+                typeof window !== "undefined" && window.innerWidth < 576
                   ? "0.45rem 1.75rem"
+                  : typeof window !== "undefined" && window.innerWidth < 768
+                  ? "0.4rem 1.5rem"
                   : typeof window !== "undefined" && window.innerWidth < 960
                   ? "0.5rem 2rem"
                   : "0.6rem 2.25rem",
               // Margin-top: mt: 2 = 16px = 1rem, mt: 2.5 = 20px = 1.25rem, mt: 3 = 24px = 1.5rem
               marginTop:
-                typeof window !== "undefined" && window.innerWidth < 600
+                typeof window !== "undefined" && window.innerWidth < 576
                   ? "1rem"
                   : typeof window !== "undefined" && window.innerWidth < 960
                   ? "1.25rem"
@@ -1841,10 +1867,10 @@ function HeroSlide({
             sx={{
               mt: { xs: 2, sm: 2.5, md: 3 },
               ml: -2,
-              px: { xs: 3.5, sm: 4, md: 4.5 },
-              py: { xs: 0.9, sm: 1, md: 1.2 },
+              px: { xs: 3.5, sm: 3, md: 4.5 },
+              py: { xs: 0.9, sm: 0.8, md: 1.2 },
               fontWeight: "700",
-              fontSize: { xs: "0.85rem", sm: "0.95rem", md: "1rem" },
+              fontSize: { xs: "0.85rem", sm: "0.88rem", md: "1rem" },
               textTransform: "capitalize",
               borderRadius: "10px",
               // Removed backgroundColor, color, boxShadow from sx to prevent Material-UI from overriding inline styles
