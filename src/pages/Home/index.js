@@ -514,8 +514,8 @@ function HeroSlide({
             paddingBottom: { xs: 0, sm: 0, md: 0 },
             marginTop:
               slideIndex === 1 || slideIndex === 2 || slideIndex === 3
-                ? { xs: 10, sm: 10, md: 0 }
-                : { xs: 10, sm: 10, md: 0 },
+                ? { xs: 2, sm: 2, md: 0 }
+                : { xs: 2, sm: 2, md: 0 },
             height: {
               xs: isMobile ? "auto" : "auto",
               sm: isTabletRange ? "auto" : "auto",
