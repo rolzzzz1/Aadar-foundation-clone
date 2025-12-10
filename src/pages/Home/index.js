@@ -551,7 +551,7 @@ function HeroSlide({
                   "linear-gradient(135deg, #4FA953 0%, #ECA533 25%, #FFD757 50%, #ECA533 75%, #4FA953 100%)",
                 boxShadow:
                   "0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(255, 255, 255, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.5)",
-                mb: { xs: 2, sm: 2, md: 0 },
+                mb: { xs: 0, sm: 0, md: 0 },
                 mt: { xs: 0, sm: 0, md: 0 },
                 mx: { xs: "auto", sm: "auto", md: 0 },
                 position: "relative",
@@ -613,7 +613,7 @@ function HeroSlide({
                   "linear-gradient(135deg, #4FA953 0%, #ECA533 25%, #FFD757 50%, #ECA533 75%, #4FA953 100%)",
                 boxShadow:
                   "0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(255, 255, 255, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.5)",
-                mb: { xs: 2, sm: 2, md: 0 },
+                mb: { xs: 0, sm: 0, md: 0 },
                 mt: { xs: 0, sm: 0, md: 0 },
                 mx: { xs: "auto", sm: "auto", md: 0 },
                 position: "relative",
@@ -675,7 +675,7 @@ function HeroSlide({
                   "linear-gradient(135deg, #4FA953 0%, #ECA533 25%, #FFD757 50%, #ECA533 75%, #4FA953 100%)",
                 boxShadow:
                   "0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(255, 255, 255, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.5)",
-                mb: { xs: 2, sm: 2, md: 0 },
+                mb: { xs: 0, sm: 0, md: 0 },
                 mt: { xs: 0, sm: 0, md: 0 },
                 mx: { xs: "auto", sm: "auto", md: 0 },
                 position: "relative",
@@ -737,8 +737,8 @@ function HeroSlide({
               marginTop:
                 slideIndex === 1 || slideIndex === 2 || slideIndex === 3
                   ? {
-                      xs: isParagraphExpanded ? 0 : 0,
-                      sm: isParagraphExpanded ? 0 : 0,
+                      xs: isParagraphExpanded ? 0 : "-40px",
+                      sm: isParagraphExpanded ? 0 : "-44px",
                       md: 0,
                     }
                   : 0,
@@ -957,8 +957,8 @@ function HeroSlide({
                 whiteSpace:
                   slideIndex === 1 || slideIndex === 2 || slideIndex === 3
                     ? {
-                        xs: isParagraphExpanded ? "normal" : "nowrap",
-                        sm: isParagraphExpanded ? "normal" : "nowrap",
+                        xs: isParagraphExpanded ? "normal" : "normal",
+                        sm: isParagraphExpanded ? "normal" : "normal",
                         md: "normal",
                       }
                     : "normal",
@@ -981,11 +981,35 @@ function HeroSlide({
                 lineHeight:
                   slideIndex === 1 || slideIndex === 2 || slideIndex === 3
                     ? {
-                        xs: isParagraphExpanded ? 1.5 : 1.2,
-                        sm: isParagraphExpanded ? 1.55 : 1.2,
+                        xs: isParagraphExpanded ? 1.5 : 1.5,
+                        sm: isParagraphExpanded ? 1.55 : 1.55,
                         md: 1.65,
                       }
                     : { xs: 1.5, sm: 1.55, md: 1.65, lg: 1.7 },
+                display:
+                  slideIndex === 1 || slideIndex === 2 || slideIndex === 3
+                    ? {
+                        xs: isParagraphExpanded ? "block" : "-webkit-box",
+                        sm: isParagraphExpanded ? "block" : "-webkit-box",
+                        md: "block",
+                      }
+                    : "block",
+                WebkitLineClamp:
+                  slideIndex === 1 || slideIndex === 2 || slideIndex === 3
+                    ? {
+                        xs: isParagraphExpanded ? "none" : 3,
+                        sm: isParagraphExpanded ? "none" : 3,
+                        md: "none",
+                      }
+                    : "none",
+                WebkitBoxOrient:
+                  slideIndex === 1 || slideIndex === 2 || slideIndex === 3
+                    ? {
+                        xs: isParagraphExpanded ? "unset" : "vertical",
+                        sm: isParagraphExpanded ? "unset" : "vertical",
+                        md: "unset",
+                      }
+                    : "unset",
                 width: "100%",
                 maxWidth: "100%",
                 flex: "1 1 auto",
