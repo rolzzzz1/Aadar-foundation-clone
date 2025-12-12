@@ -2026,10 +2026,27 @@ function Home() {
   const handleSetIsCarouselPaused = useCallback((value) => {
     setIsCarouselPaused(value);
   }, []);
-  const [activeSlide, setActiveSlide] = useState(0);
+  // Use global flag to persist slide state across remounts for faster navigation
+  const [activeSlide, setActiveSlide] = useState(() => {
+    return window.__homeActiveSlide ?? 0;
+  });
   const [slideInterval, setSlideInterval] = useState(8000);
-  const [hasPlayedSlide1Animation, setHasPlayedSlide1Animation] = useState(false);
+  
+  // Persist animation flag across remounts using global state
+  const [hasPlayedSlide1Animation, setHasPlayedSlide1Animation] = useState(() => {
+    return window.__homeHasPlayedAnimation ?? false;
+  });
   const animationTimerRef = useRef(null);
+  
+  // Save animation state to global on change
+  useEffect(() => {
+    window.__homeHasPlayedAnimation = hasPlayedSlide1Animation;
+  }, [hasPlayedSlide1Animation]);
+  
+  // Save active slide to global on change
+  useEffect(() => {
+    window.__homeActiveSlide = activeSlide;
+  }, [activeSlide]);
 
   // Treat very small screens as mobile (we hide hero videos there)
   const [isMobile, setIsMobile] = useState(
@@ -2631,8 +2648,13 @@ function Home() {
   }, []);
 
   // Set animation flag when slide 1 first becomes active (initial load)
+  // Skip if already played (persisted across remounts)
   useEffect(() => {
-    if (activeSlide === 0 && !hasPlayedSlide1Animation) {
+    if (hasPlayedSlide1Animation) {
+      return; // Already played, skip
+    }
+    
+    if (activeSlide === 0) {
       // Clear any existing timer
       if (animationTimerRef.current) {
         clearTimeout(animationTimerRef.current);
@@ -2640,6 +2662,7 @@ function Home() {
       // Set flag after animation completes (0.12s delay + 2.5s duration + buffer)
       animationTimerRef.current = setTimeout(() => {
         setHasPlayedSlide1Animation(true);
+        window.__homeHasPlayedAnimation = true;
       }, 3000);
     }
     return () => {
@@ -3646,11 +3669,14 @@ function Home() {
           fullHeightHover={false}
           swipe={true}
           autoPlay={!isCarouselPaused}
+          index={activeSlide}
           onChange={(now) => {
             setActiveSlide(now);
+            window.__homeActiveSlide = now;
             // Track first time slide 1 is shown (only on initial page load)
             if (now === 0 && !hasPlayedSlide1Animation) {
               setHasPlayedSlide1Animation(true);
+              window.__homeHasPlayedAnimation = true;
             }
           }}
           interval={slideInterval}
@@ -3762,19 +3788,19 @@ function Home() {
           boxShadow: ({ boxShadows: { xxl } }) => xxl,
         }}
       >
-        {/* About section component */}
+        {/* About section component - memoized to prevent re-render */}
         <About />
 
-        {/* Counters section component */}
+        {/* Counters section component - memoized to prevent re-render */}
         <Counters />
 
-        {/* Journey video section component */}
+        {/* Journey video section component - memoized to prevent re-render */}
         <Journey />
 
-        {/* Our work section component */}
+        {/* Our work section component - memoized to prevent re-render */}
         <Work />
 
-        {/* Events section component */}
+        {/* Events section component - memoized to prevent re-render */}
         <Events />
       </Card>
 
@@ -3801,4 +3827,5 @@ HeroSlide.propTypes = {
   totalSlides: PropTypes.number.isRequired,
 };
 
-export default Home;
+// Memoize Home component to prevent unnecessary re-renders when navigating back
+export default memo(Home);
