@@ -118,7 +118,7 @@ export default function App() {
     return cleanup;
   }, []);
 
-  // Apply watermarks to all images
+  // Apply watermarks to all images (optimized - only run once on mount)
   useEffect(() => {
     const watermarkOptions = {
       opacity: 0.05, // Very low opacity for invisible watermark
@@ -130,20 +130,22 @@ export default function App() {
     // Setup observer for dynamically added images
     const cleanupObserver = setupWatermarkObserver(watermarkOptions);
 
-    // Apply watermarks to existing images
+    // Apply watermarks to existing images - only once after initial load
     const applyWatermarks = async () => {
       // Wait for images to load
       if (document.readyState === "complete") {
-        // Small delay to ensure all images are rendered
+        // Reduced delay for faster initial load
         setTimeout(() => {
           watermarkAllImages(watermarkOptions);
-        }, 1500);
+        }, 800);
       } else {
-        window.addEventListener("load", () => {
+        const handleLoad = () => {
           setTimeout(() => {
             watermarkAllImages(watermarkOptions);
-          }, 1500);
-        });
+          }, 800);
+          window.removeEventListener("load", handleLoad);
+        };
+        window.addEventListener("load", handleLoad);
       }
     };
 
@@ -151,7 +153,7 @@ export default function App() {
 
     // Cleanup observer on unmount
     return cleanupObserver;
-  }, [pathname]);
+  }, []); // Only run once on mount, not on every pathname change
 
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {

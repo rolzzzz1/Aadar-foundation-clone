@@ -30,6 +30,8 @@ function About() {
               alt="aboutImage"
               width="95%"
               borderRadius="15px"
+              loading="lazy"
+              decoding="async"
             />
           </MKBox>
         </Grid>

@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import Tooltip from "@mui/material/Tooltip";
 import Carousel from "react-material-ui-carousel";
 import { Link } from "react-router-dom";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo, useCallback, memo } from "react";
 
 // i18next imports
 import { useTranslation } from "react-i18next";
@@ -88,7 +88,7 @@ const getOptimizedVideoUrl = (baseUrl, isMobile) => {
   return baseUrl;
 };
 
-function HeroSlide({
+const HeroSlide = memo(function HeroSlide({
   image,
   homePage,
   isFirstSlide,
@@ -109,19 +109,28 @@ function HeroSlide({
   const [isParagraphExpanded, setIsParagraphExpanded] = useState(false);
 
   // Treat very small screens as mobile (we hide hero videos there)
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 576;
+  // Memoize these values to avoid recalculating on every render
+  const isMobile = useMemo(
+    () => typeof window !== "undefined" && window.innerWidth < 576,
+    []
+  );
   // Hide video for screens between 576px and 767px, show for >= 768px
-  const showVideo = typeof window !== "undefined" && window.innerWidth >= 768;
+  const showVideo = useMemo(
+    () => typeof window !== "undefined" && window.innerWidth >= 768,
+    []
+  );
   // Check if screen is between 576px and 767px
-  const isTabletRange =
-    typeof window !== "undefined" && window.innerWidth >= 576 && window.innerWidth < 768;
+  const isTabletRange = useMemo(
+    () => typeof window !== "undefined" && window.innerWidth >= 576 && window.innerWidth < 768,
+    []
+  );
 
-  const toggleMute = () => {
+  const toggleMute = useCallback(() => {
     if (videoRef.current) {
       videoRef.current.muted = !videoRef.current.muted;
       setIsMuted(videoRef.current.muted);
     }
-  };
+  }, []);
 
   // Ensure video plays when its slide is active
   useEffect(() => {
@@ -2005,7 +2014,7 @@ function HeroSlide({
       )}
     </MKBox>
   );
-}
+});
 
 function Home() {
   const { t } = useTranslation();
@@ -2017,6 +2026,11 @@ function Home() {
 
   // State to let user pause/resume hero slider
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
+  
+  // Memoize callbacks to prevent unnecessary re-renders
+  const handleSetIsCarouselPaused = useCallback((value) => {
+    setIsCarouselPaused(value);
+  }, []);
   const [activeSlide, setActiveSlide] = useState(0);
   const [slideInterval, setSlideInterval] = useState(8000);
   const [hasPlayedSlide1Animation, setHasPlayedSlide1Animation] = useState(false);
@@ -2031,14 +2045,26 @@ function Home() {
     typeof window !== "undefined" && window.innerWidth >= 576 && window.innerWidth < 768
   );
 
-  // Update isMobile and isTabletRange on window resize
+  // Update isMobile and isTabletRange on window resize (debounced)
   useEffect(() => {
+    let resizeTimeout = null;
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 576);
-      setIsTabletRange(window.innerWidth >= 576 && window.innerWidth < 768);
+      // Debounce resize handler to avoid excessive updates
+      if (resizeTimeout) {
+        clearTimeout(resizeTimeout);
+      }
+      resizeTimeout = setTimeout(() => {
+        setIsMobile(window.innerWidth < 576);
+        setIsTabletRange(window.innerWidth >= 576 && window.innerWidth < 768);
+      }, 150); // Debounce by 150ms
     };
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      if (resizeTimeout) {
+        clearTimeout(resizeTimeout);
+      }
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   // Inject critical CSS for CTA buttons into document head on mount
@@ -2661,12 +2687,16 @@ function Home() {
   }, []);
 
   // Hero slides (slide 2, slide 3, and slide 4 share the same special video layout)
-  const heroSlides = [
-    { image: blackAndWhiteHero },
-    { image: heroImage2 },
-    { image: heroImage2 },
-    { image: heroImage2 },
-  ];
+  // Memoize to prevent recreation on every render
+  const heroSlides = useMemo(
+    () => [
+      { image: blackAndWhiteHero },
+      { image: heroImage2 },
+      { image: heroImage2 },
+      { image: heroImage2 },
+    ],
+    []
+  );
 
   return (
     <MKBox minWidth="320px">
@@ -3699,7 +3729,7 @@ function Home() {
               isActive={activeSlide === index}
               shouldAnimate={index === 0 && !hasPlayedSlide1Animation}
               isCarouselPaused={isCarouselPaused}
-              setIsCarouselPaused={setIsCarouselPaused}
+              setIsCarouselPaused={handleSetIsCarouselPaused}
               activeSlide={activeSlide}
               totalSlides={heroSlides.length}
             />

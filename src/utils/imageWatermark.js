@@ -139,101 +139,123 @@ export const addWatermarkToImage = async (imgElement, options = {}) => {
   }
 };
 
+// Debounce utility for watermarking
+let watermarkTimeout = null;
+let isWatermarking = false;
+const processedImageSet = new WeakSet();
+
 /**
- * Apply watermark to all images on the page
+ * Apply watermark to all images on the page (debounced and optimized)
  */
 export const watermarkAllImages = async (options = {}) => {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined" || isWatermarking) return;
 
-  const images = document.querySelectorAll("img");
-  const processedImages = new Set();
-
-  for (const img of images) {
-    // Skip if already processed or if it's the watermark logo itself
-    // Also skip slide 1 paint patch images
-    if (
-      processedImages.has(img) ||
-      img.src.includes("logo-aadar") ||
-      img.dataset.watermarked === "true" ||
-      img.src.includes("aadarHindiWhite") ||
-      img.src.includes("aadarHindiYellow") ||
-      img.src.includes("aadar-main-black2") ||
-      img.src.includes("brushstroke")
-    ) {
-      continue;
-    }
-
-    // Skip data URLs (already processed images)
-    if (img.src.startsWith("data:")) {
-      continue;
-    }
-
-    // Skip if image is not loaded
-    if (!img.complete || img.naturalWidth === 0) {
-      // Wait for image to load
-      await new Promise((resolve) => {
-        const timeout = setTimeout(resolve, 3000);
-        img.onload = () => {
-          clearTimeout(timeout);
-          resolve();
-        };
-        img.onerror = () => {
-          clearTimeout(timeout);
-          resolve();
-        };
-      });
-    }
-
-    // Skip if still not loaded
-    if (!img.complete || img.naturalWidth === 0) {
-      continue;
-    }
-
-    try {
-      const watermarkedDataUrl = await addWatermarkToImage(img, options);
-      if (watermarkedDataUrl && watermarkedDataUrl !== img.src) {
-        // Store original src for reference
-        img.dataset.originalSrc = img.src;
-        img.src = watermarkedDataUrl;
-        img.dataset.watermarked = "true";
-        processedImages.add(img);
-      }
-    } catch (error) {
-      console.error("Error watermarking image:", error);
-    }
+  // Clear any pending watermarking
+  if (watermarkTimeout) {
+    clearTimeout(watermarkTimeout);
   }
+
+  // Debounce watermarking to avoid multiple calls
+  return new Promise((resolve) => {
+    watermarkTimeout = setTimeout(async () => {
+      isWatermarking = true;
+      try {
+        const images = document.querySelectorAll("img");
+        const imagesToProcess = [];
+
+        // First pass: collect images that need processing
+        for (const img of images) {
+          // Skip if already processed or if it's the watermark logo itself
+          if (
+            processedImageSet.has(img) ||
+            img.src.includes("logo-aadar") ||
+            img.dataset.watermarked === "true" ||
+            img.src.includes("aadarHindiWhite") ||
+            img.src.includes("aadarHindiYellow") ||
+            img.src.includes("aadar-main-black2") ||
+            img.src.includes("brushstroke") ||
+            img.src.startsWith("data:")
+          ) {
+            continue;
+          }
+
+          // Only process images that are loaded
+          if (img.complete && img.naturalWidth > 0) {
+            imagesToProcess.push(img);
+          }
+        }
+
+        // Process images in batches to avoid blocking
+        const batchSize = 3;
+        for (let i = 0; i < imagesToProcess.length; i += batchSize) {
+          const batch = imagesToProcess.slice(i, i + batchSize);
+          await Promise.all(
+            batch.map(async (img) => {
+              try {
+                const watermarkedDataUrl = await addWatermarkToImage(img, options);
+                if (watermarkedDataUrl && watermarkedDataUrl !== img.src) {
+                  img.dataset.originalSrc = img.src;
+                  img.src = watermarkedDataUrl;
+                  img.dataset.watermarked = "true";
+                  processedImageSet.add(img);
+                }
+              } catch (error) {
+                console.error("Error watermarking image:", error);
+              }
+            })
+          );
+          // Small delay between batches to keep UI responsive
+          if (i + batchSize < imagesToProcess.length) {
+            await new Promise((r) => setTimeout(r, 50));
+          }
+        }
+      } finally {
+        isWatermarking = false;
+        resolve();
+      }
+    }, 300); // Debounce by 300ms
+  });
 };
 
 /**
- * Setup observer to watermark images as they're added to the DOM
+ * Setup observer to watermark images as they're added to the DOM (optimized)
  */
 export const setupWatermarkObserver = (options = {}) => {
   if (typeof window === "undefined") return () => {};
 
+  let debounceTimeout = null;
+
   // Use MutationObserver to watch for new images
   const observer = new MutationObserver((mutations) => {
+    let hasNewImages = false;
+
     mutations.forEach((mutation) => {
       mutation.addedNodes.forEach((node) => {
         if (node.nodeType === 1) {
           // Check if node is an image
           if (node.tagName === "IMG" && node.dataset.watermarked !== "true") {
-            // Wait a bit for image to load
-            setTimeout(() => {
-              watermarkAllImages(options);
-            }, 500);
+            hasNewImages = true;
           }
           // Check for images within the node
           const images = node.querySelectorAll
             ? node.querySelectorAll("img:not([data-watermarked='true'])")
             : [];
           if (images.length > 0) {
-            setTimeout(() => {
-              watermarkAllImages(options);
-            }, 500);
+            hasNewImages = true;
           }
         }
       });
     });
+
+    // Debounce watermarking calls
+    if (hasNewImages) {
+      if (debounceTimeout) {
+        clearTimeout(debounceTimeout);
+      }
+      debounceTimeout = setTimeout(() => {
+        watermarkAllImages(options);
+      }, 800); // Wait for images to load before watermarking
+    }
   });
 
   // Start observing
@@ -243,7 +265,12 @@ export const setupWatermarkObserver = (options = {}) => {
   });
 
   // Return cleanup function
-  return () => observer.disconnect();
+  return () => {
+    if (debounceTimeout) {
+      clearTimeout(debounceTimeout);
+    }
+    observer.disconnect();
+  };
 };
 
 /**

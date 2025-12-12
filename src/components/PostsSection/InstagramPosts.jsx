@@ -33,29 +33,36 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
   // Always fetch 6 posts
   const totalPosts = 6;
 
-  // Calculate posts per slide based on screen size
+  // Calculate posts per slide based on screen size (debounced)
   useEffect(() => {
+    let resizeTimeout = null;
     const calculatePostsPerSlide = () => {
-      const width = window.innerWidth;
-      let newPostsPerSlide;
-      if (width < 768) {
-        // Very small screens: 1 post per slide
-        newPostsPerSlide = 1;
-      } else if (width < 1025) {
-        // Middle screens: 2 posts per slide
-        newPostsPerSlide = 2;
-      } else {
-        // Large screens: 3 posts per slide
-        newPostsPerSlide = 3;
+      // Debounce resize handler
+      if (resizeTimeout) {
+        clearTimeout(resizeTimeout);
       }
-
-      setDynamicPostsPerSlide((prev) => {
-        // Reset to first slide when posts per slide changes
-        if (prev !== newPostsPerSlide) {
-          setCurrentIndex(0);
+      resizeTimeout = setTimeout(() => {
+        const width = window.innerWidth;
+        let newPostsPerSlide;
+        if (width < 768) {
+          // Very small screens: 1 post per slide
+          newPostsPerSlide = 1;
+        } else if (width < 1025) {
+          // Middle screens: 2 posts per slide
+          newPostsPerSlide = 2;
+        } else {
+          // Large screens: 3 posts per slide
+          newPostsPerSlide = 3;
         }
-        return newPostsPerSlide;
-      });
+
+        setDynamicPostsPerSlide((prev) => {
+          // Reset to first slide when posts per slide changes
+          if (prev !== newPostsPerSlide) {
+            setCurrentIndex(0);
+          }
+          return newPostsPerSlide;
+        });
+      }, 150); // Debounce by 150ms
     };
 
     // Calculate on mount
@@ -63,7 +70,12 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
 
     // Add resize listener
     window.addEventListener("resize", calculatePostsPerSlide);
-    return () => window.removeEventListener("resize", calculatePostsPerSlide);
+    return () => {
+      if (resizeTimeout) {
+        clearTimeout(resizeTimeout);
+      }
+      window.removeEventListener("resize", calculatePostsPerSlide);
+    };
   }, []);
 
   // Use prop if provided, otherwise use dynamic value
