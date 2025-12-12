@@ -145,7 +145,7 @@ function Gallery() {
   // Track which images are visible for optimized loading
   const [visibleImages, setVisibleImages] = useState(new Set());
   const galleryRef = useRef(null);
-  
+
   // Track loading state - show loading until first 6 images (above fold) are loaded
   const [loadedImages, setLoadedImages] = useState(new Set());
   const [isLoading, setIsLoading] = useState(true);
