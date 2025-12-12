@@ -207,7 +207,7 @@ function Gallery() {
                   className="galleryImgs"
                   loading={isAboveFold ? "eager" : "lazy"}
                   decoding="async"
-                  fetchPriority={isAboveFold && index < 3 ? "high" : "auto"}
+                  {...(isAboveFold && index < 3 ? { fetchpriority: "high" } : {})}
                   style={{
                     backgroundColor: "#f0f0f0",
                     minHeight: "200px",
