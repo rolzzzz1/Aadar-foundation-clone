@@ -8,7 +8,6 @@ import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 
 // Material Kit 2 React themes
