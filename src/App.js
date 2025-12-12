@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense, lazy } from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 
@@ -19,8 +19,8 @@ import { setupImageProtection, addImageProtectionCSS } from "utils/imageProtecti
 // Image watermarking
 import { watermarkAllImages, setupWatermarkObserver } from "utils/imageWatermark";
 
-// Lazy load routes for code splitting
-const Home = lazy(() => import("layouts/pages/home"));
+// Import Home directly (not lazy) since it's the main page and should load fast
+import Home from "layouts/pages/home";
 
 // Material Kit 2 React routes
 import routes from "routes";
@@ -172,13 +172,11 @@ export default function App() {
     <ErrorBoundary>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Suspense fallback={<LoadingFallback />}>
-          <Routes>
-            {getRoutes(routes)}
-            <Route path="/home" element={<Home />} />
-            <Route path="*" element={<Navigate to="/home" />} />
-          </Routes>
-        </Suspense>
+        <Routes>
+          {getRoutes(routes)}
+          <Route path="/home" element={<Home />} />
+          <Route path="*" element={<Navigate to="/home" />} />
+        </Routes>
         <Analytics />
         <SpeedInsights />
       </ThemeProvider>

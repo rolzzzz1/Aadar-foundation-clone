@@ -2012,8 +2012,9 @@ const HeroSlide = memo(function HeroSlide({
 
 function Home() {
   const { t } = useTranslation();
-  const routes = getRoutes(t);
-  const footerRoutes = getFooterRoutes(t);
+  // Memoize routes and footer routes to prevent recreation on every render
+  const routes = useMemo(() => getRoutes(t), [t]);
+  const footerRoutes = useMemo(() => getFooterRoutes(t), [t]);
   const donateBtn = t("navbar.donateBtn");
   const homePage = t("homePage");
   const ctaButtonText = t("homePage.heroSection.ctaButton");
@@ -2071,7 +2072,7 @@ function Home() {
     }
 
     const styleId = "hero-cta-buttons-critical-css";
-    // Check if style already exists
+    // Check if style already exists - if so, skip (prevents re-injection on remount)
     if (document.getElementById(styleId)) {
       return;
     }
@@ -2410,12 +2411,18 @@ function Home() {
   }, []);
 
   // Aggressive DOM manipulation to force button styles after Material-UI loads
-  // This runs after every render to ensure styles are always correct
+  // Use a global flag to prevent multiple observers from being set up
   useEffect(() => {
     // Only run in browser (not during SSR)
     if (typeof window === "undefined" || typeof document === "undefined") {
       return;
     }
+
+    // Check if observer is already set up globally (prevents re-setup on remount)
+    if (window.__homeButtonStylesObserverSet) {
+      return;
+    }
+    window.__homeButtonStylesObserverSet = true;
 
     const forceButtonStyles = () => {
       // Find all hero buttons by data attribute or class
@@ -2618,6 +2625,8 @@ function Home() {
         cancelAnimationFrame(raf2Id);
       }
       observer.disconnect();
+      // Don't reset the flag on unmount - keep it for faster remounts
+      // window.__homeButtonStylesObserverSet = false;
     };
   }, []);
 
@@ -2660,7 +2669,13 @@ function Home() {
   const slide4PreloaderRef = useRef(null);
 
   // Optimize video loading - only preload on desktop and after initial page load
+  // Use global flag to prevent re-preloading on remount
   useEffect(() => {
+    // Check if videos are already preloaded
+    if (window.__homeVideosPreloaded) {
+      return;
+    }
+
     // Delay video preloading to prioritize initial page render
     const preloadTimer = setTimeout(() => {
       if (typeof window !== "undefined" && window.innerWidth >= 768) {
@@ -2674,6 +2689,7 @@ function Home() {
         if (slide4PreloaderRef.current) {
           slide4PreloaderRef.current.load();
         }
+        window.__homeVideosPreloaded = true;
       }
     }, 1000); // Delay by 1 second to allow initial page load
 
