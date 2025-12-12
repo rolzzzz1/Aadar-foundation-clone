@@ -191,12 +191,13 @@ function Gallery() {
     };
   }, [images.length]);
 
-  // Hide loading once ALL images are loaded
+  // Hide loading once first 6 images (above fold) are loaded
+  // This allows gallery to render and images to start loading
   useEffect(() => {
-    const totalImages = images.length;
-    const loadedCount = loadedImages.size;
+    const aboveFoldCount = Math.min(6, images.length);
+    const loadedAboveFold = Array.from(loadedImages).filter((idx) => idx < aboveFoldCount).length;
 
-    if (loadedCount >= totalImages && isLoading) {
+    if (loadedAboveFold >= aboveFoldCount && isLoading) {
       // Add a small delay for smooth transition
       const timer = setTimeout(() => {
         setIsLoading(false);
@@ -350,76 +351,79 @@ function Gallery() {
               >
                 {galleryPage.title}
               </MKTypography>
-              {isLoading && (
-                <MKBox
-                  position="relative"
-                  minHeight="400px"
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      minHeight: "400px",
-                      gap: 2,
-                    }}
-                  >
-                    <CircularProgress
-                      size={60}
-                      thickness={4}
-                      sx={{
-                        color: "#4FA953",
-                      }}
-                    />
-                    <MKTypography
-                      variant="h6"
-                      color="text"
-                      fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
-                      sx={{
-                        fontSize: { xs: "1rem", sm: "1.2rem" },
-                        fontWeight: "500",
-                        textAlign: "center",
-                      }}
-                    >
-                      {galleryPage.loadingMessage || "Loading beautiful memories..."}
-                    </MKTypography>
-                    <MKTypography
-                      variant="body2"
-                      color="text"
-                      sx={{
-                        fontSize: { xs: "0.85rem", sm: "0.9rem" },
-                        opacity: 0.7,
-                        textAlign: "center",
-                      }}
-                    >
-                      {galleryPage.loadingSubMessage || "Please wait while we prepare the gallery"}
-                    </MKTypography>
-                  </Box>
-                </MKBox>
-              )}
-              {!isLoading && (
+              <MKBox position="relative">
+                {/* Always render gallery so images can start loading */}
                 <MKBox
                   sx={{
-                    animation: "fadeIn 0.5s ease-in-out",
-                    "@keyframes fadeIn": {
-                      from: {
-                        opacity: 0,
-                      },
-                      to: {
-                        opacity: 1,
-                      },
-                    },
+                    opacity: isLoading ? 0 : 1,
+                    transition: "opacity 0.5s ease-in-out",
+                    pointerEvents: isLoading ? "none" : "auto",
                   }}
                 >
                   {renderGallery()}
                 </MKBox>
-              )}
+
+                {/* Loading overlay - shown on top while loading */}
+                {isLoading && (
+                  <MKBox
+                    position="absolute"
+                    top={0}
+                    left={0}
+                    right={0}
+                    bottom={0}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "rgba(240, 242, 245, 0.95)",
+                      backdropFilter: "blur(4px)",
+                      zIndex: 10,
+                      transition: "opacity 0.3s ease-in-out",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 2,
+                      }}
+                    >
+                      <CircularProgress
+                        size={60}
+                        thickness={4}
+                        sx={{
+                          color: "#4FA953",
+                        }}
+                      />
+                      <MKTypography
+                        variant="h6"
+                        color="text"
+                        fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                        sx={{
+                          fontSize: { xs: "1rem", sm: "1.2rem" },
+                          fontWeight: "500",
+                          textAlign: "center",
+                        }}
+                      >
+                        {galleryPage.loadingMessage || "Loading beautiful memories..."}
+                      </MKTypography>
+                      <MKTypography
+                        variant="body2"
+                        color="text"
+                        sx={{
+                          fontSize: { xs: "0.85rem", sm: "0.9rem" },
+                          opacity: 0.7,
+                          textAlign: "center",
+                        }}
+                      >
+                        {galleryPage.loadingSubMessage || "Please wait while we prepare the gallery"}
+                      </MKTypography>
+                    </Box>
+                  </MKBox>
+                )}
+              </MKBox>
             </MKBox>
           </Grid>
         </MKBox>
