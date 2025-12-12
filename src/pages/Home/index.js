@@ -110,15 +110,9 @@ const HeroSlide = memo(function HeroSlide({
 
   // Treat very small screens as mobile (we hide hero videos there)
   // Memoize these values to avoid recalculating on every render
-  const isMobile = useMemo(
-    () => typeof window !== "undefined" && window.innerWidth < 576,
-    []
-  );
+  const isMobile = useMemo(() => typeof window !== "undefined" && window.innerWidth < 576, []);
   // Hide video for screens between 576px and 767px, show for >= 768px
-  const showVideo = useMemo(
-    () => typeof window !== "undefined" && window.innerWidth >= 768,
-    []
-  );
+  const showVideo = useMemo(() => typeof window !== "undefined" && window.innerWidth >= 768, []);
   // Check if screen is between 576px and 767px
   const isTabletRange = useMemo(
     () => typeof window !== "undefined" && window.innerWidth >= 576 && window.innerWidth < 768,
@@ -2026,7 +2020,7 @@ function Home() {
 
   // State to let user pause/resume hero slider
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
-  
+
   // Memoize callbacks to prevent unnecessary re-renders
   const handleSetIsCarouselPaused = useCallback((value) => {
     setIsCarouselPaused(value);
