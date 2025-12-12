@@ -29,21 +29,6 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import Typography from "@mui/material/Typography";
 
-// Loading component
-const LoadingFallback = () => (
-  <Box
-    sx={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      minHeight: "100vh",
-      backgroundColor: "#f5f5f5",
-    }}
-  >
-    <CircularProgress />
-  </Box>
-);
-
 // Error boundary component
 class ErrorBoundary extends React.Component {
   constructor(props) {
