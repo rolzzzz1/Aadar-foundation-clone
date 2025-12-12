@@ -2031,18 +2031,18 @@ function Home() {
     return window.__homeActiveSlide ?? 0;
   });
   const [slideInterval, setSlideInterval] = useState(8000);
-  
+
   // Persist animation flag across remounts using global state
   const [hasPlayedSlide1Animation, setHasPlayedSlide1Animation] = useState(() => {
     return window.__homeHasPlayedAnimation ?? false;
   });
   const animationTimerRef = useRef(null);
-  
+
   // Save animation state to global on change
   useEffect(() => {
     window.__homeHasPlayedAnimation = hasPlayedSlide1Animation;
   }, [hasPlayedSlide1Animation]);
-  
+
   // Save active slide to global on change
   useEffect(() => {
     window.__homeActiveSlide = activeSlide;
@@ -2653,7 +2653,7 @@ function Home() {
     if (hasPlayedSlide1Animation) {
       return; // Already played, skip
     }
-    
+
     if (activeSlide === 0) {
       // Clear any existing timer
       if (animationTimerRef.current) {
