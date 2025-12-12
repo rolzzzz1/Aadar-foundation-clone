@@ -1,6 +1,8 @@
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 // React hooks
 import { useMemo, useState, useEffect, useRef } from "react";
@@ -143,6 +145,10 @@ function Gallery() {
   // Track which images are visible for optimized loading
   const [visibleImages, setVisibleImages] = useState(new Set());
   const galleryRef = useRef(null);
+  
+  // Track loading state - show loading until first 6 images (above fold) are loaded
+  const [loadedImages, setLoadedImages] = useState(new Set());
+  const [isLoading, setIsLoading] = useState(true);
 
   // Use Intersection Observer for efficient lazy loading
   useEffect(() => {
@@ -185,6 +191,20 @@ function Gallery() {
     };
   }, [images.length]);
 
+  // Hide loading once first 6 images (above fold) are loaded
+  useEffect(() => {
+    const aboveFoldCount = Math.min(6, images.length);
+    const loadedAboveFold = Array.from(loadedImages).filter((idx) => idx < aboveFoldCount).length;
+
+    if (loadedAboveFold >= aboveFoldCount && isLoading) {
+      // Add a small delay for smooth transition
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [loadedImages, images.length, isLoading]);
+
   function renderGallery() {
     const onInit = () => {
       console.log("lightGallery has been initialized");
@@ -217,6 +237,21 @@ function Gallery() {
                   onLoad={(e) => {
                     // Fade in when image loads
                     e.target.style.opacity = "1";
+                    // Track loaded images
+                    setLoadedImages((prev) => {
+                      const newSet = new Set(prev);
+                      newSet.add(index);
+                      return newSet;
+                    });
+                  }}
+                  onError={(e) => {
+                    // Handle image load errors
+                    e.target.style.opacity = "0.5";
+                    setLoadedImages((prev) => {
+                      const newSet = new Set(prev);
+                      newSet.add(index);
+                      return newSet;
+                    });
                   }}
                 />
               </a>
@@ -315,7 +350,67 @@ function Gallery() {
               >
                 {galleryPage.title}
               </MKTypography>
-              {renderGallery()}
+              <MKBox
+                position="relative"
+                minHeight="400px"
+                sx={{
+                  opacity: isLoading ? 1 : 0,
+                  visibility: isLoading ? "visible" : "hidden",
+                  transition: "opacity 0.3s ease-in-out, visibility 0.3s ease-in-out",
+                  pointerEvents: isLoading ? "auto" : "none",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    minHeight: "400px",
+                    gap: 2,
+                  }}
+                >
+                  <CircularProgress
+                    size={60}
+                    thickness={4}
+                    sx={{
+                      color: "#4FA953",
+                    }}
+                  />
+                  <MKTypography
+                    variant="h6"
+                    color="text"
+                    fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                    sx={{
+                      fontSize: { xs: "1rem", sm: "1.2rem" },
+                      fontWeight: "500",
+                      textAlign: "center",
+                    }}
+                  >
+                    {galleryPage.loadingMessage || "Loading beautiful memories..."}
+                  </MKTypography>
+                  <MKTypography
+                    variant="body2"
+                    color="text"
+                    sx={{
+                      fontSize: { xs: "0.85rem", sm: "0.9rem" },
+                      opacity: 0.7,
+                      textAlign: "center",
+                    }}
+                  >
+                    {galleryPage.loadingSubMessage || "Please wait while we prepare the gallery"}
+                  </MKTypography>
+                </Box>
+              </MKBox>
+              <MKBox
+                sx={{
+                  opacity: isLoading ? 0 : 1,
+                  visibility: isLoading ? "hidden" : "visible",
+                  transition: "opacity 0.5s ease-in-out, visibility 0.5s ease-in-out",
+                }}
+              >
+                {renderGallery()}
+              </MKBox>
             </MKBox>
           </Grid>
         </MKBox>
