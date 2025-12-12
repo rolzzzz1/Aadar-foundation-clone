@@ -418,7 +418,8 @@ function Gallery() {
                           textAlign: "center",
                         }}
                       >
-                        {galleryPage.loadingSubMessage || "Please wait while we prepare the gallery"}
+                        {galleryPage.loadingSubMessage ||
+                          "Please wait while we prepare the gallery"}
                       </MKTypography>
                     </Box>
                   </MKBox>
