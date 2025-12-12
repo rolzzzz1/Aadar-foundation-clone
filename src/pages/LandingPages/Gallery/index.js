@@ -2,6 +2,9 @@
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 
+// React hooks
+import { useMemo, useState, useEffect, useRef } from "react";
+
 // i18next imports
 import { useTranslation } from "react-i18next";
 
@@ -110,40 +113,112 @@ import img20 from "assets/images/galleryImages/diwali1.jpg";
 // };
 
 function Gallery() {
-  const images = [
-    { src: img1, alt: "1" },
-    { src: img2, alt: "2" },
-    { src: img3, alt: "3" },
-    { src: img4, alt: "4" },
-    { src: img5, alt: "5" },
-    { src: img6, alt: "6" },
-    { src: img7, alt: "7" },
-    { src: img8, alt: "8" },
-    { src: img9, alt: "9" },
-    { src: img10, alt: "10" },
-    { src: img11, alt: "11" },
-    { src: img12, alt: "12" },
-    { src: img13, alt: "13" },
-    { src: img14, alt: "14" },
-    { src: img15, alt: "15" },
-    { src: img16, alt: "16" },
-    { src: img17, alt: "17" },
-    { src: img18, alt: "18" },
-    { src: img19, alt: "19" },
-    { src: img20, alt: "20" },
-  ];
+  // Memoize images array to prevent recreation on every render
+  const images = useMemo(
+    () => [
+      { src: img1, alt: "1" },
+      { src: img2, alt: "2" },
+      { src: img3, alt: "3" },
+      { src: img4, alt: "4" },
+      { src: img5, alt: "5" },
+      { src: img6, alt: "6" },
+      { src: img7, alt: "7" },
+      { src: img8, alt: "8" },
+      { src: img9, alt: "9" },
+      { src: img10, alt: "10" },
+      { src: img11, alt: "11" },
+      { src: img12, alt: "12" },
+      { src: img13, alt: "13" },
+      { src: img14, alt: "14" },
+      { src: img15, alt: "15" },
+      { src: img16, alt: "16" },
+      { src: img17, alt: "17" },
+      { src: img18, alt: "18" },
+      { src: img19, alt: "19" },
+      { src: img20, alt: "20" },
+    ],
+    []
+  );
+
+  // Track which images are visible for optimized loading
+  const [visibleImages, setVisibleImages] = useState(new Set());
+  const galleryRef = useRef(null);
+
+  // Use Intersection Observer for efficient lazy loading
+  useEffect(() => {
+    if (!galleryRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = parseInt(entry.target.dataset.index, 10);
+            setVisibleImages((prev) => {
+              const newSet = new Set(prev);
+              newSet.add(index);
+              return newSet;
+            });
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        rootMargin: "100px", // Start loading 100px before image enters viewport
+        threshold: 0.01,
+      }
+    );
+
+    // Use setTimeout to ensure DOM is ready
+    const timeoutId = setTimeout(() => {
+      const imageElements = galleryRef.current?.querySelectorAll("[data-index]");
+      if (imageElements) {
+        imageElements.forEach((el) => observer.observe(el));
+      }
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      const imageElements = galleryRef.current?.querySelectorAll("[data-index]");
+      if (imageElements) {
+        imageElements.forEach((el) => observer.unobserve(el));
+      }
+    };
+  }, [images.length]);
 
   function renderGallery() {
     const onInit = () => {
       console.log("lightGallery has been initialized");
     };
     return (
-      <div className="App">
+      <div className="App" ref={galleryRef}>
         <LightGallery onInit={onInit} speed={500} plugins={[lgThumbnail, lgZoom, lgVideo]}>
           {images.map((image, index) => {
+            const isVisible = visibleImages.has(index);
+            const isAboveFold = index < 6; // First 6 images are above the fold
+            const shouldLoad = isVisible || isAboveFold;
+
             return (
               <a href={image.src} key={index}>
-                <img alt={image.alt} src={image.src} className="galleryImgs" loading="lazy" />
+                <img
+                  alt={image.alt}
+                  src={shouldLoad ? image.src : undefined}
+                  data-src={image.src}
+                  data-index={index}
+                  className="galleryImgs"
+                  loading={isAboveFold ? "eager" : "lazy"}
+                  decoding="async"
+                  fetchPriority={isAboveFold && index < 3 ? "high" : "auto"}
+                  style={{
+                    backgroundColor: "#f0f0f0",
+                    minHeight: "200px",
+                    transition: "opacity 0.3s ease-in-out",
+                    opacity: shouldLoad ? 1 : 0.3,
+                  }}
+                  onLoad={(e) => {
+                    // Fade in when image loads
+                    e.target.style.opacity = "1";
+                  }}
+                />
               </a>
             );
           })}
@@ -153,8 +228,9 @@ function Gallery() {
   }
 
   const { t } = useTranslation();
-  const routes = getRoutes(t);
-  const footerRoutes = getFooterRoutes(t);
+  // Memoize routes to prevent recreation on every render
+  const routes = useMemo(() => getRoutes(t), [t]);
+  const footerRoutes = useMemo(() => getFooterRoutes(t), [t]);
   const donateBtn = t("navbar.donateBtn");
   const galleryPage = t("galleryPage");
 
