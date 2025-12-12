@@ -176,6 +176,8 @@ function Donate() {
                     height="250px"
                     sx={{ border: "10px solid #ECA533" }}
                     mt={{ xs: 4, sm: 5, md: 5, lg: 5, xl: 8 }}
+                    loading="lazy"
+                    decoding="async"
                   ></MKBox>
                   <MKTypography
                     textAlign="center"
@@ -214,6 +216,8 @@ function Donate() {
                     borderRadius="xxl"
                     width={{ xs: "100%", sm: "90%", md: "70%", lg: "100%" }}
                     height="500px"
+                    loading="lazy"
+                    decoding="async"
                   ></MKBox>
                 </MKBox>
               </Grid>

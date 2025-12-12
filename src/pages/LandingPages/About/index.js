@@ -272,6 +272,8 @@ function About(props) {
                       my={"auto"}
                       minHeight={"180px"}
                       maxHeight={"180px"}
+                      loading="lazy"
+                      decoding="async"
                     ></MKBox>
                   </Grid>
                 </Grid>

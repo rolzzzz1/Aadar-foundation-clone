@@ -58,6 +58,8 @@ function HorizontalTeamCard({
               shadow="lg"
               width={{ xs: "80px", sm: "150px", md: "150px", lg: "150px" }}
               height={{ xs: "80px", sm: "150px", md: "150px", lg: "150px" }}
+              loading="lazy"
+              decoding="async"
               // width="150px"
               // height="150px"
               // border="solid 1px #777"

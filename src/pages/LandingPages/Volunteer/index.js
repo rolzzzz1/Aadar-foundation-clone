@@ -304,6 +304,8 @@ function Volunteer() {
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
                   fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
                   my={2}
+                  loading="lazy"
+                  decoding="async"
                 ></MKBox>
                 <MKTypography variant="body1" fontSize="0.9rem" pt={2}>
                   {volunteerPage.description}
