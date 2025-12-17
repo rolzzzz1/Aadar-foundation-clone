@@ -2,6 +2,9 @@
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 
+// React Router
+import { useNavigate } from "react-router-dom";
+
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
@@ -19,6 +22,7 @@ import work6 from "assets/images/ourWorkImages/rehabilitation1.jpg";
 
 function Work() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const steps = [
     {
@@ -118,6 +122,7 @@ function Work() {
           {steps.map((step) => (
             <Grid item xs={11} sm={6} md={4} key={step.title} mx="auto">
               <MKBox
+                onClick={() => navigate("/pages/landing-pages/about-us")}
                 sx={{
                   height: "100%",
                   display: "flex",
@@ -128,6 +133,7 @@ function Work() {
                   transition: "transform 0.25s ease, box-shadow 0.25s ease",
                   backgroundColor: "#ffffff",
                   borderTop: "4px solid #ECA533",
+                  cursor: "pointer",
                   "&:hover": {
                     boxShadow: "0 14px 32px rgba(236, 165, 51, 0.3)",
                     transform: "translateY(-4px)",
