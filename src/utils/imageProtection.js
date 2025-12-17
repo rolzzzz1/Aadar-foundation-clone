@@ -11,7 +11,11 @@ export const setupImageProtection = () => {
 
   // Prevent right-click context menu on images
   const preventContextMenu = (e) => {
-    if (e.target.tagName === "IMG" || e.target.closest("img")) {
+    if (!e || !e.target) return;
+    if (
+      (e.target.tagName && e.target.tagName === "IMG") ||
+      (e.target.closest && e.target.closest("img"))
+    ) {
       e.preventDefault();
       return false;
     }
@@ -19,7 +23,11 @@ export const setupImageProtection = () => {
 
   // Prevent drag and drop of images
   const preventDragStart = (e) => {
-    if (e.target.tagName === "IMG" || e.target.closest("img")) {
+    if (!e || !e.target) return;
+    if (
+      (e.target.tagName && e.target.tagName === "IMG") ||
+      (e.target.closest && e.target.closest("img"))
+    ) {
       e.preventDefault();
       return false;
     }
@@ -27,7 +35,11 @@ export const setupImageProtection = () => {
 
   // Prevent image selection
   const preventSelection = (e) => {
-    if (e.target.tagName === "IMG" || e.target.closest("img")) {
+    if (!e || !e.target) return;
+    if (
+      (e.target.tagName && e.target.tagName === "IMG") ||
+      (e.target.closest && e.target.closest("img"))
+    ) {
       e.preventDefault();
       return false;
     }
@@ -35,13 +47,14 @@ export const setupImageProtection = () => {
 
   // Prevent keyboard shortcuts (Ctrl+S, Ctrl+A, etc.)
   const preventKeyboardShortcuts = (e) => {
+    if (!e) return;
     // Prevent Ctrl+S (Save)
     if ((e.ctrlKey || e.metaKey) && e.key === "s") {
       e.preventDefault();
       return false;
     }
     // Prevent Ctrl+A (Select All) on images
-    if ((e.ctrlKey || e.metaKey) && e.key === "a" && e.target.tagName === "IMG") {
+    if ((e.ctrlKey || e.metaKey) && e.key === "a" && e.target && e.target.tagName === "IMG") {
       e.preventDefault();
       return false;
     }
@@ -64,8 +77,14 @@ export const setupImageProtection = () => {
 
   // Prevent image copy
   const preventCopy = (e) => {
-    if (e.target.tagName === "IMG" || e.target.closest("img")) {
-      e.clipboardData.setData("text/plain", "");
+    if (!e || !e.target) return;
+    if (
+      (e.target.tagName && e.target.tagName === "IMG") ||
+      (e.target.closest && e.target.closest("img"))
+    ) {
+      if (e.clipboardData) {
+        e.clipboardData.setData("text/plain", "");
+      }
       e.preventDefault();
       return false;
     }

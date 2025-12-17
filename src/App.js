@@ -90,6 +90,14 @@ export default function App() {
     document.documentElement.lang = i18n.language || "en";
   }, [i18n.language]);
 
+  // Initialize SEO based on current route
+  useEffect(() => {
+    import("./utils/seo").then(({ setCanonical, setLanguageAlternates }) => {
+      setCanonical(pathname);
+      setLanguageAlternates(pathname);
+    });
+  }, [pathname]);
+
   // Setup image protection
   useEffect(() => {
     // Add CSS protection
