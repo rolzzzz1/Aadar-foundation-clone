@@ -64,13 +64,7 @@ export const setDescription = (description) => {
 /**
  * Set Open Graph tags for social sharing
  */
-export const setOpenGraph = ({
-  title,
-  description,
-  image,
-  url,
-  type = "website",
-}) => {
+export const setOpenGraph = ({ title, description, image, url, type = "website" }) => {
   const ogTitle = title || SITE_NAME;
   const ogDescription = description || DEFAULT_DESCRIPTION;
   const ogImage = image || `${SITE_URL}/assets/images/aadarHindiYellow.png`;
@@ -111,7 +105,7 @@ export const setCanonical = (url) => {
  */
 export const setLanguageAlternates = (currentPath) => {
   const languages = ["en", "hi"];
-  
+
   // Remove existing alternate links
   document.querySelectorAll('link[rel="alternate"][hreflang]').forEach((link) => {
     if (link.getAttribute("hreflang") !== "x-default") {
@@ -194,14 +188,7 @@ export const setBreadcrumbSchema = (items) => {
 /**
  * Initialize SEO for a page
  */
-export const initSEO = ({
-  title,
-  description,
-  image,
-  url,
-  type = "website",
-  breadcrumbs,
-}) => {
+export const initSEO = ({ title, description, image, url, type = "website", breadcrumbs }) => {
   // Set basic meta tags
   setTitle(title);
   setDescription(description);
@@ -234,4 +221,3 @@ export const setDefaultSEO = () => {
     url: "/",
   });
 };
-
