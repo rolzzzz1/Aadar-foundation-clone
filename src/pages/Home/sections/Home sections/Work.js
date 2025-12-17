@@ -6,6 +6,9 @@ import Grid from "@mui/material/Grid";
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 
+// i18n
+import { useTranslation } from "react-i18next";
+
 // Images
 import work1 from "assets/images/ourWorkImages/aboutImg.webp";
 import work2 from "assets/images/ourWorkImages/treatment.webp";
@@ -15,48 +18,44 @@ import work5 from "assets/images/ourWorkImages/care2.jpg";
 import work6 from "assets/images/ourWorkImages/rehabilitation1.jpg";
 
 function Work() {
+  const { t } = useTranslation();
+
   const steps = [
     {
       image: work1,
-      label: "Rescue – problem identified",
-      title: "Rescue: When the Emergency Begins",
-      description:
-        "We identify children and families in critical danger and intervene before it’s too late.",
+      label: t("homePage.workSectionNew.step1.label"),
+      title: t("homePage.workSectionNew.step1.title"),
+      description: t("homePage.workSectionNew.step1.description"),
     },
     {
       image: work2,
-      label: "Treatment – immediate action",
-      title: "Treatment: Life‑Saving Immediate Care",
-      description:
-        "We provide medical support, trauma response, and urgent interventions to stabilize their condition.",
+      label: t("homePage.workSectionNew.step2.label"),
+      title: t("homePage.workSectionNew.step2.title"),
+      description: t("homePage.workSectionNew.step2.description"),
     },
     {
       image: work3,
-      label: "Shelter – safety & stability",
-      title: "Shelter: Safe Roof, Safe Future",
-      description:
-        "We offer a secure, protective environment where they can finally rest without fear.",
+      label: t("homePage.workSectionNew.step3.label"),
+      title: t("homePage.workSectionNew.step3.title"),
+      description: t("homePage.workSectionNew.step3.description"),
     },
     {
       image: work4,
-      label: "Food – daily sustenance",
-      title: "Food: Daily Nutritious Meals",
-      description:
-        "We ensure consistent, wholesome food so no child has to worry about their next meal.",
+      label: t("homePage.workSectionNew.step4.label"),
+      title: t("homePage.workSectionNew.step4.title"),
+      description: t("homePage.workSectionNew.step4.description"),
     },
     {
       image: work5,
-      label: "Care – emotional & mental wellbeing",
-      title: "Care: Healing Hearts and Minds",
-      description:
-        "We provide emotional support, counselling, and ongoing guidance to rebuild confidence and trust.",
+      label: t("homePage.workSectionNew.step5.label"),
+      title: t("homePage.workSectionNew.step5.title"),
+      description: t("homePage.workSectionNew.step5.description"),
     },
     {
       image: work6,
-      label: "Rehabilitation – long-term impact",
-      title: "Rehabilitation: Rebuilding Independent Lives",
-      description:
-        "We focus on education, skills, and long‑term support so they can stand on their own and thrive.",
+      label: t("homePage.workSectionNew.step6.label"),
+      title: t("homePage.workSectionNew.step6.title"),
+      description: t("homePage.workSectionNew.step6.description"),
     },
   ];
 
@@ -65,288 +64,156 @@ function Work() {
       component="section"
       variant="gradient"
       position="relative"
-      mt={{ xs: 4, sm: 8 }}
-      py={{ xs: 4, sm: 6 }}
+      mt={{ xs: 3, sm: 6 }}
+      py={{ xs: 3, sm: 4 }}
       borderRadius={"10px"}
       mx={-2}
       sx={{ backgroundColor: "#f0f2f5" }}
     >
       <Container>
         <Grid container>
-          <Grid item xs={12} md={12} sx={{ textAlign: "center", mb: { xs: 1, sm: 3 } }}>
+          <Grid item xs={12} md={12} sx={{ textAlign: "center", mb: { xs: 0.5, sm: 2 } }}>
             <MKTypography
               variant="h3"
-              fontSize={{ xs: "1.5rem", sm: "1.5rem", md: "1.75rem", lg: "1.875rem" }}
+              fontSize={{ xs: "1.4rem", sm: "1.5rem", md: "1.7rem", lg: "1.8rem" }}
               fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
-              sx={{ fontWeight: "500", mb: 1 }}
+              sx={{ fontWeight: "500", mb: 0.5 }}
             >
-              Our Work
+              {t("homePage.workSectionNew.title")}
             </MKTypography>
             <MKTypography
               variant="h5"
-              fontSize={{ xs: "1rem", sm: "1.1rem", md: "1.2rem" }}
+              fontSize={{ xs: "0.9rem", sm: "1rem", md: "1.1rem" }}
+              fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
               color="text"
-              sx={{ fontWeight: "400", fontStyle: "italic", mb: { xs: 2, sm: 3 } }}
+              sx={{
+                fontWeight: "400",
+                fontStyle: "italic",
+                mt: { xs: 1, sm: 1.5 },
+                mb: { xs: 1, sm: 1.5 },
+              }}
             >
-              From the Streets to a New Life
+              "{t("homePage.workSectionNew.subtitle")}"
+            </MKTypography>
+            <MKTypography
+              variant="body1"
+              fontSize={{ xs: "0.85rem", sm: "0.95rem", md: "1rem" }}
+              color="text"
+              sx={{
+                fontWeight: "400",
+                maxWidth: "800px",
+                mx: "auto",
+                mt: { xs: 2, sm: 2.5, md: 3 },
+                mb: { xs: 1, sm: 1.5 },
+                lineHeight: 1.6,
+              }}
+            >
+              {t("homePage.workSectionNew.intro")}
             </MKTypography>
           </Grid>
         </Grid>
 
-        {/* Animated Vine-like Line Background */}
-        <MKBox
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            width: "100%",
-            height: "100%",
-            overflow: "hidden",
-            zIndex: 0,
-            pointerEvents: "none",
-          }}
-        >
-          <MKBox
-            component="svg"
-            sx={{
-              position: "absolute",
-              top: "10%",
-              left: "5%",
-              width: "90%",
-              height: "85%",
-              zIndex: 0,
-              opacity: 0.3,
-            }}
-            viewBox="0 0 1000 800"
-            preserveAspectRatio="none"
-          >
-            {/* Animated Vine Path - Flowing from 1 → 2 → 3 → 4 → 5 → 6 in zigzag waves */}
-            <path
-              d="
-                M 100 100
-                C 200 80, 300 120, 400 100
-                C 500 80, 600 120, 700 100
-                C 800 80, 900 120, 950 140
-                C 900 180, 800 200, 700 220
-                C 600 240, 500 220, 400 240
-                C 300 260, 200 240, 100 260
-                C 80 300, 100 340, 150 360
-                C 200 380, 300 360, 400 380
-                C 500 400, 600 380, 700 400
-                C 800 420, 900 400, 950 440
-                C 900 480, 800 500, 700 520
-                C 600 540, 500 520, 400 540
-                C 300 560, 200 540, 100 560
-                C 80 600, 100 640, 150 660
-                C 200 680, 300 660, 400 680
-                C 500 700, 600 680, 700 700
-              "
-              stroke="#ECA533"
-              strokeWidth="5"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              opacity="0.4"
-            >
-              <animate
-                attributeName="stroke-dasharray"
-                values="0,1000;500,1000;1000,1000"
-                dur="8s"
-                repeatCount="indefinite"
-              />
-              <animate
-                attributeName="opacity"
-                values="0.2;0.5;0.2"
-                dur="4s"
-                repeatCount="indefinite"
-              />
-            </path>
-            {/* Secondary Vine Branch */}
-            <path
-              d="M 200 120 Q 220 100, 240 110 Q 260 120, 280 105 Q 300 90, 320 100"
-              stroke="#ECA533"
-              strokeWidth="3"
-              fill="none"
-              strokeLinecap="round"
-              opacity="0.3"
-            >
-              <animate
-                attributeName="stroke-dasharray"
-                values="0,200;100,200;200,200"
-                dur="6s"
-                repeatCount="indefinite"
-                begin="1s"
-              />
-            </path>
-            {/* Third Vine Branch */}
-            <path
-              d="M 500 180 Q 520 160, 540 170 Q 560 180, 580 165 Q 600 150, 620 160"
-              stroke="#ECA533"
-              strokeWidth="3"
-              fill="none"
-              strokeLinecap="round"
-              opacity="0.3"
-            >
-              <animate
-                attributeName="stroke-dasharray"
-                values="0,200;100,200;200,200"
-                dur="6s"
-                repeatCount="indefinite"
-                begin="2s"
-              />
-            </path>
-            {/* Vine Leaves/Decorative Elements - Positioned along the wave path */}
-            <circle cx="200" cy="100" r="8" fill="#ECA533" opacity="0.4">
-              <animate
-                attributeName="opacity"
-                values="0.2;0.6;0.2"
-                dur="3s"
-                repeatCount="indefinite"
-              />
-            </circle>
-            <circle cx="400" cy="160" r="8" fill="#ECA533" opacity="0.4">
-              <animate
-                attributeName="opacity"
-                values="0.2;0.6;0.2"
-                dur="3s"
-                repeatCount="indefinite"
-                begin="1s"
-              />
-            </circle>
-            <circle cx="600" cy="200" r="8" fill="#ECA533" opacity="0.4">
-              <animate
-                attributeName="opacity"
-                values="0.2;0.6;0.2"
-                dur="3s"
-                repeatCount="indefinite"
-                begin="2s"
-              />
-            </circle>
-            <circle cx="800" cy="240" r="8" fill="#ECA533" opacity="0.4">
-              <animate
-                attributeName="opacity"
-                values="0.2;0.6;0.2"
-                dur="3s"
-                repeatCount="indefinite"
-                begin="1.5s"
-              />
-            </circle>
-            <circle cx="950" cy="300" r="8" fill="#ECA533" opacity="0.4">
-              <animate
-                attributeName="opacity"
-                values="0.2;0.6;0.2"
-                dur="3s"
-                repeatCount="indefinite"
-                begin="2.5s"
-              />
-            </circle>
-          </MKBox>
-        </MKBox>
-
-        {steps.map((step, index) => (
-          <Grid
-            key={step.title}
-            container
-            spacing={2}
-            alignItems="center"
-            justifyContent="center"
-            sx={{ mb: { xs: 2, sm: 3 }, position: "relative", zIndex: 1 }}
-          >
-            {/* Image column */}
-            <Grid
-              item
-              xs={11}
-              md={5.5}
-              order={{ xs: 1, md: index % 2 === 0 ? 1 : 2 }}
-              mx="auto"
-              sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-            >
+        {/* Cards Grid */}
+        <Grid container spacing={3} sx={{ mt: { xs: 2, sm: 3 } }}>
+          {steps.map((step) => (
+            <Grid item xs={11} sm={6} md={4} key={step.title} mx="auto">
               <MKBox
                 sx={{
-                  position: "relative",
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
                   borderRadius: "20px",
                   overflow: "hidden",
-                  padding: 0,
                   boxShadow: "0 10px 24px rgba(0, 0, 0, 0.18)",
                   transition: "transform 0.25s ease, box-shadow 0.25s ease",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "fit-content",
-                  maxWidth: "100%",
-                  minHeight: { xs: 140, sm: 170, md: 200 },
-                  maxHeight: { xs: 180, sm: 220, md: 260 },
-                  margin: "0 auto",
-                  background:
-                    "linear-gradient(135deg, rgba(240, 242, 245, 0.6) 0%, rgba(245, 247, 250, 0.7) 50%, rgba(240, 242, 245, 0.6) 100%)",
+                  backgroundColor: "#ffffff",
+                  borderTop: "4px solid #ECA533",
                   "&:hover": {
-                    boxShadow: "0 14px 32px rgba(0, 0, 0, 0.22)",
+                    boxShadow: "0 14px 32px rgba(236, 165, 51, 0.3)",
                     transform: "translateY(-4px)",
-                    background:
-                      "linear-gradient(135deg, rgba(245, 247, 250, 0.8) 0%, rgba(240, 242, 245, 0.75) 50%, rgba(245, 247, 250, 0.8) 100%)",
+                    borderTop: "4px solid #ECA533",
                   },
                 }}
               >
+                {/* Image */}
                 <MKBox
-                  component="img"
-                  src={step.image}
-                  alt={step.title}
-                  loading="lazy"
                   sx={{
-                    objectFit: "contain",
-                    width: "auto",
-                    height: "auto",
-                    maxWidth: "100%",
-                    maxHeight: { xs: 180, sm: 220, md: 260 },
-                    display: "block",
-                    borderRadius: "20px",
+                    width: "100%",
+                    height: { xs: 200, sm: 220, md: 240 },
+                    overflow: "hidden",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: "rgba(240, 242, 245, 0.6)",
+                    position: "relative",
                   }}
-                />
+                >
+                  <MKBox
+                    component="img"
+                    src={step.image}
+                    alt={step.title}
+                    loading="lazy"
+                    sx={{
+                      objectFit: "cover",
+                      objectPosition: { xs: "center top", sm: "center", md: "center" },
+                      width: "100%",
+                      height: "100%",
+                      minWidth: "100%",
+                      minHeight: "100%",
+                      display: "block",
+                    }}
+                  />
+                </MKBox>
+
+                {/* Content */}
+                <MKBox
+                  sx={{
+                    p: { xs: 2, sm: 2.5, md: 3 },
+                    flexGrow: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <MKTypography
+                    variant="overline"
+                    sx={{
+                      letterSpacing: 1.5,
+                      fontWeight: 600,
+                      textTransform: "uppercase",
+                      mb: 0.5,
+                      fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
+                      color: "#ECA533",
+                    }}
+                  >
+                    {step.label}
+                  </MKTypography>
+                  <MKTypography
+                    variant="h4"
+                    sx={{
+                      fontWeight: 600,
+                      mb: 1,
+                      fontSize: { xs: "1rem", sm: "1.1rem", md: "1.25rem" },
+                    }}
+                  >
+                    {step.title}
+                  </MKTypography>
+
+                  <MKTypography
+                    variant="body1"
+                    color="text"
+                    sx={{
+                      fontSize: { xs: "0.8rem", sm: "0.85rem", md: "0.9rem" },
+                      lineHeight: 1.5,
+                      flexGrow: 1,
+                    }}
+                  >
+                    {step.description}
+                  </MKTypography>
+                </MKBox>
               </MKBox>
             </Grid>
-
-            {/* Text column */}
-            <Grid item xs={11} md={5.5} order={{ xs: 2, md: index % 2 === 0 ? 2 : 1 }} mx="auto">
-              <MKTypography
-                variant="overline"
-                color="text"
-                sx={{
-                  letterSpacing: 2,
-                  fontWeight: 600,
-                  textTransform: "uppercase",
-                  mb: 0.5,
-                }}
-              >
-                Step {index + 1} · {step.label}
-              </MKTypography>
-
-              <MKTypography
-                variant="h4"
-                sx={{
-                  fontWeight: 600,
-                  mb: 0.75,
-                  fontSize: { xs: "1.1rem", sm: "1.35rem" },
-                }}
-              >
-                {step.title}
-              </MKTypography>
-
-              <MKTypography
-                variant="body1"
-                color="text"
-                sx={{
-                  fontSize: { xs: "0.85rem", sm: "0.95rem" },
-                  lineHeight: 1.5,
-                  maxWidth: "36rem",
-                }}
-              >
-                {step.description}
-              </MKTypography>
-            </Grid>
-          </Grid>
-        ))}
+          ))}
+        </Grid>
       </Container>
     </MKBox>
   );

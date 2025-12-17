@@ -55,6 +55,41 @@
         "description": "A father reunited with son after the efforts of Aadar foundation team"
       }
     },
+    "workSectionNew": {
+      "title": "Our Work",
+      "subtitle": "From the Streets to a New Life",
+      "intro": "At Aadar Foundation, we help people who are homeless, abandoned, or in distress. We support them step by step — from rescue to recovery — with care, respect, and dignity.",
+      "step1": {
+        "label": "Rescue",
+        "title": "Reaching Those in Need",
+        "description": "Our team reaches out to people facing danger on the streets and helps them move to safety with care and respect."
+      },
+      "step2": {
+        "label": "Treatment",
+        "title": "Providing Immediate Medical Help",
+        "description": "We give first aid and medical treatment when needed. Our focus is to make sure they are safe and healthy."
+      },
+      "step3": {
+        "label": "Shelter",
+        "title": "A Safe Place to Stay",
+        "description": "We provide clean and safe shelter where people can rest and feel protected. This helps them begin their recovery."
+      },
+      "step4": {
+        "label": "Food",
+        "title": "Healthy Meals Every Day",
+        "description": "We serve regular, nutritious meals so no one goes hungry. Good food helps people regain strength."
+      },
+      "step5": {
+        "label": "Care",
+        "title": "Emotional and Mental Support",
+        "description": "We listen, talk, and care for them. With emotional support and guidance, we help them feel valued and confident again."
+      },
+      "step6": {
+        "label": "Rehabilitation",
+        "title": "Helping Them Start a New Life",
+        "description": "We support them over time, help reconnect them with their families when possible, and guide them towards living independently with dignity."
+      }
+    },
     "impactSection": {
       "title": "Our Impact",
       "impact1": {
