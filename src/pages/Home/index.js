@@ -35,12 +35,12 @@ import aadarHindiYellow from "assets/images/aadarHindiYellow.png";
 
 // Icons and controls
 import IconButton from "@mui/material/IconButton";
-import VolumeOffIcon from "@mui/icons-material/VolumeOff";
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import PauseIcon from "@mui/icons-material/Pause";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import VolumeOffIcon from "@mui/icons-material/VolumeOff";
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 
 // Story back background - using public folder to avoid SVG processing issues
 import PropTypes from "prop-types";
@@ -56,36 +56,18 @@ import slide4MobileBg from "assets/images/mainThemeImages/slide4-mobile-bg.png";
 import { VIDEO_URLS } from "../../config/videoUrls";
 
 // Video for slide 2 (Kumbh story - Dadi Mayki), slide 3 (Nirbhay story), and slide 4
-// Videos are loaded from Cloudinary CDN
-const maykiVideoBase = VIDEO_URLS.mayki;
-const nirbhayVideoBase = VIDEO_URLS.nirbhay;
-const slide4VideoBase = VIDEO_URLS.slide4;
+// All slides use Vimeo for fast loading
+const maykiVimeoId = VIDEO_URLS.maykiVimeo;
+const nirbhayVimeoId = VIDEO_URLS.nirbhayVimeo;
+const slide4VimeoId = VIDEO_URLS.slide4Vimeo;
 
-// Helper function to get optimized video URL based on screen size
-// For mobile/tablet: lower quality, for desktop: higher quality
-const getOptimizedVideoUrl = (baseUrl, isMobile) => {
-  if (!baseUrl) return "";
-  // If it's a Cloudinary URL, add quality transformation
-  if (baseUrl.includes("cloudinary.com") && baseUrl.includes("/video/upload/")) {
-    // Check if URL already has transformations
-    const uploadIndex = baseUrl.indexOf("/video/upload/");
-    const afterUpload = baseUrl.substring(uploadIndex + "/video/upload/".length);
-
-    // If there are already transformations (contains '/'), use them, otherwise add new ones
-    if (afterUpload.includes("/")) {
-      // URL already has transformations, return as is or append
-      return baseUrl;
-    }
-
-    if (isMobile) {
-      // For mobile: lower quality (q_auto:low) and smaller resolution
-      return baseUrl.replace("/video/upload/", "/video/upload/q_auto:low,w_640,f_auto/");
-    }
-
-    // For desktop: auto quality with better settings
-    return baseUrl.replace("/video/upload/", "/video/upload/q_auto:good,w_1280,f_auto/");
-  }
-  return baseUrl;
+// Helper function to get Vimeo embed URL with minimal UI and fast loading
+const getVimeoEmbedUrl = (videoId, preload = false) => {
+  if (!videoId) return "";
+  // Optimized for fastest loading: 240p quality for instant load
+  // Add preload parameter for preloader iframes
+  const preloadParam = preload ? "&preload=auto" : "";
+  return `https://player.vimeo.com/video/${videoId}?autoplay=1&muted=1&loop=1&controls=0&playsinline=1&quality=240p&responsive=1&dnt=1&title=0&byline=0&portrait=0${preloadParam}`;
 };
 
 const HeroSlide = memo(function HeroSlide({
@@ -104,8 +86,6 @@ const HeroSlide = memo(function HeroSlide({
   const { t } = useTranslation();
 
   // Rebuild slide 2: video left + Pacifico heading + yellow/orange gradient background
-  const videoRef = useRef(null);
-  const [isMuted, setIsMuted] = useState(true);
   const [isParagraphExpanded, setIsParagraphExpanded] = useState(false);
 
   // Treat very small screens as mobile (we hide hero videos there)
@@ -118,66 +98,6 @@ const HeroSlide = memo(function HeroSlide({
     () => typeof window !== "undefined" && window.innerWidth >= 576 && window.innerWidth < 768,
     []
   );
-
-  const toggleMute = useCallback(() => {
-    if (videoRef.current) {
-      videoRef.current.muted = !videoRef.current.muted;
-      setIsMuted(videoRef.current.muted);
-    }
-  }, []);
-
-  // Ensure video plays when its slide is active
-  useEffect(() => {
-    if (
-      !videoRef.current ||
-      !isActive ||
-      !showVideo ||
-      !(slideIndex === 1 || slideIndex === 2 || slideIndex === 3)
-    ) {
-      return;
-    }
-
-    const video = videoRef.current;
-
-    const tryPlay = async () => {
-      try {
-        // Ensure video is muted based on state
-        video.muted = isMuted;
-        await video.play();
-      } catch (error) {
-        console.log("Video autoplay prevented:", error);
-        // Retry after a short delay
-        setTimeout(() => {
-          video.play().catch(() => {});
-        }, 100);
-      }
-    };
-
-    // Check if video is ready to play
-    if (video.readyState >= 3) {
-      // Video can play through
-      tryPlay();
-    } else if (video.readyState >= 2) {
-      // Video has enough data to begin playback
-      tryPlay();
-    } else {
-      // Wait for video to load
-      const handleCanPlay = () => {
-        tryPlay();
-      };
-      const handleLoadedData = () => {
-        tryPlay();
-      };
-
-      video.addEventListener("canplay", handleCanPlay, { once: true });
-      video.addEventListener("loadeddata", handleLoadedData, { once: true });
-
-      return () => {
-        video.removeEventListener("canplay", handleCanPlay);
-        video.removeEventListener("loadeddata", handleLoadedData);
-      };
-    }
-  }, [isActive, isMuted]);
 
   // Use the same special layout for slide 2, slide 3, and slide 4
   if (slideIndex === 1 || slideIndex === 2 || slideIndex === 3) {
@@ -301,50 +221,18 @@ const HeroSlide = memo(function HeroSlide({
                 },
               }}
             >
-              <video
-                key={`video-${slideIndex}`}
-                ref={videoRef}
-                autoPlay
-                loop
-                muted={isMuted}
-                playsInline
-                preload={isMobile ? "none" : "metadata"}
-                poster={heroImage2}
-                style={{
+              {/* Video iframes are rendered outside carousel for faster loading */}
+              {/* Placeholder to maintain layout - actual videos rendered outside */}
+              <MKBox
+                sx={{
                   width: "100%",
                   height: "100%",
-                  objectFit: "cover",
-                  objectPosition: "center 15%",
                   backgroundColor: "#000",
-                  display: "block",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
-                onError={(e) => {
-                  // Fallback to image if video fails to load
-                  if (typeof document === "undefined") return;
-                  e.target.style.display = "none";
-                  const img = document.createElement("img");
-                  img.src = heroImage2;
-                  img.style.width = "100%";
-                  img.style.height = "100%";
-                  img.style.objectFit = "cover";
-                  if (e.target.parentElement) {
-                    e.target.parentElement.appendChild(img);
-                  }
-                }}
-              >
-                <source
-                  src={getOptimizedVideoUrl(
-                    slideIndex === 1
-                      ? maykiVideoBase
-                      : slideIndex === 2
-                      ? nirbhayVideoBase
-                      : slide4VideoBase || nirbhayVideoBase,
-                    isMobile
-                  )}
-                  type="video/mp4"
-                />
-                Your browser does not support the video tag.
-              </video>
+              />
 
               {/* Bottom overlay to hide text */}
               <MKBox
@@ -360,136 +248,6 @@ const HeroSlide = memo(function HeroSlide({
                   pointerEvents: "none",
                 }}
               />
-
-              {/* Pause/Play button for slides 2, 3, 4 - top left of video (desktop only) */}
-              {showVideo && (
-                <MKBox
-                  sx={{
-                    position: "absolute",
-                    top: "8px",
-                    left: "8px",
-                    zIndex: 4,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: 0.5,
-                  }}
-                >
-                  <Tooltip
-                    title={
-                      isCarouselPaused
-                        ? t("homePage.heroSection.clickForNextStory")
-                        : t("homePage.heroSection.clickToHoldStory")
-                    }
-                    arrow
-                    placement="right"
-                  >
-                    <IconButton
-                      onClick={() => setIsCarouselPaused((prev) => !prev)}
-                      sx={{
-                        backgroundColor: "rgba(0, 0, 0, 0.35)",
-                        color: "rgba(255, 255, 255, 0.7)",
-                        backdropFilter: "blur(3px)",
-                        boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
-                        width: { xs: 48, sm: 50, md: 52 },
-                        height: { xs: 48, sm: 50, md: 52 },
-                        minWidth: { xs: 48, sm: 50, md: 52 },
-                        minHeight: { xs: 48, sm: 50, md: 52 },
-                        "&:hover": {
-                          backgroundColor: "rgba(0, 0, 0, 0.6)",
-                          color: "rgba(255, 255, 255, 0.9)",
-                          transform: "scale(1.05)",
-                          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
-                        },
-                        transition: "all 0.25s ease",
-                      }}
-                      aria-label={
-                        isCarouselPaused
-                          ? t("homePage.heroSection.playSlides")
-                          : t("homePage.heroSection.pauseSlides")
-                      }
-                    >
-                      {isCarouselPaused ? (
-                        <PlayArrowIcon sx={{ fontSize: { xs: 20, sm: 22, md: 24 } }} />
-                      ) : (
-                        <PauseIcon sx={{ fontSize: { xs: 20, sm: 22, md: 24 } }} />
-                      )}
-                    </IconButton>
-                  </Tooltip>
-                  <MKTypography
-                    sx={{
-                      fontSize: { xs: "0.65rem", sm: "0.7rem", md: "0.75rem" },
-                      color: "rgba(255, 255, 255, 0.6)",
-                      textAlign: "center",
-                      whiteSpace: "nowrap",
-                      fontWeight: 400,
-                      letterSpacing: "0.3px",
-                      textShadow: "0 1px 3px rgba(0, 0, 0, 0.5)",
-                      backgroundColor: "rgba(0, 0, 0, 0.3)",
-                      backdropFilter: "blur(3px)",
-                      padding: { xs: "4px 8px", sm: "4px 10px", md: "5px 12px" },
-                      borderRadius: "6px",
-                      boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
-                    }}
-                  >
-                    {t("homePage.heroSection.pausePlayHint")}
-                  </MKTypography>
-                </MKBox>
-              )}
-
-              <Tooltip
-                title={
-                  isMuted
-                    ? t("homePage.heroSection.clickToUnmute")
-                    : t("homePage.heroSection.clickToMute")
-                }
-                arrow
-                placement="top"
-              >
-                <IconButton
-                  onClick={toggleMute}
-                  sx={{
-                    position: "absolute",
-                    bottom: { xs: "12px", sm: "16px", md: "20px", lg: "24px" },
-                    right: { xs: "12px", sm: "16px", md: "20px", lg: "24px" },
-                    backgroundColor: "rgba(0, 0, 0, 0.75)",
-                    color: "white",
-                    zIndex: 3,
-                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.5)",
-                    backdropFilter: "blur(8px)",
-                    "&:hover": {
-                      backgroundColor: "rgba(0, 0, 0, 0.9)",
-                      transform: "scale(1.1)",
-                    },
-                    width: { xs: "44px", sm: "48px", md: "50px", lg: "54px" },
-                    height: { xs: "44px", sm: "48px", md: "50px", lg: "54px" },
-                    minWidth: { xs: "44px", sm: "48px", md: "50px", lg: "54px" },
-                    minHeight: { xs: "44px", sm: "48px", md: "50px", lg: "54px" },
-                    transition: "all 0.3s ease",
-                  }}
-                  aria-label={
-                    isMuted
-                      ? t("homePage.heroSection.unmuteVideo")
-                      : t("homePage.heroSection.muteVideo")
-                  }
-                >
-                  {isMuted ? (
-                    <VolumeOffIcon
-                      sx={{
-                        fontSize: { xs: "24px", sm: "26px", md: "28px", lg: "30px" },
-                        color: "#FFFFFF",
-                      }}
-                    />
-                  ) : (
-                    <VolumeUpIcon
-                      sx={{
-                        fontSize: { xs: "24px", sm: "26px", md: "28px", lg: "30px" },
-                        color: "#FFFFFF",
-                      }}
-                    />
-                  )}
-                </IconButton>
-              </Tooltip>
             </MKBox>
           </MKBox>
         )}
@@ -2021,6 +1779,12 @@ function Home() {
 
   // State to let user pause/resume hero slider
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
+  // State to track video mute status for each slide
+  const [videoMutedStates, setVideoMutedStates] = useState({
+    slide2: true,
+    slide3: true,
+    slide4: true,
+  });
 
   // Memoize callbacks to prevent unnecessary re-renders
   const handleSetIsCarouselPaused = useCallback((value) => {
@@ -2673,50 +2437,340 @@ function Home() {
   }, [activeSlide, hasPlayedSlide1Animation]);
 
   // Calculate interval based on current slide
-  // Slide 1->2: 5 seconds
-  // Slide 2->3: 5 seconds (4-6 range)
-  // Rest of slides: 8 seconds
+  // All slides: 8 seconds
   useEffect(() => {
-    if (activeSlide === 0 || activeSlide === 1) {
-      // Transition from slide 1 to 2, or slide 2 to 3
-      setSlideInterval(5000); // 5 seconds
-    } else {
-      // Rest of the slides: 8 seconds
-      setSlideInterval(8000); // 8 seconds
-    }
+    setSlideInterval(8000); // 8 seconds
   }, [activeSlide]);
 
-  // Refs for preloader videos
-  const maykiPreloaderRef = useRef(null);
-  const nirbhayPreloaderRef = useRef(null);
-  const slide4PreloaderRef = useRef(null);
+  // Refs for video iframes to set fetchpriority attribute and position
+  const maykiVideoRef = useRef(null);
+  const nirbhayVideoRef = useRef(null);
+  const slide4VideoRef = useRef(null);
 
-  // Optimize video loading - only preload on desktop and after initial page load
-  // Use global flag to prevent re-preloading on remount
+  // Set fetchpriority attribute on video iframes after mount
   useEffect(() => {
-    // Check if videos are already preloaded
-    if (window.__homeVideosPreloaded) {
-      return;
+    if (maykiVideoRef.current) {
+      maykiVideoRef.current.setAttribute("fetchpriority", "high");
     }
+    if (nirbhayVideoRef.current) {
+      nirbhayVideoRef.current.setAttribute("fetchpriority", "high");
+    }
+    if (slide4VideoRef.current) {
+      slide4VideoRef.current.setAttribute("fetchpriority", "high");
+    }
+  }, []);
 
-    // Delay video preloading to prioritize initial page render
-    const preloadTimer = setTimeout(() => {
-      if (typeof window !== "undefined" && window.innerWidth >= 768) {
-        // Only preload on desktop
-        if (maykiPreloaderRef.current) {
-          maykiPreloaderRef.current.load();
+  // Play/pause videos when slide changes
+  useEffect(() => {
+    const controlVideos = () => {
+      // Map of slide indices to video iframe classes
+      const videoMap = {
+        0: null, // Slide 1 has no video
+        1: ".hero-video-overlay-1", // Slide 2
+        2: ".hero-video-overlay-2", // Slide 3
+        3: ".hero-video-overlay-3", // Slide 4
+      };
+
+      // Control all videos
+      Object.entries(videoMap).forEach(([slideIndex, iframeClass]) => {
+        if (iframeClass) {
+          const iframe = document.querySelector(iframeClass);
+          if (iframe && iframe.contentWindow) {
+            const isActive = parseInt(slideIndex) === activeSlide;
+
+            if (isActive) {
+              // Seek to beginning and play video for active slide
+              iframe.contentWindow.postMessage(
+                {
+                  method: "setCurrentTime",
+                  value: 0,
+                },
+                "https://player.vimeo.com"
+              );
+              // Small delay before playing to ensure seek completes
+              setTimeout(() => {
+                iframe.contentWindow.postMessage(
+                  {
+                    method: "play",
+                  },
+                  "https://player.vimeo.com"
+                );
+              }, 100);
+            } else {
+              // Pause video for inactive slides
+              iframe.contentWindow.postMessage(
+                {
+                  method: "pause",
+                },
+                "https://player.vimeo.com"
+              );
+            }
+          }
         }
-        if (nirbhayPreloaderRef.current) {
-          nirbhayPreloaderRef.current.load();
+      });
+    };
+
+    // Control videos when slide changes (with a small delay to allow transition)
+    const timeoutId = setTimeout(controlVideos, 300);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [activeSlide]);
+
+  // Position video iframes to match video container locations
+  useEffect(() => {
+    const updateVideoPositions = () => {
+      if (typeof window === "undefined" || window.innerWidth < 768) return;
+
+      // Find video containers for each slide (they might be in active or inactive slides)
+      const videoContainer1 = document.querySelector(".hero-slide-video-1");
+      const videoContainer2 = document.querySelector(".hero-slide-video-2");
+      const videoContainer3 = document.querySelector(".hero-slide-video-3");
+
+      // Get the inner video box (the one with the black placeholder background)
+      const getInnerVideoBox = (container) => {
+        if (!container) return null;
+        // Find the box with black background (the placeholder)
+        const boxes = container.querySelectorAll('[class*="MuiBox-root"]');
+        for (const box of boxes) {
+          const computedStyle = window.getComputedStyle(box);
+          const bgColor = computedStyle.backgroundColor;
+          // Check for black background (can be rgb(0, 0, 0) or rgba(0, 0, 0, ...))
+          if (
+            bgColor === "rgb(0, 0, 0)" ||
+            bgColor === "rgba(0, 0, 0, 1)" ||
+            bgColor.startsWith("rgb(0, 0, 0)") ||
+            bgColor === "#000" ||
+            bgColor === "#000000"
+          ) {
+            return box;
+          }
         }
-        if (slide4PreloaderRef.current) {
-          slide4PreloaderRef.current.load();
+        // Fallback: return the deepest nested box (usually the video placeholder)
+        if (boxes.length > 0) {
+          // Find the box that's a direct child of the container with padding
+          for (const box of boxes) {
+            const parent = box.parentElement;
+            if (parent === container || parent?.classList.contains("hero-slide-video")) {
+              const style = window.getComputedStyle(box);
+              if (style.width === "100%" && style.height === "100%") {
+                return box;
+              }
+            }
+          }
+          return boxes[boxes.length - 1];
         }
-        window.__homeVideosPreloaded = true;
+        return null;
+      };
+
+      const innerBox1 = getInnerVideoBox(videoContainer1);
+      const innerBox2 = getInnerVideoBox(videoContainer2);
+      const innerBox3 = getInnerVideoBox(videoContainer3);
+
+      // Get the parent container (MKBox with position: relative) for relative positioning
+      // The iframes are children of this container
+      const parentContainer = maykiVideoRef.current?.parentElement;
+      if (!parentContainer) return;
+
+      const parentRect = parentContainer.getBoundingClientRect();
+
+      // Position iframe 1 (slide 2)
+      if (maykiVideoRef.current && innerBox1) {
+        const rect = innerBox1.getBoundingClientRect();
+        maykiVideoRef.current.style.left = `${rect.left - parentRect.left}px`;
+        maykiVideoRef.current.style.top = `${rect.top - parentRect.top}px`;
+        maykiVideoRef.current.style.width = `${rect.width}px`;
+        maykiVideoRef.current.style.height = `${rect.height}px`;
+        maykiVideoRef.current.style.borderRadius = window.getComputedStyle(innerBox1).borderRadius;
       }
-    }, 1000); // Delay by 1 second to allow initial page load
 
-    return () => clearTimeout(preloadTimer);
+      // Position iframe 2 (slide 3)
+      if (nirbhayVideoRef.current && innerBox2) {
+        const rect = innerBox2.getBoundingClientRect();
+        nirbhayVideoRef.current.style.left = `${rect.left - parentRect.left}px`;
+        nirbhayVideoRef.current.style.top = `${rect.top - parentRect.top}px`;
+        nirbhayVideoRef.current.style.width = `${rect.width}px`;
+        nirbhayVideoRef.current.style.height = `${rect.height}px`;
+        nirbhayVideoRef.current.style.borderRadius =
+          window.getComputedStyle(innerBox2).borderRadius;
+      }
+
+      // Position iframe 3 (slide 4)
+      if (slide4VideoRef.current && innerBox3) {
+        const rect = innerBox3.getBoundingClientRect();
+        slide4VideoRef.current.style.left = `${rect.left - parentRect.left}px`;
+        slide4VideoRef.current.style.top = `${rect.top - parentRect.top}px`;
+        slide4VideoRef.current.style.width = `${rect.width}px`;
+        slide4VideoRef.current.style.height = `${rect.height}px`;
+        slide4VideoRef.current.style.borderRadius = window.getComputedStyle(innerBox3).borderRadius;
+      }
+
+      // Position control buttons to match video container locations
+      const controls1 = document.querySelector(".hero-video-controls-1");
+      const controls2 = document.querySelector(".hero-video-controls-2");
+      const controls3 = document.querySelector(".hero-video-controls-3");
+
+      if (controls1 && innerBox1) {
+        const rect = innerBox1.getBoundingClientRect();
+        // Position pause button at top left
+        const pauseBtn1 = controls1.querySelector(".pause-play-btn");
+        if (pauseBtn1) {
+          pauseBtn1.style.left = `${rect.left - parentRect.left + 8}px`;
+          pauseBtn1.style.top = `${rect.top - parentRect.top + 8}px`;
+        }
+        // Position unmute button at bottom right
+        const muteBtn1 = controls1.querySelector(".mute-unmute-btn");
+        if (muteBtn1) {
+          muteBtn1.style.left = `${rect.right - parentRect.left - 60}px`;
+          muteBtn1.style.top = `${rect.bottom - parentRect.top - 60}px`;
+        }
+      }
+
+      if (controls2 && innerBox2) {
+        const rect = innerBox2.getBoundingClientRect();
+        // Position pause button at top left
+        const pauseBtn2 = controls2.querySelector(".pause-play-btn");
+        if (pauseBtn2) {
+          pauseBtn2.style.left = `${rect.left - parentRect.left + 8}px`;
+          pauseBtn2.style.top = `${rect.top - parentRect.top + 8}px`;
+        }
+        // Position unmute button at bottom right
+        const muteBtn2 = controls2.querySelector(".mute-unmute-btn");
+        if (muteBtn2) {
+          muteBtn2.style.left = `${rect.right - parentRect.left - 60}px`;
+          muteBtn2.style.top = `${rect.bottom - parentRect.top - 60}px`;
+        }
+      }
+
+      if (controls3 && innerBox3) {
+        const rect = innerBox3.getBoundingClientRect();
+        // Position pause button at top left
+        const pauseBtn3 = controls3.querySelector(".pause-play-btn");
+        if (pauseBtn3) {
+          pauseBtn3.style.left = `${rect.left - parentRect.left + 8}px`;
+          pauseBtn3.style.top = `${rect.top - parentRect.top + 8}px`;
+        }
+        // Position unmute button at bottom right
+        const muteBtn3 = controls3.querySelector(".mute-unmute-btn");
+        if (muteBtn3) {
+          muteBtn3.style.left = `${rect.right - parentRect.left - 60}px`;
+          muteBtn3.style.top = `${rect.bottom - parentRect.top - 60}px`;
+        }
+      }
+    };
+
+    // Update positions on mount and when active slide changes
+    // Use multiple timeouts to ensure DOM is ready
+    const timeout1 = setTimeout(updateVideoPositions, 100);
+    const timeout2 = setTimeout(updateVideoPositions, 300);
+    const timeout3 = setTimeout(updateVideoPositions, 600);
+    const timeout4 = setTimeout(updateVideoPositions, 1000);
+
+    // Update on window resize with debounce
+    let resizeTimeout;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(updateVideoPositions, 100);
+    };
+    window.addEventListener("resize", handleResize);
+
+    // Update when slide changes (with a delay to allow DOM update)
+    const slideTimeout = setTimeout(updateVideoPositions, 400);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(timeout1);
+      clearTimeout(timeout2);
+      clearTimeout(timeout3);
+      clearTimeout(timeout4);
+      clearTimeout(slideTimeout);
+      clearTimeout(resizeTimeout);
+    };
+  }, [activeSlide]);
+
+  // Preload Vimeo videos immediately on mount for faster loading
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Add resource hints for faster DNS and connection (only once)
+      if (!window.__vimeoPreconnectAdded) {
+        // DNS prefetch
+        const dnsPrefetch = document.createElement("link");
+        dnsPrefetch.rel = "dns-prefetch";
+        dnsPrefetch.href = "https://player.vimeo.com";
+        document.head.appendChild(dnsPrefetch);
+
+        // Preconnect for faster connection
+        const preconnect = document.createElement("link");
+        preconnect.rel = "preconnect";
+        preconnect.href = "https://player.vimeo.com";
+        preconnect.crossOrigin = "anonymous";
+        document.head.appendChild(preconnect);
+
+        // Preconnect to Vimeo CDN
+        const preconnectCDN = document.createElement("link");
+        preconnectCDN.rel = "preconnect";
+        preconnectCDN.href = "https://f.vimeocdn.com";
+        preconnectCDN.crossOrigin = "anonymous";
+        document.head.appendChild(preconnectCDN);
+
+        window.__vimeoPreconnectAdded = true;
+      }
+
+      // Preload slide 2 Vimeo video - use full viewport size for maximum preloading
+      if (maykiVimeoId && !window.__vimeoMaykiPreloaded) {
+        const preloadIframe1 = document.createElement("iframe");
+        preloadIframe1.src = getVimeoEmbedUrl(maykiVimeoId, true);
+        preloadIframe1.style.position = "fixed";
+        preloadIframe1.style.top = "0";
+        preloadIframe1.style.left = "0";
+        preloadIframe1.style.width = "100vw";
+        preloadIframe1.style.height = "100vh";
+        preloadIframe1.style.opacity = "0";
+        preloadIframe1.style.pointerEvents = "none";
+        preloadIframe1.style.zIndex = "-9999";
+        preloadIframe1.loading = "eager";
+        preloadIframe1.setAttribute("fetchpriority", "high");
+        document.body.appendChild(preloadIframe1);
+        window.__vimeoMaykiPreloaded = true;
+      }
+
+      // Preload slide 3 Vimeo video - use full viewport size for maximum preloading
+      if (nirbhayVimeoId && !window.__vimeoNirbhayPreloaded) {
+        const preloadIframe2 = document.createElement("iframe");
+        preloadIframe2.src = getVimeoEmbedUrl(nirbhayVimeoId, true);
+        preloadIframe2.style.position = "fixed";
+        preloadIframe2.style.top = "0";
+        preloadIframe2.style.left = "0";
+        preloadIframe2.style.width = "100vw";
+        preloadIframe2.style.height = "100vh";
+        preloadIframe2.style.opacity = "0";
+        preloadIframe2.style.pointerEvents = "none";
+        preloadIframe2.style.zIndex = "-9999";
+        preloadIframe2.loading = "eager";
+        preloadIframe2.setAttribute("fetchpriority", "high");
+        document.body.appendChild(preloadIframe2);
+        window.__vimeoNirbhayPreloaded = true;
+      }
+
+      // Preload slide 4 Vimeo video - use full viewport size for maximum preloading
+      if (slide4VimeoId && !window.__vimeoSlide4Preloaded) {
+        const preloadIframe3 = document.createElement("iframe");
+        preloadIframe3.src = getVimeoEmbedUrl(slide4VimeoId, true);
+        preloadIframe3.style.position = "fixed";
+        preloadIframe3.style.top = "0";
+        preloadIframe3.style.left = "0";
+        preloadIframe3.style.width = "100vw";
+        preloadIframe3.style.height = "100vh";
+        preloadIframe3.style.opacity = "0";
+        preloadIframe3.style.pointerEvents = "none";
+        preloadIframe3.style.zIndex = "-9999";
+        preloadIframe3.loading = "eager";
+        preloadIframe3.setAttribute("fetchpriority", "high");
+        document.body.appendChild(preloadIframe3);
+        window.__vimeoSlide4Preloaded = true;
+      }
+    }
   }, []);
 
   // Hero slides (slide 2, slide 3, and slide 4 share the same special video layout)
@@ -2744,64 +2798,534 @@ function Home() {
         }}
         sticky
       />
-
-      {/* Hidden video preloader - optimized loading */}
-      {/* Videos are loaded from CDN - only preload on desktop after initial load */}
-      {/* Video preloaders - lazy load on mobile, preload on desktop after delay */}
-      {typeof window !== "undefined" && window.innerWidth >= 768 && (
-        <>
-          <video
-            ref={maykiPreloaderRef}
-            preload="none"
-            style={{
-              position: "absolute",
-              top: "-9999px",
-              left: "-9999px",
-              width: "1px",
-              height: "1px",
-              opacity: 0,
-              pointerEvents: "none",
-            }}
-          >
-            <source src={getOptimizedVideoUrl(maykiVideoBase, false)} type="video/mp4" />
-          </video>
-          <video
-            ref={nirbhayPreloaderRef}
-            preload="none"
-            style={{
-              position: "absolute",
-              top: "-9999px",
-              left: "-9999px",
-              width: "1px",
-              height: "1px",
-              opacity: 0,
-              pointerEvents: "none",
-            }}
-          >
-            <source src={getOptimizedVideoUrl(nirbhayVideoBase, false)} type="video/mp4" />
-          </video>
-          {slide4VideoBase && (
-            <video
-              ref={slide4PreloaderRef}
-              preload="none"
-              style={{
-                position: "absolute",
-                top: "-9999px",
-                left: "-9999px",
-                width: "1px",
-                height: "1px",
-                opacity: 0,
-                pointerEvents: "none",
-              }}
-            >
-              <source src={getOptimizedVideoUrl(slide4VideoBase, false)} type="video/mp4" />
-            </video>
-          )}
-        </>
-      )}
-
       {/* Hero Carousel */}
       <MKBox sx={{ position: "relative" }}>
+        {/* Pre-render all Vimeo video iframes - always in DOM for instant loading */}
+        {/* Positioned absolutely to match video container, shown when slide is active */}
+        {typeof window !== "undefined" && window.innerWidth >= 768 && (
+          <>
+            {/* Slide 2 video - positioned to match .hero-slide-video-1 */}
+            {maykiVimeoId && (
+              <iframe
+                ref={maykiVideoRef}
+                src={getVimeoEmbedUrl(maykiVimeoId)}
+                title="Vimeo video player - Slide 2"
+                frameBorder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+                webkitallowfullscreen="true"
+                mozallowfullscreen="true"
+                loading="eager"
+                className="hero-video-overlay-1"
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  opacity: activeSlide === 1 ? 1 : 0,
+                  visibility: activeSlide === 1 ? "visible" : "hidden",
+                  pointerEvents: activeSlide === 1 ? "auto" : "none",
+                  zIndex: activeSlide === 1 ? 4 : -1,
+                  transition: "opacity 0.3s ease",
+                }}
+              />
+            )}
+            {/* Slide 3 video - positioned to match .hero-slide-video-2 */}
+            {nirbhayVimeoId && (
+              <iframe
+                ref={nirbhayVideoRef}
+                src={getVimeoEmbedUrl(nirbhayVimeoId)}
+                title="Vimeo video player - Slide 3"
+                frameBorder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+                webkitallowfullscreen="true"
+                mozallowfullscreen="true"
+                loading="eager"
+                className="hero-video-overlay-2"
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  opacity: activeSlide === 2 ? 1 : 0,
+                  visibility: activeSlide === 2 ? "visible" : "hidden",
+                  pointerEvents: activeSlide === 2 ? "auto" : "none",
+                  zIndex: activeSlide === 2 ? 4 : -1,
+                  transition: "opacity 0.3s ease",
+                }}
+              />
+            )}
+            {/* Slide 4 video - positioned to match .hero-slide-video-3 */}
+            {slide4VimeoId && (
+              <iframe
+                ref={slide4VideoRef}
+                src={getVimeoEmbedUrl(slide4VimeoId)}
+                title="Vimeo video player - Slide 4"
+                frameBorder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+                webkitallowfullscreen="true"
+                mozallowfullscreen="true"
+                loading="eager"
+                className="hero-video-overlay-3"
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  opacity: activeSlide === 3 ? 1 : 0,
+                  visibility: activeSlide === 3 ? "visible" : "hidden",
+                  pointerEvents: activeSlide === 3 ? "auto" : "none",
+                  zIndex: activeSlide === 3 ? 4 : -1,
+                  transition: "opacity 0.3s ease",
+                }}
+              />
+            )}
+          </>
+        )}
+
+        {/* Pause/Play and Mute/Unmute buttons for slides 2, 3, 4 - positioned above videos */}
+        {typeof window !== "undefined" && window.innerWidth >= 768 && (
+          <>
+            {/* Buttons for slide 2 */}
+            {activeSlide === 1 && (
+              <MKBox
+                className="hero-video-controls-1"
+                sx={{
+                  position: "absolute",
+                  zIndex: 15,
+                  pointerEvents: "none",
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                {/* Pause/Play button - top left */}
+                <MKBox
+                  className="pause-play-btn"
+                  sx={{
+                    position: "absolute",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 0.5,
+                    pointerEvents: "auto",
+                  }}
+                >
+                  <Tooltip
+                    title={
+                      isCarouselPaused
+                        ? t("homePage.heroSection.clickForNextStory")
+                        : t("homePage.heroSection.clickToHoldStory")
+                    }
+                    arrow
+                    placement="right"
+                  >
+                    <IconButton
+                      onClick={() => setIsCarouselPaused((prev) => !prev)}
+                      sx={{
+                        backgroundColor: "rgba(0, 0, 0, 0.35)",
+                        color: "rgba(255, 255, 255, 0.7)",
+                        backdropFilter: "blur(3px)",
+                        boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
+                        width: 52,
+                        height: 52,
+                        "&:hover": {
+                          backgroundColor: "rgba(0, 0, 0, 0.6)",
+                          color: "rgba(255, 255, 255, 0.9)",
+                          transform: "scale(1.05)",
+                          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
+                        },
+                        transition: "all 0.25s ease",
+                      }}
+                      aria-label={
+                        isCarouselPaused
+                          ? t("homePage.heroSection.playSlides")
+                          : t("homePage.heroSection.pauseSlides")
+                      }
+                    >
+                      {isCarouselPaused ? (
+                        <PlayArrowIcon sx={{ fontSize: 24 }} />
+                      ) : (
+                        <PauseIcon sx={{ fontSize: 24 }} />
+                      )}
+                    </IconButton>
+                  </Tooltip>
+                  <MKTypography
+                    sx={{
+                      fontSize: "0.7rem",
+                      color: "rgba(255, 255, 255, 0.8)",
+                      textAlign: "center",
+                      whiteSpace: "nowrap",
+                      fontWeight: 400,
+                      letterSpacing: "0.3px",
+                      textShadow: "0 1px 3px rgba(0, 0, 0, 0.8)",
+                      backgroundColor: "rgba(0, 0, 0, 0.4)",
+                      backdropFilter: "blur(3px)",
+                      padding: "4px 10px",
+                      borderRadius: "6px",
+                      boxShadow: "0 1px 4px rgba(0, 0, 0, 0.3)",
+                    }}
+                  >
+                    {t("homePage.heroSection.pausePlayHint")}
+                  </MKTypography>
+                </MKBox>
+                {/* Mute/Unmute button - bottom right */}
+                <MKBox
+                  className="mute-unmute-btn"
+                  sx={{
+                    position: "absolute",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 0.5,
+                    pointerEvents: "auto",
+                  }}
+                >
+                  <Tooltip
+                    title={videoMutedStates.slide2 ? "Unmute video" : "Mute video"}
+                    arrow
+                    placement="left"
+                  >
+                    <IconButton
+                      onClick={() => {
+                        setVideoMutedStates((prev) => ({
+                          ...prev,
+                          slide2: !prev.slide2,
+                        }));
+                        // Control Vimeo video mute/unmute via postMessage
+                        const videoIframe = document.querySelector(".hero-video-overlay-1");
+                        if (videoIframe && videoIframe.contentWindow) {
+                          videoIframe.contentWindow.postMessage(
+                            {
+                              method: "setVolume",
+                              value: videoMutedStates.slide2 ? 1 : 0,
+                            },
+                            "https://player.vimeo.com"
+                          );
+                        }
+                      }}
+                      sx={{
+                        backgroundColor: "rgba(0, 0, 0, 0.35)",
+                        color: "rgba(255, 255, 255, 0.7)",
+                        backdropFilter: "blur(3px)",
+                        boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
+                        width: 52,
+                        height: 52,
+                        "&:hover": {
+                          backgroundColor: "rgba(0, 0, 0, 0.6)",
+                          color: "rgba(255, 255, 255, 0.9)",
+                          transform: "scale(1.05)",
+                          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
+                        },
+                        transition: "all 0.25s ease",
+                      }}
+                      aria-label={videoMutedStates.slide2 ? "Unmute video" : "Mute video"}
+                    >
+                      {videoMutedStates.slide2 ? (
+                        <VolumeOffIcon sx={{ fontSize: 24 }} />
+                      ) : (
+                        <VolumeUpIcon sx={{ fontSize: 24 }} />
+                      )}
+                    </IconButton>
+                  </Tooltip>
+                </MKBox>
+              </MKBox>
+            )}
+            {/* Buttons for slide 3 */}
+            {activeSlide === 2 && (
+              <MKBox
+                className="hero-video-controls-2"
+                sx={{
+                  position: "absolute",
+                  zIndex: 15,
+                  pointerEvents: "none",
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                {/* Pause/Play button - top left */}
+                <MKBox
+                  className="pause-play-btn"
+                  sx={{
+                    position: "absolute",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 0.5,
+                    pointerEvents: "auto",
+                  }}
+                >
+                  <Tooltip
+                    title={
+                      isCarouselPaused
+                        ? t("homePage.heroSection.clickForNextStory")
+                        : t("homePage.heroSection.clickToHoldStory")
+                    }
+                    arrow
+                    placement="right"
+                  >
+                    <IconButton
+                      onClick={() => setIsCarouselPaused((prev) => !prev)}
+                      sx={{
+                        backgroundColor: "rgba(0, 0, 0, 0.35)",
+                        color: "rgba(255, 255, 255, 0.7)",
+                        backdropFilter: "blur(3px)",
+                        boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
+                        width: 52,
+                        height: 52,
+                        "&:hover": {
+                          backgroundColor: "rgba(0, 0, 0, 0.6)",
+                          color: "rgba(255, 255, 255, 0.9)",
+                          transform: "scale(1.05)",
+                          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
+                        },
+                        transition: "all 0.25s ease",
+                      }}
+                      aria-label={
+                        isCarouselPaused
+                          ? t("homePage.heroSection.playSlides")
+                          : t("homePage.heroSection.pauseSlides")
+                      }
+                    >
+                      {isCarouselPaused ? (
+                        <PlayArrowIcon sx={{ fontSize: 24 }} />
+                      ) : (
+                        <PauseIcon sx={{ fontSize: 24 }} />
+                      )}
+                    </IconButton>
+                  </Tooltip>
+                  <MKTypography
+                    sx={{
+                      fontSize: "0.7rem",
+                      color: "rgba(255, 255, 255, 0.8)",
+                      textAlign: "center",
+                      whiteSpace: "nowrap",
+                      fontWeight: 400,
+                      letterSpacing: "0.3px",
+                      textShadow: "0 1px 3px rgba(0, 0, 0, 0.8)",
+                      backgroundColor: "rgba(0, 0, 0, 0.4)",
+                      backdropFilter: "blur(3px)",
+                      padding: "4px 10px",
+                      borderRadius: "6px",
+                      boxShadow: "0 1px 4px rgba(0, 0, 0, 0.3)",
+                    }}
+                  >
+                    {t("homePage.heroSection.pausePlayHint")}
+                  </MKTypography>
+                </MKBox>
+                {/* Mute/Unmute button - bottom right */}
+                <MKBox
+                  className="mute-unmute-btn"
+                  sx={{
+                    position: "absolute",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 0.5,
+                    pointerEvents: "auto",
+                  }}
+                >
+                  <Tooltip
+                    title={videoMutedStates.slide3 ? "Unmute video" : "Mute video"}
+                    arrow
+                    placement="left"
+                  >
+                    <IconButton
+                      onClick={() => {
+                        setVideoMutedStates((prev) => ({
+                          ...prev,
+                          slide3: !prev.slide3,
+                        }));
+                        // Control Vimeo video mute/unmute via postMessage
+                        const videoIframe = document.querySelector(".hero-video-overlay-2");
+                        if (videoIframe && videoIframe.contentWindow) {
+                          videoIframe.contentWindow.postMessage(
+                            {
+                              method: "setVolume",
+                              value: videoMutedStates.slide3 ? 1 : 0,
+                            },
+                            "https://player.vimeo.com"
+                          );
+                        }
+                      }}
+                      sx={{
+                        backgroundColor: "rgba(0, 0, 0, 0.35)",
+                        color: "rgba(255, 255, 255, 0.7)",
+                        backdropFilter: "blur(3px)",
+                        boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
+                        width: 52,
+                        height: 52,
+                        "&:hover": {
+                          backgroundColor: "rgba(0, 0, 0, 0.6)",
+                          color: "rgba(255, 255, 255, 0.9)",
+                          transform: "scale(1.05)",
+                          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
+                        },
+                        transition: "all 0.25s ease",
+                      }}
+                      aria-label={videoMutedStates.slide3 ? "Unmute video" : "Mute video"}
+                    >
+                      {videoMutedStates.slide3 ? (
+                        <VolumeOffIcon sx={{ fontSize: 24 }} />
+                      ) : (
+                        <VolumeUpIcon sx={{ fontSize: 24 }} />
+                      )}
+                    </IconButton>
+                  </Tooltip>
+                </MKBox>
+              </MKBox>
+            )}
+            {/* Buttons for slide 4 */}
+            {activeSlide === 3 && (
+              <MKBox
+                className="hero-video-controls-3"
+                sx={{
+                  position: "absolute",
+                  zIndex: 15,
+                  pointerEvents: "none",
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                {/* Pause/Play button - top left */}
+                <MKBox
+                  className="pause-play-btn"
+                  sx={{
+                    position: "absolute",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 0.5,
+                    pointerEvents: "auto",
+                  }}
+                >
+                  <Tooltip
+                    title={
+                      isCarouselPaused
+                        ? t("homePage.heroSection.clickForNextStory")
+                        : t("homePage.heroSection.clickToHoldStory")
+                    }
+                    arrow
+                    placement="right"
+                  >
+                    <IconButton
+                      onClick={() => setIsCarouselPaused((prev) => !prev)}
+                      sx={{
+                        backgroundColor: "rgba(0, 0, 0, 0.35)",
+                        color: "rgba(255, 255, 255, 0.7)",
+                        backdropFilter: "blur(3px)",
+                        boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
+                        width: 52,
+                        height: 52,
+                        "&:hover": {
+                          backgroundColor: "rgba(0, 0, 0, 0.6)",
+                          color: "rgba(255, 255, 255, 0.9)",
+                          transform: "scale(1.05)",
+                          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
+                        },
+                        transition: "all 0.25s ease",
+                      }}
+                      aria-label={
+                        isCarouselPaused
+                          ? t("homePage.heroSection.playSlides")
+                          : t("homePage.heroSection.pauseSlides")
+                      }
+                    >
+                      {isCarouselPaused ? (
+                        <PlayArrowIcon sx={{ fontSize: 24 }} />
+                      ) : (
+                        <PauseIcon sx={{ fontSize: 24 }} />
+                      )}
+                    </IconButton>
+                  </Tooltip>
+                  <MKTypography
+                    sx={{
+                      fontSize: "0.7rem",
+                      color: "rgba(255, 255, 255, 0.8)",
+                      textAlign: "center",
+                      whiteSpace: "nowrap",
+                      fontWeight: 400,
+                      letterSpacing: "0.3px",
+                      textShadow: "0 1px 3px rgba(0, 0, 0, 0.8)",
+                      backgroundColor: "rgba(0, 0, 0, 0.4)",
+                      backdropFilter: "blur(3px)",
+                      padding: "4px 10px",
+                      borderRadius: "6px",
+                      boxShadow: "0 1px 4px rgba(0, 0, 0, 0.3)",
+                    }}
+                  >
+                    {t("homePage.heroSection.pausePlayHint")}
+                  </MKTypography>
+                </MKBox>
+                {/* Mute/Unmute button - bottom right */}
+                <MKBox
+                  className="mute-unmute-btn"
+                  sx={{
+                    position: "absolute",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 0.5,
+                    pointerEvents: "auto",
+                  }}
+                >
+                  <Tooltip
+                    title={videoMutedStates.slide4 ? "Unmute video" : "Mute video"}
+                    arrow
+                    placement="left"
+                  >
+                    <IconButton
+                      onClick={() => {
+                        setVideoMutedStates((prev) => ({
+                          ...prev,
+                          slide4: !prev.slide4,
+                        }));
+                        // Control Vimeo video mute/unmute via postMessage
+                        const videoIframe = document.querySelector(".hero-video-overlay-3");
+                        if (videoIframe && videoIframe.contentWindow) {
+                          videoIframe.contentWindow.postMessage(
+                            {
+                              method: "setVolume",
+                              value: videoMutedStates.slide4 ? 1 : 0,
+                            },
+                            "https://player.vimeo.com"
+                          );
+                        }
+                      }}
+                      sx={{
+                        backgroundColor: "rgba(0, 0, 0, 0.35)",
+                        color: "rgba(255, 255, 255, 0.7)",
+                        backdropFilter: "blur(3px)",
+                        boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
+                        width: 52,
+                        height: 52,
+                        "&:hover": {
+                          backgroundColor: "rgba(0, 0, 0, 0.6)",
+                          color: "rgba(255, 255, 255, 0.9)",
+                          transform: "scale(1.05)",
+                          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.4)",
+                        },
+                        transition: "all 0.25s ease",
+                      }}
+                      aria-label={videoMutedStates.slide4 ? "Unmute video" : "Mute video"}
+                    >
+                      {videoMutedStates.slide4 ? (
+                        <VolumeOffIcon sx={{ fontSize: 24 }} />
+                      ) : (
+                        <VolumeUpIcon sx={{ fontSize: 24 }} />
+                      )}
+                    </IconButton>
+                  </Tooltip>
+                </MKBox>
+              </MKBox>
+            )}
+          </>
+        )}
+
         {/* Custom styles for carousel navigation arrows - blur on hover/click */}
         <style>
           {`
@@ -3036,6 +3560,23 @@ function Home() {
             .react-material-ui-carousel > div {
               transition: opacity 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                           transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            }
+            
+            /* Position video overlay iframes - positioned dynamically via JavaScript */
+            iframe.hero-video-overlay-1,
+            iframe.hero-video-overlay-2,
+            iframe.hero-video-overlay-3 {
+              position: absolute !important;
+              border-radius: 28px !important;
+              overflow: hidden !important;
+            }
+            
+            @media (min-width: 1200px) {
+              iframe.hero-video-overlay-1,
+              iframe.hero-video-overlay-2,
+              iframe.hero-video-overlay-3 {
+                border-radius: 32px !important;
+              }
             }
             
             /* Ensure video elements transition smoothly */
@@ -3588,7 +4129,7 @@ function Home() {
               position: "absolute",
               bottom: "72px",
               right: { xs: "16px", sm: "22px", md: "28px" },
-              zIndex: 6,
+              zIndex: 10,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -3687,7 +4228,7 @@ function Home() {
               bottom: "72px",
               left: "16px",
               transform: "none",
-              zIndex: 5,
+              zIndex: 10,
               display: "flex",
               gap: 8,
               paddingLeft: "0",

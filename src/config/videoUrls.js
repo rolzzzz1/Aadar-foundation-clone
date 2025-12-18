@@ -2,12 +2,12 @@
 // Update these URLs as needed
 
 export const VIDEO_URLS = {
-  // Slide 2 (Kumbh story - Dadi Mayki)
-  mayki: "https://res.cloudinary.com/ds07nbwgq/video/upload/v1764692316/Mayki_v8ewvq.mp4",
+  // Slide 2 (Kumbh story - Dadi Mayki) - Vimeo video
+  maykiVimeo: "1147717050", // Vimeo video ID
 
-  // Slide 3 (Nirbhay story)
-  nirbhay: "https://res.cloudinary.com/ds07nbwgq/video/upload/v1764692322/Nirbhay_ei8puy.mp4",
+  // Slide 3 (Nirbhay story) - Vimeo video
+  nirbhayVimeo: "1147718772", // Vimeo video ID
 
-  // Slide 4 - UPDATE THIS URL
-  slide4: "https://res.cloudinary.com/ds07nbwgq/video/upload/v1764855509/Baba_fjnal8.mp4",
+  // Slide 4 - Vimeo video
+  slide4Vimeo: "1147716844", // Vimeo video ID
 };
