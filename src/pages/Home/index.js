@@ -66,7 +66,11 @@ const getVimeoEmbedUrl = (videoId) => {
   if (!videoId) return "";
   // Optimized for fastest loading: 240p quality for instant load
   // Always use preload=auto for faster video loading
-  return `https://player.vimeo.com/video/${videoId}?autoplay=1&muted=1&loop=1&controls=0&playsinline=1&quality=240p&responsive=1&dnt=1&title=0&byline=0&portrait=0&preload=auto`;
+  // Note: If video asks to sign in, check Vimeo privacy settings:
+  // - Set video privacy to "Public"
+  // - Enable embedding to "Anywhere"
+  // - Set a content rating
+  return `https://player.vimeo.com/video/${videoId}?autoplay=1&muted=1&loop=1&controls=0&playsinline=1&quality=240p&responsive=1&dnt=1&title=0&byline=0&portrait=0&preload=auto&transparent=0`;
 };
 
 const HeroSlide = memo(function HeroSlide({
@@ -2844,12 +2848,9 @@ function Home() {
                   visibility: activeSlide === 1 ? "visible" : "hidden",
                   pointerEvents: activeSlide === 1 ? "auto" : "none",
                   zIndex: activeSlide === 1 ? 4 : -1,
-                  transform: activeSlide === 1 ? "scale(1)" : "scale(0.97)",
-                  filter: activeSlide === 1 ? "blur(0px)" : "blur(2px)",
-                  transition:
-                    activeSlide === 1
-                      ? "opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
-                      : "none",
+                  transform: activeSlide === 1 ? "scale(1)" : "scale(0.99)",
+                  filter: activeSlide === 1 ? "blur(0px)" : "blur(1px)",
+                  transition: activeSlide === 1 ? "all 1.2s cubic-bezier(0.16, 1, 0.3, 1)" : "none",
                   willChange: "opacity, transform, filter",
                 }}
               />
@@ -2877,12 +2878,9 @@ function Home() {
                   visibility: activeSlide === 2 ? "visible" : "hidden",
                   pointerEvents: activeSlide === 2 ? "auto" : "none",
                   zIndex: activeSlide === 2 ? 4 : -1,
-                  transform: activeSlide === 2 ? "scale(1)" : "scale(0.97)",
-                  filter: activeSlide === 2 ? "blur(0px)" : "blur(2px)",
-                  transition:
-                    activeSlide === 2
-                      ? "opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
-                      : "none",
+                  transform: activeSlide === 2 ? "scale(1)" : "scale(0.99)",
+                  filter: activeSlide === 2 ? "blur(0px)" : "blur(1px)",
+                  transition: activeSlide === 2 ? "all 1.2s cubic-bezier(0.16, 1, 0.3, 1)" : "none",
                   willChange: "opacity, transform, filter",
                 }}
               />
@@ -2910,12 +2908,9 @@ function Home() {
                   visibility: activeSlide === 3 ? "visible" : "hidden",
                   pointerEvents: activeSlide === 3 ? "auto" : "none",
                   zIndex: activeSlide === 3 ? 4 : -1,
-                  transform: activeSlide === 3 ? "scale(1)" : "scale(0.97)",
-                  filter: activeSlide === 3 ? "blur(0px)" : "blur(2px)",
-                  transition:
-                    activeSlide === 3
-                      ? "opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
-                      : "none",
+                  transform: activeSlide === 3 ? "scale(1)" : "scale(0.99)",
+                  filter: activeSlide === 3 ? "blur(0px)" : "blur(1px)",
+                  transition: activeSlide === 3 ? "all 1.2s cubic-bezier(0.16, 1, 0.3, 1)" : "none",
                   willChange: "opacity, transform, filter",
                 }}
               />
