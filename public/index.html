@@ -326,7 +326,7 @@
       }
     }
     </script>
-    <!-- Preload critical resources for faster initial load -->
+    <!-- Preload critical resources for faster initial load - Slide 1 (highest priority) -->
     <link
       rel="preload"
       as="image"
@@ -339,11 +339,17 @@
       href="%PUBLIC_URL%/assets/images/aadarHindiYellow.png"
       fetchpriority="high"
     />
-    <link rel="preload" as="image" href="%PUBLIC_URL%/assets/images/aadarHindiWhite.png" />
+    <link
+      rel="preload"
+      as="image"
+      href="%PUBLIC_URL%/assets/images/aadarHindiWhite.png"
+      fetchpriority="high"
+    />
     <link
       rel="preload"
       as="image"
       href="%PUBLIC_URL%/assets/images/mainThemeImages/brushstroke.svg"
+      fetchpriority="high"
     />
     <!-- DNS prefetch for external resources -->
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
@@ -890,6 +896,32 @@
       })();
     </script>
     <!-- <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script> -->
+
+    <!-- Early slide 1 image preloading - starts before React loads for fastest first-time load -->
+    <script>
+      (function() {
+        // Preload slide 1 images immediately for instant display
+        // Use actual paths (PUBLIC_URL is typically empty in production, or / in dev)
+        var basePath = window.location.pathname.includes('/assets') ? '' : '/';
+        var slide1Images = [
+          basePath + "assets/images/mainThemeImages/aadar-main-black2.png",
+          basePath + "assets/images/aadarHindiYellow.png",
+          basePath + "assets/images/aadarHindiWhite.png",
+          basePath + "assets/images/mainThemeImages/brushstroke.svg"
+        ];
+
+        function preloadImage(src) {
+          // Create Image object to start loading immediately
+          var img = new Image();
+          img.src = src;
+          img.fetchPriority = "high";
+          img.loading = "eager";
+        }
+
+        // Start preloading immediately
+        slide1Images.forEach(preloadImage);
+      })();
+    </script>
 
     <!-- Early video preloading - starts before React loads for faster first-time load -->
     <script>

@@ -2844,7 +2844,13 @@ function Home() {
                   visibility: activeSlide === 1 ? "visible" : "hidden",
                   pointerEvents: activeSlide === 1 ? "auto" : "none",
                   zIndex: activeSlide === 1 ? 4 : -1,
-                  transition: activeSlide === 1 ? "opacity 0.4s ease-in-out" : "none",
+                  transform: activeSlide === 1 ? "scale(1)" : "scale(0.97)",
+                  filter: activeSlide === 1 ? "blur(0px)" : "blur(2px)",
+                  transition:
+                    activeSlide === 1
+                      ? "opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+                      : "none",
+                  willChange: "opacity, transform, filter",
                 }}
               />
             )}
@@ -2871,7 +2877,13 @@ function Home() {
                   visibility: activeSlide === 2 ? "visible" : "hidden",
                   pointerEvents: activeSlide === 2 ? "auto" : "none",
                   zIndex: activeSlide === 2 ? 4 : -1,
-                  transition: activeSlide === 2 ? "opacity 0.4s ease-in-out" : "none",
+                  transform: activeSlide === 2 ? "scale(1)" : "scale(0.97)",
+                  filter: activeSlide === 2 ? "blur(0px)" : "blur(2px)",
+                  transition:
+                    activeSlide === 2
+                      ? "opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+                      : "none",
+                  willChange: "opacity, transform, filter",
                 }}
               />
             )}
@@ -2898,7 +2910,13 @@ function Home() {
                   visibility: activeSlide === 3 ? "visible" : "hidden",
                   pointerEvents: activeSlide === 3 ? "auto" : "none",
                   zIndex: activeSlide === 3 ? 4 : -1,
-                  transition: activeSlide === 3 ? "opacity 0.4s ease-in-out" : "none",
+                  transform: activeSlide === 3 ? "scale(1)" : "scale(0.97)",
+                  filter: activeSlide === 3 ? "blur(0px)" : "blur(2px)",
+                  transition:
+                    activeSlide === 3
+                      ? "opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+                      : "none",
+                  willChange: "opacity, transform, filter",
                 }}
               />
             )}
