@@ -62,12 +62,11 @@ const nirbhayVimeoId = VIDEO_URLS.nirbhayVimeo;
 const slide4VimeoId = VIDEO_URLS.slide4Vimeo;
 
 // Helper function to get Vimeo embed URL with minimal UI and fast loading
-const getVimeoEmbedUrl = (videoId, preload = false) => {
+const getVimeoEmbedUrl = (videoId) => {
   if (!videoId) return "";
   // Optimized for fastest loading: 240p quality for instant load
-  // Add preload parameter for preloader iframes
-  const preloadParam = preload ? "&preload=auto" : "";
-  return `https://player.vimeo.com/video/${videoId}?autoplay=1&muted=1&loop=1&controls=0&playsinline=1&quality=240p&responsive=1&dnt=1&title=0&byline=0&portrait=0${preloadParam}`;
+  // Always use preload=auto for faster video loading
+  return `https://player.vimeo.com/video/${videoId}?autoplay=1&muted=1&loop=1&controls=0&playsinline=1&quality=240p&responsive=1&dnt=1&title=0&byline=0&portrait=0&preload=auto`;
 };
 
 const HeroSlide = memo(function HeroSlide({
@@ -2460,62 +2459,62 @@ function Home() {
     }
   }, []);
 
-  // Play/pause videos when slide changes
+  // Play/pause videos when slide changes - immediate control
   useEffect(() => {
-    const controlVideos = () => {
-      // Map of slide indices to video iframe classes
-      const videoMap = {
-        0: null, // Slide 1 has no video
-        1: ".hero-video-overlay-1", // Slide 2
-        2: ".hero-video-overlay-2", // Slide 3
-        3: ".hero-video-overlay-3", // Slide 4
-      };
+    // Map of slide indices to video iframe classes
+    const videoMap = {
+      0: null, // Slide 1 has no video
+      1: ".hero-video-overlay-1", // Slide 2
+      2: ".hero-video-overlay-2", // Slide 3
+      3: ".hero-video-overlay-3", // Slide 4
+    };
 
-      // Control all videos
-      Object.entries(videoMap).forEach(([slideIndex, iframeClass]) => {
-        if (iframeClass) {
-          const iframe = document.querySelector(iframeClass);
-          if (iframe && iframe.contentWindow) {
-            const isActive = parseInt(slideIndex) === activeSlide;
+    // Immediately pause all inactive videos
+    Object.entries(videoMap).forEach(([slideIndex, iframeClass]) => {
+      if (iframeClass) {
+        const iframe = document.querySelector(iframeClass);
+        if (iframe && iframe.contentWindow) {
+          const isActive = parseInt(slideIndex) === activeSlide;
 
-            if (isActive) {
-              // Seek to beginning and play video for active slide
-              iframe.contentWindow.postMessage(
-                {
-                  method: "setCurrentTime",
-                  value: 0,
-                },
-                "https://player.vimeo.com"
-              );
-              // Small delay before playing to ensure seek completes
-              setTimeout(() => {
-                iframe.contentWindow.postMessage(
-                  {
-                    method: "play",
-                  },
-                  "https://player.vimeo.com"
-                );
-              }, 100);
-            } else {
-              // Pause video for inactive slides
-              iframe.contentWindow.postMessage(
-                {
-                  method: "pause",
-                },
-                "https://player.vimeo.com"
-              );
-            }
+          if (!isActive) {
+            // Immediately pause video for inactive slides
+            iframe.contentWindow.postMessage(
+              {
+                method: "pause",
+              },
+              "https://player.vimeo.com"
+            );
           }
         }
-      });
-    };
+      }
+    });
 
-    // Control videos when slide changes (with a small delay to allow transition)
-    const timeoutId = setTimeout(controlVideos, 300);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
+    // Play active video with a small delay to ensure seek completes
+    const activeVideoClass = videoMap[activeSlide];
+    if (activeVideoClass) {
+      const iframe = document.querySelector(activeVideoClass);
+      if (iframe && iframe.contentWindow) {
+        // Seek to beginning
+        iframe.contentWindow.postMessage(
+          {
+            method: "setCurrentTime",
+            value: 0,
+          },
+          "https://player.vimeo.com"
+        );
+        // Small delay before playing to ensure seek completes
+        setTimeout(() => {
+          if (iframe && iframe.contentWindow) {
+            iframe.contentWindow.postMessage(
+              {
+                method: "play",
+              },
+              "https://player.vimeo.com"
+            );
+          }
+        }, 100);
+      }
+    }
   }, [activeSlide]);
 
   // Position video iframes to match video container locations
@@ -2691,36 +2690,39 @@ function Home() {
 
   // Preload Vimeo videos immediately on mount for faster loading
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      // Add resource hints for faster DNS and connection (only once)
-      if (!window.__vimeoPreconnectAdded) {
-        // DNS prefetch
-        const dnsPrefetch = document.createElement("link");
-        dnsPrefetch.rel = "dns-prefetch";
-        dnsPrefetch.href = "https://player.vimeo.com";
-        document.head.appendChild(dnsPrefetch);
+    if (typeof window === "undefined") return;
 
-        // Preconnect for faster connection
-        const preconnect = document.createElement("link");
-        preconnect.rel = "preconnect";
-        preconnect.href = "https://player.vimeo.com";
-        preconnect.crossOrigin = "anonymous";
-        document.head.appendChild(preconnect);
+    // Add resource hints for faster DNS and connection (only once)
+    if (!window.__vimeoPreconnectAdded) {
+      // DNS prefetch
+      const dnsPrefetch = document.createElement("link");
+      dnsPrefetch.rel = "dns-prefetch";
+      dnsPrefetch.href = "https://player.vimeo.com";
+      document.head.appendChild(dnsPrefetch);
 
-        // Preconnect to Vimeo CDN
-        const preconnectCDN = document.createElement("link");
-        preconnectCDN.rel = "preconnect";
-        preconnectCDN.href = "https://f.vimeocdn.com";
-        preconnectCDN.crossOrigin = "anonymous";
-        document.head.appendChild(preconnectCDN);
+      // Preconnect for faster connection
+      const preconnect = document.createElement("link");
+      preconnect.rel = "preconnect";
+      preconnect.href = "https://player.vimeo.com";
+      preconnect.crossOrigin = "anonymous";
+      document.head.appendChild(preconnect);
 
-        window.__vimeoPreconnectAdded = true;
-      }
+      // Preconnect to Vimeo CDN
+      const preconnectCDN = document.createElement("link");
+      preconnectCDN.rel = "preconnect";
+      preconnectCDN.href = "https://f.vimeocdn.com";
+      preconnectCDN.crossOrigin = "anonymous";
+      document.head.appendChild(preconnectCDN);
 
+      window.__vimeoPreconnectAdded = true;
+    }
+
+    // Start preloading immediately (don't wait for next frame)
+    const startPreloading = () => {
       // Preload slide 2 Vimeo video - use full viewport size for maximum preloading
       if (maykiVimeoId && !window.__vimeoMaykiPreloaded) {
         const preloadIframe1 = document.createElement("iframe");
-        preloadIframe1.src = getVimeoEmbedUrl(maykiVimeoId, true);
+        preloadIframe1.src = getVimeoEmbedUrl(maykiVimeoId);
         preloadIframe1.style.position = "fixed";
         preloadIframe1.style.top = "0";
         preloadIframe1.style.left = "0";
@@ -2738,7 +2740,7 @@ function Home() {
       // Preload slide 3 Vimeo video - use full viewport size for maximum preloading
       if (nirbhayVimeoId && !window.__vimeoNirbhayPreloaded) {
         const preloadIframe2 = document.createElement("iframe");
-        preloadIframe2.src = getVimeoEmbedUrl(nirbhayVimeoId, true);
+        preloadIframe2.src = getVimeoEmbedUrl(nirbhayVimeoId);
         preloadIframe2.style.position = "fixed";
         preloadIframe2.style.top = "0";
         preloadIframe2.style.left = "0";
@@ -2756,7 +2758,7 @@ function Home() {
       // Preload slide 4 Vimeo video - use full viewport size for maximum preloading
       if (slide4VimeoId && !window.__vimeoSlide4Preloaded) {
         const preloadIframe3 = document.createElement("iframe");
-        preloadIframe3.src = getVimeoEmbedUrl(slide4VimeoId, true);
+        preloadIframe3.src = getVimeoEmbedUrl(slide4VimeoId);
         preloadIframe3.style.position = "fixed";
         preloadIframe3.style.top = "0";
         preloadIframe3.style.left = "0";
@@ -2770,6 +2772,21 @@ function Home() {
         document.body.appendChild(preloadIframe3);
         window.__vimeoSlide4Preloaded = true;
       }
+    };
+
+    // Start preloading immediately
+    if (document.body) {
+      startPreloading();
+    } else {
+      // If body not ready, wait for it
+      const observer = new MutationObserver(() => {
+        if (document.body) {
+          startPreloading();
+          observer.disconnect();
+        }
+      });
+      observer.observe(document.documentElement, { childList: true, subtree: true });
+      return () => observer.disconnect();
     }
   }, []);
 
@@ -2827,7 +2844,7 @@ function Home() {
                   visibility: activeSlide === 1 ? "visible" : "hidden",
                   pointerEvents: activeSlide === 1 ? "auto" : "none",
                   zIndex: activeSlide === 1 ? 4 : -1,
-                  transition: "opacity 0.3s ease",
+                  transition: activeSlide === 1 ? "opacity 0.4s ease-in-out" : "none",
                 }}
               />
             )}
@@ -2854,7 +2871,7 @@ function Home() {
                   visibility: activeSlide === 2 ? "visible" : "hidden",
                   pointerEvents: activeSlide === 2 ? "auto" : "none",
                   zIndex: activeSlide === 2 ? 4 : -1,
-                  transition: "opacity 0.3s ease",
+                  transition: activeSlide === 2 ? "opacity 0.4s ease-in-out" : "none",
                 }}
               />
             )}
@@ -2881,7 +2898,7 @@ function Home() {
                   visibility: activeSlide === 3 ? "visible" : "hidden",
                   pointerEvents: activeSlide === 3 ? "auto" : "none",
                   zIndex: activeSlide === 3 ? 4 : -1,
-                  transition: "opacity 0.3s ease",
+                  transition: activeSlide === 3 ? "opacity 0.4s ease-in-out" : "none",
                 }}
               />
             )}
