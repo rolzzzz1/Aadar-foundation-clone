@@ -349,9 +349,13 @@
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://res.cloudinary.com" />
     <link rel="dns-prefetch" href="https://www.youtube.com" />
+    <link rel="dns-prefetch" href="https://player.vimeo.com" />
+    <link rel="dns-prefetch" href="https://f.vimeocdn.com" />
     <!-- Preconnect for critical external domains -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://player.vimeo.com" crossorigin />
+    <link rel="preconnect" href="https://f.vimeocdn.com" crossorigin />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900|Roboto+Slab:400,700|Hind:300,400,500,600,700"
@@ -886,6 +890,99 @@
       })();
     </script>
     <!-- <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script> -->
+
+    <!-- Early video preloading - starts before React loads for faster first-time load -->
+    <script>
+      (function() {
+        // Vimeo video IDs for hero slides
+        var videoIds = {
+          mayki: "1147717050",
+          nirbhay: "1147718772",
+          slide4: "1147716844"
+        };
+
+        // Helper to create Vimeo embed URL
+        function getVimeoUrl(videoId) {
+          return "https://player.vimeo.com/video/" + videoId + "?autoplay=1&muted=1&loop=1&controls=0&playsinline=1&quality=240p&responsive=1&dnt=1&title=0&byline=0&portrait=0&preload=auto";
+        }
+
+        // Start preloading videos as early as possible
+        function startVideoPreload() {
+          // Only preload on desktop (>= 768px)
+          if (window.innerWidth < 768) return;
+
+          // Preload each video with full viewport size for maximum data loading
+          // Map keys to React component flag names
+          var flagMap = {
+            mayki: "__vimeoMaykiPreloaded",
+            nirbhay: "__vimeoNirbhayPreloaded",
+            slide4: "__vimeoSlide4Preloaded"
+          };
+
+          Object.keys(videoIds).forEach(function(key) {
+            var videoId = videoIds[key];
+            var flagName = flagMap[key];
+            
+            // Skip if already preloaded
+            if (!flagName || window[flagName]) return;
+
+            try {
+              var iframe = document.createElement("iframe");
+              iframe.src = getVimeoUrl(videoId);
+              iframe.style.position = "fixed";
+              iframe.style.top = "0";
+              iframe.style.left = "0";
+              iframe.style.width = "100vw";
+              iframe.style.height = "100vh";
+              iframe.style.opacity = "0";
+              iframe.style.pointerEvents = "none";
+              iframe.style.zIndex = "-9999";
+              iframe.loading = "eager";
+              iframe.setAttribute("fetchpriority", "high");
+              
+              // Wait for body to be available
+              if (document.body) {
+                document.body.appendChild(iframe);
+                window[flagName] = true;
+              } else {
+                // If body not ready, wait for DOMContentLoaded
+                if (document.readyState === "loading") {
+                  document.addEventListener("DOMContentLoaded", function() {
+                    if (document.body && !window[flagName]) {
+                      document.body.appendChild(iframe);
+                      window[flagName] = true;
+                    }
+                  });
+                } else {
+                  // DOM already loaded, try to append
+                  setTimeout(function() {
+                    if (document.body && !window[flagName]) {
+                      document.body.appendChild(iframe);
+                      window[flagName] = true;
+                    }
+                  }, 0);
+                }
+              }
+            } catch (e) {
+              // Silently fail if there's an error
+            }
+          });
+        }
+
+        // Start preloading immediately if DOM is ready, otherwise wait
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", startVideoPreload);
+        } else {
+          // DOM already loaded, start immediately
+          startVideoPreload();
+        }
+
+        // Also try on window load as fallback
+        window.addEventListener("load", function() {
+          setTimeout(startVideoPreload, 0);
+        });
+      })();
+    </script>
 
     <!-- Nepcha Analytics (nepcha.com) -->
     <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
