@@ -1788,6 +1788,12 @@ function Home() {
     slide3: true,
     slide4: true,
   });
+  // State to control button visibility - only show after video starts loading
+  const [showVideoButtons, setShowVideoButtons] = useState({
+    slide2: false,
+    slide3: false,
+    slide4: false,
+  });
 
   // Memoize callbacks to prevent unnecessary re-renders
   const handleSetIsCarouselPaused = useCallback((value) => {
@@ -2521,6 +2527,35 @@ function Home() {
     }
   }, [activeSlide]);
 
+  // Show video buttons only after video starts loading (delay to prevent flash)
+  useEffect(() => {
+    // Hide all buttons initially
+    setShowVideoButtons({
+      slide2: false,
+      slide3: false,
+      slide4: false,
+    });
+
+    // Show buttons for active slide after video transition starts
+    if (activeSlide === 1) {
+      // Show buttons after video fade-in has started (600ms delay)
+      const timer = setTimeout(() => {
+        setShowVideoButtons((prev) => ({ ...prev, slide2: true }));
+      }, 600);
+      return () => clearTimeout(timer);
+    } else if (activeSlide === 2) {
+      const timer = setTimeout(() => {
+        setShowVideoButtons((prev) => ({ ...prev, slide3: true }));
+      }, 600);
+      return () => clearTimeout(timer);
+    } else if (activeSlide === 3) {
+      const timer = setTimeout(() => {
+        setShowVideoButtons((prev) => ({ ...prev, slide4: true }));
+      }, 600);
+      return () => clearTimeout(timer);
+    }
+  }, [activeSlide]);
+
   // Position video iframes to match video container locations
   useEffect(() => {
     const updateVideoPositions = () => {
@@ -2931,6 +2966,8 @@ function Home() {
                   pointerEvents: "none",
                   width: "100%",
                   height: "100%",
+                  opacity: showVideoButtons.slide2 ? 1 : 0,
+                  transition: "opacity 0.3s ease-in",
                 }}
               >
                 {/* Pause/Play button - top left */}
@@ -3075,6 +3112,8 @@ function Home() {
                   pointerEvents: "none",
                   width: "100%",
                   height: "100%",
+                  opacity: showVideoButtons.slide3 ? 1 : 0,
+                  transition: "opacity 0.3s ease-in",
                 }}
               >
                 {/* Pause/Play button - top left */}
@@ -3219,6 +3258,8 @@ function Home() {
                   pointerEvents: "none",
                   width: "100%",
                   height: "100%",
+                  opacity: showVideoButtons.slide4 ? 1 : 0,
+                  transition: "opacity 0.3s ease-in",
                 }}
               >
                 {/* Pause/Play button - top left */}
