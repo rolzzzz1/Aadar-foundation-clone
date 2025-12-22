@@ -364,10 +364,10 @@
     <link rel="preconnect" href="https://f.vimeocdn.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900|Roboto+Slab:400,700|Hind:300,400,500,600,700"
+      href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900|Roboto+Slab:400,700|Hind:300,400,500,600,700&display=swap"
     />
     <link
-      href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+      href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp&display=swap"
       rel="stylesheet"
     />
     <!-- Critical CSS for CTA buttons - must load before React to prevent FOUC -->
@@ -939,28 +939,18 @@
         }
 
         // Start preloading videos as early as possible
+        // Only preload slide 2 (mayki) eagerly - slides 3-4 will lazy load
+        // This improves LCP by reducing initial load time
         function startVideoPreload() {
           // Only preload on desktop (>= 768px)
           if (window.innerWidth < 768) return;
 
-          // Preload each video with full viewport size for maximum data loading
-          // Map keys to React component flag names
-          var flagMap = {
-            mayki: "__vimeoMaykiPreloaded",
-            nirbhay: "__vimeoNirbhayPreloaded",
-            slide4: "__vimeoSlide4Preloaded"
-          };
-
-          Object.keys(videoIds).forEach(function(key) {
-            var videoId = videoIds[key];
-            var flagName = flagMap[key];
-            
-            // Skip if already preloaded
-            if (!flagName || window[flagName]) return;
-
+          // Only preload slide 2 video eagerly (first video slide)
+          // Slides 3-4 will be lazy loaded when their previous slide becomes active
+          if (!window.__vimeoMaykiPreloaded) {
             try {
               var iframe = document.createElement("iframe");
-              iframe.src = getVimeoUrl(videoId);
+              iframe.src = getVimeoUrl(videoIds.mayki);
               iframe.style.position = "fixed";
               iframe.style.top = "0";
               iframe.style.left = "0";
@@ -975,22 +965,22 @@
               // Wait for body to be available
               if (document.body) {
                 document.body.appendChild(iframe);
-                window[flagName] = true;
+                window.__vimeoMaykiPreloaded = true;
               } else {
                 // If body not ready, wait for DOMContentLoaded
                 if (document.readyState === "loading") {
                   document.addEventListener("DOMContentLoaded", function() {
-                    if (document.body && !window[flagName]) {
+                    if (document.body && !window.__vimeoMaykiPreloaded) {
                       document.body.appendChild(iframe);
-                      window[flagName] = true;
+                      window.__vimeoMaykiPreloaded = true;
                     }
                   });
                 } else {
                   // DOM already loaded, try to append
                   setTimeout(function() {
-                    if (document.body && !window[flagName]) {
+                    if (document.body && !window.__vimeoMaykiPreloaded) {
                       document.body.appendChild(iframe);
-                      window[flagName] = true;
+                      window.__vimeoMaykiPreloaded = true;
                     }
                   }, 0);
                 }
@@ -998,7 +988,7 @@
             } catch (e) {
               // Silently fail if there's an error
             }
-          });
+          }
         }
 
         // Start preloading immediately if DOM is ready, otherwise wait

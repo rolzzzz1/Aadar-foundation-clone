@@ -1302,6 +1302,7 @@ const HeroSlide = memo(function HeroSlide({
             component="img"
             src={aadarHindiYellow}
             width={{ xs: "120px", sm: "100px", md: "120px", lg: "120px" }}
+            height="auto"
             display={{ xs: "inline", sm: "none" }}
             mb={2}
             loading="eager"
@@ -1310,6 +1311,7 @@ const HeroSlide = memo(function HeroSlide({
             alt="Aadar Foundation Logo"
             sx={{
               filter: { xs: "drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))", sm: "none" },
+              aspectRatio: "auto",
             }}
           />
           <MKTypography
@@ -1506,12 +1508,16 @@ const HeroSlide = memo(function HeroSlide({
               component="img"
               src={aadarHindiWhite}
               width={{ xs: "80px", sm: "100px", md: "120px", lg: "120px" }}
+              height="auto"
               my={1}
               mb={-2}
               loading="eager"
               fetchPriority="high"
               decoding="async"
               alt="Aadar Foundation Logo"
+              sx={{
+                aspectRatio: "auto",
+              }}
             />
           </MKTypography>
           <MKTypography
@@ -2469,6 +2475,43 @@ function Home() {
     }
   }, []);
 
+  // Lazy preload videos for slides 3-4 when slide 2 becomes active (proactive loading)
+  useEffect(() => {
+    // Preload slide 3 video when slide 2 is active (next slide)
+    if (activeSlide === 1 && nirbhayVimeoId && !window.__vimeoNirbhayPreloaded) {
+      const preloadIframe2 = document.createElement("iframe");
+      preloadIframe2.src = getVimeoEmbedUrl(nirbhayVimeoId);
+      preloadIframe2.style.position = "fixed";
+      preloadIframe2.style.top = "0";
+      preloadIframe2.style.left = "0";
+      preloadIframe2.style.width = "100vw";
+      preloadIframe2.style.height = "100vh";
+      preloadIframe2.style.opacity = "0";
+      preloadIframe2.style.pointerEvents = "none";
+      preloadIframe2.style.zIndex = "-9999";
+      preloadIframe2.loading = "lazy";
+      document.body.appendChild(preloadIframe2);
+      window.__vimeoNirbhayPreloaded = true;
+    }
+
+    // Preload slide 4 video when slide 3 is active (next slide)
+    if (activeSlide === 2 && slide4VimeoId && !window.__vimeoSlide4Preloaded) {
+      const preloadIframe3 = document.createElement("iframe");
+      preloadIframe3.src = getVimeoEmbedUrl(slide4VimeoId);
+      preloadIframe3.style.position = "fixed";
+      preloadIframe3.style.top = "0";
+      preloadIframe3.style.left = "0";
+      preloadIframe3.style.width = "100vw";
+      preloadIframe3.style.height = "100vh";
+      preloadIframe3.style.opacity = "0";
+      preloadIframe3.style.pointerEvents = "none";
+      preloadIframe3.style.zIndex = "-9999";
+      preloadIframe3.loading = "lazy";
+      document.body.appendChild(preloadIframe3);
+      window.__vimeoSlide4Preloaded = true;
+    }
+  }, [activeSlide, nirbhayVimeoId, slide4VimeoId]);
+
   // Play/pause videos when slide changes - immediate control
   useEffect(() => {
     // Map of slide indices to video iframe classes
@@ -2776,41 +2819,10 @@ function Home() {
         window.__vimeoMaykiPreloaded = true;
       }
 
-      // Preload slide 3 Vimeo video - use full viewport size for maximum preloading
-      if (nirbhayVimeoId && !window.__vimeoNirbhayPreloaded) {
-        const preloadIframe2 = document.createElement("iframe");
-        preloadIframe2.src = getVimeoEmbedUrl(nirbhayVimeoId);
-        preloadIframe2.style.position = "fixed";
-        preloadIframe2.style.top = "0";
-        preloadIframe2.style.left = "0";
-        preloadIframe2.style.width = "100vw";
-        preloadIframe2.style.height = "100vh";
-        preloadIframe2.style.opacity = "0";
-        preloadIframe2.style.pointerEvents = "none";
-        preloadIframe2.style.zIndex = "-9999";
-        preloadIframe2.loading = "eager";
-        preloadIframe2.setAttribute("fetchpriority", "high");
-        document.body.appendChild(preloadIframe2);
-        window.__vimeoNirbhayPreloaded = true;
-      }
-
-      // Preload slide 4 Vimeo video - use full viewport size for maximum preloading
-      if (slide4VimeoId && !window.__vimeoSlide4Preloaded) {
-        const preloadIframe3 = document.createElement("iframe");
-        preloadIframe3.src = getVimeoEmbedUrl(slide4VimeoId);
-        preloadIframe3.style.position = "fixed";
-        preloadIframe3.style.top = "0";
-        preloadIframe3.style.left = "0";
-        preloadIframe3.style.width = "100vw";
-        preloadIframe3.style.height = "100vh";
-        preloadIframe3.style.opacity = "0";
-        preloadIframe3.style.pointerEvents = "none";
-        preloadIframe3.style.zIndex = "-9999";
-        preloadIframe3.loading = "eager";
-        preloadIframe3.setAttribute("fetchpriority", "high");
-        document.body.appendChild(preloadIframe3);
-        window.__vimeoSlide4Preloaded = true;
-      }
+      // Preload slide 3 Vimeo video - lazy load (only preload when slide 2 is active)
+      // This reduces initial load time and improves LCP
+      // Preload slide 4 Vimeo video - lazy load (only preload when slide 3 is active)
+      // This reduces initial load time and improves LCP
     };
 
     // Start preloading immediately
@@ -2901,7 +2913,7 @@ function Home() {
                 allowFullScreen
                 webkitallowfullscreen="true"
                 mozallowfullscreen="true"
-                loading="eager"
+                loading="lazy"
                 className="hero-video-overlay-2"
                 style={{
                   position: "absolute",
@@ -2931,7 +2943,7 @@ function Home() {
                 allowFullScreen
                 webkitallowfullscreen="true"
                 mozallowfullscreen="true"
-                loading="eager"
+                loading="lazy"
                 className="hero-video-overlay-3"
                 style={{
                   position: "absolute",
