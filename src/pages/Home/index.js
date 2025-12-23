@@ -3,16 +3,7 @@ import Card from "@mui/material/Card";
 import Tooltip from "@mui/material/Tooltip";
 import Carousel from "react-material-ui-carousel";
 import { Link } from "react-router-dom";
-import {
-  useState,
-  useRef,
-  useEffect,
-  useMemo,
-  useCallback,
-  memo,
-  Suspense,
-  lazy,
-} from "react";
+import { useState, useRef, useEffect, useMemo, useCallback, memo, Suspense, lazy } from "react";
 
 // i18next imports
 import { useTranslation } from "react-i18next";
@@ -2463,7 +2454,7 @@ function Home() {
   // Calculate interval based on current slide
   // All slides: 8 seconds
   useEffect(() => {
-      setSlideInterval(8000); // 8 seconds
+    setSlideInterval(8000); // 8 seconds
   }, [activeSlide]);
 
   // Refs for video iframes to set fetchpriority attribute and position
@@ -2879,8 +2870,8 @@ function Home() {
       <MKBox sx={{ position: "relative" }}>
         {/* Pre-render all Vimeo video iframes - always in DOM for instant loading */}
         {/* Positioned absolutely to match video container, shown when slide is active */}
-      {typeof window !== "undefined" && window.innerWidth >= 768 && (
-        <>
+        {typeof window !== "undefined" && window.innerWidth >= 768 && (
+          <>
             {/* Slide 2 video - positioned to match .hero-slide-video-1 */}
             {maykiVimeoId && (
               <iframe
@@ -2892,10 +2883,9 @@ function Home() {
                 allowFullScreen
                 webkitallowfullscreen="true"
                 mozallowfullscreen="true"
-                loading="eager"
-                className="hero-video-overlay-1"
-            style={{
-              position: "absolute",
+                loading="lazy"
+                style={{
+                  position: "absolute",
                   top: 0,
                   left: 0,
                   width: "100%",
@@ -2909,6 +2899,7 @@ function Home() {
                   transition: activeSlide === 1 ? "all 1.2s cubic-bezier(0.16, 1, 0.3, 1)" : "none",
                   willChange: "opacity, transform, filter",
                 }}
+                className="hero-video-overlay-1"
               />
             )}
             {/* Slide 3 video - positioned to match .hero-slide-video-2 */}
@@ -2923,7 +2914,6 @@ function Home() {
                 webkitallowfullscreen="true"
                 mozallowfullscreen="true"
                 loading="lazy"
-                className="hero-video-overlay-2"
                 style={{
                   position: "absolute",
                   top: 0,
@@ -2939,6 +2929,7 @@ function Home() {
                   transition: activeSlide === 2 ? "all 1.2s cubic-bezier(0.16, 1, 0.3, 1)" : "none",
                   willChange: "opacity, transform, filter",
                 }}
+                className="hero-video-overlay-2"
               />
             )}
             {/* Slide 4 video - positioned to match .hero-slide-video-3 */}
@@ -2953,7 +2944,6 @@ function Home() {
                 webkitallowfullscreen="true"
                 mozallowfullscreen="true"
                 loading="lazy"
-                className="hero-video-overlay-3"
                 style={{
                   position: "absolute",
                   top: 0,
@@ -2969,6 +2959,7 @@ function Home() {
                   transition: activeSlide === 3 ? "all 1.2s cubic-bezier(0.16, 1, 0.3, 1)" : "none",
                   willChange: "opacity, transform, filter",
                 }}
+                className="hero-video-overlay-3"
               />
             )}
           </>
@@ -2984,7 +2975,7 @@ function Home() {
                 sx={{
                   position: "absolute",
                   zIndex: 15,
-              pointerEvents: "none",
+                  pointerEvents: "none",
                   width: "100%",
                   height: "100%",
                   opacity: showVideoButtons.slide2 ? 1 : 0,
@@ -2995,7 +2986,7 @@ function Home() {
                 <MKBox
                   className="pause-play-btn"
                   sx={{
-              position: "absolute",
+                    position: "absolute",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
@@ -3130,7 +3121,7 @@ function Home() {
                 sx={{
                   position: "absolute",
                   zIndex: 15,
-              pointerEvents: "none",
+                  pointerEvents: "none",
                   width: "100%",
                   height: "100%",
                   opacity: showVideoButtons.slide3 ? 1 : 0,
@@ -3141,7 +3132,7 @@ function Home() {
                 <MKBox
                   className="pause-play-btn"
                   sx={{
-                position: "absolute",
+                    position: "absolute",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
@@ -3414,9 +3405,9 @@ function Home() {
                   </Tooltip>
                 </MKBox>
               </MKBox>
-          )}
-        </>
-      )}
+            )}
+          </>
+        )}
 
         {/* Custom styles for carousel navigation arrows - blur on hover/click */}
         <style>
@@ -4422,22 +4413,20 @@ function Home() {
         }}
       >
         <Suspense fallback={null}>
-          <>
-        {/* About section component - memoized to prevent re-render */}
-        <About />
+          {/* About section component - memoized to prevent re-render */}
+          <About />
 
-        {/* Counters section component - memoized to prevent re-render */}
-        <Counters />
+          {/* Counters section component - memoized to prevent re-render */}
+          <Counters />
 
-        {/* Journey video section component - memoized to prevent re-render */}
-        <Journey />
+          {/* Journey video section component - memoized to prevent re-render */}
+          <Journey />
 
-        {/* Our work section component - memoized to prevent re-render */}
-        <Work />
+          {/* Our work section component - memoized to prevent re-render */}
+          <Work />
 
-        {/* Events section component - memoized to prevent re-render */}
-        <Events />
-          </>
+          {/* Events section component - memoized to prevent re-render */}
+          <Events />
         </Suspense>
       </Card>
 
