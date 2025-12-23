@@ -3,7 +3,16 @@ import Card from "@mui/material/Card";
 import Tooltip from "@mui/material/Tooltip";
 import Carousel from "react-material-ui-carousel";
 import { Link } from "react-router-dom";
-import { useState, useRef, useEffect, useMemo, useCallback, memo } from "react";
+import {
+  useState,
+  useRef,
+  useEffect,
+  useMemo,
+  useCallback,
+  memo,
+  Suspense,
+  lazy,
+} from "react";
 
 // i18next imports
 import { useTranslation } from "react-i18next";
@@ -17,12 +26,12 @@ import MKButton from "components/MKButton";
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import DefaultFooter from "examples/Footers/DefaultFooter";
 
-// Home page sections
-import About from "pages/Home/sections/Home sections/About";
-import Work from "pages/Home/sections/Home sections/Work";
-import Events from "pages/Home/sections/Home sections/Events";
-import Journey from "pages/Home/sections/Home sections/Journey";
-import Counters from "pages/Home/sections/Home sections/Counters";
+// Home page sections - lazy loaded to improve initial load performance
+const About = lazy(() => import("pages/Home/sections/Home sections/About"));
+const Work = lazy(() => import("pages/Home/sections/Home sections/Work"));
+const Events = lazy(() => import("pages/Home/sections/Home sections/Events"));
+const Journey = lazy(() => import("pages/Home/sections/Home sections/Journey"));
+const Counters = lazy(() => import("pages/Home/sections/Home sections/Counters"));
 
 // Routes
 import getRoutes from "routes1";
@@ -2454,7 +2463,7 @@ function Home() {
   // Calculate interval based on current slide
   // All slides: 8 seconds
   useEffect(() => {
-    setSlideInterval(8000); // 8 seconds
+      setSlideInterval(8000); // 8 seconds
   }, [activeSlide]);
 
   // Refs for video iframes to set fetchpriority attribute and position
@@ -2870,8 +2879,8 @@ function Home() {
       <MKBox sx={{ position: "relative" }}>
         {/* Pre-render all Vimeo video iframes - always in DOM for instant loading */}
         {/* Positioned absolutely to match video container, shown when slide is active */}
-        {typeof window !== "undefined" && window.innerWidth >= 768 && (
-          <>
+      {typeof window !== "undefined" && window.innerWidth >= 768 && (
+        <>
             {/* Slide 2 video - positioned to match .hero-slide-video-1 */}
             {maykiVimeoId && (
               <iframe
@@ -2885,8 +2894,8 @@ function Home() {
                 mozallowfullscreen="true"
                 loading="eager"
                 className="hero-video-overlay-1"
-                style={{
-                  position: "absolute",
+            style={{
+              position: "absolute",
                   top: 0,
                   left: 0,
                   width: "100%",
@@ -2975,7 +2984,7 @@ function Home() {
                 sx={{
                   position: "absolute",
                   zIndex: 15,
-                  pointerEvents: "none",
+              pointerEvents: "none",
                   width: "100%",
                   height: "100%",
                   opacity: showVideoButtons.slide2 ? 1 : 0,
@@ -2986,7 +2995,7 @@ function Home() {
                 <MKBox
                   className="pause-play-btn"
                   sx={{
-                    position: "absolute",
+              position: "absolute",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
@@ -3121,7 +3130,7 @@ function Home() {
                 sx={{
                   position: "absolute",
                   zIndex: 15,
-                  pointerEvents: "none",
+              pointerEvents: "none",
                   width: "100%",
                   height: "100%",
                   opacity: showVideoButtons.slide3 ? 1 : 0,
@@ -3132,7 +3141,7 @@ function Home() {
                 <MKBox
                   className="pause-play-btn"
                   sx={{
-                    position: "absolute",
+                position: "absolute",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
@@ -3267,7 +3276,7 @@ function Home() {
                 sx={{
                   position: "absolute",
                   zIndex: 15,
-                  pointerEvents: "none",
+                pointerEvents: "none",
                   width: "100%",
                   height: "100%",
                   opacity: showVideoButtons.slide4 ? 1 : 0,
@@ -3405,9 +3414,9 @@ function Home() {
                   </Tooltip>
                 </MKBox>
               </MKBox>
-            )}
-          </>
-        )}
+          )}
+        </>
+      )}
 
         {/* Custom styles for carousel navigation arrows - blur on hover/click */}
         <style>
@@ -4412,6 +4421,8 @@ function Home() {
           boxShadow: ({ boxShadows: { xxl } }) => xxl,
         }}
       >
+        <Suspense fallback={null}>
+          <>
         {/* About section component - memoized to prevent re-render */}
         <About />
 
@@ -4426,6 +4437,8 @@ function Home() {
 
         {/* Events section component - memoized to prevent re-render */}
         <Events />
+          </>
+        </Suspense>
       </Card>
 
       {/* Footer */}

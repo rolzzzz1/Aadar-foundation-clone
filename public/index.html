@@ -265,14 +265,14 @@
         }
         startBodyObserver();
 
-        // Apply immediately and continuously
+        // Apply immediately and with light repeated checks (reduced for performance)
         forceApplyToggleStyles();
         var interval = setInterval(function () {
           forceApplyToggleStyles();
-        }, 50);
+        }, 150);
         setTimeout(function () {
           clearInterval(interval);
-        }, 5000);
+        }, 3000);
       })();
     </script>
     <link rel="icon" href="apple-icon1.png" />
@@ -875,16 +875,16 @@
         }
         startObserving();
 
-        // Aggressive polling for first 5 seconds - especially for toggle button
+        // Light polling for first few seconds - especially for toggle button (reduced for performance)
         var attempts = 0;
         var aggressiveInterval = setInterval(function () {
           applyButtonStyles();
           attempts++;
-          if (attempts >= 50) {
-            // Stop after 5 seconds (50 * 100ms)
+          if (attempts >= 15) {
+            // Stop after ~3 seconds (15 * 200ms)
             clearInterval(aggressiveInterval);
           }
-        }, 100);
+        }, 200);
 
         // Also run on window load as final fallback
         window.addEventListener("load", function () {
