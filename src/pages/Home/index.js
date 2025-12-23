@@ -3267,7 +3267,7 @@ function Home() {
                 sx={{
                   position: "absolute",
                   zIndex: 15,
-                pointerEvents: "none",
+                  pointerEvents: "none",
                   width: "100%",
                   height: "100%",
                   opacity: showVideoButtons.slide4 ? 1 : 0,
