@@ -90,12 +90,24 @@ export default function App() {
     document.documentElement.lang = i18n.language || "en";
   }, [i18n.language]);
 
-  // Initialize SEO based on current route
+  // Initialize SEO based on current route - lazy loaded for performance
   useEffect(() => {
-    import("./utils/seo").then(({ setCanonical, setLanguageAlternates }) => {
-      setCanonical(pathname);
-      setLanguageAlternates(pathname);
-    });
+    // Use requestIdleCallback for non-critical SEO updates
+    const updateSEO = () => {
+      import("./utils/seo").then(({ setCanonical, setLanguageAlternates }) => {
+        setCanonical(pathname);
+        setLanguageAlternates(pathname);
+      }).catch(() => {
+        // Silently fail if SEO utils can't be loaded
+      });
+    };
+    
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(updateSEO, { timeout: 2000 });
+    } else {
+      // Fallback for browsers without requestIdleCallback
+      setTimeout(updateSEO, 100);
+    }
   }, [pathname]);
 
   // Setup image protection
@@ -111,6 +123,7 @@ export default function App() {
   }, []);
 
   // Apply watermarks to all images (optimized - only run once on mount)
+  // Deferred to avoid blocking initial render
   useEffect(() => {
     const watermarkOptions = {
       opacity: 0.05, // Very low opacity for invisible watermark
@@ -122,22 +135,34 @@ export default function App() {
     // Setup observer for dynamically added images
     const cleanupObserver = setupWatermarkObserver(watermarkOptions);
 
-    // Apply watermarks to existing images - only once after initial load
+    // Apply watermarks to existing images - deferred using requestIdleCallback
     const applyWatermarks = async () => {
-      // Wait for images to load
-      if (document.readyState === "complete") {
-        // Reduced delay for faster initial load
-        setTimeout(() => {
-          watermarkAllImages(watermarkOptions);
-        }, 800);
+      const apply = () => {
+        watermarkAllImages(watermarkOptions);
+      };
+      
+      // Use requestIdleCallback to defer watermarking until browser is idle
+      if ('requestIdleCallback' in window) {
+        if (document.readyState === "complete") {
+          requestIdleCallback(apply, { timeout: 2000 });
+        } else {
+          const handleLoad = () => {
+            requestIdleCallback(apply, { timeout: 2000 });
+            window.removeEventListener("load", handleLoad);
+          };
+          window.addEventListener("load", handleLoad);
+        }
       } else {
-        const handleLoad = () => {
-          setTimeout(() => {
-            watermarkAllImages(watermarkOptions);
-          }, 800);
-          window.removeEventListener("load", handleLoad);
-        };
-        window.addEventListener("load", handleLoad);
+        // Fallback for browsers without requestIdleCallback
+        if (document.readyState === "complete") {
+          setTimeout(apply, 1000);
+        } else {
+          const handleLoad = () => {
+            setTimeout(apply, 1000);
+            window.removeEventListener("load", handleLoad);
+          };
+          window.addEventListener("load", handleLoad);
+        }
       }
     };
 

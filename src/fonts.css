@@ -1,6 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700;800&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500;600;700&display=swap");
+/* Fonts are loaded via link tags in index.html for better performance */
+/* Using font-display: swap to prevent invisible text during font load */
 
 /* Ensure consistent scaling across environments */
 html {
