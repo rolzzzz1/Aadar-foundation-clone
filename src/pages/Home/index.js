@@ -1324,6 +1324,7 @@ const HeroSlide = memo(function HeroSlide({
             position="relative"
             zIndex={2}
             mb={1}
+            fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
             sx={{
               textShadow: "0 2px 8px rgba(0, 0, 0, 0.5)",
             }}
