@@ -109,6 +109,11 @@
         "description": "98 people till now have been reunited with their families by the efforts of Swarg sadan team."
       }
     },
+    "newYearBanner": {
+      "title": "Happy New Year",
+      "subtitle": "Wishing you a year filled with hope, compassion, and kindness",
+      "year": "2026"
+    },
     "heroSection": {
       "ctaButton": "Help Today",
       "ctaButtonSlide2": "Support a Story",

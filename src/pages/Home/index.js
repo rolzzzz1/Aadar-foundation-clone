@@ -2866,6 +2866,88 @@ function Home() {
         }}
         sticky
       />
+      {/* Happy New Year Banner */}
+      <MKBox
+        sx={{
+          position: "relative",
+          width: "100%",
+          background: "linear-gradient(135deg, #FF6B6B 0%, #FFD93D 25%, #6BCF7F 50%, #4D96FF 75%, #9B59B6 100%)",
+          backgroundSize: "400% 400%",
+          animation: "gradientShift 8s ease infinite",
+          py: { xs: 2, sm: 2.5, md: 3 },
+          px: { xs: 2, sm: 3, md: 4 },
+          textAlign: "center",
+          overflow: "hidden",
+          "@keyframes gradientShift": {
+            "0%": {
+              backgroundPosition: "0% 50%",
+            },
+            "50%": {
+              backgroundPosition: "100% 50%",
+            },
+            "100%": {
+              backgroundPosition: "0% 50%",
+            },
+          },
+          "&::before": {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "rgba(255, 255, 255, 0.1)",
+            backdropFilter: "blur(10px)",
+            zIndex: 0,
+          },
+        }}
+      >
+        <MKBox
+          sx={{
+            position: "relative",
+            zIndex: 1,
+            maxWidth: "1200px",
+            mx: "auto",
+          }}
+        >
+          <MKTypography
+            variant="h2"
+            sx={{
+              fontFamily: '"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif',
+              fontSize: { xs: "1.75rem", sm: "2.25rem", md: "3rem", lg: "3.5rem" },
+              fontWeight: "700",
+              color: "#FFFFFF",
+              textShadow: "0 4px 20px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2)",
+              mb: { xs: 0.5, sm: 0.75, md: 1 },
+              letterSpacing: { xs: "1px", sm: "2px", md: "3px" },
+              animation: "pulse 2s ease-in-out infinite",
+              "@keyframes pulse": {
+                "0%, 100%": {
+                  transform: "scale(1)",
+                },
+                "50%": {
+                  transform: "scale(1.05)",
+                },
+              },
+            }}
+          >
+            {homePage.newYearBanner?.title || "Happy New Year"} {homePage.newYearBanner?.year || "2026"}!
+          </MKTypography>
+          <MKTypography
+            variant="h6"
+            sx={{
+              fontSize: { xs: "0.85rem", sm: "1rem", md: "1.15rem", lg: "1.25rem" },
+              fontWeight: "500",
+              color: "#FFFFFF",
+              textShadow: "0 2px 10px rgba(0, 0, 0, 0.25)",
+              opacity: 0.95,
+              letterSpacing: { xs: "0.5px", sm: "1px" },
+            }}
+          >
+            {homePage.newYearBanner?.subtitle || "Wishing you a year filled with hope, compassion, and kindness"}
+          </MKTypography>
+        </MKBox>
+      </MKBox>
       {/* Hero Carousel */}
       <MKBox sx={{ position: "relative" }}>
         {/* Pre-render all Vimeo video iframes - always in DOM for instant loading */}
