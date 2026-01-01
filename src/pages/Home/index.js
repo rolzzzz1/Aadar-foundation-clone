@@ -2871,7 +2871,8 @@ function Home() {
         sx={{
           position: "relative",
           width: "100%",
-          background: "linear-gradient(135deg, #FF6B6B 0%, #FFD93D 25%, #6BCF7F 50%, #4D96FF 75%, #9B59B6 100%)",
+          background:
+            "linear-gradient(135deg, #FF6B6B 0%, #FFD93D 25%, #6BCF7F 50%, #4D96FF 75%, #9B59B6 100%)",
           backgroundSize: "400% 400%",
           animation: "gradientShift 8s ease infinite",
           py: { xs: 2, sm: 2.5, md: 3 },
@@ -2931,7 +2932,8 @@ function Home() {
               },
             }}
           >
-            {homePage.newYearBanner?.title || "Happy New Year"} {homePage.newYearBanner?.year || "2026"}!
+            {homePage.newYearBanner?.title || "Happy New Year"}{" "}
+            {homePage.newYearBanner?.year || "2026"}!
           </MKTypography>
           <MKTypography
             variant="h6"
@@ -2944,7 +2946,8 @@ function Home() {
               letterSpacing: { xs: "0.5px", sm: "1px" },
             }}
           >
-            {homePage.newYearBanner?.subtitle || "Wishing you a year filled with hope, compassion, and kindness"}
+            {homePage.newYearBanner?.subtitle ||
+              "Wishing you a year filled with hope, compassion, and kindness"}
           </MKTypography>
         </MKBox>
       </MKBox>
