@@ -143,7 +143,7 @@ function Journey() {
               </MKTypography>
             </MKBox>
           </Grid>
-          <Grid item xs={12} sm={11} md={10} lg={10} xl={9} mx={"auto"}>
+          <Grid item xs={12} sm={12} md={12} lg={11} xl={10} mx={"auto"}>
             <MKBox position="relative">
               <MKBox
                 display="flex"
