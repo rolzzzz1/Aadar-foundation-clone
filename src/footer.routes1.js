@@ -15,9 +15,12 @@ import logoCT from "assets/images/logos/logo-aadar.jpg";
 // import logoME from "assets/images/MyLogo1.png";
 import logoME from "assets/images/logos/MeLogo3.png";
 
-// const date = new Date().getFullYear();
-
-const getFooterRoutes = (t) => [
+const getFooterRoutes = (t) => {
+  const currentYear = new Date().getFullYear();
+  // Replace any 4-digit year (e.g., 2025) with the current year
+  const copyrightText = t("footer.copyright").replace(/\d{4}/, currentYear);
+  
+  return [
   {
     brand: {
       name: t("footer.title"),
@@ -81,7 +84,7 @@ const getFooterRoutes = (t) => [
           py={2}
           px={2}
         >
-          {t("footer.copyright")}
+          {copyrightText}
           {/* Copyright &copy; {date} Aadar foundation - All rights reserved. */}
           <MKBox
             display="flex"
@@ -256,6 +259,7 @@ const getFooterRoutes = (t) => [
     ),
   },
 ];
+};
 
 // const getFooterRoutes = (t) => [
 //   {
