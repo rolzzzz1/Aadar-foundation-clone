@@ -1317,6 +1317,22 @@ const HeroSlide = memo(function HeroSlide({
           <MKTypography
             color="white"
             textAlign="center"
+            fontSize="1rem"
+            fontWeight="600"
+            px={1}
+            display={{ xs: "inline", sm: "none" }}
+            position="relative"
+            zIndex={2}
+            mb={1}
+            sx={{
+              textShadow: "0 2px 8px rgba(0, 0, 0, 0.5)",
+            }}
+          >
+            {homePage.heroSection.happyNewYear}
+          </MKTypography>
+          <MKTypography
+            color="white"
+            textAlign="center"
             fontSize="0.9rem"
             px={1}
             display={{ xs: "inline", sm: "none" }}
@@ -1521,10 +1537,32 @@ const HeroSlide = memo(function HeroSlide({
             />
           </MKTypography>
           <MKTypography
-            variant="body"
+            variant="h5"
             color="white"
             textAlign="center"
             mt={2}
+            ml={-2}
+            display="inline-block"
+            className={
+              isActive && isFirstSlide
+                ? `hero-slide-1-text active${shouldAnimate ? " should-animate" : ""}`
+                : ""
+            }
+            fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+            sx={{
+              fontSize: { xs: "1rem", sm: "1.2rem", md: "1.4rem", lg: "1.6rem" },
+              fontWeight: "600",
+              mb: 1,
+              textShadow: "0 2px 10px rgba(0, 0, 0, 0.5)",
+            }}
+          >
+            {homePage.heroSection.happyNewYear}
+          </MKTypography>
+          <MKTypography
+            variant="body"
+            color="white"
+            textAlign="center"
+            mt={1}
             ml={-2}
             display="inline-block"
             className={
