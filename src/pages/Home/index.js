@@ -2871,6 +2871,7 @@ function Home() {
         sx={{
           position: "relative",
           width: "100%",
+          mt: { xs: "64px", sm: "72px", md: "80px" },
           background:
             "linear-gradient(135deg, #FF6B6B 0%, #FFD93D 25%, #6BCF7F 50%, #4D96FF 75%, #9B59B6 100%)",
           backgroundSize: "400% 400%",
@@ -2879,6 +2880,7 @@ function Home() {
           px: { xs: 2, sm: 3, md: 4 },
           textAlign: "center",
           overflow: "hidden",
+          zIndex: 1,
           "@keyframes gradientShift": {
             "0%": {
               backgroundPosition: "0% 50%",
