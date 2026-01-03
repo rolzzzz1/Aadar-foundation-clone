@@ -76,7 +76,7 @@ function Counters() {
           <Grid item xs={12} sm={6} md={6} lg={3}>
             <DefaultCounterCard
               key={`counter-2-${isVisible}`}
-              count={500}
+              count={600}
               separator=","
               suffix="+"
               title={impactSection.impact2.title}
@@ -86,7 +86,7 @@ function Counters() {
           <Grid item xs={12} sm={6} md={6} lg={3}>
             <DefaultCounterCard
               key={`counter-3-${isVisible}`}
-              count={80}
+              count={100}
               separator=","
               suffix="+"
               title={impactSection.impact3.title}
@@ -96,7 +96,7 @@ function Counters() {
           <Grid item xs={12} sm={6} md={6} lg={3}>
             <DefaultCounterCard
               key={`counter-4-${isVisible}`}
-              count={98}
+              count={175}
               separator=","
               suffix="+"
               title={impactSection.impact4.title}
