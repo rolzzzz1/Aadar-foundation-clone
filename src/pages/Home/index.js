@@ -2344,44 +2344,7 @@ function Home() {
         }
       });
 
-      // Force styles on footer aishx.dev buttons
-      footerButtons.forEach((btn) => {
-        if (btn && btn.style) {
-          btn.style.setProperty(
-            "background",
-            "linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%)",
-            "important"
-          );
-          btn.style.setProperty("backdrop-filter", "saturate(200%) blur(30px)", "important");
-          btn.style.setProperty("color", "#ffffff", "important");
-          btn.style.setProperty("display", "flex", "important");
-          btn.style.setProperty("align-items", "center", "important");
-          btn.style.setProperty("border-style", "solid", "important");
-          btn.style.setProperty("border-color", "rgba(255, 255, 255, 0.3)", "important");
-          btn.style.setProperty("box-shadow", "0 1px 6px rgba(0, 0, 0, 0.25)", "important");
-          // Set responsive styles based on screen size
-          const width4 = window.innerWidth;
-          if (width4 < 600) {
-            btn.style.setProperty("border-radius", "10px", "important");
-            btn.style.setProperty("border-width", "1px", "important");
-            btn.style.setProperty("padding", "4px 10px", "important");
-            btn.style.setProperty("gap", "6px", "important");
-            btn.style.setProperty("margin-left", "4px", "important");
-          } else if (width4 < 960) {
-            btn.style.setProperty("border-radius", "12px", "important");
-            btn.style.setProperty("border-width", "1.5px", "important");
-            btn.style.setProperty("padding", "5px 12px", "important");
-            btn.style.setProperty("gap", "8px", "important");
-            btn.style.setProperty("margin-left", "6px", "important");
-          } else {
-            btn.style.setProperty("border-radius", "14px", "important");
-            btn.style.setProperty("border-width", "1.5px", "important");
-            btn.style.setProperty("padding", "6px 14px", "important");
-            btn.style.setProperty("gap", "8px", "important");
-            btn.style.setProperty("margin-left", "6px", "important");
-          }
-        }
-      });
+      // Footer aishx.dev button: do not force styles - component (footer.routes1) has logo + UI + hover
     };
 
     // Run immediately
