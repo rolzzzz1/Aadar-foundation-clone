@@ -90,7 +90,8 @@ export default function App() {
   // Show back-to-top button when user has scrolled down
   useEffect(() => {
     const handleScroll = () => {
-      const scrollTop = window.scrollY ?? document.documentElement?.scrollTop ?? document.body?.scrollTop ?? 0;
+      const scrollTop =
+        window.scrollY ?? document.documentElement?.scrollTop ?? document.body?.scrollTop ?? 0;
       setShowBackToTop(scrollTop > 100);
     };
     const target = document.scrollingElement || document.documentElement || document.body;
