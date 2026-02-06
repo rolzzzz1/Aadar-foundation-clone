@@ -537,11 +537,9 @@ const HeroSlide = memo(function HeroSlide({
             }}
           >
             {/* YouTube icon link - positioned in top-right corner, for slide 2, slide 3, and slide 4 */}
-            {((slideIndex === 1 && homePage.heroSection.slide2.youtubeUrl) ||
-              (slideIndex === 2 && homePage.heroSection.slide3.youtubeUrl) ||
-              (slideIndex === 3 &&
-                homePage.heroSection.slide4 &&
-                homePage.heroSection.slide4.youtubeUrl)) && (
+            {((slideIndex === 1 && homePage?.heroSection?.slide2?.youtubeUrl) ||
+              (slideIndex === 2 && homePage?.heroSection?.slide3?.youtubeUrl) ||
+              (slideIndex === 3 && homePage?.heroSection?.slide4?.youtubeUrl)) && (
               <Tooltip
                 title={t("homePage.heroSection.clickToWatchOnYouTube")}
                 arrow
@@ -551,10 +549,10 @@ const HeroSlide = memo(function HeroSlide({
                   component="a"
                   href={
                     slideIndex === 1
-                      ? homePage.heroSection.slide2.youtubeUrl
+                      ? homePage?.heroSection?.slide2?.youtubeUrl
                       : slideIndex === 2
-                      ? homePage.heroSection.slide3.youtubeUrl
-                      : homePage.heroSection.slide4.youtubeUrl
+                      ? homePage?.heroSection?.slide3?.youtubeUrl
+                      : homePage?.heroSection?.slide4?.youtubeUrl
                   }
                   target="_blank"
                   rel="noopener noreferrer"
@@ -664,10 +662,10 @@ const HeroSlide = memo(function HeroSlide({
               }}
             >
               {slideIndex === 1
-                ? homePage.heroSection.slide2.title
+                ? homePage?.heroSection?.slide2?.title
                 : slideIndex === 2
-                ? homePage.heroSection.slide3.title
-                : homePage.heroSection.slide4.title}
+                ? homePage?.heroSection?.slide3?.title
+                : homePage?.heroSection?.slide4?.title}
             </MKTypography>
             <MKTypography
               variant="h5"
@@ -691,10 +689,10 @@ const HeroSlide = memo(function HeroSlide({
               }}
             >
               {slideIndex === 1
-                ? homePage.heroSection.slide2.subtitle
+                ? homePage?.heroSection?.slide2?.subtitle
                 : slideIndex === 2
-                ? homePage.heroSection.slide3.subtitle
-                : homePage.heroSection.slide4.subtitle}
+                ? homePage?.heroSection?.slide3?.subtitle
+                : homePage?.heroSection?.slide4?.subtitle}
             </MKTypography>
             <MKTypography
               variant="body1"
@@ -785,10 +783,10 @@ const HeroSlide = memo(function HeroSlide({
               }}
             >
               {slideIndex === 1
-                ? homePage.heroSection.slide2.paragraph
+                ? homePage?.heroSection?.slide2?.paragraph
                 : slideIndex === 2
-                ? homePage.heroSection.slide3.paragraph
-                : homePage.heroSection.slide4.paragraph}
+                ? homePage?.heroSection?.slide3?.paragraph
+                : homePage?.heroSection?.slide4?.paragraph}
             </MKTypography>
             {(slideIndex === 1 || slideIndex === 2 || slideIndex === 3) && (
               <MKTypography
@@ -1329,7 +1327,7 @@ const HeroSlide = memo(function HeroSlide({
               textShadow: "0 2px 8px rgba(0, 0, 0, 0.5)",
             }}
           >
-            {homePage.heroSection.happyNewYear}
+            {homePage?.heroSection?.happyNewYear || ""}
           </MKTypography>
           <MKTypography
             color="white"
@@ -1340,7 +1338,7 @@ const HeroSlide = memo(function HeroSlide({
             position="relative"
             zIndex={2}
           >
-            {homePage.tagLine1} {homePage.tagLine2}
+            {(homePage?.tagLine1 || "") + " " + (homePage?.tagLine2 || "")}
           </MKTypography>
           <MKButton
             variant="contained"
@@ -1557,7 +1555,7 @@ const HeroSlide = memo(function HeroSlide({
               textShadow: "0 2px 10px rgba(0, 0, 0, 0.5)",
             }}
           >
-            {homePage.heroSection.happyNewYear}
+            {homePage?.heroSection?.happyNewYear || ""}
           </MKTypography>
           <MKTypography
             variant="body"
@@ -1574,7 +1572,7 @@ const HeroSlide = memo(function HeroSlide({
             fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{ fontSize: { xs: "0.9rem", sm: "1.05rem", md: "1.1rem", lg: "1.3rem" } }}
           >
-            {homePage.tagLine1} <br /> {homePage.tagLine2}
+            {(homePage?.tagLine1 || "")} <br /> {(homePage?.tagLine2 || "")}
           </MKTypography>
           <MKButton
             variant="contained"
@@ -1822,7 +1820,9 @@ function Home() {
   const routes = useMemo(() => getRoutes(t), [t]);
   const footerRoutes = useMemo(() => getFooterRoutes(t), [t]);
   const donateBtn = t("navbar.donateBtn");
-  const homePage = t("homePage");
+  // Ensure we always have a safe object shape even if translations are not loaded yet
+  const rawHomePage = t("homePage", { defaultValue: {} });
+  const homePage = rawHomePage && typeof rawHomePage === "object" ? rawHomePage : {};
   const ctaButtonText = t("homePage.heroSection.ctaButton");
 
   // State to let user pause/resume hero slider
