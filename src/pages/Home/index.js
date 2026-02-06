@@ -1572,7 +1572,7 @@ const HeroSlide = memo(function HeroSlide({
             fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
             sx={{ fontSize: { xs: "0.9rem", sm: "1.05rem", md: "1.1rem", lg: "1.3rem" } }}
           >
-            {(homePage?.tagLine1 || "")} <br /> {(homePage?.tagLine2 || "")}
+            {homePage?.tagLine1 || ""} <br /> {homePage?.tagLine2 || ""}
           </MKTypography>
           <MKButton
             variant="contained"
