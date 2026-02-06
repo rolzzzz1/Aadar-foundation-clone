@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 
@@ -9,6 +9,7 @@ import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 // Material Kit 2 React themes
 import theme from "assets/theme";
@@ -78,12 +79,33 @@ ErrorBoundary.propTypes = {
 export default function App() {
   const { pathname } = useLocation();
   const { i18n } = useTranslation();
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
   // Setting page scroll to 0 when changing the route
   useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
+
+  // Show back-to-top button when user has scrolled down
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop =
+        window.scrollY ??
+        document.documentElement?.scrollTop ??
+        document.body?.scrollTop ??
+        0;
+      setShowBackToTop(scrollTop > 100);
+    };
+    const target = document.scrollingElement || document.documentElement || document.body;
+    target.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => target.removeEventListener("scroll", handleScroll);
+  }, [pathname]);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   // Set HTML lang attribute based on current language
   useEffect(() => {
@@ -196,6 +218,44 @@ export default function App() {
           <Route path="/home" element={<Home />} />
           <Route path="*" element={<Navigate to="/home" />} />
         </Routes>
+        <Box
+          component="button"
+          role="button"
+          aria-label="Back to top"
+          onClick={scrollToTop}
+          sx={{
+            position: "fixed",
+            bottom: 28,
+            right: 28,
+            zIndex: 9999,
+            display: showBackToTop ? "flex" : "none",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 0.5,
+            minWidth: 48,
+            height: 48,
+            px: 1.5,
+            borderRadius: "24px",
+            border: "none",
+            cursor: "pointer",
+            backgroundColor: "#4FA953",
+            color: "white",
+            fontSize: "0.9rem",
+            fontWeight: 600,
+            fontFamily: "inherit",
+            boxShadow: "0 4px 14px rgba(79, 169, 83, 0.4)",
+            transition: "opacity 0.2s, box-shadow 0.2s, background-color 0.2s",
+            "&:hover": {
+              backgroundColor: "#45a049",
+              boxShadow: "0 6px 20px rgba(79, 169, 83, 0.5)",
+            },
+          }}
+        >
+          <KeyboardArrowUpIcon sx={{ fontSize: 26 }} />
+          <Box component="span" sx={{ whiteSpace: "nowrap" }}>
+            ⬆️ Back To Top
+          </Box>
+        </Box>
         <Analytics />
         <SpeedInsights />
       </ThemeProvider>
