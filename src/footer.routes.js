@@ -8,7 +8,6 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 // Material Kit 2 React components
 import MKTypography from "components/MKTypography";
 import MKBox from "components/MKBox";
-import MKButton from "components/MKButton";
 
 // Images
 import logoCT from "assets/images/logos/logo-aadar.jpg";
@@ -87,42 +86,41 @@ export default {
         <MKBox display="flex" justifyContent="center" alignItems="center" m={1}>
           <MKTypography variant="button" fontWeight="regular" fontSize="1rem" color="white" pr={2}>
             Designed by{" "}
-            <MKButton
+            <MKBox
               component="a"
               href="https://linktr.ee/aishx.dev"
               target="_blank"
               rel="noreferrer"
-              aria-label="aishx.dev"
-              variant="text"
-              size="small"
+              aria-label="Visit Aishx.dev (opens in a new tab)"
+              title="Aishx.dev"
               data-footer-button="aishx"
               sx={{
+                display: "inline-block",
+                marginLeft: "6px",
+                width: { xs: "92px", sm: "112px", md: "124px" },
+                height: { xs: "32px", sm: "38px", md: "42px" },
+                backgroundImage: `url(${aishxDevLogo})`,
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "contain",
+                backgroundPosition: "center",
                 padding: 0,
-                minWidth: "auto",
-                backgroundColor: "transparent",
-                backdropFilter: "none",
                 border: "none",
                 boxShadow: "none",
-                textTransform: "none",
-                marginLeft: "5px",
-                display: "flex",
-                alignItems: "center",
+                lineHeight: 0,
+                verticalAlign: "middle",
+                transition: "transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease",
                 "&:hover": {
-                  border: "none",
-                  backgroundColor: "transparent",
-                  boxShadow: "none",
+                  transform: "translateY(-1px)",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.35)",
+                  filter: "brightness(1.05)",
+                },
+                "&:focus-visible": {
+                  outline: "2px solid #ffffff",
+                  outlineOffset: "3px",
+                  boxShadow: "0 0 0 3px rgba(255, 255, 255, 0.35)",
                 },
               }}
-            >
-              <MKBox
-                component="img"
-                src={aishxDevLogo}
-                alt="Aishx.dev"
-                width={{ xs: "92px", sm: "112px", md: "124px" }}
-                height="auto"
-                sx={{ display: "block" }}
-              />
-            </MKButton>
+            />
           </MKTypography>
         </MKBox>
       </MKTypography>

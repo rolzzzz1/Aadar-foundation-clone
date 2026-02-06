@@ -1996,61 +1996,35 @@ function Home() {
           box-shadow: 0 10px 30px rgba(79, 169, 83, 0.35), 0 5px 15px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
         }
         
-        /* Critical CSS for footer aishx.dev button */
+        /* Critical CSS for footer aishx.dev button - image is the button, no extra space */
         [data-footer-button="aishx"],
         [data-footer-button="aishx"].MuiButton-root,
         button[data-footer-button="aishx"],
         a[data-footer-button="aishx"] {
-          background: transparent !important;
-          backdrop-filter: none !important;
-          color: inherit !important;
-          display: inline-flex !important;
-          align-items: center !important;
-          border-style: none !important;
-          border-width: 0 !important;
-          border-color: transparent !important;
+          border: none !important;
+          border-radius: 0 !important;
           box-shadow: none !important;
-          text-transform: none !important;
-          min-height: auto !important;
           padding: 0 !important;
-          transition: all 0.25s ease !important;
+          margin: 0 !important;
+          min-width: 0 !important;
+          min-height: 0 !important;
+          line-height: 0 !important;
+          display: inline-block !important;
+          vertical-align: middle !important;
         }
-        
+        [data-footer-button="aishx"] img,
+        [data-footer-button="aishx"].MuiButton-root img {
+          display: block !important;
+          vertical-align: top !important;
+          line-height: 0 !important;
+        }
         @media (max-width: 599px) {
           [data-footer-button="aishx"],
-          [data-footer-button="aishx"].MuiButton-root,
-          button[data-footer-button="aishx"],
-          a[data-footer-button="aishx"] {
-            border-radius: 0 !important;
-            border-width: 0 !important;
-            padding: 0 !important;
-            gap: 0 !important;
-            margin-left: 4px !important;
-          }
+          a[data-footer-button="aishx"] { margin-left: 6px !important; }
         }
-        @media (min-width: 600px) and (max-width: 959px) {
+        @media (min-width: 600px) {
           [data-footer-button="aishx"],
-          [data-footer-button="aishx"].MuiButton-root,
-          button[data-footer-button="aishx"],
-          a[data-footer-button="aishx"] {
-            border-radius: 0 !important;
-            border-width: 0 !important;
-            padding: 0 !important;
-            gap: 0 !important;
-            margin-left: 6px !important;
-          }
-        }
-        @media (min-width: 960px) {
-          [data-footer-button="aishx"],
-          [data-footer-button="aishx"].MuiButton-root,
-          button[data-footer-button="aishx"],
-          a[data-footer-button="aishx"] {
-            border-radius: 0 !important;
-            border-width: 0 !important;
-            padding: 0 !important;
-            gap: 0 !important;
-            margin-left: 6px !important;
-          }
+          a[data-footer-button="aishx"] { margin-left: 6px !important; }
         }
         
         /* Critical CSS for navbar donate button - defaults to mobile for smallest screens */
@@ -2374,42 +2348,20 @@ function Home() {
         }
       });
 
-      // Force styles on footer aishx.dev buttons
+      // Force styles on footer aishx.dev buttons - image is the button, no extra space
       footerButtons.forEach((btn) => {
         if (btn && btn.style) {
-          btn.style.setProperty(
-            "background",
-            "linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%)",
-            "important"
-          );
-          btn.style.setProperty("backdrop-filter", "saturate(200%) blur(30px)", "important");
-          btn.style.setProperty("color", "#ffffff", "important");
-          btn.style.setProperty("display", "flex", "important");
-          btn.style.setProperty("align-items", "center", "important");
-          btn.style.setProperty("border-style", "solid", "important");
-          btn.style.setProperty("border-color", "rgba(255, 255, 255, 0.3)", "important");
-          btn.style.setProperty("box-shadow", "0 1px 6px rgba(0, 0, 0, 0.25)", "important");
-          // Set responsive styles based on screen size
-          const width4 = window.innerWidth;
-          if (width4 < 600) {
-            btn.style.setProperty("border-radius", "10px", "important");
-            btn.style.setProperty("border-width", "1px", "important");
-            btn.style.setProperty("padding", "4px 10px", "important");
-            btn.style.setProperty("gap", "6px", "important");
-            btn.style.setProperty("margin-left", "4px", "important");
-          } else if (width4 < 960) {
-            btn.style.setProperty("border-radius", "12px", "important");
-            btn.style.setProperty("border-width", "1.5px", "important");
-            btn.style.setProperty("padding", "5px 12px", "important");
-            btn.style.setProperty("gap", "8px", "important");
-            btn.style.setProperty("margin-left", "6px", "important");
-          } else {
-            btn.style.setProperty("border-radius", "14px", "important");
-            btn.style.setProperty("border-width", "1.5px", "important");
-            btn.style.setProperty("padding", "6px 14px", "important");
-            btn.style.setProperty("gap", "8px", "important");
-            btn.style.setProperty("margin-left", "6px", "important");
-          }
+          btn.style.setProperty("background", "transparent", "important");
+          btn.style.setProperty("border", "none", "important");
+          btn.style.setProperty("box-shadow", "none", "important");
+          btn.style.setProperty("padding", "0", "important");
+          btn.style.setProperty("margin", "0", "important");
+          btn.style.setProperty("margin-left", "6px", "important");
+          btn.style.setProperty("min-width", "0", "important");
+          btn.style.setProperty("min-height", "0", "important");
+          btn.style.setProperty("line-height", "0", "important");
+          btn.style.setProperty("display", "inline-block", "important");
+          btn.style.setProperty("vertical-align", "middle", "important");
         }
       });
     };
@@ -3520,59 +3472,37 @@ function Home() {
               box-shadow: 0 10px 30px rgba(79, 169, 83, 0.35), 0 5px 15px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
             }
             
-            /* Critical CSS for footer aishx.dev button */
+            /* Critical CSS for footer aishx.dev button - image is the button, no extra space */
             [data-footer-button="aishx"],
             [data-footer-button="aishx"].MuiButton-root,
             button[data-footer-button="aishx"],
             a[data-footer-button="aishx"] {
-              background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%) !important;
-              backdrop-filter: saturate(200%) blur(30px) !important;
-              color: #ffffff !important;
-              display: flex !important;
-              align-items: center !important;
-              border-style: solid !important;
-              border-color: rgba(255, 255, 255, 0.3) !important;
-              box-shadow: 0 1px 6px rgba(0, 0, 0, 0.25) !important;
-              text-transform: none !important;
-              min-height: auto !important;
-              transition: all 0.25s ease !important;
+              background: transparent !important;
+              backdrop-filter: none !important;
+              border: none !important;
+              border-radius: 0 !important;
+              box-shadow: none !important;
+              padding: 0 !important;
+              margin: 0 !important;
+              min-width: 0 !important;
+              min-height: 0 !important;
+              line-height: 0 !important;
+              display: inline-block !important;
+              vertical-align: middle !important;
             }
-            
+            [data-footer-button="aishx"] img,
+            [data-footer-button="aishx"].MuiButton-root img {
+              display: block !important;
+              vertical-align: top !important;
+              line-height: 0 !important;
+            }
             @media (max-width: 599px) {
               [data-footer-button="aishx"],
-              [data-footer-button="aishx"].MuiButton-root,
-              button[data-footer-button="aishx"],
-              a[data-footer-button="aishx"] {
-                border-radius: 10px !important;
-                border-width: 1px !important;
-                padding: 4px 10px !important;
-                gap: 6px !important;
-                margin-left: 4px !important;
-              }
+              a[data-footer-button="aishx"] { margin-left: 6px !important; }
             }
-            @media (min-width: 600px) and (max-width: 959px) {
+            @media (min-width: 600px) {
               [data-footer-button="aishx"],
-              [data-footer-button="aishx"].MuiButton-root,
-              button[data-footer-button="aishx"],
-              a[data-footer-button="aishx"] {
-                border-radius: 12px !important;
-                border-width: 1.5px !important;
-                padding: 5px 12px !important;
-                gap: 8px !important;
-                margin-left: 6px !important;
-              }
-            }
-            @media (min-width: 960px) {
-              [data-footer-button="aishx"],
-              [data-footer-button="aishx"].MuiButton-root,
-              button[data-footer-button="aishx"],
-              a[data-footer-button="aishx"] {
-                border-radius: 14px !important;
-                border-width: 1.5px !important;
-                padding: 6px 14px !important;
-                gap: 8px !important;
-                margin-left: 6px !important;
-              }
+              a[data-footer-button="aishx"] { margin-left: 6px !important; }
             }
             
             /* Target carousel navigation buttons */
