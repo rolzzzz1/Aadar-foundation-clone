@@ -1996,59 +1996,31 @@ function Home() {
           box-shadow: 0 10px 30px rgba(79, 169, 83, 0.35), 0 5px 15px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
         }
         
-        /* Critical CSS for footer aishx.dev button */
+        /* Critical CSS for footer aishx.dev logo button - do not override background-image */
         [data-footer-button="aishx"],
         [data-footer-button="aishx"].MuiButton-root,
         button[data-footer-button="aishx"],
         a[data-footer-button="aishx"] {
-          background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%) !important;
-          backdrop-filter: saturate(200%) blur(30px) !important;
-          color: #ffffff !important;
-          display: flex !important;
+          cursor: pointer !important;
+          display: inline-flex !important;
           align-items: center !important;
-          border-style: solid !important;
-          border-color: rgba(255, 255, 255, 0.3) !important;
-          box-shadow: 0 1px 6px rgba(0, 0, 0, 0.25) !important;
-          text-transform: none !important;
-          min-height: auto !important;
-          transition: all 0.25s ease !important;
+          justify-content: center !important;
+          text-decoration: none !important;
+          transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease, border-color 0.2s ease !important;
         }
-        
-        @media (max-width: 599px) {
-          [data-footer-button="aishx"],
-          [data-footer-button="aishx"].MuiButton-root,
-          button[data-footer-button="aishx"],
-          a[data-footer-button="aishx"] {
-            border-radius: 10px !important;
-            border-width: 1px !important;
-            padding: 4px 10px !important;
-            gap: 6px !important;
-            margin-left: 4px !important;
-          }
+        [data-footer-button="aishx"]:hover,
+        [data-footer-button="aishx"].MuiButton-root:hover,
+        button[data-footer-button="aishx"]:hover,
+        a[data-footer-button="aishx"]:hover {
+          transform: translateY(-2px) scale(1.04) !important;
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.15) !important;
+          filter: brightness(1.12) !important;
         }
-        @media (min-width: 600px) and (max-width: 959px) {
-          [data-footer-button="aishx"],
-          [data-footer-button="aishx"].MuiButton-root,
-          button[data-footer-button="aishx"],
-          a[data-footer-button="aishx"] {
-            border-radius: 12px !important;
-            border-width: 1.5px !important;
-            padding: 5px 12px !important;
-            gap: 8px !important;
-            margin-left: 6px !important;
-          }
-        }
-        @media (min-width: 960px) {
-          [data-footer-button="aishx"],
-          [data-footer-button="aishx"].MuiButton-root,
-          button[data-footer-button="aishx"],
-          a[data-footer-button="aishx"] {
-            border-radius: 14px !important;
-            border-width: 1.5px !important;
-            padding: 6px 14px !important;
-            gap: 8px !important;
-            margin-left: 6px !important;
-          }
+        [data-footer-button="aishx"]:active,
+        [data-footer-button="aishx"].MuiButton-root:active,
+        button[data-footer-button="aishx"]:active,
+        a[data-footer-button="aishx"]:active {
+          transform: translateY(0) scale(0.98) !important;
         }
         
         /* Critical CSS for navbar donate button - defaults to mobile for smallest screens */
@@ -3518,59 +3490,31 @@ function Home() {
               box-shadow: 0 10px 30px rgba(79, 169, 83, 0.35), 0 5px 15px rgba(79, 169, 83, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
             }
             
-            /* Critical CSS for footer aishx.dev button */
+            /* Critical CSS for footer aishx.dev logo button - do not override background-image */
             [data-footer-button="aishx"],
             [data-footer-button="aishx"].MuiButton-root,
             button[data-footer-button="aishx"],
             a[data-footer-button="aishx"] {
-              background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%) !important;
-              backdrop-filter: saturate(200%) blur(30px) !important;
-              color: #ffffff !important;
-              display: flex !important;
+              cursor: pointer !important;
+              display: inline-flex !important;
               align-items: center !important;
-              border-style: solid !important;
-              border-color: rgba(255, 255, 255, 0.3) !important;
-              box-shadow: 0 1px 6px rgba(0, 0, 0, 0.25) !important;
-              text-transform: none !important;
-              min-height: auto !important;
-              transition: all 0.25s ease !important;
+              justify-content: center !important;
+              text-decoration: none !important;
+              transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease, border-color 0.2s ease !important;
             }
-            
-            @media (max-width: 599px) {
-              [data-footer-button="aishx"],
-              [data-footer-button="aishx"].MuiButton-root,
-              button[data-footer-button="aishx"],
-              a[data-footer-button="aishx"] {
-                border-radius: 10px !important;
-                border-width: 1px !important;
-                padding: 4px 10px !important;
-                gap: 6px !important;
-                margin-left: 4px !important;
-              }
+            [data-footer-button="aishx"]:hover,
+            [data-footer-button="aishx"].MuiButton-root:hover,
+            button[data-footer-button="aishx"]:hover,
+            a[data-footer-button="aishx"]:hover {
+              transform: translateY(-2px) scale(1.04) !important;
+              box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.15) !important;
+              filter: brightness(1.12) !important;
             }
-            @media (min-width: 600px) and (max-width: 959px) {
-              [data-footer-button="aishx"],
-              [data-footer-button="aishx"].MuiButton-root,
-              button[data-footer-button="aishx"],
-              a[data-footer-button="aishx"] {
-                border-radius: 12px !important;
-                border-width: 1.5px !important;
-                padding: 5px 12px !important;
-                gap: 8px !important;
-                margin-left: 6px !important;
-              }
-            }
-            @media (min-width: 960px) {
-              [data-footer-button="aishx"],
-              [data-footer-button="aishx"].MuiButton-root,
-              button[data-footer-button="aishx"],
-              a[data-footer-button="aishx"] {
-                border-radius: 14px !important;
-                border-width: 1.5px !important;
-                padding: 6px 14px !important;
-                gap: 8px !important;
-                margin-left: 6px !important;
-              }
+            [data-footer-button="aishx"]:active,
+            [data-footer-button="aishx"].MuiButton-root:active,
+            button[data-footer-button="aishx"]:active,
+            a[data-footer-button="aishx"]:active {
+              transform: translateY(0) scale(0.98) !important;
             }
             
             /* Target carousel navigation buttons */

@@ -740,23 +740,7 @@
             }
           });
 
-          // Apply styles to footer aishx.dev button - image is the button, no extra space
-          const footerButtons = document.querySelectorAll('[data-footer-button="aishx"]');
-          footerButtons.forEach(function (btn) {
-            if (btn && btn.style) {
-              btn.style.setProperty("background-color", "transparent", "important");
-              btn.style.setProperty("border", "none", "important");
-              btn.style.setProperty("box-shadow", "none", "important");
-              btn.style.setProperty("padding", "0", "important");
-              btn.style.setProperty("margin", "0", "important");
-              btn.style.setProperty("margin-left", "6px", "important");
-              btn.style.setProperty("min-width", "0", "important");
-              btn.style.setProperty("min-height", "0", "important");
-              btn.style.setProperty("line-height", "0", "important");
-              btn.style.setProperty("display", "inline-block", "important");
-              btn.style.setProperty("vertical-align", "middle", "important");
-            }
-          });
+          // Footer aishx.dev logo button styles are in component (footer.routes / footer.routes1) and critical CSS
 
           // Apply styles to language selector toggle button - PRIORITY FIX
           const languageSelectors = document.querySelectorAll(
