@@ -24,16 +24,17 @@ You can adjust watermark settings in `src/App.js`:
 
 ```javascript
 const watermarkOptions = {
-  opacity: 0.05,    // 0.0 to 1.0 (lower = more invisible)
-  scale: 0.25,      // 0.1 to 1.0 (size relative to image)
+  opacity: 0.05, // 0.0 to 1.0 (lower = more invisible)
+  scale: 0.25, // 0.1 to 1.0 (size relative to image)
   position: "center", // "center", "bottom-right", "bottom-left", "top-right", "top-left"
-  repeat: false,    // true to repeat watermark across image
+  repeat: false, // true to repeat watermark across image
 };
 ```
 
 ## Limitations of Client-Side Watermarking
 
 ⚠️ **Important**: Client-side watermarking can be bypassed by:
+
 - Disabling JavaScript
 - Accessing images directly via URL
 - Using browser DevTools
@@ -48,6 +49,7 @@ For stronger protection, implement server-side watermarking:
 Process images before uploading to your server:
 
 **Using ImageMagick (Command Line)**
+
 ```bash
 # Add watermark to all images in a directory
 for img in *.jpg *.png; do
@@ -60,44 +62,48 @@ done
 ```
 
 **Using Sharp (Node.js)**
+
 ```javascript
-const sharp = require('sharp');
-const fs = require('fs');
+const sharp = require("sharp");
+const fs = require("fs");
 
 async function watermarkImage(inputPath, outputPath, logoPath) {
   await sharp(inputPath)
-    .composite([{
-      input: logoPath,
-      gravity: 'center',
-      blend: 'over',
-      opacity: 0.05
-    }])
+    .composite([
+      {
+        input: logoPath,
+        gravity: "center",
+        blend: "over",
+        opacity: 0.05,
+      },
+    ])
     .toFile(outputPath);
 }
 ```
 
 **Using PIL (Python)**
+
 ```python
 from PIL import Image, ImageEnhance
 
 def watermark_image(input_path, output_path, logo_path, opacity=0.05):
     base_image = Image.open(input_path)
     watermark = Image.open(logo_path)
-    
+
     # Resize watermark
     watermark_size = (int(base_image.width * 0.25), int(base_image.height * 0.25))
     watermark = watermark.resize(watermark_size, Image.Resampling.LANCZOS)
-    
+
     # Apply opacity
     watermark = watermark.convert("RGBA")
     alpha = watermark.split()[3]
     alpha = ImageEnhance.Brightness(alpha).enhance(opacity)
     watermark.putalpha(alpha)
-    
+
     # Position watermark
     position = ((base_image.width - watermark.width) // 2,
                 (base_image.height - watermark.height) // 2)
-    
+
     # Composite
     base_image.paste(watermark, position, watermark)
     base_image.save(output_path, "JPEG", quality=92)
@@ -108,51 +114,57 @@ def watermark_image(input_path, output_path, logo_path, opacity=0.05):
 Watermark images when they're requested:
 
 **Using Express.js + Sharp**
+
 ```javascript
-const express = require('express');
-const sharp = require('sharp');
+const express = require("express");
+const sharp = require("sharp");
 const app = express();
 
-app.get('/images/:filename', async (req, res) => {
+app.get("/images/:filename", async (req, res) => {
   const { filename } = req.params;
   const inputPath = `./uploads/${filename}`;
-  const logoPath = './assets/logo-aadar.jpg';
-  
+  const logoPath = "./assets/logo-aadar.jpg";
+
   const watermarked = await sharp(inputPath)
-    .composite([{
-      input: logoPath,
-      gravity: 'center',
-      blend: 'over',
-      opacity: 0.05
-    }])
+    .composite([
+      {
+        input: logoPath,
+        gravity: "center",
+        blend: "over",
+        opacity: 0.05,
+      },
+    ])
     .jpeg({ quality: 92 })
     .toBuffer();
-  
-  res.type('image/jpeg');
+
+  res.type("image/jpeg");
   res.send(watermarked);
 });
 ```
 
 **Using Cloudinary (SaaS)**
+
 ```javascript
 // Cloudinary automatically applies watermarks
-const url = cloudinary.url('image.jpg', {
-  overlay: 'logo-aadar',
+const url = cloudinary.url("image.jpg", {
+  overlay: "logo-aadar",
   opacity: 5,
-  gravity: 'center',
+  gravity: "center",
   width: 0.25,
-  flags: 'relative'
+  flags: "relative",
 });
 ```
 
 ## Testing
 
-1. **Check Watermark Visibility**: 
+1. **Check Watermark Visibility**:
+
    - Open browser DevTools
    - Inspect an image
    - The watermark should be embedded in the image data
 
 2. **Verify All Images**:
+
    - Navigate through your website
    - Check that all images have watermarks applied
 
@@ -163,16 +175,19 @@ const url = cloudinary.url('image.jpg', {
 ## Troubleshooting
 
 **Watermark not appearing:**
+
 - Check browser console for errors
 - Verify logo file exists at `assets/images/logos/logo-aadar.jpg`
 - Ensure images are fully loaded before watermarking
 
 **Performance issues:**
+
 - Reduce watermark scale
 - Process fewer images at once
 - Consider server-side watermarking for better performance
 
 **Watermark too visible:**
+
 - Reduce opacity value (try 0.02 or 0.03)
 - Adjust position to less visible area
 
@@ -190,4 +205,3 @@ const url = cloudinary.url('image.jpg', {
 - Implement DRM for highly sensitive content
 - Consider using image fingerprinting
 - Add metadata to images with copyright information
-

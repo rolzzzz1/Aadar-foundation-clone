@@ -13,7 +13,7 @@ import MKButton from "components/MKButton";
 // Images
 import logoCT from "assets/images/logos/logo-aadar.jpg";
 // import logoME from "assets/images/MyLogo1.png";
-import logoME from "assets/images/logos/MeLogo3.png";
+import aishxDevLogo from "assets/images/logos/aishx-dev-logo.png";
 
 const getFooterRoutes = (t) => {
   const currentYear = new Date().getFullYear();
@@ -107,152 +107,121 @@ const getFooterRoutes = (t) => {
             >
               {t("footer.designed by")}
             </MKTypography>
-            <MKTypography
+            <MKButton
               component="a"
-              href={"https://linktr.ee/Rolzzzz"}
+              href="https://linktr.ee/aishx.dev"
               target="_blank"
               rel="noreferrer"
-            >
-              <MKButton
-                variant="text"
-                size="small"
-                data-footer-button="aishx"
-                ref={(el) => {
-                  if (el && typeof window !== "undefined") {
-                    const element = el;
-                    element.style.setProperty(
-                      "background",
-                      "linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%)",
-                      "important"
-                    );
-                    element.style.setProperty(
-                      "backdrop-filter",
-                      "saturate(200%) blur(30px)",
-                      "important"
-                    );
-                    element.style.setProperty("color", "#ffffff", "important");
-                    element.style.setProperty("display", "flex", "important");
-                    element.style.setProperty("align-items", "center", "important");
-                    const width = window.innerWidth;
-                    if (width < 600) {
-                      element.style.setProperty("border-radius", "10px", "important");
-                      element.style.setProperty("border-width", "1px", "important");
-                      element.style.setProperty("padding", "4px 10px", "important");
-                      element.style.setProperty("gap", "6px", "important");
-                      element.style.setProperty("margin-left", "4px", "important");
-                    } else if (width < 960) {
-                      element.style.setProperty("border-radius", "12px", "important");
-                      element.style.setProperty("border-width", "1.5px", "important");
-                      element.style.setProperty("padding", "5px 12px", "important");
-                      element.style.setProperty("gap", "8px", "important");
-                      element.style.setProperty("margin-left", "6px", "important");
-                    } else {
-                      element.style.setProperty("border-radius", "14px", "important");
-                      element.style.setProperty("border-width", "1.5px", "important");
-                      element.style.setProperty("padding", "6px 14px", "important");
-                      element.style.setProperty("gap", "8px", "important");
-                      element.style.setProperty("margin-left", "6px", "important");
-                    }
-                    element.style.setProperty("border-style", "solid", "important");
-                    element.style.setProperty(
-                      "border-color",
-                      "rgba(255, 255, 255, 0.3)",
-                      "important"
-                    );
-                    element.style.setProperty(
-                      "box-shadow",
-                      "0 1px 6px rgba(0, 0, 0, 0.25)",
-                      "important"
-                    );
+              aria-label="aishx.dev"
+              variant="text"
+              size="small"
+              data-footer-button="aishx"
+              ref={(el) => {
+                if (el && typeof window !== "undefined") {
+                  const element = el;
+                  element.style.setProperty(
+                    "background",
+                    "linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%)",
+                    "important"
+                  );
+                  element.style.setProperty(
+                    "backdrop-filter",
+                    "saturate(200%) blur(30px)",
+                    "important"
+                  );
+                  element.style.setProperty("color", "#ffffff", "important");
+                  element.style.setProperty("display", "flex", "important");
+                  element.style.setProperty("align-items", "center", "important");
+                  const width = window.innerWidth;
+                  if (width < 600) {
+                    element.style.setProperty("border-radius", "10px", "important");
+                    element.style.setProperty("border-width", "1px", "important");
+                    element.style.setProperty("padding", "4px 10px", "important");
+                    element.style.setProperty("gap", "0px", "important");
+                    element.style.setProperty("margin-left", "4px", "important");
+                  } else if (width < 960) {
+                    element.style.setProperty("border-radius", "12px", "important");
+                    element.style.setProperty("border-width", "1.5px", "important");
+                    element.style.setProperty("padding", "5px 12px", "important");
+                    element.style.setProperty("gap", "0px", "important");
+                    element.style.setProperty("margin-left", "6px", "important");
+                  } else {
+                    element.style.setProperty("border-radius", "14px", "important");
+                    element.style.setProperty("border-width", "1.5px", "important");
+                    element.style.setProperty("padding", "6px 14px", "important");
+                    element.style.setProperty("gap", "0px", "important");
+                    element.style.setProperty("margin-left", "6px", "important");
                   }
-                }}
-                style={{
+                  element.style.setProperty("border-style", "solid", "important");
+                  element.style.setProperty("border-color", "rgba(255, 255, 255, 0.3)", "important");
+                  element.style.setProperty("box-shadow", "0 1px 6px rgba(0, 0, 0, 0.25)", "important");
+                }
+              }}
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%)",
+                backdropFilter: "saturate(200%) blur(30px)",
+                color: "#ffffff",
+                textTransform: "none",
+                display: "flex",
+                alignItems: "center",
+                borderStyle: "solid",
+                borderColor: "rgba(255, 255, 255, 0.3)",
+                boxShadow: "0 1px 6px rgba(0, 0, 0, 0.25)",
+                borderRadius:
+                  typeof window !== "undefined" && window.innerWidth < 600
+                    ? "10px"
+                    : typeof window !== "undefined" && window.innerWidth < 960
+                    ? "12px"
+                    : "14px",
+                borderWidth: typeof window !== "undefined" && window.innerWidth < 600 ? "1px" : "1.5px",
+                padding:
+                  typeof window !== "undefined" && window.innerWidth < 600
+                    ? "4px 10px"
+                    : typeof window !== "undefined" && window.innerWidth < 960
+                    ? "5px 12px"
+                    : "6px 14px",
+                gap: 0,
+                marginLeft: typeof window !== "undefined" && window.innerWidth < 600 ? "4px" : "6px",
+                minHeight: "auto",
+                transition: "all 0.25s ease",
+              }}
+              sx={{
+                background:
+                  "linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%)",
+                backdropFilter: `saturate(200%) blur(30px)`,
+                color: "#ffffff",
+                textTransform: "none",
+                borderRadius: { xs: "10px", sm: "12px", md: "14px" },
+                borderWidth: { xs: "1px", sm: "1.5px" },
+                borderStyle: "solid",
+                borderColor: "rgba(255, 255, 255, 0.3)",
+                "&:hover": {
+                  borderColor: "rgba(255, 255, 255, 0.6)",
                   background:
-                    "linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%)",
-                  backdropFilter: "saturate(200%) blur(30px)",
-                  color: "#ffffff",
-                  textTransform: "none",
-                  display: "flex",
-                  alignItems: "center",
-                  borderStyle: "solid",
-                  borderColor: "rgba(255, 255, 255, 0.3)",
-                  boxShadow: "0 1px 6px rgba(0, 0, 0, 0.25)",
-                  borderRadius:
-                    typeof window !== "undefined" && window.innerWidth < 600
-                      ? "10px"
-                      : typeof window !== "undefined" && window.innerWidth < 960
-                      ? "12px"
-                      : "14px",
-                  borderWidth:
-                    typeof window !== "undefined" && window.innerWidth < 600 ? "1px" : "1.5px",
-                  padding:
-                    typeof window !== "undefined" && window.innerWidth < 600
-                      ? "4px 10px"
-                      : typeof window !== "undefined" && window.innerWidth < 960
-                      ? "5px 12px"
-                      : "6px 14px",
-                  gap: typeof window !== "undefined" && window.innerWidth < 600 ? "6px" : "8px",
-                  marginLeft:
-                    typeof window !== "undefined" && window.innerWidth < 600 ? "4px" : "6px",
-                  minHeight: "auto",
-                  transition: "all 0.25s ease",
-                }}
-                sx={{
-                  background:
-                    "linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%)",
-                  backdropFilter: `saturate(200%) blur(30px)`,
-                  color: "#ffffff",
-                  textTransform: "none",
-                  borderRadius: { xs: "10px", sm: "12px", md: "14px" },
-                  borderWidth: { xs: "1px", sm: "1.5px" },
-                  borderStyle: "solid",
-                  borderColor: "rgba(255, 255, 255, 0.3)",
-                  "&:hover": {
-                    borderColor: "rgba(255, 255, 255, 0.6)",
-                    background:
-                      "linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%)",
-                    transform: "translateY(-2px)",
-                    boxShadow: "0 4px 14px rgba(0, 0, 0, 0.35)",
-                  },
-                  marginLeft: { xs: "4px", sm: "6px" },
-                  padding: { xs: "4px 10px", sm: "5px 12px", md: "6px 14px" },
-                  display: "flex",
-                  alignItems: "center",
-                  gap: { xs: "6px", sm: "8px", md: "8px" },
-                  minHeight: "auto",
-                  transition: "all 0.25s ease",
-                  boxShadow: "0 1px 6px rgba(0, 0, 0, 0.25)",
-                }}
-              >
-                <MKTypography
-                  fontWeight="700"
-                  fontSize={{ xs: "0.8rem", sm: "0.9rem", md: "1rem" }}
-                  color="white"
-                  letterSpacing={{ xs: "0.4px", sm: "0.6px", md: "0.8px" }}
-                  sx={{
-                    fontFamily: '"Lato", "Helvetica", "Arial", sans-serif',
-                    textShadow: "0 1px 3px rgba(0, 0, 0, 0.3)",
-                    lineHeight: 1.3,
-                  }}
-                >
-                  aishx.dev
-                </MKTypography>
-                <MKBox
-                  component="img"
-                  src={logoME}
-                  borderRadius="50%"
-                  width={{ xs: "16px", sm: "18px", md: "20px" }}
-                  height={{ xs: "16px", sm: "18px", md: "20px" }}
-                  sx={{
-                    borderWidth: { xs: "1px", sm: "1.5px" },
-                    borderStyle: "solid",
-                    borderColor: "rgba(255, 255, 255, 0.4)",
-                    transition: "all 0.25s ease",
-                    boxShadow: "0 1px 4px rgba(0, 0, 0, 0.3)",
-                  }}
-                ></MKBox>
-              </MKButton>
-            </MKTypography>
+                    "linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%)",
+                  transform: "translateY(-2px)",
+                  boxShadow: "0 4px 14px rgba(0, 0, 0, 0.35)",
+                },
+                marginLeft: { xs: "4px", sm: "6px" },
+                padding: { xs: "4px 10px", sm: "5px 12px", md: "6px 14px" },
+                display: "flex",
+                alignItems: "center",
+                gap: 0,
+                minHeight: "auto",
+                transition: "all 0.25s ease",
+                boxShadow: "0 1px 6px rgba(0, 0, 0, 0.25)",
+              }}
+            >
+              <MKBox
+                component="img"
+                src={aishxDevLogo}
+                alt="Aishx.dev"
+                width={{ xs: "92px", sm: "112px", md: "124px" }}
+                height="auto"
+                sx={{ display: "block" }}
+              />
+            </MKButton>
           </MKBox>
         </MKTypography>
       </MKBox>

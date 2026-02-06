@@ -33,3 +33,4 @@ src/assets/images/Mayki.mp4
 src/assets/images/Nirbhay.mp4
 # Local Netlify folder
 .netlify
+.vercel

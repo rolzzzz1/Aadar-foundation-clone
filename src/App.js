@@ -94,15 +94,17 @@ export default function App() {
   useEffect(() => {
     // Use requestIdleCallback for non-critical SEO updates
     const updateSEO = () => {
-      import("./utils/seo").then(({ setCanonical, setLanguageAlternates }) => {
-        setCanonical(pathname);
-        setLanguageAlternates(pathname);
-      }).catch(() => {
-        // Silently fail if SEO utils can't be loaded
-      });
+      import("./utils/seo")
+        .then(({ setCanonical, setLanguageAlternates }) => {
+          setCanonical(pathname);
+          setLanguageAlternates(pathname);
+        })
+        .catch(() => {
+          // Silently fail if SEO utils can't be loaded
+        });
     };
-    
-    if ('requestIdleCallback' in window) {
+
+    if ("requestIdleCallback" in window) {
       requestIdleCallback(updateSEO, { timeout: 2000 });
     } else {
       // Fallback for browsers without requestIdleCallback
@@ -140,9 +142,9 @@ export default function App() {
       const apply = () => {
         watermarkAllImages(watermarkOptions);
       };
-      
+
       // Use requestIdleCallback to defer watermarking until browser is idle
-      if ('requestIdleCallback' in window) {
+      if ("requestIdleCallback" in window) {
         if (document.readyState === "complete") {
           requestIdleCallback(apply, { timeout: 2000 });
         } else {

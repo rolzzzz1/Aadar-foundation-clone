@@ -18,31 +18,37 @@
 ### 2. **Additional Server-Side Measures (Recommended)**
 
 #### A. **Watermarking**
+
 - Add visible or invisible watermarks to images
 - Use tools like ImageMagick, PIL (Python), or Sharp (Node.js)
 - Example: Add "Aadar Foundation" watermark to all images
 
 #### B. **Low-Resolution Versions**
+
 - Serve lower resolution images on the website
 - Keep high-resolution versions only on server
 - Reduces value of downloaded images
 
 #### C. **Image Format Optimization**
+
 - Use WebP format with quality settings
 - Serve optimized versions that look good on screen but aren't high-res
 - Consider using responsive images with `srcset`
 
 #### D. **Referrer Checking**
+
 - Configure server to check HTTP referrer
 - Block direct image access (only allow from your domain)
 - Add `.htaccess` rules (Apache) or nginx config
 
 #### E. **Token-Based Access**
+
 - Generate temporary tokens for image URLs
 - Expire tokens after a short time
 - Makes it harder to share direct image links
 
 #### F. **CDN Protection**
+
 - Use CDN services with built-in protection (Cloudflare, etc.)
 - Configure hotlink protection
 - Set up signed URLs for images
@@ -50,6 +56,7 @@
 ## Server Configuration Examples
 
 ### Apache (.htaccess)
+
 ```apache
 # Prevent direct image access
 RewriteEngine On
@@ -61,6 +68,7 @@ Options -Indexes
 ```
 
 ### Nginx
+
 ```nginx
 # Prevent direct image access
 location ~* \.(jpg|jpeg|png|gif|webp)$ {
@@ -82,6 +90,7 @@ location ~* \.(jpg|jpeg|png|gif|webp)$ {
 ## Limitations
 
 Even with all measures:
+
 - Users can take screenshots
 - Browser DevTools can access images
 - Network tab shows all image URLs
@@ -91,6 +100,7 @@ Even with all measures:
 ## Legal Notice
 
 Consider adding to your website's Terms of Use:
+
 - "All images are protected by copyright"
 - "Unauthorized downloading or use is prohibited"
 - "Images are for viewing purposes only"
@@ -106,4 +116,3 @@ Consider adding to your website's Terms of Use:
 ## Conclusion
 
 The implemented client-side protection will stop 90%+ of casual users from downloading images. For stronger protection, implement server-side measures and consider watermarking your images.
-

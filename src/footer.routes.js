@@ -12,8 +12,7 @@ import MKButton from "components/MKButton";
 
 // Images
 import logoCT from "assets/images/logos/logo-aadar.jpg";
-// import logoME from "assets/images/MyLogo1.png";
-import logoME from "assets/images/logos/MeLogo3.png";
+import aishxDevLogo from "assets/images/logos/aishx-dev-logo.png";
 
 const date = new Date().getFullYear();
 
@@ -88,48 +87,39 @@ export default {
         <MKBox display="flex" justifyContent="center" alignItems="center" m={1}>
           <MKTypography variant="button" fontWeight="regular" fontSize="1rem" color="white" pr={2}>
             Designed by{" "}
-            <MKTypography
+            <MKButton
               component="a"
-              href={"https://linktr.ee/Rolzzzz"}
+              href="https://linktr.ee/aishx.dev"
               target="_blank"
               rel="noreferrer"
+              aria-label="aishx.dev"
+              variant="text"
+              size="small"
+              data-footer-button="aishx"
+              sx={{
+                backgroundColor: "#575757",
+                backdropFilter: `saturate(200%) blur(30px)`,
+                color: "#ffffff",
+                textTransform: "none",
+                border: "2px solid transparent",
+                "&:hover": {
+                  border: "2px solid #FFFFFF",
+                },
+                marginLeft: "5px",
+                padding: "5px 8px",
+                display: "flex",
+                alignItems: "center",
+              }}
             >
-              <MKButton
-                variant="text"
-                size="small"
-                sx={{
-                  backgroundColor: "#575757",
-                  backdropFilter: `saturate(200%) blur(30px)`,
-                  color: "#ffffff",
-                  textTransform: "capitalize",
-                  border: "2px solid transparent",
-                  "&: hover": {
-                    border: "2px solid #FFFFFF",
-                  },
-                  marginLeft: "5px",
-                  padding: "5px 5px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                }}
-              >
-                <MKBox display="flex" flexDirection="column">
-                  <MKTypography fontWeight="regular" fontSize="0.9rem" color="white">
-                    Aishx.dev
-                  </MKTypography>
-                  <MKTypography fontWeight="light" fontSize="0.75rem" color="white">
-                    ( Aishwarya Sharma )
-                  </MKTypography>
-                </MKBox>
-                <MKBox
-                  component="img"
-                  src={logoME}
-                  borderRadius="3px"
-                  width="27px"
-                  height="22px"
-                ></MKBox>
-              </MKButton>
-            </MKTypography>
+              <MKBox
+                component="img"
+                src={aishxDevLogo}
+                alt="Aishx.dev"
+                width={{ xs: "92px", sm: "112px", md: "124px" }}
+                height="auto"
+                sx={{ display: "block" }}
+              />
+            </MKButton>
           </MKTypography>
         </MKBox>
       </MKTypography>

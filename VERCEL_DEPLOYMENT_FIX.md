@@ -11,12 +11,14 @@ If your Git pushes are not triggering Vercel deployments, follow these steps:
 1. **Go to Vercel Dashboard**: https://vercel.com/dashboard
 2. **Click "Add New Project"** (or select your existing project)
 3. **Import Git Repository**:
+
    - Click "Import Git Repository"
    - Select your GitHub account
    - Find and select `Aadar-foundation-clone`
    - Click "Import"
 
 4. **Configure Project Settings**:
+
    - **Framework Preset**: Create React App (or leave as "Other")
    - **Root Directory**: `./` (leave as default)
    - **Build Command**: `npm run build`
@@ -24,6 +26,7 @@ If your Git pushes are not triggering Vercel deployments, follow these steps:
    - **Install Command**: `npm install`
 
 5. **Environment Variables** (if needed):
+
    - Add any required environment variables
    - See `VERCEL_ENV_SETUP.md` for details
 
@@ -71,6 +74,7 @@ vercel
 
 1. **Go to Vercel Dashboard** → Your Project → **Settings**
 2. **Check "Git" Section**:
+
    - Verify repository is connected
    - Check if correct branch is set for production
    - Ensure "Auto-deploy" is enabled
@@ -95,6 +99,7 @@ vercel
 If deployments exist but aren't updating:
 
 1. **Via Dashboard**:
+
    - Go to Vercel Dashboard → Your Project → **Deployments**
    - Click "..." on latest deployment
    - Select "Redeploy"
@@ -121,12 +126,14 @@ If deployments exist but aren't updating:
 After fixing the connection:
 
 1. **Make a test commit**:
+
    ```bash
    git commit --allow-empty -m "Test deployment"
    git push origin main
    ```
 
 2. **Check Vercel Dashboard**:
+
    - Should see a new deployment starting
    - Wait for it to complete (usually 2-5 minutes)
 
@@ -138,15 +145,19 @@ After fixing the connection:
 ## Common Issues and Fixes
 
 ### Issue: "No deployments found"
+
 - **Fix**: Repository not connected. Use Solution 1 or 2.
 
 ### Issue: "Build failed"
+
 - **Fix**: Check build logs, verify build command and output directory.
 
 ### Issue: "Deployments not triggering"
+
 - **Fix**: Check webhook configuration, verify branch settings.
 
 ### Issue: "Old version showing"
+
 - **Fix**: Clear browser cache, check deployment status, force redeploy.
 
 ## Next Steps
@@ -164,4 +175,3 @@ After connecting:
 - **Vercel Docs**: https://vercel.com/docs
 - **Vercel Support**: https://vercel.com/support
 - **Check Build Logs**: Always check build logs first for specific errors
-

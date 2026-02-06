@@ -285,50 +285,74 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <!-- Preload manifest for PWA -->
     <link rel="preload" href="%PUBLIC_URL%/manifest.json" as="fetch" crossorigin="anonymous" />
-    
+
     <!-- SEO Meta Tags -->
     <title>Aadar Foundation - Transforming Lives from Streets to New Life</title>
-    <meta name="description" content="Aadar Foundation - Transforming lives from the streets to a new life. We rescue, treat, shelter, feed, care for, and rehabilitate children and families in need." />
-    <meta name="keywords" content="Aadar Foundation, NGO, charity, children rescue, rehabilitation, shelter, food, care, India, social work, foundation" />
+    <meta
+      name="description"
+      content="Aadar Foundation - Transforming lives from the streets to a new life. We rescue, treat, shelter, feed, care for, and rehabilitate children and families in need."
+    />
+    <meta
+      name="keywords"
+      content="Aadar Foundation, NGO, charity, children rescue, rehabilitation, shelter, food, care, India, social work, foundation"
+    />
     <meta name="author" content="Aadar Foundation" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://www.aadar.foundation/" />
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.aadar.foundation/" />
-    <meta property="og:title" content="Aadar Foundation - Transforming Lives from Streets to New Life" />
-    <meta property="og:description" content="Aadar Foundation - Transforming lives from the streets to a new life. We rescue, treat, shelter, feed, care for, and rehabilitate children and families in need." />
-    <meta property="og:image" content="https://www.aadar.foundation/assets/images/aadarHindiYellow.png" />
+    <meta
+      property="og:title"
+      content="Aadar Foundation - Transforming Lives from Streets to New Life"
+    />
+    <meta
+      property="og:description"
+      content="Aadar Foundation - Transforming lives from the streets to a new life. We rescue, treat, shelter, feed, care for, and rehabilitate children and families in need."
+    />
+    <meta
+      property="og:image"
+      content="https://www.aadar.foundation/assets/images/aadarHindiYellow.png"
+    />
     <meta property="og:site_name" content="Aadar Foundation" />
-    
+
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://www.aadar.foundation/" />
-    <meta name="twitter:title" content="Aadar Foundation - Transforming Lives from Streets to New Life" />
-    <meta name="twitter:description" content="Aadar Foundation - Transforming lives from the streets to a new life. We rescue, treat, shelter, feed, care for, and rehabilitate children and families in need." />
-    <meta name="twitter:image" content="https://www.aadar.foundation/assets/images/aadarHindiYellow.png" />
-    
+    <meta
+      name="twitter:title"
+      content="Aadar Foundation - Transforming Lives from Streets to New Life"
+    />
+    <meta
+      name="twitter:description"
+      content="Aadar Foundation - Transforming lives from the streets to a new life. We rescue, treat, shelter, feed, care for, and rehabilitate children and families in need."
+    />
+    <meta
+      name="twitter:image"
+      content="https://www.aadar.foundation/assets/images/aadarHindiYellow.png"
+    />
+
     <!-- Language Alternates -->
     <link rel="alternate" hreflang="en" href="https://www.aadar.foundation/" />
     <link rel="alternate" hreflang="hi" href="https://www.aadar.foundation/hi/" />
     <link rel="alternate" hreflang="x-default" href="https://www.aadar.foundation/" />
-    
+
     <!-- Structured Data -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "NGO",
-      "name": "Aadar Foundation",
-      "alternateName": "Aadar Foundation Swarg Sadan",
-      "url": "https://www.aadar.foundation",
-      "logo": "https://www.aadar.foundation/assets/images/aadarHindiYellow.png",
-      "description": "Aadar Foundation - Transforming lives from the streets to a new life. We rescue, treat, shelter, feed, care for, and rehabilitate children and families in need.",
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "IN"
+      {
+        "@context": "https://schema.org",
+        "@type": "NGO",
+        "name": "Aadar Foundation",
+        "alternateName": "Aadar Foundation Swarg Sadan",
+        "url": "https://www.aadar.foundation",
+        "logo": "https://www.aadar.foundation/assets/images/aadarHindiYellow.png",
+        "description": "Aadar Foundation - Transforming lives from the streets to a new life. We rescue, treat, shelter, feed, care for, and rehabilitate children and families in need.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "IN"
+        }
       }
-    }
     </script>
     <!-- Preload critical resources for faster initial load - Slide 1 (highest priority) -->
     <link
@@ -373,8 +397,14 @@
       onload="this.onload=null;this.rel='stylesheet'"
     />
     <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" />
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700;800&display=swap" />
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      />
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700;800&display=swap"
+      />
     </noscript>
     <!-- DNS prefetch for external resources -->
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
@@ -943,15 +973,15 @@
 
     <!-- Early slide 1 image preloading - starts before React loads for fastest first-time load -->
     <script>
-      (function() {
+      (function () {
         // Preload slide 1 images immediately for instant display
         // Use actual paths (PUBLIC_URL is typically empty in production, or / in dev)
-        var basePath = window.location.pathname.includes('/assets') ? '' : '/';
+        var basePath = window.location.pathname.includes("/assets") ? "" : "/";
         var slide1Images = [
           basePath + "assets/images/mainThemeImages/aadar-main-black2.png",
           basePath + "assets/images/aadarHindiYellow.png",
           basePath + "assets/images/aadarHindiWhite.png",
-          basePath + "assets/images/mainThemeImages/brushstroke.svg"
+          basePath + "assets/images/mainThemeImages/brushstroke.svg",
         ];
 
         function preloadImage(src) {
@@ -969,17 +999,21 @@
 
     <!-- Early video preloading - starts before React loads for faster first-time load -->
     <script>
-      (function() {
+      (function () {
         // Vimeo video IDs for hero slides
         var videoIds = {
           mayki: "1147717050",
           nirbhay: "1147718772",
-          slide4: "1147716844"
+          slide4: "1147716844",
         };
 
         // Helper to create Vimeo embed URL
         function getVimeoUrl(videoId) {
-          return "https://player.vimeo.com/video/" + videoId + "?autoplay=1&muted=1&loop=1&controls=0&playsinline=1&quality=240p&responsive=1&dnt=1&title=0&byline=0&portrait=0&preload=auto";
+          return (
+            "https://player.vimeo.com/video/" +
+            videoId +
+            "?autoplay=1&muted=1&loop=1&controls=0&playsinline=1&quality=240p&responsive=1&dnt=1&title=0&byline=0&portrait=0&preload=auto"
+          );
         }
 
         // Start preloading videos as early as possible
@@ -1005,7 +1039,7 @@
               iframe.style.zIndex = "-9999";
               iframe.loading = "eager";
               iframe.setAttribute("fetchpriority", "high");
-              
+
               // Wait for body to be available
               if (document.body) {
                 document.body.appendChild(iframe);
@@ -1013,7 +1047,7 @@
               } else {
                 // If body not ready, wait for DOMContentLoaded
                 if (document.readyState === "loading") {
-                  document.addEventListener("DOMContentLoaded", function() {
+                  document.addEventListener("DOMContentLoaded", function () {
                     if (document.body && !window.__vimeoMaykiPreloaded) {
                       document.body.appendChild(iframe);
                       window.__vimeoMaykiPreloaded = true;
@@ -1021,7 +1055,7 @@
                   });
                 } else {
                   // DOM already loaded, try to append
-                  setTimeout(function() {
+                  setTimeout(function () {
                     if (document.body && !window.__vimeoMaykiPreloaded) {
                       document.body.appendChild(iframe);
                       window.__vimeoMaykiPreloaded = true;
@@ -1044,7 +1078,7 @@
         }
 
         // Also try on window load as fallback
-        window.addEventListener("load", function() {
+        window.addEventListener("load", function () {
           setTimeout(startVideoPreload, 0);
         });
       })();
@@ -1063,4 +1097,3 @@
     <div id="root"></div>
   </body>
 </html>
-
