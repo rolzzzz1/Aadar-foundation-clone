@@ -138,7 +138,8 @@ const getFooterRoutes = (t) => {
                     "transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease, border-color 0.2s ease",
                   "&:hover": {
                     transform: "translateY(-2px) scale(1.04)",
-                    boxShadow: "0 6px 20px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.15)",
+                    boxShadow:
+                      "0 6px 20px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.15)",
                     filter: "brightness(1.12)",
                     borderColor: "rgba(255, 255, 255, 0.35)",
                     backgroundColor: "rgba(255, 255, 255, 0.1)",
