@@ -2243,10 +2243,6 @@ function Home() {
       const navbarButtons = document.querySelectorAll(
         '[data-navbar-button="donate"], button[data-navbar-button="donate"], a[data-navbar-button="donate"]'
       );
-      // Find footer aishx.dev buttons
-      const footerButtons = document.querySelectorAll(
-        '[data-footer-button="aishx"], button[data-footer-button="aishx"], a[data-footer-button="aishx"]'
-      );
 
       // Force styles on slide 1 button
       slide1Buttons.forEach((btn) => {
