@@ -60,8 +60,25 @@ class ErrorBoundary extends React.Component {
           <Typography variant="h5" gutterBottom>
             Something went wrong
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2, textAlign: "center" }}>
             {this.state.error?.message || "An unexpected error occurred"}
+          </Typography>
+          <Typography
+            component="button"
+            variant="body2"
+            onClick={() => window.location.reload()}
+            sx={{
+              cursor: "pointer",
+              padding: "8px 16px",
+              backgroundColor: "#4FA953",
+              color: "white",
+              border: "none",
+              borderRadius: "8px",
+              fontWeight: 600,
+              "&:hover": { backgroundColor: "#3d8a41" },
+            }}
+          >
+            Refresh page
           </Typography>
         </Box>
       );

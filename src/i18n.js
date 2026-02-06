@@ -14,11 +14,15 @@ i18n
     fallbackLng: "en",
     returnObjects: true,
     backend: {
-      // Translation files are served statically from public/locales
       loadPath: "/locales/{{lng}}/{{ns}}.json",
     },
     react: {
-      // Disable Suspense so the app always renders, even if translations are delayed
       useSuspense: false,
     },
+    // Prevent app from breaking if translation load fails
+    partialBundledLanguages: true,
+    load: "currentOnly",
+  })
+  .catch(() => {
+    // If init fails (e.g. network), app still mounts with fallback keys
   });
