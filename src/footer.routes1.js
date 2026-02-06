@@ -117,18 +117,21 @@ const getFooterRoutes = (t) => {
                 size="small"
                 data-footer-button="aishx"
                 sx={{
-                  backgroundColor: "#575757",
-                  backdropFilter: `saturate(200%) blur(30px)`,
-                  color: "#ffffff",
+                  padding: 0,
+                  minWidth: "auto",
+                  backgroundColor: "transparent",
+                  backdropFilter: "none",
+                  border: "none",
+                  boxShadow: "none",
                   textTransform: "none",
-                  border: "2px solid transparent",
-                  "&:hover": {
-                    border: "2px solid #FFFFFF",
-                  },
                   marginLeft: "5px",
-                  padding: "5px 8px",
                   display: "flex",
                   alignItems: "center",
+                  "&:hover": {
+                    border: "none",
+                    backgroundColor: "transparent",
+                    boxShadow: "none",
+                  },
                 }}
               >
                 <MKBox

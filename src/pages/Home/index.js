@@ -2001,16 +2001,18 @@ function Home() {
         [data-footer-button="aishx"].MuiButton-root,
         button[data-footer-button="aishx"],
         a[data-footer-button="aishx"] {
-          background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%) !important;
-          backdrop-filter: saturate(200%) blur(30px) !important;
-          color: #ffffff !important;
-          display: flex !important;
+          background: transparent !important;
+          backdrop-filter: none !important;
+          color: inherit !important;
+          display: inline-flex !important;
           align-items: center !important;
-          border-style: solid !important;
-          border-color: rgba(255, 255, 255, 0.3) !important;
-          box-shadow: 0 1px 6px rgba(0, 0, 0, 0.25) !important;
+          border-style: none !important;
+          border-width: 0 !important;
+          border-color: transparent !important;
+          box-shadow: none !important;
           text-transform: none !important;
           min-height: auto !important;
+          padding: 0 !important;
           transition: all 0.25s ease !important;
         }
         
@@ -2019,10 +2021,10 @@ function Home() {
           [data-footer-button="aishx"].MuiButton-root,
           button[data-footer-button="aishx"],
           a[data-footer-button="aishx"] {
-            border-radius: 10px !important;
-            border-width: 1px !important;
-            padding: 4px 10px !important;
-            gap: 6px !important;
+            border-radius: 0 !important;
+            border-width: 0 !important;
+            padding: 0 !important;
+            gap: 0 !important;
             margin-left: 4px !important;
           }
         }
@@ -2031,10 +2033,10 @@ function Home() {
           [data-footer-button="aishx"].MuiButton-root,
           button[data-footer-button="aishx"],
           a[data-footer-button="aishx"] {
-            border-radius: 12px !important;
-            border-width: 1.5px !important;
-            padding: 5px 12px !important;
-            gap: 8px !important;
+            border-radius: 0 !important;
+            border-width: 0 !important;
+            padding: 0 !important;
+            gap: 0 !important;
             margin-left: 6px !important;
           }
         }
@@ -2043,10 +2045,10 @@ function Home() {
           [data-footer-button="aishx"].MuiButton-root,
           button[data-footer-button="aishx"],
           a[data-footer-button="aishx"] {
-            border-radius: 14px !important;
-            border-width: 1.5px !important;
-            padding: 6px 14px !important;
-            gap: 8px !important;
+            border-radius: 0 !important;
+            border-width: 0 !important;
+            padding: 0 !important;
+            gap: 0 !important;
             margin-left: 6px !important;
           }
         }
