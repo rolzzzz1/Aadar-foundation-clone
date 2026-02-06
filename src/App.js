@@ -60,25 +60,8 @@ class ErrorBoundary extends React.Component {
           <Typography variant="h5" gutterBottom>
             Something went wrong
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2, textAlign: "center" }}>
+          <Typography variant="body2" color="text.secondary">
             {this.state.error?.message || "An unexpected error occurred"}
-          </Typography>
-          <Typography
-            component="button"
-            variant="body2"
-            onClick={() => window.location.reload()}
-            sx={{
-              cursor: "pointer",
-              padding: "8px 16px",
-              backgroundColor: "#4FA953",
-              color: "white",
-              border: "none",
-              borderRadius: "8px",
-              fontWeight: 600,
-              "&:hover": { backgroundColor: "#3d8a41" },
-            }}
-          >
-            Refresh page
           </Typography>
         </Box>
       );
@@ -111,17 +94,15 @@ export default function App() {
   useEffect(() => {
     // Use requestIdleCallback for non-critical SEO updates
     const updateSEO = () => {
-      import("./utils/seo")
-        .then(({ setCanonical, setLanguageAlternates }) => {
-          setCanonical(pathname);
-          setLanguageAlternates(pathname);
-        })
-        .catch(() => {
-          // Silently fail if SEO utils can't be loaded
-        });
+      import("./utils/seo").then(({ setCanonical, setLanguageAlternates }) => {
+        setCanonical(pathname);
+        setLanguageAlternates(pathname);
+      }).catch(() => {
+        // Silently fail if SEO utils can't be loaded
+      });
     };
-
-    if ("requestIdleCallback" in window) {
+    
+    if ('requestIdleCallback' in window) {
       requestIdleCallback(updateSEO, { timeout: 2000 });
     } else {
       // Fallback for browsers without requestIdleCallback
@@ -159,9 +140,9 @@ export default function App() {
       const apply = () => {
         watermarkAllImages(watermarkOptions);
       };
-
+      
       // Use requestIdleCallback to defer watermarking until browser is idle
-      if ("requestIdleCallback" in window) {
+      if ('requestIdleCallback' in window) {
         if (document.readyState === "complete") {
           requestIdleCallback(apply, { timeout: 2000 });
         } else {
