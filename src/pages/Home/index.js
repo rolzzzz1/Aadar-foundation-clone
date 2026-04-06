@@ -2701,76 +2701,92 @@ function Home() {
     };
   }, [activeSlide]);
 
-  // Preload Vimeo videos immediately on mount for faster loading
+  // Preload the *next* slide assets without blocking initial paint.
+  // Goal: keep slide transitions smooth while improving FCP/LCP.
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined") return undefined;
 
-    // Add resource hints for faster DNS and connection (only once)
+    // Preload slide background images (cheap, local) after first paint
+    const preloadImages = () => {
+      const imageUrls = [
+        blackAndWhiteHero,
+        heroImage2,
+        slide2MobileBg,
+        slide3MobileBg,
+        slide4MobileBg,
+      ];
+      imageUrls.forEach((src) => {
+        if (!src) return;
+        const img = new Image();
+        img.decoding = "async";
+        img.loading = "eager";
+        img.src = src;
+      });
+    };
+
+    // Add lightweight resource hints for Vimeo (connection warm-up is cheap)
     if (!window.__vimeoPreconnectAdded) {
-      // DNS prefetch
-      const dnsPrefetch = document.createElement("link");
-      dnsPrefetch.rel = "dns-prefetch";
-      dnsPrefetch.href = "https://player.vimeo.com";
-      document.head.appendChild(dnsPrefetch);
-
-      // Preconnect for faster connection
-      const preconnect = document.createElement("link");
-      preconnect.rel = "preconnect";
-      preconnect.href = "https://player.vimeo.com";
-      preconnect.crossOrigin = "anonymous";
-      document.head.appendChild(preconnect);
-
-      // Preconnect to Vimeo CDN
-      const preconnectCDN = document.createElement("link");
-      preconnectCDN.rel = "preconnect";
-      preconnectCDN.href = "https://f.vimeocdn.com";
-      preconnectCDN.crossOrigin = "anonymous";
-      document.head.appendChild(preconnectCDN);
-
+      const addLink = (rel, href) => {
+        const link = document.createElement("link");
+        link.rel = rel;
+        link.href = href;
+        link.crossOrigin = "anonymous";
+        document.head.appendChild(link);
+      };
+      addLink("dns-prefetch", "https://player.vimeo.com");
+      addLink("preconnect", "https://player.vimeo.com");
+      addLink("preconnect", "https://f.vimeocdn.com");
       window.__vimeoPreconnectAdded = true;
     }
 
-    // Start preloading immediately (don't wait for next frame)
-    const startPreloading = () => {
-      // Preload slide 2 Vimeo video - use full viewport size for maximum preloading
-      if (maykiVimeoId && !window.__vimeoMaykiPreloaded) {
-        const preloadIframe1 = document.createElement("iframe");
-        preloadIframe1.src = getVimeoEmbedUrl(maykiVimeoId);
-        preloadIframe1.style.position = "fixed";
-        preloadIframe1.style.top = "0";
-        preloadIframe1.style.left = "0";
-        preloadIframe1.style.width = "100vw";
-        preloadIframe1.style.height = "100vh";
-        preloadIframe1.style.opacity = "0";
-        preloadIframe1.style.pointerEvents = "none";
-        preloadIframe1.style.zIndex = "-9999";
-        preloadIframe1.loading = "eager";
-        preloadIframe1.setAttribute("fetchpriority", "high");
-        document.body.appendChild(preloadIframe1);
-        window.__vimeoMaykiPreloaded = true;
-      }
+    // Defer the heavy Vimeo iframe preload so it doesn't compete with FCP/LCP.
+    // Slides advance every 8s, so preloading after a short delay still keeps slide 2 ready in time.
+    const preloadMaykiVideo = () => {
+      if (window.innerWidth < 768) return;
+      if (!maykiVimeoId || window.__vimeoMaykiPreloaded) return;
 
-      // Preload slide 3 Vimeo video - lazy load (only preload when slide 2 is active)
-      // This reduces initial load time and improves LCP
-      // Preload slide 4 Vimeo video - lazy load (only preload when slide 3 is active)
-      // This reduces initial load time and improves LCP
+      try {
+        const preloadIframe = document.createElement("iframe");
+        preloadIframe.src = getVimeoEmbedUrl(maykiVimeoId);
+        preloadIframe.style.position = "fixed";
+        preloadIframe.style.top = "0";
+        preloadIframe.style.left = "0";
+        preloadIframe.style.width = "100vw";
+        preloadIframe.style.height = "100vh";
+        preloadIframe.style.opacity = "0";
+        preloadIframe.style.pointerEvents = "none";
+        preloadIframe.style.zIndex = "-9999";
+        preloadIframe.loading = "lazy";
+        preloadIframe.setAttribute("fetchpriority", "low");
+        document.body.appendChild(preloadIframe);
+        window.__vimeoMaykiPreloaded = true;
+      } catch (e) {
+        // ignore
+      }
     };
 
-    // Start preloading immediately
-    if (document.body) {
-      startPreloading();
+    let idleId;
+    let timeoutId;
+
+    // Image preload ASAP after mount, but not before first paint.
+    timeoutId = window.setTimeout(preloadImages, 0);
+
+    // Video preload a bit later (keeps slide 2 smooth without hurting first paint).
+    if ("requestIdleCallback" in window) {
+      idleId = window.requestIdleCallback(preloadMaykiVideo, { timeout: 4000 });
     } else {
-      // If body not ready, wait for it
-      const observer = new MutationObserver(() => {
-        if (document.body) {
-          startPreloading();
-          observer.disconnect();
-        }
-      });
-      observer.observe(document.documentElement, { childList: true, subtree: true });
-      return () => observer.disconnect();
+      timeoutId = window.setTimeout(preloadMaykiVideo, 2500);
     }
-  }, []);
+
+    return () => {
+      if (idleId && "cancelIdleCallback" in window) {
+        window.cancelIdleCallback(idleId);
+      }
+      if (timeoutId) {
+        window.clearTimeout(timeoutId);
+      }
+    };
+  }, [maykiVimeoId, blackAndWhiteHero, heroImage2]);
 
   // Hero slides (slide 2, slide 3, and slide 4 share the same special video layout)
   // Memoize to prevent recreation on every render
