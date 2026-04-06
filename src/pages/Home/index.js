@@ -29,9 +29,10 @@ import getRoutes from "routes1";
 import getFooterRoutes from "footer.routes1";
 
 // Images
-import bgImage from "assets/images/mainThemeImages/brushstroke.svg";
-import aadarHindiWhite from "assets/images/aadarHindiWhite.png";
-import aadarHindiYellow from "assets/images/aadarHindiYellow.png";
+const publicAsset = (path) => `${process.env.PUBLIC_URL || ""}${path}`;
+const bgImage = publicAsset("/assets/images/mainThemeImages/brushstroke.svg");
+const aadarHindiWhite = publicAsset("/assets/images/aadarHindiWhite.png");
+const aadarHindiYellow = publicAsset("/assets/images/aadarHindiYellow.png");
 
 // Icons and controls
 import IconButton from "@mui/material/IconButton";
@@ -46,11 +47,11 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import PropTypes from "prop-types";
 
 // Additional hero images for carousel
-import blackAndWhiteHero from "assets/images/mainThemeImages/aadar-main-black2.png";
 import heroImage2 from "assets/images/aboutPageImages/main1.jpg";
-import slide2MobileBg from "assets/images/mainThemeImages/slide2-mobile-bg.png";
-import slide3MobileBg from "assets/images/mainThemeImages/slide3-mobile-bg.png";
-import slide4MobileBg from "assets/images/mainThemeImages/slide4-mobile-bg.png";
+const blackAndWhiteHero = publicAsset("/assets/images/mainThemeImages/aadar-main-black2.png");
+const slide2MobileBg = publicAsset("/assets/images/mainThemeImages/slide2-mobile-bg.png");
+const slide3MobileBg = publicAsset("/assets/images/mainThemeImages/slide3-mobile-bg.png");
+const slide4MobileBg = publicAsset("/assets/images/mainThemeImages/slide4-mobile-bg.png");
 
 // Video URLs configuration - import from config file
 import { VIDEO_URLS } from "../../config/videoUrls";
