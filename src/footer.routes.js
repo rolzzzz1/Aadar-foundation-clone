@@ -99,16 +99,13 @@ export default {
                 alignItems: "center",
                 justifyContent: "center",
                 marginLeft: "8px",
-                width: { xs: "88px", sm: "104px", md: "116px" },
-                height: { xs: "28px", sm: "32px", md: "36px" },
-                backgroundImage: `url(${aishxDevLogo})`,
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "contain",
-                backgroundPosition: "center",
+                width: "fit-content",
+                maxWidth: "100%",
+                boxSizing: "border-box",
                 backgroundColor: "rgba(255, 255, 255, 0.06)",
                 borderRadius: "10px",
                 border: "1px solid rgba(255, 255, 255, 0.2)",
-                padding: 0,
+                padding: "4px 8px",
                 boxShadow: "0 2px 8px rgba(0, 0, 0, 0.2)",
                 lineHeight: 0,
                 verticalAlign: "middle",
@@ -133,7 +130,23 @@ export default {
                   boxShadow: "0 0 0 3px rgba(255, 255, 255, 0.25)",
                 },
               }}
-            />
+            >
+              <MKBox
+                component="img"
+                src={aishxDevLogo}
+                alt=""
+                draggable={false}
+                sx={{
+                  display: "block",
+                  height: { xs: "20px", sm: "24px", md: "28px" },
+                  width: "auto",
+                  maxWidth: "min(200px, 100%)",
+                  objectFit: "contain",
+                  pointerEvents: "none",
+                  userSelect: "none",
+                }}
+              />
+            </MKBox>
           </MKTypography>
         </MKBox>
       </MKTypography>
