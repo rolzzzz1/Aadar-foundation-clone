@@ -119,36 +119,28 @@ const getFooterRoutes = (t) => {
                   alignItems: "center",
                   justifyContent: "center",
                   marginLeft: "8px",
-                  width: "fit-content",
-                  maxWidth: "100%",
-                  boxSizing: "border-box",
-                  backgroundColor: "rgba(255, 255, 255, 0.06)",
+                  width: { xs: "88px", sm: "104px", md: "116px" },
+                  height: { xs: "28px", sm: "32px", md: "36px" },
                   borderRadius: "10px",
-                  border: "1px solid rgba(255, 255, 255, 0.2)",
-                  padding: "4px 8px",
-                  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.2)",
+                  overflow: "hidden",
+                  padding: 0,
                   lineHeight: 0,
                   verticalAlign: "middle",
                   cursor: "pointer",
                   textDecoration: "none",
-                  transition:
-                    "transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease, border-color 0.2s ease",
+                  transition: "transform 0.25s ease, filter 0.25s ease",
                   "&:hover": {
                     transform: "translateY(-2px) scale(1.04)",
-                    boxShadow:
-                      "0 6px 20px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.15)",
-                    filter: "brightness(1.12)",
-                    borderColor: "rgba(255, 255, 255, 0.35)",
-                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                    filter: "drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35)) brightness(1.06)",
                   },
                   "&:active": {
                     transform: "translateY(0) scale(0.98)",
-                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.25)",
+                    filter: "drop-shadow(0 2px 8px rgba(0, 0, 0, 0.25)) brightness(1.02)",
                   },
                   "&:focus-visible": {
                     outline: "2px solid rgba(255, 255, 255, 0.8)",
                     outlineOffset: "3px",
-                    boxShadow: "0 0 0 3px rgba(255, 255, 255, 0.25)",
+                    filter: "drop-shadow(0 0 0 rgba(0,0,0,0))",
                   },
                 }}
               >
@@ -159,12 +151,12 @@ const getFooterRoutes = (t) => {
                   draggable={false}
                   sx={{
                     display: "block",
-                    height: { xs: "20px", sm: "24px", md: "28px" },
-                    width: "auto",
-                    maxWidth: "min(200px, 100%)",
-                    objectFit: "contain",
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
                     pointerEvents: "none",
                     userSelect: "none",
+                    borderRadius: "10px",
                   }}
                 />
               </MKBox>
