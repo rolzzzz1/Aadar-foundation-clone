@@ -348,6 +348,9 @@ const HeroSlide = memo(function HeroSlide({
                 alt="Aadar Foundation"
                 width="100%"
                 height="100%"
+                loading="lazy"
+                decoding="async"
+                fetchPriority="low"
                 sx={{
                   width: "calc(100% - 10px)",
                   height: "calc(100% - 10px)",
@@ -410,6 +413,9 @@ const HeroSlide = memo(function HeroSlide({
                 alt="Aadar Foundation"
                 width="100%"
                 height="100%"
+                loading="lazy"
+                decoding="async"
+                fetchPriority="low"
                 sx={{
                   width: "calc(100% - 10px)",
                   height: "calc(100% - 10px)",
@@ -472,6 +478,9 @@ const HeroSlide = memo(function HeroSlide({
                 alt="Aadar Foundation"
                 width="100%"
                 height="100%"
+                loading="lazy"
+                decoding="async"
+                fetchPriority="low"
                 sx={{
                   width: "calc(100% - 10px)",
                   height: "calc(100% - 10px)",

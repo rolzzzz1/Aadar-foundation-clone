@@ -77,6 +77,9 @@ function DefaultFooter({ content }) {
                 alt={brand.name}
                 maxWidth="5rem"
                 mb={1}
+                loading="lazy"
+                decoding="async"
+                fetchPriority="low"
                 sx={{ borderRadius: "10px" }}
               />
               <MKTypography

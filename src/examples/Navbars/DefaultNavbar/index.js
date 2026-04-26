@@ -534,6 +534,10 @@ function DefaultNavbar({
             width={{ xs: "50px", sm: "70px", md: "80px", lg: "80px", xl: "90px" }}
             borderRadius="10px"
             my={1}
+            alt="Aadar Foundation"
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
           />
 
           {/* <img src={aadarLogo} width="130px" /> */}

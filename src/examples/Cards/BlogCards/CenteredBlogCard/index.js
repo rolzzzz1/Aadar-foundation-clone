@@ -40,6 +40,9 @@ function CenteredBlogCard({ image, title, description, action }) {
           width="100%"
           position="relative"
           zIndex={1}
+          loading="lazy"
+          decoding="async"
+          fetchPriority="low"
         />
         <MKBox
           borderRadius="lg"
