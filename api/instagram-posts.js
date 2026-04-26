@@ -1,4 +1,4 @@
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   try {
     const accessToken = process.env.INSTAGRAM_ACCESS_TOKEN;
     const accountId = process.env.INSTAGRAM_ACCOUNT_ID;
@@ -57,4 +57,4 @@ export default async function handler(req, res) {
   } catch (err) {
     return res.status(500).json({ error: err.message || "Error fetching posts" });
   }
-}
+};
