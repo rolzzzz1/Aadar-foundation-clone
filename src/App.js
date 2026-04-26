@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, lazy } from "react";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 
@@ -28,6 +28,8 @@ import routes from "routes";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import Typography from "@mui/material/Typography";
+
+const RazorpayTest = lazy(() => import("pages/RazorpayTest"));
 
 // Error boundary component
 class ErrorBoundary extends React.Component {
@@ -213,6 +215,8 @@ export default function App() {
         <Routes>
           {getRoutes(routes)}
           <Route path="/home" element={<Home />} />
+          {/* Hidden test route (not in navbar) */}
+          <Route path="/__razorpay-test" element={<RazorpayTest />} />
           <Route path="*" element={<Navigate to="/home" />} />
         </Routes>
         <Box
