@@ -55,6 +55,7 @@ const slide4MobileBg = publicAsset("/assets/images/mainThemeImages/slide4-mobile
 
 // Video URLs configuration - import from config file
 import { VIDEO_URLS } from "../../config/videoUrls";
+import { getHomePageCopy } from "utils/getHomePageCopy";
 
 // Video for slide 2 (Kumbh story - Dadi Mayki), slide 3 (Nirbhay story), and slide 4
 // All slides use Vimeo for fast loading
@@ -1788,12 +1789,12 @@ const HeroSlide = memo(function HeroSlide({
 });
 
 function Home() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   // Memoize routes and footer routes to prevent recreation on every render
   const routes = useMemo(() => getRoutes(t), [t]);
   const footerRoutes = useMemo(() => getFooterRoutes(t), [t]);
   const donateBtn = t("navbar.donateBtn");
-  const homePage = t("homePage");
+  const homePage = useMemo(() => getHomePageCopy(t), [t, i18n.language]);
   const ctaButtonText = t("homePage.heroSection.ctaButton");
 
   // State to let user pause/resume hero slider
