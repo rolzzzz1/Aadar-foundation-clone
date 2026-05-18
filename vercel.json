@@ -5,11 +5,7 @@
   "framework": "create-react-app",
   "rewrites": [
     {
-      "source": "/api/:path*",
-      "destination": "/api/:path*"
-    },
-    {
-      "source": "/:path*",
+      "source": "/((?!api/|static/|assets/|locales/|favicon\\.ico|manifest\\.json|robots\\.txt|sitemap\\.xml|apple-icon).*)",
       "destination": "/index.html"
     }
   ],

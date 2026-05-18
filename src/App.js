@@ -30,6 +30,8 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import Typography from "@mui/material/Typography";
 
 const RazorpayTest = lazy(() => import("pages/RazorpayTest"));
+const Donate2 = lazy(() => import("pages/LandingPages/Donate2"));
+const DonationResult = lazy(() => import("pages/DonationResult"));
 
 // Error boundary component
 class ErrorBoundary extends React.Component {
@@ -86,7 +88,10 @@ export default function App() {
   // Setting page scroll to 0 when changing the route
   useEffect(() => {
     document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
+    const scrollEl = document.scrollingElement || document.documentElement;
+    if (scrollEl) {
+      scrollEl.scrollTop = 0;
+    }
   }, [pathname]);
 
   // Show back-to-top button when user has scrolled down
@@ -217,6 +222,12 @@ export default function App() {
           <Route path="/home" element={<Home />} />
           {/* Hidden test route (not in navbar) */}
           <Route path="/__razorpay-test" element={<RazorpayTest />} />
+          <Route path="/donation/success" element={<DonationResult />} />
+          <Route path="/donation/failed" element={<DonationResult />} />
+          {/* Hidden duplicate donate page (not in navbar) */}
+          <Route path="/pages/landing-pages/donate2" element={<Donate2 />} />
+          {/* Short alias so /donate2 also resolves to the hidden page */}
+          <Route path="/donate2" element={<Navigate to="/pages/landing-pages/donate2" replace />} />
           <Route path="*" element={<Navigate to="/home" />} />
         </Routes>
         <Box

@@ -427,42 +427,73 @@
     },
     "message80g": "All donations to the Organisation are 50 % tax exempted under section 80 G of Income Tax Act 1961. ",
     "panNo": "PAN No - AAIAA2457N",
+    "donateViaCardNetbanking": "Donate via card / netbanking",
     "membershipSection": {
       "title": "Join Us",
       "subTitle": "Here’s how you can take part in our services",
       "membership": {
         "title": "Membership",
-        "membership1": {
-          "name": "Monthly membership -",
-          "time": "( per month )"
-        },
-        "membership2": {
-          "name": "Half-yearly membership -",
-          "time": "( per 6 months )"
-        },
-        "membership3": {
-          "name": "Annual membership -",
-          "time": "( per year )"
-        }
+        "subtitle": "Join as a regular supporter and help sustain the daily care of our residents.",
+        "items": [
+          {
+            "label": "Monthly membership",
+            "detail": "( per month )",
+            "amount": "Rs 101/201/501"
+          },
+          {
+            "label": "Half-yearly membership",
+            "detail": "( per 6 months )",
+            "amount": "Rs 2,601"
+          },
+          {
+            "label": "Annual membership",
+            "detail": "( per year )",
+            "amount": "Rs 5,101"
+          }
+        ]
       },
       "sponsorPrabhuji": {
         "title": "Sponsor Prabhuji",
-        "sponsorship1": {
-          "name": "Expenses of one Prabhuji -",
-          "services": "( for a Month )"
-        },
-        "sponsorship2": {
-          "name": "Expenses of one Prabhuji -",
-          "services": "( for a Year )"
-        },
+        "subtitle": "Adopt a Prabhuji's journey — your sponsorship covers their treatment, food, clothing, and care.",
+        "cards": [
+          {
+            "description": "Expenses of one Prabhuji",
+            "periodDetail": "( for a Month )",
+            "highlight": "One Month – Rs. 3,001",
+            "payButton": "Pay Now - Rs. 3,001",
+            "amount": 3001
+          },
+          {
+            "description": "Expenses of one Prabhuji",
+            "periodDetail": "( for a Year )",
+            "highlight": "One Year – Rs. 30,001",
+            "payButton": "Pay Now - Rs. 30,001",
+            "amount": 30001
+          }
+        ],
         "description": "** This includes their treatment, food, clothes and care."
       },
       "foodSponsorship": {
         "title": "Food sponsorship",
-        "foodSponsorship1": "One time meal (breakfast) during a day for 50 Prabhuji (1unit) -",
-        "foodSponsorship2": "One time meal (lunch/dinner) during a day for 50 Prabhuji (1 Units) -",
-        "foodSponsorship3": "One time meal (lunch/dinner) during a day for 100 Prabhuji (2 Units) -",
-        "foodSponsorship4": "Full day meal for 100 Prabhuji (2 units) -"
+        "subtitle": "Your support helps us serve wholesome meals with dignity and care.",
+        "items": [
+          {
+            "label": "One time breakfast for 50 Prabhuji",
+            "amount": "Rs 1,501"
+          },
+          {
+            "label": "One time lunch or dinner for 50 Prabhuji",
+            "amount": "Rs 3,001"
+          },
+          {
+            "label": "One time lunch or dinner for 100 Prabhuji",
+            "amount": "Rs 6,001"
+          },
+          {
+            "label": "Full day meals for 100 Prabhuji",
+            "amount": "Rs 15,001"
+          }
+        ]
       }
     }
   },

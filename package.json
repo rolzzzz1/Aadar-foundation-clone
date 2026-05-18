@@ -33,6 +33,7 @@
     "i18next": "^24.2.3",
     "i18next-browser-languagedetector": "^8.0.4",
     "i18next-http-backend": "^3.0.2",
+    "jspdf": "^4.2.1",
     "lg-video": "^1.4.0",
     "libphonenumber-js": "^1.12.6",
     "lightgallery": "^2.8.3",
@@ -54,11 +55,14 @@
     "web-vitals": "3.3.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently -k -n api,web -c blue,green npm:api:dev npm:start:web",
+    "start:web": "react-scripts start",
+    "dev": "npm start",
     "build": "react-scripts build",
     "build:prod": "CI=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "api:dev": "node api/dev-server.js",
     "lint": "eslint ./src",
     "prettify": "prettier --write ."
   },
@@ -82,6 +86,8 @@
   },
   "devDependencies": {
     "ajv": "^7.2.4",
+    "concurrently": "^9.2.1",
+    "http-proxy-middleware": "^2.0.6",
     "eslint": "8.38.0",
     "eslint-config-prettier": "8.8.0",
     "eslint-plugin-import": "2.27.5",
