@@ -199,14 +199,23 @@ export default function DonationResultPage() {
 
         <MKBox px={3} pb={3}>
           {canDownloadReceipt ? (
-            <MKBox sx={{ mb: 2.5 }}>
+            <MKBox sx={{ mb: 2.5, display: "flex", flexDirection: "column", alignItems: "center" }}>
               <Typography
                 variant="subtitle2"
-                sx={{ fontWeight: 800, color: brandGreen, letterSpacing: "0.04em", mb: 1.25 }}
+                sx={{
+                  fontWeight: 800,
+                  color: brandGreen,
+                  letterSpacing: "0.04em",
+                  mb: 1.25,
+                  width: "100%",
+                  textAlign: "center",
+                }}
               >
                 YOUR RECEIPT
               </Typography>
-              <DonationReceiptSheet record={record} logoSrc={aadarLogo} />
+              <Box sx={{ width: "100%", maxWidth: 720 }}>
+                <DonationReceiptSheet record={record} logoSrc={aadarLogo} />
+              </Box>
             </MKBox>
           ) : (
             <>

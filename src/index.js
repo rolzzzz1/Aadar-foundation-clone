@@ -18,20 +18,26 @@ function reportWebVitals(metric) {
   }
 }
 
-// Initialize Web Vitals reporting
+// Defer Web Vitals until after load so measurement does not compete with user metrics
 if (typeof window !== "undefined") {
-  import("web-vitals")
-    .then(({ onCLS, onFID, onFCP, onLCP, onTTFB, onINP }) => {
-      onCLS(reportWebVitals);
-      onFID(reportWebVitals);
-      onFCP(reportWebVitals);
-      onLCP(reportWebVitals);
-      onTTFB(reportWebVitals);
-      onINP(reportWebVitals);
-    })
-    .catch(() => {
-      // Silently fail if web-vitals is not available
-    });
+  const initWebVitals = () => {
+    import("web-vitals")
+      .then(({ onCLS, onFID, onFCP, onLCP, onTTFB, onINP }) => {
+        onCLS(reportWebVitals);
+        onFID(reportWebVitals);
+        onFCP(reportWebVitals);
+        onLCP(reportWebVitals);
+        onTTFB(reportWebVitals);
+        onINP(reportWebVitals);
+      })
+      .catch(() => {});
+  };
+
+  if (document.readyState === "complete") {
+    initWebVitals();
+  } else {
+    window.addEventListener("load", initWebVitals, { once: true });
+  }
 }
 
 const container = document.getElementById("root");

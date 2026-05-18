@@ -8,134 +8,12 @@
     <meta charset="utf-8" />
     <meta http-equiv="x-dns-prefetch-control" content="on" />
     <meta http-equiv="Accept-Encoding" content="gzip, deflate, br" />
-    <!-- CRITICAL CSS - Must load FIRST before any other styles -->
-    <style id="critical-toggle-css">
-      /* Ultra-high priority CSS for language selector toggle - loads before everything */
-      /* Maximum specificity to override Material-UI */
-      div.btn-container,
-      div.btn-container.MKBox-root,
-      div.btn-container.MuiBox-root,
-      div.btn-container.MKBox-root.MuiBox-root,
-      div[class*="btn-container"],
-      div[class*="btn-container"].MKBox-root,
-      div[class*="btn-container"].MuiBox-root,
-      div[class*="btn-container"].MKBox-root.MuiBox-root,
-      div[data-language-selector="true"],
-      div[data-language-selector="true"].MKBox-root,
-      div[data-language-selector="true"].MuiBox-root,
-      div[data-language-selector="true"].MKBox-root.MuiBox-root,
-      div[data-language-selector="true"][class*="btn-container"],
-      div[data-language-selector="true"][class*="btn-container"].MKBox-root,
-      div[data-language-selector="true"][class*="btn-container"].MuiBox-root,
-      div[data-language-selector="true"][class*="btn-container"].MKBox-root.MuiBox-root,
-      .btn-container,
-      .btn-container.MKBox-root,
-      .btn-container.MuiBox-root,
-      .btn-container.MKBox-root.MuiBox-root,
-      [class*="btn-container"],
-      [class*="btn-container"].MKBox-root,
-      [class*="btn-container"].MuiBox-root,
-      [class*="btn-container"].MKBox-root.MuiBox-root,
-      [data-language-selector="true"],
-      [data-language-selector="true"].MKBox-root,
-      [data-language-selector="true"].MuiBox-root,
-      [data-language-selector="true"].MKBox-root.MuiBox-root,
-      [data-language-selector="true"][class*="btn-container"],
-      [data-language-selector="true"][class*="btn-container"].MKBox-root,
-      [data-language-selector="true"][class*="btn-container"].MuiBox-root,
-      [data-language-selector="true"][class*="btn-container"].MKBox-root.MuiBox-root {
-        display: flex !important;
-        align-items: center !important;
-        gap: 0.5rem !important;
-        padding: 4px 8px !important;
-        transition: all 0.3s ease !important;
-        margin-left: -16px !important;
-        box-sizing: border-box !important;
-      }
-      @media (min-width: 600px) {
-        div.btn-container,
-        div.btn-container.MKBox-root,
-        div.btn-container.MuiBox-root,
-        div.btn-container.MKBox-root.MuiBox-root,
-        div[class*="btn-container"],
-        div[class*="btn-container"].MKBox-root,
-        div[class*="btn-container"].MuiBox-root,
-        div[class*="btn-container"].MKBox-root.MuiBox-root,
-        div[data-language-selector="true"],
-        div[data-language-selector="true"].MKBox-root,
-        div[data-language-selector="true"].MuiBox-root,
-        div[data-language-selector="true"].MKBox-root.MuiBox-root,
-        div[data-language-selector="true"][class*="btn-container"],
-        div[data-language-selector="true"][class*="btn-container"].MKBox-root,
-        div[data-language-selector="true"][class*="btn-container"].MuiBox-root,
-        div[data-language-selector="true"][class*="btn-container"].MKBox-root.MuiBox-root,
-        .btn-container,
-        .btn-container.MKBox-root,
-        .btn-container.MuiBox-root,
-        .btn-container.MKBox-root.MuiBox-root,
-        [class*="btn-container"],
-        [class*="btn-container"].MKBox-root,
-        [class*="btn-container"].MuiBox-root,
-        [class*="btn-container"].MKBox-root.MuiBox-root,
-        [data-language-selector="true"],
-        [data-language-selector="true"].MKBox-root,
-        [data-language-selector="true"].MuiBox-root,
-        [data-language-selector="true"].MKBox-root.MuiBox-root,
-        [data-language-selector="true"][class*="btn-container"],
-        [data-language-selector="true"][class*="btn-container"].MKBox-root,
-        [data-language-selector="true"][class*="btn-container"].MuiBox-root,
-        [data-language-selector="true"][class*="btn-container"].MKBox-root.MuiBox-root {
-          gap: 0.75rem !important;
-          padding: 4px 10px !important;
-        }
-      }
-      @media (min-width: 960px) {
-        div.btn-container,
-        div.btn-container.MKBox-root,
-        div.btn-container.MuiBox-root,
-        div.btn-container.MKBox-root.MuiBox-root,
-        div[class*="btn-container"],
-        div[class*="btn-container"].MKBox-root,
-        div[class*="btn-container"].MuiBox-root,
-        div[class*="btn-container"].MKBox-root.MuiBox-root,
-        div[data-language-selector="true"],
-        div[data-language-selector="true"].MKBox-root,
-        div[data-language-selector="true"].MuiBox-root,
-        div[data-language-selector="true"].MKBox-root.MuiBox-root,
-        div[data-language-selector="true"][class*="btn-container"],
-        div[data-language-selector="true"][class*="btn-container"].MKBox-root,
-        div[data-language-selector="true"][class*="btn-container"].MuiBox-root,
-        div[data-language-selector="true"][class*="btn-container"].MKBox-root.MuiBox-root,
-        .btn-container,
-        .btn-container.MKBox-root,
-        .btn-container.MuiBox-root,
-        .btn-container.MKBox-root.MuiBox-root,
-        [class*="btn-container"],
-        [class*="btn-container"].MKBox-root,
-        [class*="btn-container"].MuiBox-root,
-        [class*="btn-container"].MKBox-root.MuiBox-root,
-        [data-language-selector="true"],
-        [data-language-selector="true"].MKBox-root,
-        [data-language-selector="true"].MuiBox-root,
-        [data-language-selector="true"].MKBox-root.MuiBox-root,
-        [data-language-selector="true"][class*="btn-container"],
-        [data-language-selector="true"][class*="btn-container"].MKBox-root,
-        [data-language-selector="true"][class*="btn-container"].MuiBox-root,
-        [data-language-selector="true"][class*="btn-container"].MKBox-root.MuiBox-root {
-          gap: 1rem !important;
-          padding: 6px 12px !important;
-        }
-      }
-    </style>
     <link rel="icon" href="apple-icon1.png" />
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1" /> -->
     <meta name="theme-color" content="#1A73E8" />
     <link rel="apple-touch-icon" sizes="76x76" href="%PUBLIC_URL%/apple-icon1.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!-- Preload manifest for PWA -->
-    <link rel="preload" href="%PUBLIC_URL%/manifest.json" as="fetch" crossorigin="anonymous" />
-
     <!-- SEO Meta Tags -->
     <title>Aadar Foundation - Transforming Lives from Streets to New Life</title>
     <meta
@@ -204,58 +82,13 @@
         }
       }
     </script>
-    <!-- Preload critical resources for faster initial load - Slide 1 (highest priority) -->
+    <!-- LCP hero image only — extra preloads compete for bandwidth -->
     <link
       rel="preload"
       as="image"
       href="%PUBLIC_URL%/assets/images/mainThemeImages/aadar-main-black2.png"
       fetchpriority="high"
-      crossorigin="anonymous"
     />
-    <link
-      rel="preload"
-      as="image"
-      href="%PUBLIC_URL%/assets/images/aadarHindiYellow.png"
-      fetchpriority="high"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preload"
-      as="image"
-      href="%PUBLIC_URL%/assets/images/aadarHindiWhite.png"
-      fetchpriority="high"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preload"
-      as="image"
-      href="%PUBLIC_URL%/assets/images/mainThemeImages/brushstroke.svg"
-      fetchpriority="high"
-      crossorigin="anonymous"
-    />
-    <!-- Preload critical fonts -->
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
-      onload="this.onload=null;this.rel='stylesheet'"
-    />
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700;800&display=swap"
-      onload="this.onload=null;this.rel='stylesheet'"
-    />
-    <noscript>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
-      />
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700;800&display=swap"
-      />
-    </noscript>
     <!-- DNS prefetch for external resources -->
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://res.cloudinary.com" />
@@ -267,30 +100,27 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://player.vimeo.com" crossorigin />
     <link rel="preconnect" href="https://f.vimeocdn.com" crossorigin />
-    <!-- Preconnect for Vercel Analytics -->
-    <link rel="preconnect" href="https://vitals.vercel-insights.com" crossorigin />
-    <link rel="dns-prefetch" href="https://vitals.vercel-insights.com" />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Roboto+Slab:wght@400;700&family=Hind:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Roboto+Slab:wght@700&family=Hind:wght@400;600;700&family=Mukta:wght@400;600;700&family=Pacifico&display=swap"
       media="print"
       onload="this.media='all'"
     />
     <noscript>
       <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Roboto+Slab:wght@400;700&family=Hind:wght@300;400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Roboto+Slab:wght@700&family=Hind:wght@400;600;700&family=Mukta:wght@400;600;700&family=Pacifico&display=swap"
       />
     </noscript>
     <link
-      href="https://fonts.googleapis.com/css2?family=Material+Icons&family=Material+Icons+Outlined&family=Material+Icons+Two+Tone&family=Material+Icons+Round&family=Material+Icons+Sharp&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined&family=Material+Icons+Round&display=swap"
       rel="stylesheet"
       media="print"
       onload="this.media='all'"
     />
     <noscript>
       <link
-        href="https://fonts.googleapis.com/css2?family=Material+Icons&family=Material+Icons+Outlined&family=Material+Icons+Two+Tone&family=Material+Icons+Round&family=Material+Icons+Sharp&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined&family=Material+Icons+Round&display=swap"
         rel="stylesheet"
       />
     </noscript>

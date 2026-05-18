@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy } from "react";
+import React, { useEffect, useState, lazy, Suspense } from "react";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 
@@ -16,8 +16,9 @@ import theme from "assets/theme";
 
 // Image protection utilities
 import { setupImageProtection, addImageProtectionCSS } from "utils/imageProtection";
-// Image watermarking
+// Image watermarking (gallery only — canvas work hurts Real Experience Score)
 import { watermarkAllImages, setupWatermarkObserver } from "utils/imageWatermark";
+import DeferredVitals from "components/DeferredVitals";
 
 // Import Home directly (not lazy) since it's the main page and should load fast
 import Home from "layouts/pages/home";
@@ -25,9 +26,9 @@ import Home from "layouts/pages/home";
 // Material Kit 2 React routes
 import routes from "routes";
 
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/react";
 import Typography from "@mui/material/Typography";
+
+const isGalleryRoute = (path) => /\/gallery\/?$/i.test(path);
 
 const RazorpayTest = lazy(() => import("pages/RazorpayTest"));
 const Donate2 = lazy(() => import("pages/LandingPages/Donate2"));
@@ -138,67 +139,67 @@ export default function App() {
     }
   }, [pathname]);
 
-  // Setup image protection
+  // Image protection — defer until idle so it does not compete with LCP / INP
   useEffect(() => {
-    // Add CSS protection
-    addImageProtectionCSS();
+    let idleId;
+    let timeoutId;
+    let cleanup = () => {};
 
-    // Setup event listeners for image protection
-    const cleanup = setupImageProtection();
+    const init = () => {
+      addImageProtectionCSS();
+      cleanup = setupImageProtection() || (() => {});
+    };
 
-    // Cleanup on unmount
-    return cleanup;
+    if ("requestIdleCallback" in window) {
+      idleId = requestIdleCallback(init, { timeout: 5000 });
+    } else {
+      timeoutId = window.setTimeout(init, 3000);
+    }
+
+    return () => {
+      if (idleId != null && "cancelIdleCallback" in window) {
+        cancelIdleCallback(idleId);
+      }
+      if (timeoutId != null) {
+        window.clearTimeout(timeoutId);
+      }
+      cleanup();
+    };
   }, []);
 
-  // Apply watermarks to all images (optimized - only run once on mount)
-  // Deferred to avoid blocking initial render
+  // Watermark only on gallery — re-encoding every <img> via canvas tanks RES on the home page
   useEffect(() => {
+    if (!isGalleryRoute(pathname)) return undefined;
+
     const watermarkOptions = {
-      opacity: 0.05, // Very low opacity for invisible watermark
-      scale: 0.25, // 25% of image size
-      position: "center", // Center position
-      repeat: false, // Single watermark
+      opacity: 0.05,
+      scale: 0.25,
+      position: "center",
+      repeat: false,
     };
 
-    // Setup observer for dynamically added images
     const cleanupObserver = setupWatermarkObserver(watermarkOptions);
+    let idleId;
+    let timeoutId;
 
-    // Apply watermarks to existing images - deferred using requestIdleCallback
-    const applyWatermarks = async () => {
-      const apply = () => {
-        watermarkAllImages(watermarkOptions);
-      };
+    const apply = () => watermarkAllImages(watermarkOptions);
 
-      // Use requestIdleCallback to defer watermarking until browser is idle
-      if ("requestIdleCallback" in window) {
-        if (document.readyState === "complete") {
-          requestIdleCallback(apply, { timeout: 2000 });
-        } else {
-          const handleLoad = () => {
-            requestIdleCallback(apply, { timeout: 2000 });
-            window.removeEventListener("load", handleLoad);
-          };
-          window.addEventListener("load", handleLoad);
-        }
-      } else {
-        // Fallback for browsers without requestIdleCallback
-        if (document.readyState === "complete") {
-          setTimeout(apply, 1000);
-        } else {
-          const handleLoad = () => {
-            setTimeout(apply, 1000);
-            window.removeEventListener("load", handleLoad);
-          };
-          window.addEventListener("load", handleLoad);
-        }
+    if ("requestIdleCallback" in window) {
+      idleId = requestIdleCallback(apply, { timeout: 8000 });
+    } else {
+      timeoutId = window.setTimeout(apply, 4000);
+    }
+
+    return () => {
+      cleanupObserver();
+      if (idleId != null && "cancelIdleCallback" in window) {
+        cancelIdleCallback(idleId);
+      }
+      if (timeoutId != null) {
+        window.clearTimeout(timeoutId);
       }
     };
-
-    applyWatermarks();
-
-    // Cleanup observer on unmount
-    return cleanupObserver;
-  }, []); // Only run once on mount, not on every pathname change
+  }, [pathname]);
 
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
@@ -221,11 +222,39 @@ export default function App() {
           {getRoutes(routes)}
           <Route path="/home" element={<Home />} />
           {/* Hidden test route (not in navbar) */}
-          <Route path="/__razorpay-test" element={<RazorpayTest />} />
-          <Route path="/donation/success" element={<DonationResult />} />
-          <Route path="/donation/failed" element={<DonationResult />} />
+          <Route
+            path="/__razorpay-test"
+            element={
+              <Suspense fallback={null}>
+                <RazorpayTest />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/donation/success"
+            element={
+              <Suspense fallback={null}>
+                <DonationResult />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/donation/failed"
+            element={
+              <Suspense fallback={null}>
+                <DonationResult />
+              </Suspense>
+            }
+          />
           {/* Hidden duplicate donate page (not in navbar) */}
-          <Route path="/pages/landing-pages/donate2" element={<Donate2 />} />
+          <Route
+            path="/pages/landing-pages/donate2"
+            element={
+              <Suspense fallback={null}>
+                <Donate2 />
+              </Suspense>
+            }
+          />
           {/* Short alias so /donate2 also resolves to the hidden page */}
           <Route path="/donate2" element={<Navigate to="/pages/landing-pages/donate2" replace />} />
           <Route path="*" element={<Navigate to="/home" />} />
@@ -268,8 +297,7 @@ export default function App() {
             ⬆️ Back To Top
           </Box>
         </Box>
-        <Analytics />
-        <SpeedInsights />
+        <DeferredVitals />
       </ThemeProvider>
     </ErrorBoundary>
   );
