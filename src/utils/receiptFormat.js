@@ -1,14 +1,23 @@
+import { amountInWordsInrHi, getReceiptCopy, getReceiptLocale } from "utils/receiptI18n";
+
+const ORG_BASE = {
+  registration80G: "AAIAA2457N24BP01",
+  address:
+    "Swarg sadan ashram - Sarkari Malti, Behind Muktidham, Guda Gudi Ka Naka, Gwalior, MP 474001",
+  pan: "AAIAA2457N",
+  email: "aadarfoundation2018@gmail.com",
+  phone: "+91 9039129571",
+  website: "https://www.aadarfoundation.org/",
+};
+
 export const ORG = {
   name: "Aadar Foundation",
   subtitle: "Aashram Swarg Sadan",
   tagline: "80G Registered Non-Profit Organization",
-  address:
-    "Swarg sadan ashram - Sarkari Malti, Behind Muktidham, Guda Gudi Ka Naka, Gwalior, MP 474001",
-  pan: "AAIAA2457N",
-  email: "aadarfoundatio2018@gmail.com",
-  phone: "+91 9039129571",
-  website: "https://aadar.foundation/",
+  ...ORG_BASE,
 };
+
+export const RECEIPT_QR_HINT = "Scan to visit our website";
 
 const ONES = [
   "",
@@ -81,9 +90,9 @@ export function formatInrPdf(amountInr) {
   return formatInr(amountInr).replace(/\u20B9/g, "Rs. ");
 }
 
-export function formatReceiptDate(iso) {
+export function formatReceiptDate(iso, locale = "en") {
   try {
-    return new Intl.DateTimeFormat("en-IN", {
+    return new Intl.DateTimeFormat(locale === "hi" ? "hi-IN" : "en-IN", {
       day: "numeric",
       month: "short",
       year: "numeric",
@@ -108,27 +117,33 @@ export function formatDisplayReceiptNo(record) {
   return `AADAR-${year}-${digits}`;
 }
 
-export function receiptForLabel(record) {
+export function receiptForLabel(record, copy) {
   if (record.programLabel) return record.programLabel;
   if (record.purpose) return record.purpose;
-  return "General Donation";
+  return copy.generalDonation;
 }
 
-export function paymentStatusLabel(record) {
-  if (record.status === "success") return "Successful";
-  if (record.status === "unverified") return "Pending verification";
-  return "Not completed";
+export function paymentStatusLabel(record, copy) {
+  if (record.status === "success") return copy.status.success;
+  if (record.status === "unverified") return copy.status.unverified;
+  return copy.status.failed;
 }
 
 export function buildReceiptViewModel(record) {
+  const locale = getReceiptLocale(record);
+  const copy = getReceiptCopy(locale);
   const donor = record.donor || {};
+  const org = { ...ORG_BASE, ...copy.org };
+
   return {
+    locale,
+    copy,
     isSuccess: record.status === "success",
     testMode: !!record.testMode,
     receiptNo: formatDisplayReceiptNo(record),
-    date: formatReceiptDate(record.paidAt || new Date().toISOString()),
-    paymentMode: "Online (Razorpay)",
-    paymentStatus: paymentStatusLabel(record),
+    date: formatReceiptDate(record.paidAt || new Date().toISOString(), locale),
+    paymentMode: copy.paymentMode,
+    paymentStatus: paymentStatusLabel(record, copy),
     donorName: donor.name || "—",
     fatherOrHusbandName: donor.fatherOrHusbandName || "—",
     email: donor.email || "—",
@@ -137,11 +152,13 @@ export function buildReceiptViewModel(record) {
     amountInr: Number(record.amountInr) || 0,
     amountFormatted: formatInr(record.amountInr),
     amountFormattedPdf: formatInrPdf(record.amountInr),
-    amountWords: amountInWordsInr(record.amountInr),
+    amountWords:
+      locale === "hi" ? amountInWordsInrHi(record.amountInr) : amountInWordsInr(record.amountInr),
     paymentId: record.paymentId || "—",
     orderId: record.orderId || "—",
-    receiptFor: receiptForLabel(record),
+    receiptFor: receiptForLabel(record, copy),
     errorDescription: record.errorDescription || "",
-    org: ORG,
+    org,
+    qrHint: copy.qrHint,
   };
 }

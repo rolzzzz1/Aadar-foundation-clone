@@ -313,7 +313,7 @@ function DefaultFooter({ content }) {
                   color="white"
                   // overflow="hidden"
                 >
-                  aadarfoundatio2018
+                  aadarfoundation2018
                   <br />
                   <MKTypography
                     color="white"

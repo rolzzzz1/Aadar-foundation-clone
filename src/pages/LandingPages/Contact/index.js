@@ -186,8 +186,8 @@ function Contact() {
                 >
                   {contactPage.phoneNumber.label}
                 </MKTypography>
-                <MKTypography variant="body1" fontSize="1rem">
-                  +91 9039129571, +91 9826441863, +91 9630982392
+                <MKTypography variant="body1" fontSize="1rem" sx={{ whiteSpace: "pre-line" }}>
+                  {contactPage.phoneNumber.numbers}
                 </MKTypography>
 
                 <MKTypography
@@ -201,7 +201,7 @@ function Contact() {
                   {contactPage.emailLabel}
                 </MKTypography>
                 <MKTypography variant="body1" fontSize="1rem">
-                  aadarfoundatio2018@gmail.com
+                  aadarfoundation2018@gmail.com
                 </MKTypography>
               </Grid>
               <Grid item xs={12} md={12} lg={8} sx={{ mx: "auto" }}>

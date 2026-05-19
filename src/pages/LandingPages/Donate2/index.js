@@ -41,7 +41,7 @@ import getFooterRoutes from "footer.routes1";
 // Images
 import bgImage2 from "assets/images/mainThemeImages/swargSadanBlack.png";
 import bgImage from "assets/images/mainThemeImages/smallBrushstroke2.svg";
-import scanner from "assets/images/scanner.jpg";
+import donateUpiQr from "assets/images/donate-upi-qr.png";
 import donateImg from "assets/images/donate-happy-faces.png";
 import MKButton from "components/MKButton";
 
@@ -214,11 +214,23 @@ function Donate2() {
                       sx={{ maxWidth: 640 }}
                     >
                       {[
-                        { Icon: VerifiedUserOutlinedIcon, text: "80G Tax Benefit Available" },
-                        { Icon: GroupsOutlinedIcon, text: "500+ Lives Impacted" },
-                        { Icon: LockOutlinedIcon, text: "Secure Payments via Razorpay" },
-                      ].map(({ Icon, text }) => (
-                        <Grid item xs={12} sm={4} key={text}>
+                        {
+                          id: "taxBenefit80g",
+                          Icon: VerifiedUserOutlinedIcon,
+                          text: donatePage.trustBadges.taxBenefit80g,
+                        },
+                        {
+                          id: "livesImpacted",
+                          Icon: GroupsOutlinedIcon,
+                          text: donatePage.trustBadges.livesImpacted,
+                        },
+                        {
+                          id: "securePayments",
+                          Icon: LockOutlinedIcon,
+                          text: donatePage.trustBadges.securePayments,
+                        },
+                      ].map(({ id, Icon, text }) => (
+                        <Grid item xs={12} sm={4} key={id}>
                           <MKBox
                             display="flex"
                             alignItems="center"
@@ -273,25 +285,22 @@ function Donate2() {
                     >
                       {[
                         {
+                          id: "membership",
                           Icon: PersonOutlineIcon,
-                          title: "Membership",
-                          subtitle: "Regular support",
-                          amount: "₹101 / 201 / 501",
+                          ...donatePage.quickGiveCards.membership,
                         },
                         {
+                          id: "mealSponsorship",
                           Icon: RestaurantOutlinedIcon,
-                          title: "Meal Sponsorship",
-                          subtitle: "50 prabhuji breakfast",
-                          amount: "₹1,501",
+                          ...donatePage.quickGiveCards.mealSponsorship,
                         },
                         {
+                          id: "monthlyCare",
                           Icon: VolunteerActivismOutlinedIcon,
-                          title: "Monthly Care",
-                          subtitle: "1 prabhuji / month",
-                          amount: "₹3,001",
+                          ...donatePage.quickGiveCards.monthlyCare,
                         },
-                      ].map(({ Icon, title, subtitle, amount }) => (
-                        <Grid item xs={12} sm={4} key={title}>
+                      ].map(({ id, Icon, title, subtitle, amount }) => (
+                        <Grid item xs={12} sm={4} key={id}>
                           <MKBox
                             display="flex"
                             alignItems="center"
@@ -428,7 +437,7 @@ function Donate2() {
                             gap: 0.6,
                           }}
                         >
-                          Make a Difference Now
+                          {donatePage.makeADifferenceNow}
                           <FavoriteBorderIcon
                             sx={{
                               color: "#ff4d4f",
@@ -446,7 +455,7 @@ function Donate2() {
                           color: "rgba(66, 86, 122, 0.75)",
                         }}
                       >
-                        Select Amount
+                        {donatePage.selectAmount}
                       </MKTypography>
                     </MKBox>
 
@@ -476,7 +485,7 @@ function Donate2() {
                                       whiteSpace: "nowrap",
                                     }}
                                   >
-                                    Most Popular
+                                    {donatePage.mostPopular}
                                   </MKBox>
                                 )}
                                 <MKButton
@@ -539,7 +548,7 @@ function Donate2() {
                           setCustomAmount(v);
                           if (v) setSelectedAmount(Number(v));
                         }}
-                        placeholder="Enter custom amount"
+                        placeholder={donatePage.enterCustomAmount}
                         variant="outlined"
                         error={!!customAmount && !amountCheck.ok}
                         helperText={customAmount && !amountCheck.ok ? amountCheck.error : undefined}
@@ -621,7 +630,7 @@ function Donate2() {
                           },
                         }}
                       >
-                        Donate Now
+                        {donatePage.donateNow}
                       </MKButton>
 
                       <DonateTrustBanner />
@@ -660,9 +669,9 @@ function Donate2() {
                         lineHeight: 1.2,
                       }}
                     >
-                      Help us increase
+                      {donatePage.helpUsIncreaseSmilesLine1}
                       <br />
-                      number of these smiles.
+                      {donatePage.helpUsIncreaseSmilesLine2}
                     </MKTypography>
 
                     <MKTypography
@@ -727,7 +736,7 @@ function Donate2() {
                         },
                       }}
                     >
-                      Support Them Now
+                      {donatePage.supportThemNow}
                       <AutoAwesomeRoundedIcon className="sparkle-glyph" />
                     </MKTypography>
                   </MKBox>
@@ -951,7 +960,7 @@ function Donate2() {
                       },
                     }}
                   >
-                    Donate Instantly Instead (UPI / Card / Netbanking)
+                    {donatePage.donateInstantlyInstead}
                   </MKButton>
                 </MKBox>
               </MKBox>
@@ -1170,27 +1179,51 @@ function Donate2() {
                       pl: { xs: 0, lg: 2 },
                       pr: { xs: 0, lg: 1 },
                       px: { xs: 2, sm: 3 },
+                      backgroundColor: "transparent",
+                      backgroundImage: "none",
+                      boxShadow: "none",
                     }}
                   >
                     <MKBox
-                      component="img"
-                      src={scanner}
-                      alt="UPI QR code"
-                      borderRadius="xxl"
-                      loading="lazy"
-                      decoding="async"
+                      component="figure"
                       sx={{
-                        display: "block",
-                        width: { xs: "100%", sm: "90%", md: "85%", lg: "100%" },
-                        maxWidth: { xs: 320, sm: 360, md: 340, lg: 400 },
-                        height: "auto",
-                        objectFit: "contain",
+                        m: 0,
+                        mx: "auto",
                         p: 0,
-                        border: "1px solid rgba(31, 42, 68, 0.12)",
-                        boxShadow:
-                          "0 8px 24px rgba(31, 42, 68, 0.1), 0 2px 8px rgba(31, 42, 68, 0.06)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: { xs: "100%", sm: "90%", md: "85%", lg: "100%" },
+                        maxWidth: { xs: 260, sm: 280, md: 280, lg: 320 },
+                        height: { xs: 360, sm: 400, md: 390, lg: 480 },
+                        overflow: "hidden",
+                        backgroundColor: "transparent",
+                        backgroundImage: "none",
+                        boxShadow: "none",
+                        border: "none",
                       }}
-                    />
+                    >
+                      <MKBox
+                        component="img"
+                        src={donateUpiQr}
+                        alt="Aadar Foundation UPI QR — scan to donate"
+                        loading="lazy"
+                        decoding="async"
+                        sx={{
+                          display: "block",
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "contain",
+                          objectPosition: "center",
+                          p: 0,
+                          m: 0,
+                          border: "none",
+                          borderRadius: 0,
+                          boxShadow: "none",
+                          backgroundColor: "transparent",
+                        }}
+                      />
+                    </MKBox>
                     <MKButton
                       component={Link}
                       to="/__razorpay-test"
@@ -1201,7 +1234,7 @@ function Donate2() {
                       fullWidth
                       sx={{
                         mt: 2,
-                        maxWidth: { xs: 320, sm: 360, lg: 400 },
+                        maxWidth: { xs: 260, sm: 280, lg: 320 },
                         py: 1.35,
                         borderRadius: "12px",
                         fontWeight: 800,

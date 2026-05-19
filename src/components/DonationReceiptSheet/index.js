@@ -6,14 +6,8 @@ import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import PhoneIphoneOutlinedIcon from "@mui/icons-material/PhoneIphoneOutlined";
-import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
-
 import { buildReceiptViewModel } from "utils/receiptFormat";
+import { getReceiptWebsiteQrSrc } from "utils/receiptAssets";
 
 const green = "#1b5e20";
 const greenMid = "#2e7d32";
@@ -21,17 +15,19 @@ const greenLight = "#eaf7ea";
 
 function MetaCell({ label, value, valueGreen }) {
   return (
-    <Box sx={{ textAlign: "center" }}>
+    <Box sx={{ textAlign: "center", px: 0.5 }}>
       <Typography
-        sx={{ fontSize: "0.68rem", color: "rgba(31,42,68,0.55)", fontWeight: 600, mb: 0.25 }}
+        sx={{ fontSize: "0.62rem", color: "rgba(31,42,68,0.55)", fontWeight: 600, lineHeight: 1.2 }}
       >
         {label}
       </Typography>
       <Typography
         sx={{
-          fontSize: "0.82rem",
+          fontSize: "0.72rem",
           fontWeight: 700,
           color: valueGreen ? greenMid : "#1f2a44",
+          lineHeight: 1.25,
+          wordBreak: "break-word",
         }}
       >
         {value}
@@ -46,59 +42,67 @@ MetaCell.propTypes = {
   valueGreen: PropTypes.bool,
 };
 
-function DetailTable({ title, rows }) {
+function DetailTable({ title, rows, amountLabels }) {
   return (
     <Box
       sx={{
         flex: 1,
         minWidth: 0,
-        maxWidth: 360,
         border: "1px solid #d8e0d8",
         borderRadius: "6px",
         overflow: "hidden",
       }}
     >
-      <Box sx={{ bgcolor: green, px: 1.25, py: 0.65, textAlign: "center" }}>
+      <Box sx={{ bgcolor: green, px: 1, py: 0.45, textAlign: "center" }}>
         <Typography
-          sx={{ color: "#fff", fontSize: "0.62rem", fontWeight: 800, letterSpacing: "0.08em" }}
+          sx={{ color: "#fff", fontSize: "0.58rem", fontWeight: 800, letterSpacing: "0.08em" }}
         >
           {title}
         </Typography>
       </Box>
-      {rows.map(([label, value], idx) => (
-        <Box
-          key={label}
-          sx={{
-            px: 1.25,
-            py: 0.65,
-            textAlign: "center",
-            bgcolor: idx % 2 === 0 ? "#fff" : "#fafcfa",
-            borderTop: idx > 0 ? "1px solid #eef2ee" : "none",
-          }}
-        >
-          <Typography
+      {rows.map(([label, value], idx) => {
+        const isAmount = amountLabels.includes(label);
+        return (
+          <Box
+            key={label}
             sx={{
-              fontSize: "0.65rem",
-              color: "rgba(31,42,68,0.6)",
-              fontWeight: 600,
-              display: "block",
-              mb: 0.2,
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+              gap: 0.75,
+              px: 1,
+              py: 0.35,
+              bgcolor: idx % 2 === 0 ? "#fff" : "#fafcfa",
+              borderTop: idx > 0 ? "1px solid #eef2ee" : "none",
             }}
           >
-            {label}
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: "0.65rem",
-              color: label === "Donation Amount" ? greenMid : "#1f2a44",
-              fontWeight: label === "Donation Amount" ? 800 : 600,
-              wordBreak: "break-word",
-            }}
-          >
-            {value}
-          </Typography>
-        </Box>
-      ))}
+            <Typography
+              sx={{
+                fontSize: "0.6rem",
+                color: "rgba(31,42,68,0.6)",
+                fontWeight: 600,
+                flexShrink: 0,
+                maxWidth: "42%",
+                textAlign: "left",
+              }}
+            >
+              {label}
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: "0.6rem",
+                color: isAmount ? greenMid : "#1f2a44",
+                fontWeight: isAmount ? 800 : 600,
+                wordBreak: "break-word",
+                textAlign: "right",
+                flex: 1,
+              }}
+            >
+              {value}
+            </Typography>
+          </Box>
+        );
+      })}
     </Box>
   );
 }
@@ -106,39 +110,53 @@ function DetailTable({ title, rows }) {
 DetailTable.propTypes = {
   title: PropTypes.string.isRequired,
   rows: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
+  amountLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default function DonationReceiptSheet({ record, logoSrc }) {
   const vm = buildReceiptViewModel(record);
-  const { org } = vm;
+  const { copy, org } = vm;
+  const dr = copy.donorRows;
+  const dn = copy.donationRows;
+  const amountLabels = [dn.amount, dn.amountAlt];
 
   const donorRows = [
-    ["Donor Name", vm.donorName],
-    ["Father / Husband Name", vm.fatherOrHusbandName],
-    ["Email", vm.email],
-    ["Mobile", vm.mobile],
-    ["PAN", vm.pan],
+    [dr.name, vm.donorName],
+    [dr.fatherHusband, vm.fatherOrHusbandName],
+    [dr.email, vm.email],
+    [dr.mobile, vm.mobile],
+    [dr.pan, vm.pan],
   ];
 
   const donationRows = [
-    ["Donation Amount", vm.amountFormatted],
-    ["Transaction ID", vm.paymentId],
-    ["Order ID", vm.orderId],
-    ["Receipt For", vm.receiptFor],
-    ["Amount (in words)", vm.amountWords],
+    [dn.amount, vm.amountFormatted],
+    [dn.transactionId, vm.paymentId],
+    [dn.orderId, vm.orderId],
+    [dn.receiptFor, vm.receiptFor],
+    [dn.inWords, vm.amountWords],
   ];
 
   return (
     <Box
+      className="donation-receipt-sheet"
+      lang={vm.locale}
       sx={{
         position: "relative",
         bgcolor: "#fff",
         borderRadius: "10px",
         border: "1px solid #d5e8d5",
         overflow: "hidden",
-        fontFamily: '"Segoe UI", Lato, Helvetica, Arial, sans-serif',
+        fontFamily: '"Segoe UI", Lato, "Noto Sans Devanagari", Helvetica, Arial, sans-serif',
         textAlign: "center",
         mx: "auto",
+        maxWidth: 720,
+        "@media print": {
+          maxWidth: "100%",
+          borderRadius: 0,
+          border: "none",
+          pageBreakInside: "avoid",
+          breakInside: "avoid",
+        },
       }}
     >
       {logoSrc ? (
@@ -150,223 +168,209 @@ export default function DonationReceiptSheet({ record, logoSrc }) {
           sx={{
             position: "absolute",
             left: "50%",
-            top: "42%",
+            top: "45%",
             transform: "translate(-50%, -50%)",
-            width: 200,
-            height: 200,
-            opacity: 0.06,
+            width: 88,
+            height: 88,
+            opacity: 0.05,
             pointerEvents: "none",
             objectFit: "contain",
           }}
         />
       ) : null}
 
-      <Box sx={{ position: "relative", p: { xs: 1.5, sm: 2 } }}>
-        <Box sx={{ display: "flex", justifyContent: "center", mb: 0.5 }}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 1,
-              maxWidth: "100%",
-            }}
+      <Box sx={{ position: "relative", px: { xs: 1.25, sm: 1.75 }, py: 1.25 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 0.5,
+            mb: 0.75,
+          }}
+        >
+          {logoSrc ? (
+            <Box
+              component="img"
+              src={logoSrc}
+              alt={org.name}
+              sx={{
+                width: 38,
+                height: 38,
+                borderRadius: "50%",
+                objectFit: "cover",
+                border: `2px solid ${greenMid}`,
+              }}
+            />
+          ) : null}
+          <Typography sx={{ fontSize: "1rem", fontWeight: 800, color: green, lineHeight: 1.15 }}>
+            {org.name}
+          </Typography>
+          <Typography
+            sx={{ fontSize: "0.78rem", fontWeight: 700, color: "#1f2a44", lineHeight: 1.2 }}
           >
-            {logoSrc ? (
-              <Box
-                component="img"
-                src={logoSrc}
-                alt={org.name}
-                sx={{
-                  width: 72,
-                  height: 72,
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                  border: `2px solid ${greenMid}`,
-                  flexShrink: 0,
-                }}
-              />
-            ) : null}
-            <Box sx={{ textAlign: "center", minWidth: 0 }}>
-              <Typography
-                sx={{ fontSize: "1.15rem", fontWeight: 800, color: green, lineHeight: 1.2 }}
-              >
-                {org.name}
-              </Typography>
-              <Typography sx={{ fontSize: "0.85rem", fontWeight: 700, color: "#1f2a44" }}>
-                {org.subtitle}
-              </Typography>
-              <Typography sx={{ fontSize: "0.72rem", fontWeight: 600, color: greenMid, mt: 0.25 }}>
-                {org.tagline}
-              </Typography>
-            </Box>
-          </Box>
+            {org.subtitle}
+          </Typography>
+          <Typography sx={{ fontSize: "0.65rem", fontWeight: 600, color: greenMid }}>
+            {org.tagline}
+          </Typography>
         </Box>
 
-        <Box
-          sx={{ display: "flex", alignItems: "center", justifyContent: "center", my: 1.5, gap: 1 }}
-        >
-          <Typography sx={{ color: greenMid, fontSize: "0.9rem" }} aria-hidden>
-            🌿
-          </Typography>
+        <Box sx={{ display: "flex", justifyContent: "center", mb: 0.75 }}>
           <Box
             sx={{
               bgcolor: green,
               color: "#fff",
-              px: 2.5,
-              py: 0.55,
+              px: 2,
+              py: 0.4,
               borderRadius: "999px",
-              fontSize: "0.72rem",
+              fontSize: "0.65rem",
               fontWeight: 800,
-              letterSpacing: "0.12em",
+              letterSpacing: "0.1em",
             }}
           >
-            DONATION RECEIPT
+            {copy.title}
           </Box>
-          <Typography sx={{ color: greenMid, fontSize: "0.9rem" }} aria-hidden>
-            🌿
-          </Typography>
         </Box>
 
         {vm.testMode ? (
           <Typography
             sx={{
-              mb: 1,
+              mb: 0.75,
               px: 1,
-              py: 0.5,
+              py: 0.35,
               bgcolor: "#fff8e1",
               color: "#6d4c00",
-              fontSize: "0.7rem",
-              borderRadius: "6px",
-              textAlign: "center",
+              fontSize: "0.62rem",
+              borderRadius: "4px",
             }}
           >
-            TEST MODE — Not a valid tax receipt for live payments.
+            {copy.testBanner}
           </Typography>
         ) : null}
 
-        <Grid container spacing={2} sx={{ mb: 1.5, justifyContent: "center" }}>
-          <Grid item xs={12} sm={6}>
-            <MetaCell label="Receipt No." value={vm.receiptNo} valueGreen />
-            <Box sx={{ mt: 1 }}>
-              <MetaCell label="Date" value={vm.date} />
-            </Box>
+        <Grid container spacing={0.75} sx={{ mb: 0.75 }}>
+          <Grid item xs={6} sm={3}>
+            <MetaCell label={copy.meta.receiptNo} value={vm.receiptNo} valueGreen />
           </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={6}
-            sx={{
-              borderTop: { xs: "1px solid #e2e8e2", sm: "none" },
-              borderLeft: { sm: "1px solid #e2e8e2" },
-              pt: { xs: 2, sm: 0 },
-              pl: { sm: 2 },
-            }}
-          >
-            <MetaCell label="Mode of Payment" value={vm.paymentMode} />
-            <Box sx={{ mt: 1 }}>
-              <MetaCell label="Payment Status" value={vm.paymentStatus} valueGreen={vm.isSuccess} />
-            </Box>
+          <Grid item xs={6} sm={3}>
+            <MetaCell label={copy.meta.date} value={vm.date} />
+          </Grid>
+          <Grid item xs={6} sm={3}>
+            <MetaCell label={copy.meta.payment} value={vm.paymentMode} />
+          </Grid>
+          <Grid item xs={6} sm={3}>
+            <MetaCell label={copy.meta.status} value={vm.paymentStatus} valueGreen={vm.isSuccess} />
           </Grid>
         </Grid>
 
-        <Typography
-          sx={{
-            textAlign: "center",
-            fontSize: "0.78rem",
-            color: "#1f2a44",
-            lineHeight: 1.55,
-            mb: 0.25,
-          }}
-        >
-          Thank you, <strong>{vm.donorName}</strong>, for your generous contribution towards the
-          care, shelter and dignity of homeless &amp; unclaimed people.
+        <Typography sx={{ fontSize: "0.68rem", color: "#1f2a44", lineHeight: 1.4, mb: 0.25 }}>
+          {copy.thanks(vm.donorName)}
         </Typography>
         <Typography
           sx={{
-            textAlign: "center",
-            fontSize: "0.72rem",
+            fontSize: "0.62rem",
             color: "rgba(31,42,68,0.65)",
             fontStyle: "italic",
-            mb: 1.5,
+            mb: 0.75,
           }}
         >
-          Your support truly makes a difference.
+          {copy.thanksSub}
         </Typography>
 
         <Box
           sx={{
             display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 1.25,
-            mb: 1.5,
+            flexDirection: { xs: "column", sm: "row" },
+            gap: 0.75,
+            mb: 0.75,
+            alignItems: "stretch",
           }}
         >
-          <DetailTable title="DONOR DETAILS" rows={donorRows} />
-          <DetailTable title="DONATION DETAILS" rows={donationRows} />
+          <DetailTable title={copy.donorTableTitle} rows={donorRows} amountLabels={amountLabels} />
+          <DetailTable
+            title={copy.donationTableTitle}
+            rows={donationRows}
+            amountLabels={amountLabels}
+          />
         </Box>
 
         <Box
           sx={{
             border: "1px dashed #b8c9b8",
-            borderRadius: "8px",
-            p: 1.25,
+            borderRadius: "6px",
+            p: 0.85,
             bgcolor: "#fafcfa",
-            mb: 1.5,
-            maxWidth: 560,
-            mx: "auto",
+            mb: 0.75,
+            fontSize: "0.62rem",
+            lineHeight: 1.45,
+            color: "#1f2a44",
           }}
         >
-          <DescriptionOutlinedIcon sx={{ color: greenMid, fontSize: 22, mb: 0.5 }} />
-          <Box>
-            <Typography sx={{ fontSize: "0.68rem", color: "#1f2a44", lineHeight: 1.5 }}>
-              This donation is eligible for tax exemption under Section 80G of the Income Tax Act,
-              1961, subject to applicable rules. Please keep this receipt for your tax records.
+          {copy.taxNotice}
+          <Typography
+            component="span"
+            display="block"
+            sx={{ fontWeight: 700, color: greenMid, mt: 0.35, fontSize: "inherit" }}
+          >
+            {copy.reg80g(org.registration80G)}
+          </Typography>
+          <Typography
+            component="span"
+            display="block"
+            sx={{ fontWeight: 700, color: greenMid, mt: 0.2, fontSize: "inherit" }}
+          >
+            {copy.fundsNotice}
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            alignItems: { xs: "center", sm: "flex-start" },
+            justifyContent: "space-between",
+            gap: 1,
+            mb: 0.75,
+            textAlign: { xs: "center", sm: "left" },
+          }}
+        >
+          <Box sx={{ flex: 1, fontSize: "0.6rem", color: "rgba(31,42,68,0.75)", lineHeight: 1.45 }}>
+            <Typography sx={{ fontSize: "inherit", mb: 0.35 }}>{org.address}</Typography>
+            <Typography sx={{ fontSize: "inherit" }}>
+              {copy.contact.email}: {org.email}
             </Typography>
-            <Typography sx={{ fontSize: "0.68rem", fontWeight: 700, color: greenMid, mt: 0.5 }}>
-              This receipt is valid subject to realization of funds.
+            <Typography sx={{ fontSize: "inherit" }}>
+              {copy.contact.phone}: {org.phone}
+            </Typography>
+            <Typography sx={{ fontSize: "inherit" }}>
+              {copy.contact.pan}: {org.pan}
+            </Typography>
+          </Box>
+          <Box sx={{ flexShrink: 0, textAlign: "center" }}>
+            <Box
+              component="img"
+              src={getReceiptWebsiteQrSrc()}
+              alt={vm.qrHint}
+              sx={{ width: 64, height: 64, objectFit: "contain", display: "block", mx: "auto" }}
+            />
+            <Typography sx={{ fontSize: "0.58rem", color: "rgba(31,42,68,0.55)", mt: 0.25 }}>
+              {vm.qrHint}
             </Typography>
           </Box>
         </Box>
 
-        <Box sx={{ fontSize: "0.65rem", color: "rgba(31,42,68,0.75)", maxWidth: 480, mx: "auto" }}>
-          <Box sx={{ display: "flex", gap: 0.75, justifyContent: "center", mb: 1 }}>
-            <LocationOnOutlinedIcon sx={{ fontSize: 16, color: greenMid, flexShrink: 0 }} />
-            <Typography sx={{ fontSize: "0.65rem", lineHeight: 1.45, textAlign: "left" }}>
-              {org.address}
-            </Typography>
-          </Box>
-          <Box sx={{ display: "flex", gap: 0.75, justifyContent: "center", mb: 0.5 }}>
-            <EmailOutlinedIcon sx={{ fontSize: 15, color: greenMid }} />
-            <Typography sx={{ fontSize: "0.65rem" }}>{org.email}</Typography>
-          </Box>
-          <Box sx={{ display: "flex", gap: 0.75, justifyContent: "center", mb: 0.5 }}>
-            <PhoneIphoneOutlinedIcon sx={{ fontSize: 15, color: greenMid }} />
-            <Typography sx={{ fontSize: "0.65rem" }}>{org.phone}</Typography>
-          </Box>
-          <Box sx={{ display: "flex", gap: 0.75, justifyContent: "center", mb: 0.5 }}>
-            <BadgeOutlinedIcon sx={{ fontSize: 15, color: greenMid }} />
-            <Typography sx={{ fontSize: "0.65rem" }}>PAN: {org.pan}</Typography>
-          </Box>
-          <Typography sx={{ fontSize: "0.62rem", color: "rgba(31,42,68,0.55)", mt: 0.5 }}>
-            Visit: {org.website.replace(/^https?:\/\//, "")}
-          </Typography>
-        </Box>
+        <Divider sx={{ borderColor: greenLight, mb: 0.6 }} />
 
-        <Divider sx={{ my: 1.25, borderColor: greenLight }} />
-
-        <Box sx={{ textAlign: "center" }}>
-          <Typography sx={{ fontSize: "0.7rem", color: "rgba(31,42,68,0.7)", mb: 0.35 }}>
-            <FavoriteBorderIcon sx={{ fontSize: 14, verticalAlign: "text-bottom", mr: 0.3 }} />
-            Every contribution helps us provide food, shelter and dignity to those in need.
+        <Box>
+          <Typography sx={{ fontSize: "0.62rem", color: "rgba(31,42,68,0.7)", lineHeight: 1.35 }}>
+            {copy.closing1}
           </Typography>
-          <Typography sx={{ fontSize: "0.75rem", fontWeight: 800, color: green }}>
-            Thank you for being a part of our mission.
+          <Typography sx={{ fontSize: "0.68rem", fontWeight: 800, color: green, mt: 0.25 }}>
+            {copy.closing2}
           </Typography>
-          <Typography sx={{ fontSize: "0.6rem", color: "rgba(31,42,68,0.45)", mt: 1 }}>
-            This is a computer-generated receipt and does not require physical signature.
+          <Typography sx={{ fontSize: "0.55rem", color: "rgba(31,42,68,0.45)", mt: 0.35 }}>
+            {copy.signature}
           </Typography>
         </Box>
       </Box>

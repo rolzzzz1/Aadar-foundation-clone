@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Trans, useTranslation } from "react-i18next";
 
 import Alert from "@mui/material/Alert";
+import Button from "@mui/material/Button";
 import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -32,6 +34,7 @@ import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import GppGoodOutlinedIcon from "@mui/icons-material/GppGoodOutlined";
 import HouseOutlinedIcon from "@mui/icons-material/HouseOutlined";
+import LanguageIcon from "@mui/icons-material/Language";
 
 import MKBox from "components/MKBox";
 import MKButton from "components/MKButton";
@@ -73,6 +76,44 @@ import { saveDonationReceipt } from "utils/donationReceiptStorage";
 
 const PRESET_AMOUNTS = Object.freeze([501, 1001, 3001, 5001, 15001]);
 const MOST_CHOSEN_AMOUNT = 1001;
+
+function localizeValidationError(error, errors, lang) {
+  if (!error || lang !== "hi" || !errors) return error;
+
+  const staticMap = {
+    "Enter an amount.": errors.enterAmount,
+    "Amount must be a positive whole number.": errors.amountPositiveWhole,
+    "Name is required.": errors.nameRequired,
+    "Name is too short.": errors.nameTooShort,
+    "Use letters, spaces, hyphens, apostrophes, periods.": errors.nameInvalid,
+    "Father's / husband's name is required.": errors.fatherRequired,
+    "Email is required.": errors.emailRequired,
+    "Enter a valid email address.": errors.emailInvalid,
+    "Phone number is required.": errors.phoneRequired,
+    "Enter a valid 10-digit Indian mobile number.": errors.phoneInvalid,
+    "Address is required.": errors.addressRequired,
+    "Enter house no., street, locality, or landmark.": errors.addressTooShort,
+    "State is required.": errors.stateRequired,
+    "City is required.": errors.cityRequired,
+    "Select a state first.": errors.selectStateFirst,
+    "PIN code is required.": errors.pinRequired,
+    "PIN must be 6 digits.": errors.pinInvalid,
+    "PAN is required.": errors.panRequired,
+    "PAN must be 10 characters.": errors.panLength,
+    "Enter a valid PAN (e.g. ABCDE1234F).": errors.panInvalid,
+  };
+  if (staticMap[error]) return staticMap[error];
+
+  const minMatch = error.match(/^Minimum donation is ₹(\d+)\.$/);
+  if (minMatch) return errors.minAmount.replace("{{min}}", minMatch[1]);
+
+  const maxMatch = error.match(
+    /^Maximum online donation is ₹([\d,]+)\. For larger amounts please contact us\.$/
+  );
+  if (maxMatch) return errors.maxAmount.replace("{{max}}", maxMatch[1]);
+
+  return error;
+}
 
 /** Organization IDs shown for Section 80G eligibility (test / donation page). */
 const AADAR_ORG_PAN = "AAIAA2457N";
@@ -274,10 +315,27 @@ function loadRazorpayCheckoutScript() {
 }
 
 export default function RazorpayTestPage() {
+  const { t, i18n } = useTranslation();
+  const form = t("donationForm");
+  const sidebar = form.sidebar;
+
   const keyId = process.env.REACT_APP_RAZORPAY_KEY_ID || "";
   const keyMode = getRazorpayKeyMode(keyId);
   const { search } = useLocation();
   const navigate = useNavigate();
+
+  const isHi = i18n.language === "hi";
+  const toggleLanguage = () => i18n.changeLanguage(isHi ? "en" : "hi");
+
+  const localizeError = useCallback(
+    (error) => localizeValidationError(error, form.errors, i18n.language),
+    [form.errors, i18n.language]
+  );
+
+  const fieldHelper = useCallback(
+    (check) => (check.error ? localizeError(check.error) : " "),
+    [localizeError]
+  );
 
   const purposeKey = useMemo(() => pickQueryPurpose(search), [search]);
   const program = purposeKey ? PROGRAMS[purposeKey] : null;
@@ -450,7 +508,7 @@ export default function RazorpayTestPage() {
       return;
     }
     if (!formValid) {
-      setError("Please fix the highlighted fields before continuing.");
+      setError(form.fixFieldsError);
       return;
     }
 
@@ -507,6 +565,7 @@ export default function RazorpayTestPage() {
             goToDonationResult(
               buildDonationReceiptRecord({
                 status: verification.verified ? "success" : "unverified",
+                locale: isHi ? "hi" : "en",
                 amountInr: amountCheck.valueInr,
                 donor,
                 paymentId: response.razorpay_payment_id,
@@ -525,6 +584,7 @@ export default function RazorpayTestPage() {
             goToDonationResult(
               buildDonationReceiptRecord({
                 status: "unverified",
+                locale: isHi ? "hi" : "en",
                 amountInr: amountCheck.valueInr,
                 donor,
                 paymentId: response.razorpay_payment_id,
@@ -547,6 +607,7 @@ export default function RazorpayTestPage() {
         goToDonationResult(
           buildDonationReceiptRecord({
             status: "failed",
+            locale: isHi ? "hi" : "en",
             amountInr: amountCheck.valueInr,
             donor: {
               name: nameCheck.value,
@@ -577,6 +638,7 @@ export default function RazorpayTestPage() {
     }
   }, [
     keyId,
+    isHi,
     formValid,
     amountPaise,
     nameCheck.value,
@@ -590,6 +652,7 @@ export default function RazorpayTestPage() {
     purposeCheck.value,
     amountCheck.valueInr,
     goToDonationResult,
+    form.fixFieldsError,
   ]);
 
   const markTouched = (field) => () => setTouched((t) => ({ ...t, [field]: true }));
@@ -693,7 +756,7 @@ export default function RazorpayTestPage() {
                       lineHeight: 1.2,
                     }}
                   >
-                    Aadar Foundation
+                    {sidebar.orgName}
                   </Typography>
                   <Typography
                     variant="body1"
@@ -706,7 +769,7 @@ export default function RazorpayTestPage() {
                       fontSize: { xs: "0.95rem", sm: "1.02rem" },
                     }}
                   >
-                    Aashram Swarg Sadan
+                    {sidebar.ashramName}
                   </Typography>
                   <Stack
                     direction="row"
@@ -729,7 +792,7 @@ export default function RazorpayTestPage() {
                         textAlign: "left",
                       }}
                     >
-                      A Home for Homeless &amp; Unclaimed People
+                      {sidebar.tagline}
                     </Typography>
                   </Stack>
                   <Typography
@@ -745,8 +808,7 @@ export default function RazorpayTestPage() {
                       m: 0,
                     }}
                   >
-                    Your support helps us provide shelter, care and dignity to those who have no
-                    one.
+                    {sidebar.supportMessage}
                   </Typography>
                 </Box>
 
@@ -777,12 +839,12 @@ export default function RazorpayTestPage() {
                         m: 0,
                       }}
                     >
-                      Your contributions are eligible for upto{" "}
-                      <Box component="strong" sx={{ color: brandGreen, fontWeight: 700 }}>
-                        50% tax benefit
-                      </Box>{" "}
-                      under Section 80G as Aadar Foundation is registered as a non profit
-                      organization
+                      <Trans
+                        i18nKey="donationForm.sidebar.taxBenefit"
+                        components={{
+                          1: <Box component="strong" sx={{ color: brandGreen, fontWeight: 700 }} />,
+                        }}
+                      />
                     </Typography>
                   </Stack>
                   <Divider sx={{ my: 1.25 }} />
@@ -797,7 +859,7 @@ export default function RazorpayTestPage() {
                       variant="caption"
                       sx={{ fontWeight: 700, color: "#1f2a44", letterSpacing: "0.03em" }}
                     >
-                      PAN:{" "}
+                      {sidebar.panLabel}{" "}
                       <Box component="span" sx={{ fontWeight: 800, color: brandGreen }}>
                         {AADAR_ORG_PAN}
                       </Box>
@@ -809,7 +871,7 @@ export default function RazorpayTestPage() {
                       variant="caption"
                       sx={{ fontWeight: 700, color: "#1f2a44", letterSpacing: "0.03em" }}
                     >
-                      80G NUMBER:{" "}
+                      {sidebar.reg80gLabel}{" "}
                       <Box component="span" sx={{ fontWeight: 800, color: brandGreen }}>
                         {AADAR_80G_REG_NO}
                       </Box>
@@ -840,7 +902,7 @@ export default function RazorpayTestPage() {
                     >
                       <ShieldOutlinedIcon sx={{ fontSize: 17, color: accentOrange }} />
                       <Typography variant="caption" sx={{ fontWeight: 600, color: "#5a6b8a" }}>
-                        100% Secure Payments
+                        {sidebar.securePayments}
                       </Typography>
                     </Stack>
                     <Stack
@@ -858,7 +920,7 @@ export default function RazorpayTestPage() {
                     >
                       <LockOutlinedIcon sx={{ fontSize: 17, color: accentOrange }} />
                       <Typography variant="caption" sx={{ fontWeight: 600, color: "#5a6b8a" }}>
-                        SSL Secured
+                        {sidebar.sslSecured}
                       </Typography>
                     </Stack>
                   </Stack>
@@ -877,13 +939,13 @@ export default function RazorpayTestPage() {
                   >
                     <VolunteerActivismOutlinedIcon sx={{ fontSize: 17, color: accentOrange }} />
                     <Typography variant="caption" sx={{ fontWeight: 600, color: "#5a6b8a" }}>
-                      Your Donation Makes Impact
+                      {sidebar.donationImpact}
                     </Typography>
                   </Stack>
                 </Stack>
 
                 <Typography variant="caption" sx={{ color: "rgba(31,42,68,0.45)", pt: 0.5 }}>
-                  Test checkout: <code>/__razorpay-test</code>
+                  {sidebar.testCheckout} <code>/__razorpay-test</code>
                 </Typography>
               </Stack>
             </MKBox>
@@ -892,45 +954,88 @@ export default function RazorpayTestPage() {
           {/* Right column — form */}
           <Grid item xs={12} md={7}>
             <MKBox sx={{ p: { xs: 2.5, sm: 3, md: 3.5 } }}>
-              <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                <Typography
-                  variant="h4"
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                spacing={1}
+                sx={{ mb: 2 }}
+              >
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Typography
+                    variant="h4"
+                    sx={{
+                      fontFamily: HEADING_FONT,
+                      fontWeight: 500,
+                      fontSize: { xs: "1.35rem", sm: "1.5rem" },
+                      color: "#1f2a44",
+                    }}
+                  >
+                    {form.title}
+                  </Typography>
+                  <FavoriteBorderIcon sx={{ color: "#ff6b6b", fontSize: 26 }} />
+                </Stack>
+                <Button
+                  onClick={toggleLanguage}
+                  variant="outlined"
+                  size="small"
+                  startIcon={<LanguageIcon />}
                   sx={{
-                    fontFamily: HEADING_FONT,
-                    fontWeight: 500,
-                    fontSize: { xs: "1.35rem", sm: "1.5rem" },
+                    flexShrink: 0,
+                    textTransform: "none",
+                    fontWeight: 600,
+                    fontSize: "0.78rem",
+                    borderRadius: "999px",
+                    borderColor: "rgba(31, 42, 68, 0.18)",
                     color: "#1f2a44",
+                    px: 1.5,
+                    py: 0.5,
+                    "&:hover": {
+                      borderColor: brandGreen,
+                      backgroundColor: "rgba(79, 169, 83, 0.06)",
+                    },
                   }}
                 >
-                  Donation Details
-                </Typography>
-                <FavoriteBorderIcon sx={{ color: "#ff6b6b", fontSize: 26 }} />
+                  {isHi ? form.languageToggleEn : form.languageToggle}
+                </Button>
               </Stack>
 
               {!keyId && (
                 <Alert severity="warning" sx={{ mb: 2 }}>
-                  Set <code>REACT_APP_RAZORPAY_KEY_ID</code> (public test key) for checkout.
+                  {form.missingKey}
                 </Alert>
               )}
 
               {keyId && keyMode === "live" && (
                 <Alert severity="error" sx={{ mb: 2 }}>
-                  Your key is <strong>Live</strong> (<code>rzp_live_</code>). Local testing must use{" "}
-                  <strong>Test Mode</strong> keys (<code>rzp_test_</code>) from the Razorpay
-                  Dashboard toggle.
+                  <Trans
+                    i18nKey="donationForm.liveKeyWarning"
+                    components={{
+                      1: <strong />,
+                      2: <Box component="code" />,
+                      3: <strong />,
+                      4: <Box component="code" />,
+                    }}
+                  />
                 </Alert>
               )}
 
               {amountClamped && !program && (
                 <Alert severity="info" sx={{ mb: 2 }}>
-                  The amount in the link was outside the allowed range and has been adjusted.
+                  {form.amountAdjusted}
                 </Alert>
               )}
 
               {program && (
                 <Alert severity="info" sx={{ mb: 2 }}>
-                  Program: <strong>{program.label}</strong> — amount is locked to ₹
-                  {program.amountInr.toLocaleString("en-IN")}.
+                  <Trans
+                    i18nKey="donationForm.programLocked"
+                    values={{
+                      label: program.label,
+                      amount: program.amountInr.toLocaleString("en-IN"),
+                    }}
+                    components={{ 1: <strong /> }}
+                  />
                 </Alert>
               )}
 
@@ -958,12 +1063,12 @@ export default function RazorpayTestPage() {
                   variant="body2"
                   sx={{ color: formTextPrimary, lineHeight: 1.55, fontWeight: 500 }}
                 >
-                  Keeping Indian traditions of{" "}
-                  <Box component="span" sx={{ color: payOrange, fontWeight: 600 }}>
-                    शुभ दान
-                  </Box>{" "}
-                  in mind, we&apos;ve suggested auspicious donation amounts as a symbol of blessings
-                  and goodwill, while deeply valuing every hard-earned contribution.
+                  <Trans
+                    i18nKey="donationForm.shubhDanMessage"
+                    components={{
+                      1: <Box component="span" sx={{ color: payOrange, fontWeight: 600 }} />,
+                    }}
+                  />
                 </Typography>
               </Box>
 
@@ -977,7 +1082,7 @@ export default function RazorpayTestPage() {
                   mb: 1.5,
                 }}
               >
-                Select Donation Amount (₹)
+                {form.selectAmountTitle}
               </Typography>
 
               <Stack direction="row" flexWrap="wrap" useFlexGap sx={{ gap: 1.1, mb: 1.5 }}>
@@ -1004,7 +1109,7 @@ export default function RazorpayTestPage() {
                             zIndex: 1,
                           }}
                         >
-                          Most Popular
+                          {form.mostPopular}
                         </Box>
                       )}
                       <MKButton
@@ -1064,7 +1169,7 @@ export default function RazorpayTestPage() {
                     lineHeight: 1,
                   }}
                 >
-                  OR
+                  {form.orDivider}
                 </Typography>
                 <Box
                   component="span"
@@ -1081,14 +1186,14 @@ export default function RazorpayTestPage() {
               <TextField
                 fullWidth
                 size="small"
-                label="Custom Donation Amount (₹)"
-                placeholder="Enter amount"
+                label={form.customAmountLabel}
+                placeholder={form.customAmountPlaceholder}
                 value={amountInr}
                 onChange={onCustomAmountChange}
                 onBlur={markTouched("amount")}
                 disabled={!!program}
                 error={showError("amount", amountCheck)}
-                helperText={showError("amount", amountCheck) ? amountCheck.error : " "}
+                helperText={showError("amount", amountCheck) ? fieldHelper(amountCheck) : " "}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -1110,13 +1215,13 @@ export default function RazorpayTestPage() {
                     fullWidth
                     size="small"
                     required
-                    label="Full Name"
-                    placeholder="Full name as per PAN card for receipt"
+                    label={form.fullNameLabel}
+                    placeholder={form.fullNamePlaceholder}
                     value={name}
                     onChange={(e) => setName(sanitizeText(e.target.value, NAME_MAX))}
                     onBlur={markTouched("name")}
                     error={showError("name", nameCheck)}
-                    helperText={showError("name", nameCheck) ? nameCheck.error : " "}
+                    helperText={showError("name", nameCheck) ? fieldHelper(nameCheck) : " "}
                     sx={formFieldSx}
                     InputProps={{
                       startAdornment: (
@@ -1132,15 +1237,17 @@ export default function RazorpayTestPage() {
                     fullWidth
                     size="small"
                     required
-                    label="Mobile Number"
-                    placeholder="Enter 10 digit mobile number"
+                    label={form.mobileLabel}
+                    placeholder={form.mobilePlaceholder}
                     value={contact}
                     onChange={(e) =>
                       setContact(e.target.value.replace(/\D/g, "").slice(0, PHONE_LEN))
                     }
                     onBlur={markTouched("contact")}
                     error={showError("contact", contactCheck)}
-                    helperText={showError("contact", contactCheck) ? contactCheck.error : " "}
+                    helperText={
+                      showError("contact", contactCheck) ? fieldHelper(contactCheck) : " "
+                    }
                     sx={formFieldSx}
                     InputProps={{
                       startAdornment: (
@@ -1157,13 +1264,13 @@ export default function RazorpayTestPage() {
                     fullWidth
                     size="small"
                     required
-                    label="Email ID"
-                    placeholder="Enter email address"
+                    label={form.emailLabel}
+                    placeholder={form.emailPlaceholder}
                     value={email}
                     onChange={(e) => setEmail(sanitizeText(e.target.value, EMAIL_MAX))}
                     onBlur={markTouched("email")}
                     error={showError("email", emailCheck)}
-                    helperText={showError("email", emailCheck) ? emailCheck.error : " "}
+                    helperText={showError("email", emailCheck) ? fieldHelper(emailCheck) : " "}
                     sx={formFieldSx}
                     InputProps={{
                       startAdornment: (
@@ -1179,15 +1286,15 @@ export default function RazorpayTestPage() {
                     fullWidth
                     size="small"
                     required
-                    label="Father's / Husband's Name"
-                    placeholder="Enter father's or husband's name"
+                    label={form.fatherHusbandLabel}
+                    placeholder={form.fatherHusbandPlaceholder}
                     value={fatherOrHusbandName}
                     onChange={(e) => setFatherOrHusbandName(sanitizeText(e.target.value, NAME_MAX))}
                     onBlur={markTouched("fatherOrHusbandName")}
                     error={showError("fatherOrHusbandName", fatherOrHusbandNameCheck)}
                     helperText={
                       showError("fatherOrHusbandName", fatherOrHusbandNameCheck)
-                        ? fatherOrHusbandNameCheck.error
+                        ? fieldHelper(fatherOrHusbandNameCheck)
                         : " "
                     }
                     sx={formFieldSx}
@@ -1205,8 +1312,8 @@ export default function RazorpayTestPage() {
                     fullWidth
                     size="small"
                     required
-                    label="PAN Number"
-                    placeholder="Required for 80G tax exemption in India"
+                    label={form.panLabel}
+                    placeholder={form.panPlaceholder}
                     value={pan}
                     onChange={(e) =>
                       setPan(
@@ -1217,7 +1324,7 @@ export default function RazorpayTestPage() {
                     }
                     onBlur={markTouched("pan")}
                     error={showError("pan", panCheck)}
-                    helperText={showError("pan", panCheck) ? panCheck.error : " "}
+                    helperText={showError("pan", panCheck) ? fieldHelper(panCheck) : " "}
                     sx={formFieldSx}
                     InputProps={{
                       startAdornment: (
@@ -1234,13 +1341,15 @@ export default function RazorpayTestPage() {
                     fullWidth
                     size="small"
                     required
-                    label="Street Address"
-                    placeholder="House no., street, locality, landmark"
+                    label={form.addressLabel}
+                    placeholder={form.addressPlaceholder}
                     value={address}
                     onChange={(e) => setAddress(sanitizeText(e.target.value, ADDRESS_MAX))}
                     onBlur={markTouched("address")}
                     error={showError("address", addressCheck)}
-                    helperText={showError("address", addressCheck) ? addressCheck.error : " "}
+                    helperText={
+                      showError("address", addressCheck) ? fieldHelper(addressCheck) : " "
+                    }
                     sx={formFieldSx}
                     InputProps={{
                       startAdornment: (
@@ -1269,14 +1378,14 @@ export default function RazorpayTestPage() {
                         {...params}
                         size="small"
                         required
-                        label="State"
-                        placeholder="Select state"
+                        label={form.stateLabel}
+                        placeholder={form.statePlaceholder}
                         onBlur={(e) => {
                           params.inputProps.onBlur?.(e);
                           markTouched("state")();
                         }}
                         error={showError("state", stateCheck)}
-                        helperText={showError("state", stateCheck) ? stateCheck.error : " "}
+                        helperText={showError("state", stateCheck) ? fieldHelper(stateCheck) : " "}
                         sx={formFieldSx}
                         InputProps={{
                           ...params.InputProps,
@@ -1311,20 +1420,20 @@ export default function RazorpayTestPage() {
                       if (!q) return opts;
                       return opts.filter((c) => c.toLowerCase().includes(q));
                     }}
-                    noOptionsText={stateSel ? "Type your city name" : "Select a state first"}
+                    noOptionsText={stateSel ? form.cityNoOptions : form.citySelectStateFirst}
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         size="small"
                         required
-                        label="City"
-                        placeholder={stateSel ? "Select city" : "Select state first"}
+                        label={form.cityLabel}
+                        placeholder={stateSel ? form.cityPlaceholder : form.cityPlaceholderNoState}
                         onBlur={(e) => {
                           params.inputProps.onBlur?.(e);
                           markTouched("city")();
                         }}
                         error={showError("city", cityCheck)}
-                        helperText={showError("city", cityCheck) ? cityCheck.error : " "}
+                        helperText={showError("city", cityCheck) ? fieldHelper(cityCheck) : " "}
                         sx={formFieldSx}
                         InputProps={{
                           ...params.InputProps,
@@ -1346,13 +1455,13 @@ export default function RazorpayTestPage() {
                     fullWidth
                     size="small"
                     required
-                    label="PIN Code"
-                    placeholder="Enter 6 digit PIN code"
+                    label={form.pinLabel}
+                    placeholder={form.pinPlaceholder}
                     value={pin}
                     onChange={(e) => setPin(e.target.value.replace(/\D/g, "").slice(0, 6))}
                     onBlur={markTouched("pin")}
                     error={showError("pin", pinCheck)}
-                    helperText={showError("pin", pinCheck) ? pinCheck.error : " "}
+                    helperText={showError("pin", pinCheck) ? fieldHelper(pinCheck) : " "}
                     sx={formFieldSx}
                     InputProps={{
                       startAdornment: (
@@ -1368,8 +1477,8 @@ export default function RazorpayTestPage() {
                   <TextField
                     fullWidth
                     size="small"
-                    label="Purpose of Donation (optional)"
-                    placeholder="Let us know the purpose of your donation"
+                    label={form.purposeLabel}
+                    placeholder={form.purposePlaceholder}
                     value={purposeText}
                     onChange={(e) => setPurposeText(sanitizeText(e.target.value, NOTE_MAX))}
                     sx={formFieldSx}
@@ -1425,29 +1534,31 @@ export default function RazorpayTestPage() {
                       component="span"
                       sx={{ color: "#1f2a44", lineHeight: 1.45 }}
                     >
-                      I accept the{" "}
-                      <MuiLink
-                        component={Link}
-                        to="/pages/landing-pages/terms-conditions"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        underline="always"
-                        sx={{ fontWeight: 600, color: "#1565c0", fontSize: "0.78rem" }}
-                      >
-                        Terms &amp; Conditions
-                      </MuiLink>{" "}
-                      and{" "}
-                      <MuiLink
-                        component={Link}
-                        to="/pages/landing-pages/privacy-policy"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        underline="always"
-                        sx={{ fontWeight: 600, color: "#1565c0", fontSize: "0.78rem" }}
-                      >
-                        Privacy Policy
-                      </MuiLink>
-                      .
+                      <Trans
+                        i18nKey="donationForm.termsAccept"
+                        components={{
+                          1: (
+                            <MuiLink
+                              component={Link}
+                              to="/pages/landing-pages/terms-conditions"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              underline="always"
+                              sx={{ fontWeight: 600, color: "#1565c0", fontSize: "0.78rem" }}
+                            />
+                          ),
+                          2: (
+                            <MuiLink
+                              component={Link}
+                              to="/pages/landing-pages/privacy-policy"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              underline="always"
+                              sx={{ fontWeight: 600, color: "#1565c0", fontSize: "0.78rem" }}
+                            />
+                          ),
+                        }}
+                      />
                     </Typography>
                   }
                 />
@@ -1491,7 +1602,7 @@ export default function RazorpayTestPage() {
                   busy ? <CircularProgress size={20} color="inherit" /> : <LockOutlinedIcon />
                 }
               >
-                {busy ? "Opening Checkout…" : "PROCEED TO PAYMENT"}
+                {busy ? form.openingCheckout : form.proceedPayment}
               </MKButton>
 
               <Box
@@ -1519,7 +1630,7 @@ export default function RazorpayTestPage() {
                     component="span"
                     sx={{ color: formTextMuted, fontWeight: 500, fontSize: "0.8rem" }}
                   >
-                    Secure payments powered by
+                    {form.securePaymentsPoweredBy}
                   </Typography>
                   <Box
                     component={RazorpayLogoLight}

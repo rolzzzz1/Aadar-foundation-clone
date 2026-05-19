@@ -18,6 +18,7 @@ export const DONATION_RECEIPT_STORAGE_KEY = "aadar_donation_receipt_v1";
  * @property {string} [errorCode]
  * @property {string} [errorDescription]
  * @property {boolean} [testMode]
+ * @property {'en' | 'hi'} [locale]
  */
 
 export function saveDonationReceipt(record) {

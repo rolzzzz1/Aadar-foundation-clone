@@ -10,6 +10,8 @@ import "react-international-phone/style.css";
 
 import emailjs from "@emailjs/browser";
 
+const VOLUNTEER_FORM_TO_EMAIL = "aadarfoundation2018@gmail.com";
+
 // @mui material components
 import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
@@ -322,6 +324,7 @@ function Volunteer() {
                   ref={form}
                   onSubmit={sendEmail}
                 >
+                  <input type="hidden" name="to_email" value={VOLUNTEER_FORM_TO_EMAIL} />
                   <MKBox py={3} px={0}>
                     <Grid container spacing={3}>
                       <Grid item xs={12} md={6}>

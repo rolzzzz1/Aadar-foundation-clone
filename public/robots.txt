@@ -4,4 +4,4 @@ Allow: /
 Disallow: /api/
 
 # Sitemap
-Sitemap: https://www.aadar.foundation/sitemap.xml
+Sitemap: https://www.aadarfoundation.org/sitemap.xml

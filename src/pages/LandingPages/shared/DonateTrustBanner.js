@@ -1,5 +1,6 @@
 import VerifiedUserOutlinedIcon from "@mui/icons-material/VerifiedUserOutlined";
 import AssignmentTurnedInOutlinedIcon from "@mui/icons-material/AssignmentTurnedInOutlined";
+import { useTranslation } from "react-i18next";
 
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
@@ -17,11 +18,15 @@ const receiptSx = {
   fontWeight: 400,
   fontSize: { xs: "0.58rem", sm: "0.62rem", md: "0.65rem" },
   lineHeight: 1.2,
-  whiteSpace: "nowrap",
+  whiteSpace: { xs: "normal", sm: "nowrap" },
+  textAlign: "center",
 };
 
 /** Trust block below Donate Now — two rows: payments + receipt. */
 export default function DonateTrustBanner() {
+  const { t } = useTranslation();
+  const trustBanner = t("donatePage.trustBanner");
+
   return (
     <MKBox
       sx={{
@@ -48,7 +53,7 @@ export default function DonateTrustBanner() {
           sx={{ color: "#2e7d32", fontSize: { xs: 22, sm: 24 }, flexShrink: 0 }}
         />
         <MKTypography variant="body2" sx={labelSx}>
-          Secure payments powered by
+          {trustBanner.securePaymentsPoweredBy}
         </MKTypography>
         <MKBox
           component={RazorpayLogoLight}
@@ -87,7 +92,7 @@ export default function DonateTrustBanner() {
           />
         </MKBox>
         <MKTypography variant="body2" sx={receiptSx}>
-          Receipt will be provided in proper optimised way
+          {trustBanner.receiptProvided}
         </MKTypography>
       </MKBox>
     </MKBox>

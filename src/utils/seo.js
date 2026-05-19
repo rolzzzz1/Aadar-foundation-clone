@@ -3,7 +3,7 @@
  * Manages meta tags, Open Graph, Twitter Cards, and structured data
  */
 
-const SITE_URL = "https://www.aadar.foundation";
+const SITE_URL = "https://www.aadarfoundation.org";
 const SITE_NAME = "Aadar Foundation";
 const DEFAULT_DESCRIPTION =
   "Aadar Foundation - Transforming lives from the streets to a new life. We rescue, treat, shelter, feed, care for, and rehabilitate children and families in need.";

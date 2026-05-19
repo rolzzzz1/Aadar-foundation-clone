@@ -16,9 +16,11 @@ export function buildDonationReceiptRecord({
   errorDescription,
   keyId,
   verified,
+  locale,
 }) {
   return {
     status,
+    locale: locale === "hi" ? "hi" : "en",
     amountInr: Number(amountInr) || 0,
     currency: "INR",
     donor: {

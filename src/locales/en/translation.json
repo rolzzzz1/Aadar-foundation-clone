@@ -332,7 +332,7 @@
     },
     "phoneNumber": {
       "label": "Phone number :",
-      "numbers": "+91 9039129571, +91 9826441863, +91 9630982392"
+      "numbers": "+91 9039129571\n+91 9826441863\n+91 9630982392"
     },
     "emailLabel": "Email :",
     "followUs": "Follow us"
@@ -379,7 +379,7 @@
     "controlPersonalInfoSection": {
       "title": "Controlling Your Personal Information",
       "description1": "We do not sell, distribute, or share your personal information with third parties unless we have your permission or are required by law. However, if you have opted in, we may use your information to send you promotional content about third parties that we believe may be of interest to you.",
-      "description2": "You have the right to request details of the personal information we hold about you under the Data Protection Act 1998. To request a copy, please write to: Aadar Foundation (Swarg Sadan Ashram) Sarkari Malti, Behind Muktidham, Guda Gudi Ka Naka, Gwalior, India, 474001 Email: aadarfoundatio2018@gmail.com",
+      "description2": "You have the right to request details of the personal information we hold about you under the Data Protection Act 1998. To request a copy, please write to: Aadar Foundation (Swarg Sadan Ashram) Sarkari Malti, Behind Muktidham, Guda Gudi Ka Naka, Gwalior, India, 474001 Email: aadarfoundation2018@gmail.com",
       "description3": "If you believe any information we hold about you is incorrect or incomplete, please contact us at the above address. We will promptly update any inaccuracies."
     }
   },
@@ -397,15 +397,50 @@
     "listItem9": "If there is any conflict between these terms and conditions and rules and/or specific terms of use appearing on this site relating to specific material then the latter shall prevail.",
     "listItem10": "These terms and conditions shall be governed and construed in accordance with the laws of India. Any disputes shall be subject to the exclusive jurisdiction of the Courts of Madhya Pradesh.",
     "listItem11": "If these terms and conditions are not accepted in full, the use of this site must be terminated immediately.",
-    "descriptionEnd": "Aadar foundation is a registered NGO by the name Aadar foundation in Gwalior, Madhya Pradesh – 474001, India, Tel : +91 9039129571, Website : https://aadar.foundation/, Email: aadarfoundatio2018@gmail.com"
+    "descriptionEnd": "Aadar foundation is a registered NGO by the name Aadar foundation in Gwalior, Madhya Pradesh – 474001, India, Tel : +91 9039129571, Website : https://www.aadarfoundation.org/, Email: aadarfoundation2018@gmail.com"
   },
   "donatePage": {
     "tagLine": "Donate",
     "title": "Donate",
     "description": "We ensure that every donation is used with purpose and precision. Each decision we make is thoughtfully considered, and even the smallest contribution is directed toward initiatives where it will yield the greatest impact.",
     "clickToCopy": "Click to copy",
-    "emailMessage": "Please email your <1>name, mobile number and screenshot</1> of your transaction at <1>aadarfoundatio2018@gmail.com</1> to get receipt of your contribution.",
+    "emailMessage": "Please email your <1>name, mobile number and screenshot</1> of your transaction at <1>aadarfoundation2018@gmail.com</1> to get receipt of your contribution.",
     "imageTagLine": "\" Help us increase number of these smiles \"",
+    "makeADifferenceNow": "Make a Difference Now",
+    "selectAmount": "Select Amount",
+    "mostPopular": "Most Popular",
+    "enterCustomAmount": "Enter custom amount",
+    "donateNow": "Donate Now",
+    "helpUsIncreaseSmilesLine1": "Help us increase",
+    "helpUsIncreaseSmilesLine2": "number of these smiles.",
+    "supportThemNow": "Support Them Now",
+    "donateInstantlyInstead": "Donate Instantly Instead (UPI / Card / Netbanking)",
+    "trustBadges": {
+      "taxBenefit80g": "80G Tax Benefit Available",
+      "livesImpacted": "500+ Lives Impacted",
+      "securePayments": "Secure Payments via Razorpay"
+    },
+    "quickGiveCards": {
+      "membership": {
+        "title": "Membership",
+        "subtitle": "Regular support",
+        "amount": "₹101 / 201 / 501"
+      },
+      "mealSponsorship": {
+        "title": "Meal Sponsorship",
+        "subtitle": "50 prabhuji breakfast",
+        "amount": "₹1,501"
+      },
+      "monthlyCare": {
+        "title": "Monthly Care",
+        "subtitle": "1 prabhuji / month",
+        "amount": "₹3,001"
+      }
+    },
+    "trustBanner": {
+      "securePaymentsPoweredBy": "Secure payments powered by",
+      "receiptProvided": "Receipt will be provided in proper optimised way"
+    },
     "bankAccountDetails": {
       "title": "Bank account details",
       "acccountName": {
@@ -496,6 +531,122 @@
         ]
       }
     }
+  },
+  "donationForm": {
+    "title": "Donation Details",
+    "languageToggle": "हिन्दी",
+    "languageToggleEn": "English",
+    "selectAmountTitle": "Select Donation Amount (₹)",
+    "mostPopular": "Most Popular",
+    "orDivider": "OR",
+    "customAmountLabel": "Custom Donation Amount (₹)",
+    "customAmountPlaceholder": "Enter amount",
+    "fullNameLabel": "Full Name",
+    "fullNamePlaceholder": "Full name as per PAN card for receipt",
+    "mobileLabel": "Mobile Number",
+    "mobilePlaceholder": "Enter 10 digit mobile number",
+    "emailLabel": "Email ID",
+    "emailPlaceholder": "Enter email address",
+    "fatherHusbandLabel": "Father's / Husband's Name",
+    "fatherHusbandPlaceholder": "Enter father's or husband's name",
+    "panLabel": "PAN Number",
+    "panPlaceholder": "Required for 80G tax exemption in India",
+    "addressLabel": "Street Address",
+    "addressPlaceholder": "House no., street, locality, landmark",
+    "stateLabel": "State",
+    "statePlaceholder": "Select state",
+    "cityLabel": "City",
+    "cityPlaceholder": "Select city",
+    "cityPlaceholderNoState": "Select state first",
+    "cityNoOptions": "Type your city name",
+    "citySelectStateFirst": "Select a state first",
+    "pinLabel": "PIN Code",
+    "pinPlaceholder": "Enter 6 digit PIN code",
+    "purposeLabel": "Purpose of Donation (optional)",
+    "purposePlaceholder": "Let us know the purpose of your donation",
+    "termsAccept": "I accept the <1>Terms & Conditions</1> and <2>Privacy Policy</2>.",
+    "proceedPayment": "PROCEED TO PAYMENT",
+    "openingCheckout": "Opening Checkout…",
+    "securePaymentsPoweredBy": "Secure payments powered by",
+    "shubhDanMessage": "Keeping Indian traditions of <1>शुभ दान</1> in mind, we've suggested auspicious donation amounts as a symbol of blessings and goodwill, while deeply valuing every hard-earned contribution.",
+    "amountAdjusted": "The amount in the link was outside the allowed range and has been adjusted.",
+    "programLocked": "Program: <1>{{label}}</1> — amount is locked to ₹{{amount}}.",
+    "missingKey": "Set <code>REACT_APP_RAZORPAY_KEY_ID</code> (public test key) for checkout.",
+    "liveKeyWarning": "Your key is <1>Live</1> (<2>rzp_live_</2>). Local testing must use <3>Test Mode</3> keys (<4>rzp_test_</4>) from the Razorpay Dashboard toggle.",
+    "fixFieldsError": "Please fix the highlighted fields before continuing.",
+    "sidebar": {
+      "orgName": "Aadar Foundation",
+      "ashramName": "Aashram Swarg Sadan",
+      "tagline": "A Home for Homeless & Unclaimed People",
+      "supportMessage": "Your support helps us provide shelter, care and dignity to those who have no one.",
+      "taxBenefit": "Your contributions are eligible for upto <1>50% tax benefit</1> under Section 80G as Aadar Foundation is registered as a non profit organization",
+      "panLabel": "PAN:",
+      "reg80gLabel": "80G NUMBER:",
+      "securePayments": "100% Secure Payments",
+      "sslSecured": "SSL Secured",
+      "donationImpact": "Your Donation Makes Impact",
+      "testCheckout": "Test checkout:"
+    },
+    "errors": {
+      "enterAmount": "Enter an amount.",
+      "amountPositiveWhole": "Amount must be a positive whole number.",
+      "minAmount": "Minimum donation is ₹{{min}}.",
+      "maxAmount": "Maximum online donation is ₹{{max}}. For larger amounts please contact us.",
+      "nameRequired": "Name is required.",
+      "nameTooShort": "Name is too short.",
+      "nameInvalid": "Use letters, spaces, hyphens, apostrophes, periods.",
+      "fatherRequired": "Father's / husband's name is required.",
+      "emailRequired": "Email is required.",
+      "emailInvalid": "Enter a valid email address.",
+      "phoneRequired": "Phone number is required.",
+      "phoneInvalid": "Enter a valid 10-digit Indian mobile number.",
+      "addressRequired": "Address is required.",
+      "addressTooShort": "Enter house no., street, locality, or landmark.",
+      "stateRequired": "State is required.",
+      "cityRequired": "City is required.",
+      "selectStateFirst": "Select a state first.",
+      "pinRequired": "PIN code is required.",
+      "pinInvalid": "PIN must be 6 digits.",
+      "panRequired": "PAN is required.",
+      "panLength": "PAN must be 10 characters.",
+      "panInvalid": "Enter a valid PAN (e.g. ABCDE1234F)."
+    }
+  },
+  "donationResult": {
+    "noRecordTitle": "No payment details found",
+    "noRecordBody": "Start a new donation to see your confirmation here.",
+    "donateNow": "Donate now",
+    "titleSuccess": "Thank you for your donation!",
+    "titleUnverified": "Payment received",
+    "titleFailed": "Payment could not be completed",
+    "bodySuccess": "Your payment was successful. Download your receipt below for your records.",
+    "bodyUnverified": "We received your payment but could not verify it automatically. Please contact us with your payment ID.",
+    "bodyFailedFallback": "Something went wrong during checkout. You can try again — no donation was confirmed.",
+    "testMode": "Test mode — this was not a live donation.",
+    "yourReceipt": "YOUR RECEIPT",
+    "donationSummary": "DONATION SUMMARY",
+    "attemptSummary": "ATTEMPT SUMMARY",
+    "downloadPdf": "Download PDF receipt",
+    "downloadReceipt": "Download receipt (HTML)",
+    "printSave": "Print / Save as PDF",
+    "printOpened": "Print dialog opened — choose Save as PDF to keep a copy.",
+    "printFailed": "Could not open the print dialog. Try Download receipt instead.",
+    "preparing": "Preparing your receipt…",
+    "pdfDownloaded": "PDF receipt downloaded to your device.",
+    "htmlDownloaded": "Receipt downloaded as HTML — open it in your browser and use Print → Save as PDF for best Hindi text.",
+    "downloadFailed": "Download failed. Try Print / Save as PDF instead.",
+    "tryAgain": "Try again",
+    "backHome": "Back to home",
+    "amount": "Amount",
+    "donor": "Donor",
+    "fatherHusband": "Father / husband",
+    "email": "Email",
+    "mobile": "Mobile",
+    "pan": "PAN",
+    "paymentId": "Payment ID",
+    "orderId": "Order ID",
+    "program": "Program",
+    "purpose": "Purpose"
   },
   "footer": {
     "title": "Aadar foundation",

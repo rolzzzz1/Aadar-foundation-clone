@@ -117,7 +117,7 @@ Ensure your site is served over HTTPS (required for many SEO features).
 
 ### 8. **Google Search Console**
 
-1. Submit your sitemap: `https://www.aadar.foundation/sitemap.xml`
+1. Submit your sitemap: `https://www.aadarfoundation.org/sitemap.xml`
 2. Verify site ownership
 3. Monitor search performance
 
