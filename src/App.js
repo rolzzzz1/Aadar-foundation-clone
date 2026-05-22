@@ -25,8 +25,21 @@ import Home from "layouts/pages/home";
 
 // Material Kit 2 React routes
 import routes from "routes";
+import { DONATE_PAGE_PATH, DONATION_CHECKOUT_PATH } from "utils/donation";
 
 import Typography from "@mui/material/Typography";
+
+/** Keeps old bookmarks/links working after checkout moved off /__razorpay-test. */
+function LegacyCheckoutRedirect() {
+  const { search } = useLocation();
+  return <Navigate to={`${DONATION_CHECKOUT_PATH}${search}`} replace />;
+}
+
+/** Old Donate2 URLs → /donate (preserves hash e.g. #donate-widget). */
+function LegacyDonatePageRedirect() {
+  const { search, hash } = useLocation();
+  return <Navigate to={`${DONATE_PAGE_PATH}${search}${hash}`} replace />;
+}
 
 const isGalleryRoute = (path) => /\/gallery\/?$/i.test(path);
 
@@ -95,22 +108,33 @@ export default function App() {
     }
   }, [pathname]);
 
-  // Show back-to-top button when user has scrolled down
+  // Show back-to-top when the page scrolls (listen on window — documentElement alone often misses events)
   useEffect(() => {
+    const SCROLL_SHOW_PX = 120;
+
     const handleScroll = () => {
       const scrollTop =
-        window.scrollY ?? document.documentElement?.scrollTop ?? document.body?.scrollTop ?? 0;
-      setShowBackToTop(scrollTop > 100);
+        window.scrollY ??
+        document.scrollingElement?.scrollTop ??
+        document.documentElement?.scrollTop ??
+        document.body?.scrollTop ??
+        0;
+      setShowBackToTop(scrollTop > SCROLL_SHOW_PX);
     };
-    const target = document.scrollingElement || document.documentElement || document.body;
-    target.addEventListener("scroll", handleScroll, { passive: true });
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
-    return () => target.removeEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+    const el = document.scrollingElement || document.documentElement;
+    if (el) el.scrollTop = 0;
+    document.body.scrollTop = 0;
   };
+
+  const hideBackToTop = pathname === DONATION_CHECKOUT_PATH;
 
   // Set HTML lang attribute based on current language
   useEffect(() => {
@@ -221,15 +245,15 @@ export default function App() {
         <Routes>
           {getRoutes(routes)}
           <Route path="/home" element={<Home />} />
-          {/* Hidden test route (not in navbar) */}
           <Route
-            path="/__razorpay-test"
+            path={DONATION_CHECKOUT_PATH}
             element={
               <Suspense fallback={null}>
                 <RazorpayTest />
               </Suspense>
             }
           />
+          <Route path="/__razorpay-test" element={<LegacyCheckoutRedirect />} />
           <Route
             path="/donation/success"
             element={
@@ -246,57 +270,76 @@ export default function App() {
               </Suspense>
             }
           />
-          {/* Hidden duplicate donate page (not in navbar) */}
           <Route
-            path="/pages/landing-pages/donate2"
+            path={DONATE_PAGE_PATH}
             element={
               <Suspense fallback={null}>
                 <Donate2 />
               </Suspense>
             }
           />
-          {/* Short alias so /donate2 also resolves to the hidden page */}
-          <Route path="/donate2" element={<Navigate to="/pages/landing-pages/donate2" replace />} />
+          <Route path="/pages/landing-pages/donate2" element={<LegacyDonatePageRedirect />} />
+          <Route path="/donate2" element={<LegacyDonatePageRedirect />} />
           <Route path="*" element={<Navigate to="/home" />} />
         </Routes>
-        <Box
-          component="button"
-          role="button"
-          aria-label="Back to top"
-          onClick={scrollToTop}
-          sx={{
-            position: "fixed",
-            bottom: 28,
-            right: 28,
-            zIndex: 9999,
-            display: showBackToTop ? "flex" : "none",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 0.5,
-            minWidth: 48,
-            height: 48,
-            px: 1.5,
-            borderRadius: "24px",
-            border: "none",
-            cursor: "pointer",
-            backgroundColor: "#4FA953",
-            color: "white",
-            fontSize: "0.9rem",
-            fontWeight: 600,
-            fontFamily: "inherit",
-            boxShadow: "0 4px 14px rgba(79, 169, 83, 0.4)",
-            transition: "opacity 0.2s, box-shadow 0.2s, background-color 0.2s",
-            "&:hover": {
-              backgroundColor: "#45a049",
-              boxShadow: "0 6px 20px rgba(79, 169, 83, 0.5)",
-            },
-          }}
-        >
-          <KeyboardArrowUpIcon sx={{ fontSize: 26 }} />
-          <Box component="span" sx={{ whiteSpace: "nowrap" }}>
-            ⬆️ Back To Top
+        {!hideBackToTop && (
+          <Box
+            component="button"
+            type="button"
+            aria-label="Back to top"
+            title="Back to top"
+            onClick={scrollToTop}
+            sx={{
+              position: "fixed",
+              bottom: { xs: 20, sm: 28 },
+              right: { xs: 20, sm: 28 },
+              zIndex: 9999,
+              width: 46,
+              height: 46,
+              borderRadius: "50%",
+              border: "2px solid #ECA533",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#8a5a12",
+              backgroundColor: "rgba(255, 248, 236, 0.9)",
+              backdropFilter: "blur(10px)",
+              WebkitBackdropFilter: "blur(10px)",
+              boxShadow:
+                "0 0 0 1px rgba(236, 165, 51, 0.12), 0 4px 14px rgba(236, 165, 51, 0.16), 0 2px 6px rgba(31, 42, 68, 0.06)",
+              opacity: showBackToTop ? 0.8 : 0,
+              visibility: showBackToTop ? "visible" : "hidden",
+              transform: showBackToTop ? "translateY(0) scale(1)" : "translateY(12px) scale(0.92)",
+              pointerEvents: showBackToTop ? "auto" : "none",
+              transition:
+                "opacity 0.3s ease, transform 0.3s ease, box-shadow 0.22s ease, background-color 0.22s ease, border-color 0.22s ease, color 0.22s ease",
+              "&:hover": {
+                opacity: showBackToTop ? 0.95 : 0,
+                backgroundColor: "rgba(255, 243, 220, 0.96)",
+                borderColor: "#d9962e",
+                color: "#7a4f10",
+                boxShadow:
+                  "0 0 0 2px rgba(236, 165, 51, 0.18), 0 6px 18px rgba(236, 165, 51, 0.22), 0 3px 8px rgba(31, 42, 68, 0.08)",
+                transform: showBackToTop
+                  ? "translateY(-1px) scale(1.02)"
+                  : "translateY(12px) scale(0.92)",
+              },
+              "&:active": {
+                transform: showBackToTop
+                  ? "translateY(0) scale(0.98)"
+                  : "translateY(12px) scale(0.92)",
+              },
+              "&:focus-visible": {
+                outline: "2px solid #ECA533",
+                outlineOffset: 3,
+                opacity: showBackToTop ? 0.95 : 0,
+              },
+            }}
+          >
+            <KeyboardArrowUpIcon sx={{ fontSize: 24, opacity: 0.8 }} />
           </Box>
-        </Box>
+        )}
         <DeferredVitals />
       </ThemeProvider>
     </ErrorBoundary>

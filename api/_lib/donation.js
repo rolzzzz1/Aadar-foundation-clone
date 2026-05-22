@@ -21,6 +21,18 @@ const NOTE_MAX = 240;
 
 /** Server-enforced canonical prices. Keep in sync with src/utils/donation.js. */
 const PROGRAMS = Object.freeze({
+  "donate-501": {
+    label: "Membership — ₹501",
+    amountInr: 501,
+  },
+  "donate-1001": {
+    label: "Donation — ₹1,001",
+    amountInr: 1001,
+  },
+  "meal-sponsorship": {
+    label: "Meal Sponsorship — ₹1,501",
+    amountInr: 1501,
+  },
   "sponsor-prabhuji-month": {
     label: "Sponsor a Prabhuji (1 month)",
     amountInr: 3001,

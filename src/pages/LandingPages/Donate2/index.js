@@ -49,7 +49,14 @@ import DonateSectionPricingList from "pages/LandingPages/shared/DonateSectionPri
 import DonateTrustBanner from "pages/LandingPages/shared/DonateTrustBanner";
 import SponsorPrabhujiCtaCards from "pages/LandingPages/shared/SponsorPrabhujiCtaCards";
 
-import { sanitizeAmountInput, validateAmountInr } from "utils/donation";
+import {
+  DONATE_WIDGET_PRESET_PURPOSE,
+  DONATION_CHECKOUT_PATH,
+  getDonationCheckoutNavigation,
+  QUICK_GIVE_CARD_PURPOSE,
+  sanitizeAmountInput,
+  validateAmountInr,
+} from "utils/donation";
 
 function Donate2() {
   const { t } = useTranslation();
@@ -63,9 +70,19 @@ function Donate2() {
 
   const activeAmountRaw = customAmount && Number(customAmount) > 0 ? customAmount : selectedAmount;
   const amountCheck = React.useMemo(() => validateAmountInr(activeAmountRaw), [activeAmountRaw]);
-  const donateHref = amountCheck.ok
-    ? `/__razorpay-test?amount=${encodeURIComponent(amountCheck.valueInr)}`
-    : "#";
+  const usingCustomAmount = Boolean(customAmount && Number(customAmount) > 0);
+  const widgetPresetPurpose = !usingCustomAmount
+    ? DONATE_WIDGET_PRESET_PURPOSE[selectedAmount]
+    : null;
+  const donateCheckoutNav = React.useMemo(
+    () =>
+      getDonationCheckoutNavigation({
+        purpose: widgetPresetPurpose,
+        amountInr: amountCheck.ok ? amountCheck.valueInr : 0,
+        useFreeAmount: usingCustomAmount,
+      }),
+    [widgetPresetPurpose, amountCheck.ok, amountCheck.valueInr, usingCustomAmount]
+  );
 
   return (
     <MKBox minWidth="320px">
@@ -299,86 +316,96 @@ function Donate2() {
                           Icon: VolunteerActivismOutlinedIcon,
                           ...donatePage.quickGiveCards.monthlyCare,
                         },
-                      ].map(({ id, Icon, title, subtitle, amount }) => (
-                        <Grid item xs={12} sm={4} key={id}>
-                          <MKBox
-                            display="flex"
-                            alignItems="center"
-                            gap={1.5}
-                            pl={2}
-                            pr={1.75}
-                            py={1.5}
-                            sx={{
-                              backgroundColor: "#ffffff",
-                              borderRadius: "14px",
-                              border: "1px solid rgba(31, 42, 68, 0.06)",
-                              boxShadow:
-                                "inset 4px 0 0 #ECA533, 0 12px 30px rgba(31, 42, 68, 0.10), 0 3px 8px rgba(31, 42, 68, 0.05)",
-                              height: "100%",
-                              transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                              "&:hover": {
-                                transform: "translateY(-1px)",
-                                boxShadow:
-                                  "inset 4px 0 0 #ECA533, 0 16px 38px rgba(31, 42, 68, 0.12), 0 4px 12px rgba(31, 42, 68, 0.06)",
-                              },
-                            }}
-                          >
+                      ].map(({ id, Icon, title, subtitle, amount }) => {
+                        const quickGiveNav = getDonationCheckoutNavigation({
+                          purpose: QUICK_GIVE_CARD_PURPOSE[id],
+                        });
+                        return (
+                          <Grid item xs={12} sm={4} key={id}>
                             <MKBox
+                              component={Link}
+                              to={quickGiveNav.pathname}
+                              state={quickGiveNav.state}
                               display="flex"
                               alignItems="center"
-                              justifyContent="center"
+                              gap={1.5}
+                              pl={2}
+                              pr={1.75}
+                              py={1.5}
                               sx={{
-                                width: 34,
-                                height: 34,
-                                borderRadius: "10px",
-                                backgroundColor: "rgba(79, 169, 83, 0.10)",
-                                color: "#2e7d32",
-                                flex: "0 0 auto",
+                                backgroundColor: "#ffffff",
+                                borderRadius: "14px",
+                                border: "1px solid rgba(31, 42, 68, 0.06)",
+                                boxShadow:
+                                  "inset 4px 0 0 #ECA533, 0 12px 30px rgba(31, 42, 68, 0.10), 0 3px 8px rgba(31, 42, 68, 0.05)",
+                                height: "100%",
+                                textDecoration: "none",
+                                color: "inherit",
+                                transition: "transform 0.2s ease, box-shadow 0.2s ease",
+                                "&:hover": {
+                                  transform: "translateY(-1px)",
+                                  boxShadow:
+                                    "inset 4px 0 0 #ECA533, 0 16px 38px rgba(31, 42, 68, 0.12), 0 4px 12px rgba(31, 42, 68, 0.06)",
+                                },
                               }}
                             >
-                              <Icon sx={{ fontSize: 20 }} />
-                            </MKBox>
-                            <MKBox sx={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
-                              <MKTypography
-                                variant="button"
+                              <MKBox
+                                display="flex"
+                                alignItems="center"
+                                justifyContent="center"
                                 sx={{
-                                  fontWeight: 800,
-                                  fontSize: "0.7rem",
-                                  lineHeight: 1.2,
-                                  letterSpacing: "0.02rem",
-                                  textTransform: "none",
-                                  color: "#1f2a44",
-                                }}
-                              >
-                                {title}
-                              </MKTypography>
-                              <MKTypography
-                                sx={{
-                                  fontSize: "0.58rem",
-                                  fontWeight: 500,
-                                  color: "rgba(31, 42, 68, 0.6)",
-                                  lineHeight: 1.25,
-                                  mt: "4px",
-                                }}
-                              >
-                                {subtitle}
-                              </MKTypography>
-                              <MKTypography
-                                sx={{
-                                  fontSize: "0.7rem",
-                                  fontWeight: 800,
+                                  width: 34,
+                                  height: 34,
+                                  borderRadius: "10px",
+                                  backgroundColor: "rgba(79, 169, 83, 0.10)",
                                   color: "#2e7d32",
-                                  lineHeight: 1.2,
-                                  mt: "6px",
-                                  fontVariantNumeric: "tabular-nums",
+                                  flex: "0 0 auto",
                                 }}
                               >
-                                {amount}
-                              </MKTypography>
+                                <Icon sx={{ fontSize: 20 }} />
+                              </MKBox>
+                              <MKBox sx={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
+                                <MKTypography
+                                  variant="button"
+                                  sx={{
+                                    fontWeight: 800,
+                                    fontSize: "0.7rem",
+                                    lineHeight: 1.2,
+                                    letterSpacing: "0.02rem",
+                                    textTransform: "none",
+                                    color: "#1f2a44",
+                                  }}
+                                >
+                                  {title}
+                                </MKTypography>
+                                <MKTypography
+                                  sx={{
+                                    fontSize: "0.58rem",
+                                    fontWeight: 500,
+                                    color: "rgba(31, 42, 68, 0.6)",
+                                    lineHeight: 1.25,
+                                    mt: "4px",
+                                  }}
+                                >
+                                  {subtitle}
+                                </MKTypography>
+                                <MKTypography
+                                  sx={{
+                                    fontSize: "0.7rem",
+                                    fontWeight: 800,
+                                    color: "#2e7d32",
+                                    lineHeight: 1.2,
+                                    mt: "6px",
+                                    fontVariantNumeric: "tabular-nums",
+                                  }}
+                                >
+                                  {amount}
+                                </MKTypography>
+                              </MKBox>
                             </MKBox>
-                          </MKBox>
-                        </Grid>
-                      ))}
+                          </Grid>
+                        );
+                      })}
                     </Grid>
                   </MKTypography>
                 </MKBox>
@@ -575,9 +602,8 @@ function Donate2() {
 
                       <MKButton
                         component={Link}
-                        to={donateHref}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        to={donateCheckoutNav.pathname}
+                        state={donateCheckoutNav.state}
                         onClick={(e) => {
                           if (!amountCheck.ok) e.preventDefault();
                         }}
@@ -908,9 +934,7 @@ function Donate2() {
                 <MKBox display="flex" justifyContent="center" mt={{ xs: 2.2, sm: 2.6 }}>
                   <MKButton
                     component={Link}
-                    to="/__razorpay-test"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    to={DONATION_CHECKOUT_PATH}
                     variant="contained"
                     startIcon={<BoltOutlinedIcon />}
                     sx={{
@@ -1226,9 +1250,7 @@ function Donate2() {
                     </MKBox>
                     <MKButton
                       component={Link}
-                      to="/__razorpay-test"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      to={DONATION_CHECKOUT_PATH}
                       variant="contained"
                       color="success"
                       fullWidth

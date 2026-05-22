@@ -16,6 +16,7 @@ const routes = {
   "/api/health": require("./health.js"),
   "/api/razorpay-order": require("./razorpay-order.js"),
   "/api/razorpay-verify": require("./razorpay-verify.js"),
+  "/api/razorpay-webhook": require("./razorpay-webhook.js"),
 };
 
 function loadEnvFiles() {
@@ -40,6 +41,7 @@ function loadEnvFiles() {
       ) {
         val = val.slice(1, -1);
       }
+      val = val.trim();
       if (process.env[key] === undefined) process.env[key] = val;
     }
   }
@@ -121,6 +123,7 @@ const server = http.createServer(async (nodeReq, nodeRes) => {
       method: nodeReq.method,
       headers: nodeReq.headers,
       body,
+      rawBody: raw.length ? raw.toString("utf8") : "",
     };
 
     await handler(req, createMockRes(nodeReq, nodeRes));
@@ -156,6 +159,7 @@ server.listen(PORT, "127.0.0.1", () => {
   console.log("  POST /api/razorpay-order");
   // eslint-disable-next-line no-console
   console.log("  POST /api/razorpay-verify");
+  console.log("  POST /api/razorpay-webhook");
   // eslint-disable-next-line no-console
   console.log("  GET  /api/health");
 });

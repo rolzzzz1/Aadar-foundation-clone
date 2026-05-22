@@ -12,6 +12,13 @@
  *   replace server validation.
  */
 
+/** Public React Router path for the Razorpay donation checkout form. */
+export const DONATION_CHECKOUT_PATH = "/donate/checkout";
+
+/** Public donate page (Donate2). */
+export const DONATE_PAGE_PATH = "/donate";
+export const DONATE_WIDGET_HASH = "donate-widget";
+
 export const MIN_AMOUNT_INR = 1;
 export const MAX_AMOUNT_INR = 500000;
 export const MIN_AMOUNT_PAISE = MIN_AMOUNT_INR * 100;
@@ -31,6 +38,18 @@ export const PAN_LEN = 10;
  * a URL/form value. Keep this in sync with api/_lib/donation.js.
  */
 export const PROGRAMS = Object.freeze({
+  "donate-501": {
+    label: "Membership — ₹501",
+    amountInr: 501,
+  },
+  "donate-1001": {
+    label: "Donation — ₹1,001",
+    amountInr: 1001,
+  },
+  "meal-sponsorship": {
+    label: "Meal Sponsorship — ₹1,501",
+    amountInr: 1501,
+  },
   "sponsor-prabhuji-month": {
     label: "Sponsor a Prabhuji (1 month)",
     amountInr: 3001,
@@ -40,6 +59,121 @@ export const PROGRAMS = Object.freeze({
     amountInr: 30001,
   },
 });
+
+/** Make a Difference widget presets → server `purpose` keys (amount locked on API). */
+export const DONATE_WIDGET_PRESET_PURPOSE = Object.freeze({
+  501: "donate-501",
+  1001: "donate-1001",
+  3001: "sponsor-prabhuji-month",
+});
+
+/** Quick-give summary cards above the widget → checkout `purpose` keys. */
+export const QUICK_GIVE_CARD_PURPOSE = Object.freeze({
+  membership: "donate-501",
+  mealSponsorship: "meal-sponsorship",
+  monthlyCare: "sponsor-prabhuji-month",
+});
+
+/**
+ * React Router navigation target for Donate2 → checkout (amount/purpose in state, not the URL).
+ * @param {{ purpose?: string | null, amountInr?: number, useFreeAmount?: boolean }} opts
+ * @returns {{ pathname: string, state: { purpose?: string, amountInr?: number } }}
+ */
+export function getDonationCheckoutNavigation({ purpose, amountInr, useFreeAmount }) {
+  const state = {};
+  if (!useFreeAmount && purpose && Object.prototype.hasOwnProperty.call(PROGRAMS, purpose)) {
+    state.purpose = purpose;
+  } else if (amountInr != null && amountInr > 0) {
+    state.amountInr = amountInr;
+  }
+  return { pathname: DONATION_CHECKOUT_PATH, state };
+}
+
+/**
+ * Checkout link with query params (for shareable deep links, e.g. sponsor cards).
+ * @param {{ purpose?: string | null, amountInr?: number, useFreeAmount?: boolean }} opts
+ */
+export function buildDonationCheckoutHref({ purpose, amountInr, useFreeAmount }) {
+  if (!useFreeAmount && purpose && Object.prototype.hasOwnProperty.call(PROGRAMS, purpose)) {
+    return `${DONATION_CHECKOUT_PATH}?purpose=${encodeURIComponent(purpose)}`;
+  }
+  if (amountInr != null && amountInr > 0) {
+    return `${DONATION_CHECKOUT_PATH}?amount=${encodeURIComponent(amountInr)}`;
+  }
+  return "#";
+}
+
+/**
+ * Resolve checkout prefill from router state (Donate2) then URL query (legacy / external links).
+ * @param {{ search?: string, state?: unknown }} location
+ * @param {number} [defaultInr]
+ */
+/** True when checkout was opened with a valid amount or program (state or URL). */
+export function hasCheckoutEntrySource(location) {
+  const navState =
+    location && location.state && typeof location.state === "object" ? location.state : {};
+
+  if (navState.purpose && Object.prototype.hasOwnProperty.call(PROGRAMS, navState.purpose)) {
+    return true;
+  }
+  if (navState.amountInr != null && navState.amountInr !== "") {
+    if (validateAmountInr(navState.amountInr).ok) return true;
+  }
+  if (pickQueryPurpose(location?.search)) return true;
+
+  try {
+    const raw = new URLSearchParams(location?.search || "").get("amount");
+    if (raw != null && raw !== "" && validateAmountInr(raw).ok) return true;
+  } catch {
+    /* ignore */
+  }
+  return false;
+}
+
+export function resolveCheckoutEntry(location, defaultInr = 1001) {
+  const navState =
+    location && location.state && typeof location.state === "object" ? location.state : {};
+
+  const purposeFromState = navState.purpose;
+  const purposeKey =
+    purposeFromState && Object.prototype.hasOwnProperty.call(PROGRAMS, purposeFromState)
+      ? purposeFromState
+      : pickQueryPurpose(location?.search);
+
+  const programFromEntry = purposeKey ? PROGRAMS[purposeKey] : null;
+
+  if (programFromEntry) {
+    return {
+      purposeKey,
+      programFromEntry,
+      amountInr: programFromEntry.amountInr,
+      amountClamped: false,
+      fromRouterState: !!purposeFromState,
+    };
+  }
+
+  if (navState.amountInr != null && navState.amountInr !== "") {
+    const validated = validateAmountInr(navState.amountInr);
+    if (validated.ok) {
+      return {
+        purposeKey: null,
+        programFromEntry: null,
+        amountInr: validated.valueInr,
+        amountClamped: false,
+        fromRouterState: true,
+      };
+    }
+  }
+
+  const picked = pickQueryAmount(location?.search, defaultInr);
+  return {
+    purposeKey: null,
+    programFromEntry: null,
+    amountInr: picked.valueInr,
+    amountClamped: picked.clamped,
+    fromRouterState: false,
+  };
+}
 
 // eslint-disable-next-line no-control-regex
 const CONTROL_CHARS = /[\u0000-\u001F\u007F]/g;

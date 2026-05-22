@@ -238,7 +238,7 @@ function Donate() {
                   />
                   <MKButton
                     component={Link}
-                    to="/pages/landing-pages/donate2#donate-widget"
+                    to="/donate#donate-widget"
                     variant="contained"
                     color="success"
                     sx={{

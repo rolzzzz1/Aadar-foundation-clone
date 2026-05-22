@@ -571,9 +571,17 @@
     "shubhDanMessage": "Keeping Indian traditions of <1>शुभ दान</1> in mind, we've suggested auspicious donation amounts as a symbol of blessings and goodwill, while deeply valuing every hard-earned contribution.",
     "amountAdjusted": "The amount in the link was outside the allowed range and has been adjusted.",
     "programLocked": "Program: <1>{{label}}</1> — amount is locked to ₹{{amount}}.",
+    "amountPrefilled": "<1>{{label}}</1> — ₹{{amount}} pre-selected from the donate page. You can change the amount below.",
     "missingKey": "Set <code>REACT_APP_RAZORPAY_KEY_ID</code> (public test key) for checkout.",
     "liveKeyWarning": "Your key is <1>Live</1> (<2>rzp_live_</2>). Local testing must use <3>Test Mode</3> keys (<4>rzp_test_</4>) from the Razorpay Dashboard toggle.",
     "fixFieldsError": "Please fix the highlighted fields before continuing.",
+    "backToDonatePageLink": "Back to donate page",
+    "cancelDonationTitle": "Cancel donation?",
+    "cancelDonationBody": "Your donation will not be completed. Do you want to cancel and go back?",
+    "cancelDonationBusyBody": "Payment is in progress. Please finish or close the payment window before cancelling your donation.",
+    "cancelDonationStay": "No, continue donating",
+    "cancelDonationConfirm": "Yes, cancel donation",
+    "cannotLeaveDuringPayment": "Please finish or close the payment window before cancelling your donation.",
     "sidebar": {
       "orgName": "Aadar Foundation",
       "ashramName": "Aashram Swarg Sadan",
@@ -585,7 +593,7 @@
       "securePayments": "100% Secure Payments",
       "sslSecured": "SSL Secured",
       "donationImpact": "Your Donation Makes Impact",
-      "testCheckout": "Test checkout:"
+      "secureCheckout": "Secure checkout:"
     },
     "errors": {
       "enterAmount": "Enter an amount.",

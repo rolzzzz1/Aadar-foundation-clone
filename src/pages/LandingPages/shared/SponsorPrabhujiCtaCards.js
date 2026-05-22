@@ -1,14 +1,18 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { DONATION_CHECKOUT_PATH } from "utils/donation";
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 import MKButton from "components/MKButton";
 
 const BRAND_GREEN = "#2e7d32";
 
+/** Server-enforced program keys (see utils/donation.js PROGRAMS). Order matches sponsor.cards. */
+const SPONSOR_PURPOSE_KEYS = ["sponsor-prabhuji-month", "sponsor-prabhuji-year"];
+
 /**
  * Sponsor Prabhuji — CTA cards at 40% width each on md+ (centered row); full width stacked on xs.
- * Pay Now buttons navigate to the Razorpay test page with the card's `amount` as a query param.
+ * Pay Now links use `purpose` so the API sets the canonical amount (not a client-controlled amount).
  */
 export default function SponsorPrabhujiCtaCards({ sponsor }) {
   const { title, subtitle, cards } = sponsor;
@@ -162,9 +166,9 @@ export default function SponsorPrabhujiCtaCards({ sponsor }) {
               </MKTypography>
               <MKButton
                 component={Link}
-                to={`/__razorpay-test?amount=${encodeURIComponent(card.amount)}`}
-                target="_blank"
-                rel="noopener noreferrer"
+                to={`${DONATION_CHECKOUT_PATH}?purpose=${encodeURIComponent(
+                  SPONSOR_PURPOSE_KEYS[idx] || SPONSOR_PURPOSE_KEYS[0]
+                )}`}
                 variant="contained"
                 disableElevation
                 sx={payButtonSx}

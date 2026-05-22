@@ -7,8 +7,30 @@ const {
   validateRzpId,
   validateSignatureHex,
 } = require("./_lib/donation");
+const { fetchPaymentUntilCaptured, fetchOrder } = require("./_lib/razorpay");
+const {
+  buildRecordFromRazorpay,
+  saveDonationRecord,
+} = require("./_lib/donationRecord");
 
 const MAX_BODY_BYTES = 2 * 1024;
+
+function verifyCheckoutSignature(orderId, paymentId, signature, keySecret) {
+  const expected = crypto.createHmac("sha256", keySecret).update(`${orderId}|${paymentId}`).digest("hex");
+
+  const expectedBuf = Buffer.from(expected, "utf8");
+  const givenBuf = Buffer.from(signature, "utf8");
+
+  if (expectedBuf.length !== givenBuf.length) {
+    return false;
+  }
+
+  try {
+    return crypto.timingSafeEqual(expectedBuf, givenBuf);
+  } catch {
+    return false;
+  }
+}
 
 module.exports = async function handler(req, res) {
   applySecurityHeaders(res);
@@ -50,24 +72,77 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: "Invalid payment payload." });
   }
 
-  const expected = crypto
-    .createHmac("sha256", keySecret)
-    .update(`${orderId}|${paymentId}`)
-    .digest("hex");
+  const signatureValid = verifyCheckoutSignature(orderId, paymentId, signature, keySecret);
 
-  const expectedBuf = Buffer.from(expected, "utf8");
-  const givenBuf = Buffer.from(signature, "utf8");
-
-  if (expectedBuf.length !== givenBuf.length) {
-    return res.status(200).json({ verified: false });
+  if (!signatureValid) {
+    return res.status(200).json({
+      verified: false,
+      signature_valid: false,
+      captured: false,
+      reason: "invalid_signature",
+    });
   }
 
-  let verified = false;
+  let payment;
+  let captureCheck;
   try {
-    verified = crypto.timingSafeEqual(expectedBuf, givenBuf);
-  } catch {
-    verified = false;
+    const result = await fetchPaymentUntilCaptured(paymentId, orderId);
+    payment = result.payment;
+    captureCheck = result.check;
+  } catch (err) {
+    if (!isProduction()) {
+      return res.status(502).json({
+        verified: false,
+        signature_valid: true,
+        captured: false,
+        reason: "payment_fetch_failed",
+        details: err.message,
+      });
+    }
+    return res.status(502).json({
+      verified: false,
+      signature_valid: true,
+      captured: false,
+      reason: "payment_fetch_failed",
+    });
   }
 
-  return res.status(200).json({ verified });
+  if (!captureCheck.ok) {
+    if (!isProduction()) {
+      // eslint-disable-next-line no-console
+      console.warn("[razorpay-verify] capture check failed", {
+        reason: captureCheck.reason,
+        payment_status: captureCheck.payment_status,
+        payment_id: paymentId,
+        order_id: orderId,
+      });
+    }
+    return res.status(200).json({
+      verified: false,
+      signature_valid: true,
+      captured: false,
+      reason: captureCheck.reason,
+      payment_status: captureCheck.payment_status,
+    });
+  }
+
+  let order = null;
+  try {
+    order = await fetchOrder(orderId);
+  } catch {
+    order = null;
+  }
+
+  const record = buildRecordFromRazorpay({ payment, order, source: "verify" });
+  const saved = await saveDonationRecord(record);
+
+  return res.status(200).json({
+    verified: true,
+    signature_valid: true,
+    captured: true,
+    payment_status: captureCheck.payment_status,
+    amount_paise: captureCheck.amount_paise,
+    currency: captureCheck.currency,
+    record_saved: saved.saved,
+  });
 };

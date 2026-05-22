@@ -4,6 +4,11 @@ import { Trans, useTranslation } from "react-i18next";
 
 import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -18,6 +23,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import MuiLink from "@mui/material/Link";
 
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import CardGiftcardOutlinedIcon from "@mui/icons-material/CardGiftcardOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -48,9 +54,11 @@ import {
   NOTE_MAX,
   PAN_LEN,
   PHONE_LEN,
-  PROGRAMS,
-  pickQueryAmount,
-  pickQueryPurpose,
+  DONATE_PAGE_PATH,
+  DONATE_WIDGET_HASH,
+  DONATION_CHECKOUT_PATH,
+  hasCheckoutEntrySource,
+  resolveCheckoutEntry,
   sanitizeAmountInput,
   sanitizeText,
   toPaise,
@@ -68,6 +76,7 @@ import {
 import { getApiUrl, postJson } from "utils/api";
 import {
   buildRazorpayCheckoutOptions,
+  formatRazorpayPaymentFailedError,
   getRazorpayKeyMode,
   isRazorpayTestKey,
 } from "utils/razorpayCheckout";
@@ -292,6 +301,27 @@ const termsCheckboxUncheckedIcon = (
 
 const termsCheckboxCheckedIcon = <CheckBoxIcon sx={{ fontSize: 22, color: "#1976d2" }} />;
 
+function verificationFailureMessage(verification, fallback) {
+  if (!verification) return fallback;
+  const { reason, payment_status: paymentStatus } = verification;
+  switch (reason) {
+    case "invalid_signature":
+      return "Payment signature could not be verified. Please contact us with your payment ID.";
+    case "not_captured":
+      return `Payment was not captured (status: ${
+        paymentStatus || "unknown"
+      }). Please contact us with your payment ID.`;
+    case "order_mismatch":
+      return "Payment does not match this donation order. Please contact us with your payment ID.";
+    case "payment_fetch_failed":
+      return "We could not confirm this payment with Razorpay yet. If money was debited, contact us with your payment ID.";
+    case "invalid_amount":
+      return "Payment amount could not be verified. Please contact us with your payment ID.";
+    default:
+      return fallback;
+  }
+}
+
 function loadRazorpayCheckoutScript() {
   return new Promise((resolve, reject) => {
     if (window.Razorpay) return resolve(true);
@@ -321,7 +351,7 @@ export default function RazorpayTestPage() {
 
   const keyId = process.env.REACT_APP_RAZORPAY_KEY_ID || "";
   const keyMode = getRazorpayKeyMode(keyId);
-  const { search } = useLocation();
+  const location = useLocation();
   const navigate = useNavigate();
 
   const isHi = i18n.language === "hi";
@@ -337,23 +367,20 @@ export default function RazorpayTestPage() {
     [localizeError]
   );
 
-  const purposeKey = useMemo(() => pickQueryPurpose(search), [search]);
-  const program = purposeKey ? PROGRAMS[purposeKey] : null;
+  const checkoutEntry = useMemo(
+    () => resolveCheckoutEntry(location, MOST_CHOSEN_AMOUNT),
+    [location]
+  );
+  const purposeKey = checkoutEntry.purposeKey;
+  const programFromUrl = checkoutEntry.programFromEntry;
 
-  const initialAmount = useMemo(() => {
-    if (program) return String(program.amountInr);
-    const picked = pickQueryAmount(search, MOST_CHOSEN_AMOUNT);
-    return String(picked.valueInr);
-  }, [program, search]);
+  const presetForInr = (inr) => (PRESET_AMOUNTS.includes(inr) ? inr : null);
+
+  const initialAmount = String(checkoutEntry.amountInr);
 
   const [amountInr, setAmountInr] = useState(initialAmount);
-  const [amountClamped, setAmountClamped] = useState(() => {
-    if (program) return false;
-    return pickQueryAmount(search, MOST_CHOSEN_AMOUNT).clamped;
-  });
-  const [selectedPreset, setSelectedPreset] = useState(() =>
-    program ? null : PRESET_AMOUNTS.includes(Number(initialAmount)) ? Number(initialAmount) : null
-  );
+  const [amountClamped, setAmountClamped] = useState(() => checkoutEntry.amountClamped);
+  const [selectedPreset, setSelectedPreset] = useState(() => presetForInr(checkoutEntry.amountInr));
 
   const [name, setName] = useState("");
   const [fatherOrHusbandName, setFatherOrHusbandName] = useState("");
@@ -370,22 +397,94 @@ export default function RazorpayTestPage() {
   const [touched, setTouched] = useState({});
 
   useEffect(() => {
-    if (program) {
-      setAmountInr(String(program.amountInr));
-      setAmountClamped(false);
-      setSelectedPreset(null);
-      return;
-    }
-    const picked = pickQueryAmount(search, MOST_CHOSEN_AMOUNT);
-    setAmountInr(String(picked.valueInr));
-    setAmountClamped(picked.clamped);
-    const n = picked.valueInr;
-    setSelectedPreset(PRESET_AMOUNTS.includes(n) ? n : null);
-  }, [search, program]);
+    const entry = resolveCheckoutEntry(location, MOST_CHOSEN_AMOUNT);
+    setAmountInr(String(entry.amountInr));
+    setAmountClamped(entry.amountClamped);
+    setSelectedPreset(presetForInr(entry.amountInr));
+  }, [location]);
 
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [apiSetupWarning, setApiSetupWarning] = useState("");
+  const [leaveDialogOpen, setLeaveDialogOpen] = useState(false);
+
+  const donatePageTarget = `${DONATE_PAGE_PATH}#${DONATE_WIDGET_HASH}`;
+
+  const isFormDirty = useMemo(
+    () =>
+      Boolean(
+        name.trim() ||
+          fatherOrHusbandName.trim() ||
+          email.trim() ||
+          contact.trim() ||
+          pan.trim() ||
+          address.trim() ||
+          stateSel ||
+          citySel ||
+          pin.trim() ||
+          purposeText.trim() ||
+          termsAccepted
+      ),
+    [
+      name,
+      fatherOrHusbandName,
+      email,
+      contact,
+      pan,
+      address,
+      stateSel,
+      citySel,
+      pin,
+      purposeText,
+      termsAccepted,
+    ]
+  );
+
+  const shouldConfirmLeave = isFormDirty || busy;
+
+  useEffect(() => {
+    if (hasCheckoutEntrySource(location)) return;
+    navigate(donatePageTarget, { replace: true });
+  }, [location, navigate, donatePageTarget]);
+
+  useEffect(() => {
+    if (!shouldConfirmLeave) return undefined;
+
+    const onBeforeUnload = (e) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, [shouldConfirmLeave]);
+
+  useEffect(() => {
+    window.history.pushState({ checkoutLeaveGuard: true }, "");
+    const onPopState = () => {
+      if (busy) {
+        window.history.pushState({ checkoutLeaveGuard: true }, "");
+        setError(form.cannotLeaveDuringPayment);
+        return;
+      }
+      setLeaveDialogOpen(true);
+      window.history.pushState({ checkoutLeaveGuard: true }, "");
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, [busy, form.cannotLeaveDuringPayment]);
+
+  const requestLeaveCheckout = useCallback(() => {
+    if (busy) {
+      setError(form.cannotLeaveDuringPayment);
+      return;
+    }
+    setLeaveDialogOpen(true);
+  }, [busy, form.cannotLeaveDuringPayment]);
+
+  const confirmLeaveCheckout = useCallback(() => {
+    setLeaveDialogOpen(false);
+    navigate(donatePageTarget);
+  }, [navigate, donatePageTarget]);
 
   useEffect(() => {
     if (process.env.NODE_ENV !== "development") return undefined;
@@ -530,7 +629,9 @@ export default function RazorpayTestPage() {
         },
       };
 
-      if (program) {
+      const orderProgram =
+        programFromUrl && amountCheck.valueInr === programFromUrl.amountInr ? programFromUrl : null;
+      if (orderProgram && purposeKey) {
         orderRequest.purpose = purposeKey;
       } else {
         orderRequest.amount = amountPaise;
@@ -538,10 +639,23 @@ export default function RazorpayTestPage() {
 
       const order = await postJson("/api/razorpay-order", orderRequest);
 
+      const clientKeyMode = getRazorpayKeyMode(keyId);
+      if (
+        order.key_mode &&
+        order.key_mode !== "unknown" &&
+        clientKeyMode !== "unknown" &&
+        order.key_mode !== clientKeyMode
+      ) {
+        setError(
+          `Razorpay key mismatch: checkout uses ${clientKeyMode} keys but the server created the order in ${order.key_mode} mode. Set REACT_APP_RAZORPAY_KEY_ID and RAZORPAY_KEY_ID to the same test (or live) pair in .env, then restart npm start.`
+        );
+        return;
+      }
+
       const options = buildRazorpayCheckoutOptions({
         keyId,
         order,
-        program,
+        program: orderProgram,
         name: nameCheck.value,
         email: emailCheck.value,
         contact: contactCheck.value,
@@ -562,9 +676,10 @@ export default function RazorpayTestPage() {
               razorpay_signature: response.razorpay_signature,
             });
 
+            const paymentOk = !!(verification && verification.verified);
             goToDonationResult(
               buildDonationReceiptRecord({
-                status: verification.verified ? "success" : "unverified",
+                status: paymentOk ? "success" : "unverified",
                 locale: isHi ? "hi" : "en",
                 amountInr: amountCheck.valueInr,
                 donor,
@@ -572,12 +687,15 @@ export default function RazorpayTestPage() {
                 orderId: response.razorpay_order_id,
                 receiptNo,
                 purpose: purposeCheck.value,
-                programLabel: program?.label,
+                programLabel: orderProgram?.label,
                 keyId,
-                verified: verification.verified,
-                errorDescription: verification.verified
+                verified: paymentOk,
+                errorDescription: paymentOk
                   ? ""
-                  : "Payment signature could not be verified. Please contact us with your payment ID.",
+                  : verificationFailureMessage(
+                      verification,
+                      "Payment could not be verified. Please contact us with your payment ID."
+                    ),
               })
             );
           } catch (e) {
@@ -591,7 +709,7 @@ export default function RazorpayTestPage() {
                 orderId: response.razorpay_order_id,
                 receiptNo,
                 purpose: purposeCheck.value,
-                programLabel: program?.label,
+                programLabel: orderProgram?.label,
                 keyId,
                 verified: false,
                 errorDescription: (e && e.message) || String(e),
@@ -620,11 +738,15 @@ export default function RazorpayTestPage() {
               (resp && resp.error && resp.error.metadata && resp.error.metadata.order_id) || "",
             receiptNo,
             purpose: purposeCheck.value,
-            programLabel: program?.label,
+            programLabel:
+              programFromUrl && amountCheck.valueInr === programFromUrl.amountInr
+                ? programFromUrl.label
+                : "",
             keyId,
             errorCode: err.code || "",
-            errorDescription:
-              err.description || err.reason || "Payment failed at the bank or wallet.",
+            errorDescription: formatRazorpayPaymentFailedError(err, {
+              testMode: isRazorpayTestKey(keyId),
+            }),
           })
         );
         setBusy(false);
@@ -647,7 +769,7 @@ export default function RazorpayTestPage() {
     contactCheck.value,
     panCheck.value,
     buildOrderNote,
-    program,
+    programFromUrl,
     purposeKey,
     purposeCheck.value,
     amountCheck.valueInr,
@@ -659,13 +781,11 @@ export default function RazorpayTestPage() {
   const showError = (field, check) => touched[field] && !check.ok;
 
   const onSelectPreset = (amt) => {
-    if (program) return;
     setSelectedPreset(amt);
     setAmountInr(String(amt));
   };
 
   const onCustomAmountChange = (e) => {
-    if (program) return;
     setAmountInr(sanitizeAmountInput(e.target.value));
     setSelectedPreset(null);
   };
@@ -945,7 +1065,7 @@ export default function RazorpayTestPage() {
                 </Stack>
 
                 <Typography variant="caption" sx={{ color: "rgba(31,42,68,0.45)", pt: 0.5 }}>
-                  {sidebar.testCheckout} <code>/__razorpay-test</code>
+                  {sidebar.secureCheckout} <code>{DONATION_CHECKOUT_PATH}</code>
                 </Typography>
               </Stack>
             </MKBox>
@@ -1006,7 +1126,7 @@ export default function RazorpayTestPage() {
                 </Alert>
               )}
 
-              {keyId && keyMode === "live" && (
+              {keyId && keyMode === "live" && process.env.NODE_ENV === "development" && (
                 <Alert severity="error" sx={{ mb: 2 }}>
                   <Trans
                     i18nKey="donationForm.liveKeyWarning"
@@ -1020,24 +1140,26 @@ export default function RazorpayTestPage() {
                 </Alert>
               )}
 
-              {amountClamped && !program && (
+              {amountClamped && !programFromUrl && (
                 <Alert severity="info" sx={{ mb: 2 }}>
                   {form.amountAdjusted}
                 </Alert>
               )}
 
-              {program && (
-                <Alert severity="info" sx={{ mb: 2 }}>
-                  <Trans
-                    i18nKey="donationForm.programLocked"
-                    values={{
-                      label: program.label,
-                      amount: program.amountInr.toLocaleString("en-IN"),
-                    }}
-                    components={{ 1: <strong /> }}
-                  />
-                </Alert>
-              )}
+              {programFromUrl &&
+                amountCheck.ok &&
+                amountCheck.valueInr === programFromUrl.amountInr && (
+                  <Alert severity="info" sx={{ mb: 2 }}>
+                    <Trans
+                      i18nKey="donationForm.amountPrefilled"
+                      values={{
+                        label: programFromUrl.label,
+                        amount: programFromUrl.amountInr.toLocaleString("en-IN"),
+                      }}
+                      components={{ 1: <strong /> }}
+                    />
+                  </Alert>
+                )}
 
               <Box
                 sx={{
@@ -1087,10 +1209,10 @@ export default function RazorpayTestPage() {
 
               <Stack direction="row" flexWrap="wrap" useFlexGap sx={{ gap: 1.1, mb: 1.5 }}>
                 {PRESET_AMOUNTS.map((amt) => {
-                  const active = !program && selectedPreset === amt && amountInr === String(amt);
+                  const active = selectedPreset === amt && amountInr === String(amt);
                   return (
                     <Box key={amt} sx={{ position: "relative", flex: "1 1 88px", minWidth: 72 }}>
-                      {!program && amt === MOST_CHOSEN_AMOUNT && (
+                      {amt === MOST_CHOSEN_AMOUNT && (
                         <Box
                           sx={{
                             position: "absolute",
@@ -1115,7 +1237,6 @@ export default function RazorpayTestPage() {
                       <MKButton
                         fullWidth
                         variant="outlined"
-                        disabled={!!program}
                         onClick={() => onSelectPreset(amt)}
                         sx={{
                           py: 1.1,
@@ -1191,7 +1312,6 @@ export default function RazorpayTestPage() {
                 value={amountInr}
                 onChange={onCustomAmountChange}
                 onBlur={markTouched("amount")}
-                disabled={!!program}
                 error={showError("amount", amountCheck)}
                 helperText={showError("amount", amountCheck) ? fieldHelper(amountCheck) : " "}
                 InputProps={{
@@ -1650,10 +1770,75 @@ export default function RazorpayTestPage() {
                   />
                 </Stack>
               </Box>
+
+              <Box
+                sx={{
+                  mt: 2,
+                  pt: 1.5,
+                  borderTop: "1px solid rgba(31, 42, 68, 0.06)",
+                  textAlign: "center",
+                }}
+              >
+                <Button
+                  type="button"
+                  onClick={requestLeaveCheckout}
+                  disabled={busy}
+                  variant="text"
+                  size="small"
+                  startIcon={<ChevronLeftIcon sx={{ fontSize: 17, opacity: 0.7 }} />}
+                  sx={{
+                    textTransform: "none",
+                    fontSize: "0.78rem",
+                    fontWeight: 600,
+                    color: "rgba(31, 42, 68, 0.5)",
+                    px: 1,
+                    py: 0.5,
+                    borderRadius: "8px",
+                    "&:hover": {
+                      backgroundColor: "rgba(31, 42, 68, 0.04)",
+                      color: "rgba(31, 42, 68, 0.72)",
+                    },
+                    "&.Mui-disabled": { color: "rgba(31, 42, 68, 0.28)" },
+                  }}
+                >
+                  {form.backToDonatePageLink}
+                </Button>
+              </Box>
             </MKBox>
           </Grid>
         </Grid>
       </Card>
+
+      <Dialog
+        open={leaveDialogOpen}
+        onClose={() => setLeaveDialogOpen(false)}
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogTitle sx={{ fontWeight: 800 }}>{form.cancelDonationTitle}</DialogTitle>
+        <DialogContent>
+          <DialogContentText sx={{ color: "rgba(31,42,68,0.78)" }}>
+            {busy ? form.cancelDonationBusyBody : form.cancelDonationBody}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 2.5 }}>
+          <Button
+            onClick={() => setLeaveDialogOpen(false)}
+            sx={{ textTransform: "none", fontWeight: 700 }}
+          >
+            {form.cancelDonationStay}
+          </Button>
+          <Button
+            onClick={confirmLeaveCheckout}
+            variant="contained"
+            color="warning"
+            disabled={busy}
+            sx={{ textTransform: "none", fontWeight: 800 }}
+          >
+            {form.cancelDonationConfirm}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </MKBox>
   );
 }

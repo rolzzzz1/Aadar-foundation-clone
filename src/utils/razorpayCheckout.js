@@ -51,7 +51,8 @@ export function buildRazorpayCheckoutOptions({
       upi: true,
       card: true,
       netbanking: true,
-      wallet: true,
+      // Real wallet / GPay tokens fail in test mode with "Invalid Token"
+      wallet: !testMode,
       emi: false,
       paylater: false,
     },
@@ -66,4 +67,30 @@ export function buildRazorpayCheckoutOptions({
     handler: onSuccess,
     modal: { ondismiss: onDismiss },
   };
+}
+
+/** User-facing message from Razorpay `payment.failed` payload. */
+export function formatRazorpayPaymentFailedError(err, { testMode = false } = {}) {
+  const description = (err && (err.description || err.reason)) || "";
+  const reason = (err && err.reason) || "";
+  const isTokenError =
+    /invalid\s*token/i.test(description) ||
+    reason === "authentication_failed" ||
+    (err && err.code) === "INVALID_TOKEN";
+
+  if (isTokenError) {
+    if (testMode) {
+      return (
+        "Payment could not be completed (Invalid Token). In Razorpay test mode, use a test card " +
+        "(e.g. 4111 1111 1111 1111, any future expiry/CVV) or test UPI success@razorpay — " +
+        "not a real card, Google Pay, or PhonePe. After changing .env keys, stop and run npm start again."
+      );
+    }
+    return (
+      "Payment authentication failed. Ensure live Razorpay keys match on the server and checkout, " +
+      "then try again or use another payment method."
+    );
+  }
+
+  return description || "Payment failed at the bank or wallet.";
 }

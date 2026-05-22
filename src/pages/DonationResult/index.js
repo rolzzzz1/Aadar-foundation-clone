@@ -21,6 +21,7 @@ import MKButton from "components/MKButton";
 import DonationReceiptSheet from "components/DonationReceiptSheet";
 import aadarLogo from "assets/images/logos/logo-aadar.jpg";
 
+import { DONATION_CHECKOUT_PATH } from "utils/donation";
 import { loadDonationReceipt } from "utils/donationReceiptStorage";
 import { downloadReceiptPdf, formatInr } from "utils/donationReceipt";
 import { getReceiptCopy } from "utils/receiptI18n";
@@ -114,7 +115,7 @@ export default function DonationResultPage() {
           </Typography>
           <MKButton
             component={RouterLink}
-            to="/__razorpay-test"
+            to={DONATION_CHECKOUT_PATH}
             variant="contained"
             color="success"
           >
@@ -184,7 +185,7 @@ export default function DonationResultPage() {
             {isSuccess
               ? t("donationResult.bodySuccess")
               : isUnverified
-              ? t("donationResult.bodyUnverified")
+              ? record.errorDescription || t("donationResult.bodyUnverified")
               : record.errorDescription || t("donationResult.bodyFailedFallback")}
           </Typography>
           {record.testMode && (
@@ -273,7 +274,7 @@ export default function DonationResultPage() {
               <MKButton
                 fullWidth
                 variant="contained"
-                onClick={() => navigate("/__razorpay-test")}
+                onClick={() => navigate(DONATION_CHECKOUT_PATH)}
                 startIcon={<ReplayOutlinedIcon />}
                 sx={{
                   py: 1.2,

@@ -1,4 +1,5 @@
 const { isProduction } = require("./_lib/donation");
+const { isStoreConfigured } = require("./_lib/donationRecord");
 
 module.exports = function handler(req, res) {
   res.setHeader("Content-Type", "application/json; charset=utf-8");
@@ -14,7 +15,9 @@ module.exports = function handler(req, res) {
     payload.razorpay = {
       key_id: !!keyId,
       key_secret: !!process.env.RAZORPAY_KEY_SECRET,
+      webhook_secret: !!process.env.RAZORPAY_WEBHOOK_SECRET,
     };
+    payload.donation_store = isStoreConfigured();
   }
 
   return res.status(200).json(payload);
