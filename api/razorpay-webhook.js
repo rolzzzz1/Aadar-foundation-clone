@@ -1,5 +1,6 @@
 const crypto = require("crypto");
 const { applySecurityHeaders, isProduction } = require("./_lib/donation");
+const { getRawBody } = require("./_lib/rawBody");
 const { fetchOrder } = require("./_lib/razorpay");
 const {
   buildRecordFromRazorpay,
@@ -7,13 +8,6 @@ const {
 } = require("./_lib/donationRecord");
 
 const MAX_BODY_BYTES = 64 * 1024;
-
-function getRawBody(req) {
-  if (req.rawBody) return req.rawBody;
-  if (typeof req.body === "string") return req.body;
-  if (req.body && typeof req.body === "object") return JSON.stringify(req.body);
-  return "";
-}
 
 function verifyWebhookSignature(rawBody, signature, secret) {
   if (!signature || !secret || !rawBody) return false;
@@ -51,7 +45,7 @@ module.exports = async function handler(req, res) {
     return res.status(413).json({ error: "Payload too large" });
   }
 
-  const rawBody = getRawBody(req);
+  const rawBody = await getRawBody(req);
   const signature =
     (req.headers && (req.headers["x-razorpay-signature"] || req.headers["X-Razorpay-Signature"])) ||
     "";

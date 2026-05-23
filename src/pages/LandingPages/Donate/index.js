@@ -2,7 +2,6 @@ import React from "react";
 
 // i18next imports
 import { useTranslation, Trans } from "react-i18next";
-import { Link } from "react-router-dom";
 
 // @mui material components
 import Container from "@mui/material/Container";
@@ -236,26 +235,6 @@ function Donate() {
                         "0 8px 24px rgba(31, 42, 68, 0.1), 0 2px 8px rgba(31, 42, 68, 0.06)",
                     }}
                   />
-                  <MKButton
-                    component={Link}
-                    to="/donate#donate-widget"
-                    variant="contained"
-                    color="success"
-                    sx={{
-                      mt: 2,
-                      width: "100%",
-                      maxWidth: { xs: 340, sm: 380, md: 400, lg: 440 },
-                      py: 1.35,
-                      borderRadius: "12px",
-                      fontWeight: 800,
-                      textTransform: "none",
-                      fontSize: { xs: "0.88rem", sm: "0.95rem" },
-                      boxShadow: "0 10px 26px rgba(79, 169, 83, 0.28)",
-                      "&&": { color: "#ffffff" },
-                    }}
-                  >
-                    {t("donatePage.donateViaCardNetbanking")}
-                  </MKButton>
                 </MKBox>
               </Grid>
             </Grid>

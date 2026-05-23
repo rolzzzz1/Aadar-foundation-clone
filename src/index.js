@@ -5,6 +5,43 @@ import App from "App";
 import "./i18n.js";
 import "./fonts.css";
 
+const CHUNK_RELOAD_KEY = "aadar_chunk_reload";
+
+function isChunkLoadFailure(reason) {
+  const message = reason?.message || String(reason || "");
+  return /Loading chunk [\d]+ failed/i.test(message);
+}
+
+/** Recover from slow networks or stale caches after deploy (one automatic reload per session). */
+function setupChunkLoadRecovery() {
+  const reloadOnce = () => {
+    if (sessionStorage.getItem(CHUNK_RELOAD_KEY)) return;
+    sessionStorage.setItem(CHUNK_RELOAD_KEY, "1");
+    window.location.reload();
+  };
+
+  window.addEventListener("unhandledrejection", (event) => {
+    if (isChunkLoadFailure(event.reason)) {
+      event.preventDefault();
+      reloadOnce();
+    }
+  });
+
+  window.addEventListener(
+    "error",
+    (event) => {
+      if (isChunkLoadFailure(event.error || event.message)) {
+        reloadOnce();
+      }
+    },
+    true
+  );
+}
+
+if (typeof window !== "undefined") {
+  setupChunkLoadRecovery();
+}
+
 // Report Web Vitals for performance monitoring
 function reportWebVitals(metric) {
   // Send to Vercel Analytics if available

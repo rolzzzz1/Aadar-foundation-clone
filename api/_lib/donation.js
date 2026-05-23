@@ -90,26 +90,48 @@ function sanitizeNotes(input) {
   return out;
 }
 
+function normalizeOrigin(value) {
+  const trimmed = String(value || "")
+    .trim()
+    .replace(/\/$/, "");
+  if (!trimmed) return "";
+  try {
+    return new URL(trimmed).origin;
+  } catch {
+    return trimmed;
+  }
+}
+
 function getAllowedOrigins() {
-  const env = process.env.ALLOWED_ORIGINS || "";
-  return env
+  const fromEnv = (process.env.ALLOWED_ORIGINS || "")
     .split(",")
-    .map((s) => s.trim())
+    .map(normalizeOrigin)
     .filter(Boolean);
+
+  const extra = [];
+  if (process.env.VERCEL_ENV === "preview" && process.env.VERCEL_URL) {
+    extra.push(normalizeOrigin(`https://${process.env.VERCEL_URL}`));
+  }
+
+  return [...new Set([...fromEnv, ...extra])];
 }
 
 /**
- * Reject cross-origin POSTs in production. In dev / preview where no
- * allowlist is configured, allow everything (this avoids breaking
- * `localhost:3000` calls against `localhost:3001`).
+ * Reject cross-origin POSTs when an allowlist is set. In production, an empty
+ * allowlist is denied (set ALLOWED_ORIGINS on Vercel). Local dev with no
+ * allowlist still allows all origins.
  */
 function originIsAllowed(req) {
   const allowList = getAllowedOrigins();
-  if (allowList.length === 0) return true;
+  if (allowList.length === 0) {
+    return !isProduction();
+  }
+
   const origin = (req.headers && (req.headers.origin || req.headers.Origin)) || "";
   const referer = (req.headers && (req.headers.referer || req.headers.Referer)) || "";
   const candidate = origin || referer;
   if (!candidate) return false;
+
   try {
     const url = new URL(candidate);
     return allowList.includes(url.origin);

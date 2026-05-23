@@ -64,6 +64,9 @@ class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
+      const message = this.state.error?.message || "An unexpected error occurred";
+      const isChunkError = /Loading chunk [\d]+ failed/i.test(message);
+
       return (
         <Box
           sx={{
@@ -74,13 +77,34 @@ class ErrorBoundary extends React.Component {
             minHeight: "100vh",
             backgroundColor: "#f5f5f5",
             padding: 3,
+            textAlign: "center",
           }}
         >
           <Typography variant="h5" gutterBottom>
             Something went wrong
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {this.state.error?.message || "An unexpected error occurred"}
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2, maxWidth: 420 }}>
+            {isChunkError
+              ? "Part of the page could not load (slow connection or outdated cache). Please refresh."
+              : message}
+          </Typography>
+          <Typography
+            component="button"
+            type="button"
+            variant="button"
+            onClick={() => window.location.reload()}
+            sx={{
+              border: "none",
+              cursor: "pointer",
+              bgcolor: "#4fa953",
+              color: "#fff",
+              px: 3,
+              py: 1.25,
+              borderRadius: "10px",
+              fontWeight: 700,
+            }}
+          >
+            Refresh page
           </Typography>
         </Box>
       );

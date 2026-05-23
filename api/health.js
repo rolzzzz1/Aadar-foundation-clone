@@ -1,4 +1,4 @@
-const { isProduction } = require("./_lib/donation");
+const { isProduction, getAllowedOrigins } = require("./_lib/donation");
 const { isStoreConfigured } = require("./_lib/donationRecord");
 
 module.exports = function handler(req, res) {
@@ -18,6 +18,11 @@ module.exports = function handler(req, res) {
       webhook_secret: !!process.env.RAZORPAY_WEBHOOK_SECRET,
     };
     payload.donation_store = isStoreConfigured();
+    const origins = getAllowedOrigins();
+    payload.allowed_origins = {
+      configured: origins.length > 0,
+      count: origins.length,
+    };
   }
 
   return res.status(200).json(payload);
