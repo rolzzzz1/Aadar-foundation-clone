@@ -304,7 +304,7 @@ const HeroSlide = memo(function HeroSlide({
           }}
         >
           {/* Horizontal rectangular image for slide 2 - positioned above text box (on xs and sm screens) */}
-          {slideIndex === 1 && (
+          {slideIndex === 1 && isActive && (
             <MKBox
               sx={{
                 width: { xs: "90%", sm: "85%", md: 0 },
@@ -369,7 +369,7 @@ const HeroSlide = memo(function HeroSlide({
             </MKBox>
           )}
           {/* Horizontal rectangular image for slide 3 - positioned above text box (on xs and sm screens) */}
-          {slideIndex === 2 && (
+          {slideIndex === 2 && isActive && (
             <MKBox
               sx={{
                 width: { xs: "90%", sm: "85%", md: 0 },
@@ -434,7 +434,7 @@ const HeroSlide = memo(function HeroSlide({
             </MKBox>
           )}
           {/* Horizontal rectangular image for slide 4 - positioned above text box (on xs and sm screens) */}
-          {slideIndex === 3 && (
+          {slideIndex === 3 && isActive && (
             <MKBox
               sx={{
                 width: { xs: "90%", sm: "85%", md: 0 },
@@ -1878,6 +1878,10 @@ function Home() {
     if (typeof window === "undefined" || typeof document === "undefined") {
       return;
     }
+    // Avoid heavy DOM observers on mobile; critical CSS is already in index.html.
+    if (window.innerWidth < 768) {
+      return;
+    }
 
     const styleId = "hero-cta-buttons-critical-css";
     // Check if style already exists - if so, skip (prevents re-injection on remount)
@@ -2195,6 +2199,10 @@ function Home() {
   useEffect(() => {
     // Only run in browser (not during SSR)
     if (typeof window === "undefined" || typeof document === "undefined") {
+      return;
+    }
+    // Skip on mobile; this observer is expensive and mobile already has inline critical CSS.
+    if (window.innerWidth < 768) {
       return;
     }
 
@@ -2720,13 +2728,10 @@ function Home() {
 
     // Preload slide background images (cheap, local) after first paint
     const preloadImages = () => {
-      const imageUrls = [
-        blackAndWhiteHero,
-        heroImage2,
-        slide2MobileBg,
-        slide3MobileBg,
-        slide4MobileBg,
-      ];
+      // Mobile has very limited bandwidth; avoid preloading multi‑MB slide images.
+      if (window.innerWidth < 768) return;
+
+      const imageUrls = [blackAndWhiteHero, heroImage2];
       imageUrls.forEach((src) => {
         if (!src) return;
         const img = new Image();
