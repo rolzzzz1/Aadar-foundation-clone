@@ -25,8 +25,12 @@ import Home from "layouts/pages/home";
 
 // Material Kit 2 React routes
 import routes from "routes";
-import { DONATE_PAGE_PATH, DONATION_CHECKOUT_PATH } from "utils/donation";
-import { LEGACY_PATH_REDIRECTS } from "utils/paths";
+import {
+  DONATE_PAGE_PATH,
+  DONATE2_PAGE_PATH,
+  DONATION_CHECKOUT_PATH,
+  LEGACY_PATH_REDIRECTS,
+} from "utils/paths";
 
 import Typography from "@mui/material/Typography";
 
@@ -50,6 +54,7 @@ const isGalleryRoute = (path) => /\/gallery\/?$/i.test(path);
 
 const RazorpayTest = lazy(() => import("pages/RazorpayTest"));
 const Donate = lazy(() => import("layouts/pages/landing-pages/donate"));
+const Donate2 = lazy(() => import("pages/LandingPages/Donate2"));
 const DonationResult = lazy(() => import("pages/DonationResult"));
 
 // Error boundary component
@@ -220,7 +225,7 @@ export default function App() {
     };
   }, []);
 
-  // Watermark only on gallery — re-encoding every <img> via canvas tanks RES on the home page
+  // Watermark only on gallery — defer until scroll/idle so initial paint stays fast on mobile
   useEffect(() => {
     if (!isGalleryRoute(pathname)) return undefined;
 
@@ -234,22 +239,42 @@ export default function App() {
     const cleanupObserver = setupWatermarkObserver(watermarkOptions);
     let idleId;
     let timeoutId;
+    let scrollTimeoutId;
+    let applied = false;
 
-    const apply = () => watermarkAllImages(watermarkOptions);
+    const apply = () => {
+      if (applied) return;
+      applied = true;
+      watermarkAllImages(watermarkOptions);
+      window.removeEventListener("scroll", onScroll, scrollOptions);
+      if (scrollTimeoutId != null) {
+        window.clearTimeout(scrollTimeoutId);
+      }
+    };
+
+    const scrollOptions = { passive: true };
+    const onScroll = () => apply();
+
+    window.addEventListener("scroll", onScroll, scrollOptions);
+    scrollTimeoutId = window.setTimeout(apply, 12000);
 
     if ("requestIdleCallback" in window) {
-      idleId = requestIdleCallback(apply, { timeout: 8000 });
+      idleId = requestIdleCallback(apply, { timeout: 10000 });
     } else {
-      timeoutId = window.setTimeout(apply, 4000);
+      timeoutId = window.setTimeout(apply, 6000);
     }
 
     return () => {
       cleanupObserver();
+      window.removeEventListener("scroll", onScroll, scrollOptions);
       if (idleId != null && "cancelIdleCallback" in window) {
         cancelIdleCallback(idleId);
       }
       if (timeoutId != null) {
         window.clearTimeout(timeoutId);
+      }
+      if (scrollTimeoutId != null) {
+        window.clearTimeout(scrollTimeoutId);
       }
     };
   }, [pathname]);
@@ -307,6 +332,14 @@ export default function App() {
             element={
               <Suspense fallback={null}>
                 <Donate />
+              </Suspense>
+            }
+          />
+          <Route
+            path={DONATE2_PAGE_PATH}
+            element={
+              <Suspense fallback={null}>
+                <Donate2 />
               </Suspense>
             }
           />

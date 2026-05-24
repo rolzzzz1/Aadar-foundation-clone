@@ -101,7 +101,7 @@ function Donate2() {
 
       {/* Main Image and text */}
       <MKBox
-        minHeight="80vh"
+        minHeight={{ xs: "55vh", sm: "65vh", md: "80vh" }}
         width="100%"
         sx={{
           backgroundImage: `url(${bgImage2})`,
@@ -150,7 +150,7 @@ function Donate2() {
           mt: -2,
           mb: 4,
           backgroundColor: "#f0f2f5",
-          backdropFilter: "saturate(200%) blur(30px)",
+          backdropFilter: { xs: "none", md: "saturate(200%) blur(30px)" },
           boxShadow: ({ boxShadows: { xxl } }) => xxl,
         }}
       >

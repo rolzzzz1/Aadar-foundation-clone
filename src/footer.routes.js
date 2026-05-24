@@ -8,10 +8,10 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 // Material Kit 2 React components
 import MKTypography from "components/MKTypography";
 import MKBox from "components/MKBox";
+import AishxDevCreditButton from "components/AishxDevCreditButton";
 
 // Images
 import logoCT from "assets/images/logos/logo-aadar.jpg";
-import aishxDevLogo from "assets/images/logos/aishx-dev-logo.png";
 import {
   ABOUT_PATH,
   WORK_PATH,
@@ -95,61 +95,7 @@ export default {
         <MKBox display="flex" justifyContent="center" alignItems="center" m={1}>
           <MKTypography variant="button" fontWeight="regular" fontSize="1rem" color="white" pr={2}>
             Designed by{" "}
-            <MKBox
-              component="a"
-              href="https://linktr.ee/aishx.dev"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Visit Aishx.dev (opens in a new tab)"
-              title="Aishx.dev"
-              data-footer-button="aishx"
-              sx={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                marginLeft: "8px",
-                width: { xs: "88px", sm: "104px", md: "116px" },
-                height: { xs: "28px", sm: "32px", md: "36px" },
-                borderRadius: "10px",
-                overflow: "hidden",
-                padding: 0,
-                lineHeight: 0,
-                verticalAlign: "middle",
-                cursor: "pointer",
-                textDecoration: "none",
-                transition:
-                  "transform 0.25s ease, filter 0.25s ease",
-                "&:hover": {
-                  transform: "translateY(-2px) scale(1.04)",
-                  filter: "drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35)) brightness(1.06)",
-                },
-                "&:active": {
-                  transform: "translateY(0) scale(0.98)",
-                  filter: "drop-shadow(0 2px 8px rgba(0, 0, 0, 0.25)) brightness(1.02)",
-                },
-                "&:focus-visible": {
-                  outline: "2px solid rgba(255, 255, 255, 0.8)",
-                  outlineOffset: "3px",
-                  filter: "drop-shadow(0 0 0 rgba(0,0,0,0))",
-                },
-              }}
-            >
-              <MKBox
-                component="img"
-                src={aishxDevLogo}
-                alt=""
-                draggable={false}
-                sx={{
-                  display: "block",
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  pointerEvents: "none",
-                  userSelect: "none",
-                  borderRadius: "10px",
-                }}
-              />
-            </MKBox>
+            <AishxDevCreditButton />
           </MKTypography>
         </MKBox>
       </MKTypography>

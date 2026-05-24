@@ -24,15 +24,28 @@ function About() {
     <MKBox component="section" pt={2} my={{ xs: 0.5, sm: 2 }}>
       <Grid container alignItems="center">
         <Grid item xs={9} sm={6} md={5} lg={4} sx={{ mx: "auto" }}>
-          <MKBox position="relative" display="flex" justifyContent="center">
+          <MKBox
+            position="relative"
+            display="flex"
+            justifyContent="center"
+            sx={{
+              width: "95%",
+              mx: "auto",
+              aspectRatio: "4 / 3",
+              borderRadius: "15px",
+              overflow: "hidden",
+            }}
+          >
             <MKBox
               component="img"
               src={aboutImg}
               alt="aboutImage"
-              width="95%"
+              width="100%"
+              height="100%"
               borderRadius="15px"
               loading="lazy"
               decoding="async"
+              sx={{ objectFit: "cover", display: "block" }}
             />
           </MKBox>
         </Grid>

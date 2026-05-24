@@ -15,16 +15,22 @@
 }
 
 .galleryImgs {
+  width: 100%;
   max-width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
   display: block;
   padding: 5px 0px;
   border-radius: 20px;
   transition: transform 0.2s;
 }
 
-.galleryImgs:hover {
-  filter: opacity(0.7);
-  transform: scale(1.01);
+@media (max-width: 767px) {
+  .galleryImgs:hover {
+    filter: none;
+    transform: none;
+  }
 }
 
 .video-gallery a {

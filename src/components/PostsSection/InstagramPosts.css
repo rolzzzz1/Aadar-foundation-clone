@@ -220,6 +220,7 @@
 .loading {
   text-align: center;
   padding: 40px;
+  min-height: 360px;
 }
 
 .spinner {

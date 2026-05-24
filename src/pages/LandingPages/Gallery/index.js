@@ -286,7 +286,7 @@ function Gallery() {
 
       {/* Main Image and text */}
       <MKBox
-        minHeight="80vh"
+        minHeight={{ xs: "55vh", sm: "65vh", md: "80vh" }}
         width="100%"
         sx={{
           backgroundImage: `url(${bgImage2})`,
@@ -335,7 +335,7 @@ function Gallery() {
           mt: -2,
           mb: 4,
           backgroundColor: "#f0f2f5",
-          backdropFilter: "saturate(200%) blur(30px)",
+          backdropFilter: { xs: "none", md: "saturate(200%) blur(30px)" },
           boxShadow: ({ boxShadows: { xxl } }) => xxl,
         }}
       >
@@ -352,33 +352,17 @@ function Gallery() {
                 {galleryPage.title}
               </MKTypography>
               <MKBox position="relative">
-                {/* Always render gallery so images can start loading */}
-                <MKBox
-                  sx={{
-                    opacity: isLoading ? 0 : 1,
-                    transition: "opacity 0.5s ease-in-out",
-                    pointerEvents: isLoading ? "none" : "auto",
-                  }}
-                >
-                  {renderGallery()}
-                </MKBox>
-
-                {/* Loading overlay - shown on top while loading */}
-                {isLoading && (
+                {isLoading ? (
                   <MKBox
-                    position="absolute"
-                    top={0}
-                    left={0}
-                    right={0}
-                    bottom={0}
                     sx={{
+                      minHeight: { xs: 180, sm: 220 },
                       display: "flex",
+                      flexDirection: "column",
                       alignItems: "center",
-                      justifyContent: "center",
+                      justifyContent: "flex-start",
+                      pt: { xs: 2, sm: 3 },
+                      pb: 2,
                       backgroundColor: "rgba(240, 242, 245, 0.95)",
-                      backdropFilter: "blur(4px)",
-                      zIndex: 10,
-                      transition: "opacity 0.3s ease-in-out",
                     }}
                   >
                     <Box
@@ -423,7 +407,26 @@ function Gallery() {
                       </MKTypography>
                     </Box>
                   </MKBox>
-                )}
+                ) : null}
+                {/* Render gallery off-screen while loading so above-fold images can fetch */}
+                <MKBox
+                  sx={{
+                    opacity: isLoading ? 0 : 1,
+                    transition: "opacity 0.5s ease-in-out",
+                    pointerEvents: isLoading ? "none" : "auto",
+                    ...(isLoading && {
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: 0,
+                      overflow: "hidden",
+                      visibility: "hidden",
+                    }),
+                  }}
+                >
+                  {renderGallery()}
+                </MKBox>
               </MKBox>
             </MKBox>
           </Grid>

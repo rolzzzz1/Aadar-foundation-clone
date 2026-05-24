@@ -200,6 +200,12 @@ function citiesForState(state) {
   return CITIES_BY_STATE[state] || [];
 }
 
+function waitAtLeast(ms, startedAt) {
+  const remaining = ms - (Date.now() - startedAt);
+  if (remaining <= 0) return Promise.resolve();
+  return new Promise((resolve) => window.setTimeout(resolve, remaining));
+}
+
 /** Readable secondary text on the payment form (labels, helpers, placeholders). */
 const formTextMuted = "#4a5568";
 const formTextPlaceholder = "#5c6b82";
@@ -404,10 +410,32 @@ export default function RazorpayTestPage() {
     setSelectedPreset(presetForInr(entry.amountInr));
   }, [location]);
 
-  const [busy, setBusy] = useState(false);
+  const [busyPhase, setBusyPhase] = useState(null);
   const [error, setError] = useState("");
   const [apiSetupWarning, setApiSetupWarning] = useState("");
   const [leaveDialogOpen, setLeaveDialogOpen] = useState(false);
+
+  const paymentBusy = Boolean(busyPhase);
+
+  const resetPaymentUi = useCallback(() => {
+    setBusyPhase(null);
+  }, []);
+
+  const paymentProgressMessage = useMemo(() => {
+    if (busyPhase === "opening" || busyPhase === "awaitingPayment") {
+      return form.openingCheckout || "Opening checkout…";
+    }
+    if (busyPhase === "processing") return form.checkingDonation || "Checking donation…";
+    if (busyPhase === "creatingReceipt") return form.creatingReceipt || "Creating receipt…";
+    if (busyPhase === "redirecting") return form.redirecting || "Almost done…";
+    return "";
+  }, [busyPhase, form]);
+
+  const paymentButtonLabel = paymentBusy
+    ? paymentProgressMessage || form.openingCheckout
+    : form.proceedPayment;
+
+  const showPaymentOverlay = Boolean(busyPhase && busyPhase !== "awaitingPayment");
 
   const donatePageTarget = `${DONATE_PAGE_PATH}#${DONATE_WIDGET_HASH}`;
 
@@ -441,7 +469,7 @@ export default function RazorpayTestPage() {
     ]
   );
 
-  const shouldConfirmLeave = isFormDirty || busy;
+  const shouldConfirmLeave = isFormDirty || paymentBusy;
 
   useEffect(() => {
     if (hasCheckoutEntrySource(location)) return;
@@ -462,7 +490,7 @@ export default function RazorpayTestPage() {
   useEffect(() => {
     window.history.pushState({ checkoutLeaveGuard: true }, "");
     const onPopState = () => {
-      if (busy) {
+      if (paymentBusy) {
         window.history.pushState({ checkoutLeaveGuard: true }, "");
         setError(form.cannotLeaveDuringPayment);
         return;
@@ -472,20 +500,24 @@ export default function RazorpayTestPage() {
     };
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
-  }, [busy, form.cannotLeaveDuringPayment]);
+  }, [paymentBusy, form.cannotLeaveDuringPayment]);
 
   const requestLeaveCheckout = useCallback(() => {
-    if (busy) {
+    if (paymentBusy) {
       setError(form.cannotLeaveDuringPayment);
       return;
     }
     setLeaveDialogOpen(true);
-  }, [busy, form.cannotLeaveDuringPayment]);
+  }, [paymentBusy, form.cannotLeaveDuringPayment]);
 
   const confirmLeaveCheckout = useCallback(() => {
     setLeaveDialogOpen(false);
     navigate(donatePageTarget);
   }, [navigate, donatePageTarget]);
+
+  useEffect(() => {
+    loadRazorpayCheckoutScript().catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (process.env.NODE_ENV !== "development") return undefined;
@@ -612,7 +644,7 @@ export default function RazorpayTestPage() {
       return;
     }
 
-    setBusy(true);
+    setBusyPhase("opening");
     try {
       await loadRazorpayCheckoutScript();
 
@@ -650,6 +682,7 @@ export default function RazorpayTestPage() {
         setError(
           `Razorpay key mismatch: checkout uses ${clientKeyMode} keys but the server created the order in ${order.key_mode} mode. Set REACT_APP_RAZORPAY_KEY_ID and RAZORPAY_KEY_ID to the same test (or live) pair in .env, then restart npm start.`
         );
+        resetPaymentUi();
         return;
       }
 
@@ -661,8 +694,10 @@ export default function RazorpayTestPage() {
         email: emailCheck.value,
         contact: contactCheck.value,
         note: buildOrderNote(),
-        onDismiss: () => setBusy(false),
+        onDismiss: () => resetPaymentUi(),
         onSuccess: async (response) => {
+          setBusyPhase("processing");
+          const processingStartedAt = Date.now();
           const donor = {
             name: nameCheck.value,
             fatherOrHusbandName: fatherOrHusbandNameCheck.value,
@@ -677,7 +712,13 @@ export default function RazorpayTestPage() {
               razorpay_signature: response.razorpay_signature,
             });
 
+            await waitAtLeast(750, processingStartedAt);
+
             const paymentOk = !!(verification && verification.verified);
+            setBusyPhase("creatingReceipt");
+            const receiptStartedAt = Date.now();
+            await waitAtLeast(650, receiptStartedAt);
+            setBusyPhase("redirecting");
             goToDonationResult(
               buildDonationReceiptRecord({
                 status: paymentOk ? "success" : "unverified",
@@ -700,6 +741,11 @@ export default function RazorpayTestPage() {
               })
             );
           } catch (e) {
+            await waitAtLeast(750, processingStartedAt);
+            setBusyPhase("creatingReceipt");
+            const receiptStartedAt = Date.now();
+            await waitAtLeast(650, receiptStartedAt);
+            setBusyPhase("redirecting");
             goToDonationResult(
               buildDonationReceiptRecord({
                 status: "unverified",
@@ -722,6 +768,7 @@ export default function RazorpayTestPage() {
 
       const rzp = new window.Razorpay(options);
       rzp.on("payment.failed", (resp) => {
+        setBusyPhase("redirecting");
         const err = (resp && resp.error) || {};
         goToDonationResult(
           buildDonationReceiptRecord({
@@ -750,14 +797,13 @@ export default function RazorpayTestPage() {
             }),
           })
         );
-        setBusy(false);
       });
 
       rzp.open();
+      setBusyPhase("awaitingPayment");
     } catch (e) {
       setError((e && e.message) || String(e));
-    } finally {
-      setBusy(false);
+      resetPaymentUi();
     }
   }, [
     keyId,
@@ -776,6 +822,7 @@ export default function RazorpayTestPage() {
     amountCheck.valueInr,
     goToDonationResult,
     form.fixFieldsError,
+    resetPaymentUi,
   ]);
 
   const markTouched = (field) => () => setTouched((t) => ({ ...t, [field]: true }));
@@ -1701,7 +1748,7 @@ export default function RazorpayTestPage() {
                 fullWidth
                 variant="contained"
                 onClick={startPayment}
-                disabled={busy || !keyId || !formValid}
+                disabled={paymentBusy || !keyId || !formValid}
                 sx={{
                   mt: 2,
                   py: 1.55,
@@ -1720,10 +1767,14 @@ export default function RazorpayTestPage() {
                   "&.Mui-disabled": { color: "rgba(255,255,255,0.7) !important" },
                 }}
                 startIcon={
-                  busy ? <CircularProgress size={20} color="inherit" /> : <LockOutlinedIcon />
+                  paymentBusy ? (
+                    <CircularProgress size={20} color="inherit" />
+                  ) : (
+                    <LockOutlinedIcon />
+                  )
                 }
               >
-                {busy ? form.openingCheckout : form.proceedPayment}
+                {paymentButtonLabel}
               </MKButton>
 
               <Box
@@ -1783,7 +1834,7 @@ export default function RazorpayTestPage() {
                 <Button
                   type="button"
                   onClick={requestLeaveCheckout}
-                  disabled={busy}
+                  disabled={paymentBusy}
                   variant="text"
                   size="small"
                   startIcon={<ChevronLeftIcon sx={{ fontSize: 17, opacity: 0.7 }} />}
@@ -1810,6 +1861,73 @@ export default function RazorpayTestPage() {
         </Grid>
       </Card>
 
+      {paymentBusy && busyPhase === "awaitingPayment" ? (
+        <Box
+          aria-hidden
+          sx={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 1200,
+            backgroundColor: "rgba(15, 23, 42, 0.12)",
+            pointerEvents: "none",
+          }}
+        />
+      ) : null}
+
+      {showPaymentOverlay ? (
+        <Box
+          role="status"
+          aria-live="polite"
+          aria-busy="true"
+          sx={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 1400,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            px: 2,
+            py: 3,
+            backgroundColor: "rgba(15, 23, 42, 0.55)",
+            backdropFilter: "blur(6px)",
+          }}
+        >
+          <Box
+            sx={{
+              width: "100%",
+              maxWidth: 320,
+              borderRadius: "14px",
+              px: 3,
+              py: 3,
+              textAlign: "center",
+              backgroundColor: "#fff",
+              boxShadow: "0 18px 48px rgba(15, 23, 42, 0.22)",
+            }}
+          >
+            <Stack spacing={2} alignItems="center">
+              <CircularProgress size={44} thickness={4} sx={{ color: "#2e7d32" }} />
+              <Typography
+                variant="h6"
+                component="p"
+                sx={{
+                  fontWeight: 600,
+                  color: "#1f2a44",
+                  fontSize: "1.1rem",
+                  lineHeight: 1.4,
+                }}
+              >
+                {paymentProgressMessage}
+              </Typography>
+              {busyPhase === "processing" || busyPhase === "creatingReceipt" ? (
+                <Typography variant="body2" sx={{ color: "rgba(31, 42, 68, 0.55)" }}>
+                  {form.pleaseWait || "Please wait"}
+                </Typography>
+              ) : null}
+            </Stack>
+          </Box>
+        </Box>
+      ) : null}
+
       <Dialog
         open={leaveDialogOpen}
         onClose={() => setLeaveDialogOpen(false)}
@@ -1819,7 +1937,7 @@ export default function RazorpayTestPage() {
         <DialogTitle sx={{ fontWeight: 800 }}>{form.cancelDonationTitle}</DialogTitle>
         <DialogContent>
           <DialogContentText sx={{ color: "rgba(31,42,68,0.78)" }}>
-            {busy ? form.cancelDonationBusyBody : form.cancelDonationBody}
+            {paymentBusy ? form.cancelDonationBusyBody : form.cancelDonationBody}
           </DialogContentText>
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2.5 }}>
@@ -1833,7 +1951,7 @@ export default function RazorpayTestPage() {
             onClick={confirmLeaveCheckout}
             variant="contained"
             color="warning"
-            disabled={busy}
+            disabled={paymentBusy}
             sx={{ textTransform: "none", fontWeight: 800 }}
           >
             {form.cancelDonationConfirm}

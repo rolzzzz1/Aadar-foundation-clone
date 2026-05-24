@@ -509,7 +509,7 @@ function DefaultNavbar({
         zIndex={2001}
         sx={({ palette: { transparent: transparentColor, primary }, functions: { rgba } }) => ({
           backgroundColor: transparent ? transparentColor.main : rgba(primary.main, 0.8),
-          backdropFilter: transparent ? "none" : `saturate(200%) blur(10px)`,
+          backdropFilter: transparent ? "none" : { xs: "none", md: "saturate(200%) blur(10px)" },
         })}
         // sx={({ palette: { transparent: transparentColor, grey } }) => ({
         //   backgroundColor: transparent ? transparentColor.main : grey[400],
@@ -586,7 +586,7 @@ function DefaultNavbar({
           zIndex={2001}
           sx={({ palette: { transparent: transparentColor, grey } }) => ({
             backgroundColor: transparent ? transparentColor.main : grey[100],
-            backdropFilter: transparent ? "none" : `saturate(200%) blur(30px)`,
+            backdropFilter: transparent ? "none" : { xs: "none", md: "saturate(200%) blur(30px)" },
           })}
         >
           <MKBox

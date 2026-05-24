@@ -75,12 +75,14 @@ function DefaultFooter({ content }) {
                 component="img"
                 src={brand.image}
                 alt={brand.name}
+                width="80"
+                height="80"
                 maxWidth="5rem"
                 mb={1}
                 loading="lazy"
                 decoding="async"
                 fetchPriority="low"
-                sx={{ borderRadius: "10px" }}
+                sx={{ borderRadius: "10px", aspectRatio: "1 / 1", objectFit: "contain" }}
               />
               <MKTypography
                 variant="h4"

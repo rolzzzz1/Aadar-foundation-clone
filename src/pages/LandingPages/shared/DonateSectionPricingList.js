@@ -10,27 +10,37 @@ export default function DonateSectionPricingList({
   subtitle,
   items,
   wideAmountColumn = false,
+  centered = false,
 }) {
-  const gridTemplateColumns = wideAmountColumn
+  const gridTemplateColumns = centered
+    ? { xs: "1fr", sm: "1fr" }
+    : wideAmountColumn
     ? {
-        xs: "minmax(0, 1fr) minmax(6.25rem, 7.5rem)",
+        xs: "1fr",
         sm: "minmax(0, 1fr) 9.25rem",
         md: "minmax(0, 1fr) 9.75rem",
       }
     : {
-        xs: "minmax(0, 1fr) minmax(5rem, 5.75rem)",
+        xs: "1fr",
         sm: "minmax(0, 1fr) 6.75rem",
         md: "minmax(0, 1fr) 7rem",
       };
 
   return (
-    <>
+    <MKBox
+      sx={{
+        width: "100%",
+        maxWidth: centered ? { xs: "100%", sm: 560, md: 600 } : "100%",
+        mx: centered ? "auto" : 0,
+      }}
+    >
       <MKTypography
         fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
         sx={{
           fontSize: { xs: "1.1rem", sm: "1.3rem", md: "1.3rem", lg: "1.5rem" },
           fontWeight: "400",
           width: "100%",
+          textAlign: centered ? "center" : { xs: "left", sm: "center" },
         }}
         pb={subtitle ? 0.75 : 2}
       >
@@ -46,6 +56,7 @@ export default function DonateSectionPricingList({
             lineHeight: 1.5,
             letterSpacing: "0.02em",
             width: "100%",
+            textAlign: centered ? "center" : "left",
           }}
         >
           {subtitle}
@@ -91,7 +102,10 @@ export default function DonateSectionPricingList({
                   sx={{
                     fontWeight: 500,
                     color: "#1f2a44",
-                    lineHeight: 1.45,
+                    lineHeight: 1.5,
+                    wordBreak: "normal",
+                    overflowWrap: "break-word",
+                    textAlign: centered ? "center" : "left",
                   }}
                 >
                   {row.label}
@@ -105,6 +119,7 @@ export default function DonateSectionPricingList({
                       color: "rgba(31, 42, 68, 0.62)",
                       mt: 0.35,
                       lineHeight: 1.4,
+                      textAlign: centered ? "center" : "left",
                     }}
                   >
                     {row.detail}
@@ -122,10 +137,11 @@ export default function DonateSectionPricingList({
                 sx={{
                   fontWeight: 700,
                   color: "#2e7d32",
-                  whiteSpace: "nowrap",
-                  textAlign: "right",
+                  whiteSpace: { xs: "normal", sm: "nowrap" },
+                  textAlign: centered ? "center" : { xs: "left", sm: "right" },
                   justifySelf: "stretch",
                   fontVariantNumeric: "tabular-nums",
+                  mt: { xs: 0.35, sm: 0 },
                 }}
               >
                 {row.amount}
@@ -134,7 +150,7 @@ export default function DonateSectionPricingList({
           );
         })}
       </MKBox>
-    </>
+    </MKBox>
   );
 }
 
@@ -149,4 +165,5 @@ DonateSectionPricingList.propTypes = {
     })
   ).isRequired,
   wideAmountColumn: PropTypes.bool,
+  centered: PropTypes.bool,
 };

@@ -350,7 +350,7 @@ const HeroSlide = memo(function HeroSlide({
                 alt="Aadar Foundation"
                 width="100%"
                 height="100%"
-                loading="lazy"
+                loading="eager"
                 decoding="async"
                 fetchPriority="low"
                 sx={{
@@ -415,7 +415,7 @@ const HeroSlide = memo(function HeroSlide({
                 alt="Aadar Foundation"
                 width="100%"
                 height="100%"
-                loading="lazy"
+                loading="eager"
                 decoding="async"
                 fetchPriority="low"
                 sx={{
@@ -480,7 +480,7 @@ const HeroSlide = memo(function HeroSlide({
                 alt="Aadar Foundation"
                 width="100%"
                 height="100%"
-                loading="lazy"
+                loading="eager"
                 decoding="async"
                 fetchPriority="low"
                 sx={{
@@ -1314,7 +1314,7 @@ const HeroSlide = memo(function HeroSlide({
             component="img"
             src={aadarHindiYellow}
             width={{ xs: "120px", sm: "100px", md: "120px", lg: "120px" }}
-            height="auto"
+            height={{ xs: "120px", sm: "100px", md: "120px", lg: "120px" }}
             display={{ xs: "inline", sm: "none" }}
             mb={2}
             loading="eager"
@@ -1323,7 +1323,7 @@ const HeroSlide = memo(function HeroSlide({
             alt="Aadar Foundation Logo"
             sx={{
               filter: { xs: "drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))", sm: "none" },
-              aspectRatio: "auto",
+              objectFit: "contain",
             }}
           />
           <MKTypography
@@ -1847,6 +1847,15 @@ function Home() {
   const [isTabletRange, setIsTabletRange] = useState(
     typeof window !== "undefined" && window.innerWidth >= 576 && window.innerWidth < 768
   );
+  const [reduceMotion, setReduceMotion] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduceMotion(mq.matches);
+    const onChange = (event) => setReduceMotion(event.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
 
   // Update isMobile and isTabletRange on window resize (debounced)
   useEffect(() => {
@@ -1989,9 +1998,8 @@ function Home() {
         [data-footer-button="aishx"].MuiButton-root:hover,
         button[data-footer-button="aishx"]:hover,
         a[data-footer-button="aishx"]:hover {
-          transform: translateY(-2px) scale(1.04) !important;
-          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.15) !important;
-          filter: brightness(1.12) !important;
+          transform: translateY(-2px) !important;
+          filter: none !important;
         }
         [data-footer-button="aishx"]:active,
         [data-footer-button="aishx"].MuiButton-root:active,
@@ -2728,15 +2736,18 @@ function Home() {
 
     // Preload slide background images (cheap, local) after first paint
     const preloadImages = () => {
-      // Mobile has very limited bandwidth; avoid preloading multi‑MB slide images.
-      if (window.innerWidth < 768) return;
-
-      const imageUrls = [blackAndWhiteHero, heroImage2];
+      const isMobile = window.innerWidth < 768;
+      const imageUrls = isMobile
+        ? [publicAsset("/assets/images/aadarHindiYellow.png")]
+        : [blackAndWhiteHero, heroImage2];
       imageUrls.forEach((src) => {
         if (!src) return;
         const img = new Image();
         img.decoding = "async";
         img.loading = "eager";
+        if (!isMobile && src === blackAndWhiteHero) {
+          img.fetchPriority = "high";
+        }
         img.src = src;
       });
     };
@@ -3459,9 +3470,8 @@ function Home() {
             [data-footer-button="aishx"].MuiButton-root:hover,
             button[data-footer-button="aishx"]:hover,
             a[data-footer-button="aishx"]:hover {
-              transform: translateY(-2px) scale(1.04) !important;
-              box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.15) !important;
-              filter: brightness(1.12) !important;
+              transform: translateY(-2px) !important;
+              filter: none !important;
             }
             [data-footer-button="aishx"]:active,
             [data-footer-button="aishx"].MuiButton-root:active,
@@ -4221,7 +4231,7 @@ function Home() {
 
         <Carousel
           animation="fade"
-          duration={650}
+          duration={reduceMotion ? 0 : isMobile || isTabletRange ? 350 : 650}
           indicators={!isMobile && !isTabletRange}
           navButtonsAlwaysVisible={true}
           navButtonsAlwaysInvisible={false}
@@ -4343,26 +4353,30 @@ function Home() {
           mb: { xs: 2, sm: 4 },
           position: "relative",
           zIndex: 10,
-          backgroundColor: ({ palette: { white }, functions: { rgba } }) => rgba(white.main, 0.8),
-          backdropFilter: "saturate(200%) blur(30px)",
+          backgroundColor: ({ palette: { white }, functions: { rgba } }) => ({
+            xs: rgba(white.main, 0.96),
+            md: rgba(white.main, 0.8),
+          }),
+          backdropFilter: { xs: "none", md: "saturate(200%) blur(30px)" },
           boxShadow: ({ boxShadows: { xxl } }) => xxl,
         }}
       >
         <Suspense fallback={null}>
-          {/* About section component - memoized to prevent re-render */}
-          <About />
-
-          {/* Counters section component - memoized to prevent re-render */}
-          <Counters />
-
-          {/* Journey video section component - memoized to prevent re-render */}
-          <Journey />
-
-          {/* Our work section component - memoized to prevent re-render */}
-          <Work />
-
-          {/* Events section component - memoized to prevent re-render */}
-          <Events />
+          <MKBox sx={{ contentVisibility: "auto", containIntrinsicSize: "0 520px" }}>
+            <About />
+          </MKBox>
+          <MKBox sx={{ contentVisibility: "auto", containIntrinsicSize: "0 360px" }}>
+            <Counters />
+          </MKBox>
+          <MKBox sx={{ contentVisibility: "auto", containIntrinsicSize: "0 480px" }}>
+            <Journey />
+          </MKBox>
+          <MKBox sx={{ contentVisibility: "auto", containIntrinsicSize: "0 640px" }}>
+            <Work />
+          </MKBox>
+          <MKBox sx={{ contentVisibility: "auto", containIntrinsicSize: "0 520px" }}>
+            <Events />
+          </MKBox>
         </Suspense>
       </Card>
 

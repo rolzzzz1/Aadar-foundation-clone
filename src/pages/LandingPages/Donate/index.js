@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 // i18next imports
 import { useTranslation, Trans } from "react-i18next";
@@ -31,6 +32,63 @@ import bgImage from "assets/images/mainThemeImages/smallBrushstroke2.svg";
 import scanner from "assets/images/scanner.jpg";
 import donateImg from "assets/images/donate-happy-faces.png";
 import MKButton from "components/MKButton";
+import DonateSectionPricingList from "pages/LandingPages/shared/DonateSectionPricingList";
+
+function BankDetailRow({ label, value, copyLabel, onCopy }) {
+  return (
+    <MKBox
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: 1,
+        width: "100%",
+        py: 1.25,
+        borderBottom: "1px solid rgba(31, 42, 68, 0.1)",
+        "&:last-of-type": { borderBottom: "none" },
+      }}
+    >
+      <MKTypography
+        component="div"
+        fontSize={{ xs: "0.92rem", sm: "1rem" }}
+        sx={{
+          flex: 1,
+          minWidth: 0,
+          letterSpacing: "0.03rem",
+          lineHeight: 1.5,
+          wordBreak: "break-word",
+        }}
+      >
+        <MKBox component="span" fontWeight="700">
+          {label}
+        </MKBox>
+        <MKBox component="span" sx={{ ml: 0.5 }}>
+          {value}
+        </MKBox>
+      </MKTypography>
+      <Tooltip title={copyLabel} placement="top">
+        <MKButton
+          onClick={onCopy}
+          variant="text"
+          color="text"
+          size="small"
+          iconOnly
+          sx={{ flexShrink: 0, minWidth: 36, minHeight: 36 }}
+          aria-label={copyLabel}
+        >
+          <ContentCopyIcon fontSize="small" />
+        </MKButton>
+      </Tooltip>
+    </MKBox>
+  );
+}
+
+BankDetailRow.propTypes = {
+  label: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  copyLabel: PropTypes.string.isRequired,
+  onCopy: PropTypes.func.isRequired,
+};
 
 function Donate() {
   const { t } = useTranslation();
@@ -56,7 +114,7 @@ function Donate() {
 
       {/* Main Image and text */}
       <MKBox
-        minHeight="80vh"
+        minHeight={{ xs: "55vh", sm: "65vh", md: "80vh" }}
         width="100%"
         sx={{
           backgroundImage: `url(${bgImage2})`,
@@ -100,12 +158,12 @@ function Donate() {
       {/* Donate section */}
       <Card
         sx={{
-          p: 2,
-          mx: { xs: 2, lg: 3 },
-          mt: -2,
+          p: { xs: 1.5, sm: 2 },
+          mx: { xs: 1, sm: 2, lg: 3 },
+          mt: { xs: 1, sm: -2 },
           mb: 4,
           backgroundColor: "#f0f2f5",
-          backdropFilter: "saturate(200%) blur(30px)",
+          backdropFilter: { xs: "none", md: "saturate(200%) blur(30px)" },
           boxShadow: ({ boxShadows: { xxl } }) => xxl,
         }}
       >
@@ -241,133 +299,82 @@ function Donate() {
             </Grid>
             <Grid display={"flex"} flexDirection={"column"} alignItems={"center"}>
               <MKBox
-                sx={{ backgroundColor: "#fbecd4", borderRadius: "20px" }}
-                py={{ xs: 6, sm: 8 }}
-                px={{ xs: 2, sm: 5, md: 10, lg: 20, xl: 40 }}
+                sx={{
+                  backgroundColor: "#fbecd4",
+                  borderRadius: "20px",
+                  width: "100%",
+                  maxWidth: 640,
+                }}
+                py={{ xs: 3, sm: 5, md: 6 }}
+                px={{ xs: 2, sm: 4, md: 6, lg: 8 }}
                 mt={{ xs: 4, sm: 8 }}
-                display={"flex"}
-                flexDirection={"column"}
-                alignItems={"center"}
+                display="flex"
+                flexDirection="column"
+                alignItems="stretch"
               >
                 <MKTypography
                   fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
                   sx={{
-                    fontSize: { xs: "1.2rem", sm: "1.4rem", md: "1.4rem", lg: "1.5rem" },
+                    fontSize: { xs: "1.2rem", sm: "1.4rem", md: "1.5rem" },
                     fontWeight: "500",
                     letterSpacing: "0.05rem",
                   }}
                   variant="h4"
-                  pb={4}
+                  pb={3}
+                  textAlign="center"
                 >
                   {donatePage.bankAccountDetails.title}
                 </MKTypography>
 
-                <MKTypography
-                  fontSize={{ xs: "1rem", sm: "1rem", md: "1rem", lg: "1rem" }}
-                  py={{ lg: 1 }}
-                  sx={{ letterSpacing: "0.05rem" }}
-                >
-                  <b>{donatePage.bankAccountDetails.acccountName.title} - </b>
-                  {donatePage.bankAccountDetails.acccountName.value}
-                  <Tooltip title={donatePage.clickToCopy} placement="right">
-                    <MKButton
-                      onClick={() => {
-                        navigator.clipboard.writeText(
-                          donatePage.bankAccountDetails.acccountName.value
-                        );
-                      }}
-                      variant="text"
-                      color="text"
-                      size="medium"
-                      display="inline-block"
-                      iconOnly
-                    >
-                      <ContentCopyIcon />
-                    </MKButton>
-                  </Tooltip>
-                </MKTypography>
-
-                <MKTypography
-                  fontSize={{ xs: "1rem", sm: "1rem", md: "1rem", lg: "1rem" }}
-                  py={{ lg: 1 }}
-                  sx={{ letterSpacing: "0.05rem" }}
-                >
-                  <b>{donatePage.bankAccountDetails.bankName.title} - </b>
-                  {donatePage.bankAccountDetails.bankName.value}{" "}
-                  <Tooltip title={donatePage.clickToCopy} placement="right">
-                    <MKButton
-                      onClick={() => {
-                        navigator.clipboard.writeText(donatePage.bankAccountDetails.bankName.value);
-                      }}
-                      variant="text"
-                      color="text"
-                      size="medium"
-                      display="inline-block"
-                      iconOnly
-                    >
-                      <ContentCopyIcon />
-                    </MKButton>
-                  </Tooltip>
-                </MKTypography>
-                <MKTypography
-                  fontSize={{ xs: "1rem", sm: "1rem", md: "1rem", lg: "1rem" }}
-                  py={{ lg: 1 }}
-                  sx={{ letterSpacing: "0.05rem" }}
-                >
-                  <b>{donatePage.bankAccountDetails.ifscCode.title} - </b>BARB0VJCCGW{" "}
-                  <Tooltip title={donatePage.clickToCopy} placement="right">
-                    <MKButton
-                      onClick={() => {
-                        navigator.clipboard.writeText("BARB0VJCCGW");
-                      }}
-                      variant="text"
-                      color="text"
-                      size="medium"
-                      display="inline-block"
-                      iconOnly
-                    >
-                      <ContentCopyIcon />
-                    </MKButton>
-                  </Tooltip>
-                </MKTypography>
-                <MKTypography
-                  fontSize={{ xs: "1rem", sm: "1rem", md: "1rem", lg: "1rem" }}
-                  py={{ lg: 1 }}
-                  sx={{ letterSpacing: "0.05rem" }}
-                >
-                  <b>{donatePage.bankAccountDetails.accountNo.title} - </b>67940100000154{" "}
-                  <Tooltip title={donatePage.clickToCopy} placement="right">
-                    <MKButton
-                      onClick={() => {
-                        navigator.clipboard.writeText("67940100000154");
-                      }}
-                      variant="text"
-                      color="text"
-                      size="medium"
-                      display="inline-block"
-                      iconOnly
-                    >
-                      <ContentCopyIcon />
-                    </MKButton>
-                  </Tooltip>
-                </MKTypography>
+                <BankDetailRow
+                  label={`${donatePage.bankAccountDetails.acccountName.title} -`}
+                  value={donatePage.bankAccountDetails.acccountName.value}
+                  copyLabel={donatePage.clickToCopy}
+                  onCopy={() =>
+                    navigator.clipboard.writeText(donatePage.bankAccountDetails.acccountName.value)
+                  }
+                />
+                <BankDetailRow
+                  label={`${donatePage.bankAccountDetails.bankName.title} -`}
+                  value={donatePage.bankAccountDetails.bankName.value}
+                  copyLabel={donatePage.clickToCopy}
+                  onCopy={() =>
+                    navigator.clipboard.writeText(donatePage.bankAccountDetails.bankName.value)
+                  }
+                />
+                <BankDetailRow
+                  label={`${donatePage.bankAccountDetails.ifscCode.title} -`}
+                  value="BARB0VJCCGW"
+                  copyLabel={donatePage.clickToCopy}
+                  onCopy={() => navigator.clipboard.writeText("BARB0VJCCGW")}
+                />
+                <BankDetailRow
+                  label={`${donatePage.bankAccountDetails.accountNo.title} -`}
+                  value="67940100000154"
+                  copyLabel={donatePage.clickToCopy}
+                  onCopy={() => navigator.clipboard.writeText("67940100000154")}
+                />
               </MKBox>
             </Grid>
             <MKBox
               border="2px solid #66BB6A"
               borderRadius="5px"
-              width={{ xs: "100%", sm: "80%" }}
-              p={{ xs: 1, sm: 2 }}
+              width="100%"
+              maxWidth={640}
+              p={{ xs: 1.5, sm: 2 }}
               mx="auto"
               my={{ xs: 4, sm: 8 }}
             >
               <MKTypography
                 color="success"
-                fontSize={{ xs: "0.8rem", sm: "0.8rem", md: "1rem", lg: "1rem" }}
+                fontSize={{ xs: "0.85rem", sm: "0.95rem", md: "1rem" }}
                 textAlign="center"
+                sx={{ lineHeight: 1.65 }}
               >
-                {donatePage.message80g} <br />
-                <b>{donatePage.panNo}</b>
+                {donatePage.message80g}{" "}
+                <MKBox component="span" display="block" fontWeight="700" mt={0.5}>
+                  {donatePage.panNo}
+                </MKBox>
               </MKTypography>
             </MKBox>
             <MKBox
@@ -375,7 +382,7 @@ function Donate() {
               py={2}
               mb={2}
               mx={0}
-              px={{ xs: 2, sm: 3, md: 4, lg: 5 }}
+              px={{ xs: 1, sm: 3, md: 4, lg: 5 }}
               sx={{
                 backgroundColor: "#fafafa",
                 borderRadius: "20px",
@@ -414,181 +421,57 @@ function Donate() {
                 </MKTypography>
               </Grid>
 
-              <Grid container pt={{ xs: 2, sm: 4, md: 4, lg: 6 }} px={{ xs: 1, sm: 2, md: 2 }}>
-                <Grid
-                  container
-                  display={"flex"}
-                  flexDirection={"column"}
-                  alignItems={"center"}
-                  pt={4}
-                  lg={6}
-                  xl={6}
-                >
-                  <MKTypography
-                    sx={{
-                      fontSize: { xs: "1.1rem", sm: "1.3rem", md: "1.3rem", lg: "1.5rem" },
-                      fontWeight: "400",
-                    }}
-                    pb={2}
-                    fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
-                  >
-                    {donatePage.membershipSection.membership.title}
-                  </MKTypography>
-                  <MKBox pt={{ sm: 1, md: 2 }} px={{ xs: 4, md: 5, lg: 8 }}>
-                    {donatePage.membershipSection.membership.items.map((row) => (
-                      <MKTypography
-                        key={row.label}
-                        fontSize={{ xs: "0.8rem", sm: "1rem", md: "1rem", lg: "1rem" }}
-                        py={1}
-                        sx={{ letterSpacing: "0.05rem" }}
-                      >
-                        <b>
-                          {row.label} - {row.amount}
-                        </b>
-                        <MKTypography fontSize="0.9rem" sx={{ letterSpacing: "0.05rem" }}>
-                          {row.detail}
-                        </MKTypography>
-                      </MKTypography>
-                    ))}
-                  </MKBox>
-                </Grid>
-                <Grid
-                  container
-                  display={"flex"}
-                  flexDirection={"column"}
-                  alignItems={"center"}
-                  pt={4}
-                  lg={6}
-                  xl={6}
-                >
-                  <MKTypography
-                    sx={{
-                      fontSize: { xs: "1.1rem", sm: "1.3rem", md: "1.3rem", lg: "1.5rem" },
-                      fontWeight: "400",
-                    }}
-                    pb={2}
-                    fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
-                  >
-                    {donatePage.membershipSection.sponsorPrabhuji.title}
-                  </MKTypography>
-                  <MKBox pt={{ sm: 1, md: 2 }} px={{ xs: 4, md: 5, lg: 10 }}>
-                    {donatePage.membershipSection.sponsorPrabhuji.cards.map((row) => (
-                      <MKBox key={`${row.description}-${row.periodDetail}`} py={0.8}>
-                        <MKTypography
-                          fontSize={{ xs: "0.8rem", sm: "1rem", md: "1rem", lg: "1rem" }}
-                          sx={{ letterSpacing: "0.05rem" }}
-                        >
-                          <b>
-                            {row.description} - {row.highlight.split("–").pop().trim()}
-                          </b>
-                        </MKTypography>
-                        <MKTypography fontSize="0.9rem" sx={{ letterSpacing: "0.05rem" }}>
-                          {row.periodDetail}
-                        </MKTypography>
-                      </MKBox>
-                    ))}
-                    <MKTypography
-                      fontSize={{ xs: "0.7rem", sm: "0.75rem", md: "0.8rem", lg: "0.85rem" }}
-                      py={2}
-                      sx={{ letterSpacing: "0.05rem" }}
-                    >
-                      {donatePage.membershipSection.sponsorPrabhuji.description}
-                    </MKTypography>
-                  </MKBox>
-                </Grid>
-              </Grid>
-
               <Grid
                 container
-                pt={{ xs: 4, sm: 4, md: 6, lg: 8 }}
+                pt={{ xs: 2, sm: 4, md: 4, lg: 6 }}
                 px={{ xs: 1, sm: 2, md: 2 }}
-                display={"flex"}
-                flexDirection={"column"}
-                alignItems={"center"}
+                direction="column"
+                alignItems="center"
+                spacing={{ xs: 4, sm: 5 }}
                 pb={4}
               >
-                <MKTypography
-                  fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
-                  sx={{
-                    fontSize: { xs: "1.1rem", sm: "1.3rem", md: "1.3rem", lg: "1.5rem" },
-                    fontWeight: "400",
-                  }}
-                  pb={2}
-                  px={{ xs: 4, md: 4, sm: 8 }}
-                >
-                  {donatePage.membershipSection.foodSponsorship.title}
-                </MKTypography>
-                <MKBox
-                  component="ul"
-                  sx={{
-                    listStyle: "none",
-                    m: 0,
-                    p: 0,
-                    width: "100%",
-                    maxWidth: 720,
-                    mx: "auto",
-                    px: { xs: 4, md: 4, sm: 8 },
-                  }}
-                >
-                  {donatePage.membershipSection.foodSponsorship.items.map((row, idx) => (
-                    <MKBox
-                      key={row.label}
-                      component="li"
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: {
-                          xs: "minmax(0, 1fr) minmax(5rem, 5.75rem)",
-                          sm: "minmax(0, 1fr) 6.75rem",
-                          md: "minmax(0, 1fr) 7rem",
-                        },
-                        columnGap: { xs: 1.25, sm: 2 },
-                        alignItems: "start",
-                        py: idx === 3 ? 1.6 : 1.2,
-                        letterSpacing: "0.05rem",
-                        borderBottom: idx < 3 ? "1px solid rgba(31, 42, 68, 0.08)" : "none",
-                      }}
-                    >
-                      <MKTypography
-                        component="span"
-                        fontSize={{
-                          xs: "0.8rem",
-                          sm: "0.9rem",
-                          md: "0.9rem",
-                          lg: idx === 3 ? "1.05rem" : "1rem",
-                        }}
-                        sx={{
-                          minWidth: 0,
-                          fontWeight: 500,
-                          color: "#1f2a44",
-                          lineHeight: 1.45,
-                          textAlign: "left",
-                          pr: { xs: 0.5, sm: 1 },
-                        }}
-                      >
-                        {row.label}
-                      </MKTypography>
-                      <MKTypography
-                        component="span"
-                        fontSize={{
-                          xs: "0.8rem",
-                          sm: "0.9rem",
-                          md: "0.95rem",
-                          lg: idx === 3 ? "1.15rem" : "1rem",
-                        }}
-                        sx={{
-                          fontWeight: 700,
-                          color: "#2e7d32",
-                          whiteSpace: "nowrap",
-                          textAlign: "right",
-                          justifySelf: "stretch",
-                          fontVariantNumeric: "tabular-nums",
-                        }}
-                      >
-                        {row.amount}
-                      </MKTypography>
-                    </MKBox>
-                  ))}
-                </MKBox>
+                <Grid item xs={12} sx={{ width: "100%" }}>
+                  <DonateSectionPricingList
+                    centered
+                    wideAmountColumn
+                    title={donatePage.membershipSection.membership.title}
+                    subtitle={donatePage.membershipSection.membership.subtitle}
+                    items={donatePage.membershipSection.membership.items}
+                  />
+                </Grid>
+                <Grid item xs={12} sx={{ width: "100%" }}>
+                  <DonateSectionPricingList
+                    centered
+                    wideAmountColumn
+                    title={donatePage.membershipSection.sponsorPrabhuji.title}
+                    subtitle={donatePage.membershipSection.sponsorPrabhuji.subtitle}
+                    items={donatePage.membershipSection.sponsorPrabhuji.cards.map((row) => ({
+                      label: row.description,
+                      detail: row.periodDetail,
+                      amount: row.highlight.split("–").pop()?.trim() || row.highlight,
+                    }))}
+                  />
+                  <MKTypography
+                    fontSize={{ xs: "0.7rem", sm: "0.75rem", md: "0.8rem", lg: "0.85rem" }}
+                    py={2}
+                    sx={{
+                      letterSpacing: "0.05rem",
+                      textAlign: "center",
+                      maxWidth: { sm: 560, md: 600 },
+                      mx: "auto",
+                    }}
+                  >
+                    {donatePage.membershipSection.sponsorPrabhuji.description}
+                  </MKTypography>
+                </Grid>
+                <Grid item xs={12} sx={{ width: "100%" }}>
+                  <DonateSectionPricingList
+                    centered
+                    title={donatePage.membershipSection.foodSponsorship.title}
+                    subtitle={donatePage.membershipSection.foodSponsorship.subtitle}
+                    items={donatePage.membershipSection.foodSponsorship.items}
+                  />
+                </Grid>
               </Grid>
             </MKBox>
           </Container>
