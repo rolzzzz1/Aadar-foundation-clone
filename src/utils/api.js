@@ -48,6 +48,9 @@ export function formatApiErrorMessage(data, status) {
       " Check RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET match your Razorpay test keys, then restart npm start.";
   } else if (lower.includes("authentication failed")) {
     msg += " Your key secret likely does not match the key id — update .env.local and restart.";
+  } else if (status === 403) {
+    msg +=
+      " The payment API blocked this request (origin not allowed). On Vercel, set ALLOWED_ORIGINS to your site URL(s), e.g. https://www.aadarfoundation.org,https://aadarfoundation.org";
   }
 
   return msg;

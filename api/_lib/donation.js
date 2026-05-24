@@ -102,6 +102,12 @@ function normalizeOrigin(value) {
   }
 }
 
+/** Canonical site origins — used when ALLOWED_ORIGINS is unset on Vercel. */
+const DEFAULT_PRODUCTION_ORIGINS = Object.freeze([
+  "https://www.aadarfoundation.org",
+  "https://aadarfoundation.org",
+]);
+
 function getAllowedOrigins() {
   const fromEnv = (process.env.ALLOWED_ORIGINS || "")
     .split(",")
@@ -109,31 +115,73 @@ function getAllowedOrigins() {
     .filter(Boolean);
 
   const extra = [];
-  if (process.env.VERCEL_ENV === "preview" && process.env.VERCEL_URL) {
+  if (process.env.VERCEL_URL) {
     extra.push(normalizeOrigin(`https://${process.env.VERCEL_URL}`));
   }
 
-  return [...new Set([...fromEnv, ...extra])];
+  const defaults =
+    isProduction() && fromEnv.length === 0
+      ? DEFAULT_PRODUCTION_ORIGINS.map(normalizeOrigin).filter(Boolean)
+      : [];
+
+  return [...new Set([...fromEnv, ...defaults, ...extra])];
+}
+
+function getRequestOrigin(req) {
+  const origin = (req.headers && (req.headers.origin || req.headers.Origin)) || "";
+  if (origin) return origin;
+
+  const referer = (req.headers && (req.headers.referer || req.headers.Referer)) || "";
+  if (referer) {
+    try {
+      return new URL(referer).origin;
+    } catch {
+      return "";
+    }
+  }
+
+  const host = (req.headers && req.headers.host) || "";
+  if (!host) return "";
+
+  const protoHeader = req.headers["x-forwarded-proto"] || req.headers["X-Forwarded-Proto"];
+  const proto = String(protoHeader || "https")
+    .split(",")[0]
+    .trim();
+  return `${proto}://${host}`;
+}
+
+/** True when the browser origin matches the host serving this API (same deployment). */
+function isSameDeploymentHost(req, requestOrigin) {
+  const host = (req.headers && req.headers.host) || "";
+  if (!host || !requestOrigin) return false;
+  try {
+    return new URL(requestOrigin).host === host.split(":")[0];
+  } catch {
+    return false;
+  }
 }
 
 /**
- * Reject cross-origin POSTs when an allowlist is set. In production, an empty
- * allowlist is denied (set ALLOWED_ORIGINS on Vercel). Local dev with no
- * allowlist still allows all origins.
+ * Reject cross-origin POSTs. Production allows DEFAULT_PRODUCTION_ORIGINS when
+ * ALLOWED_ORIGINS is unset, plus same-host requests to the current deployment.
  */
 function originIsAllowed(req) {
+  const requestOrigin = getRequestOrigin(req);
+  if (!requestOrigin) {
+    return !isProduction();
+  }
+
+  if (isSameDeploymentHost(req, requestOrigin)) {
+    return true;
+  }
+
   const allowList = getAllowedOrigins();
   if (allowList.length === 0) {
     return !isProduction();
   }
 
-  const origin = (req.headers && (req.headers.origin || req.headers.Origin)) || "";
-  const referer = (req.headers && (req.headers.referer || req.headers.Referer)) || "";
-  const candidate = origin || referer;
-  if (!candidate) return false;
-
   try {
-    const url = new URL(candidate);
+    const url = new URL(requestOrigin);
     return allowList.includes(url.origin);
   } catch {
     return false;
