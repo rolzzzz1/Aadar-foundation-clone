@@ -12,12 +12,9 @@
  *   replace server validation.
  */
 
-/** Public React Router path for the Razorpay donation checkout form. */
-export const DONATION_CHECKOUT_PATH = "/donate/checkout";
+import { DONATE_PAGE_PATH, DONATION_CHECKOUT_PATH, DONATE_WIDGET_HASH } from "./paths";
 
-/** Public donate page (Donate2). */
-export const DONATE_PAGE_PATH = "/donate";
-export const DONATE_WIDGET_HASH = "donate-widget";
+export { DONATE_PAGE_PATH, DONATION_CHECKOUT_PATH, DONATE_WIDGET_HASH };
 
 export const MIN_AMOUNT_INR = 1;
 export const MAX_AMOUNT_INR = 500000;

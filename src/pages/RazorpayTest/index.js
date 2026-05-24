@@ -46,6 +46,7 @@ import MKBox from "components/MKBox";
 import MKButton from "components/MKButton";
 import aadarLogo from "assets/images/logos/logo-aadar.jpg";
 import { ReactComponent as RazorpayLogoLight } from "assets/images/logos/razorpay-logo-light.svg";
+import { PRIVACY_POLICY_PATH, TERMS_CONDITIONS_PATH } from "utils/paths";
 
 import {
   EMAIL_MAX,
@@ -1660,7 +1661,7 @@ export default function RazorpayTestPage() {
                           1: (
                             <MuiLink
                               component={Link}
-                              to="/pages/landing-pages/terms-conditions"
+                              to={TERMS_CONDITIONS_PATH}
                               target="_blank"
                               rel="noopener noreferrer"
                               underline="always"
@@ -1670,7 +1671,7 @@ export default function RazorpayTestPage() {
                           2: (
                             <MuiLink
                               component={Link}
-                              to="/pages/landing-pages/privacy-policy"
+                              to={PRIVACY_POLICY_PATH}
                               target="_blank"
                               rel="noopener noreferrer"
                               underline="always"

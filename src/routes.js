@@ -32,13 +32,21 @@
 
 // Lazy load routes for code splitting and faster initial load
 import { lazy } from "react";
+import {
+  ABOUT_PATH,
+  WORK_PATH,
+  VOLUNTEER_PATH,
+  GALLERY_PATH,
+  CONTACT_PATH,
+  PRIVACY_POLICY_PATH,
+  TERMS_CONDITIONS_PATH,
+} from "utils/paths";
 
 const About = lazy(() => import("layouts/pages/landing-pages/about-us"));
 const Work = lazy(() => import("layouts/pages/landing-pages/work"));
 const Gallery = lazy(() => import("layouts/pages/landing-pages/gallery"));
 const Contact = lazy(() => import("layouts/pages/landing-pages/contact"));
 const Volunteer = lazy(() => import("layouts/pages/landing-pages/volunteer"));
-const Donate = lazy(() => import("layouts/pages/landing-pages/donate"));
 const PrivacyPolicy = lazy(() => import("layouts/pages/landing-pages/privacy-policy"));
 const TermsConditions = lazy(() => import("layouts/pages/landing-pages/terms-conditions"));
 
@@ -86,50 +94,44 @@ const routes = [
   {
     key: 2,
     name: "About Us",
-    route: "/pages/landing-pages/about-us",
+    route: ABOUT_PATH,
     component: createLazyRoute(About, { isWorkOn: false }),
   },
 
   {
     key: 3,
     name: "Our Work",
-    route: "/pages/landing-pages/work",
+    route: WORK_PATH,
     component: createLazyRoute(Work, { isWorkOn: true }),
   },
   {
     key: 4,
     name: "Volunteer",
-    route: "/pages/landing-pages/volunteer",
+    route: VOLUNTEER_PATH,
     component: createLazyRoute(Volunteer),
-  },
-  {
-    key: 5,
-    name: "Donate",
-    route: "/pages/landing-pages/donate",
-    component: createLazyRoute(Donate),
   },
   {
     key: 6,
     name: "Gallery",
-    route: "/pages/landing-pages/gallery",
+    route: GALLERY_PATH,
     component: createLazyRoute(Gallery),
   },
   {
     key: 7,
     name: "Contact",
-    route: "/pages/landing-pages/contact",
+    route: CONTACT_PATH,
     component: createLazyRoute(Contact),
   },
   {
     key: 8,
     name: "Privacy policy",
-    route: "/pages/landing-pages/privacy-policy",
+    route: PRIVACY_POLICY_PATH,
     component: createLazyRoute(PrivacyPolicy),
   },
   {
     key: 9,
     name: "Terms Conditions",
-    route: "/pages/landing-pages/terms-conditions",
+    route: TERMS_CONDITIONS_PATH,
     component: createLazyRoute(TermsConditions),
   },
 ];

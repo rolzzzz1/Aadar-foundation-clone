@@ -10,52 +10,51 @@
     <xhtml:link rel="alternate" hreflang="hi" href="https://www.aadarfoundation.org/hi/"/>
   </url>
   <url>
-    <loc>https://www.aadarfoundation.org/pages/landing-pages/about</loc>
+    <loc>https://www.aadarfoundation.org/about</loc>
     <lastmod>2024-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.aadarfoundation.org/pages/landing-pages/about"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.aadarfoundation.org/hi/pages/landing-pages/about"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.aadarfoundation.org/about"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://www.aadarfoundation.org/hi/about"/>
   </url>
   <url>
-    <loc>https://www.aadarfoundation.org/pages/landing-pages/work</loc>
+    <loc>https://www.aadarfoundation.org/work</loc>
     <lastmod>2024-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.aadarfoundation.org/pages/landing-pages/work"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.aadarfoundation.org/hi/pages/landing-pages/work"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.aadarfoundation.org/work"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://www.aadarfoundation.org/hi/work"/>
   </url>
   <url>
-    <loc>https://www.aadarfoundation.org/pages/landing-pages/events</loc>
+    <loc>https://www.aadarfoundation.org/volunteer</loc>
+    <lastmod>2024-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.aadarfoundation.org/volunteer"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://www.aadarfoundation.org/hi/volunteer"/>
+  </url>
+  <url>
+    <loc>https://www.aadarfoundation.org/gallery</loc>
     <lastmod>2024-01-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.aadarfoundation.org/pages/landing-pages/events"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.aadarfoundation.org/hi/pages/landing-pages/events"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.aadarfoundation.org/gallery"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://www.aadarfoundation.org/hi/gallery"/>
   </url>
   <url>
-    <loc>https://www.aadarfoundation.org/pages/landing-pages/gallery</loc>
-    <lastmod>2024-01-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.aadarfoundation.org/pages/landing-pages/gallery"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.aadarfoundation.org/hi/pages/landing-pages/gallery"/>
-  </url>
-  <url>
-    <loc>https://www.aadarfoundation.org/pages/landing-pages/contact</loc>
+    <loc>https://www.aadarfoundation.org/contact</loc>
     <lastmod>2024-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.aadarfoundation.org/pages/landing-pages/contact"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.aadarfoundation.org/hi/pages/landing-pages/contact"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.aadarfoundation.org/contact"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://www.aadarfoundation.org/hi/contact"/>
   </url>
   <url>
-    <loc>https://www.aadarfoundation.org/pages/landing-pages/donate</loc>
+    <loc>https://www.aadarfoundation.org/donate</loc>
     <lastmod>2024-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.aadarfoundation.org/pages/landing-pages/donate"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://www.aadarfoundation.org/hi/pages/landing-pages/donate"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.aadarfoundation.org/donate"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://www.aadarfoundation.org/hi/donate"/>
   </url>
 </urlset>
-

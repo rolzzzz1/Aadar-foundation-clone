@@ -50,6 +50,7 @@ import DonateTrustBanner from "pages/LandingPages/shared/DonateTrustBanner";
 import SponsorPrabhujiCtaCards from "pages/LandingPages/shared/SponsorPrabhujiCtaCards";
 
 import {
+  DONATE_PAGE_PATH,
   DONATE_WIDGET_PRESET_PURPOSE,
   DONATION_CHECKOUT_PATH,
   getDonationCheckoutNavigation,
@@ -91,7 +92,7 @@ function Donate2() {
         routes={routes}
         action={{
           type: "internal",
-          route: "/pages/landing-pages/donate",
+          route: DONATE_PAGE_PATH,
           label: donateBtn,
           color: "success",
         }}

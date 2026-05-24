@@ -13,6 +13,15 @@ import MKBox from "components/MKBox";
 import logoCT from "assets/images/logos/logo-aadar.jpg";
 // import logoME from "assets/images/MyLogo1.png";
 import aishxDevLogo from "assets/images/logos/aishx-dev-logo.png";
+import {
+  ABOUT_PATH,
+  WORK_PATH,
+  VOLUNTEER_PATH,
+  GALLERY_PATH,
+  CONTACT_PATH,
+  PRIVACY_POLICY_PATH,
+  TERMS_CONDITIONS_PATH,
+} from "utils/paths";
 
 const getFooterRoutes = (t) => {
   const currentYear = new Date().getFullYear();
@@ -48,10 +57,10 @@ const getFooterRoutes = (t) => {
           name: t("footer.menus.name"),
           items: [
             { name: t("footer.menus.items.home"), href: "/" },
-            { name: t("footer.menus.items.about us"), route: "/pages/landing-pages/about-us" },
-            { name: t("footer.menus.items.our work"), route: "/pages/landing-pages/work" },
-            { name: t("footer.menus.items.volunteer"), route: "/pages/landing-pages/volunteer" },
-            { name: t("footer.menus.items.gallery"), route: "/pages/landing-pages/gallery" },
+            { name: t("footer.menus.items.about us"), route: ABOUT_PATH },
+            { name: t("footer.menus.items.our work"), route: WORK_PATH },
+            { name: t("footer.menus.items.volunteer"), route: VOLUNTEER_PATH },
+            { name: t("footer.menus.items.gallery"), route: GALLERY_PATH },
           ],
         },
 
@@ -60,13 +69,13 @@ const getFooterRoutes = (t) => {
           items: [
             {
               name: t("footer.menus.items1.privacy policy"),
-              route: "/pages/landing-pages/privacy-policy",
+              route: PRIVACY_POLICY_PATH,
             },
             {
               name: t("footer.menus.items1.terms and conditions"),
-              route: "/pages/landing-pages/terms-conditions",
+              route: TERMS_CONDITIONS_PATH,
             },
-            { name: t("footer.menus.items1.contact"), route: "/pages/landing-pages/contact" },
+            { name: t("footer.menus.items1.contact"), route: CONTACT_PATH },
           ],
         },
       ],

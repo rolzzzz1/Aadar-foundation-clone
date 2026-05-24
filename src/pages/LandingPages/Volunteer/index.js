@@ -37,6 +37,7 @@ import MKProgress from "components/MKProgress";
 // Routes
 import getRoutes from "routes1";
 import getFooterRoutes from "footer.routes1";
+import { DONATE_PAGE_PATH } from "utils/donation";
 
 // Images
 import bgImage2 from "assets/images/mainThemeImages/swargSadanBlack.png";
@@ -212,7 +213,7 @@ function Volunteer() {
         routes={routes}
         action={{
           type: "internal",
-          route: "/pages/landing-pages/donate",
+          route: DONATE_PAGE_PATH,
           label: donateBtn,
           color: "success",
         }}

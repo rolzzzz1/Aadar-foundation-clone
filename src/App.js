@@ -26,6 +26,7 @@ import Home from "layouts/pages/home";
 // Material Kit 2 React routes
 import routes from "routes";
 import { DONATE_PAGE_PATH, DONATION_CHECKOUT_PATH } from "utils/donation";
+import { LEGACY_PATH_REDIRECTS } from "utils/paths";
 
 import Typography from "@mui/material/Typography";
 
@@ -35,11 +36,15 @@ function LegacyCheckoutRedirect() {
   return <Navigate to={`${DONATION_CHECKOUT_PATH}${search}`} replace />;
 }
 
-/** Old Donate2 URLs → /donate (preserves hash e.g. #donate-widget). */
-function LegacyDonatePageRedirect() {
+/** Old verbose paths → canonical URLs (preserves query string and hash). */
+function LegacyPathRedirect({ to }) {
   const { search, hash } = useLocation();
-  return <Navigate to={`${DONATE_PAGE_PATH}${search}${hash}`} replace />;
+  return <Navigate to={`${to}${search}${hash}`} replace />;
 }
+
+LegacyPathRedirect.propTypes = {
+  to: PropTypes.string.isRequired,
+};
 
 const isGalleryRoute = (path) => /\/gallery\/?$/i.test(path);
 
@@ -278,6 +283,9 @@ export default function App() {
             }
           />
           <Route path="/__razorpay-test" element={<LegacyCheckoutRedirect />} />
+          {Object.entries(LEGACY_PATH_REDIRECTS).map(([from, to]) => (
+            <Route key={from} path={from} element={<LegacyPathRedirect to={to} />} />
+          ))}
           <Route
             path="/donation/success"
             element={
@@ -302,8 +310,6 @@ export default function App() {
               </Suspense>
             }
           />
-          <Route path="/pages/landing-pages/donate2" element={<LegacyDonatePageRedirect />} />
-          <Route path="/donate2" element={<LegacyDonatePageRedirect />} />
           <Route path="*" element={<Navigate to="/home" />} />
         </Routes>
         {!hideBackToTop && (

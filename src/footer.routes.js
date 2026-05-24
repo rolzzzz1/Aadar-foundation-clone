@@ -12,6 +12,15 @@ import MKBox from "components/MKBox";
 // Images
 import logoCT from "assets/images/logos/logo-aadar.jpg";
 import aishxDevLogo from "assets/images/logos/aishx-dev-logo.png";
+import {
+  ABOUT_PATH,
+  WORK_PATH,
+  VOLUNTEER_PATH,
+  GALLERY_PATH,
+  CONTACT_PATH,
+  PRIVACY_POLICY_PATH,
+  TERMS_CONDITIONS_PATH,
+} from "utils/paths";
 
 const date = new Date().getFullYear();
 
@@ -41,10 +50,10 @@ export default {
       name: "Navigation",
       items: [
         { name: "home", href: "/" },
-        { name: "about us", route: "/pages/landing-pages/about-us" },
-        { name: "our work", route: "/pages/landing-pages/work" },
-        { name: "volunteer", route: "/pages/landing-pages/volunteer" },
-        { name: "gallery", route: "/pages/landing-pages/gallery" },
+        { name: "about us", route: ABOUT_PATH },
+        { name: "our work", route: WORK_PATH },
+        { name: "volunteer", route: VOLUNTEER_PATH },
+        { name: "gallery", route: GALLERY_PATH },
       ],
     },
 
@@ -53,10 +62,10 @@ export default {
       items: [
         {
           name: "privacy policy",
-          route: "/pages/landing-pages/privacy-policy",
+          route: PRIVACY_POLICY_PATH,
         },
-        { name: "terms and conditions", route: "/pages/landing-pages/terms-conditions" },
-        { name: "contact", route: "/pages/landing-pages/contact" },
+        { name: "terms and conditions", route: TERMS_CONDITIONS_PATH },
+        { name: "contact", route: CONTACT_PATH },
       ],
     },
 

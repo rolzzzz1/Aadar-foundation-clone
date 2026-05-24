@@ -27,6 +27,7 @@ const Counters = lazy(() => import("pages/Home/sections/Home sections/Counters")
 // Routes
 import getRoutes from "routes1";
 import getFooterRoutes from "footer.routes1";
+import { DONATE_PAGE_PATH } from "utils/donation";
 
 // Images
 const publicAsset = (path) => `${process.env.PUBLIC_URL || ""}${path}`;
@@ -1002,7 +1003,7 @@ const HeroSlide = memo(function HeroSlide({
                 },
               }}
               component={Link}
-              to="/pages/landing-pages/donate"
+              to={DONATE_PAGE_PATH}
             >
               <span style={{ color: "white" }}>{t("homePage.heroSection.ctaButtonSlide2")}</span>
               <span
@@ -1406,7 +1407,7 @@ const HeroSlide = memo(function HeroSlide({
               },
             }}
             component={Link}
-            to="/pages/landing-pages/donate"
+            to={DONATE_PAGE_PATH}
             display={{ xs: "inline-flex", sm: "none" }}
           >
             {ctaButtonText}
@@ -1721,7 +1722,7 @@ const HeroSlide = memo(function HeroSlide({
               },
             }}
             component={Link}
-            to="/pages/landing-pages/donate"
+            to={DONATE_PAGE_PATH}
           >
             {ctaButtonText}
             <MKBox
@@ -2818,7 +2819,7 @@ function Home() {
         routes={routes}
         action={{
           type: "internal",
-          route: "/pages/landing-pages/donate",
+          route: DONATE_PAGE_PATH,
           label: donateBtn,
           color: "success",
         }}

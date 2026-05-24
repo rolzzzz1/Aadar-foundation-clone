@@ -11,6 +11,7 @@ import MKTypography from "components/MKTypography";
 
 // i18n
 import { useTranslation } from "react-i18next";
+import { ABOUT_PATH } from "utils/paths";
 
 // Images
 import work1 from "assets/images/ourWorkImages/aboutImg.webp";
@@ -122,7 +123,7 @@ function Work() {
           {steps.map((step) => (
             <Grid item xs={11} sm={6} md={4} key={step.title} mx="auto">
               <MKBox
-                onClick={() => navigate("/pages/landing-pages/about-us")}
+                onClick={() => navigate(ABOUT_PATH)}
                 sx={{
                   height: "100%",
                   display: "flex",

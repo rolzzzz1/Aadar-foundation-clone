@@ -3,6 +3,20 @@
   "outputDirectory": "build",
   "installCommand": "npm install",
   "framework": "create-react-app",
+  "redirects": [
+    { "source": "/pages/landing-pages/about-us", "destination": "/about", "permanent": true },
+    { "source": "/pages/landing-pages/about", "destination": "/about", "permanent": true },
+    { "source": "/pages/landing-pages/work", "destination": "/work", "permanent": true },
+    { "source": "/pages/landing-pages/volunteer", "destination": "/volunteer", "permanent": true },
+    { "source": "/pages/landing-pages/donate", "destination": "/donate", "permanent": true },
+    { "source": "/pages/landing-pages/donate2", "destination": "/donate", "permanent": true },
+    { "source": "/donate2", "destination": "/donate", "permanent": true },
+    { "source": "/pages/landing-pages/gallery", "destination": "/gallery", "permanent": true },
+    { "source": "/pages/landing-pages/contact", "destination": "/contact", "permanent": true },
+    { "source": "/pages/landing-pages/privacy-policy", "destination": "/privacy-policy", "permanent": true },
+    { "source": "/pages/landing-pages/terms-conditions", "destination": "/terms-and-conditions", "permanent": true },
+    { "source": "/__razorpay-test", "destination": "/donate/checkout", "permanent": true }
+  ],
   "rewrites": [
     {
       "source": "/((?!api/|static/|assets/|locales/|favicon\\.ico|manifest\\.json|robots\\.txt|sitemap\\.xml|apple-icon).*)",

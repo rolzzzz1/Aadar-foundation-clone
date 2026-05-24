@@ -21,6 +21,7 @@ import MKButton from "components/MKButton";
 // Routes
 import getRoutes from "routes1";
 import getFooterRoutes from "footer.routes1";
+import { DONATE_PAGE_PATH } from "utils/donation";
 
 // About page sections files
 import Team from "pages/LandingPages/About/sections/Team";
@@ -87,7 +88,7 @@ function About(props) {
         routes={routes}
         action={{
           type: "internal",
-          route: "/pages/landing-pages/donate",
+          route: DONATE_PAGE_PATH,
           label: donateBtn,
           color: "success",
         }}

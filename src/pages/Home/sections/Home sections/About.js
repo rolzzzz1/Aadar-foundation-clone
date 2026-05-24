@@ -11,6 +11,7 @@ import Icon from "@mui/material/Icon";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
+import { ABOUT_PATH } from "utils/paths";
 
 // Images
 import aboutImg from "assets/images/ourWorkImages/aboutImg.webp";
@@ -102,7 +103,7 @@ function About() {
             <MKBox mt={2.5}>
               <MKTypography
                 component={Link}
-                to={"/pages/landing-pages/about-us"}
+                to={ABOUT_PATH}
                 variant="body2"
                 fontWeight="700"
                 textTransform="none"

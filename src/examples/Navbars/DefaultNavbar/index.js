@@ -30,6 +30,7 @@ import DefaultNavbarMobile from "examples/Navbars/DefaultNavbar/DefaultNavbarMob
 // Material Kit 2 React base styles
 import breakpoints from "assets/theme/base/breakpoints";
 import aadarLogo from "assets/images/logos/logo-aadar.jpg";
+import { DONATE_PAGE_PATH } from "utils/donation";
 
 function DefaultNavbar({
   // brand,
@@ -807,7 +808,7 @@ function DefaultNavbar({
               </MKTypography> */}
               {/* <MKButton
                 component={Link}
-                to={"/pages/landing-pages/donate"}
+                to={DONATE_PAGE_PATH}
                 variant="contained"
                 color="success"
                 size="small"
@@ -1121,7 +1122,7 @@ function DefaultNavbar({
                 open={mobileNavbar}
                 action={{
                   type: "internal",
-                  route: "/pages/landing-pages/donate",
+                  route: DONATE_PAGE_PATH,
                   label: donateBtn,
                   color: "success",
                 }}
