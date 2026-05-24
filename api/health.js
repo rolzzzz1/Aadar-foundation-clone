@@ -8,6 +8,13 @@ module.exports = function handler(req, res) {
     ok: true,
     service: "aadar-foundation-clone",
     timestamp: new Date().toISOString(),
+    integrations: {
+      donation_store: isStoreConfigured(),
+      razorpay_webhook: !!process.env.RAZORPAY_WEBHOOK_SECRET,
+      razorpay_server_keys: !!(
+        process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET
+      ),
+    },
   };
 
   if (!isProduction()) {

@@ -81,6 +81,35 @@ Check Supabase `donations` for `source: webhook` on real captured payments.
 
 ---
 
-## 4. Health check (local only)
+## 4. Supabase (required for donation log)
 
-`GET http://localhost:3001/api/health` shows `allowed_origins.configured` and `webhook_secret` when env is loaded.
+Without these on Vercel **Production**, payments still appear in Razorpay but **no row** is written to Supabase:
+
+| Name | Notes |
+|------|--------|
+| `SUPABASE_URL` | Project URL from Supabase → Settings → API |
+| `SUPABASE_SERVICE_ROLE_KEY` | **service_role** key (server only — never expose to React) |
+
+1. In Supabase → **SQL Editor**, run `supabase/donations.sql` once.
+2. Add both variables in Vercel → **Redeploy**.
+3. `GET https://www.aadarfoundation.org/api/health` should show `"donation_store": true` under `integrations`.
+
+After a test payment, check **Vercel → Logs** for `[donation]` or `[razorpay-verify]` if the row is missing.
+
+---
+
+## 5. Health check
+
+`GET /api/health` returns safe flags (no secrets):
+
+```json
+"integrations": {
+  "donation_store": true,
+  "razorpay_webhook": true,
+  "razorpay_server_keys": true
+}
+```
+
+If `donation_store` is **false**, set Supabase env vars and redeploy. If `razorpay_webhook` is **false**, webhook backup saves will not run.
+
+Locally: `http://localhost:3001/api/health` also shows `allowed_origins` details when not in production.

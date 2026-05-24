@@ -1,6 +1,6 @@
 /**
  * Raw request body for Razorpay webhook signature verification.
- * Vercel may leave the stream readable; dev-server sets req.rawBody.
+ * Dev-server sets req.rawBody. On Vercel, disable body parsing (see razorpay-webhook.js config).
  */
 
 function readRequestStream(req) {
@@ -13,11 +13,21 @@ function readRequestStream(req) {
 }
 
 /**
- * @param {import("http").IncomingMessage & { rawBody?: string, body?: unknown }} req
+ * @param {import("http").IncomingMessage & {
+ *   rawBody?: string,
+ *   body?: unknown,
+ *   isBase64Encoded?: boolean
+ * }} req
+ * @param {{ allowParsedObjectFallback?: boolean }} [options]
  * @returns {Promise<string>}
  */
-async function getRawBody(req) {
+async function getRawBody(req, options = {}) {
   if (req.rawBody) return req.rawBody;
+
+  if (req.isBase64Encoded && typeof req.body === "string") {
+    return Buffer.from(req.body, "base64").toString("utf8");
+  }
+
   if (typeof req.body === "string") return req.body;
   if (Buffer.isBuffer(req.body)) return req.body.toString("utf8");
 
@@ -30,11 +40,17 @@ async function getRawBody(req) {
     }
   }
 
-  if (req.body && typeof req.body === "object") {
+  // Parsed JSON breaks Razorpay HMAC — never use this for webhooks unless explicitly allowed.
+  if (options.allowParsedObjectFallback && req.body && typeof req.body === "object") {
     return JSON.stringify(req.body);
   }
 
   return "";
 }
 
-module.exports = { getRawBody };
+/** Raw body for webhook signature verification only. */
+function getWebhookRawBody(req) {
+  return getRawBody(req, { allowParsedObjectFallback: false });
+}
+
+module.exports = { getRawBody, getWebhookRawBody };

@@ -59,21 +59,25 @@ function buildRecordFromRazorpay({ payment, order, source }) {
   };
 }
 
+function logSaveFailure(message, details) {
+  // eslint-disable-next-line no-console
+  console.error("[donation]", message, details);
+}
+
 /**
- * Insert donation row (idempotent on payment_id via Prefer header).
+ * Insert donation row (idempotent on payment_id).
  * @returns {Promise<{ saved: boolean, reason?: string }>}
  */
 async function saveDonationRecord(record) {
   if (!isStoreConfigured()) {
-    if (!isProduction()) {
-      // eslint-disable-next-line no-console
-      console.log("[donation] store not configured — skipping save", record.payment_id);
-    }
+    logSaveFailure("store not configured — skipping save", {
+      payment_id: record && record.payment_id,
+    });
     return { saved: false, reason: "not_configured" };
   }
 
   const base = process.env.SUPABASE_URL.replace(/\/$/, "");
-  const url = `${base}/rest/v1/donations`;
+  const url = `${base}/rest/v1/donations?on_conflict=payment_id`;
 
   try {
     const res = await fetch(url, {
@@ -92,16 +96,18 @@ async function saveDonationRecord(record) {
     }
 
     const text = await res.text().catch(() => "");
-    if (!isProduction()) {
-      // eslint-disable-next-line no-console
-      console.error("[donation] Supabase insert failed", res.status, text);
-    }
-    return { saved: false, reason: "store_error" };
+    const snippet = text.slice(0, 200);
+    logSaveFailure("Supabase insert failed", {
+      status: res.status,
+      payment_id: record.payment_id,
+      detail: snippet,
+    });
+    return { saved: false, reason: `store_error_${res.status}` };
   } catch (err) {
-    if (!isProduction()) {
-      // eslint-disable-next-line no-console
-      console.error("[donation] Supabase insert error", err);
-    }
+    logSaveFailure("Supabase insert error", {
+      payment_id: record.payment_id,
+      message: err && err.message ? err.message : String(err),
+    });
     return { saved: false, reason: "store_error" };
   }
 }

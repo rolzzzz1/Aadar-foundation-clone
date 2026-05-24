@@ -1,6 +1,6 @@
 const crypto = require("crypto");
 const { applySecurityHeaders, isProduction } = require("./_lib/donation");
-const { getRawBody } = require("./_lib/rawBody");
+const { getWebhookRawBody } = require("./_lib/rawBody");
 const { fetchOrder } = require("./_lib/razorpay");
 const {
   buildRecordFromRazorpay,
@@ -45,7 +45,7 @@ module.exports = async function handler(req, res) {
     return res.status(413).json({ error: "Payload too large" });
   }
 
-  const rawBody = await getRawBody(req);
+  const rawBody = await getWebhookRawBody(req);
   const signature =
     (req.headers && (req.headers["x-razorpay-signature"] || req.headers["X-Razorpay-Signature"])) ||
     "";
@@ -83,8 +83,22 @@ module.exports = async function handler(req, res) {
       order,
       source: "webhook",
     });
-    await saveDonationRecord(record);
+    const saved = await saveDonationRecord(record);
+    if (!saved.saved) {
+      // eslint-disable-next-line no-console
+      console.warn("[razorpay-webhook] payment.captured but donation not saved", {
+        payment_id: paymentEntity.id,
+        reason: saved.reason,
+      });
+    }
   }
 
   return res.status(200).json({ ok: true });
+};
+
+// Vercel: keep the request body raw so X-Razorpay-Signature verification succeeds.
+module.exports.config = {
+  api: {
+    bodyParser: false,
+  },
 };

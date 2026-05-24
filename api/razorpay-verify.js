@@ -136,6 +136,14 @@ module.exports = async function handler(req, res) {
   const record = buildRecordFromRazorpay({ payment, order, source: "verify" });
   const saved = await saveDonationRecord(record);
 
+  if (!saved.saved) {
+    // eslint-disable-next-line no-console
+    console.warn("[razorpay-verify] payment verified but donation not saved", {
+      payment_id: paymentId,
+      reason: saved.reason,
+    });
+  }
+
   return res.status(200).json({
     verified: true,
     signature_valid: true,
@@ -144,5 +152,6 @@ module.exports = async function handler(req, res) {
     amount_paise: captureCheck.amount_paise,
     currency: captureCheck.currency,
     record_saved: saved.saved,
+    record_save_reason: saved.saved ? undefined : saved.reason,
   });
 };
