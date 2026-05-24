@@ -49,7 +49,7 @@ LegacyPathRedirect.propTypes = {
 const isGalleryRoute = (path) => /\/gallery\/?$/i.test(path);
 
 const RazorpayTest = lazy(() => import("pages/RazorpayTest"));
-const Donate2 = lazy(() => import("pages/LandingPages/Donate2"));
+const Donate = lazy(() => import("layouts/pages/landing-pages/donate"));
 const DonationResult = lazy(() => import("pages/DonationResult"));
 
 // Error boundary component
@@ -306,7 +306,7 @@ export default function App() {
             path={DONATE_PAGE_PATH}
             element={
               <Suspense fallback={null}>
-                <Donate2 />
+                <Donate />
               </Suspense>
             }
           />
