@@ -34,6 +34,19 @@ import {
 
 import Typography from "@mui/material/Typography";
 
+const CHUNK_RELOAD_KEY = "aadar_chunk_reload";
+
+function isChunkLoadFailure(reason) {
+  const message = reason?.message || String(reason || "");
+  return (
+    /Loading chunk [\d]+ failed/i.test(message) ||
+    /ChunkLoadError/i.test(message) ||
+    /Failed to fetch dynamically imported module/i.test(message) ||
+    /Importing a module script failed/i.test(message) ||
+    /error loading dynamically imported module/i.test(message)
+  );
+}
+
 /** Keeps old bookmarks/links working after checkout moved off /__razorpay-test. */
 function LegacyCheckoutRedirect() {
   const { search } = useLocation();
@@ -52,10 +65,12 @@ LegacyPathRedirect.propTypes = {
 
 const isGalleryRoute = (path) => /\/gallery\/?$/i.test(path);
 
+// Payment result must load reliably after redirect (avoid lazy chunk failures post-deploy).
+import DonationResult from "pages/DonationResult";
+
 const RazorpayTest = lazy(() => import("pages/RazorpayTest"));
 const Donate = lazy(() => import("layouts/pages/landing-pages/donate"));
 const Donate2 = lazy(() => import("pages/LandingPages/Donate2"));
-const DonationResult = lazy(() => import("pages/DonationResult"));
 
 // Error boundary component
 class ErrorBoundary extends React.Component {
@@ -70,12 +85,16 @@ class ErrorBoundary extends React.Component {
 
   componentDidCatch(error, errorInfo) {
     console.error("Error caught by boundary:", error, errorInfo);
+    if (isChunkLoadFailure(error) && !sessionStorage.getItem(CHUNK_RELOAD_KEY)) {
+      sessionStorage.setItem(CHUNK_RELOAD_KEY, "1");
+      window.location.reload();
+    }
   }
 
   render() {
     if (this.state.hasError) {
       const message = this.state.error?.message || "An unexpected error occurred";
-      const isChunkError = /Loading chunk [\d]+ failed/i.test(message);
+      const isChunkError = isChunkLoadFailure(this.state.error);
 
       return (
         <Box
@@ -311,22 +330,8 @@ export default function App() {
           {Object.entries(LEGACY_PATH_REDIRECTS).map(([from, to]) => (
             <Route key={from} path={from} element={<LegacyPathRedirect to={to} />} />
           ))}
-          <Route
-            path="/donation/success"
-            element={
-              <Suspense fallback={null}>
-                <DonationResult />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/donation/failed"
-            element={
-              <Suspense fallback={null}>
-                <DonationResult />
-              </Suspense>
-            }
-          />
+          <Route path="/donation/success" element={<DonationResult />} />
+          <Route path="/donation/failed" element={<DonationResult />} />
           <Route
             path={DONATE_PAGE_PATH}
             element={

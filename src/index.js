@@ -9,7 +9,13 @@ const CHUNK_RELOAD_KEY = "aadar_chunk_reload";
 
 function isChunkLoadFailure(reason) {
   const message = reason?.message || String(reason || "");
-  return /Loading chunk [\d]+ failed/i.test(message);
+  return (
+    /Loading chunk [\d]+ failed/i.test(message) ||
+    /ChunkLoadError/i.test(message) ||
+    /Failed to fetch dynamically imported module/i.test(message) ||
+    /Importing a module script failed/i.test(message) ||
+    /error loading dynamically imported module/i.test(message)
+  );
 }
 
 /** Recover from slow networks or stale caches after deploy (one automatic reload per session). */
