@@ -31,13 +31,14 @@ async function getRawBody(req, options = {}) {
   if (typeof req.body === "string") return req.body;
   if (Buffer.isBuffer(req.body)) return req.body.toString("utf8");
 
-  if (req.body === undefined || req.body === null) {
-    try {
-      const fromStream = await readRequestStream(req);
-      if (fromStream) return fromStream;
-    } catch {
-      /* stream already consumed */
-    }
+  // On Vercel, even with `bodyParser: false`, `req.body` can sometimes be set to an
+  // object while the raw stream is still available. For webhook signature checks
+  // we must prefer the raw stream when possible.
+  try {
+    const fromStream = await readRequestStream(req);
+    if (fromStream) return fromStream;
+  } catch {
+    /* stream already consumed */
   }
 
   // Parsed JSON breaks Razorpay HMAC — never use this for webhooks unless explicitly allowed.
