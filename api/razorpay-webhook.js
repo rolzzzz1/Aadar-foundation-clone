@@ -22,6 +22,11 @@ function verifyWebhookSignature(rawBody, signature, secret) {
   }
 }
 
+function debugSnippet(value, maxLen = 140) {
+  if (!value) return "";
+  return String(value).replace(/\s+/g, " ").slice(0, maxLen);
+}
+
 module.exports = async function handler(req, res) {
   applySecurityHeaders(res);
 
@@ -51,6 +56,19 @@ module.exports = async function handler(req, res) {
     "";
 
   if (!verifyWebhookSignature(rawBody, signature, secret)) {
+    // Debugging help (safe): log what we received without leaking secrets.
+    // This is intentionally logged in production because webhook issues are
+    // operational and otherwise hard to diagnose.
+    // eslint-disable-next-line no-console
+    console.warn("[razorpay-webhook] invalid signature", {
+      has_signature_header: !!signature,
+      signature_len: signature ? String(signature).length : 0,
+      raw_len: rawBody ? String(rawBody).length : 0,
+      content_type:
+        (req.headers && (req.headers["content-type"] || req.headers["Content-Type"])) || "",
+      ua: (req.headers && (req.headers["user-agent"] || req.headers["User-Agent"])) || "",
+      raw_snippet: debugSnippet(rawBody),
+    });
     return res.status(400).json({ error: "Invalid webhook signature" });
   }
 
@@ -58,6 +76,11 @@ module.exports = async function handler(req, res) {
   try {
     payload = JSON.parse(rawBody);
   } catch {
+    // eslint-disable-next-line no-console
+    console.warn("[razorpay-webhook] invalid JSON", {
+      raw_len: rawBody ? String(rawBody).length : 0,
+      raw_snippet: debugSnippet(rawBody),
+    });
     return res.status(400).json({ error: "Invalid JSON" });
   }
 
