@@ -81,7 +81,7 @@ function Work() {
             <MKTypography
               variant="h3"
               fontSize={{ xs: "1.4rem", sm: "1.5rem", md: "1.7rem", lg: "1.8rem" }}
-              fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+              fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
               sx={{ fontWeight: "500", mb: 0.5 }}
             >
               {t("homePage.workSectionNew.title")}
@@ -89,7 +89,7 @@ function Work() {
             <MKTypography
               variant="h5"
               fontSize={{ xs: "0.9rem", sm: "1rem", md: "1.1rem" }}
-              fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+              fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
               color="text"
               sx={{
                 fontWeight: "400",

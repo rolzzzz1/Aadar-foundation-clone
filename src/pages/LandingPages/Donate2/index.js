@@ -99,20 +99,43 @@ function Donate2() {
         sticky
       />
 
-      {/* Main Image and text */}
+      {/* Main Image and text — hero image is rendered as an <img> with
+          decoding="async" + low fetchpriority so the page can paint
+          immediately on slow networks instead of blocking on a 260 KB
+          PNG background. The dark gradient acts as a placeholder until
+          the image arrives, so the headline is always readable. */}
       <MKBox
         minHeight={{ xs: "55vh", sm: "65vh", md: "80vh" }}
         width="100%"
         sx={{
-          backgroundImage: `url(${bgImage2})`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "left",
+          position: "relative",
+          backgroundColor: "#1f2a44",
+          backgroundImage: "linear-gradient(135deg, #1a2238 0%, #1f2a44 45%, #2a3658 100%)",
           display: "flex",
           justifyContent: "end",
           alignItems: "end",
+          overflow: "hidden",
         }}
       >
+        <MKBox
+          component="img"
+          src={bgImage2}
+          alt=""
+          aria-hidden="true"
+          loading="eager"
+          decoding="async"
+          fetchPriority="low"
+          sx={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition: "left",
+            zIndex: 0,
+            pointerEvents: "none",
+          }}
+        />
         <MKBox
           color="white"
           display="flex"
@@ -120,6 +143,8 @@ function Donate2() {
           justifyContent="center"
           alignItems="center"
           sx={{
+            position: "relative",
+            zIndex: 1,
             backgroundImage: `url(${bgImage})`,
             backgroundSize: "contain",
             backgroundRepeat: "no-repeat",
@@ -133,7 +158,7 @@ function Donate2() {
             color="white"
             textAlign="center"
             ml={-2}
-            fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
             fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
             mb={{ xs: 1, sm: 0 }}
           >
@@ -160,7 +185,7 @@ function Donate2() {
               <Grid item xs={12}>
                 <MKTypography
                   variant="h4"
-                  fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   sx={{
                     fontWeight: "500",
                     fontSize: { xs: "1.5rem", sm: "1.75rem", md: "1.875rem", lg: "1.875rem" },
@@ -185,7 +210,7 @@ function Donate2() {
                 >
                   <MKTypography
                     variant="h4"
-                    fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                    fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                     sx={{
                       fontWeight: "500",
                       fontSize: { xs: "1.2rem", sm: "1.5rem", md: "1.2rem", lg: "1.5rem" },
@@ -198,7 +223,7 @@ function Donate2() {
                     <MKTypography
                       display="inline"
                       variant="h4"
-                      fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                      fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                       sx={{
                         fontSize: { xs: "1.5rem", sm: "1.7rem", md: "1.7rem", lg: "2rem" },
                         fontWeight: "700",
@@ -212,7 +237,7 @@ function Donate2() {
                     <MKTypography
                       variant="body1"
                       fontSize={{ xs: "0.8rem", sm: "0.85rem", md: "0.92rem", lg: "0.95rem" }}
-                      fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+                      fontFamily='"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                       sx={{
                         letterSpacing: "0.03rem",
                         lineHeight: 1.55,
@@ -450,7 +475,7 @@ function Donate2() {
                       }}
                     >
                       <MKTypography
-                        fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                        fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                         sx={{
                           fontSize: { xs: "1.4rem", sm: "1.6rem" },
                           fontWeight: 500,
@@ -688,7 +713,7 @@ function Donate2() {
                   >
                     <MKTypography
                       variant="h4"
-                      fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                      fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                       sx={{
                         fontWeight: 400,
                         fontSize: { xs: "1.25rem", sm: "1.4rem", md: "1.6rem" },
@@ -709,7 +734,7 @@ function Donate2() {
                         const el = document.getElementById("donate-widget");
                         if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
                       }}
-                      fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                      fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                       sx={{
                         mt: { xs: 1.75, sm: 2.25, md: 2.75 },
                         display: "inline-flex",
@@ -779,6 +804,7 @@ function Donate2() {
                     height={{ xs: "240px", sm: "280px", md: "300px" }}
                     loading="lazy"
                     decoding="async"
+                    fetchPriority="low"
                     sx={{
                       objectFit: "cover",
                       boxShadow: "0 18px 44px rgba(31, 42, 68, 0.14)",
@@ -810,7 +836,7 @@ function Donate2() {
                 <MKTypography
                   variant="h4"
                   textAlign="center"
-                  fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   sx={{
                     fontWeight: 400,
                     fontSize: { xs: "1.25rem", sm: "1.35rem", md: "1.5rem" },
@@ -1023,7 +1049,7 @@ function Donate2() {
                     <MKTypography
                       component="span"
                       variant="h4"
-                      fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                      fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                       sx={{
                         fontSize: { xs: "1.7rem", sm: "2.05rem", md: "2.15rem", lg: "2.35rem" },
                         fontWeight: "500",
@@ -1035,7 +1061,7 @@ function Donate2() {
                     <MKTypography
                       component="span"
                       variant="h4"
-                      fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                      fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                       sx={{
                         fontSize: { xs: "1.05rem", sm: "1.3rem", md: "1.45rem", lg: "1.65rem" },
                         fontWeight: "500",
@@ -1082,7 +1108,7 @@ function Donate2() {
                     }}
                   >
                     <MKTypography
-                      fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                      fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                       sx={{
                         fontSize: { xs: "1.1rem", sm: "1.3rem", md: "1.3rem", lg: "1.5rem" },
                         fontWeight: 400,
@@ -1234,6 +1260,7 @@ function Donate2() {
                         alt="Aadar Foundation UPI QR — scan to donate"
                         loading="lazy"
                         decoding="async"
+                        fetchPriority="low"
                         sx={{
                           display: "block",
                           width: "100%",

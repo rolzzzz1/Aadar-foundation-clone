@@ -108,7 +108,7 @@ const getFooterRoutes = (t) => {
             >
               <MKTypography
                 variant="button"
-                fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                 fontWeight="regular"
                 fontSize={{ xs: "0.85rem", sm: "0.95rem", md: "1.05rem" }}
                 color="white"

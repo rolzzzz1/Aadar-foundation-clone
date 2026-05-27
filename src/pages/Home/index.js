@@ -24,6 +24,11 @@ const Events = lazy(() => import("pages/Home/sections/Home sections/Events"));
 const Journey = lazy(() => import("pages/Home/sections/Home sections/Journey"));
 const Counters = lazy(() => import("pages/Home/sections/Home sections/Counters"));
 
+// IntersectionObserver mount-gate: each below-the-fold section's JS chunk
+// + images only start downloading when the section scrolls into view, so
+// the hero never has to fight 5 parallel chunk fetches on slow networks.
+import LazyVisible from "components/LazyMedia/LazyVisible";
+
 // Routes
 import getRoutes from "routes1";
 import getFooterRoutes from "footer.routes1";
@@ -58,6 +63,9 @@ const slide4MobileBg = publicAsset("/assets/images/mainThemeImages/slide4-mobile
 import { VIDEO_URLS } from "../../config/videoUrls";
 import { getHomePageCopy } from "utils/getHomePageCopy";
 
+// Network-aware loading: skip heavy embeds on save-data / 2g / 3g
+import { useNetworkSnapshot, shouldSkipHeavyMedia } from "utils/networkAware";
+
 // Video for slide 2 (Kumbh story - Dadi Mayki), slide 3 (Nirbhay story), and slide 4
 // All slides use Vimeo for fast loading
 const maykiVimeoId = VIDEO_URLS.maykiVimeo;
@@ -88,6 +96,7 @@ const HeroSlide = memo(function HeroSlide({
   setIsCarouselPaused,
   activeSlide,
   totalSlides,
+  skipHeavyMedia,
 }) {
   const { t } = useTranslation();
 
@@ -344,28 +353,33 @@ const HeroSlide = memo(function HeroSlide({
                 },
               }}
             >
-              <MKBox
-                component="img"
-                src={slide2MobileBg}
-                alt="Aadar Foundation"
-                width="100%"
-                height="100%"
-                loading="eager"
-                decoding="async"
-                fetchPriority="low"
-                sx={{
-                  width: "calc(100% - 10px)",
-                  height: "calc(100% - 10px)",
-                  margin: "5px",
-                  objectFit: "cover",
-                  objectPosition: { xs: "center 40%", sm: "center 40%", md: "center" },
-                  borderRadius: { xs: "12px", sm: "12px", md: 0 },
-                  position: "relative",
-                  zIndex: 10,
-                  backgroundColor: "transparent",
-                  display: "block",
-                }}
-              />
+              {/* The parent box renders a vibrant gradient that already
+                  fills this frame. On save-data we keep just that gradient
+                  instead of pulling a ~2.5 MB PNG over a slow line. */}
+              {!skipHeavyMedia && (
+                <MKBox
+                  component="img"
+                  src={slide2MobileBg}
+                  alt="Aadar Foundation"
+                  width="100%"
+                  height="100%"
+                  loading="lazy"
+                  decoding="async"
+                  fetchPriority="low"
+                  sx={{
+                    width: "calc(100% - 10px)",
+                    height: "calc(100% - 10px)",
+                    margin: "5px",
+                    objectFit: "cover",
+                    objectPosition: { xs: "center 40%", sm: "center 40%", md: "center" },
+                    borderRadius: { xs: "12px", sm: "12px", md: 0 },
+                    position: "relative",
+                    zIndex: 10,
+                    backgroundColor: "transparent",
+                    display: "block",
+                  }}
+                />
+              )}
             </MKBox>
           )}
           {/* Horizontal rectangular image for slide 3 - positioned above text box (on xs and sm screens) */}
@@ -409,28 +423,32 @@ const HeroSlide = memo(function HeroSlide({
                 },
               }}
             >
-              <MKBox
-                component="img"
-                src={slide3MobileBg}
-                alt="Aadar Foundation"
-                width="100%"
-                height="100%"
-                loading="eager"
-                decoding="async"
-                fetchPriority="low"
-                sx={{
-                  width: "calc(100% - 10px)",
-                  height: "calc(100% - 10px)",
-                  margin: "5px",
-                  objectFit: "cover",
-                  objectPosition: { xs: "center 40%", sm: "center 40%", md: "center" },
-                  borderRadius: { xs: "12px", sm: "12px", md: 0 },
-                  position: "relative",
-                  zIndex: 10,
-                  backgroundColor: "transparent",
-                  display: "block",
-                }}
-              />
+              {/* Same data-saver fallback as slide 2: keep just the gradient
+                  on slow connections so the page stays responsive. */}
+              {!skipHeavyMedia && (
+                <MKBox
+                  component="img"
+                  src={slide3MobileBg}
+                  alt="Aadar Foundation"
+                  width="100%"
+                  height="100%"
+                  loading="lazy"
+                  decoding="async"
+                  fetchPriority="low"
+                  sx={{
+                    width: "calc(100% - 10px)",
+                    height: "calc(100% - 10px)",
+                    margin: "5px",
+                    objectFit: "cover",
+                    objectPosition: { xs: "center 40%", sm: "center 40%", md: "center" },
+                    borderRadius: { xs: "12px", sm: "12px", md: 0 },
+                    position: "relative",
+                    zIndex: 10,
+                    backgroundColor: "transparent",
+                    display: "block",
+                  }}
+                />
+              )}
             </MKBox>
           )}
           {/* Horizontal rectangular image for slide 4 - positioned above text box (on xs and sm screens) */}
@@ -474,28 +492,32 @@ const HeroSlide = memo(function HeroSlide({
                 },
               }}
             >
-              <MKBox
-                component="img"
-                src={slide4MobileBg}
-                alt="Aadar Foundation"
-                width="100%"
-                height="100%"
-                loading="eager"
-                decoding="async"
-                fetchPriority="low"
-                sx={{
-                  width: "calc(100% - 10px)",
-                  height: "calc(100% - 10px)",
-                  margin: "5px",
-                  objectFit: "cover",
-                  objectPosition: { xs: "center 40%", sm: "center 40%", md: "center" },
-                  borderRadius: { xs: "12px", sm: "12px", md: 0 },
-                  position: "relative",
-                  zIndex: 10,
-                  backgroundColor: "transparent",
-                  display: "block",
-                }}
-              />
+              {/* Same data-saver fallback as slide 2/3: keep just the gradient
+                  on slow connections so the page stays responsive. */}
+              {!skipHeavyMedia && (
+                <MKBox
+                  component="img"
+                  src={slide4MobileBg}
+                  alt="Aadar Foundation"
+                  width="100%"
+                  height="100%"
+                  loading="lazy"
+                  decoding="async"
+                  fetchPriority="low"
+                  sx={{
+                    width: "calc(100% - 10px)",
+                    height: "calc(100% - 10px)",
+                    margin: "5px",
+                    objectFit: "cover",
+                    objectPosition: { xs: "center 40%", sm: "center 40%", md: "center" },
+                    borderRadius: { xs: "12px", sm: "12px", md: 0 },
+                    position: "relative",
+                    zIndex: 10,
+                    backgroundColor: "transparent",
+                    display: "block",
+                  }}
+                />
+              )}
             </MKBox>
           )}
           <MKBox
@@ -652,7 +674,8 @@ const HeroSlide = memo(function HeroSlide({
                 overflowWrap: "break-word",
                 fontWeight: 500,
                 letterSpacing: { xs: "0.1px", sm: "0.15px", md: "0.2px", lg: "0.25px" },
-                fontFamily: '"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif',
+                fontFamily:
+                  '"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
                 borderBottom: "3px solid #4FA953",
                 paddingBottom: { xs: 0.3, sm: 0.5, md: 0.7, lg: 0.9 },
                 paddingTop: { xs: 0, sm: 0, md: 0 },
@@ -698,7 +721,8 @@ const HeroSlide = memo(function HeroSlide({
                 wordWrap: "break-word",
                 overflowWrap: "break-word",
                 textAlign: { xs: "center", sm: "center", md: "left" },
-                fontFamily: '"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif',
+                fontFamily:
+                  '"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
                 letterSpacing: { xs: "0.5px", sm: "0.7px", md: "0.9px", lg: "1.1px" },
               }}
             >
@@ -728,8 +752,8 @@ const HeroSlide = memo(function HeroSlide({
                 textAlign: { xs: "center", sm: "center", md: "left" },
                 fontFamily:
                   slideIndex === 1
-                    ? '"Lato", "Helvetica", "Arial", sans-serif'
-                    : '"Lato", "Helvetica", "Arial", sans-serif',
+                    ? '"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                    : '"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
                 whiteSpace:
                   slideIndex === 1 || slideIndex === 2 || slideIndex === 3
                     ? {
@@ -1513,7 +1537,7 @@ const HeroSlide = memo(function HeroSlide({
                 ? `hero-slide-1-text active${shouldAnimate ? " should-animate" : ""}`
                 : ""
             }
-            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
             sx={{ fontSize: { xs: "1.5rem", sm: "1.7rem", md: "2rem", lg: "2rem" } }}
           >
             <MKBox
@@ -1544,7 +1568,7 @@ const HeroSlide = memo(function HeroSlide({
                 ? `hero-slide-1-text active${shouldAnimate ? " should-animate" : ""}`
                 : ""
             }
-            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
             sx={{ fontSize: { xs: "0.9rem", sm: "1.05rem", md: "1.1rem", lg: "1.3rem" } }}
           >
             {homePage.tagLine1} <br /> {homePage.tagLine2}
@@ -1797,6 +1821,11 @@ function Home() {
   const donateBtn = t("navbar.donateBtn");
   const homePage = useMemo(() => getHomePageCopy(t), [t, i18n.language]);
   const ctaButtonText = t("homePage.heroSection.ctaButton");
+
+  // Network profile — used to skip heavy Vimeo iframes on slow / metered
+  // connections so the hero still paints quickly on weak 3G / save-data.
+  const network = useNetworkSnapshot();
+  const skipHeavyMedia = shouldSkipHeavyMedia(network);
 
   // State to let user pause/resume hero slider
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
@@ -2421,6 +2450,35 @@ function Home() {
   const nirbhayVideoRef = useRef(null);
   const slide4VideoRef = useRef(null);
 
+  // Track which slide iframes are allowed to mount. We always mount the
+  // active slide; the "next" slide is warmed ~2s later on fast networks.
+  // On slow / save-data connections we never warm — iframes are loaded
+  // strictly on-demand to keep bandwidth free for the page itself.
+  const [loadedSlides, setLoadedSlides] = useState(() => new Set([0, activeSlide]));
+
+  useEffect(() => {
+    setLoadedSlides((prev) => {
+      if (prev.has(activeSlide)) return prev;
+      const next = new Set(prev);
+      next.add(activeSlide);
+      return next;
+    });
+  }, [activeSlide]);
+
+  useEffect(() => {
+    if (skipHeavyMedia) return undefined;
+    const nextIdx = (activeSlide + 1) % 4;
+    const timer = setTimeout(() => {
+      setLoadedSlides((prev) => {
+        if (prev.has(nextIdx)) return prev;
+        const next = new Set(prev);
+        next.add(nextIdx);
+        return next;
+      });
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [activeSlide, skipHeavyMedia]);
+
   // Set fetchpriority attribute on video iframes after mount
   useEffect(() => {
     if (maykiVideoRef.current) {
@@ -2434,8 +2492,12 @@ function Home() {
     }
   }, []);
 
-  // Lazy preload videos for slides 3-4 when slide 2 becomes active (proactive loading)
+  // Lazy preload videos for slides 3-4 when slide 2 becomes active (proactive loading).
+  // Skipped entirely on slow / save-data connections so the user does not pay for
+  // off-screen iframes they will never see.
   useEffect(() => {
+    if (skipHeavyMedia) return;
+
     // Preload slide 3 video when slide 2 is active (next slide)
     if (activeSlide === 1 && nirbhayVimeoId && !window.__vimeoNirbhayPreloaded) {
       const preloadIframe2 = document.createElement("iframe");
@@ -2469,7 +2531,7 @@ function Home() {
       document.body.appendChild(preloadIframe3);
       window.__vimeoSlide4Preloaded = true;
     }
-  }, [activeSlide, nirbhayVimeoId, slide4VimeoId]);
+  }, [activeSlide, nirbhayVimeoId, slide4VimeoId, skipHeavyMedia]);
 
   // Play/pause videos when slide changes - immediate control
   useEffect(() => {
@@ -2752,8 +2814,10 @@ function Home() {
       });
     };
 
-    // Add lightweight resource hints for Vimeo (connection warm-up is cheap)
-    if (!window.__vimeoPreconnectAdded) {
+    // Add lightweight resource hints for Vimeo (connection warm-up is cheap).
+    // Skipped on slow / save-data connections where we will never load the
+    // Vimeo iframes anyway, to avoid wasting a TLS round-trip.
+    if (!window.__vimeoPreconnectAdded && !shouldSkipHeavyMedia()) {
       const addLink = (rel, href) => {
         const link = document.createElement("link");
         link.rel = rel;
@@ -2769,8 +2833,10 @@ function Home() {
 
     // Defer the heavy Vimeo iframe preload so it doesn't compete with FCP/LCP.
     // Slides advance every 8s, so preloading after a short delay still keeps slide 2 ready in time.
+    // On slow / save-data connections we skip the preload entirely.
     const preloadMaykiVideo = () => {
       if (window.innerWidth < 768) return;
+      if (shouldSkipHeavyMedia()) return;
       if (!maykiVimeoId || window.__vimeoMaykiPreloaded) return;
 
       try {
@@ -2843,12 +2909,14 @@ function Home() {
       />
       {/* Hero Carousel */}
       <MKBox sx={{ position: "relative" }}>
-        {/* Pre-render all Vimeo video iframes - always in DOM for instant loading */}
-        {/* Positioned absolutely to match video container, shown when slide is active */}
-        {typeof window !== "undefined" && window.innerWidth >= 768 && (
+        {/* Network-aware Vimeo iframes. On slow / save-data connections the
+            iframes never mount (the slide image acts as the poster); on fast
+            connections only the active + the just-warmed "next" slide mount,
+            so we never download 3 simultaneous Vimeo players on first paint. */}
+        {typeof window !== "undefined" && window.innerWidth >= 768 && !skipHeavyMedia && (
           <>
             {/* Slide 2 video - positioned to match .hero-slide-video-1 */}
-            {maykiVimeoId && (
+            {maykiVimeoId && loadedSlides.has(1) && (
               <iframe
                 ref={maykiVideoRef}
                 src={getVimeoEmbedUrl(maykiVimeoId)}
@@ -2878,7 +2946,7 @@ function Home() {
               />
             )}
             {/* Slide 3 video - positioned to match .hero-slide-video-2 */}
-            {nirbhayVimeoId && (
+            {nirbhayVimeoId && loadedSlides.has(2) && (
               <iframe
                 ref={nirbhayVideoRef}
                 src={getVimeoEmbedUrl(nirbhayVimeoId)}
@@ -2908,7 +2976,7 @@ function Home() {
               />
             )}
             {/* Slide 4 video - positioned to match .hero-slide-video-3 */}
-            {slide4VimeoId && (
+            {slide4VimeoId && loadedSlides.has(3) && (
               <iframe
                 ref={slide4VideoRef}
                 src={getVimeoEmbedUrl(slide4VimeoId)}
@@ -4338,6 +4406,7 @@ function Home() {
               setIsCarouselPaused={handleSetIsCarouselPaused}
               activeSlide={activeSlide}
               totalSlides={heroSlides.length}
+              skipHeavyMedia={skipHeavyMedia}
             />
           ))}
         </Carousel>
@@ -4362,20 +4431,67 @@ function Home() {
         }}
       >
         <Suspense fallback={null}>
-          <MKBox sx={{ contentVisibility: "auto", containIntrinsicSize: "0 520px" }}>
-            <About />
+          {/* Each section is gated by LazyVisible — its lazy() chunk and any
+              section-level images do not start downloading until the
+              section is within ~500 px of the viewport. The outer MKBox
+              reserves a responsive minHeight that approximates the real
+              rendered height; this prevents Cumulative Layout Shift while
+              the chunk + images are downloading. Real content overrides
+              minHeight when it is taller. */}
+          <MKBox
+            sx={{
+              contentVisibility: "auto",
+              containIntrinsicSize: "0 720px",
+              minHeight: { xs: 720, sm: 640, md: 560, lg: 520 },
+            }}
+          >
+            <LazyVisible rootMargin="500px">
+              <About />
+            </LazyVisible>
           </MKBox>
-          <MKBox sx={{ contentVisibility: "auto", containIntrinsicSize: "0 360px" }}>
-            <Counters />
+          <MKBox
+            sx={{
+              contentVisibility: "auto",
+              containIntrinsicSize: "0 620px",
+              minHeight: { xs: 620, sm: 500, md: 360, lg: 340 },
+            }}
+          >
+            <LazyVisible rootMargin="500px">
+              <Counters />
+            </LazyVisible>
           </MKBox>
-          <MKBox sx={{ contentVisibility: "auto", containIntrinsicSize: "0 480px" }}>
-            <Journey />
+          <MKBox
+            sx={{
+              contentVisibility: "auto",
+              containIntrinsicSize: "0 560px",
+              minHeight: { xs: 560, sm: 540, md: 520, lg: 500 },
+            }}
+          >
+            <LazyVisible rootMargin="500px">
+              <Journey />
+            </LazyVisible>
           </MKBox>
-          <MKBox sx={{ contentVisibility: "auto", containIntrinsicSize: "0 640px" }}>
-            <Work />
+          <MKBox
+            sx={{
+              contentVisibility: "auto",
+              containIntrinsicSize: "0 1100px",
+              minHeight: { xs: 1500, sm: 1100, md: 780, lg: 700 },
+            }}
+          >
+            <LazyVisible rootMargin="500px">
+              <Work />
+            </LazyVisible>
           </MKBox>
-          <MKBox sx={{ contentVisibility: "auto", containIntrinsicSize: "0 520px" }}>
-            <Events />
+          <MKBox
+            sx={{
+              contentVisibility: "auto",
+              containIntrinsicSize: "0 820px",
+              minHeight: { xs: 900, sm: 820, md: 720, lg: 680 },
+            }}
+          >
+            <LazyVisible rootMargin="500px">
+              <Events />
+            </LazyVisible>
           </MKBox>
         </Suspense>
       </Card>
@@ -4401,6 +4517,7 @@ HeroSlide.propTypes = {
   setIsCarouselPaused: PropTypes.func.isRequired,
   activeSlide: PropTypes.number.isRequired,
   totalSlides: PropTypes.number.isRequired,
+  skipHeavyMedia: PropTypes.bool,
 };
 
 // Memoize Home component to prevent unnecessary re-renders when navigating back

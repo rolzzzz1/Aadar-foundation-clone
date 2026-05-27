@@ -129,8 +129,9 @@ function localizeValidationError(error, errors, lang) {
 const AADAR_ORG_PAN = "AAIAA2457N";
 const AADAR_80G_REG_NO = "AAIAA2457N24BP01";
 
-const HEADING_FONT = '"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif';
-const BODY_FONT = '"Lato", "Helvetica", "Arial", sans-serif';
+const HEADING_FONT =
+  '"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif';
+const BODY_FONT = '"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif';
 
 const INDIAN_STATES = [
   "Andhra Pradesh",

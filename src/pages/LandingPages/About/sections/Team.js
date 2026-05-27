@@ -54,7 +54,8 @@ function Team() {
               <MKTypography
                 sx={{
                   fontSize: { xs: "1rem", sm: "1rem", md: "1.2rem", lg: "1.2rem" },
-                  fontFamily: '"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif',
+                  fontFamily:
+                    '"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
                 }}
               >
                 {aboutUsPage.teamSection.subTitle1} <br />
@@ -66,7 +67,8 @@ function Team() {
                 className="team-section-title"
                 sx={{
                   fontSize: { xs: "1rem", sm: "1.2rem", md: "1.4rem", lg: "1.4rem" },
-                  fontFamily: '"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif',
+                  fontFamily:
+                    '"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
                 }}
               >
                 {aboutUsPage.teamSection.title}

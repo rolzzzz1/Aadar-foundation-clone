@@ -82,12 +82,26 @@
         }
       }
     </script>
-    <!-- LCP hero image only — extra preloads compete for bandwidth -->
+    <!-- LCP hero image only — extra preloads compete for bandwidth.
+         The desktop hero PNG is heavy (~2 MB), so we only preload it on
+         viewports that will actually render it; mobile gets the smaller
+         Hindi-yellow logo.
+
+         We dropped `fetchpriority="high"` on the desktop PNG because a
+         2 MB high-priority fetch was crowding out the small CSS / JS
+         files the browser actually needs to paint anything — pushing
+         First Contentful Paint past 1.8 s. At default priority the PNG
+         still preloads, but it sits behind the HTML/CSS/JS in the queue
+         so FCP fires sooner. The `<img>` element itself sets
+         fetchPriority="high" once React mounts, so LCP is preserved.
+
+         The mobile logo is small (~30 KB), so it keeps the high
+         priority preload — there is no bandwidth conflict. -->
     <link
       rel="preload"
       as="image"
       href="%PUBLIC_URL%/assets/images/mainThemeImages/aadar-main-black2.png"
-      fetchpriority="high"
+      media="(min-width: 768px)"
     />
     <link
       rel="preload"
@@ -100,13 +114,29 @@
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://res.cloudinary.com" />
     <link rel="dns-prefetch" href="https://www.youtube.com" />
+    <link rel="dns-prefetch" href="https://www.youtube-nocookie.com" />
+    <link rel="dns-prefetch" href="https://i.ytimg.com" />
     <link rel="dns-prefetch" href="https://player.vimeo.com" />
     <link rel="dns-prefetch" href="https://f.vimeocdn.com" />
     <!-- Preconnect for critical external domains -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://player.vimeo.com" crossorigin />
-    <link rel="preconnect" href="https://f.vimeocdn.com" crossorigin />
+    <!-- YouTube/Vimeo preconnect is dynamic — added only when an embed is
+         actually about to load (see LazyYouTube + home page network logic) —
+         so we do not pay TLS / TCP cost on slow connections where the
+         user may never reach the video sections. -->
+    <link rel="preconnect" href="https://i.ytimg.com" crossorigin />
+    <!-- Web font CSS: kick the fetch off at high priority via preload so
+         the woff2 files can stream in parallel with HTML / JS / CSS,
+         then activate the stylesheet without blocking render. Combined
+         with the metric-adjusted "Lato-fallback" / "RobotoSlab-fallback"
+         @font-face declarations above, the font swap is nearly
+         invisible and contributes almost zero CLS. -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Roboto+Slab:wght@700&family=Hind:wght@400;600;700&family=Mukta:wght@400;600;700&family=Pacifico&display=swap"
+    />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Roboto+Slab:wght@700&family=Hind:wght@400;600;700&family=Mukta:wght@400;600;700&family=Pacifico&display=swap"
@@ -133,6 +163,63 @@
     </noscript>
     <!-- Critical CSS for CTA buttons - must load before React to prevent FOUC -->
     <style>
+      /*
+       * Metric-adjusted fallback fonts.
+       *
+       * The Lato + Roboto Slab webfonts ship via Google Fonts using
+       * `display=swap`, which means the browser paints text in a
+       * system fallback first and swaps to the webfont once it loads.
+       * If the fallback has different metrics than the webfont, the
+       * swap reflows every paragraph / heading — the dominant source
+       * of Cumulative Layout Shift on this site.
+       *
+       * These @font-face rules define system-font copies (Arial /
+       * Times) with `size-adjust`, `ascent-override`, `descent-override`,
+       * and `line-gap-override` chosen so the fallback text has nearly
+       * identical line height and glyph widths to the real webfont.
+       * The webfont still wins once loaded; the swap is just invisible.
+       */
+      @font-face {
+        font-family: "Lato-fallback";
+        font-style: normal;
+        font-weight: 400;
+        src: local("Arial");
+        size-adjust: 97.38%;
+        ascent-override: 99%;
+        descent-override: 21.5%;
+        line-gap-override: 0%;
+      }
+      @font-face {
+        font-family: "Lato-fallback";
+        font-style: normal;
+        font-weight: 700;
+        src: local("Arial Bold"), local("Arial");
+        size-adjust: 97.38%;
+        ascent-override: 99%;
+        descent-override: 21.5%;
+        line-gap-override: 0%;
+      }
+      @font-face {
+        font-family: "Lato-fallback";
+        font-style: normal;
+        font-weight: 900;
+        src: local("Arial Black"), local("Arial");
+        size-adjust: 97.38%;
+        ascent-override: 99%;
+        descent-override: 21.5%;
+        line-gap-override: 0%;
+      }
+      @font-face {
+        font-family: "RobotoSlab-fallback";
+        font-style: normal;
+        font-weight: 700;
+        src: local("Times New Roman Bold"), local("Times New Roman");
+        size-adjust: 100.06%;
+        ascent-override: 92.6%;
+        descent-override: 24.4%;
+        line-gap-override: 0%;
+      }
+
       /* Critical CSS for CTA buttons - loads immediately on first page load */
       /* Target by data attributes first (set immediately), then by classes */
       [data-hero-button="slide1"],

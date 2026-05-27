@@ -29,7 +29,7 @@ body {
 
 /* Apply Hind font for Hindi translations - softer and more elegant */
 html[lang="hi"] body {
-  font-family: '"Hind", "Mukta", "Lato", "Helvetica", "Arial", sans-serif';
+  font-family: '"Hind", "Mukta", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif';
   font-weight: 600;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -39,7 +39,7 @@ html[lang="hi"] body {
 /* Apply Hind to typography components for Hindi with increased weight */
 html[lang="hi"] .MuiTypography-root,
 html[lang="hi"] .MKTypography-root {
-  font-family: '"Hind", "Mukta", "Lato", "Helvetica", "Arial", sans-serif';
+  font-family: '"Hind", "Mukta", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif';
   font-weight: 600;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -242,7 +242,7 @@ html[lang="hi"] .MuiTypography-h1,
 html[lang="hi"] .MKTypography-h1,
 html[lang="hi"] .MuiTypography-root.MuiTypography-h1,
 html[lang="hi"] .MKTypography-root.MKTypography-h1 {
-  font-family: '"Roboto Slab", "Lato", "Helvetica", "Arial", sans-serif' !important;
+  font-family: '"Roboto Slab", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif' !important;
   font-weight: 700 !important;
   -webkit-font-smoothing: antialiased !important;
   -moz-osx-font-smoothing: grayscale !important;
@@ -267,7 +267,7 @@ html[lang="hi"] .MuiTypography-h1 div,
 html[lang="hi"] .MKTypography-h1 div,
 html[lang="hi"] .MuiTypography-root.MuiTypography-h1 *,
 html[lang="hi"] .MKTypography-root.MKTypography-h1 * {
-  font-family: '"Roboto Slab", "Lato", "Helvetica", "Arial", sans-serif' !important;
+  font-family: '"Roboto Slab", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif' !important;
   font-weight: 700 !important;
   -webkit-font-smoothing: antialiased !important;
   -moz-osx-font-smoothing: grayscale !important;

@@ -19,7 +19,7 @@ export default function termsData() {
           sx={{ fontWeight: "500" }}
           pb={4}
           fontSize={{ xs: "1.5rem", sm: "1.75rem", md: "1.875rem", lg: "1.875rem" }}
-          fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+          fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
         >
           {termsConditionsPage.title}
         </MKTypography>
@@ -27,7 +27,7 @@ export default function termsData() {
           mt={2}
           variant="body1"
           fontSize={{ xs: "0.8rem", md: "1rem" }}
-          fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+          fontFamily='"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
           sx={{
             letterSpacing: "0.05rem",
           }}
@@ -39,7 +39,7 @@ export default function termsData() {
             mt={2}
             variant="body1"
             fontSize={{ xs: "0.8rem", md: "1rem" }}
-            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
             }}
@@ -50,7 +50,7 @@ export default function termsData() {
                   mt={1}
                   variant="body1"
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
-                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   sx={{
                     letterSpacing: "0.05rem",
                   }}
@@ -63,7 +63,7 @@ export default function termsData() {
                   mt={1}
                   variant="body1"
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
-                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   sx={{
                     letterSpacing: "0.05rem",
                   }}
@@ -76,7 +76,7 @@ export default function termsData() {
                   mt={1}
                   variant="body1"
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
-                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   sx={{
                     letterSpacing: "0.05rem",
                   }}
@@ -89,7 +89,7 @@ export default function termsData() {
                   mt={1}
                   variant="body1"
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
-                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   sx={{
                     letterSpacing: "0.05rem",
                   }}
@@ -102,7 +102,7 @@ export default function termsData() {
                   mt={1}
                   variant="body1"
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
-                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   sx={{
                     letterSpacing: "0.05rem",
                   }}
@@ -115,7 +115,7 @@ export default function termsData() {
                   mt={1}
                   variant="body1"
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
-                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   sx={{
                     letterSpacing: "0.05rem",
                   }}
@@ -128,7 +128,7 @@ export default function termsData() {
                   mt={1}
                   variant="body1"
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
-                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   sx={{
                     letterSpacing: "0.05rem",
                   }}
@@ -141,7 +141,7 @@ export default function termsData() {
                   mt={1}
                   variant="body1"
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
-                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   sx={{
                     letterSpacing: "0.05rem",
                   }}
@@ -154,7 +154,7 @@ export default function termsData() {
                   mt={1}
                   variant="body1"
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
-                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   sx={{
                     letterSpacing: "0.05rem",
                   }}
@@ -167,7 +167,7 @@ export default function termsData() {
                   mt={1}
                   variant="body1"
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
-                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   sx={{
                     letterSpacing: "0.05rem",
                   }}
@@ -180,7 +180,7 @@ export default function termsData() {
                   mt={1}
                   variant="body1"
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
-                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   sx={{
                     letterSpacing: "0.05rem",
                   }}
@@ -194,7 +194,7 @@ export default function termsData() {
             mt={2}
             variant="body1"
             fontSize={{ xs: "0.8rem", md: "1rem" }}
-            fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
             sx={{
               letterSpacing: "0.05rem",
             }}

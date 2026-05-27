@@ -12,6 +12,9 @@ import MKTypography from "components/MKTypography";
 // Instagram posts section
 import InstagramPosts from "components/PostsSection/InstagramPosts";
 
+// Defer the Instagram fetch + media until the section scrolls into view
+import LazyVisible from "components/LazyMedia/LazyVisible";
+
 function Work() {
   const { t } = useTranslation();
   const postsSection = t("homePage.postsSection");
@@ -43,7 +46,7 @@ function Work() {
             <MKTypography
               variant="h3"
               sx={{ fontWeight: "500" }}
-              fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+              fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
               fontSize={{ xs: "1.5rem", sm: "1.5rem", md: "1.75rem", lg: "1.875rem" }}
             >
               {postsSection.title}
@@ -52,7 +55,9 @@ function Work() {
         </Grid>
         <Grid item container lg={12}>
           <MKBox pt={1} width="100%">
-            <InstagramPosts />
+            <LazyVisible rootMargin="400px" minHeight={420}>
+              <InstagramPosts />
+            </LazyVisible>
           </MKBox>
         </Grid>
       </Container>

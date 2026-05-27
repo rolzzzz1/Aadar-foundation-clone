@@ -26,7 +26,8 @@ import { loadDonationReceipt } from "utils/donationReceiptStorage";
 import { downloadReceiptPdf, formatInr } from "utils/donationReceipt";
 import { getReceiptCopy } from "utils/receiptI18n";
 
-const HEADING_FONT = '"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif';
+const HEADING_FONT =
+  '"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif';
 const brandGreen = "#2e7d32";
 const payOrange = "#e67e22";
 

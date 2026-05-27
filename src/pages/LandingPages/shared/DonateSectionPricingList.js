@@ -11,6 +11,7 @@ export default function DonateSectionPricingList({
   items,
   wideAmountColumn = false,
   centered = false,
+  headerMinHeight,
 }) {
   const gridTemplateColumns = centered
     ? { xs: "1fr", sm: "1fr" }
@@ -34,34 +35,47 @@ export default function DonateSectionPricingList({
         mx: centered ? "auto" : 0,
       }}
     >
-      <MKTypography
-        fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+      {/* Title + subtitle live inside a reserved-height block when
+          `headerMinHeight` is set, so siblings rendered side-by-side
+          can keep their list rows aligned even when subtitles wrap
+          to different line counts. */}
+      <MKBox
         sx={{
-          fontSize: { xs: "1.1rem", sm: "1.3rem", md: "1.3rem", lg: "1.5rem" },
-          fontWeight: "400",
           width: "100%",
-          textAlign: centered ? "center" : { xs: "left", sm: "center" },
+          minHeight: headerMinHeight,
+          display: "flex",
+          flexDirection: "column",
         }}
-        pb={subtitle ? 0.75 : 2}
       >
-        {title}
-      </MKTypography>
-      {subtitle ? (
         <MKTypography
+          fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
           sx={{
-            mb: { xs: 1.75, sm: 2 },
-            fontSize: { xs: "0.78rem", sm: "0.82rem", md: "0.85rem" },
-            fontWeight: 400,
-            color: "rgba(31, 42, 68, 0.6)",
-            lineHeight: 1.5,
-            letterSpacing: "0.02em",
+            fontSize: { xs: "1.1rem", sm: "1.3rem", md: "1.3rem", lg: "1.5rem" },
+            fontWeight: "400",
             width: "100%",
-            textAlign: centered ? "center" : "left",
+            textAlign: centered ? "center" : { xs: "left", sm: "center" },
           }}
+          pb={subtitle ? 0.75 : 2}
         >
-          {subtitle}
+          {title}
         </MKTypography>
-      ) : null}
+        {subtitle ? (
+          <MKTypography
+            sx={{
+              mb: { xs: 1.75, sm: 2 },
+              fontSize: { xs: "0.78rem", sm: "0.82rem", md: "0.85rem" },
+              fontWeight: 400,
+              color: "rgba(31, 42, 68, 0.6)",
+              lineHeight: 1.5,
+              letterSpacing: "0.02em",
+              width: "100%",
+              textAlign: centered ? "center" : "left",
+            }}
+          >
+            {subtitle}
+          </MKTypography>
+        ) : null}
+      </MKBox>
       <MKBox
         component="ul"
         sx={{
@@ -166,4 +180,7 @@ DonateSectionPricingList.propTypes = {
   ).isRequired,
   wideAmountColumn: PropTypes.bool,
   centered: PropTypes.bool,
+  // Accepts any value MUI's sx system understands (number, string,
+  // or a responsive object like { xs: "auto", md: 140 }).
+  headerMinHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.object]),
 };

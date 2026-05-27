@@ -87,7 +87,7 @@ function DefaultFooter({ content }) {
               <MKTypography
                 variant="h4"
                 color="white"
-                fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
               >
                 {brand.name}
               </MKTypography>

@@ -84,7 +84,7 @@ function Contact() {
             color="white"
             textAlign="center"
             ml={-2}
-            fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
             fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
             mb={{ xs: 1, sm: 0 }}
           >
@@ -119,7 +119,7 @@ function Contact() {
                 <MKTypography
                   variant="h4"
                   fontSize={{ xs: "1.5rem", sm: "1.75rem", md: "1.875rem", lg: "1.875rem" }}
-                  fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   sx={{ fontWeight: "500" }}
                   pb={4}
                 >
@@ -129,7 +129,7 @@ function Contact() {
                   variant="body1"
                   paddingTop="15px"
                   fontSize="1.2rem"
-                  fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   className="contact-label-address"
                   sx={{ fontWeight: "600" }}
                 >
@@ -181,7 +181,7 @@ function Contact() {
                   variant="body1"
                   paddingTop="15px"
                   fontSize="1.2rem"
-                  fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   className="contact-label-phone"
                   sx={{ fontWeight: "600" }}
                 >
@@ -195,7 +195,7 @@ function Contact() {
                   variant="body1"
                   paddingTop="15px"
                   fontSize="1.2rem"
-                  fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   className="contact-label-email"
                   sx={{ fontWeight: "600" }}
                 >
@@ -217,7 +217,7 @@ function Contact() {
                   <MKTypography
                     fontSize="1.3rem"
                     textAlign={{ xs: "center", sm: "left" }}
-                    fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                    fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                     className="contact-label-follow"
                     sx={{ fontWeight: "600" }}
                   >

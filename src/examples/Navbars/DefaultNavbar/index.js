@@ -700,7 +700,7 @@ function DefaultNavbar({
                   xl: "1.25rem",
                 }}
                 lineHeight={1.25}
-                fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
               >
                 {navbar.title}
               </MKTypography>

@@ -12,6 +12,10 @@ import Grid from "@mui/material/Grid";
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 
+// Lazy YouTube facade — loads the player iframe only on click / when idle
+// so slow connections do not pay the ~500 KB player JS cost up front.
+import LazyYouTube from "components/LazyMedia/LazyYouTube";
+
 function Journey() {
   const { t } = useTranslation();
   const homePage = t("homePage");
@@ -108,7 +112,7 @@ function Journey() {
             <MKBox mb={{ xs: 2, sm: 2.5, md: 3 }} px={{ xs: 1, sm: 2, md: 2 }}>
               <MKTypography
                 variant="h3"
-                fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                 sx={{
                   letterSpacing: "0.05rem",
                   fontSize: {
@@ -180,22 +184,12 @@ function Journey() {
                   overflow: "hidden",
                 }}
               >
-                <iframe
-                  width="100%"
-                  height="100%"
-                  src="https://www.youtube.com/embed/0jZWD7v2vOM"
+                <LazyYouTube
+                  videoId="0jZWD7v2vOM"
                   title={homePage.journeySection.youtubeVideoPlayer}
-                  style={{
-                    border: "0px",
-                    borderRadius: "0px",
-                    display: "block",
-                    margin: "0",
-                    padding: "0",
-                  }}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  autoPlay={true}
-                ></iframe>
+                  posterQuality="hqdefault"
+                  style={{ borderRadius: 0 }}
+                />
               </MKBox>
             </MKBox>
           </Grid>

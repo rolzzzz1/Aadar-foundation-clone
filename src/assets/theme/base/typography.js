@@ -27,9 +27,16 @@ import pxToRem from "assets/theme/functions/pxToRem";
 
 const { dark } = colors;
 
+// `Lato-fallback` / `RobotoSlab-fallback` are metric-adjusted @font-face
+// declarations defined in `public/index.html`. Placing them in the
+// font-family chain BEFORE the generic system fonts means the browser
+// uses the adjusted fallback while the real webfont is downloading.
+// When Google Fonts finishes loading and "Lato" / "Roboto Slab" become
+// available, the swap is visually nearly identical — eliminating most
+// of the Cumulative Layout Shift caused by font swap.
 const baseProperties = {
-  fontFamily: '"Lato", "Helvetica", "Arial", sans-serif',
-  fontFamily2: '"Roboto Slab", sans-serif',
+  fontFamily: '"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
+  fontFamily2: '"Roboto Slab", "RobotoSlab-fallback", "Times New Roman", serif',
   fontWeightLighter: 100,
   fontWeightLight: 300,
   fontWeightRegular: 400,

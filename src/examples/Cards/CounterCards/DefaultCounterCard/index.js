@@ -32,10 +32,10 @@ function DefaultCounterCard({ color, count, title, description, ...rest }) {
         color={color}
         textGradient
         sx={{
-          fontFamily: '"Roboto Slab", "Lato", "Helvetica", "Arial", sans-serif',
+          fontFamily: '"Roboto Slab", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
           fontWeight: 700,
           "& *": {
-            fontFamily: '"Roboto Slab", "Lato", "Helvetica", "Arial", sans-serif',
+            fontFamily: '"Roboto Slab", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
             fontWeight: 700,
           },
         }}
@@ -48,7 +48,7 @@ function DefaultCounterCard({ color, count, title, description, ...rest }) {
           fontSize={{ xs: "1.1rem", sm: "1.25rem" }}
           mt={2}
           mb={1}
-          fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+          fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
           sx={{ fontWeight: "500" }}
         >
           {title}

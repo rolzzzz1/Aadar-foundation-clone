@@ -254,7 +254,7 @@ function Volunteer() {
             color="white"
             textAlign="center"
             ml={-2}
-            fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
             fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
             mb={{ xs: 1, sm: 0 }}
           >
@@ -289,7 +289,7 @@ function Volunteer() {
                 <MKTypography
                   variant="h3"
                   fontSize={{ xs: "1.5rem", sm: "1.75rem", md: "1.875rem", lg: "1.875rem" }}
-                  fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   sx={{ letterSpacing: "0.05rem", fontWeight: 500 }}
                   pb={{ xs: 2, sm: 4 }}
                 >
@@ -305,7 +305,7 @@ function Volunteer() {
                     width: { xs: "100%", sm: "80%", md: "80%", lg: "100%" },
                   }}
                   fontSize={{ xs: "0.8rem", md: "1rem" }}
-                  fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   my={2}
                   loading="lazy"
                   decoding="async"

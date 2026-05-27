@@ -112,20 +112,43 @@ function Donate() {
         sticky
       />
 
-      {/* Main Image and text */}
+      {/* Main Image and text — hero image is rendered as an <img> with
+          decoding="async" + low fetchpriority so the page can paint
+          immediately on slow networks instead of blocking on a 260 KB
+          PNG background. The dark gradient acts as a placeholder until
+          the image arrives, so the headline is always readable. */}
       <MKBox
         minHeight={{ xs: "55vh", sm: "65vh", md: "80vh" }}
         width="100%"
         sx={{
-          backgroundImage: `url(${bgImage2})`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "left",
+          position: "relative",
+          backgroundColor: "#1f2a44",
+          backgroundImage: "linear-gradient(135deg, #1a2238 0%, #1f2a44 45%, #2a3658 100%)",
           display: "flex",
           justifyContent: "end",
           alignItems: "end",
+          overflow: "hidden",
         }}
       >
+        <MKBox
+          component="img"
+          src={bgImage2}
+          alt=""
+          aria-hidden="true"
+          loading="eager"
+          decoding="async"
+          fetchPriority="low"
+          sx={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition: "left",
+            zIndex: 0,
+            pointerEvents: "none",
+          }}
+        />
         <MKBox
           color="white"
           display="flex"
@@ -133,6 +156,8 @@ function Donate() {
           justifyContent="center"
           alignItems="center"
           sx={{
+            position: "relative",
+            zIndex: 1,
             backgroundImage: `url(${bgImage})`,
             backgroundSize: "contain",
             backgroundRepeat: "no-repeat",
@@ -146,7 +171,7 @@ function Donate() {
             color="white"
             textAlign="center"
             ml={-2}
-            fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
             fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
             mb={{ xs: 1, sm: 0 }}
           >
@@ -172,7 +197,7 @@ function Donate() {
             <Grid lg={12}>
               <MKTypography
                 variant="h4"
-                fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                 sx={{
                   fontWeight: "500",
                   fontSize: { xs: "1.5rem", sm: "1.75rem", md: "1.875rem", lg: "1.875rem" },
@@ -187,7 +212,7 @@ function Donate() {
                 <MKBox>
                   <MKTypography
                     variant="h4"
-                    fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                    fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                     sx={{
                       fontWeight: "500",
                       fontSize: { xs: "1.2rem", sm: "1.5rem", md: "1.2rem", lg: "1.5rem" },
@@ -200,7 +225,7 @@ function Donate() {
                     <MKTypography
                       display="inline"
                       variant="h4"
-                      fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                      fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                       sx={{
                         fontSize: { xs: "1.5rem", sm: "1.7rem", md: "1.7rem", lg: "2rem" },
                         fontWeight: "700",
@@ -214,7 +239,7 @@ function Donate() {
                     <MKTypography
                       variant="body1"
                       fontSize={{ xs: "0.8rem", md: "1rem" }}
-                      fontFamily='"Lato", "Helvetica", "Arial", sans-serif'
+                      fontFamily='"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                       sx={{
                         letterSpacing: "0.05rem",
                         paddingTop: { xs: "40px", sm: "40px", md: "20px", lg: "0px" },
@@ -237,13 +262,14 @@ function Donate() {
                     mt={{ xs: 4, sm: 5, md: 5, lg: 5, xl: 8 }}
                     loading="lazy"
                     decoding="async"
+                    fetchPriority="low"
                   ></MKBox>
                   <MKTypography
                     textAlign="center"
                     variant="h5"
                     mt={1.5}
                     fontSize={{ xs: "1rem", md: "1.2rem" }}
-                    fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                    fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   >
                     <i>{donatePage.imageTagLine}</i>
                   </MKTypography>
@@ -282,10 +308,19 @@ function Donate() {
                     borderRadius="xxl"
                     loading="lazy"
                     decoding="async"
+                    fetchPriority="low"
+                    width="1824"
+                    height="2645"
                     sx={{
                       display: "block",
                       width: { xs: "100%", sm: "92%", md: "85%", lg: "100%" },
                       maxWidth: { xs: 340, sm: 380, md: 400, lg: 440 },
+                      // Explicit aspect-ratio + intrinsic width/height attrs
+                      // reserve vertical space before the lazy image loads.
+                      // The scanner is a tall portrait JPEG (1824 × 2645)
+                      // — without this the page expanded ~500px when the
+                      // image arrived, dominating CLS on the Donate page.
+                      aspectRatio: "1824 / 2645",
                       height: "auto",
                       objectFit: "contain",
                       p: 0,
@@ -313,7 +348,7 @@ function Donate() {
                 alignItems="stretch"
               >
                 <MKTypography
-                  fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   sx={{
                     fontSize: { xs: "1.2rem", sm: "1.4rem", md: "1.5rem" },
                     fontWeight: "500",
@@ -398,7 +433,7 @@ function Donate() {
               >
                 <MKTypography
                   variant="h4"
-                  fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   sx={{
                     fontSize: { sm: "1.8rem", md: "1.8rem", lg: "2rem" },
                     fontWeight: "500",
@@ -409,7 +444,7 @@ function Donate() {
                 </MKTypography>
                 <MKTypography
                   variant="h4"
-                  fontFamily='"Pacifico", "Flix", "Lato", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   sx={{
                     fontSize: { xs: "1rem", sm: "1.2rem", md: "1.3rem", lg: "1.5rem" },
                     fontWeight: "500",
@@ -421,25 +456,52 @@ function Donate() {
                 </MKTypography>
               </Grid>
 
+              {/* Membership / Sponsor Prabhuji / Food Sponsorship — single
+                  row on md+ screens, stacked on xs/sm so the lists stay
+                  readable on phones. `alignItems="stretch"` keeps the three
+                  cards the same height regardless of content length. */}
               <Grid
                 container
                 pt={{ xs: 2, sm: 4, md: 4, lg: 6 }}
                 px={{ xs: 1, sm: 2, md: 2 }}
-                direction="column"
-                alignItems="center"
-                spacing={{ xs: 4, sm: 5 }}
+                alignItems="stretch"
+                justifyContent="center"
+                spacing={{ xs: 4, sm: 5, md: 3, lg: 4 }}
                 pb={4}
               >
-                <Grid item xs={12} sx={{ width: "100%" }}>
+                {/* Subtle vertical dividers between the three cards on md+ —
+                    a hairline left border on the 2nd and 3rd columns. The
+                    dividers disappear on xs/sm where the cards stack. */}
+                <Grid
+                  item
+                  xs={12}
+                  md={4}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    px: { xs: 0, md: 2.5, lg: 3 },
+                  }}
+                >
                   <DonateSectionPricingList
                     centered
                     wideAmountColumn
                     title={donatePage.membershipSection.membership.title}
                     subtitle={donatePage.membershipSection.membership.subtitle}
                     items={donatePage.membershipSection.membership.items}
+                    headerMinHeight={{ xs: "auto", md: 150, lg: 160 }}
                   />
                 </Grid>
-                <Grid item xs={12} sx={{ width: "100%" }}>
+                <Grid
+                  item
+                  xs={12}
+                  md={4}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    px: { xs: 0, md: 2.5, lg: 3 },
+                    borderLeft: { xs: "none", md: "1px solid rgba(31, 42, 68, 0.12)" },
+                  }}
+                >
                   <DonateSectionPricingList
                     centered
                     wideAmountColumn
@@ -450,26 +512,38 @@ function Donate() {
                       detail: row.periodDetail,
                       amount: row.highlight.split("–").pop()?.trim() || row.highlight,
                     }))}
+                    headerMinHeight={{ xs: "auto", md: 150, lg: 160 }}
                   />
                   <MKTypography
-                    fontSize={{ xs: "0.7rem", sm: "0.75rem", md: "0.8rem", lg: "0.85rem" }}
+                    fontSize={{ xs: "0.7rem", sm: "0.75rem", md: "0.78rem", lg: "0.82rem" }}
                     py={2}
                     sx={{
                       letterSpacing: "0.05rem",
                       textAlign: "center",
-                      maxWidth: { sm: 560, md: 600 },
+                      maxWidth: { sm: 560, md: "100%" },
                       mx: "auto",
                     }}
                   >
                     {donatePage.membershipSection.sponsorPrabhuji.description}
                   </MKTypography>
                 </Grid>
-                <Grid item xs={12} sx={{ width: "100%" }}>
+                <Grid
+                  item
+                  xs={12}
+                  md={4}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    px: { xs: 0, md: 2.5, lg: 3 },
+                    borderLeft: { xs: "none", md: "1px solid rgba(31, 42, 68, 0.12)" },
+                  }}
+                >
                   <DonateSectionPricingList
                     centered
                     title={donatePage.membershipSection.foodSponsorship.title}
                     subtitle={donatePage.membershipSection.foodSponsorship.subtitle}
                     items={donatePage.membershipSection.foodSponsorship.items}
+                    headerMinHeight={{ xs: "auto", md: 150, lg: 160 }}
                   />
                 </Grid>
               </Grid>
