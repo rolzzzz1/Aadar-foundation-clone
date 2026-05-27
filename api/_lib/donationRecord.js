@@ -46,10 +46,12 @@ function buildRecordFromRazorpay({ payment, order, source }) {
   return {
     payment_id: payment.id,
     order_id: payment.order_id,
+    receipt_no: (order && order.receipt) || "",
     amount_paise: Number(payment.amount),
     currency: payment.currency || "INR",
     status: payment.status,
     donor_name: pickNote(notes, "donor_name"),
+    donor_father_or_husband: pickNote(notes, "donor_father_or_husband"),
     donor_email: pickNote(notes, "donor_email"),
     donor_contact: pickNote(notes, "donor_contact"),
     donor_pan: pickNote(notes, "donor_pan"),

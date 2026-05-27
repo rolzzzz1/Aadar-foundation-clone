@@ -113,3 +113,110 @@ After a test payment, check **Vercel → Logs** for `[donation]` or `[razorpay-v
 If `donation_store` is **false**, set Supabase env vars and redeploy. If `razorpay_webhook` is **false**, webhook backup saves will not run.
 
 Locally: `http://localhost:3001/api/health` also shows `allowed_origins` details when not in production.
+
+---
+
+## 6. End-to-end payment flow (how it works)
+
+```mermaid
+sequenceDiagram
+  participant Donor
+  participant Checkout as /donate/checkout
+  participant OrderAPI as POST /api/razorpay-order
+  participant Razorpay
+  participant VerifyAPI as POST /api/razorpay-verify
+  participant Webhook as POST /api/razorpay-webhook
+  participant Supabase
+  participant Result as /donation/success
+
+  Donor->>Checkout: Fill form + Pay
+  Checkout->>OrderAPI: amount or purpose + donor notes
+  OrderAPI->>Razorpay: orders.create (server-side amount)
+  OrderAPI-->>Checkout: order_id
+  Checkout->>Razorpay: Razorpay Checkout modal
+  Razorpay-->>Checkout: payment_id + signature
+  Checkout->>VerifyAPI: verify signature + fetch payment
+  VerifyAPI->>Razorpay: payments.fetch (must be captured)
+  VerifyAPI->>Supabase: insert donation (source: verify)
+  VerifyAPI-->>Checkout: verified: true
+  Checkout->>Result: sessionStorage receipt + PDF download
+  Note over Webhook,Supabase: If browser closes before verify
+  Razorpay->>Webhook: payment.captured
+  Webhook->>Supabase: insert donation (source: webhook, idempotent)
+```
+
+**Security already in place:**
+
+| Layer | What it does |
+|-------|----------------|
+| `ALLOWED_ORIGINS` | Blocks other sites from calling order/verify APIs |
+| Server-side amounts | `purpose` → fixed `PROGRAMS` prices; custom amounts validated min/max |
+| Checkout signature | HMAC `order_id\|payment_id` verified with `RAZORPAY_KEY_SECRET` |
+| Capture check | Server fetches payment from Razorpay; must be `captured` and match order |
+| Webhook signature | Raw body + `X-Razorpay-Signature` vs `RAZORPAY_WEBHOOK_SECRET` |
+| Supabase | `service_role` only on server; RLS enabled, no public policies |
+| Idempotency | `payment_id` unique — verify + webhook cannot duplicate rows |
+
+**Receipts today:**
+
+- After payment, donor sees `/donation/success` with on-screen receipt + **Download PDF** (English/Hindi).
+- Receipt data is stored in **browser `sessionStorage`** for that tab/session only.
+- Permanent copy is in **Supabase** (`donations` table) when env vars are set.
+- Optional recovery API: `POST /api/donation-receipt` with `payment_id`, `donor_email`, `donor_pan` (must match Supabase row). UI for “retrieve receipt” can be added later.
+
+---
+
+## 7. Go live on Razorpay (checklist)
+
+### A. Razorpay Dashboard (Live mode)
+
+1. Complete **KYC / business activation** so Live mode is enabled.
+2. **Settings → API Keys → Live** — generate **Live** Key ID + Secret.
+3. **Settings → Webhooks** (while in **Live** mode):
+   - URL: `https://www.aadarfoundation.org/api/razorpay-webhook`
+   - Event: **`payment.captured`**
+   - Copy **Webhook Secret** (shown once).
+4. Ensure payments are set to **capture** (orders use `payment_capture: 1` in code).
+
+### B. Vercel → Production environment variables
+
+| Variable | Value |
+|----------|--------|
+| `REACT_APP_RAZORPAY_KEY_ID` | `rzp_live_...` (same as below) |
+| `RAZORPAY_KEY_ID` | `rzp_live_...` |
+| `RAZORPAY_KEY_SECRET` | Live secret (Sensitive) |
+| `RAZORPAY_WEBHOOK_SECRET` | From Live webhook (Sensitive) |
+| `SUPABASE_URL` | Project URL |
+| `SUPABASE_SERVICE_ROLE_KEY` | service_role key (Sensitive, server only) |
+| `ALLOWED_ORIGINS` | `https://www.aadarfoundation.org,https://aadarfoundation.org` |
+
+**Critical:** `REACT_APP_RAZORPAY_KEY_ID` and `RAZORPAY_KEY_ID` must be the **same mode** (both live). The checkout page detects a mismatch and blocks payment.
+
+Redeploy after changing any variable.
+
+### C. Supabase
+
+1. Run `supabase/donations.sql` in SQL Editor (new projects).
+2. If the table already exists, also run:
+   ```sql
+   alter table public.donations add column if not exists receipt_no text;
+   alter table public.donations add column if not exists donor_father_or_husband text;
+   ```
+3. Confirm `GET /api/health` → `"donation_store": true`.
+
+### D. Production smoke test (real ₹1–₹10)
+
+1. Open `https://www.aadarfoundation.org/donate/checkout` (or from Donate2 → Pay).
+2. Complete a **small live** payment.
+3. Confirm:
+   - Success page + PDF download works.
+   - Razorpay Dashboard → Payments shows **captured**.
+   - Supabase `donations` row with `source: verify` (or `webhook` if verify failed).
+4. Razorpay → Webhooks → send test `payment.captured` → expect **200**.
+
+### E. Not built yet (optional improvements)
+
+- Email receipt to donor (needs SendGrid/Resend + template).
+- Admin dashboard to list/export donations (Supabase Studio works for now).
+- Public “Retrieve my receipt” page wired to `POST /api/donation-receipt`.
+- `payment.failed` webhook logging (currently only `payment.captured` is stored).

@@ -5,10 +5,12 @@ create table if not exists public.donations (
   id bigint generated always as identity primary key,
   payment_id text not null,
   order_id text not null,
+  receipt_no text,
   amount_paise integer not null,
   currency text not null default 'INR',
   status text not null,
   donor_name text,
+  donor_father_or_husband text,
   donor_email text,
   donor_contact text,
   donor_pan text,
@@ -23,6 +25,10 @@ create index if not exists donations_created_at_idx on public.donations (created
 create index if not exists donations_order_id_idx on public.donations (order_id);
 
 comment on table public.donations is 'Razorpay captured donations; written by Vercel API (service role).';
+
+-- If the table already exists from an earlier deploy, run this once in SQL Editor:
+-- alter table public.donations add column if not exists receipt_no text;
+-- alter table public.donations add column if not exists donor_father_or_husband text;
 
 -- Lock down public access; your Node API uses SUPABASE_SERVICE_ROLE_KEY (bypasses RLS).
 alter table public.donations enable row level security;
