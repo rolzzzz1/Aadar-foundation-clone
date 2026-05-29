@@ -13,7 +13,10 @@ const { isStoreConfigured } = require("./_lib/donationRecord");
 const MAX_BODY_BYTES = 2 * 1024;
 
 function normalizeEmail(v) {
-  return String(v || "").trim().toLowerCase().slice(0, EMAIL_MAX);
+  return String(v || "")
+    .trim()
+    .toLowerCase()
+    .slice(0, EMAIL_MAX);
 }
 
 function normalizePan(v) {
@@ -29,7 +32,8 @@ function normalizePan(v) {
  *
  * SECURITY MODEL:
  * - Requires a payment id (Razorpay id format)
- * - Requires donor email + PAN to match what was saved in Razorpay order notes
+ * - Requires donor PAN to match what was saved in Razorpay order notes
+ * - Donor email is optional (PAN is currently mandatory in the checkout UI)
  *   (and persisted to Supabase via verify/webhook)
  * - Returns a minimal, sanitized record suitable for building the PDF client-side
  *
@@ -70,7 +74,7 @@ module.exports = async function handler(req, res) {
   const donorEmail = normalizeEmail(body.donor_email || body.email);
   const donorPan = normalizePan(body.donor_pan || body.pan);
 
-  if (!validateRzpId(paymentId) || !donorEmail || donorEmail.length < 5 || donorPan.length !== 10) {
+  if (!validateRzpId(paymentId) || donorPan.length !== 10) {
     return res.status(400).json({ error: "Invalid lookup payload." });
   }
 
@@ -91,7 +95,9 @@ module.exports = async function handler(req, res) {
     if (!r.ok) {
       if (!isProduction()) {
         const text = await r.text().catch(() => "");
-        return res.status(502).json({ error: "Receipt lookup failed", details: text.slice(0, 200) });
+        return res
+          .status(502)
+          .json({ error: "Receipt lookup failed", details: text.slice(0, 200) });
       }
       return res.status(502).json({ error: "Receipt lookup failed" });
     }
@@ -106,9 +112,10 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    const matchEmail = normalizeEmail(row.donor_email) === donorEmail;
     const matchPan = normalizePan(row.donor_pan) === donorPan;
-    if (!matchEmail || !matchPan) {
+    const emailProvided = !!donorEmail && donorEmail.length >= 5;
+    const matchEmail = !emailProvided || normalizeEmail(row.donor_email) === donorEmail;
+    if (!matchPan || !matchEmail) {
       return res.status(404).json({
         error: "Receipt not found. Please check your details or contact us with your payment ID.",
       });
@@ -124,7 +131,7 @@ module.exports = async function handler(req, res) {
         donor: {
           name: sanitizeText(row.donor_name || "", NAME_MAX),
           fatherOrHusbandName: sanitizeText(row.donor_father_or_husband || "", NAME_MAX),
-          email: donorEmail,
+          email: emailProvided ? donorEmail : normalizeEmail(row.donor_email),
           contact: sanitizeText(row.donor_contact || "", 20),
           pan: donorPan,
         },
@@ -146,4 +153,3 @@ module.exports = async function handler(req, res) {
     return res.status(502).json({ error: "Receipt lookup failed" });
   }
 };
-

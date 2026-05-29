@@ -52,8 +52,6 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 // Story back background - using public folder to avoid SVG processing issues
 import PropTypes from "prop-types";
 
-// Additional hero images for carousel
-import heroImage2 from "assets/images/aboutPageImages/main1.jpg";
 const blackAndWhiteHero = publicAsset("/assets/images/mainThemeImages/aadar-main-black2.png");
 const slide2MobileBg = publicAsset("/assets/images/mainThemeImages/slide2-mobile-bg.png");
 const slide3MobileBg = publicAsset("/assets/images/mainThemeImages/slide3-mobile-bg.png");
@@ -1827,6 +1825,31 @@ function Home() {
   const network = useNetworkSnapshot();
   const skipHeavyMedia = shouldSkipHeavyMedia(network);
 
+  // Slides 2–4 background — dynamic import keeps a large JPG out of the main JS chunk
+  const [heroSlideBg, setHeroSlideBg] = useState(null);
+  useEffect(() => {
+    let cancelled = false;
+    const load = () => {
+      import("assets/images/aboutPageImages/main1.jpg")
+        .then((mod) => {
+          if (!cancelled) setHeroSlideBg(mod.default);
+        })
+        .catch(() => {});
+    };
+    if ("requestIdleCallback" in window) {
+      const id = requestIdleCallback(load, { timeout: 2500 });
+      return () => {
+        cancelled = true;
+        cancelIdleCallback(id);
+      };
+    }
+    const tId = window.setTimeout(load, 800);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(tId);
+    };
+  }, []);
+
   // State to let user pause/resume hero slider
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
   // State to track video mute status for each slide
@@ -2799,9 +2822,14 @@ function Home() {
     // Preload slide background images (cheap, local) after first paint
     const preloadImages = () => {
       const isMobile = window.innerWidth < 768;
-      const imageUrls = isMobile
-        ? [publicAsset("/assets/images/aadarHindiYellow.png")]
-        : [blackAndWhiteHero, heroImage2];
+      let imageUrls;
+      if (isMobile) {
+        imageUrls = [publicAsset("/assets/images/aadarHindiYellow.png")];
+      } else if (heroSlideBg) {
+        imageUrls = [blackAndWhiteHero, heroSlideBg];
+      } else {
+        imageUrls = [blackAndWhiteHero];
+      }
       imageUrls.forEach((src) => {
         if (!src) return;
         const img = new Image();
@@ -2880,19 +2908,18 @@ function Home() {
         window.clearTimeout(timeoutId);
       }
     };
-  }, [maykiVimeoId, blackAndWhiteHero, heroImage2]);
+  }, [maykiVimeoId, blackAndWhiteHero, heroSlideBg]);
 
   // Hero slides (slide 2, slide 3, and slide 4 share the same special video layout)
-  // Memoize to prevent recreation on every render
-  const heroSlides = useMemo(
-    () => [
+  const heroSlides = useMemo(() => {
+    const slideBg = heroSlideBg || blackAndWhiteHero;
+    return [
       { image: blackAndWhiteHero },
-      { image: heroImage2 },
-      { image: heroImage2 },
-      { image: heroImage2 },
-    ],
-    []
-  );
+      { image: slideBg },
+      { image: slideBg },
+      { image: slideBg },
+    ];
+  }, [heroSlideBg]);
 
   return (
     <MKBox minWidth="320px">

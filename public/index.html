@@ -132,23 +132,52 @@
          with the metric-adjusted "Lato-fallback" / "RobotoSlab-fallback"
          @font-face declarations above, the font swap is nearly
          invisible and contributes almost zero CLS. -->
+    <!-- Primary UI fonts only on first paint; Hindi + display fonts load after idle -->
     <link
       rel="preload"
       as="style"
-      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Roboto+Slab:wght@700&family=Hind:wght@400;600;700&family=Mukta:wght@400;600;700&family=Pacifico&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Roboto+Slab:wght@700&display=swap"
     />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Roboto+Slab:wght@700&family=Hind:wght@400;600;700&family=Mukta:wght@400;600;700&family=Pacifico&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Roboto+Slab:wght@700&display=swap"
       media="print"
       onload="this.media='all'"
     />
     <noscript>
       <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Roboto+Slab:wght@700&family=Hind:wght@400;600;700&family=Mukta:wght@400;600;700&family=Pacifico&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Roboto+Slab:wght@700&display=swap"
       />
     </noscript>
+    <script>
+      (function () {
+        var secondary =
+          "https://fonts.googleapis.com/css2?family=Hind:wght@400;600;700&family=Mukta:wght@400;600;700&family=Pacifico&display=swap";
+        var loadSecondary = function () {
+          if (document.getElementById("aadar-secondary-fonts")) return;
+          var link = document.createElement("link");
+          link.id = "aadar-secondary-fonts";
+          link.rel = "stylesheet";
+          link.href = secondary;
+          document.head.appendChild(link);
+        };
+        try {
+          var lng = localStorage.getItem("i18nextLng") || "";
+          if (lng.indexOf("hi") === 0) {
+            loadSecondary();
+            return;
+          }
+        } catch (e) {}
+        if ("requestIdleCallback" in window) {
+          requestIdleCallback(loadSecondary, { timeout: 3500 });
+        } else {
+          window.addEventListener("load", function () {
+            setTimeout(loadSecondary, 1200);
+          });
+        }
+      })();
+    </script>
     <link
       href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined&family=Material+Icons+Round&display=swap"
       rel="stylesheet"

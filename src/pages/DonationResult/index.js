@@ -7,14 +7,25 @@ import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
+import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 import ReplayOutlinedIcon from "@mui/icons-material/ReplayOutlined";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import SmsOutlinedIcon from "@mui/icons-material/SmsOutlined";
 
 import MKBox from "components/MKBox";
 import MKButton from "components/MKButton";
@@ -22,14 +33,54 @@ import DonationReceiptSheet from "components/DonationReceiptSheet";
 import aadarLogo from "assets/images/logos/logo-aadar.jpg";
 
 import { DONATION_CHECKOUT_PATH } from "utils/donation";
-import { loadDonationReceipt } from "utils/donationReceiptStorage";
+import { loadDonationReceipt, saveDonationReceipt } from "utils/donationReceiptStorage";
 import { downloadReceiptPdf, formatInr } from "utils/donationReceipt";
 import { getReceiptCopy } from "utils/receiptI18n";
+import { postJson } from "utils/api";
 
 const HEADING_FONT =
   '"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif';
 const brandGreen = "#2e7d32";
 const payOrange = "#e67e22";
+
+/** Support contact shown on the receipt-recovery form only */
+const RECEIPT_LOOKUP_SUPPORT_EMAIL = "aadarfoundation.tech@gmail.com";
+const RECEIPT_LOOKUP_SUPPORT_PHONE = "+91 9826441863";
+
+const lookupFieldSx = {
+  "& .MuiInputBase-input": { fontSize: { xs: "0.9375rem", sm: "0.975rem" }, py: 1.1 },
+  "& .MuiInputLabel-root": { fontSize: { xs: "0.875rem", sm: "0.9375rem" }, fontWeight: 600 },
+  "& .MuiOutlinedInput-root": { borderRadius: "12px" },
+};
+
+const lookupBodyText = {
+  fontSize: { xs: "0.875rem", sm: "0.9375rem" },
+  lineHeight: 1.6,
+  color: "#3a465f",
+};
+
+const lookupHintText = {
+  fontSize: { xs: "0.8125rem", sm: "0.875rem" },
+  lineHeight: 1.5,
+  color: "#5a6578",
+};
+
+const lookupSectionTitle = {
+  fontWeight: 800,
+  color: "#1f2a44",
+  fontSize: { xs: "0.975rem", sm: "1.025rem" },
+};
+
+const lookupSubsectionTitle = {
+  ...lookupSectionTitle,
+  fontSize: { xs: "0.9375rem", sm: "0.975rem" },
+};
+
+const lookupAlertText = {
+  fontSize: { xs: "0.8125rem", sm: "0.875rem" },
+  lineHeight: 1.5,
+  color: "#475569",
+};
 
 function DetailRow({ label, value }) {
   if (!value || value === "—") return null;
@@ -59,6 +110,14 @@ export default function DonationResultPage() {
 
   const [record, setRecord] = useState(() => loadDonationReceipt());
   const [downloadMsg, setDownloadMsg] = useState("");
+  const [lookupBusy, setLookupBusy] = useState(false);
+  const [lookupError, setLookupError] = useState("");
+  const [lookupNotFound, setLookupNotFound] = useState(false);
+  const [lookup, setLookup] = useState({
+    paymentId: "",
+    email: "",
+    pan: "",
+  });
 
   useEffect(() => {
     setRecord(loadDonationReceipt());
@@ -96,6 +155,67 @@ export default function DonationResultPage() {
     }
   };
 
+  const normalizePaymentId = (v) => String(v || "").trim();
+  const normalizeEmail = (v) =>
+    String(v || "")
+      .trim()
+      .toLowerCase();
+  const normalizePan = (v) =>
+    String(v || "")
+      .trim()
+      .toUpperCase()
+      .replace(/[^A-Z0-9]/g, "");
+
+  const handleLookup = async () => {
+    setLookupError("");
+    setLookupNotFound(false);
+
+    const paymentId = normalizePaymentId(lookup.paymentId);
+    const email = normalizeEmail(lookup.email);
+    const pan = normalizePan(lookup.pan);
+
+    if (!paymentId || paymentId.length < 5) {
+      setLookupError(t("donationResult.lookupInvalid"));
+      return;
+    }
+    if (!pan || pan.length !== 10) {
+      setLookupError(t("donationResult.lookupInvalid"));
+      return;
+    }
+
+    setLookupBusy(true);
+    try {
+      const result = await postJson("/api/donation-receipt", {
+        payment_id: paymentId,
+        donor_email: email || "",
+        donor_pan: pan,
+      });
+
+      const next = result && result.record ? result.record : null;
+      if (!next) {
+        throw new Error(t("donationResult.lookupNotFound"));
+      }
+
+      saveDonationReceipt(next);
+      setRecord(next);
+    } catch (err) {
+      const msg = (err && err.message) || t("donationResult.lookupFailed");
+      const notFoundCopy = t(
+        "donationResult.lookupNotFound",
+        "Receipt not found. Please check your details or contact us with your payment ID."
+      );
+      const isNotFound =
+        msg === notFoundCopy ||
+        /receipt\s+not\s+found/i.test(msg) ||
+        /couldn'?t\s+find/i.test(msg) ||
+        /not\s+find\s+a\s+matching/i.test(msg);
+      setLookupNotFound(isNotFound);
+      setLookupError(msg);
+    } finally {
+      setLookupBusy(false);
+    }
+  };
+
   if (!record) {
     return (
       <MKBox
@@ -107,21 +227,476 @@ export default function DonationResultPage() {
         py={6}
         sx={{ background: "linear-gradient(180deg, #f4f7f4 0%, #eef1f6 100%)" }}
       >
-        <Card sx={{ maxWidth: 480, p: 4, borderRadius: "18px", textAlign: "center" }}>
-          <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
-            {t("donationResult.noRecordTitle")}
-          </Typography>
-          <Typography variant="body2" sx={{ color: "rgba(31,42,68,0.7)", mb: 3 }}>
-            {t("donationResult.noRecordBody")}
-          </Typography>
-          <MKButton
-            component={RouterLink}
-            to={DONATION_CHECKOUT_PATH}
-            variant="contained"
-            color="success"
+        <Card
+          sx={{
+            maxWidth: 980,
+            width: "100%",
+            p: { xs: 2.5, sm: 4 },
+            borderRadius: "22px",
+            textAlign: "left",
+            border: "1px solid rgba(31, 42, 68, 0.08)",
+            boxShadow: "0 20px 60px rgba(31, 42, 68, 0.12)",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              alignItems: { xs: "center", sm: "center" },
+              gap: { xs: 1.25, sm: 2 },
+              mb: 2,
+            }}
           >
-            {t("donationResult.donateNow")}
-          </MKButton>
+            <Box
+              component="img"
+              src={aadarLogo}
+              alt="Aadar Foundation"
+              sx={{
+                width: { xs: 56, sm: 64 },
+                height: { xs: 56, sm: 64 },
+                borderRadius: "50%",
+                objectFit: "cover",
+                flexShrink: 0,
+              }}
+            />
+            <Divider
+              sx={{
+                display: { xs: "block", sm: "none" },
+                width: "100%",
+                maxWidth: 280,
+                borderColor: "rgba(31, 42, 68, 0.14)",
+              }}
+            />
+            <Box
+              sx={{
+                minWidth: 0,
+                flex: 1,
+                textAlign: { xs: "center", sm: "left" },
+                borderLeft: { sm: "1px solid rgba(31, 42, 68, 0.14)" },
+                pl: { sm: 2.5 },
+              }}
+            >
+              <Typography
+                sx={{
+                  fontFamily: HEADING_FONT,
+                  fontWeight: 500,
+                  color: "#1f2a44",
+                  fontSize: { xs: "1.1rem", sm: "1.35rem" },
+                  lineHeight: 1.25,
+                  mb: 0.5,
+                }}
+              >
+                {t("donationResult.lookupHeroTitle", "Recover Donation Receipt")}
+              </Typography>
+              <Typography
+                sx={{
+                  color: "#64748b",
+                  fontSize: { xs: "0.8125rem", sm: "0.875rem" },
+                  lineHeight: 1.5,
+                }}
+              >
+                {t(
+                  "donationResult.lookupHeroSubtitle",
+                  "If your payment was completed but the page closed accidentally, retrieve your receipt below."
+                )}
+              </Typography>
+            </Box>
+          </Box>
+
+          <Box
+            sx={{
+              mb: 2.5,
+              p: { xs: 1.5, sm: 2 },
+              borderRadius: "10px",
+              bgcolor: "#f0fdf4",
+              border: "1px solid #dcfce7",
+              display: "flex",
+              alignItems: "center",
+              gap: 1.25,
+            }}
+          >
+            <CheckCircleIcon sx={{ color: "#22c55e", fontSize: 22, flexShrink: 0 }} />
+            <Typography sx={lookupAlertText}>
+              <Box component="span" sx={{ fontWeight: 700, color: "#166534" }}>
+                {t("donationResult.lookupAlertBold", "Your payment may already be successful.")}
+              </Box>{" "}
+              {t(
+                "donationResult.lookupAlertRest",
+                "Enter your details below to retrieve your receipt."
+              )}
+            </Typography>
+          </Box>
+
+          <Grid container spacing={2.25} sx={{ textAlign: "left" }}>
+            <Grid item xs={12} md={7}>
+              <Box
+                sx={{
+                  p: 2.25,
+                  borderRadius: "18px",
+                  bgcolor: "#fff",
+                  border: "1px solid rgba(31,42,68,0.08)",
+                }}
+              >
+                <Stack spacing={2}>
+                  <TextField
+                    label={t("donationResult.lookupPaymentId", "Payment ID")}
+                    value={lookup.paymentId}
+                    onChange={(e) =>
+                      setLookup((prev) => ({ ...prev, paymentId: e.target.value || "" }))
+                    }
+                    placeholder="Example: pay_Q8x7ABCD1234"
+                    size="medium"
+                    fullWidth
+                    sx={lookupFieldSx}
+                    InputProps={{
+                      startAdornment: (
+                        <PaymentsOutlinedIcon sx={{ mr: 1, color: brandGreen, fontSize: 20 }} />
+                      ),
+                    }}
+                  />
+                  <Typography sx={{ ...lookupHintText, mt: -0.5 }}>
+                    {t(
+                      "donationResult.lookupPaymentIdHint",
+                      "You can find this in UPI SMS, Bank SMS, Razorpay message or Bank statement."
+                    )}
+                  </Typography>
+
+                  <TextField
+                    label={t("donationResult.lookupEmail", "Email (optional)")}
+                    value={lookup.email}
+                    onChange={(e) =>
+                      setLookup((prev) => ({ ...prev, email: e.target.value || "" }))
+                    }
+                    placeholder={t(
+                      "donationResult.lookupEmailPh",
+                      "Enter the email used during donation"
+                    )}
+                    size="medium"
+                    fullWidth
+                    sx={lookupFieldSx}
+                    InputProps={{
+                      startAdornment: (
+                        <EmailOutlinedIcon sx={{ mr: 1, color: "#4a6a8a", fontSize: 20 }} />
+                      ),
+                    }}
+                  />
+
+                  <TextField
+                    label={t("donationResult.lookupPan", "PAN Number")}
+                    value={lookup.pan}
+                    onChange={(e) => setLookup((prev) => ({ ...prev, pan: e.target.value || "" }))}
+                    placeholder="ABCDE1234F"
+                    size="medium"
+                    fullWidth
+                    inputProps={{ maxLength: 10 }}
+                    sx={lookupFieldSx}
+                    InputProps={{
+                      startAdornment: (
+                        <PersonOutlineIcon sx={{ mr: 1, color: "#4a6a8a", fontSize: 20 }} />
+                      ),
+                    }}
+                  />
+
+                  {lookupError ? (
+                    <Alert severity="error" sx={{ textAlign: "left", fontSize: "0.9375rem" }}>
+                      {lookupError}
+                    </Alert>
+                  ) : null}
+
+                  <MKButton
+                    variant="contained"
+                    color="success"
+                    onClick={handleLookup}
+                    disabled={lookupBusy}
+                    startIcon={<SearchOutlinedIcon />}
+                    sx={{
+                      py: 1.5,
+                      fontSize: { xs: "0.9375rem", sm: "0.975rem" },
+                      fontWeight: 800,
+                      textTransform: "none",
+                      borderRadius: "12px",
+                    }}
+                  >
+                    {lookupBusy
+                      ? t("donationResult.lookupBusy", "Retrieving…")
+                      : t("donationResult.lookupButton", "Retrieve Donation Receipt")}
+                  </MKButton>
+
+                  <Box sx={{ display: "flex", alignItems: "flex-start", gap: 1 }}>
+                    <InfoOutlinedIcon sx={{ fontSize: 20, color: "#5a6578", mt: "2px" }} />
+                    <Typography sx={lookupHintText}>
+                      {t(
+                        "donationResult.lookupPrivacy",
+                        "Your details are safe and used only to retrieve your receipt."
+                      )}
+                    </Typography>
+                  </Box>
+                </Stack>
+              </Box>
+            </Grid>
+
+            <Grid item xs={12} md={5}>
+              <Box
+                sx={{
+                  p: 2.25,
+                  borderRadius: "18px",
+                  bgcolor: "rgba(31,42,68,0.02)",
+                  border: "1px solid rgba(31,42,68,0.08)",
+                  height: "100%",
+                }}
+              >
+                <Typography sx={{ ...lookupSectionTitle, mb: 1.5 }}>
+                  {t("donationResult.lookupWhereTitle", "Where to find Payment ID?")}
+                </Typography>
+                <Stack spacing={1.75}>
+                  <Box sx={{ display: "flex", gap: 1.25 }}>
+                    <Box
+                      sx={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: "10px",
+                        bgcolor: "rgba(79, 169, 83, 0.12)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                      }}
+                    >
+                      <PaymentsOutlinedIcon sx={{ color: brandGreen, fontSize: 20 }} />
+                    </Box>
+                    <Box sx={{ minWidth: 0 }}>
+                      <Typography sx={lookupSubsectionTitle}>
+                        {t("donationResult.lookupWhereUpiTitle", "UPI App")}
+                      </Typography>
+                      <Typography sx={lookupBodyText}>
+                        {t("donationResult.lookupWhereUpiBody", "Check your UPI payment history.")}
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  <Box sx={{ display: "flex", gap: 1.25 }}>
+                    <Box
+                      sx={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: "10px",
+                        bgcolor: "rgba(79, 169, 83, 0.12)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                      }}
+                    >
+                      <SmsOutlinedIcon sx={{ color: brandGreen, fontSize: 20 }} />
+                    </Box>
+                    <Box sx={{ minWidth: 0 }}>
+                      <Typography sx={lookupSubsectionTitle}>
+                        {t("donationResult.lookupWhereSmsTitle", "Bank SMS")}
+                      </Typography>
+                      <Typography sx={lookupBodyText}>
+                        {t("donationResult.lookupWhereSmsBody", "Look for Razorpay payment SMS.")}
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  <Box sx={{ display: "flex", gap: 1.25 }}>
+                    <Box
+                      sx={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: "10px",
+                        bgcolor: "rgba(79, 169, 83, 0.12)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                      }}
+                    >
+                      <ReceiptLongOutlinedIcon sx={{ color: brandGreen, fontSize: 20 }} />
+                    </Box>
+                    <Box sx={{ minWidth: 0 }}>
+                      <Typography sx={lookupSubsectionTitle}>
+                        {t("donationResult.lookupWhereRzpTitle", "Razorpay Message")}
+                      </Typography>
+                      <Typography sx={lookupBodyText}>
+                        {t(
+                          "donationResult.lookupWhereRzpBody",
+                          "Check your email or SMS from Razorpay."
+                        )}
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  <Box sx={{ display: "flex", gap: 1.25 }}>
+                    <Box
+                      sx={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: "10px",
+                        bgcolor: "rgba(79, 169, 83, 0.12)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                      }}
+                    >
+                      <ReceiptLongOutlinedIcon sx={{ color: brandGreen, fontSize: 20 }} />
+                    </Box>
+                    <Box sx={{ minWidth: 0 }}>
+                      <Typography sx={lookupSubsectionTitle}>
+                        {t("donationResult.lookupWhereStmtTitle", "Bank Statement")}
+                      </Typography>
+                      <Typography sx={lookupBodyText}>
+                        {t("donationResult.lookupWhereStmtBody", "Check your account statement.")}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Stack>
+              </Box>
+            </Grid>
+          </Grid>
+
+          {lookupNotFound ? (
+            <Box sx={{ mt: 2.5 }}>
+              <Alert
+                severity="warning"
+                icon={<InfoOutlinedIcon />}
+                sx={{
+                  textAlign: "left",
+                  borderRadius: "14px",
+                  bgcolor: "rgba(255, 193, 7, 0.12)",
+                  border: "1px solid rgba(255, 193, 7, 0.25)",
+                }}
+              >
+                <Typography sx={{ ...lookupSectionTitle, mb: 0.5 }}>
+                  {t("donationResult.lookupNotFoundTitle", "We couldn't find a matching donation")}
+                </Typography>
+                <Typography sx={lookupBodyText}>
+                  {t(
+                    "donationResult.lookupNotFoundBody",
+                    "Please verify your Payment ID and PAN. If the issue persists, contact us at {{email}} or {{phone}}.",
+                    { email: RECEIPT_LOOKUP_SUPPORT_EMAIL, phone: RECEIPT_LOOKUP_SUPPORT_PHONE }
+                  )}
+                </Typography>
+              </Alert>
+            </Box>
+          ) : null}
+
+          <Grid container spacing={2} sx={{ mt: 2.5, textAlign: "left" }}>
+            <Grid item xs={12} md={7}>
+              <Box
+                sx={{
+                  p: 2,
+                  borderRadius: "18px",
+                  bgcolor: "rgba(79, 169, 83, 0.06)",
+                  border: "1px solid rgba(79, 169, 83, 0.18)",
+                  height: "100%",
+                }}
+              >
+                <Typography sx={{ ...lookupSectionTitle, mb: 0.75 }}>
+                  {t("donationResult.lookupHelpTitle", "Need assistance?")}
+                </Typography>
+                <Typography sx={{ ...lookupBodyText, mb: 1.25 }}>
+                  {t("donationResult.lookupHelpBody", "We're here to help you.")}
+                </Typography>
+                <Stack spacing={0.75}>
+                  <Link
+                    href={`mailto:${RECEIPT_LOOKUP_SUPPORT_EMAIL}`}
+                    underline="hover"
+                    sx={{
+                      ...lookupBodyText,
+                      fontWeight: 700,
+                      color: brandGreen,
+                      wordBreak: "break-word",
+                    }}
+                  >
+                    {RECEIPT_LOOKUP_SUPPORT_EMAIL}
+                  </Link>
+                  <Link
+                    href={`tel:${RECEIPT_LOOKUP_SUPPORT_PHONE.replace(/\s/g, "")}`}
+                    underline="hover"
+                    sx={{ ...lookupBodyText, fontWeight: 700, color: brandGreen }}
+                  >
+                    {RECEIPT_LOOKUP_SUPPORT_PHONE}
+                  </Link>
+                </Stack>
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={5}>
+              <Box
+                sx={{
+                  p: 2,
+                  borderRadius: "18px",
+                  bgcolor: "rgba(79, 169, 83, 0.06)",
+                  border: "1px solid rgba(79, 169, 83, 0.18)",
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  gap: 1.25,
+                }}
+              >
+                <Box>
+                  <Typography sx={{ ...lookupSectionTitle, mb: 0.75 }}>
+                    {t("donationResult.lookupSupportAgainTitle", "Want to support again?")}
+                  </Typography>
+                  <Typography sx={lookupBodyText}>
+                    {t(
+                      "donationResult.lookupSupportAgainBody",
+                      "Your contribution helps us create a better and brighter future."
+                    )}
+                  </Typography>
+                </Box>
+                <MKButton
+                  component={RouterLink}
+                  to={DONATION_CHECKOUT_PATH}
+                  variant="contained"
+                  color="success"
+                  sx={{
+                    fontWeight: 800,
+                    fontSize: { xs: "0.9375rem", sm: "0.975rem" },
+                    textTransform: "none",
+                    borderRadius: "12px",
+                    py: 1.15,
+                  }}
+                >
+                  {t("donationResult.donateNow")}
+                </MKButton>
+              </Box>
+            </Grid>
+          </Grid>
+
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            spacing={1.5}
+            justifyContent="center"
+            sx={{ mt: 2.5 }}
+          >
+            <MKButton
+              component={RouterLink}
+              to="/home"
+              variant="outlined"
+              color="dark"
+              startIcon={<HomeOutlinedIcon />}
+              sx={{
+                fontWeight: 700,
+                fontSize: { xs: "0.9375rem", sm: "0.975rem" },
+                textTransform: "none",
+                borderRadius: "12px",
+                py: 1.15,
+                px: 2.5,
+              }}
+            >
+              {t("donationResult.backHome")}
+            </MKButton>
+          </Stack>
+
+          <Typography
+            variant="caption"
+            sx={{ display: "block", mt: 2, color: "rgba(31,42,68,0.6)", textAlign: "center" }}
+          >
+            {t("donationResult.lookupFooter", "Thank you for supporting Aadar Foundation.")}
+          </Typography>
         </Card>
       </MKBox>
     );

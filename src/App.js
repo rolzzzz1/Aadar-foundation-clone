@@ -20,8 +20,8 @@ import { setupImageProtection, addImageProtectionCSS } from "utils/imageProtecti
 import { watermarkAllImages, setupWatermarkObserver } from "utils/imageWatermark";
 import DeferredVitals from "components/DeferredVitals";
 
-// Import Home directly (not lazy) since it's the main page and should load fast
-import Home from "layouts/pages/home";
+// Home is large — keep it out of the main bundle so mobile FCP/TBT improve
+const Home = lazy(() => import(/* webpackChunkName: "home" */ "layouts/pages/home"));
 
 // Material Kit 2 React routes
 import routes from "routes";
@@ -317,7 +317,24 @@ export default function App() {
         <CssBaseline />
         <Routes>
           {getRoutes(routes)}
-          <Route path="/home" element={<Home />} />
+          <Route
+            path="/home"
+            element={
+              <Suspense
+                fallback={
+                  <Box
+                    aria-hidden
+                    sx={{
+                      minHeight: "100vh",
+                      bgcolor: "#1f2a44",
+                    }}
+                  />
+                }
+              >
+                <Home />
+              </Suspense>
+            }
+          />
           <Route
             path={DONATION_CHECKOUT_PATH}
             element={

@@ -34,8 +34,15 @@ export function formatApiErrorMessage(data, status) {
   if (process.env.NODE_ENV !== "development") return msg;
 
   const lower = msg.toLowerCase();
+  const isReceiptLookupMiss =
+    lower.includes("receipt not found") || lower.includes("couldn't find a matching donation");
+  const isMissingApiRoute =
+    status === 404 &&
+    !isReceiptLookupMiss &&
+    ((data && data.error === "Not found" && data.path) || lower === "not found");
+
   if (
-    status === 404 ||
+    isMissingApiRoute ||
     lower.includes("payment api is not running") ||
     lower.includes("could not reach")
   ) {
