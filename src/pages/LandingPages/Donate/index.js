@@ -412,7 +412,10 @@ function Donate() {
                   display="block"
                   fontWeight="700"
                   mt={1}
-                  sx={{ fontFamily: '"Roboto Mono", "Consolas", monospace', letterSpacing: "0.03em" }}
+                  sx={{
+                    fontFamily: '"Roboto Mono", "Consolas", monospace',
+                    letterSpacing: "0.03em",
+                  }}
                 >
                   {donatePage.panNo}
                 </MKBox>
