@@ -75,9 +75,6 @@ const slide3MobileBgWebp = publicAsset("/assets/images/mainThemeImages/slide3-mo
 const slide4MobileBg = publicAsset("/assets/images/mainThemeImages/slide4-mobile-bg.png");
 const slide4MobileBgWebp = publicAsset("/assets/images/mainThemeImages/slide4-mobile-bg.webp");
 
-/** Lightweight mobile slide-1 background — avoids downloading the 2 MB desktop hero PNG. */
-const mobileSlide1Bg = "linear-gradient(180deg, #1a2332 0%, #243047 45%, #1a2332 100%)";
-
 // Video URLs configuration - import from config file
 import { VIDEO_URLS } from "../../config/videoUrls";
 import { getHomePageCopy } from "utils/getHomePageCopy";
@@ -2826,7 +2823,7 @@ function Home() {
       const isMobile = window.innerWidth < 768;
       let imageUrls;
       if (isMobile) {
-        imageUrls = [publicAsset("/assets/images/aadarHindiYellow.png")];
+        imageUrls = [publicAsset("/assets/images/aadarHindiYellow.png"), blackAndWhiteHeroWebp];
       } else if (heroSlideBg) {
         imageUrls = [blackAndWhiteHeroWebp, blackAndWhiteHeroPng, heroSlideBg];
       } else {
@@ -2854,7 +2851,8 @@ function Home() {
   // Hero slides (slide 2, slide 3, and slide 4 share the same special video layout)
   const heroSlides = useMemo(() => {
     const slideBg = heroSlideBg || blackAndWhiteHeroPng;
-    const slide1Bg = isDesktopViewport ? blackAndWhiteHero : mobileSlide1Bg;
+    // Mobile: WebP only (~225 KB). Desktop: WebP + PNG fallback via image-set.
+    const slide1Bg = isDesktopViewport ? blackAndWhiteHero : blackAndWhiteHeroWebp;
     return [{ image: slide1Bg }, { image: slideBg }, { image: slideBg }, { image: slideBg }];
   }, [heroSlideBg, isDesktopViewport]);
 
