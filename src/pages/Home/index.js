@@ -2483,34 +2483,83 @@ function Home() {
   const nirbhayVideoRef = useRef(null);
   const slide4VideoRef = useRef(null);
 
-  // Track which slide iframes are allowed to mount. We always mount the
-  // active slide; the "next" slide is warmed ~2s later on fast networks.
-  // On slow / save-data connections we never warm — iframes are loaded
-  // strictly on-demand to keep bandwidth free for the page itself.
+  // Track which slide iframes are allowed to mount (slides 2–4 = indices 1–3).
   const [loadedSlides, setLoadedSlides] = useState(() => new Set([0, activeSlide]));
 
-  useEffect(() => {
+  const warmVideoSlide = useCallback((slideIndex) => {
+    if (slideIndex < 1 || slideIndex > 3) return;
     setLoadedSlides((prev) => {
-      if (prev.has(activeSlide)) return prev;
+      if (prev.has(slideIndex)) return prev;
       const next = new Set(prev);
-      next.add(activeSlide);
+      next.add(slideIndex);
       return next;
     });
-  }, [activeSlide]);
+  }, []);
 
+  // Always mount the active slide + the next two video slides immediately.
+  useEffect(() => {
+    if (skipHeavyMedia) return;
+    setLoadedSlides((prev) => {
+      const next = new Set(prev);
+      next.add(activeSlide);
+      for (let offset = 1; offset <= 2; offset += 1) {
+        const idx = (activeSlide + offset) % 4;
+        if (idx > 0) next.add(idx);
+      }
+      return next;
+    });
+  }, [activeSlide, skipHeavyMedia]);
+
+  // On desktop/fast networks, start loading carousel videos after first paint (slide 1 still on screen).
   useEffect(() => {
     if (skipHeavyMedia) return undefined;
-    const nextIdx = (activeSlide + 1) % 4;
-    const timer = setTimeout(() => {
-      setLoadedSlides((prev) => {
-        if (prev.has(nextIdx)) return prev;
-        const next = new Set(prev);
-        next.add(nextIdx);
-        return next;
-      });
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, [activeSlide, skipHeavyMedia]);
+    if (typeof window === "undefined" || window.innerWidth < 768) return undefined;
+
+    let cancelled = false;
+    let idleId;
+    let t1;
+    let t2;
+    let t3;
+
+    const addVimeoPreconnect = () => {
+      if (cancelled || window.__vimeoPreconnectAdded) return;
+      const addLink = (rel, href) => {
+        const link = document.createElement("link");
+        link.rel = rel;
+        link.href = href;
+        link.crossOrigin = "anonymous";
+        document.head.appendChild(link);
+      };
+      addLink("dns-prefetch", "https://player.vimeo.com");
+      addLink("preconnect", "https://player.vimeo.com");
+      addLink("preconnect", "https://f.vimeocdn.com");
+      window.__vimeoPreconnectAdded = true;
+    };
+
+    const startEarlyVideoWarmup = () => {
+      if (cancelled) return;
+      addVimeoPreconnect();
+      warmVideoSlide(1);
+      t1 = window.setTimeout(() => warmVideoSlide(2), 800);
+      t2 = window.setTimeout(() => warmVideoSlide(3), 1600);
+    };
+
+    if ("requestIdleCallback" in window) {
+      idleId = requestIdleCallback(startEarlyVideoWarmup, { timeout: 2200 });
+    } else {
+      t3 = window.setTimeout(startEarlyVideoWarmup, 1500);
+    }
+
+    return () => {
+      cancelled = true;
+      if (idleId != null && "cancelIdleCallback" in window) {
+        cancelIdleCallback(idleId);
+      }
+      if (t1 != null) window.clearTimeout(t1);
+      if (t2 != null) window.clearTimeout(t2);
+      if (t3 != null) window.clearTimeout(t3);
+    };
+  }, [skipHeavyMedia, warmVideoSlide]);
 
   // Set fetchpriority attribute on video iframes after mount
   useEffect(() => {
@@ -2524,47 +2573,6 @@ function Home() {
       slide4VideoRef.current.setAttribute("fetchpriority", "high");
     }
   }, []);
-
-  // Lazy preload videos for slides 3-4 when slide 2 becomes active (proactive loading).
-  // Skipped entirely on slow / save-data connections so the user does not pay for
-  // off-screen iframes they will never see.
-  useEffect(() => {
-    if (skipHeavyMedia) return;
-
-    // Preload slide 3 video when slide 2 is active (next slide)
-    if (activeSlide === 1 && nirbhayVimeoId && !window.__vimeoNirbhayPreloaded) {
-      const preloadIframe2 = document.createElement("iframe");
-      preloadIframe2.src = getVimeoEmbedUrl(nirbhayVimeoId);
-      preloadIframe2.style.position = "fixed";
-      preloadIframe2.style.top = "0";
-      preloadIframe2.style.left = "0";
-      preloadIframe2.style.width = "100vw";
-      preloadIframe2.style.height = "100vh";
-      preloadIframe2.style.opacity = "0";
-      preloadIframe2.style.pointerEvents = "none";
-      preloadIframe2.style.zIndex = "-9999";
-      preloadIframe2.loading = "lazy";
-      document.body.appendChild(preloadIframe2);
-      window.__vimeoNirbhayPreloaded = true;
-    }
-
-    // Preload slide 4 video when slide 3 is active (next slide)
-    if (activeSlide === 2 && slide4VimeoId && !window.__vimeoSlide4Preloaded) {
-      const preloadIframe3 = document.createElement("iframe");
-      preloadIframe3.src = getVimeoEmbedUrl(slide4VimeoId);
-      preloadIframe3.style.position = "fixed";
-      preloadIframe3.style.top = "0";
-      preloadIframe3.style.left = "0";
-      preloadIframe3.style.width = "100vw";
-      preloadIframe3.style.height = "100vh";
-      preloadIframe3.style.opacity = "0";
-      preloadIframe3.style.pointerEvents = "none";
-      preloadIframe3.style.zIndex = "-9999";
-      preloadIframe3.loading = "lazy";
-      document.body.appendChild(preloadIframe3);
-      window.__vimeoSlide4Preloaded = true;
-    }
-  }, [activeSlide, nirbhayVimeoId, slide4VimeoId, skipHeavyMedia]);
 
   // Play/pause videos when slide changes - immediate control
   useEffect(() => {
@@ -2859,66 +2867,6 @@ function Home() {
     };
   }, [blackAndWhiteHeroWebp, blackAndWhiteHeroPng, heroSlideBg]);
 
-  // Vimeo iframe warmup only when slide 2 is active — avoids competing with desktop LCP.
-  useEffect(() => {
-    if (typeof window === "undefined") return undefined;
-    if (activeSlide < 1) return undefined;
-    if (window.innerWidth < 768) return undefined;
-    if (shouldSkipHeavyMedia()) return undefined;
-    if (!maykiVimeoId || window.__vimeoMaykiPreloaded) return undefined;
-
-    let cancelled = false;
-    let idleId;
-    let timeoutId;
-
-    const preloadMaykiVideo = () => {
-      if (cancelled || window.__vimeoMaykiPreloaded) return;
-
-      if (!window.__vimeoPreconnectAdded) {
-        const addLink = (rel, href) => {
-          const link = document.createElement("link");
-          link.rel = rel;
-          link.href = href;
-          link.crossOrigin = "anonymous";
-          document.head.appendChild(link);
-        };
-        addLink("dns-prefetch", "https://player.vimeo.com");
-        addLink("preconnect", "https://player.vimeo.com");
-        addLink("preconnect", "https://f.vimeocdn.com");
-        window.__vimeoPreconnectAdded = true;
-      }
-
-      try {
-        const preloadIframe = document.createElement("iframe");
-        preloadIframe.src = getVimeoEmbedUrl(maykiVimeoId);
-        preloadIframe.style.cssText =
-          "position:fixed;top:0;left:0;width:100vw;height:100vh;opacity:0;pointer-events:none;z-index:-9999";
-        preloadIframe.loading = "lazy";
-        preloadIframe.setAttribute("fetchpriority", "low");
-        document.body.appendChild(preloadIframe);
-        window.__vimeoMaykiPreloaded = true;
-      } catch (e) {
-        // ignore
-      }
-    };
-
-    if ("requestIdleCallback" in window) {
-      idleId = window.requestIdleCallback(preloadMaykiVideo, { timeout: 3000 });
-    } else {
-      timeoutId = window.setTimeout(preloadMaykiVideo, 500);
-    }
-
-    return () => {
-      cancelled = true;
-      if (idleId && "cancelIdleCallback" in window) {
-        window.cancelIdleCallback(idleId);
-      }
-      if (timeoutId) {
-        window.clearTimeout(timeoutId);
-      }
-    };
-  }, [activeSlide, maykiVimeoId, network]);
-
   // Hero slides (slide 2, slide 3, and slide 4 share the same special video layout)
   const heroSlides = useMemo(() => {
     const slideBg = heroSlideBg || blackAndWhiteHeroPng;
@@ -2946,9 +2894,8 @@ function Home() {
       {/* Hero Carousel */}
       <MKBox sx={{ position: "relative" }}>
         {/* Network-aware Vimeo iframes. On slow / save-data connections the
-            iframes never mount (the slide image acts as the poster); on fast
-            connections only the active + the just-warmed "next" slide mount,
-            so we never download 3 simultaneous Vimeo players on first paint. */}
+            iframes never mount; on fast connections they warm after first paint
+            while slide 1 is still visible so slide 2+ videos are ready in time. */}
         {typeof window !== "undefined" && window.innerWidth >= 768 && !skipHeavyMedia && (
           <>
             {/* Slide 2 video - positioned to match .hero-slide-video-1 */}
@@ -2962,7 +2909,7 @@ function Home() {
                 allowFullScreen
                 webkitallowfullscreen="true"
                 mozallowfullscreen="true"
-                loading="lazy"
+                loading="eager"
                 style={{
                   position: "absolute",
                   top: 0,
@@ -2992,7 +2939,7 @@ function Home() {
                 allowFullScreen
                 webkitallowfullscreen="true"
                 mozallowfullscreen="true"
-                loading="lazy"
+                loading="eager"
                 style={{
                   position: "absolute",
                   top: 0,
@@ -3022,7 +2969,7 @@ function Home() {
                 allowFullScreen
                 webkitallowfullscreen="true"
                 mozallowfullscreen="true"
-                loading="lazy"
+                loading="eager"
                 style={{
                   position: "absolute",
                   top: 0,
