@@ -55,6 +55,14 @@ import PropTypes from "prop-types";
 const blackAndWhiteHeroPng = publicAsset("/assets/images/mainThemeImages/aadar-main-black2.png");
 const blackAndWhiteHeroWebp = publicAsset("/assets/images/mainThemeImages/aadar-main-black2.webp");
 const blackAndWhiteHero = `image-set(url("${blackAndWhiteHeroWebp}") type("image/webp"), url("${blackAndWhiteHeroPng}") type("image/png"))`;
+
+/** image-set() must not be wrapped in url() — only plain paths use url(). */
+function heroBackgroundImage(src) {
+  if (typeof src === "string" && src.startsWith("image-set(")) {
+    return src;
+  }
+  return `url(${src})`;
+}
 const slide2MobileBg = publicAsset("/assets/images/mainThemeImages/slide2-mobile-bg.png");
 const slide3MobileBg = publicAsset("/assets/images/mainThemeImages/slide3-mobile-bg.png");
 const slide4MobileBg = publicAsset("/assets/images/mainThemeImages/slide4-mobile-bg.png");
@@ -1311,7 +1319,7 @@ const HeroSlide = memo(function HeroSlide({
       height={{ xs: "100vh", sm: "100vh", md: "100vh" }}
       width="100%"
       sx={{
-        backgroundImage: `url(${image})`,
+        backgroundImage: heroBackgroundImage(image),
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "top",
