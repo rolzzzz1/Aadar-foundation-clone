@@ -249,6 +249,25 @@ function Donate2() {
                     >
                       {donatePage.description}
                     </MKTypography>
+                    <MKBox
+                      mt={2}
+                      p={{ xs: 1.25, sm: 1.5 }}
+                      sx={{
+                        maxWidth: 640,
+                        borderRadius: "12px",
+                        border: "1px solid #f0c36d",
+                        backgroundColor: "#fff8e8",
+                        boxShadow: "0 4px 14px rgba(236, 165, 51, 0.12)",
+                      }}
+                    >
+                      <MKTypography
+                        variant="body2"
+                        fontSize={{ xs: "0.78rem", sm: "0.85rem" }}
+                        sx={{ color: "#6d4c00", lineHeight: 1.6, fontWeight: 600 }}
+                      >
+                        {donatePage.domesticDonationsNotice}
+                      </MKTypography>
+                    </MKBox>
                     <Grid
                       container
                       spacing={{ xs: 1, sm: 1.2 }}

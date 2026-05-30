@@ -249,21 +249,26 @@ function Donate() {
                     >
                       {donatePage.description}
                     </MKTypography>
-                    <MKTypography
-                      variant="body2"
-                      fontSize={{ xs: "0.78rem", md: "0.9rem" }}
-                      fontFamily='"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                    <MKBox
+                      mt={2}
+                      mr={{ xs: 2, sm: 6 }}
+                      p={{ xs: 1.25, sm: 1.5 }}
                       sx={{
-                        letterSpacing: "0.03rem",
-                        color: "#5a6578",
-                        lineHeight: 1.6,
-                        mt: 2,
-                        mr: { xs: 2, sm: 6 },
                         maxWidth: 640,
+                        borderRadius: "12px",
+                        border: "1px solid #f0c36d",
+                        backgroundColor: "#fff8e8",
+                        boxShadow: "0 4px 14px rgba(236, 165, 51, 0.12)",
                       }}
                     >
-                      {donatePage.domesticDonationsNotice}
-                    </MKTypography>
+                      <MKTypography
+                        variant="body2"
+                        fontSize={{ xs: "0.78rem", sm: "0.85rem" }}
+                        sx={{ color: "#6d4c00", lineHeight: 1.6, fontWeight: 600 }}
+                      >
+                        {donatePage.domesticDonationsNotice}
+                      </MKTypography>
+                    </MKBox>
                   </MKTypography>
 
                   <MKBox
