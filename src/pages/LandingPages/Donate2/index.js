@@ -10,6 +10,7 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Tooltip from "@mui/material/Tooltip";
 import TextField from "@mui/material/TextField";
+import Divider from "@mui/material/Divider";
 
 // @mui icons-material components
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
@@ -1303,40 +1304,88 @@ function Donate2() {
 
                 <Grid item xs={12}>
                   <MKBox
-                    width={{ xs: "100%", sm: "80%" }}
-                    p={{ xs: 1.25, sm: 1.75 }}
+                    width={{ xs: "100%", sm: "88%", md: "80%" }}
+                    p={{ xs: 1.75, sm: 2.25 }}
                     mx="auto"
                     mt={{ xs: 2, sm: 3 }}
                     sx={{
-                      border: "1px solid rgba(31, 42, 68, 0.12)",
-                      borderRadius: "10px",
-                      backgroundColor: "rgba(31, 42, 68, 0.02)",
+                      border: "1px solid rgba(31, 42, 68, 0.1)",
+                      borderRadius: "14px",
+                      backgroundColor: "rgba(255, 255, 255, 0.72)",
+                      boxShadow: "0 6px 20px rgba(31, 42, 68, 0.05)",
                     }}
                   >
                     <MKTypography
-                      fontSize={{ xs: "0.8rem", sm: "0.85rem", md: "0.95rem", lg: "0.95rem" }}
-                      textAlign="center"
-                      sx={{
-                        color: "#1f2a44",
-                        lineHeight: 1.5,
-                        letterSpacing: "0.02em",
-                      }}
-                    >
-                      {donatePage.message80g} <br />
-                      <MKBox component="span" sx={{ fontWeight: 700, color: "#1f2a44" }}>
-                        {donatePage.panNo}
-                      </MKBox>
-                    </MKTypography>
-                    <MKTypography
-                      component="p"
-                      fontSize={{ xs: "0.68rem", sm: "0.72rem" }}
-                      textAlign="center"
+                      component="h3"
+                      fontSize={{ xs: "0.72rem", sm: "0.76rem" }}
+                      textAlign="left"
                       sx={{
                         color: "rgba(31, 42, 68, 0.55)",
-                        lineHeight: 1.5,
-                        mt: 1.25,
-                        mb: 0,
-                        fontStyle: "italic",
+                        fontWeight: 700,
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                        mb: 1.25,
+                      }}
+                    >
+                      {donatePage.complianceSectionTitle}
+                    </MKTypography>
+
+                    <MKTypography
+                      fontSize={{ xs: "0.84rem", sm: "0.9rem" }}
+                      textAlign="left"
+                      sx={{
+                        color: "#1f2a44",
+                        lineHeight: 1.65,
+                        letterSpacing: "0.01em",
+                      }}
+                    >
+                      {donatePage.message80g}
+                    </MKTypography>
+
+                    <MKBox
+                      display="inline-flex"
+                      alignItems="center"
+                      gap={1}
+                      mt={1.5}
+                      px={1.25}
+                      py={0.65}
+                      sx={{
+                        borderRadius: "999px",
+                        border: "1px solid rgba(79, 169, 83, 0.22)",
+                        backgroundColor: "rgba(79, 169, 83, 0.06)",
+                      }}
+                    >
+                      <MKTypography
+                        component="span"
+                        fontSize={{ xs: "0.72rem", sm: "0.76rem" }}
+                        sx={{ color: "rgba(31, 42, 68, 0.62)", fontWeight: 700 }}
+                      >
+                        {donatePage.panLabel}
+                      </MKTypography>
+                      <MKTypography
+                        component="span"
+                        fontSize={{ xs: "0.78rem", sm: "0.82rem" }}
+                        sx={{
+                          color: "#1f2a44",
+                          fontWeight: 800,
+                          fontFamily: '"Roboto Mono", "Consolas", monospace',
+                          letterSpacing: "0.04em",
+                        }}
+                      >
+                        {donatePage.panValue}
+                      </MKTypography>
+                    </MKBox>
+
+                    <Divider sx={{ my: 1.75, borderColor: "rgba(31, 42, 68, 0.08)" }} />
+
+                    <MKTypography
+                      component="p"
+                      fontSize={{ xs: "0.74rem", sm: "0.78rem" }}
+                      textAlign="left"
+                      sx={{
+                        color: "rgba(31, 42, 68, 0.62)",
+                        lineHeight: 1.65,
+                        m: 0,
                       }}
                     >
                       {donatePage.domesticDonationsFootnote}

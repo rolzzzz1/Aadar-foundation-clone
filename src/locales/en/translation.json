@@ -463,8 +463,11 @@
         "value": "67940100000154"
       }
     },
-    "message80g": "All donations to the Organisation are 50 % tax exempted under section 80 G of Income Tax Act 1961. ",
-    "panNo": "PAN No - AAIAA2457N",
+    "complianceSectionTitle": "Tax & donation information",
+    "message80g": "Donations to Aadar Foundation are eligible for 50% tax exemption under Section 80G of the Income Tax Act, 1961 (subject to applicable rules).",
+    "panLabel": "PAN",
+    "panValue": "AAIAA2457N",
+    "panNo": "PAN — AAIAA2457N",
     "donateViaCardNetbanking": "Donate via card / netbanking",
     "membershipSection": {
       "title": "Join Us",

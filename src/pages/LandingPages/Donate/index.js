@@ -406,8 +406,14 @@ function Donate() {
                 textAlign="center"
                 sx={{ lineHeight: 1.65 }}
               >
-                {donatePage.message80g}{" "}
-                <MKBox component="span" display="block" fontWeight="700" mt={0.5}>
+                {donatePage.message80g}
+                <MKBox
+                  component="span"
+                  display="block"
+                  fontWeight="700"
+                  mt={1}
+                  sx={{ fontFamily: '"Roboto Mono", "Consolas", monospace', letterSpacing: "0.03em" }}
+                >
                   {donatePage.panNo}
                 </MKBox>
                 <MKBox
