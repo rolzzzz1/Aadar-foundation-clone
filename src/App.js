@@ -14,10 +14,6 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 // Material Kit 2 React themes
 import theme from "assets/theme";
 
-// Image protection utilities
-import { setupImageProtection, addImageProtectionCSS } from "utils/imageProtection";
-// Image watermarking (gallery only — canvas work hurts Real Experience Score)
-import { watermarkAllImages, setupWatermarkObserver } from "utils/imageWatermark";
 import DeferredVitals from "components/DeferredVitals";
 
 // Home is large — keep it out of the main bundle so mobile FCP/TBT improve
@@ -65,9 +61,9 @@ LegacyPathRedirect.propTypes = {
 
 const isGalleryRoute = (path) => /\/gallery\/?$/i.test(path);
 
-// Payment result must load reliably after redirect (avoid lazy chunk failures post-deploy).
-import DonationResult from "pages/DonationResult";
-
+const DonationResult = lazy(() =>
+  import(/* webpackChunkName: "donation-result" */ "pages/DonationResult")
+);
 const RazorpayTest = lazy(() => import("pages/RazorpayTest"));
 const Donate = lazy(() => import("layouts/pages/landing-pages/donate"));
 const Donate2 = lazy(() => import("pages/LandingPages/Donate2"));
@@ -152,6 +148,13 @@ export default function App() {
   const { i18n } = useTranslation();
   const [showBackToTop, setShowBackToTop] = useState(false);
 
+  // Warm the donation-result chunk on checkout so post-payment redirect stays fast
+  useEffect(() => {
+    if (pathname === DONATION_CHECKOUT_PATH) {
+      import(/* webpackChunkName: "donation-result" */ "pages/DonationResult").catch(() => {});
+    }
+  }, [pathname]);
+
   // Setting page scroll to 0 when changing the route
   useEffect(() => {
     document.documentElement.scrollTop = 0;
@@ -223,14 +226,18 @@ export default function App() {
     let cleanup = () => {};
 
     const init = () => {
-      addImageProtectionCSS();
-      cleanup = setupImageProtection() || (() => {});
+      import("utils/imageProtection")
+        .then(({ addImageProtectionCSS, setupImageProtection }) => {
+          addImageProtectionCSS();
+          cleanup = setupImageProtection() || (() => {});
+        })
+        .catch(() => {});
     };
 
     if ("requestIdleCallback" in window) {
-      idleId = requestIdleCallback(init, { timeout: 5000 });
+      idleId = requestIdleCallback(init, { timeout: 8000 });
     } else {
-      timeoutId = window.setTimeout(init, 3000);
+      timeoutId = window.setTimeout(init, 4000);
     }
 
     return () => {
@@ -255,16 +262,21 @@ export default function App() {
       repeat: false,
     };
 
-    const cleanupObserver = setupWatermarkObserver(watermarkOptions);
     let idleId;
     let timeoutId;
     let scrollTimeoutId;
     let applied = false;
+    let cleanupObserver = () => {};
 
     const apply = () => {
       if (applied) return;
       applied = true;
-      watermarkAllImages(watermarkOptions);
+      import("utils/imageWatermark")
+        .then(({ watermarkAllImages, setupWatermarkObserver }) => {
+          cleanupObserver = setupWatermarkObserver(watermarkOptions);
+          watermarkAllImages(watermarkOptions);
+        })
+        .catch(() => {});
       window.removeEventListener("scroll", onScroll, scrollOptions);
       if (scrollTimeoutId != null) {
         window.clearTimeout(scrollTimeoutId);
@@ -347,8 +359,22 @@ export default function App() {
           {Object.entries(LEGACY_PATH_REDIRECTS).map(([from, to]) => (
             <Route key={from} path={from} element={<LegacyPathRedirect to={to} />} />
           ))}
-          <Route path="/donation/success" element={<DonationResult />} />
-          <Route path="/donation/failed" element={<DonationResult />} />
+          <Route
+            path="/donation/success"
+            element={
+              <Suspense fallback={null}>
+                <DonationResult />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/donation/failed"
+            element={
+              <Suspense fallback={null}>
+                <DonationResult />
+              </Suspense>
+            }
+          />
           <Route
             path={DONATE_PAGE_PATH}
             element={

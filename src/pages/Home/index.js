@@ -52,7 +52,9 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 // Story back background - using public folder to avoid SVG processing issues
 import PropTypes from "prop-types";
 
-const blackAndWhiteHero = publicAsset("/assets/images/mainThemeImages/aadar-main-black2.png");
+const blackAndWhiteHeroPng = publicAsset("/assets/images/mainThemeImages/aadar-main-black2.png");
+const blackAndWhiteHeroWebp = publicAsset("/assets/images/mainThemeImages/aadar-main-black2.webp");
+const blackAndWhiteHero = `image-set(url("${blackAndWhiteHeroWebp}") type("image/webp"), url("${blackAndWhiteHeroPng}") type("image/png"))`;
 const slide2MobileBg = publicAsset("/assets/images/mainThemeImages/slide2-mobile-bg.png");
 const slide3MobileBg = publicAsset("/assets/images/mainThemeImages/slide3-mobile-bg.png");
 const slide4MobileBg = publicAsset("/assets/images/mainThemeImages/slide4-mobile-bg.png");
@@ -2826,58 +2828,63 @@ function Home() {
       if (isMobile) {
         imageUrls = [publicAsset("/assets/images/aadarHindiYellow.png")];
       } else if (heroSlideBg) {
-        imageUrls = [blackAndWhiteHero, heroSlideBg];
+        imageUrls = [blackAndWhiteHeroWebp, blackAndWhiteHeroPng, heroSlideBg];
       } else {
-        imageUrls = [blackAndWhiteHero];
+        imageUrls = [blackAndWhiteHeroWebp, blackAndWhiteHeroPng];
       }
       imageUrls.forEach((src) => {
         if (!src) return;
         const img = new Image();
         img.decoding = "async";
         img.loading = "eager";
-        if (!isMobile && src === blackAndWhiteHero) {
+        if (!isMobile && src === blackAndWhiteHeroWebp) {
           img.fetchPriority = "high";
         }
         img.src = src;
       });
     };
 
-    // Add lightweight resource hints for Vimeo (connection warm-up is cheap).
-    // Skipped on slow / save-data connections where we will never load the
-    // Vimeo iframes anyway, to avoid wasting a TLS round-trip.
-    if (!window.__vimeoPreconnectAdded && !shouldSkipHeavyMedia()) {
-      const addLink = (rel, href) => {
-        const link = document.createElement("link");
-        link.rel = rel;
-        link.href = href;
-        link.crossOrigin = "anonymous";
-        document.head.appendChild(link);
-      };
-      addLink("dns-prefetch", "https://player.vimeo.com");
-      addLink("preconnect", "https://player.vimeo.com");
-      addLink("preconnect", "https://f.vimeocdn.com");
-      window.__vimeoPreconnectAdded = true;
-    }
+    const imageTimeoutId = window.setTimeout(preloadImages, 0);
 
-    // Defer the heavy Vimeo iframe preload so it doesn't compete with FCP/LCP.
-    // Slides advance every 8s, so preloading after a short delay still keeps slide 2 ready in time.
-    // On slow / save-data connections we skip the preload entirely.
+    return () => {
+      window.clearTimeout(imageTimeoutId);
+    };
+  }, [blackAndWhiteHeroWebp, blackAndWhiteHeroPng, heroSlideBg]);
+
+  // Vimeo iframe warmup only when slide 2 is active — avoids competing with desktop LCP.
+  useEffect(() => {
+    if (typeof window === "undefined") return undefined;
+    if (activeSlide < 1) return undefined;
+    if (window.innerWidth < 768) return undefined;
+    if (shouldSkipHeavyMedia()) return undefined;
+    if (!maykiVimeoId || window.__vimeoMaykiPreloaded) return undefined;
+
+    let cancelled = false;
+    let idleId;
+    let timeoutId;
+
     const preloadMaykiVideo = () => {
-      if (window.innerWidth < 768) return;
-      if (shouldSkipHeavyMedia()) return;
-      if (!maykiVimeoId || window.__vimeoMaykiPreloaded) return;
+      if (cancelled || window.__vimeoMaykiPreloaded) return;
+
+      if (!window.__vimeoPreconnectAdded) {
+        const addLink = (rel, href) => {
+          const link = document.createElement("link");
+          link.rel = rel;
+          link.href = href;
+          link.crossOrigin = "anonymous";
+          document.head.appendChild(link);
+        };
+        addLink("dns-prefetch", "https://player.vimeo.com");
+        addLink("preconnect", "https://player.vimeo.com");
+        addLink("preconnect", "https://f.vimeocdn.com");
+        window.__vimeoPreconnectAdded = true;
+      }
 
       try {
         const preloadIframe = document.createElement("iframe");
         preloadIframe.src = getVimeoEmbedUrl(maykiVimeoId);
-        preloadIframe.style.position = "fixed";
-        preloadIframe.style.top = "0";
-        preloadIframe.style.left = "0";
-        preloadIframe.style.width = "100vw";
-        preloadIframe.style.height = "100vh";
-        preloadIframe.style.opacity = "0";
-        preloadIframe.style.pointerEvents = "none";
-        preloadIframe.style.zIndex = "-9999";
+        preloadIframe.style.cssText =
+          "position:fixed;top:0;left:0;width:100vw;height:100vh;opacity:0;pointer-events:none;z-index:-9999";
         preloadIframe.loading = "lazy";
         preloadIframe.setAttribute("fetchpriority", "low");
         document.body.appendChild(preloadIframe);
@@ -2887,20 +2894,14 @@ function Home() {
       }
     };
 
-    let idleId;
-    let timeoutId;
-
-    // Image preload ASAP after mount, but not before first paint.
-    timeoutId = window.setTimeout(preloadImages, 0);
-
-    // Video preload a bit later (keeps slide 2 smooth without hurting first paint).
     if ("requestIdleCallback" in window) {
-      idleId = window.requestIdleCallback(preloadMaykiVideo, { timeout: 4000 });
+      idleId = window.requestIdleCallback(preloadMaykiVideo, { timeout: 3000 });
     } else {
-      timeoutId = window.setTimeout(preloadMaykiVideo, 2500);
+      timeoutId = window.setTimeout(preloadMaykiVideo, 500);
     }
 
     return () => {
+      cancelled = true;
       if (idleId && "cancelIdleCallback" in window) {
         window.cancelIdleCallback(idleId);
       }
@@ -2908,11 +2909,11 @@ function Home() {
         window.clearTimeout(timeoutId);
       }
     };
-  }, [maykiVimeoId, blackAndWhiteHero, heroSlideBg]);
+  }, [activeSlide, maykiVimeoId, network]);
 
   // Hero slides (slide 2, slide 3, and slide 4 share the same special video layout)
   const heroSlides = useMemo(() => {
-    const slideBg = heroSlideBg || blackAndWhiteHero;
+    const slideBg = heroSlideBg || blackAndWhiteHeroPng;
     return [
       { image: blackAndWhiteHero },
       { image: slideBg },

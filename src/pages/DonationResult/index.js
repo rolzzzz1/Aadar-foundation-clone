@@ -34,7 +34,7 @@ import aadarLogo from "assets/images/logos/logo-aadar.jpg";
 
 import { DONATION_CHECKOUT_PATH } from "utils/donation";
 import { loadDonationReceipt, saveDonationReceipt } from "utils/donationReceiptStorage";
-import { downloadReceiptPdf, formatInr } from "utils/donationReceipt";
+import { formatInr } from "utils/receiptFormat";
 import { getReceiptCopy } from "utils/receiptI18n";
 import { postJson } from "utils/api";
 
@@ -147,6 +147,7 @@ export default function DonationResultPage() {
   const handleDownload = async () => {
     if (!record) return;
     setDownloadMsg(t("donationResult.preparing"));
+    const { downloadReceiptPdf } = await import("utils/donationReceipt");
     const result = await downloadReceiptPdf(record);
     if (result === "pdf") {
       setDownloadMsg(t("donationResult.pdfDownloaded"));
