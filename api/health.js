@@ -1,4 +1,4 @@
-const { isProduction, getAllowedOrigins } = require("./_lib/donation");
+const { isProduction, getAllowedOrigins, paymentsAreEnabled } = require("./_lib/donation");
 const { isStoreConfigured } = require("./_lib/donationRecord");
 
 module.exports = function handler(req, res) {
@@ -9,6 +9,7 @@ module.exports = function handler(req, res) {
     service: "aadar-foundation-clone",
     timestamp: new Date().toISOString(),
     integrations: {
+      payments_enabled: paymentsAreEnabled(),
       donation_store: isStoreConfigured(),
       razorpay_webhook: !!process.env.RAZORPAY_WEBHOOK_SECRET,
       razorpay_server_keys: !!(

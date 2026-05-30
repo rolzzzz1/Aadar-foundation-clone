@@ -1,5 +1,5 @@
 const crypto = require("crypto");
-const { applySecurityHeaders, isProduction } = require("./_lib/donation");
+const { applySecurityHeaders, isProduction, paymentsAreEnabled } = require("./_lib/donation");
 const { getWebhookRawBody } = require("./_lib/rawBody");
 const { fetchOrder } = require("./_lib/razorpay");
 const {
@@ -33,6 +33,10 @@ module.exports = async function handler(req, res) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  if (!paymentsAreEnabled()) {
+    return res.status(503).json({ error: "Webhook not accepting payments yet." });
   }
 
   const secret = process.env.RAZORPAY_WEBHOOK_SECRET;

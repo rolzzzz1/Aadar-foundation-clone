@@ -7,6 +7,9 @@ export const WORK_PATH = "/work";
 export const VOLUNTEER_PATH = "/volunteer";
 export const DONATE_PAGE_PATH = "/donate";
 export const DONATE2_PAGE_PATH = "/donate2";
+
+/** Donate2 is a WIP landing page — dev/local only until wired as the public donate flow. */
+export const isDonate2Enabled = process.env.NODE_ENV !== "production";
 export const GALLERY_PATH = "/gallery";
 export const CONTACT_PATH = "/contact";
 export const PRIVACY_POLICY_PATH = "/privacy-policy";
@@ -25,7 +28,7 @@ export const LEGACY_PATH_REDIRECTS = Object.freeze({
   "/pages/landing-pages/work": WORK_PATH,
   "/pages/landing-pages/volunteer": VOLUNTEER_PATH,
   "/pages/landing-pages/donate": DONATE_PAGE_PATH,
-  "/pages/landing-pages/donate2": DONATE2_PAGE_PATH,
+  "/pages/landing-pages/donate2": isDonate2Enabled ? DONATE2_PAGE_PATH : DONATE_PAGE_PATH,
   "/pages/landing-pages/gallery": GALLERY_PATH,
   "/pages/landing-pages/contact": CONTACT_PATH,
   "/pages/landing-pages/privacy-policy": PRIVACY_POLICY_PATH,

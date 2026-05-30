@@ -23,8 +23,12 @@ import {
   DONATE_PAGE_PATH,
   DONATE2_PAGE_PATH,
   DONATION_CHECKOUT_PATH,
+  DONATION_FAILED_PATH,
+  DONATION_SUCCESS_PATH,
+  isDonate2Enabled,
   LEGACY_PATH_REDIRECTS,
 } from "utils/paths";
+import { isPaymentsEnabled } from "utils/paymentsFeature";
 
 import Typography from "@mui/material/Typography";
 
@@ -44,6 +48,9 @@ function isChunkLoadFailure(reason) {
 /** Keeps old bookmarks/links working after checkout moved off /__razorpay-test. */
 function LegacyCheckoutRedirect() {
   const { search } = useLocation();
+  if (!isPaymentsEnabled()) {
+    return <Navigate to={DONATE_PAGE_PATH} replace />;
+  }
   return <Navigate to={`${DONATION_CHECKOUT_PATH}${search}`} replace />;
 }
 
@@ -59,12 +66,16 @@ LegacyPathRedirect.propTypes = {
 
 const isGalleryRoute = (path) => /\/gallery\/?$/i.test(path);
 
-const DonationResult = lazy(() =>
-  import(/* webpackChunkName: "donation-result" */ "pages/DonationResult")
-);
-const RazorpayTest = lazy(() => import("pages/RazorpayTest"));
+const RazorpayTest = isPaymentsEnabled()
+  ? lazy(() => import("pages/RazorpayTest"))
+  : null;
+const DonationResult = isPaymentsEnabled()
+  ? lazy(() => import(/* webpackChunkName: "donation-result" */ "pages/DonationResult"))
+  : null;
 const Donate = lazy(() => import("layouts/pages/landing-pages/donate"));
-const Donate2 = lazy(() => import("pages/LandingPages/Donate2"));
+const Donate2 = isDonate2Enabled
+  ? lazy(() => import("pages/LandingPages/Donate2"))
+  : null;
 
 // Error boundary component
 class ErrorBoundary extends React.Component {
@@ -331,9 +342,13 @@ export default function App() {
           <Route
             path={DONATION_CHECKOUT_PATH}
             element={
-              <Suspense fallback={null}>
-                <RazorpayTest />
-              </Suspense>
+              isPaymentsEnabled() && RazorpayTest ? (
+                <Suspense fallback={null}>
+                  <RazorpayTest />
+                </Suspense>
+              ) : (
+                <Navigate to={DONATE_PAGE_PATH} replace />
+              )
             }
           />
           <Route path="/__razorpay-test" element={<LegacyCheckoutRedirect />} />
@@ -341,19 +356,27 @@ export default function App() {
             <Route key={from} path={from} element={<LegacyPathRedirect to={to} />} />
           ))}
           <Route
-            path="/donation/success"
+            path={DONATION_SUCCESS_PATH}
             element={
-              <Suspense fallback={null}>
-                <DonationResult />
-              </Suspense>
+              isPaymentsEnabled() && DonationResult ? (
+                <Suspense fallback={null}>
+                  <DonationResult />
+                </Suspense>
+              ) : (
+                <Navigate to={DONATE_PAGE_PATH} replace />
+              )
             }
           />
           <Route
-            path="/donation/failed"
+            path={DONATION_FAILED_PATH}
             element={
-              <Suspense fallback={null}>
-                <DonationResult />
-              </Suspense>
+              isPaymentsEnabled() && DonationResult ? (
+                <Suspense fallback={null}>
+                  <DonationResult />
+                </Suspense>
+              ) : (
+                <Navigate to={DONATE_PAGE_PATH} replace />
+              )
             }
           />
           <Route
@@ -367,9 +390,13 @@ export default function App() {
           <Route
             path={DONATE2_PAGE_PATH}
             element={
-              <Suspense fallback={null}>
-                <Donate2 />
-              </Suspense>
+              isDonate2Enabled && Donate2 ? (
+                <Suspense fallback={null}>
+                  <Donate2 />
+                </Suspense>
+              ) : (
+                <Navigate to={DONATE_PAGE_PATH} replace />
+              )
             }
           />
           <Route path="*" element={<Navigate to="/home" />} />

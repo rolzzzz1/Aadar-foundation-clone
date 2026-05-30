@@ -9,7 +9,7 @@
     { "source": "/pages/landing-pages/work", "destination": "/work", "permanent": true },
     { "source": "/pages/landing-pages/volunteer", "destination": "/volunteer", "permanent": true },
     { "source": "/pages/landing-pages/donate", "destination": "/donate", "permanent": true },
-    { "source": "/pages/landing-pages/donate2", "destination": "/donate2", "permanent": true },
+    { "source": "/pages/landing-pages/donate2", "destination": "/donate", "permanent": false },
     { "source": "/pages/landing-pages/gallery", "destination": "/gallery", "permanent": true },
     { "source": "/pages/landing-pages/contact", "destination": "/contact", "permanent": true },
     { "source": "/pages/landing-pages/privacy-policy", "destination": "/privacy-policy", "permanent": true },

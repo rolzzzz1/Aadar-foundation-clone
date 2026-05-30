@@ -3,6 +3,8 @@ const {
   getJsonBody,
   isProduction,
   originIsAllowed,
+  paymentsAreEnabled,
+  paymentsDisabledResponse,
   sanitizeText,
   validateRzpId,
   EMAIL_MAX,
@@ -50,6 +52,10 @@ module.exports = async function handler(req, res) {
 
   if (!originIsAllowed(req)) {
     return res.status(403).json({ error: "Forbidden" });
+  }
+
+  if (!paymentsAreEnabled()) {
+    return res.status(503).json(paymentsDisabledResponse());
   }
 
   const contentLength = Number(

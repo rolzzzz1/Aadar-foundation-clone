@@ -192,6 +192,22 @@ function isProduction() {
   return process.env.NODE_ENV === "production" || process.env.VERCEL_ENV === "production";
 }
 
+/**
+ * Server-side payments gate — keep in sync with src/utils/paymentsFeature.js.
+ * Production (Vercel): off unless PAYMENTS_ENABLED=true.
+ * Local api:dev: on unless PAYMENTS_ENABLED=false.
+ */
+function paymentsAreEnabled() {
+  const flag = process.env.PAYMENTS_ENABLED;
+  if (flag === "true") return true;
+  if (flag === "false") return false;
+  return !isProduction();
+}
+
+function paymentsDisabledResponse() {
+  return { error: "Online donations are not available yet." };
+}
+
 const HEX_SIGNATURE = /^[a-f0-9]{64}$/i;
 const RZP_ID = /^[A-Za-z0-9_-]{1,64}$/;
 
@@ -259,6 +275,8 @@ module.exports = {
   getAllowedOrigins,
   originIsAllowed,
   isProduction,
+  paymentsAreEnabled,
+  paymentsDisabledResponse,
   getJsonBody,
   applySecurityHeaders,
   formatRazorpayError,
