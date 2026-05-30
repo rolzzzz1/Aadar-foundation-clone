@@ -426,9 +426,9 @@ function Donate() {
                   sx={{
                     fontSize: { xs: "0.68rem", sm: "0.72rem" },
                     color: "rgba(31, 42, 68, 0.55)",
-                    fontStyle: "italic",
                     fontWeight: 400,
                     lineHeight: 1.5,
+                    whiteSpace: "pre-line",
                   }}
                 >
                   {donatePage.domesticDonationsFootnote}

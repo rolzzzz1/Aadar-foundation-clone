@@ -1386,6 +1386,7 @@ function Donate2() {
                         color: "rgba(31, 42, 68, 0.62)",
                         lineHeight: 1.65,
                         m: 0,
+                        whiteSpace: "pre-line",
                       }}
                     >
                       {donatePage.domesticDonationsFootnote}
