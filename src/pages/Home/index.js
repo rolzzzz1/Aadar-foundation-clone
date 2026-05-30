@@ -80,7 +80,7 @@ import { VIDEO_URLS } from "../../config/videoUrls";
 import { getHomePageCopy } from "utils/getHomePageCopy";
 
 // Network-aware loading: skip heavy embeds on save-data / 2g / 3g
-import { useNetworkSnapshot, shouldSkipHeavyMedia } from "utils/networkAware";
+import { useNetworkSnapshot } from "utils/networkAware";
 
 // Video for slide 2 (Kumbh story - Dadi Mayki), slide 3 (Nirbhay story), and slide 4
 // All slides use Vimeo for fast loading
@@ -100,7 +100,7 @@ const getVimeoEmbedUrl = (videoId) => {
   return `https://player.vimeo.com/video/${videoId}?autoplay=1&muted=1&loop=1&controls=0&playsinline=1&quality=240p&responsive=1&dnt=1&title=0&byline=0&portrait=0&preload=auto&transparent=0`;
 };
 
-function MobileSlidePhoto({ webpSrc, pngSrc, alt }) {
+function MobileSlidePhoto({ webpSrc, pngSrc, alt, eager }) {
   return (
     <picture
       style={{
@@ -116,10 +116,10 @@ function MobileSlidePhoto({ webpSrc, pngSrc, alt }) {
       <img
         src={pngSrc}
         alt={alt}
-        loading="lazy"
+        loading={eager ? "eager" : "lazy"}
         decoding="async"
         // eslint-disable-next-line react/no-unknown-property
-        fetchPriority="low"
+        fetchPriority={eager ? "high" : "low"}
         style={{
           width: "100%",
           height: "100%",
@@ -137,6 +137,7 @@ MobileSlidePhoto.propTypes = {
   webpSrc: PropTypes.string.isRequired,
   pngSrc: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
+  eager: PropTypes.bool,
 };
 
 function SectionSkeleton({ minHeight }) {
@@ -169,7 +170,6 @@ const HeroSlide = memo(function HeroSlide({
   setIsCarouselPaused,
   activeSlide,
   totalSlides,
-  skipHeavyMedia,
   skipHeroVideos,
 }) {
   const { t } = useTranslation();
@@ -430,16 +430,12 @@ const HeroSlide = memo(function HeroSlide({
                 },
               }}
             >
-              {/* The parent box renders a vibrant gradient that already
-                  fills this frame. On save-data we keep just that gradient
-                  instead of pulling a ~2.5 MB PNG over a slow line. */}
-              {!skipHeavyMedia && (
-                <MobileSlidePhoto
-                  webpSrc={slide2MobileBgWebp}
-                  pngSrc={slide2MobileBg}
-                  alt="Aadar Foundation"
-                />
-              )}
+              <MobileSlidePhoto
+                webpSrc={slide2MobileBgWebp}
+                pngSrc={slide2MobileBg}
+                alt="Aadar Foundation"
+                eager={isActive}
+              />
             </MKBox>
           )}
           {/* Horizontal rectangular image for slide 3 - positioned above text box (on xs and sm screens) */}
@@ -483,15 +479,12 @@ const HeroSlide = memo(function HeroSlide({
                 },
               }}
             >
-              {/* Same data-saver fallback as slide 2: keep just the gradient
-                  on slow connections so the page stays responsive. */}
-              {!skipHeavyMedia && (
-                <MobileSlidePhoto
-                  webpSrc={slide3MobileBgWebp}
-                  pngSrc={slide3MobileBg}
-                  alt="Aadar Foundation"
-                />
-              )}
+              <MobileSlidePhoto
+                webpSrc={slide3MobileBgWebp}
+                pngSrc={slide3MobileBg}
+                alt="Aadar Foundation"
+                eager={isActive}
+              />
             </MKBox>
           )}
           {/* Horizontal rectangular image for slide 4 - positioned above text box (on xs and sm screens) */}
@@ -537,13 +530,12 @@ const HeroSlide = memo(function HeroSlide({
             >
               {/* Same data-saver fallback as slide 2/3: keep just the gradient
                   on slow connections so the page stays responsive. */}
-              {!skipHeavyMedia && (
-                <MobileSlidePhoto
-                  webpSrc={slide4MobileBgWebp}
-                  pngSrc={slide4MobileBg}
-                  alt="Aadar Foundation"
-                />
-              )}
+              <MobileSlidePhoto
+                webpSrc={slide4MobileBgWebp}
+                pngSrc={slide4MobileBg}
+                alt="Aadar Foundation"
+                eager={isActive}
+              />
             </MKBox>
           )}
           <MKBox
@@ -1848,9 +1840,8 @@ function Home() {
   const homePage = useMemo(() => getHomePageCopy(t), [t, i18n.language]);
   const ctaButtonText = t("homePage.heroSection.ctaButton");
 
-  // Network profile — skip large mobile slide PNGs on slow links; Vimeo only on save-data.
+  // Network profile — Vimeo skipped only when the browser has save-data enabled.
   const network = useNetworkSnapshot();
-  const skipHeavyMedia = shouldSkipHeavyMedia(network);
   const skipHeroVideos = Boolean(network?.saveData);
 
   const [isDesktopViewport, setIsDesktopViewport] = useState(() =>
@@ -2823,7 +2814,13 @@ function Home() {
       const isMobile = window.innerWidth < 768;
       let imageUrls;
       if (isMobile) {
-        imageUrls = [publicAsset("/assets/images/aadarHindiYellow.png"), blackAndWhiteHeroWebp];
+        imageUrls = [
+          publicAsset("/assets/images/aadarHindiYellow.png"),
+          blackAndWhiteHeroWebp,
+          slide2MobileBgWebp,
+          slide3MobileBgWebp,
+          slide4MobileBgWebp,
+        ];
       } else if (heroSlideBg) {
         imageUrls = [blackAndWhiteHeroWebp, blackAndWhiteHeroPng, heroSlideBg];
       } else {
@@ -4371,7 +4368,6 @@ function Home() {
               setIsCarouselPaused={handleSetIsCarouselPaused}
               activeSlide={activeSlide}
               totalSlides={heroSlides.length}
-              skipHeavyMedia={skipHeavyMedia}
               skipHeroVideos={skipHeroVideos}
             />
           ))}
@@ -4484,7 +4480,6 @@ HeroSlide.propTypes = {
   setIsCarouselPaused: PropTypes.func.isRequired,
   activeSlide: PropTypes.number.isRequired,
   totalSlides: PropTypes.number.isRequired,
-  skipHeavyMedia: PropTypes.bool,
   skipHeroVideos: PropTypes.bool,
 };
 
