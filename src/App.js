@@ -66,16 +66,12 @@ LegacyPathRedirect.propTypes = {
 
 const isGalleryRoute = (path) => /\/gallery\/?$/i.test(path);
 
-const RazorpayTest = isPaymentsEnabled()
-  ? lazy(() => import("pages/RazorpayTest"))
-  : null;
+const RazorpayTest = isPaymentsEnabled() ? lazy(() => import("pages/RazorpayTest")) : null;
 const DonationResult = isPaymentsEnabled()
   ? lazy(() => import(/* webpackChunkName: "donation-result" */ "pages/DonationResult"))
   : null;
 const Donate = lazy(() => import("layouts/pages/landing-pages/donate"));
-const Donate2 = isDonate2Enabled
-  ? lazy(() => import("pages/LandingPages/Donate2"))
-  : null;
+const Donate2 = isDonate2Enabled ? lazy(() => import("pages/LandingPages/Donate2")) : null;
 
 // Error boundary component
 class ErrorBoundary extends React.Component {
