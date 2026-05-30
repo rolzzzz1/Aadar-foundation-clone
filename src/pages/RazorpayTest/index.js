@@ -1021,21 +1021,6 @@ export default function RazorpayTestPage() {
                       />
                     </Typography>
                   </Stack>
-                  <Typography
-                    variant="caption"
-                    component="p"
-                    sx={{
-                      fontFamily: BODY_FONT,
-                      fontWeight: 500,
-                      color: "rgba(31,42,68,0.78)",
-                      lineHeight: 1.55,
-                      fontSize: "0.72rem",
-                      textAlign: "left",
-                      m: 0,
-                    }}
-                  >
-                    {form.domesticDonationNotice}
-                  </Typography>
                   <Divider sx={{ my: 1.25 }} />
                   <Stack
                     direction="row"
@@ -1689,11 +1674,6 @@ export default function RazorpayTestPage() {
                   borderTop: "1px solid rgba(31, 42, 68, 0.09)",
                 }}
               >
-                <Alert severity="info" sx={{ mb: 2, textAlign: "left" }}>
-                  <Typography variant="body2" sx={{ color: "#1f2a44", lineHeight: 1.55 }}>
-                    {form.domesticDonationNotice}
-                  </Typography>
-                </Alert>
                 <FormControlLabel
                   sx={{
                     mt: 0,
@@ -1717,7 +1697,11 @@ export default function RazorpayTestPage() {
                     <Typography
                       variant="body2"
                       component="span"
-                      sx={{ color: "#1f2a44", lineHeight: 1.45, fontSize: "0.78rem" }}
+                      sx={{
+                        color: "rgba(31, 42, 68, 0.72)",
+                        lineHeight: 1.45,
+                        fontSize: "0.74rem",
+                      }}
                     >
                       {form.fcraDeclaration}
                     </Typography>

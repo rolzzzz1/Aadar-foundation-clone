@@ -111,7 +111,7 @@ export const RECEIPT_COPY = {
     reg80g: (no) => `80G Registration No.: ${no}`,
     fundsNotice: "This receipt is valid subject to realization of funds.",
     fcraNotice:
-      "This donation was accepted as a domestic contribution from India. Aadar Foundation is not registered under FCRA and does not accept foreign contributions through its online portal.",
+      "Domestic contribution (India). Organisation not registered under FCRA.",
     contact: { email: "Email", phone: "Phone", pan: "PAN" },
     closing1: "Every contribution helps us provide food, shelter and dignity to those in need.",
     closing2: "Thank you for being a part of our mission.",
@@ -165,7 +165,7 @@ export const RECEIPT_COPY = {
     reg80g: (no) => `80G पंजीकरण संख्या: ${no}`,
     fundsNotice: "यह रसीद धन प्राप्ति के अधीन मान्य है।",
     fcraNotice:
-      "यह दान भारत से घरेलू अंशदान के रूप में स्वीकार किया गया। आदर फाउंडेशन FCRA के अंतर्गत पंजीकृत नहीं है और अपने ऑनलाइन पोर्टल के माध्यम से विदेशी अंशदान स्वीकार नहीं करता।",
+      "घरेलू अंशदान (भारत)। संगठन FCRA के अंतर्गत पंजीकृत नहीं।",
     contact: { email: "ईमेल", phone: "फ़ोन", pan: "PAN" },
     closing1: "हर योगदान जरूरतमंदों को भोजन, आश्रय और गरिमा प्रदान करने में मदद करता है।",
     closing2: "हमारे मिशन का हिस्सा बनने के लिए धन्यवाद।",

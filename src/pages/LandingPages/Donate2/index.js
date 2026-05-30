@@ -249,25 +249,6 @@ function Donate2() {
                     >
                       {donatePage.description}
                     </MKTypography>
-                    <MKBox
-                      mt={2}
-                      p={{ xs: 1.25, sm: 1.5 }}
-                      sx={{
-                        maxWidth: 640,
-                        borderRadius: "12px",
-                        border: "1px solid #f0c36d",
-                        backgroundColor: "#fff8e8",
-                        boxShadow: "0 4px 14px rgba(236, 165, 51, 0.12)",
-                      }}
-                    >
-                      <MKTypography
-                        variant="body2"
-                        fontSize={{ xs: "0.78rem", sm: "0.85rem" }}
-                        sx={{ color: "#6d4c00", lineHeight: 1.6, fontWeight: 600 }}
-                      >
-                        {donatePage.domesticDonationsNotice}
-                      </MKTypography>
-                    </MKBox>
                     <Grid
                       container
                       spacing={{ xs: 1, sm: 1.2 }}
@@ -1339,24 +1320,26 @@ function Donate2() {
                         color: "#1f2a44",
                         lineHeight: 1.5,
                         letterSpacing: "0.02em",
-                        mb: 2,
-                      }}
-                    >
-                      {donatePage.domesticDonationsNotice}
-                    </MKTypography>
-                    <MKTypography
-                      fontSize={{ xs: "0.8rem", sm: "0.85rem", md: "0.95rem", lg: "0.95rem" }}
-                      textAlign="center"
-                      sx={{
-                        color: "#1f2a44",
-                        lineHeight: 1.5,
-                        letterSpacing: "0.02em",
                       }}
                     >
                       {donatePage.message80g} <br />
                       <MKBox component="span" sx={{ fontWeight: 700, color: "#1f2a44" }}>
                         {donatePage.panNo}
                       </MKBox>
+                    </MKTypography>
+                    <MKTypography
+                      component="p"
+                      fontSize={{ xs: "0.68rem", sm: "0.72rem" }}
+                      textAlign="center"
+                      sx={{
+                        color: "rgba(31, 42, 68, 0.55)",
+                        lineHeight: 1.5,
+                        mt: 1.25,
+                        mb: 0,
+                        fontStyle: "italic",
+                      }}
+                    >
+                      {donatePage.domesticDonationsFootnote}
                     </MKTypography>
                   </MKBox>
                 </Grid>

@@ -325,7 +325,7 @@ export default function DonationReceiptSheet({ record, logoSrc }) {
           <Typography
             component="span"
             display="block"
-            sx={{ fontWeight: 600, color: "rgba(31,42,68,0.85)", mt: 0.35, fontSize: "inherit" }}
+            sx={{ fontWeight: 600, color: "rgba(31,42,68,0.72)", mt: 0.35, fontSize: "0.58rem" }}
           >
             {copy.fcraNotice}
           </Typography>

@@ -417,6 +417,7 @@
     "supportThemNow": "Support Them Now",
     "donateInstantlyInstead": "Donate Instantly Instead (UPI / Card / Netbanking — India only)",
     "domesticDonationsNotice": "Online payments on this page are for donors in India only (INR). Aadar Foundation is not registered under FCRA and cannot accept foreign contributions here. If you are outside India, please contact us at aadarfoundation2018@gmail.com before donating.",
+    "domesticDonationsFootnote": "Domestic donations only (India, INR). Not registered under FCRA; foreign contributions are not accepted online.",
     "trustBadges": {
       "taxBenefit80g": "80G Tax Benefit Available",
       "livesImpacted": "500+ Lives Impacted",
