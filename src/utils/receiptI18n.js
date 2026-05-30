@@ -110,8 +110,7 @@ export const RECEIPT_COPY = {
       "Eligible for tax exemption under Section 80G, subject to applicable rules. Keep for your records.",
     reg80g: (no) => `80G Registration No.: ${no}`,
     fundsNotice: "This receipt is valid subject to realization of funds.",
-    fcraNotice:
-      "Domestic contribution (India). Organisation not registered under FCRA.",
+    fcraNotice: "Domestic contribution (India). Organisation not registered under FCRA.",
     contact: { email: "Email", phone: "Phone", pan: "PAN" },
     closing1: "Every contribution helps us provide food, shelter and dignity to those in need.",
     closing2: "Thank you for being a part of our mission.",
@@ -164,8 +163,7 @@ export const RECEIPT_COPY = {
       "धारा 80G के अंतर्गत कर छूट के लिए पात्र, लागू नियमों के अधीन। अपने रिकॉर्ड के लिए सुरक्षित रखें।",
     reg80g: (no) => `80G पंजीकरण संख्या: ${no}`,
     fundsNotice: "यह रसीद धन प्राप्ति के अधीन मान्य है।",
-    fcraNotice:
-      "घरेलू अंशदान (भारत)। संगठन FCRA के अंतर्गत पंजीकृत नहीं।",
+    fcraNotice: "घरेलू अंशदान (भारत)। संगठन FCRA के अंतर्गत पंजीकृत नहीं।",
     contact: { email: "ईमेल", phone: "फ़ोन", pan: "PAN" },
     closing1: "हर योगदान जरूरतमंदों को भोजन, आश्रय और गरिमा प्रदान करने में मदद करता है।",
     closing2: "हमारे मिशन का हिस्सा बनने के लिए धन्यवाद।",
