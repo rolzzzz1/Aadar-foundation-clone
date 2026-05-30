@@ -397,6 +397,7 @@
     "listItem9": "If there is any conflict between these terms and conditions and rules and/or specific terms of use appearing on this site relating to specific material then the latter shall prevail.",
     "listItem10": "These terms and conditions shall be governed and construed in accordance with the laws of India. Any disputes shall be subject to the exclusive jurisdiction of the Courts of Madhya Pradesh.",
     "listItem11": "If these terms and conditions are not accepted in full, the use of this site must be terminated immediately.",
+    "listItem12": "Donations through this website are accepted from persons in India only, in Indian Rupees (INR). Aadar Foundation is registered under Section 80G of the Income Tax Act, 1961, but is not registered under the Foreign Contribution (Regulation) Act, 2010 (FCRA). We do not accept foreign contributions through this online payment portal. By donating, you confirm that you are not making a foreign contribution under FCRA. Donors must provide accurate Indian contact and tax details (including PAN where applicable). If a payment is found to be a foreign contribution or otherwise not permitted by law, the Organisation may refund or return the amount as required by applicable law.",
     "descriptionEnd": "Aadar foundation is a registered NGO by the name Aadar foundation in Gwalior, Madhya Pradesh – 474001, India, Tel : +91 9039129571, Website : https://www.aadarfoundation.org/, Email: aadarfoundation2018@gmail.com"
   },
   "donatePage": {
@@ -414,7 +415,8 @@
     "helpUsIncreaseSmilesLine1": "Help us increase",
     "helpUsIncreaseSmilesLine2": "number of these smiles.",
     "supportThemNow": "Support Them Now",
-    "donateInstantlyInstead": "Donate Instantly Instead (UPI / Card / Netbanking)",
+    "donateInstantlyInstead": "Donate Instantly Instead (UPI / Card / Netbanking — India only)",
+    "domesticDonationsNotice": "Online payments on this page are for donors in India only (INR). Aadar Foundation is not registered under FCRA and cannot accept foreign contributions here. If you are outside India, please contact us at aadarfoundation2018@gmail.com before donating.",
     "trustBadges": {
       "taxBenefit80g": "80G Tax Benefit Available",
       "livesImpacted": "500+ Lives Impacted",
@@ -565,6 +567,8 @@
     "purposeLabel": "Purpose of Donation (optional)",
     "purposePlaceholder": "Let us know the purpose of your donation",
     "termsAccept": "I accept the <1>Terms & Conditions</1> and <2>Privacy Policy</2>.",
+    "domesticDonationNotice": "This checkout accepts donations in INR from persons in India only. We are not registered under FCRA and cannot accept foreign contributions through this page. International cards and payments from outside India are not accepted. If you are abroad, contact us at aadarfoundation2018@gmail.com before donating.",
+    "fcraDeclaration": "I confirm that I am donating from India, I am an Indian citizen or resident, and this is not a foreign contribution under the Foreign Contribution (Regulation) Act, 2010 (FCRA).",
     "proceedPayment": "PROCEED TO PAYMENT",
     "openingCheckout": "Opening checkout…",
     "checkingDonation": "Checking donation…",

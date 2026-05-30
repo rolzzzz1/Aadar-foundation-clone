@@ -401,6 +401,7 @@ export default function RazorpayTestPage() {
   const [pin, setPin] = useState("");
   const [purposeText, setPurposeText] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [fcraAccepted, setFcraAccepted] = useState(false);
 
   const [touched, setTouched] = useState({});
 
@@ -453,7 +454,8 @@ export default function RazorpayTestPage() {
           citySel ||
           pin.trim() ||
           purposeText.trim() ||
-          termsAccepted
+          termsAccepted ||
+          fcraAccepted
       ),
     [
       name,
@@ -467,6 +469,7 @@ export default function RazorpayTestPage() {
       pin,
       purposeText,
       termsAccepted,
+      fcraAccepted,
     ]
   );
 
@@ -593,7 +596,8 @@ export default function RazorpayTestPage() {
     stateCheck.ok &&
     cityCheck.ok &&
     pinCheck.ok &&
-    termsAccepted;
+    termsAccepted &&
+    fcraAccepted;
 
   const buildOrderNote = useCallback(() => {
     const parts = [];
@@ -660,6 +664,7 @@ export default function RazorpayTestPage() {
           donor_email: emailCheck.value,
           donor_contact: contactCheck.value,
           donor_pan: panCheck.value,
+          fcra_declaration: "accepted",
         },
       };
 
@@ -1016,6 +1021,21 @@ export default function RazorpayTestPage() {
                       />
                     </Typography>
                   </Stack>
+                  <Typography
+                    variant="caption"
+                    component="p"
+                    sx={{
+                      fontFamily: BODY_FONT,
+                      fontWeight: 500,
+                      color: "rgba(31,42,68,0.78)",
+                      lineHeight: 1.55,
+                      fontSize: "0.72rem",
+                      textAlign: "left",
+                      m: 0,
+                    }}
+                  >
+                    {form.domesticDonationNotice}
+                  </Typography>
                   <Divider sx={{ my: 1.25 }} />
                   <Stack
                     direction="row"
@@ -1669,6 +1689,40 @@ export default function RazorpayTestPage() {
                   borderTop: "1px solid rgba(31, 42, 68, 0.09)",
                 }}
               >
+                <Alert severity="info" sx={{ mb: 2, textAlign: "left" }}>
+                  <Typography variant="body2" sx={{ color: "#1f2a44", lineHeight: 1.55 }}>
+                    {form.domesticDonationNotice}
+                  </Typography>
+                </Alert>
+                <FormControlLabel
+                  sx={{
+                    mt: 0,
+                    mx: 0,
+                    mb: 1.25,
+                    alignItems: "flex-start",
+                    display: "flex",
+                    flexDirection: "row",
+                    "& .MuiFormControlLabel-label": { mt: 0.15 },
+                  }}
+                  control={
+                    <Checkbox
+                      checked={fcraAccepted}
+                      onChange={(e) => setFcraAccepted(e.target.checked)}
+                      icon={termsCheckboxUncheckedIcon}
+                      checkedIcon={termsCheckboxCheckedIcon}
+                      sx={{ p: 0.5, mr: 0.75, mt: -0.25 }}
+                    />
+                  }
+                  label={
+                    <Typography
+                      variant="body2"
+                      component="span"
+                      sx={{ color: "#1f2a44", lineHeight: 1.45, fontSize: "0.78rem" }}
+                    >
+                      {form.fcraDeclaration}
+                    </Typography>
+                  }
+                />
                 <FormControlLabel
                   sx={{
                     mt: 0,

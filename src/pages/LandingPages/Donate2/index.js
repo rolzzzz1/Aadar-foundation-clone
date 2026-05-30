@@ -1320,6 +1320,18 @@ function Donate2() {
                         color: "#1f2a44",
                         lineHeight: 1.5,
                         letterSpacing: "0.02em",
+                        mb: 2,
+                      }}
+                    >
+                      {donatePage.domesticDonationsNotice}
+                    </MKTypography>
+                    <MKTypography
+                      fontSize={{ xs: "0.8rem", sm: "0.85rem", md: "0.95rem", lg: "0.95rem" }}
+                      textAlign="center"
+                      sx={{
+                        color: "#1f2a44",
+                        lineHeight: 1.5,
+                        letterSpacing: "0.02em",
                       }}
                     >
                       {donatePage.message80g} <br />

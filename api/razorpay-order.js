@@ -107,6 +107,12 @@ module.exports = async function handler(req, res) {
   const notes = sanitizeNotes(body.notes);
   if (programLabel) notes.purpose = programLabel;
 
+  if (notes.fcra_declaration !== "accepted") {
+    return res.status(400).json({
+      error: "Domestic donation declaration is required before payment.",
+    });
+  }
+
   try {
     const razorpay = new Razorpay({ key_id: keyId, key_secret: keySecret });
     const order = await razorpay.orders.create({

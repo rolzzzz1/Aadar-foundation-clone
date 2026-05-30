@@ -556,7 +556,7 @@ async function buildReceiptPdfVector(record) {
   );
   y = Math.max(leftEnd, rightEnd) + 3;
 
-  const taxH = 16;
+  const taxH = 22;
   doc.setDrawColor(184, 201, 184);
   doc.setLineWidth(0.25);
   doc.roundedRect(margin, y, contentW, taxH, 2, 2, "S");
@@ -571,6 +571,11 @@ async function buildReceiptPdfVector(record) {
     align: "center",
   });
   doc.text(pdfSafeText(copy.fundsNotice, loc), centerX, y + 11.5, { align: "center" });
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(5);
+  doc.setTextColor(90, 107, 138);
+  const fcraLines = doc.splitTextToSize(pdfSafeText(copy.fcraNotice, loc), contentW - 8);
+  doc.text(fcraLines, centerX, y + 15, { align: "center" });
   y += taxH + 3;
 
   const footerTop = y;

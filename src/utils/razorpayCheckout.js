@@ -36,8 +36,8 @@ export function buildRazorpayCheckoutOptions({
     description: program
       ? program.label
       : testMode
-      ? "Donation — test mode (no real money)"
-      : "Donation — Aadar Foundation",
+      ? "Donation — test mode (India only, no real money)"
+      : "Donation — Aadar Foundation (India only, INR)",
     order_id: order.id,
     prefill: {
       name,

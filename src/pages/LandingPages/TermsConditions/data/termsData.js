@@ -188,6 +188,19 @@ export default function termsData() {
                   {termsConditionsPage.listItem11}
                 </MKTypography>
               </li>
+              <li>
+                <MKTypography
+                  mt={1}
+                  variant="body1"
+                  fontSize={{ xs: "0.8rem", md: "1rem" }}
+                  fontFamily='"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                  sx={{
+                    letterSpacing: "0.05rem",
+                  }}
+                >
+                  {termsConditionsPage.listItem12}
+                </MKTypography>
+              </li>
             </ol>
           </MKTypography>
           <MKTypography
