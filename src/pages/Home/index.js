@@ -58,14 +58,25 @@ const blackAndWhiteHero = `image-set(url("${blackAndWhiteHeroWebp}") type("image
 
 /** image-set() must not be wrapped in url() — only plain paths use url(). */
 function heroBackgroundImage(src) {
-  if (typeof src === "string" && src.startsWith("image-set(")) {
+  if (
+    typeof src === "string" &&
+    (src.startsWith("image-set(") ||
+      src.startsWith("linear-gradient(") ||
+      src.startsWith("radial-gradient("))
+  ) {
     return src;
   }
   return `url(${src})`;
 }
 const slide2MobileBg = publicAsset("/assets/images/mainThemeImages/slide2-mobile-bg.png");
+const slide2MobileBgWebp = publicAsset("/assets/images/mainThemeImages/slide2-mobile-bg.webp");
 const slide3MobileBg = publicAsset("/assets/images/mainThemeImages/slide3-mobile-bg.png");
+const slide3MobileBgWebp = publicAsset("/assets/images/mainThemeImages/slide3-mobile-bg.webp");
 const slide4MobileBg = publicAsset("/assets/images/mainThemeImages/slide4-mobile-bg.png");
+const slide4MobileBgWebp = publicAsset("/assets/images/mainThemeImages/slide4-mobile-bg.webp");
+
+/** Lightweight mobile slide-1 background — avoids downloading the 2 MB desktop hero PNG. */
+const mobileSlide1Bg = "linear-gradient(180deg, #1a2332 0%, #243047 45%, #1a2332 100%)";
 
 // Video URLs configuration - import from config file
 import { VIDEO_URLS } from "../../config/videoUrls";
@@ -90,6 +101,63 @@ const getVimeoEmbedUrl = (videoId) => {
   // - Enable embedding to "Anywhere"
   // - Set a content rating
   return `https://player.vimeo.com/video/${videoId}?autoplay=1&muted=1&loop=1&controls=0&playsinline=1&quality=240p&responsive=1&dnt=1&title=0&byline=0&portrait=0&preload=auto&transparent=0`;
+};
+
+function MobileSlidePhoto({ webpSrc, pngSrc, alt }) {
+  return (
+    <picture
+      style={{
+        display: "block",
+        width: "calc(100% - 10px)",
+        height: "calc(100% - 10px)",
+        margin: "5px",
+        position: "relative",
+        zIndex: 10,
+      }}
+    >
+      <source srcSet={webpSrc} type="image/webp" />
+      <img
+        src={pngSrc}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        // eslint-disable-next-line react/no-unknown-property
+        fetchPriority="low"
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          objectPosition: "center 40%",
+          borderRadius: "12px",
+          display: "block",
+        }}
+      />
+    </picture>
+  );
+}
+
+MobileSlidePhoto.propTypes = {
+  webpSrc: PropTypes.string.isRequired,
+  pngSrc: PropTypes.string.isRequired,
+  alt: PropTypes.string.isRequired,
+};
+
+function SectionSkeleton({ minHeight }) {
+  return (
+    <MKBox
+      aria-hidden
+      sx={{
+        width: "100%",
+        minHeight,
+        bgcolor: "rgba(240, 242, 245, 0.6)",
+        borderRadius: "8px",
+      }}
+    />
+  );
+}
+
+SectionSkeleton.propTypes = {
+  minHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]).isRequired,
 };
 
 const HeroSlide = memo(function HeroSlide({
@@ -369,27 +437,10 @@ const HeroSlide = memo(function HeroSlide({
                   fills this frame. On save-data we keep just that gradient
                   instead of pulling a ~2.5 MB PNG over a slow line. */}
               {!skipHeavyMedia && (
-                <MKBox
-                  component="img"
-                  src={slide2MobileBg}
+                <MobileSlidePhoto
+                  webpSrc={slide2MobileBgWebp}
+                  pngSrc={slide2MobileBg}
                   alt="Aadar Foundation"
-                  width="100%"
-                  height="100%"
-                  loading="lazy"
-                  decoding="async"
-                  fetchPriority="low"
-                  sx={{
-                    width: "calc(100% - 10px)",
-                    height: "calc(100% - 10px)",
-                    margin: "5px",
-                    objectFit: "cover",
-                    objectPosition: { xs: "center 40%", sm: "center 40%", md: "center" },
-                    borderRadius: { xs: "12px", sm: "12px", md: 0 },
-                    position: "relative",
-                    zIndex: 10,
-                    backgroundColor: "transparent",
-                    display: "block",
-                  }}
                 />
               )}
             </MKBox>
@@ -438,27 +489,10 @@ const HeroSlide = memo(function HeroSlide({
               {/* Same data-saver fallback as slide 2: keep just the gradient
                   on slow connections so the page stays responsive. */}
               {!skipHeavyMedia && (
-                <MKBox
-                  component="img"
-                  src={slide3MobileBg}
+                <MobileSlidePhoto
+                  webpSrc={slide3MobileBgWebp}
+                  pngSrc={slide3MobileBg}
                   alt="Aadar Foundation"
-                  width="100%"
-                  height="100%"
-                  loading="lazy"
-                  decoding="async"
-                  fetchPriority="low"
-                  sx={{
-                    width: "calc(100% - 10px)",
-                    height: "calc(100% - 10px)",
-                    margin: "5px",
-                    objectFit: "cover",
-                    objectPosition: { xs: "center 40%", sm: "center 40%", md: "center" },
-                    borderRadius: { xs: "12px", sm: "12px", md: 0 },
-                    position: "relative",
-                    zIndex: 10,
-                    backgroundColor: "transparent",
-                    display: "block",
-                  }}
                 />
               )}
             </MKBox>
@@ -507,27 +541,10 @@ const HeroSlide = memo(function HeroSlide({
               {/* Same data-saver fallback as slide 2/3: keep just the gradient
                   on slow connections so the page stays responsive. */}
               {!skipHeavyMedia && (
-                <MKBox
-                  component="img"
-                  src={slide4MobileBg}
+                <MobileSlidePhoto
+                  webpSrc={slide4MobileBgWebp}
+                  pngSrc={slide4MobileBg}
                   alt="Aadar Foundation"
-                  width="100%"
-                  height="100%"
-                  loading="lazy"
-                  decoding="async"
-                  fetchPriority="low"
-                  sx={{
-                    width: "calc(100% - 10px)",
-                    height: "calc(100% - 10px)",
-                    margin: "5px",
-                    objectFit: "cover",
-                    objectPosition: { xs: "center 40%", sm: "center 40%", md: "center" },
-                    borderRadius: { xs: "12px", sm: "12px", md: 0 },
-                    position: "relative",
-                    zIndex: 10,
-                    backgroundColor: "transparent",
-                    display: "block",
-                  }}
                 />
               )}
             </MKBox>
@@ -1935,6 +1952,12 @@ function Home() {
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
+  useEffect(() => {
+    if (isMobile || isTabletRange) {
+      setHasPlayedSlide1Animation(true);
+    }
+  }, [isMobile, isTabletRange]);
+
   // Update isMobile and isTabletRange on window resize (debounced)
   useEffect(() => {
     let resizeTimeout = null;
@@ -2831,13 +2854,9 @@ function Home() {
   // Hero slides (slide 2, slide 3, and slide 4 share the same special video layout)
   const heroSlides = useMemo(() => {
     const slideBg = heroSlideBg || blackAndWhiteHeroPng;
-    return [
-      { image: blackAndWhiteHero },
-      { image: slideBg },
-      { image: slideBg },
-      { image: slideBg },
-    ];
-  }, [heroSlideBg]);
+    const slide1Bg = isDesktopViewport ? blackAndWhiteHero : mobileSlide1Bg;
+    return [{ image: slide1Bg }, { image: slideBg }, { image: slideBg }, { image: slideBg }];
+  }, [heroSlideBg, isDesktopViewport]);
 
   return (
     <MKBox minWidth="320px">
@@ -4343,7 +4362,13 @@ function Home() {
               ctaButtonText={ctaButtonText}
               slideIndex={index}
               isActive={activeSlide === index}
-              shouldAnimate={index === 0 && !hasPlayedSlide1Animation}
+              shouldAnimate={
+                index === 0 &&
+                !hasPlayedSlide1Animation &&
+                !isMobile &&
+                !isTabletRange &&
+                !reduceMotion
+              }
               isCarouselPaused={isCarouselPaused}
               setIsCarouselPaused={handleSetIsCarouselPaused}
               activeSlide={activeSlide}
@@ -4373,70 +4398,71 @@ function Home() {
           boxShadow: ({ boxShadows: { xxl } }) => xxl,
         }}
       >
-        <Suspense fallback={null}>
-          {/* Each section is gated by LazyVisible — its lazy() chunk and any
-              section-level images do not start downloading until the
-              section is within ~500 px of the viewport. The outer MKBox
-              reserves a responsive minHeight that approximates the real
-              rendered height; this prevents Cumulative Layout Shift while
-              the chunk + images are downloading. Real content overrides
-              minHeight when it is taller. */}
-          <MKBox
-            sx={{
-              contentVisibility: "auto",
-              containIntrinsicSize: "0 720px",
-              minHeight: { xs: 720, sm: 640, md: 560, lg: 520 },
-            }}
-          >
-            <LazyVisible rootMargin="500px">
+        <MKBox
+          sx={{
+            contentVisibility: "auto",
+            containIntrinsicSize: "0 720px",
+            minHeight: { xs: 720, sm: 640, md: 560, lg: 520 },
+          }}
+        >
+          <LazyVisible rootMargin="500px" minHeight={520}>
+            <Suspense fallback={<SectionSkeleton minHeight={520} />}>
               <About />
-            </LazyVisible>
-          </MKBox>
-          <MKBox
-            sx={{
-              contentVisibility: "auto",
-              containIntrinsicSize: "0 620px",
-              minHeight: { xs: 620, sm: 500, md: 360, lg: 340 },
-            }}
-          >
-            <LazyVisible rootMargin="500px">
+            </Suspense>
+          </LazyVisible>
+        </MKBox>
+        <MKBox
+          sx={{
+            contentVisibility: "auto",
+            containIntrinsicSize: "0 620px",
+            minHeight: { xs: 620, sm: 500, md: 360, lg: 340 },
+          }}
+        >
+          <LazyVisible rootMargin="500px" minHeight={340}>
+            <Suspense fallback={<SectionSkeleton minHeight={340} />}>
               <Counters />
-            </LazyVisible>
-          </MKBox>
-          <MKBox
-            sx={{
-              contentVisibility: "auto",
-              containIntrinsicSize: "0 560px",
-              minHeight: { xs: 560, sm: 540, md: 520, lg: 500 },
-            }}
-          >
-            <LazyVisible rootMargin="500px">
+            </Suspense>
+          </LazyVisible>
+        </MKBox>
+        <MKBox
+          sx={{
+            contentVisibility: "auto",
+            containIntrinsicSize: "0 560px",
+            minHeight: { xs: 560, sm: 540, md: 520, lg: 500 },
+          }}
+        >
+          <LazyVisible rootMargin="500px" minHeight={500}>
+            <Suspense fallback={<SectionSkeleton minHeight={500} />}>
               <Journey />
-            </LazyVisible>
-          </MKBox>
-          <MKBox
-            sx={{
-              contentVisibility: "auto",
-              containIntrinsicSize: "0 1100px",
-              minHeight: { xs: 1500, sm: 1100, md: 780, lg: 700 },
-            }}
-          >
-            <LazyVisible rootMargin="500px">
+            </Suspense>
+          </LazyVisible>
+        </MKBox>
+        <MKBox
+          sx={{
+            contentVisibility: "auto",
+            containIntrinsicSize: "0 1100px",
+            minHeight: { xs: 1500, sm: 1100, md: 780, lg: 700 },
+          }}
+        >
+          <LazyVisible rootMargin="500px" minHeight={700}>
+            <Suspense fallback={<SectionSkeleton minHeight={700} />}>
               <Work />
-            </LazyVisible>
-          </MKBox>
-          <MKBox
-            sx={{
-              contentVisibility: "auto",
-              containIntrinsicSize: "0 820px",
-              minHeight: { xs: 900, sm: 820, md: 720, lg: 680 },
-            }}
-          >
-            <LazyVisible rootMargin="500px">
+            </Suspense>
+          </LazyVisible>
+        </MKBox>
+        <MKBox
+          sx={{
+            contentVisibility: "auto",
+            containIntrinsicSize: "0 820px",
+            minHeight: { xs: 900, sm: 820, md: 720, lg: 680 },
+          }}
+        >
+          <LazyVisible rootMargin="500px" minHeight={680}>
+            <Suspense fallback={<SectionSkeleton minHeight={680} />}>
               <Events />
-            </LazyVisible>
-          </MKBox>
-        </Suspense>
+            </Suspense>
+          </LazyVisible>
+        </MKBox>
       </Card>
 
       {/* Footer */}
