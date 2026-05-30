@@ -105,6 +105,7 @@ const HeroSlide = memo(function HeroSlide({
   activeSlide,
   totalSlides,
   skipHeavyMedia,
+  skipHeroVideos,
 }) {
   const { t } = useTranslation();
 
@@ -115,7 +116,10 @@ const HeroSlide = memo(function HeroSlide({
   // Memoize these values to avoid recalculating on every render
   const isMobile = useMemo(() => typeof window !== "undefined" && window.innerWidth < 576, []);
   // Hide video for screens between 576px and 767px, show for >= 768px
-  const showVideo = useMemo(() => typeof window !== "undefined" && window.innerWidth >= 768, []);
+  const showVideo = useMemo(
+    () => typeof window !== "undefined" && window.innerWidth >= 768 && !skipHeroVideos,
+    [skipHeroVideos]
+  );
   // Check if screen is between 576px and 767px
   const isTabletRange = useMemo(
     () => typeof window !== "undefined" && window.innerWidth >= 576 && window.innerWidth < 768,
@@ -1830,10 +1834,22 @@ function Home() {
   const homePage = useMemo(() => getHomePageCopy(t), [t, i18n.language]);
   const ctaButtonText = t("homePage.heroSection.ctaButton");
 
-  // Network profile — used to skip heavy Vimeo iframes on slow / metered
-  // connections so the hero still paints quickly on weak 3G / save-data.
+  // Network profile — skip large mobile slide PNGs on slow links; Vimeo only on save-data.
   const network = useNetworkSnapshot();
   const skipHeavyMedia = shouldSkipHeavyMedia(network);
+  const skipHeroVideos = Boolean(network?.saveData);
+
+  const [isDesktopViewport, setIsDesktopViewport] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth >= 768 : false
+  );
+  useEffect(() => {
+    const update = () => setIsDesktopViewport(window.innerWidth >= 768);
+    update();
+    window.addEventListener("resize", update, { passive: true });
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  const showHeroVimeo = isDesktopViewport && !skipHeroVideos;
 
   // Slides 2–4 background — dynamic import keeps a large JPG out of the main JS chunk
   const [heroSlideBg, setHeroSlideBg] = useState(null);
@@ -2483,86 +2499,28 @@ function Home() {
   const nirbhayVideoRef = useRef(null);
   const slide4VideoRef = useRef(null);
 
-  // Track which slide iframes are allowed to mount (slides 2–4 = indices 1–3).
-  const [loadedSlides, setLoadedSlides] = useState(() => new Set([0, activeSlide]));
-
-  const warmVideoSlide = useCallback((slideIndex) => {
-    if (slideIndex < 1 || slideIndex > 3) return;
-    setLoadedSlides((prev) => {
-      if (prev.has(slideIndex)) return prev;
-      const next = new Set(prev);
-      next.add(slideIndex);
-      return next;
-    });
-  }, []);
-
-  // Always mount the active slide + the next two video slides immediately.
+  // Warm Vimeo connection once desktop hero videos are enabled.
   useEffect(() => {
-    if (skipHeavyMedia) return;
-    setLoadedSlides((prev) => {
-      const next = new Set(prev);
-      next.add(activeSlide);
-      for (let offset = 1; offset <= 2; offset += 1) {
-        const idx = (activeSlide + offset) % 4;
-        if (idx > 0) next.add(idx);
-      }
-      return next;
-    });
-  }, [activeSlide, skipHeavyMedia]);
+    if (!showHeroVimeo || window.__vimeoPreconnectAdded) return undefined;
 
-  // On desktop/fast networks, start loading carousel videos after first paint (slide 1 still on screen).
-  useEffect(() => {
-    if (skipHeavyMedia) return undefined;
-    if (typeof window === "undefined" || window.innerWidth < 768) return undefined;
-
-    let cancelled = false;
-    let idleId;
-    let t1;
-    let t2;
-    let t3;
-
-    const addVimeoPreconnect = () => {
-      if (cancelled || window.__vimeoPreconnectAdded) return;
-      const addLink = (rel, href) => {
-        const link = document.createElement("link");
-        link.rel = rel;
-        link.href = href;
-        link.crossOrigin = "anonymous";
-        document.head.appendChild(link);
-      };
-      addLink("dns-prefetch", "https://player.vimeo.com");
-      addLink("preconnect", "https://player.vimeo.com");
-      addLink("preconnect", "https://f.vimeocdn.com");
-      window.__vimeoPreconnectAdded = true;
+    const addLink = (rel, href) => {
+      const link = document.createElement("link");
+      link.rel = rel;
+      link.href = href;
+      link.crossOrigin = "anonymous";
+      document.head.appendChild(link);
     };
+    addLink("dns-prefetch", "https://player.vimeo.com");
+    addLink("preconnect", "https://player.vimeo.com");
+    addLink("preconnect", "https://f.vimeocdn.com");
+    window.__vimeoPreconnectAdded = true;
 
-    const startEarlyVideoWarmup = () => {
-      if (cancelled) return;
-      addVimeoPreconnect();
-      warmVideoSlide(1);
-      t1 = window.setTimeout(() => warmVideoSlide(2), 800);
-      t2 = window.setTimeout(() => warmVideoSlide(3), 1600);
-    };
-
-    if ("requestIdleCallback" in window) {
-      idleId = requestIdleCallback(startEarlyVideoWarmup, { timeout: 2200 });
-    } else {
-      t3 = window.setTimeout(startEarlyVideoWarmup, 1500);
-    }
-
-    return () => {
-      cancelled = true;
-      if (idleId != null && "cancelIdleCallback" in window) {
-        cancelIdleCallback(idleId);
-      }
-      if (t1 != null) window.clearTimeout(t1);
-      if (t2 != null) window.clearTimeout(t2);
-      if (t3 != null) window.clearTimeout(t3);
-    };
-  }, [skipHeavyMedia, warmVideoSlide]);
+    return undefined;
+  }, [showHeroVimeo]);
 
   // Set fetchpriority attribute on video iframes after mount
   useEffect(() => {
+    if (!showHeroVimeo) return;
     if (maykiVideoRef.current) {
       maykiVideoRef.current.setAttribute("fetchpriority", "high");
     }
@@ -2572,7 +2530,7 @@ function Home() {
     if (slide4VideoRef.current) {
       slide4VideoRef.current.setAttribute("fetchpriority", "high");
     }
-  }, []);
+  }, [showHeroVimeo]);
 
   // Play/pause videos when slide changes - immediate control
   useEffect(() => {
@@ -2713,7 +2671,10 @@ function Home() {
 
       // Get the parent container (MKBox with position: relative) for relative positioning
       // The iframes are children of this container
-      const parentContainer = maykiVideoRef.current?.parentElement;
+      const parentContainer =
+        maykiVideoRef.current?.parentElement ||
+        nirbhayVideoRef.current?.parentElement ||
+        slide4VideoRef.current?.parentElement;
       if (!parentContainer) return;
 
       const parentRect = parentContainer.getBoundingClientRect();
@@ -2830,7 +2791,7 @@ function Home() {
       clearTimeout(slideTimeout);
       clearTimeout(resizeTimeout);
     };
-  }, [activeSlide]);
+  }, [activeSlide, showHeroVimeo]);
 
   // Preload the *next* slide assets without blocking initial paint.
   // Goal: keep slide transitions smooth while improving FCP/LCP.
@@ -2893,13 +2854,11 @@ function Home() {
       />
       {/* Hero Carousel */}
       <MKBox sx={{ position: "relative" }}>
-        {/* Network-aware Vimeo iframes. On slow / save-data connections the
-            iframes never mount; on fast connections they warm after first paint
-            while slide 1 is still visible so slide 2+ videos are ready in time. */}
-        {typeof window !== "undefined" && window.innerWidth >= 768 && !skipHeavyMedia && (
+        {/* Desktop Vimeo overlays (hidden on mobile and when save-data is on). */}
+        {showHeroVimeo && (
           <>
             {/* Slide 2 video - positioned to match .hero-slide-video-1 */}
-            {maykiVimeoId && loadedSlides.has(1) && (
+            {maykiVimeoId && (
               <iframe
                 ref={maykiVideoRef}
                 src={getVimeoEmbedUrl(maykiVimeoId)}
@@ -2929,7 +2888,7 @@ function Home() {
               />
             )}
             {/* Slide 3 video - positioned to match .hero-slide-video-2 */}
-            {nirbhayVimeoId && loadedSlides.has(2) && (
+            {nirbhayVimeoId && (
               <iframe
                 ref={nirbhayVideoRef}
                 src={getVimeoEmbedUrl(nirbhayVimeoId)}
@@ -2959,7 +2918,7 @@ function Home() {
               />
             )}
             {/* Slide 4 video - positioned to match .hero-slide-video-3 */}
-            {slide4VimeoId && loadedSlides.has(3) && (
+            {slide4VimeoId && (
               <iframe
                 ref={slide4VideoRef}
                 src={getVimeoEmbedUrl(slide4VimeoId)}
@@ -4390,6 +4349,7 @@ function Home() {
               activeSlide={activeSlide}
               totalSlides={heroSlides.length}
               skipHeavyMedia={skipHeavyMedia}
+              skipHeroVideos={skipHeroVideos}
             />
           ))}
         </Carousel>
@@ -4501,6 +4461,7 @@ HeroSlide.propTypes = {
   activeSlide: PropTypes.number.isRequired,
   totalSlides: PropTypes.number.isRequired,
   skipHeavyMedia: PropTypes.bool,
+  skipHeroVideos: PropTypes.bool,
 };
 
 // Memoize Home component to prevent unnecessary re-renders when navigating back
