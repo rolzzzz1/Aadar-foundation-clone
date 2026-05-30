@@ -9,11 +9,7 @@ import { useTranslation } from "react-i18next";
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 
-// Defer the Instagram fetch + media until the section scrolls into view
-import LazyVisible from "components/LazyMedia/LazyVisible";
-import { lazy, Suspense } from "react";
-
-const InstagramPosts = lazy(() => import("components/PostsSection/InstagramPosts"));
+import InstagramPosts from "components/PostsSection/InstagramPosts";
 
 function Work() {
   const { t } = useTranslation();
@@ -55,11 +51,7 @@ function Work() {
         </Grid>
         <Grid item container lg={12}>
           <MKBox pt={1} width="100%">
-            <LazyVisible rootMargin="400px" minHeight={420}>
-              <Suspense fallback={null}>
-                <InstagramPosts />
-              </Suspense>
-            </LazyVisible>
+            <InstagramPosts />
           </MKBox>
         </Grid>
       </Container>

@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 import "./InstagramPosts.css";
 
-import { shouldSkipHeavyMedia } from "utils/networkAware";
-
 /**
  * InstagramPosts Component
  *
@@ -30,9 +28,6 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
   const [currentIndex, setCurrentIndex] = useState(0);
   const [dynamicPostsPerSlide, setDynamicPostsPerSlide] = useState(3);
   const [isAutoPlayPaused, setIsAutoPlayPaused] = useState(false);
-  // On save-data / 2g / 3g we start with the feed gated behind a button so
-  // the page does not silently spend megabytes on Instagram media.
-  const [dataSaverActive, setDataSaverActive] = useState(() => shouldSkipHeavyMedia());
   const videoRefs = useRef({}); // Store refs to all video elements
 
   // Always fetch 6 posts
@@ -87,10 +82,6 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
   const postsPerSlide = propPostsPerSlide !== undefined ? propPostsPerSlide : dynamicPostsPerSlide;
 
   useEffect(() => {
-    if (dataSaverActive) {
-      setLoading(false);
-      return undefined;
-    }
     let cancelled = false;
     const fetchPosts = async () => {
       try {
@@ -149,7 +140,7 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
     return () => {
       cancelled = true;
     };
-  }, [totalPosts, dataSaverActive]);
+  }, [totalPosts, t]);
 
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
@@ -207,10 +198,7 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
     const slide = Math.floor(postIndex / postsPerSlide);
     return slide === currentIndex;
   };
-  const videoPreloadMode = (postIndex) => {
-    if (dataSaverActive) return "none";
-    return isVideoOnActiveSlide(postIndex) ? "metadata" : "none";
-  };
+  const videoPreloadMode = (postIndex) => (isVideoOnActiveSlide(postIndex) ? "metadata" : "none");
 
   // Check if any video in current slide is playing
   const checkVideosPlaying = () => {
@@ -342,31 +330,7 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
         </div>
       )}
 
-      {dataSaverActive && posts.length === 0 && !loading && (
-        <div className="loading" style={{ textAlign: "center", padding: "1.5rem" }}>
-          <p style={{ marginBottom: "0.75rem", color: "#5a6b8a" }}>
-            {t("homePage.postsSection.loadingPosts")}
-          </p>
-          <button
-            type="button"
-            onClick={() => setDataSaverActive(false)}
-            style={{
-              background: "linear-gradient(90deg, #4FA953 0%, #45a049 55%, #4FA953 100%)",
-              color: "#fff",
-              border: "none",
-              padding: "10px 22px",
-              borderRadius: 12,
-              fontWeight: 700,
-              cursor: "pointer",
-              boxShadow: "0 8px 18px rgba(79, 169, 83, 0.22)",
-            }}
-          >
-            {t("homePage.postsSection.viewOnInstagram") || "Load posts"}
-          </button>
-        </div>
-      )}
-
-      {loading && !dataSaverActive && (
+      {loading && (
         <div className="loading">
           <div className="spinner" />
           <p>{t("homePage.postsSection.loadingPosts")}</p>
