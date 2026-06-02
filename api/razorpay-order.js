@@ -9,11 +9,12 @@ const {
   originIsAllowed,
   paymentsAreEnabled,
   paymentsDisabledResponse,
-  sanitizeNotes,
   sanitizeReceipt,
   validateAmountPaise,
+  validateOrderNotes,
   formatRazorpayError,
 } = require("./_lib/donation");
+const { applyRateLimit, LIMITS } = require("./_lib/rateLimit");
 
 const MAX_BODY_BYTES = 4 * 1024;
 
@@ -28,6 +29,8 @@ module.exports = async function handler(req, res) {
   if (!originIsAllowed(req)) {
     return res.status(403).json({ error: "Forbidden" });
   }
+
+  if (!applyRateLimit(req, res, LIMITS.order)) return;
 
   if (!paymentsAreEnabled()) {
     return res.status(503).json(paymentsDisabledResponse());
@@ -104,14 +107,12 @@ module.exports = async function handler(req, res) {
   }
 
   const receipt = sanitizeReceipt(body.receipt);
-  const notes = sanitizeNotes(body.notes);
-  if (programLabel) notes.purpose = programLabel;
-
-  if (notes.fcra_declaration !== "accepted") {
-    return res.status(400).json({
-      error: "Domestic donation declaration is required before payment.",
-    });
+  const notesResult = validateOrderNotes(body.notes);
+  if (!notesResult.ok) {
+    return res.status(400).json({ error: notesResult.error });
   }
+  const notes = notesResult.notes;
+  if (programLabel) notes.purpose = programLabel;
 
   try {
     const razorpay = new Razorpay({ key_id: keyId, key_secret: keySecret });

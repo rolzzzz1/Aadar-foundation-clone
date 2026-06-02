@@ -12,10 +12,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import Checkbox from "@mui/material/Checkbox";
 import CircularProgress from "@mui/material/CircularProgress";
 import Divider from "@mui/material/Divider";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
 import Stack from "@mui/material/Stack";
@@ -37,13 +35,13 @@ import PhoneIphoneOutlinedIcon from "@mui/icons-material/PhoneIphoneOutlined";
 import ShieldOutlinedIcon from "@mui/icons-material/ShieldOutlined";
 import VolunteerActivismOutlinedIcon from "@mui/icons-material/VolunteerActivismOutlined";
 import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import GppGoodOutlinedIcon from "@mui/icons-material/GppGoodOutlined";
 import HouseOutlinedIcon from "@mui/icons-material/HouseOutlined";
 import LanguageIcon from "@mui/icons-material/Language";
 
 import MKBox from "components/MKBox";
 import MKButton from "components/MKButton";
+import ExpandableTermsCheckbox from "components/ExpandableTermsCheckbox";
 import aadarLogo from "assets/images/logos/logo-aadar.jpg";
 import { ReactComponent as RazorpayLogoLight } from "assets/images/logos/razorpay-logo-light.svg";
 import { PRIVACY_POLICY_PATH, TERMS_CONDITIONS_PATH } from "utils/paths";
@@ -292,22 +290,7 @@ const autocompleteFieldSx = {
   "& .MuiOutlinedInput-root": { minHeight: formInputMinHeight },
 };
 
-const termsCheckboxUncheckedIcon = (
-  <Box
-    className="terms-checkbox-box"
-    sx={{
-      width: 20,
-      height: 20,
-      borderRadius: "3px",
-      border: "1.5px solid #9ca3af",
-      bgcolor: "#fff",
-      boxSizing: "border-box",
-      flexShrink: 0,
-    }}
-  />
-);
-
-const termsCheckboxCheckedIcon = <CheckBoxIcon sx={{ fontSize: 22, color: "#1976d2" }} />;
+const policyLinkSx = { fontWeight: 600, color: "#1565c0", fontSize: "0.78rem" };
 
 function verificationFailureMessage(verification, fallback) {
   if (!verification) return fallback;
@@ -365,6 +348,32 @@ export default function RazorpayTestPage() {
   const isHi = i18n.language === "hi";
   const toggleLanguage = () => i18n.changeLanguage(isHi ? "en" : "hi");
 
+  const policyLinkComponents = useMemo(
+    () => ({
+      1: (
+        <MuiLink
+          component={Link}
+          to={TERMS_CONDITIONS_PATH}
+          target="_blank"
+          rel="noopener noreferrer"
+          underline="always"
+          sx={policyLinkSx}
+        />
+      ),
+      2: (
+        <MuiLink
+          component={Link}
+          to={PRIVACY_POLICY_PATH}
+          target="_blank"
+          rel="noopener noreferrer"
+          underline="always"
+          sx={policyLinkSx}
+        />
+      ),
+    }),
+    []
+  );
+
   const localizeError = useCallback(
     (error) => localizeValidationError(error, form.errors, i18n.language),
     [form.errors, i18n.language]
@@ -400,8 +409,8 @@ export default function RazorpayTestPage() {
   const [citySel, setCitySel] = useState("");
   const [pin, setPin] = useState("");
   const [purposeText, setPurposeText] = useState("");
-  const [termsAccepted, setTermsAccepted] = useState(false);
-  const [fcraAccepted, setFcraAccepted] = useState(false);
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
+  const [declarationAccepted, setDeclarationAccepted] = useState(false);
 
   const [touched, setTouched] = useState({});
 
@@ -454,8 +463,8 @@ export default function RazorpayTestPage() {
           citySel ||
           pin.trim() ||
           purposeText.trim() ||
-          termsAccepted ||
-          fcraAccepted
+          privacyAccepted ||
+          declarationAccepted
       ),
     [
       name,
@@ -468,8 +477,8 @@ export default function RazorpayTestPage() {
       citySel,
       pin,
       purposeText,
-      termsAccepted,
-      fcraAccepted,
+      privacyAccepted,
+      declarationAccepted,
     ]
   );
 
@@ -596,18 +605,13 @@ export default function RazorpayTestPage() {
     stateCheck.ok &&
     cityCheck.ok &&
     pinCheck.ok &&
-    termsAccepted &&
-    fcraAccepted;
+    privacyAccepted &&
+    declarationAccepted;
 
   const buildOrderNote = useCallback(() => {
-    const parts = [];
-    if (purposeCheck.value) parts.push(`Purpose: ${purposeCheck.value}`);
-    parts.push(`Address: ${addressCheck.value}`);
-    parts.push(`State: ${stateCheck.value}`);
-    parts.push(`City: ${cityCheck.value}`);
-    parts.push(`PIN: ${pinCheck.value}`);
-    return sanitizeText(parts.join(" | "), NOTE_MAX);
-  }, [purposeCheck.value, addressCheck.value, stateCheck.value, cityCheck.value, pinCheck.value]);
+    if (!purposeCheck.value) return "";
+    return sanitizeText(purposeCheck.value, NOTE_MAX);
+  }, [purposeCheck.value]);
 
   const goToDonationResult = useCallback(
     (record) => {
@@ -664,7 +668,12 @@ export default function RazorpayTestPage() {
           donor_email: emailCheck.value,
           donor_contact: contactCheck.value,
           donor_pan: panCheck.value,
+          donor_address: addressCheck.value,
+          donor_state: stateCheck.value,
+          donor_city: cityCheck.value,
+          donor_pin: pinCheck.value,
           fcra_declaration: "accepted",
+          privacy_consent: "accepted",
         },
       };
 
@@ -721,6 +730,10 @@ export default function RazorpayTestPage() {
             await waitAtLeast(750, processingStartedAt);
 
             const paymentOk = !!(verification && verification.verified);
+            const confirmedAmountInr =
+              paymentOk && verification.amount_paise
+                ? Math.round(Number(verification.amount_paise) / 100)
+                : amountCheck.valueInr;
             setBusyPhase("creatingReceipt");
             const receiptStartedAt = Date.now();
             await waitAtLeast(650, receiptStartedAt);
@@ -729,7 +742,7 @@ export default function RazorpayTestPage() {
               buildDonationReceiptRecord({
                 status: paymentOk ? "success" : "unverified",
                 locale: isHi ? "hi" : "en",
-                amountInr: amountCheck.valueInr,
+                amountInr: confirmedAmountInr,
                 donor,
                 paymentId: response.razorpay_payment_id,
                 orderId: response.razorpay_order_id,
@@ -1674,100 +1687,22 @@ export default function RazorpayTestPage() {
                   borderTop: "1px solid rgba(31, 42, 68, 0.09)",
                 }}
               >
-                <FormControlLabel
-                  sx={{
-                    mt: 0,
-                    mx: 0,
-                    mb: 1.25,
-                    alignItems: "flex-start",
-                    display: "flex",
-                    flexDirection: "row",
-                    "& .MuiFormControlLabel-label": { mt: 0.15 },
-                  }}
-                  control={
-                    <Checkbox
-                      checked={fcraAccepted}
-                      onChange={(e) => setFcraAccepted(e.target.checked)}
-                      icon={termsCheckboxUncheckedIcon}
-                      checkedIcon={termsCheckboxCheckedIcon}
-                      sx={{ p: 0.5, mr: 0.75, mt: -0.25 }}
+                <ExpandableTermsCheckbox
+                  checked={privacyAccepted}
+                  onChange={(e) => setPrivacyAccepted(e.target.checked)}
+                  summary={form.privacyConsentSummary}
+                  details={
+                    <Trans
+                      i18nKey="donationForm.privacyConsentDetails"
+                      components={policyLinkComponents}
                     />
-                  }
-                  label={
-                    <Typography
-                      variant="body2"
-                      component="span"
-                      sx={{
-                        color: "rgba(31, 42, 68, 0.72)",
-                        lineHeight: 1.45,
-                        fontSize: "0.74rem",
-                      }}
-                    >
-                      {form.fcraDeclaration}
-                    </Typography>
                   }
                 />
-                <FormControlLabel
-                  sx={{
-                    mt: 0,
-                    mx: 0,
-                    alignItems: "center",
-                    display: "flex",
-                    flexDirection: "row",
-                    "& .MuiFormControlLabel-label": { mt: 0 },
-                  }}
-                  control={
-                    <Checkbox
-                      checked={termsAccepted}
-                      onChange={(e) => setTermsAccepted(e.target.checked)}
-                      icon={termsCheckboxUncheckedIcon}
-                      checkedIcon={termsCheckboxCheckedIcon}
-                      sx={{
-                        p: 0.5,
-                        mr: 0.75,
-                        "&:hover .terms-checkbox-box": {
-                          borderColor: "#6b7280",
-                          boxShadow: "0 0 0 2px rgba(156, 163, 175, 0.25)",
-                        },
-                        "&:hover": {
-                          bgcolor: "rgba(25, 118, 210, 0.08)",
-                        },
-                      }}
-                    />
-                  }
-                  label={
-                    <Typography
-                      variant="body2"
-                      component="span"
-                      sx={{ color: "#1f2a44", lineHeight: 1.45 }}
-                    >
-                      <Trans
-                        i18nKey="donationForm.termsAccept"
-                        components={{
-                          1: (
-                            <MuiLink
-                              component={Link}
-                              to={TERMS_CONDITIONS_PATH}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              underline="always"
-                              sx={{ fontWeight: 600, color: "#1565c0", fontSize: "0.78rem" }}
-                            />
-                          ),
-                          2: (
-                            <MuiLink
-                              component={Link}
-                              to={PRIVACY_POLICY_PATH}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              underline="always"
-                              sx={{ fontWeight: 600, color: "#1565c0", fontSize: "0.78rem" }}
-                            />
-                          ),
-                        }}
-                      />
-                    </Typography>
-                  }
+                <ExpandableTermsCheckbox
+                  checked={declarationAccepted}
+                  onChange={(e) => setDeclarationAccepted(e.target.checked)}
+                  summary={form.donorDeclarationSummary}
+                  details={form.donorDeclarationDetails}
                 />
               </Box>
 

@@ -11,6 +11,7 @@ const {
   NAME_MAX,
 } = require("./_lib/donation");
 const { isStoreConfigured } = require("./_lib/donationRecord");
+const { applyRateLimit, LIMITS } = require("./_lib/rateLimit");
 
 const MAX_BODY_BYTES = 2 * 1024;
 
@@ -54,6 +55,8 @@ module.exports = async function handler(req, res) {
     return res.status(403).json({ error: "Forbidden" });
   }
 
+  if (!applyRateLimit(req, res, LIMITS.receipt)) return;
+
   if (!paymentsAreEnabled()) {
     return res.status(503).json(paymentsDisabledResponse());
   }
@@ -87,7 +90,7 @@ module.exports = async function handler(req, res) {
   const base = process.env.SUPABASE_URL.replace(/\/$/, "");
   const url = `${base}/rest/v1/donations?payment_id=eq.${encodeURIComponent(
     paymentId
-  )}&select=payment_id,order_id,receipt_no,amount_paise,currency,status,donor_name,donor_father_or_husband,donor_email,donor_contact,donor_pan,program_label,purpose,created_at`;
+  )}&select=payment_id,order_id,receipt_no,amount_paise,currency,status,donor_name,donor_father_or_husband,donor_email,donor_contact,donor_pan,donor_address,donor_state,donor_city,donor_pin,program_label,purpose,created_at`;
 
   try {
     const r = await fetch(url, {
@@ -127,11 +130,13 @@ module.exports = async function handler(req, res) {
       });
     }
 
+    const captured = String(row.status || "").toLowerCase() === "captured";
+
     // Minimal + sanitized payload for client-side receipt generation.
     return res.status(200).json({
       ok: true,
       record: {
-        status: String(row.status || "").toLowerCase() === "captured" ? "success" : "unverified",
+        status: captured ? "success" : "unverified",
         amountInr: Math.round((Number(row.amount_paise) || 0) / 100),
         currency: row.currency || "INR",
         donor: {
@@ -140,6 +145,10 @@ module.exports = async function handler(req, res) {
           email: emailProvided ? donorEmail : normalizeEmail(row.donor_email),
           contact: sanitizeText(row.donor_contact || "", 20),
           pan: donorPan,
+          address: sanitizeText(row.donor_address || "", 200),
+          state: sanitizeText(row.donor_state || "", 80),
+          city: sanitizeText(row.donor_city || "", 80),
+          pin: sanitizeText(row.donor_pin || "", 6),
         },
         paymentId: row.payment_id || paymentId,
         orderId: row.order_id || "",
@@ -147,7 +156,7 @@ module.exports = async function handler(req, res) {
         purpose: row.purpose || "",
         programLabel: row.program_label || "",
         paidAt: row.created_at || new Date().toISOString(),
-        verified: String(row.status || "").toLowerCase() === "captured",
+        verified: captured,
         testMode: undefined,
         locale: "en",
       },

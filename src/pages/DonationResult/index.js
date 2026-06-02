@@ -6,6 +6,7 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
+import CircularProgress from "@mui/material/CircularProgress";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
@@ -46,6 +47,10 @@ const payOrange = "#e67e22";
 /** Support contact shown on the receipt-recovery form only */
 const RECEIPT_LOOKUP_SUPPORT_EMAIL = "aadarfoundation.tech@gmail.com";
 const RECEIPT_LOOKUP_SUPPORT_PHONE = "+91 9826441863";
+
+function needsServerConfirm(r) {
+  return !!(r?.paymentId && r?.orderId && r?.donor?.pan && r?.status !== "failed");
+}
 
 const lookupFieldSx = {
   "& .MuiInputBase-input": { fontSize: { xs: "0.9375rem", sm: "0.975rem" }, py: 1.1 },
@@ -109,6 +114,7 @@ export default function DonationResultPage() {
   const { t, i18n } = useTranslation();
 
   const [record, setRecord] = useState(() => loadDonationReceipt());
+  const [confirmBusy, setConfirmBusy] = useState(() => needsServerConfirm(loadDonationReceipt()));
   const [downloadMsg, setDownloadMsg] = useState("");
   const [lookupBusy, setLookupBusy] = useState(false);
   const [lookupError, setLookupError] = useState("");
@@ -120,8 +126,69 @@ export default function DonationResultPage() {
   });
 
   useEffect(() => {
-    setRecord(loadDonationReceipt());
-  }, []);
+    const initial = loadDonationReceipt();
+    if (!needsServerConfirm(initial)) {
+      setConfirmBusy(false);
+      return undefined;
+    }
+
+    let cancelled = false;
+
+    (async () => {
+      setConfirmBusy(true);
+      try {
+        const result = await postJson("/api/donation-confirm", {
+          payment_id: initial.paymentId,
+          order_id: initial.orderId,
+          donor_pan: initial.donor.pan,
+          locale: initial.locale || "en",
+        });
+
+        if (cancelled) return;
+
+        if (result?.ok && result?.record?.verified) {
+          const merged = {
+            ...initial,
+            ...result.record,
+            verified: true,
+            status: "success",
+            testMode: initial.testMode,
+            locale: initial.locale || result.record.locale,
+          };
+          saveDonationReceipt(merged);
+          setRecord(merged);
+        } else {
+          setRecord({
+            ...initial,
+            status: "unverified",
+            verified: false,
+            errorDescription: t(
+              "donationResult.confirmFailed",
+              "Payment could not be verified with our records. Please contact us with your payment ID."
+            ),
+          });
+        }
+      } catch {
+        if (!cancelled) {
+          setRecord({
+            ...initial,
+            status: "unverified",
+            verified: false,
+            errorDescription: t(
+              "donationResult.confirmFailed",
+              "Payment could not be verified with our records. Please contact us with your payment ID."
+            ),
+          });
+        }
+      } finally {
+        if (!cancelled) setConfirmBusy(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [t]);
 
   useEffect(() => {
     if (!record?.locale) return;
@@ -133,10 +200,10 @@ export default function DonationResultPage() {
 
   const orgAlt = useMemo(() => getReceiptCopy(record?.locale || "en").org.name, [record?.locale]);
 
-  const isSuccess = record?.status === "success";
+  const isSuccess = record?.status === "success" && record?.verified === true;
   const isUnverified = record?.status === "unverified";
   const isFailed = record?.status === "failed";
-  const canDownloadReceipt = !!record?.paymentId && (isSuccess || isUnverified);
+  const canDownloadReceipt = !!(record?.paymentId && isSuccess && record?.verified === true);
 
   const title = useMemo(() => {
     if (isSuccess) return t("donationResult.titleSuccess");
@@ -145,7 +212,15 @@ export default function DonationResultPage() {
   }, [isSuccess, isUnverified, t]);
 
   const handleDownload = async () => {
-    if (!record) return;
+    if (!record || !record.verified) {
+      setDownloadMsg(
+        t(
+          "donationResult.downloadNotVerified",
+          "Receipt download is available only after payment is verified."
+        )
+      );
+      return;
+    }
     setDownloadMsg(t("donationResult.preparing"));
     const { downloadReceiptPdf } = await import("utils/donationReceipt");
     const result = await downloadReceiptPdf(record);
@@ -216,6 +291,40 @@ export default function DonationResultPage() {
       setLookupBusy(false);
     }
   };
+
+  if (confirmBusy) {
+    return (
+      <MKBox
+        minHeight="100vh"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        px={2}
+        py={6}
+        sx={{ background: "linear-gradient(180deg, #f4f7f4 0%, #eef1f6 100%)" }}
+      >
+        <Card
+          sx={{
+            maxWidth: 420,
+            width: "100%",
+            p: 4,
+            borderRadius: "18px",
+            textAlign: "center",
+            border: "1px solid rgba(31, 42, 68, 0.08)",
+            boxShadow: "0 18px 48px rgba(31, 42, 68, 0.1)",
+          }}
+        >
+          <CircularProgress sx={{ color: brandGreen, mb: 2 }} />
+          <Typography variant="body1" sx={{ color: "#1f2a44", fontWeight: 600 }}>
+            {t("donationResult.confirmingPayment", "Verifying your payment…")}
+          </Typography>
+          <Typography variant="body2" sx={{ mt: 1, color: "rgba(31,42,68,0.65)" }}>
+            {t("donationResult.pleaseWait", "Please wait")}
+          </Typography>
+        </Card>
+      </MKBox>
+    );
+  }
 
   if (!record) {
     return (

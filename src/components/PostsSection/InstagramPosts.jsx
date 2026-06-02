@@ -85,14 +85,7 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
     let cancelled = false;
     const fetchPosts = async () => {
       try {
-        // Determine the correct function URL based on environment
-        // In local dev: http://localhost:3000/api/instagram-posts (if using Vercel dev)
-        // In production: /api/instagram-posts
-        const isLocalDev =
-          window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-        const functionUrl = isLocalDev
-          ? `http://localhost:3000/api/instagram-posts?limit=${totalPosts}`
-          : `/api/instagram-posts?limit=${totalPosts}`;
+        const functionUrl = `/api/instagram-posts?limit=${totalPosts}`;
 
         const response = await fetch(functionUrl, {
           method: "GET",
@@ -113,10 +106,14 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
         const data = await response.json();
 
         if (data.error) {
-          // Show more detailed error information
-          const errorMsg = data.error.message || t("homePage.postsSection.failedToFetchPosts");
-          const errorDetails = data.error.details
-            ? ` (Error Code: ${data.error.code || "unknown"})`
+          const errorMsg =
+            typeof data.error === "string"
+              ? data.error
+              : data.error.message || t("homePage.postsSection.failedToFetchPosts");
+          const errorDetails = data.code
+            ? ` (Error Code: ${data.code})`
+            : data.details?.code
+            ? ` (Error Code: ${data.details.code})`
             : "";
           setError(`${errorMsg}${errorDetails}`);
           console.error("Instagram API Error:", data.error);

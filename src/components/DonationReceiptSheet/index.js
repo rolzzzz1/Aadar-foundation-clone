@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 
 import { buildReceiptViewModel } from "utils/receiptFormat";
 import { getReceiptWebsiteQrSrc } from "utils/receiptAssets";
+import ReceiptHeader from "./ReceiptHeader";
 
 const green = "#1b5e20";
 const greenMid = "#2e7d32";
@@ -180,58 +181,7 @@ export default function DonationReceiptSheet({ record, logoSrc }) {
       ) : null}
 
       <Box sx={{ position: "relative", px: { xs: 1.25, sm: 1.75 }, py: 1.25 }}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 0.5,
-            mb: 0.75,
-          }}
-        >
-          {logoSrc ? (
-            <Box
-              component="img"
-              src={logoSrc}
-              alt={org.name}
-              sx={{
-                width: 38,
-                height: 38,
-                borderRadius: "50%",
-                objectFit: "cover",
-                border: `2px solid ${greenMid}`,
-              }}
-            />
-          ) : null}
-          <Typography sx={{ fontSize: "1rem", fontWeight: 800, color: green, lineHeight: 1.15 }}>
-            {org.name}
-          </Typography>
-          <Typography
-            sx={{ fontSize: "0.78rem", fontWeight: 700, color: "#1f2a44", lineHeight: 1.2 }}
-          >
-            {org.subtitle}
-          </Typography>
-          <Typography sx={{ fontSize: "0.65rem", fontWeight: 600, color: greenMid }}>
-            {org.tagline}
-          </Typography>
-        </Box>
-
-        <Box sx={{ display: "flex", justifyContent: "center", mb: 0.75 }}>
-          <Box
-            sx={{
-              bgcolor: green,
-              color: "#fff",
-              px: 2,
-              py: 0.4,
-              borderRadius: "999px",
-              fontSize: "0.65rem",
-              fontWeight: 800,
-              letterSpacing: "0.1em",
-            }}
-          >
-            {copy.title}
-          </Box>
-        </Box>
+        <ReceiptHeader org={org} title={copy.title} logoSrc={logoSrc} />
 
         {vm.testMode ? (
           <Typography

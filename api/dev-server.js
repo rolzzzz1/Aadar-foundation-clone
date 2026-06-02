@@ -18,6 +18,8 @@ const routes = {
   "/api/razorpay-verify": require("./razorpay-verify.js"),
   "/api/razorpay-webhook": require("./razorpay-webhook.js"),
   "/api/donation-receipt": require("./donation-receipt.js"),
+  "/api/donation-confirm": require("./donation-confirm.js"),
+  "/api/instagram-posts": require("./instagram-posts.js"),
 };
 
 function loadEnvFiles() {
@@ -96,7 +98,9 @@ function readBody(nodeReq) {
 }
 
 const server = http.createServer(async (nodeReq, nodeRes) => {
-  const urlPath = (nodeReq.url || "").split("?")[0];
+  const rawUrl = nodeReq.url || "/";
+  const urlPath = rawUrl.split("?")[0];
+  const query = Object.fromEntries(new URL(rawUrl, "http://127.0.0.1").searchParams);
   setCors(nodeReq, nodeRes);
 
   if (nodeReq.method === "OPTIONS") {
@@ -123,6 +127,7 @@ const server = http.createServer(async (nodeReq, nodeRes) => {
     const req = {
       method: nodeReq.method,
       headers: nodeReq.headers,
+      query,
       body,
       rawBody: raw.length ? raw.toString("utf8") : "",
     };
@@ -163,8 +168,16 @@ server.listen(PORT, "127.0.0.1", () => {
   console.log("  POST /api/razorpay-webhook");
   // eslint-disable-next-line no-console
   console.log("  POST /api/donation-receipt");
+  console.log("  POST /api/donation-confirm");
+  // eslint-disable-next-line no-console
+  console.log("  GET  /api/instagram-posts");
   // eslint-disable-next-line no-console
   console.log("  GET  /api/health");
+  const hasInstagram = !!(
+    process.env.INSTAGRAM_ACCESS_TOKEN && process.env.INSTAGRAM_ACCOUNT_ID
+  );
+  // eslint-disable-next-line no-console
+  console.log(`  Instagram: ${hasInstagram ? "ok" : "MISSING (set INSTAGRAM_* in .env.local)"}`);
 });
 
 server.on("error", (err) => {

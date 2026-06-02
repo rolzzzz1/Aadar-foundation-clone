@@ -1329,7 +1329,11 @@ const HeroSlide = memo(function HeroSlide({
       height={{ xs: "100vh", sm: "100vh", md: "100vh" }}
       width="100%"
       sx={{
-        backgroundImage: heroBackgroundImage(image),
+        // Prefer a real <img> for the first hero slide so it can be
+        // prioritized and counted as the page's LCP element.
+        backgroundImage: isFirstSlide
+          ? "linear-gradient(135deg, #101826 0%, #1f2a44 55%, #2a3658 100%)"
+          : heroBackgroundImage(image),
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "top",
@@ -1337,8 +1341,40 @@ const HeroSlide = memo(function HeroSlide({
         justifyContent: { xs: "center", sm: "end" },
         alignItems: "end",
         position: "relative",
+        overflow: "hidden",
       }}
     >
+      {isFirstSlide && (
+        <picture
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            zIndex: 0,
+            pointerEvents: "none",
+          }}
+        >
+          <source srcSet={blackAndWhiteHeroWebp} type="image/webp" />
+          <img
+            src={blackAndWhiteHeroPng}
+            alt=""
+            loading="eager"
+            decoding="async"
+            // eslint-disable-next-line react/no-unknown-property
+            fetchpriority="high"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "top",
+              display: "block",
+            }}
+          />
+        </picture>
+      )}
+
       {/* Mobile view - centered */}
       {isFirstSlide && (
         <MKBox
@@ -2509,6 +2545,30 @@ function Home() {
   const maykiVideoRef = useRef(null);
   const nirbhayVideoRef = useRef(null);
   const slide4VideoRef = useRef(null);
+  const heroCarouselRef = useRef(null);
+  const [isHeroInView, setIsHeroInView] = useState(true);
+
+  // Pause hero videos when the hero is not in the viewport.
+  useEffect(() => {
+    if (typeof window === "undefined" || typeof IntersectionObserver === "undefined") {
+      setIsHeroInView(true);
+      return undefined;
+    }
+
+    const node = heroCarouselRef.current;
+    if (!node) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Consider "in view" only when a meaningful portion is visible.
+        setIsHeroInView(Boolean(entry?.isIntersecting) && (entry?.intersectionRatio ?? 0) > 0.12);
+      },
+      { threshold: [0, 0.12, 0.25] }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   // Warm Vimeo connection once desktop hero videos are enabled.
   useEffect(() => {
@@ -2545,6 +2605,17 @@ function Home() {
 
   // Play/pause videos when slide changes - immediate control
   useEffect(() => {
+    // If the hero isn't visible, keep everything paused.
+    if (!isHeroInView) {
+      [".hero-video-overlay-1", ".hero-video-overlay-2", ".hero-video-overlay-3"].forEach((sel) => {
+        const iframe = document.querySelector(sel);
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage({ method: "pause" }, "https://player.vimeo.com");
+        }
+      });
+      return;
+    }
+
     // Map of slide indices to video iframe classes
     const videoMap = {
       0: null, // Slide 1 has no video
@@ -2599,7 +2670,43 @@ function Home() {
         }, 100);
       }
     }
-  }, [activeSlide]);
+  }, [activeSlide, isHeroInView]);
+
+  // When the hero leaves the viewport, immediately pause all videos. When it
+  // re-enters, resume only the active slide's video (if any).
+  useEffect(() => {
+    if (!showHeroVimeo) return;
+
+    const pauseAll = () => {
+      [".hero-video-overlay-1", ".hero-video-overlay-2", ".hero-video-overlay-3"].forEach((sel) => {
+        const iframe = document.querySelector(sel);
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage({ method: "pause" }, "https://player.vimeo.com");
+        }
+      });
+    };
+
+    if (!isHeroInView) {
+      pauseAll();
+      return;
+    }
+
+    // Resume only the active slide (2/3/4).
+    const activeSel =
+      activeSlide === 1
+        ? ".hero-video-overlay-1"
+        : activeSlide === 2
+        ? ".hero-video-overlay-2"
+        : activeSlide === 3
+        ? ".hero-video-overlay-3"
+        : null;
+    if (!activeSel) return;
+
+    const iframe = document.querySelector(activeSel);
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.postMessage({ method: "play" }, "https://player.vimeo.com");
+    }
+  }, [isHeroInView, activeSlide, showHeroVimeo]);
 
   // Show video buttons only after video starts loading (delay to prevent flash)
   useEffect(() => {
@@ -2867,7 +2974,7 @@ function Home() {
         sticky
       />
       {/* Hero Carousel */}
-      <MKBox sx={{ position: "relative" }}>
+      <MKBox ref={heroCarouselRef} sx={{ position: "relative" }}>
         {/* Desktop Vimeo overlays (hidden on mobile and when save-data is on). */}
         {showHeroVimeo && (
           <>

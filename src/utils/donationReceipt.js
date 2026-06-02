@@ -5,15 +5,12 @@ import aadarLogoUrl from "assets/images/logos/logo-aadar.jpg";
 import { getReceiptWebsiteQrSrc } from "utils/receiptAssets";
 import { buildReceiptViewModel, ORG, formatInr, formatReceiptDate } from "utils/receiptFormat";
 import { buildReceiptHtmlBody } from "utils/receiptI18n";
+import { buildReceiptHeaderHtml, receiptHeaderCss } from "utils/receiptHeaderHtml";
 
-/** Header logo (px) on screen / print preview. */
-const RECEIPT_LOGO_PX = 38;
 /** Watermark (px) on screen / print preview. */
 const RECEIPT_WATERMARK_PX = 88;
-/** Header logo (px) in PDF download layout. */
-const RECEIPT_PDF_LOGO_PX = 90;
 /** Header logo size (mm) in vector PDF fallback. */
-const RECEIPT_PDF_LOGO_MM = 11;
+const RECEIPT_PDF_LOGO_MM = 18;
 const HTML2CANVAS_SCALE = 2;
 
 export { ORG, formatInr, formatReceiptDate as formatDate };
@@ -101,12 +98,7 @@ function receiptDocumentStyles(forPdf) {
     .watermark { display: none; }
     .inner.pdf-body { display: flex; flex-direction: column; align-items: stretch; gap: 11px; padding: 14px 16px 16px; text-align: center; }
     .inner.pdf-body > * { margin: 0; }
-    .header-inner { display: flex; flex-direction: column; align-items: center; gap: 5px; flex-shrink: 0; }
-    .header-inner img.logo { width: ${RECEIPT_PDF_LOGO_PX}px; height: ${RECEIPT_PDF_LOGO_PX}px; border-radius: 50%; object-fit: cover; border: 2px solid #2e7d32; flex-shrink: 0; }
-    .header-inner h1 { font-size: 1rem; line-height: 1.2; color: #1b5e20; font-weight: 800; }
-    .header-inner .sub { font-size: 0.82rem; line-height: 1.25; font-weight: 700; color: #1a2340; }
-    .header-inner .tag { font-size: 0.72rem; line-height: 1.2; font-weight: 600; color: #2e7d32; }
-    .title-pill { align-self: center; background: #1b5e20; color: #fff; padding: 5px 16px; border-radius: 999px; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.07em; }
+    ${receiptHeaderCss}
     .meta { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px 10px; padding: 10px 10px; background: #f6faf6; border-radius: 6px; text-align: center; }
     .meta label { display: block; font-size: 0.65rem; color: #4a5568; font-weight: 700; margin-bottom: 3px; line-height: 1.2; }
     .meta span { display: block; font-size: 0.76rem; font-weight: 800; word-break: break-word; color: #1a2340; line-height: 1.25; }
@@ -148,12 +140,7 @@ function receiptDocumentStyles(forPdf) {
     .sheet { max-width: 720px; margin: 0 auto; background: #fff; border: 1px solid #d5e8d5; border-radius: 8px; overflow: hidden; position: relative; page-break-inside: avoid; }
     .watermark { position: absolute; left: 50%; top: 45%; transform: translate(-50%,-50%); width: ${RECEIPT_WATERMARK_PX}px; opacity: 0.05; pointer-events: none; }
     .inner { position: relative; padding: 12px 14px; text-align: center; }
-    .header-inner { display: flex; flex-direction: column; align-items: center; gap: 4px; margin-bottom: 6px; }
-    .header-inner img.logo { width: ${RECEIPT_LOGO_PX}px; height: ${RECEIPT_LOGO_PX}px; border-radius: 50%; object-fit: cover; border: 2px solid #2e7d32; }
-    .header-inner h1 { margin: 0; font-size: 1rem; color: #1b5e20; }
-    .header-inner .sub { margin: 0; font-size: 0.78rem; font-weight: 700; }
-    .header-inner .tag { margin: 0; font-size: 0.65rem; font-weight: 600; color: #2e7d32; }
-    .title-pill { display: inline-block; background: #1b5e20; color: #fff; padding: 4px 16px; border-radius: 999px; font-size: 0.65rem; font-weight: 800; letter-spacing: 0.1em; margin-bottom: 8px; }
+    ${receiptHeaderCss}
     .meta { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 8px; text-align: center; }
     .meta label { display: block; font-size: 0.58rem; color: rgba(31,42,68,0.55); font-weight: 600; }
     .meta span { display: block; font-size: 0.68rem; font-weight: 700; word-break: break-word; }
@@ -267,13 +254,17 @@ export function receiptDocumentHtml(
   <div class="sheet">
     <img class="watermark" src="${safe.logoSrc}" alt="" />
     <div class="inner${forPdf ? " pdf-body" : ""}">
-      <div class="header-inner">
-        <img class="logo" src="${safe.logoSrc}" alt="${safe.orgName}" />
-        <h1>${safe.orgName}</h1>
-        <p class="sub">${safe.orgSubtitle}</p>
-        <p class="tag">${safe.orgTagline}</p>
-      </div>
-      <span class="title-pill">${escapeHtml(copy.title)}</span>
+      ${buildReceiptHeaderHtml({
+        org: {
+          name: safe.orgName,
+          subtitle: safe.orgSubtitle,
+          tagline: safe.orgTagline,
+        },
+        title: escapeHtml(copy.title),
+        logoSrc: safe.logoSrc,
+        logoAlt: safe.orgName,
+        forPdf,
+      })}
       ${testBanner}
       ${failBlock}
       ${buildReceiptHtmlBody({ copy, vm, safe, donorTable, donationTable, forPdf })}
@@ -471,24 +462,26 @@ async function buildReceiptPdfVector(record) {
   }
 
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(13);
+  doc.setFontSize(14);
   doc.setTextColor(27, 94, 32);
   doc.text(pdfSafeText(vm.org.name, loc), centerX, y + 4, { align: "center" });
-  doc.setFontSize(8.5);
-  doc.setTextColor(31, 42, 68);
+  doc.setFontSize(9);
+  doc.setTextColor(30, 58, 95);
   doc.text(pdfSafeText(vm.org.subtitle, loc), centerX, y + 9, { align: "center" });
-  doc.setFontSize(7);
-  doc.setTextColor(46, 125, 50);
-  doc.text(pdfSafeText(vm.org.tagline, loc), centerX, y + 13, { align: "center" });
-  y += 17;
+  y += 13;
 
-  const pillW = Math.min(56, Math.max(48, copy.title.length * 1.8));
+  doc.setFontSize(6.5);
+  doc.setTextColor(27, 94, 32);
+  doc.text(pdfSafeText(vm.org.tagline.toUpperCase(), loc), centerX, y + 2, { align: "center" });
+  y += 6;
+
   doc.setFillColor(27, 94, 32);
-  doc.roundedRect((pageW - pillW) / 2, y, pillW, 6, 3, 3, "F");
-  doc.setFontSize(7);
+  doc.rect(margin, y, contentW, 7, "F");
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8);
   doc.setTextColor(255, 255, 255);
-  doc.text(pdfSafeText(copy.title, loc), centerX, y + 4.2, { align: "center" });
-  y += 10;
+  doc.text(pdfSafeText(copy.title, loc), centerX, y + 4.8, { align: "center" });
+  y += 11;
 
   if (vm.testMode) {
     doc.setFontSize(6);
@@ -653,7 +646,7 @@ async function getReceiptPdfBlob(record) {
  * @returns {Promise<'pdf' | false>}
  */
 export async function downloadReceiptPdf(record) {
-  if (!record) return false;
+  if (!record || record.verified !== true) return false;
 
   try {
     const blob = await getReceiptPdfBlob(record);

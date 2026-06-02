@@ -14,6 +14,7 @@ const {
   buildRecordFromRazorpay,
   saveDonationRecord,
 } = require("./_lib/donationRecord");
+const { applyRateLimit, LIMITS } = require("./_lib/rateLimit");
 
 const MAX_BODY_BYTES = 2 * 1024;
 
@@ -45,6 +46,8 @@ module.exports = async function handler(req, res) {
   if (!originIsAllowed(req)) {
     return res.status(403).json({ error: "Forbidden" });
   }
+
+  if (!applyRateLimit(req, res, LIMITS.verify)) return;
 
   if (!paymentsAreEnabled()) {
     return res.status(503).json(paymentsDisabledResponse());
@@ -89,10 +92,26 @@ module.exports = async function handler(req, res) {
     });
   }
 
+  let order = null;
+  try {
+    order = await fetchOrder(orderId);
+  } catch {
+    order = null;
+  }
+
+  if (!order) {
+    return res.status(200).json({
+      verified: false,
+      signature_valid: true,
+      captured: false,
+      reason: "order_fetch_failed",
+    });
+  }
+
   let payment;
   let captureCheck;
   try {
-    const result = await fetchPaymentUntilCaptured(paymentId, orderId);
+    const result = await fetchPaymentUntilCaptured(paymentId, orderId, { order });
     payment = result.payment;
     captureCheck = result.check;
   } catch (err) {
@@ -130,13 +149,6 @@ module.exports = async function handler(req, res) {
       reason: captureCheck.reason,
       payment_status: captureCheck.payment_status,
     });
-  }
-
-  let order = null;
-  try {
-    order = await fetchOrder(orderId);
-  } catch {
-    order = null;
   }
 
   const record = buildRecordFromRazorpay({ payment, order, source: "verify" });

@@ -45,18 +45,22 @@ function LazyYouTube({
   className,
   allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
   preconnect = true,
+  playWhenInView = true,
+  pauseWhenOutOfView = true,
 }) {
   const videoId = extractVideoId(rawVideoId);
   const wrapperRef = useRef(null);
+  const iframeRef = useRef(null);
   const [activated, setActivated] = useState(false);
   const [warmHints, setWarmHints] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const lastVisibilityRef = useRef(null);
 
   const activate = useCallback(() => setActivated(true), []);
 
   // When the facade scrolls into view, optionally auto-activate on
   // good connections so the iframe is ready before the user clicks.
   useEffect(() => {
-    if (activated) return undefined;
     if (typeof window === "undefined") return undefined;
     if (typeof IntersectionObserver === "undefined") return undefined;
 
@@ -66,29 +70,68 @@ function LazyYouTube({
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
+          const visible = Boolean(entry.isIntersecting) && (entry.intersectionRatio ?? 0) > 0.12;
+          setIsInView(visible);
+
+          if (!visible) return;
+
+          // Warm the connections as soon as the section is near/visible.
           setWarmHints(true);
-          if (!shouldSkipHeavyMedia()) {
+
+          // Auto-activate once on good connections.
+          if (!activated && !shouldSkipHeavyMedia()) {
             setActivated(true);
-            observer.disconnect();
           }
         });
       },
-      { rootMargin: "200px", threshold: 0.01 }
+      { rootMargin: "200px", threshold: [0, 0.12, 0.25] }
     );
 
     observer.observe(node);
     return () => observer.disconnect();
   }, [activated]);
 
+  // Pause/play the YouTube player based on viewport visibility.
+  // Uses the iframe postMessage API (enablejsapi=1).
+  useEffect(() => {
+    if (!activated) return;
+    if (typeof window === "undefined") return;
+    if (!iframeRef.current || !iframeRef.current.contentWindow) return;
+
+    // Avoid spamming postMessages on re-renders.
+    if (lastVisibilityRef.current === isInView) return;
+    lastVisibilityRef.current = isInView;
+
+    const post = (func) => {
+      try {
+        iframeRef.current.contentWindow.postMessage(
+          JSON.stringify({ event: "command", func, args: [] }),
+          "*"
+        );
+      } catch (e) {
+        // ignore
+      }
+    };
+
+    if (!isInView && pauseWhenOutOfView) {
+      post("pauseVideo");
+      return;
+    }
+    if (isInView && playWhenInView) {
+      post("playVideo");
+    }
+  }, [activated, isInView, pauseWhenOutOfView, playWhenInView]);
+
   if (!videoId) {
     return null;
   }
 
   const posterSrc = `https://i.ytimg.com/vi/${videoId}/${posterQuality}.jpg`;
-  const iframeSrc = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&playsinline=1${
-    params ? `&${params}` : ""
-  }`;
+  const origin =
+    typeof window !== "undefined" && window.location?.origin ? window.location.origin : "";
+  const iframeSrc = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&enablejsapi=1${
+    origin ? `&origin=${encodeURIComponent(origin)}` : ""
+  }${params ? `&${params}` : ""}`;
 
   return (
     <div
@@ -125,6 +168,7 @@ function LazyYouTube({
 
       {activated ? (
         <iframe
+          ref={iframeRef}
           width="100%"
           height="100%"
           src={iframeSrc}
@@ -215,6 +259,8 @@ LazyYouTube.propTypes = {
   className: PropTypes.string,
   allow: PropTypes.string,
   preconnect: PropTypes.bool,
+  playWhenInView: PropTypes.bool,
+  pauseWhenOutOfView: PropTypes.bool,
 };
 
 export default LazyYouTube;

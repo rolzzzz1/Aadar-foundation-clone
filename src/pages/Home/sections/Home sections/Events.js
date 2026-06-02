@@ -10,6 +10,7 @@ import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 
 import InstagramPosts from "components/PostsSection/InstagramPosts";
+import LazyVisible from "components/LazyMedia/LazyVisible";
 
 function Work() {
   const { t } = useTranslation();
@@ -51,7 +52,9 @@ function Work() {
         </Grid>
         <Grid item container lg={12}>
           <MKBox pt={1} width="100%">
-            <InstagramPosts />
+            <LazyVisible rootMargin="500px" minHeight={520}>
+              <InstagramPosts />
+            </LazyVisible>
           </MKBox>
         </Grid>
       </Container>

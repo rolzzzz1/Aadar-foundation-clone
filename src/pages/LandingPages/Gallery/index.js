@@ -340,13 +340,13 @@ function Gallery() {
         }}
       >
         <MKBox component="section" my={3} mx={5}>
-          <Grid container alignItems="center" display="flex" justifyContent={"center"}>
+          <Grid container alignItems="center" display="flex" justifyContent="flex-start">
             <MKBox component="section" my={1}>
               <MKTypography
                 variant="h4"
                 fontSize={{ xs: "1.5rem", sm: "1.75rem", md: "1.875rem", lg: "1.875rem" }}
                 fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
-                sx={{ fontWeight: "500" }}
+                sx={{ fontWeight: "500", textAlign: "left", width: "100%" }}
                 pb={6}
               >
                 {galleryPage.title}

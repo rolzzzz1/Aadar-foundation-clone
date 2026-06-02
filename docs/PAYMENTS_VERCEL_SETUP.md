@@ -42,7 +42,11 @@ Backup path: saves donations to Supabase if the browser never hits `/api/razorpa
 
 1. **Settings** → **Webhooks** → **+ New Webhook**
 2. **Webhook URL:** `https://www.aadarfoundation.org/api/razorpay-webhook`
-3. **Events:** enable **`payment.captured`**
+3. **Events:** enable at minimum:
+   - **`payment.captured`** (required — saves verified donations)
+   - **`payment.failed`** (updates Supabase status)
+   - **`refund.created`** and **`refund.processed`** (marks donations refunded)
+   - Optional: **`payment.dispute.created`** (marks disputes)
 4. **Active** → Save
 5. Copy **Webhook Secret** (shown once)
 
@@ -201,6 +205,12 @@ Redeploy after changing any variable.
    ```sql
    alter table public.donations add column if not exists receipt_no text;
    alter table public.donations add column if not exists donor_father_or_husband text;
+   alter table public.donations add column if not exists fcra_declaration text;
+   alter table public.donations add column if not exists donor_address text;
+   alter table public.donations add column if not exists donor_state text;
+   alter table public.donations add column if not exists donor_city text;
+   alter table public.donations add column if not exists donor_pin text;
+   alter table public.donations add column if not exists updated_at timestamptz not null default now();
    ```
 3. Confirm `GET /api/health` → `"donation_store": true`.
 
@@ -219,4 +229,5 @@ Redeploy after changing any variable.
 - Email receipt to donor (needs SendGrid/Resend + template).
 - Admin dashboard to list/export donations (Supabase Studio works for now).
 - Public “Retrieve my receipt” page wired to `POST /api/donation-receipt`.
-- `payment.failed` webhook logging (currently only `payment.captured` is stored).
+- `payment.failed` webhook logging (updates existing Supabase rows to `failed`).
+- Refund / dispute webhooks update Supabase status to `refunded` or `disputed`.

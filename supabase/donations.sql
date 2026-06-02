@@ -14,10 +14,16 @@ create table if not exists public.donations (
   donor_email text,
   donor_contact text,
   donor_pan text,
+  donor_address text,
+  donor_state text,
+  donor_city text,
+  donor_pin text,
   program_label text,
   purpose text,
+  fcra_declaration text,
   source text not null,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   constraint donations_payment_id_key unique (payment_id)
 );
 
@@ -29,6 +35,12 @@ comment on table public.donations is 'Razorpay captured donations; written by Ve
 -- If the table already exists from an earlier deploy, run this once in SQL Editor:
 -- alter table public.donations add column if not exists receipt_no text;
 -- alter table public.donations add column if not exists donor_father_or_husband text;
+-- alter table public.donations add column if not exists fcra_declaration text;
+-- alter table public.donations add column if not exists donor_address text;
+-- alter table public.donations add column if not exists donor_state text;
+-- alter table public.donations add column if not exists donor_city text;
+-- alter table public.donations add column if not exists donor_pin text;
+-- alter table public.donations add column if not exists updated_at timestamptz not null default now();
 
 -- Lock down public access; your Node API uses SUPABASE_SERVICE_ROLE_KEY (bypasses RLS).
 alter table public.donations enable row level security;

@@ -48,9 +48,10 @@ async function fetchOrder(orderId) {
 
 /**
  * Confirm payment belongs to order and money was captured (not just authorized/failed).
- * @returns {{ ok: boolean, reason?: string, payment_status?: string }}
+ * When `order` is provided, also asserts payment.amount === order.amount.
+ * @returns {{ ok: boolean, reason?: string, payment_status?: string, amount_paise?: number, currency?: string }}
  */
-function validateCapturedPayment(payment, expectedOrderId) {
+function validateCapturedPayment(payment, expectedOrderId, order) {
   if (!payment || typeof payment !== "object") {
     return { ok: false, reason: "payment_not_found" };
   }
@@ -69,6 +70,19 @@ function validateCapturedPayment(payment, expectedOrderId) {
     return { ok: false, reason: "invalid_amount", payment_status: status };
   }
 
+  if (order && order.amount != null) {
+    const orderAmount = Number(order.amount);
+    if (Number.isFinite(orderAmount) && amount !== orderAmount) {
+      return {
+        ok: false,
+        reason: "amount_mismatch",
+        payment_status: status,
+        amount_paise: amount,
+        currency: payment.currency || "INR",
+      };
+    }
+  }
+
   return { ok: true, payment_status: status, amount_paise: amount, currency: payment.currency || "INR" };
 }
 
@@ -85,13 +99,14 @@ function sleep(ms) {
 async function fetchPaymentUntilCaptured(paymentId, orderId, options = {}) {
   const maxAttempts = options.maxAttempts ?? 6;
   const delayMs = options.delayMs ?? 500;
+  const order = options.order || null;
 
   let payment = null;
   let check = { ok: false, reason: "payment_not_found" };
 
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     payment = await fetchPayment(paymentId);
-    check = validateCapturedPayment(payment, orderId);
+    check = validateCapturedPayment(payment, orderId, order);
     if (check.ok) {
       return { payment, check };
     }

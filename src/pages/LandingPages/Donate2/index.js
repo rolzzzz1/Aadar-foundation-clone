@@ -10,7 +10,6 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Tooltip from "@mui/material/Tooltip";
 import TextField from "@mui/material/TextField";
-import Divider from "@mui/material/Divider";
 
 // @mui icons-material components
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
@@ -42,18 +41,18 @@ import getFooterRoutes from "footer.routes1";
 // Images
 import bgImage2 from "assets/images/mainThemeImages/swargSadanBlack.png";
 import bgImage from "assets/images/mainThemeImages/smallBrushstroke2.svg";
-import donateUpiQr from "assets/images/donate-upi-qr.png";
+import barodaUpiQr from "assets/images/scanner.jpg";
 import donateImg from "assets/images/donate-happy-faces.png";
 import MKButton from "components/MKButton";
 
 import DonateSectionPricingList from "pages/LandingPages/shared/DonateSectionPricingList";
 import DonateTrustBanner from "pages/LandingPages/shared/DonateTrustBanner";
 import SponsorPrabhujiCtaCards from "pages/LandingPages/shared/SponsorPrabhujiCtaCards";
+import LazyVisible from "components/LazyMedia/LazyVisible";
 
 import {
   DONATE_PAGE_PATH,
   DONATE_WIDGET_PRESET_PURPOSE,
-  DONATION_CHECKOUT_PATH,
   getDonationCheckoutNavigation,
   QUICK_GIVE_CARD_PURPOSE,
   sanitizeAmountInput,
@@ -69,6 +68,23 @@ function Donate2() {
   const { i18n } = useTranslation();
   const [selectedAmount, setSelectedAmount] = React.useState(1001);
   const [customAmount, setCustomAmount] = React.useState("");
+
+  // Help LCP on direct loads: ask the browser to fetch the hero image as early
+  // as possible once this route mounts (without globally preloading it for
+  // every page in `public/index.html`).
+  React.useEffect(() => {
+    if (typeof document === "undefined") return;
+    const href = bgImage2;
+    if (!href) return;
+    const existing = document.querySelector(`link[rel="preload"][as="image"][href="${href}"]`);
+    if (existing) return;
+
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "image";
+    link.href = href;
+    document.head.appendChild(link);
+  }, []);
 
   const activeAmountRaw = customAmount && Number(customAmount) > 0 ? customAmount : selectedAmount;
   const amountCheck = React.useMemo(() => validateAmountInr(activeAmountRaw), [activeAmountRaw]);
@@ -125,7 +141,7 @@ function Donate2() {
           aria-hidden="true"
           loading="eager"
           decoding="async"
-          fetchPriority="low"
+          fetchPriority="high"
           sx={{
             position: "absolute",
             inset: 0,
@@ -693,330 +709,345 @@ function Donate2() {
               </Grid>
             </Grid>
 
-            <MKBox
-              sx={{
-                mt: { xs: 3, md: 4 },
-                px: { xs: 0, sm: 0, md: 0 },
-                pt: { xs: 4, sm: 4.5, md: 5 },
-              }}
-            >
-              <Grid container spacing={{ xs: 3, md: 4 }} alignItems="center">
-                <Grid item xs={12} lg={4}>
-                  <MKBox
-                    sx={{
-                      maxWidth: 520,
-                      textAlign: "center",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      mx: "auto",
-                    }}
-                  >
-                    <MKTypography
-                      variant="h4"
-                      fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+            <LazyVisible rootMargin="600px" minHeight={420}>
+              <MKBox
+                sx={{
+                  mt: { xs: 3, md: 4 },
+                  px: { xs: 0, sm: 0, md: 0 },
+                  pt: { xs: 4, sm: 4.5, md: 5 },
+                }}
+              >
+                <Grid container spacing={{ xs: 3, md: 4 }} alignItems="center">
+                  <Grid item xs={12} lg={4}>
+                    <MKBox
                       sx={{
-                        fontWeight: 400,
-                        fontSize: { xs: "1.25rem", sm: "1.4rem", md: "1.6rem" },
-                        color: "#1f2a44",
-                        lineHeight: 1.2,
-                      }}
-                    >
-                      {donatePage.helpUsIncreaseSmilesLine1}
-                      <br />
-                      {donatePage.helpUsIncreaseSmilesLine2}
-                    </MKTypography>
-
-                    <MKTypography
-                      component="a"
-                      href="#donate-widget"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        const el = document.getElementById("donate-widget");
-                        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-                      }}
-                      fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
-                      sx={{
-                        mt: { xs: 1.75, sm: 2.25, md: 2.75 },
-                        display: "inline-flex",
+                        maxWidth: 520,
+                        textAlign: "center",
+                        display: "flex",
+                        flexDirection: "column",
                         alignItems: "center",
-                        gap: { xs: 0.8, sm: 1, md: 1.2 },
-                        fontWeight: 500,
-                        fontSize: { xs: "1.5rem", sm: "1.8rem", md: "2rem", lg: "2.2rem" },
-                        lineHeight: 1.1,
-                        letterSpacing: "0.01em",
-                        backgroundImage:
-                          "linear-gradient(90deg, #ECA533 0%, #f5b94a 45%, #ECA533 100%)",
-                        backgroundClip: "text",
-                        WebkitBackgroundClip: "text",
-                        color: "transparent",
-                        WebkitTextFillColor: "transparent",
-                        textDecoration: "none",
-                        transition: "transform 0.25s ease, filter 0.25s ease",
-                        "& .sparkle-glyph": {
-                          color: "#ECA533",
-                          WebkitTextFillColor: "#ECA533",
-                          fontSize: { xs: 26, sm: 30, md: 34 },
-                          transform: "translateY(-2px) rotate(-12deg)",
-                          transformOrigin: "center",
-                          transition:
-                            "transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s ease",
-                          filter:
-                            "drop-shadow(0 0 6px rgba(255, 215, 110, 0.55)) drop-shadow(0 4px 10px rgba(236, 165, 51, 0.3))",
-                          animation: "sparkleTwinkle 2.4s ease-in-out infinite",
-                        },
-                        "@keyframes sparkleTwinkle": {
-                          "0%, 100%": {
-                            transform: "translateY(-2px) rotate(-12deg) scale(1)",
-                            opacity: 0.9,
-                          },
-                          "50%": {
-                            transform: "translateY(-4px) rotate(0deg) scale(1.12)",
-                            opacity: 1,
-                          },
-                        },
-                        "&:hover": {
-                          transform: "translateY(-2px)",
-                          filter: "drop-shadow(0 6px 18px rgba(236, 165, 51, 0.35))",
-                        },
-                        "&:hover .sparkle-glyph": {
-                          transform: "translateY(-4px) rotate(15deg) scale(1.2)",
-                        },
-                        "&:focus-visible": {
-                          outline: "2px solid rgba(236, 165, 51, 0.55)",
-                          outlineOffset: "4px",
-                          borderRadius: "10px",
-                        },
+                        mx: "auto",
                       }}
                     >
-                      {donatePage.supportThemNow}
-                      <AutoAwesomeRoundedIcon className="sparkle-glyph" />
-                    </MKTypography>
-                  </MKBox>
-                </Grid>
+                      <MKTypography
+                        variant="h4"
+                        fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                        sx={{
+                          fontWeight: 400,
+                          fontSize: { xs: "1.25rem", sm: "1.4rem", md: "1.6rem" },
+                          color: "#1f2a44",
+                          lineHeight: 1.2,
+                        }}
+                      >
+                        {donatePage.helpUsIncreaseSmilesLine1}
+                        <br />
+                        {donatePage.helpUsIncreaseSmilesLine2}
+                      </MKTypography>
 
-                <Grid item xs={12} lg={8}>
-                  <MKBox
-                    component="img"
-                    src={donateImg}
-                    alt="Donation impact"
-                    borderRadius="xxl"
-                    width="100%"
-                    height={{ xs: "240px", sm: "280px", md: "300px" }}
-                    loading="lazy"
-                    decoding="async"
-                    fetchPriority="low"
-                    sx={{
-                      objectFit: "cover",
-                      boxShadow: "0 18px 44px rgba(31, 42, 68, 0.14)",
-                      border: "10px solid #ECA533",
-                    }}
-                  />
-                </Grid>
-              </Grid>
-            </MKBox>
+                      <MKTypography
+                        component="a"
+                        href="#donate-widget"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          const el = document.getElementById("donate-widget");
+                          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                        }}
+                        fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                        sx={{
+                          mt: { xs: 1.75, sm: 2.25, md: 2.75 },
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: { xs: 0.8, sm: 1, md: 1.2 },
+                          fontWeight: 500,
+                          fontSize: { xs: "1.5rem", sm: "1.8rem", md: "2rem", lg: "2.2rem" },
+                          lineHeight: 1.1,
+                          letterSpacing: "0.01em",
+                          backgroundImage:
+                            "linear-gradient(90deg, #ECA533 0%, #f5b94a 45%, #ECA533 100%)",
+                          backgroundClip: "text",
+                          WebkitBackgroundClip: "text",
+                          color: "transparent",
+                          WebkitTextFillColor: "transparent",
+                          textDecoration: "none",
+                          transition: "transform 0.25s ease, filter 0.25s ease",
+                          "& .sparkle-glyph": {
+                            color: "#ECA533",
+                            WebkitTextFillColor: "#ECA533",
+                            fontSize: { xs: 26, sm: 30, md: 34 },
+                            transform: "translateY(-2px) rotate(-12deg)",
+                            transformOrigin: "center",
+                            transition:
+                              "transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s ease",
+                            filter:
+                              "drop-shadow(0 0 6px rgba(255, 215, 110, 0.55)) drop-shadow(0 4px 10px rgba(236, 165, 51, 0.3))",
+                            animation: "sparkleTwinkle 2.4s ease-in-out infinite",
+                          },
+                          "@keyframes sparkleTwinkle": {
+                            "0%, 100%": {
+                              transform: "translateY(-2px) rotate(-12deg) scale(1)",
+                              opacity: 0.9,
+                            },
+                            "50%": {
+                              transform: "translateY(-4px) rotate(0deg) scale(1.12)",
+                              opacity: 1,
+                            },
+                          },
+                          "&:hover": {
+                            transform: "translateY(-2px)",
+                            filter: "drop-shadow(0 6px 18px rgba(236, 165, 51, 0.35))",
+                          },
+                          "&:hover .sparkle-glyph": {
+                            transform: "translateY(-4px) rotate(15deg) scale(1.2)",
+                          },
+                          "&:focus-visible": {
+                            outline: "2px solid rgba(236, 165, 51, 0.55)",
+                            outlineOffset: "4px",
+                            borderRadius: "10px",
+                          },
+                        }}
+                      >
+                        {donatePage.supportThemNow}
+                        <AutoAwesomeRoundedIcon className="sparkle-glyph" />
+                      </MKTypography>
+                    </MKBox>
+                  </Grid>
 
-            <MKBox
-              sx={{
-                mt: { xs: 4, sm: 6, md: 7 },
-                mb: { xs: 6, sm: 7, md: 8 },
-                px: { xs: 2, sm: 3, md: 4 },
-              }}
+                  <Grid item xs={12} lg={8}>
+                    <MKBox
+                      component="img"
+                      src={donateImg}
+                      alt="Donation impact"
+                      borderRadius="xxl"
+                      width="100%"
+                      height={{ xs: "240px", sm: "280px", md: "300px" }}
+                      loading="lazy"
+                      decoding="async"
+                      fetchPriority="low"
+                      sx={{
+                        objectFit: "cover",
+                        boxShadow: "0 18px 44px rgba(31, 42, 68, 0.14)",
+                        border: "10px solid #ECA533",
+                      }}
+                    />
+                  </Grid>
+                </Grid>
+              </MKBox>
+            </LazyVisible>
+
+            <LazyVisible
+              rootMargin="700px"
+              // Reserve only what this section typically needs; too-large values
+              // look like extra bottom padding once content has loaded.
+              minHeight={{ xs: 520, sm: 420, md: 380, lg: 360 }}
             >
               <MKBox
                 sx={{
-                  borderRadius: "22px",
-                  px: { xs: 2, sm: 3.5, md: 4 },
-                  py: { xs: 2.5, sm: 3, md: 3.5 },
-                  background:
-                    "linear-gradient(180deg, rgba(255, 251, 242, 0.55) 0%, rgba(255, 245, 230, 0.35) 100%)",
-                  border: "1px solid rgba(236, 165, 51, 0.14)",
-                  boxShadow: "0 14px 34px rgba(31, 42, 68, 0.05)",
+                  mt: { xs: 4, sm: 6, md: 7 },
+                  // Reduce excess gap before the next section
+                  mb: { xs: 8, sm: 10, md: 12 },
+                  px: { xs: 2, sm: 3, md: 4 },
                 }}
               >
-                <MKTypography
-                  variant="h4"
-                  textAlign="center"
-                  fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                <MKBox
                   sx={{
-                    fontWeight: 400,
-                    fontSize: { xs: "1.25rem", sm: "1.35rem", md: "1.5rem" },
-                    mb: { xs: 2, sm: 2.5 },
-                    color: "#1f2a44",
+                    borderRadius: "22px",
+                    px: { xs: 2, sm: 3.5, md: 4 },
+                    py: { xs: 2.5, sm: 3, md: 3.5 },
+                    background:
+                      "linear-gradient(180deg, rgba(255, 251, 242, 0.55) 0%, rgba(255, 245, 230, 0.35) 100%)",
+                    border: "1px solid rgba(236, 165, 51, 0.14)",
+                    boxShadow: "0 14px 34px rgba(31, 42, 68, 0.05)",
                   }}
                 >
-                  {donatePage.bankAccountDetails.title}
-                </MKTypography>
-
-                <Grid container spacing={{ xs: 2, md: 2.5 }} alignItems="stretch">
-                  {[
-                    {
-                      Icon: PersonOutlineIcon,
-                      label: donatePage.bankAccountDetails.acccountName.title,
-                      value: donatePage.bankAccountDetails.acccountName.value,
-                    },
-                    {
-                      Icon: AccountBalanceOutlinedIcon,
-                      label: donatePage.bankAccountDetails.bankName.title,
-                      value: donatePage.bankAccountDetails.bankName.value,
-                    },
-                    {
-                      Icon: CodeOutlinedIcon,
-                      label: donatePage.bankAccountDetails.ifscCode.title,
-                      value: "BARB0VJCCGW",
-                      nowrap: true,
-                    },
-                    {
-                      Icon: CreditCardOutlinedIcon,
-                      label: donatePage.bankAccountDetails.accountNo.title,
-                      value: "67940100000154",
-                      nowrap: true,
-                    },
-                  ].map(({ Icon, label, value, nowrap }) => (
-                    <Grid item xs={12} sm={6} lg={3} key={label}>
-                      <MKBox
-                        sx={{
-                          height: "100%",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 1.4,
-                          px: 1.8,
-                          py: 1.5,
-                          borderRadius: "16px",
-                          backgroundColor: "rgba(255, 255, 255, 0.65)",
-                          border: "1px solid rgba(31, 42, 68, 0.06)",
-                          backdropFilter: "blur(10px)",
-                        }}
-                      >
-                        <MKBox
-                          sx={{
-                            width: 44,
-                            height: 44,
-                            borderRadius: "999px",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            backgroundColor: "rgba(236, 165, 51, 0.18)",
-                            color: "#1f2a44",
-                            flex: "0 0 auto",
-                          }}
-                        >
-                          <Icon sx={{ fontSize: 24 }} />
-                        </MKBox>
-
-                        <MKBox sx={{ minWidth: 0, flex: 1, pr: 0.5 }}>
-                          <MKTypography
-                            sx={{
-                              fontSize: "0.8rem",
-                              fontWeight: 800,
-                              color: "rgba(31, 42, 68, 0.55)",
-                              lineHeight: 1.1,
-                              mb: 0.6,
-                            }}
-                          >
-                            {label}
-                          </MKTypography>
-                          <MKTypography
-                            sx={{
-                              fontSize: "0.85rem",
-                              fontWeight: 600,
-                              color: "#1f2a44",
-                              lineHeight: 1.25,
-                              // Wrap cleanly for long values
-                              wordBreak: "normal",
-                              overflowWrap: "break-word",
-                              whiteSpace: nowrap ? "nowrap" : "normal",
-                            }}
-                            title={value}
-                          >
-                            {value}
-                          </MKTypography>
-                        </MKBox>
-
-                        <Tooltip title={donatePage.clickToCopy} placement="top">
-                          <MKButton
-                            onClick={() => navigator.clipboard.writeText(value)}
-                            variant="text"
-                            color="text"
-                            size="small"
-                            iconOnly
-                            sx={{
-                              flex: "0 0 auto",
-                              minWidth: "unset",
-                              width: 32,
-                              height: 32,
-                              borderRadius: "10px",
-                              "&:hover": {
-                                backgroundColor: "rgba(31, 42, 68, 0.06)",
-                              },
-                            }}
-                          >
-                            <ContentCopyIcon sx={{ fontSize: 18 }} />
-                          </MKButton>
-                        </Tooltip>
-                      </MKBox>
-                    </Grid>
-                  ))}
-                </Grid>
-
-                <MKBox display="flex" justifyContent="center" mt={{ xs: 2.2, sm: 2.6 }}>
-                  <MKButton
-                    component={Link}
-                    to={DONATION_CHECKOUT_PATH}
-                    variant="contained"
-                    startIcon={<BoltOutlinedIcon />}
+                  <MKTypography
+                    variant="h4"
+                    textAlign="center"
+                    fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                     sx={{
-                      borderRadius: "10px",
-                      py: { xs: 0.85, sm: 0.95 },
-                      px: { xs: 2.25, sm: 2.75 },
-                      fontSize: { xs: "0.78rem", sm: "0.82rem" },
-                      fontWeight: 700,
-                      background: "linear-gradient(90deg, #4FA953 0%, #45a049 55%, #4FA953 100%)",
-                      color: "#ffffff !important",
-                      boxShadow: "0 8px 18px rgba(79, 169, 83, 0.20)",
-                      textTransform: "none",
-                      textDecoration: "none",
-                      letterSpacing: "0.2px",
-                      transition:
-                        "transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease",
-                      "&&": {
-                        color: "#ffffff",
-                      },
-                      "& *": {
-                        color: "#ffffff",
-                      },
-                      "& .MuiSvgIcon-root": {
-                        color: "#ffffff",
-                      },
-                      "&:hover": {
-                        background: "linear-gradient(90deg, #45a049 0%, #3d8a41 55%, #45a049 100%)",
-                        boxShadow: "0 12px 24px rgba(79, 169, 83, 0.26)",
-                        textDecoration: "none",
-                        transform: "translateY(-1px)",
-                      },
-                      "&:active": {
-                        transform: "translateY(0px)",
-                        boxShadow: "0 6px 14px rgba(79, 169, 83, 0.22)",
-                      },
-                      "&:focus, &.Mui-focusVisible, &:focus-visible, &:focus:not(:hover)": {
-                        background: "linear-gradient(90deg, #4FA953 0%, #45a049 55%, #4FA953 100%)",
-                        color: "#ffffff",
-                        boxShadow: "0 8px 18px rgba(79, 169, 83, 0.20)",
-                        outline: "none",
-                      },
-                      "& .MuiButton-startIcon": {
-                        marginRight: { xs: 0.6, sm: 0.75 },
-                      },
-                      "& .MuiButton-startIcon .MuiSvgIcon-root": {
-                        fontSize: { xs: 16, sm: 18 },
-                      },
+                      fontWeight: 400,
+                      fontSize: { xs: "1.25rem", sm: "1.35rem", md: "1.5rem" },
+                      mb: { xs: 2, sm: 2.5 },
+                      color: "#1f2a44",
                     }}
                   >
-                    {donatePage.donateInstantlyInstead}
-                  </MKButton>
+                    {donatePage.bankAccountDetails.title}
+                  </MKTypography>
+
+                  <Grid container spacing={{ xs: 2, md: 2.5 }} alignItems="stretch">
+                    {[
+                      {
+                        Icon: PersonOutlineIcon,
+                        label: donatePage.bankAccountDetails.acccountName.title,
+                        value: donatePage.bankAccountDetails.acccountName.value,
+                      },
+                      {
+                        Icon: AccountBalanceOutlinedIcon,
+                        label: donatePage.bankAccountDetails.bankName.title,
+                        value: donatePage.bankAccountDetails.bankName.value,
+                      },
+                      {
+                        Icon: CodeOutlinedIcon,
+                        label: donatePage.bankAccountDetails.ifscCode.title,
+                        value: "BARB0VJCCGW",
+                        nowrap: true,
+                      },
+                      {
+                        Icon: CreditCardOutlinedIcon,
+                        label: donatePage.bankAccountDetails.accountNo.title,
+                        value: "67940100000154",
+                        nowrap: true,
+                      },
+                    ].map(({ Icon, label, value, nowrap }) => (
+                      <Grid item xs={12} sm={6} lg={3} key={label}>
+                        <MKBox
+                          sx={{
+                            height: "100%",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1.4,
+                            px: 1.8,
+                            py: 1.5,
+                            borderRadius: "16px",
+                            backgroundColor: "rgba(255, 255, 255, 0.65)",
+                            border: "1px solid rgba(31, 42, 68, 0.06)",
+                            backdropFilter: "blur(10px)",
+                          }}
+                        >
+                          <MKBox
+                            sx={{
+                              width: 44,
+                              height: 44,
+                              borderRadius: "999px",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              backgroundColor: "rgba(236, 165, 51, 0.18)",
+                              color: "#1f2a44",
+                              flex: "0 0 auto",
+                            }}
+                          >
+                            <Icon sx={{ fontSize: 24 }} />
+                          </MKBox>
+
+                          <MKBox sx={{ minWidth: 0, flex: 1, pr: 0.5 }}>
+                            <MKTypography
+                              sx={{
+                                fontSize: "0.8rem",
+                                fontWeight: 800,
+                                color: "rgba(31, 42, 68, 0.55)",
+                                lineHeight: 1.1,
+                                mb: 0.6,
+                              }}
+                            >
+                              {label}
+                            </MKTypography>
+                            <MKTypography
+                              sx={{
+                                fontSize: "0.85rem",
+                                fontWeight: 600,
+                                color: "#1f2a44",
+                                lineHeight: 1.25,
+                                // Wrap cleanly for long values
+                                wordBreak: "normal",
+                                overflowWrap: "break-word",
+                                whiteSpace: nowrap ? "nowrap" : "normal",
+                              }}
+                              title={value}
+                            >
+                              {value}
+                            </MKTypography>
+                          </MKBox>
+
+                          <Tooltip title={donatePage.clickToCopy} placement="top">
+                            <MKButton
+                              onClick={() => navigator.clipboard.writeText(value)}
+                              variant="text"
+                              color="text"
+                              size="small"
+                              iconOnly
+                              sx={{
+                                flex: "0 0 auto",
+                                minWidth: "unset",
+                                width: 32,
+                                height: 32,
+                                borderRadius: "10px",
+                                "&:hover": {
+                                  backgroundColor: "rgba(31, 42, 68, 0.06)",
+                                },
+                              }}
+                            >
+                              <ContentCopyIcon sx={{ fontSize: 18 }} />
+                            </MKButton>
+                          </Tooltip>
+                        </MKBox>
+                      </Grid>
+                    ))}
+                  </Grid>
+
+                  <MKBox display="flex" justifyContent="center" mt={{ xs: 2.2, sm: 2.6 }}>
+                    <MKButton
+                      component={Link}
+                      to={donateCheckoutNav.pathname}
+                      state={donateCheckoutNav.state}
+                      disabled={!amountCheck.ok}
+                      aria-disabled={!amountCheck.ok}
+                      variant="contained"
+                      startIcon={<BoltOutlinedIcon />}
+                      sx={{
+                        borderRadius: "10px",
+                        py: { xs: 0.85, sm: 0.95 },
+                        px: { xs: 2.25, sm: 2.75 },
+                        fontSize: { xs: "0.78rem", sm: "0.82rem" },
+                        fontWeight: 700,
+                        background: "linear-gradient(90deg, #4FA953 0%, #45a049 55%, #4FA953 100%)",
+                        color: "#ffffff !important",
+                        boxShadow: "0 8px 18px rgba(79, 169, 83, 0.20)",
+                        textTransform: "none",
+                        textDecoration: "none",
+                        letterSpacing: "0.2px",
+                        transition:
+                          "transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease",
+                        "&&": {
+                          color: "#ffffff",
+                        },
+                        "& *": {
+                          color: "#ffffff",
+                        },
+                        "& .MuiSvgIcon-root": {
+                          color: "#ffffff",
+                        },
+                        "&:hover": {
+                          background:
+                            "linear-gradient(90deg, #45a049 0%, #3d8a41 55%, #45a049 100%)",
+                          boxShadow: "0 12px 24px rgba(79, 169, 83, 0.26)",
+                          textDecoration: "none",
+                          transform: "translateY(-1px)",
+                        },
+                        "&:active": {
+                          transform: "translateY(0px)",
+                          boxShadow: "0 6px 14px rgba(79, 169, 83, 0.22)",
+                        },
+                        "&:focus, &.Mui-focusVisible, &:focus-visible, &:focus:not(:hover)": {
+                          background:
+                            "linear-gradient(90deg, #4FA953 0%, #45a049 55%, #4FA953 100%)",
+                          color: "#ffffff",
+                          boxShadow: "0 8px 18px rgba(79, 169, 83, 0.20)",
+                          outline: "none",
+                        },
+                        "& .MuiButton-startIcon": {
+                          marginRight: { xs: 0.6, sm: 0.75 },
+                        },
+                        "& .MuiButton-startIcon .MuiSvgIcon-root": {
+                          fontSize: { xs: 16, sm: 18 },
+                        },
+                      }}
+                    >
+                      {donatePage.donateInstantlyInstead}
+                    </MKButton>
+                  </MKBox>
                 </MKBox>
               </MKBox>
-            </MKBox>
+            </LazyVisible>
             <MKBox
               component="section"
               py={2}
@@ -1247,7 +1278,6 @@ function Donate2() {
                         justifyContent: "center",
                         width: { xs: "100%", sm: "90%", md: "85%", lg: "100%" },
                         maxWidth: { xs: 260, sm: 280, md: 280, lg: 320 },
-                        height: { xs: 360, sm: 400, md: 390, lg: 480 },
                         overflow: "hidden",
                         backgroundColor: "transparent",
                         backgroundImage: "none",
@@ -1257,29 +1287,37 @@ function Donate2() {
                     >
                       <MKBox
                         component="img"
-                        src={donateUpiQr}
-                        alt="Aadar Foundation UPI QR — scan to donate"
+                        src={barodaUpiQr}
+                        alt="Bank of Baroda UPI QR — scan to donate to Aadar Foundation"
+                        width="1824"
+                        height="2645"
                         loading="lazy"
                         decoding="async"
                         fetchPriority="low"
                         sx={{
                           display: "block",
                           width: "100%",
-                          height: "100%",
+                          maxWidth: { xs: 260, sm: 280, md: 280, lg: 320 },
+                          aspectRatio: "1824 / 2645",
+                          height: "auto",
                           objectFit: "contain",
                           objectPosition: "center",
                           p: 0,
                           m: 0,
-                          border: "none",
-                          borderRadius: 0,
-                          boxShadow: "none",
-                          backgroundColor: "transparent",
+                          border: "1px solid rgba(31, 42, 68, 0.12)",
+                          borderRadius: "12px",
+                          boxShadow:
+                            "0 8px 24px rgba(31, 42, 68, 0.1), 0 2px 8px rgba(31, 42, 68, 0.06)",
+                          backgroundColor: "#fff",
                         }}
                       />
                     </MKBox>
                     <MKButton
                       component={Link}
-                      to={DONATION_CHECKOUT_PATH}
+                      to={donateCheckoutNav.pathname}
+                      state={donateCheckoutNav.state}
+                      disabled={!amountCheck.ok}
+                      aria-disabled={!amountCheck.ok}
                       variant="contained"
                       color="success"
                       fullWidth
@@ -1304,89 +1342,94 @@ function Donate2() {
 
                 <Grid item xs={12}>
                   <MKBox
-                    width={{ xs: "100%", sm: "88%", md: "80%" }}
+                    width={{ xs: "100%", sm: "88%", md: "72%" }}
                     p={{ xs: 1.75, sm: 2.25 }}
                     mx="auto"
                     mt={{ xs: 2, sm: 3 }}
+                    textAlign="center"
                     sx={{
-                      border: "1px solid rgba(31, 42, 68, 0.1)",
-                      borderRadius: "14px",
+                      border: "1px solid rgba(31, 42, 68, 0.08)",
+                      borderRadius: "12px",
                       backgroundColor: "rgba(255, 255, 255, 0.72)",
-                      boxShadow: "0 6px 20px rgba(31, 42, 68, 0.05)",
                     }}
                   >
                     <MKTypography
-                      component="h3"
-                      fontSize={{ xs: "0.72rem", sm: "0.76rem" }}
-                      textAlign="left"
+                      fontSize={{ xs: "0.78rem", sm: "0.84rem" }}
                       sx={{
-                        color: "rgba(31, 42, 68, 0.55)",
-                        fontWeight: 700,
-                        letterSpacing: "0.08em",
-                        textTransform: "uppercase",
-                        mb: 1.25,
-                      }}
-                    >
-                      {donatePage.complianceSectionTitle}
-                    </MKTypography>
-
-                    <MKTypography
-                      fontSize={{ xs: "0.84rem", sm: "0.9rem" }}
-                      textAlign="left"
-                      sx={{
-                        color: "#1f2a44",
+                        color: "rgba(31, 42, 68, 0.78)",
                         lineHeight: 1.65,
-                        letterSpacing: "0.01em",
+                        m: 0,
+                        maxWidth: "36rem",
+                        mx: "auto",
                       }}
                     >
                       {donatePage.message80g}
                     </MKTypography>
-
                     <MKBox
                       display="inline-flex"
                       alignItems="center"
-                      gap={1}
+                      justifyContent="center"
+                      flexWrap="wrap"
+                      gap={{ xs: 0.65, sm: 0.9 }}
                       mt={1.5}
-                      px={1.25}
-                      py={0.65}
+                      px={{ xs: 1.25, sm: 1.75 }}
+                      py={{ xs: 0.7, sm: 0.85 }}
+                      mx="auto"
                       sx={{
                         borderRadius: "999px",
-                        border: "1px solid rgba(79, 169, 83, 0.22)",
-                        backgroundColor: "rgba(79, 169, 83, 0.06)",
+                        backgroundColor: "rgba(79, 169, 83, 0.1)",
+                        border: "1px solid rgba(79, 169, 83, 0.24)",
                       }}
                     >
                       <MKTypography
-                        component="span"
-                        fontSize={{ xs: "0.72rem", sm: "0.76rem" }}
-                        sx={{ color: "rgba(31, 42, 68, 0.62)", fontWeight: 700 }}
+                        fontSize={{ xs: "0.8rem", sm: "0.86rem" }}
+                        sx={{ color: "#166534", fontWeight: 700, lineHeight: 1 }}
                       >
-                        {donatePage.panLabel}
+                        {donatePage.panLabel}:
                       </MKTypography>
                       <MKTypography
                         component="span"
-                        fontSize={{ xs: "0.78rem", sm: "0.82rem" }}
+                        fontSize={{ xs: "0.82rem", sm: "0.88rem" }}
                         sx={{
-                          color: "#1f2a44",
+                          color: "#14532d",
                           fontWeight: 800,
                           fontFamily: '"Roboto Mono", "Consolas", monospace',
-                          letterSpacing: "0.04em",
+                          letterSpacing: "0.06em",
+                          lineHeight: 1,
                         }}
                       >
                         {donatePage.panValue}
                       </MKTypography>
+                      <MKBox
+                        aria-hidden
+                        sx={{
+                          width: "1px",
+                          height: 16,
+                          backgroundColor: "rgba(22, 101, 52, 0.28)",
+                          display: { xs: "none", sm: "block" },
+                        }}
+                      />
+                      <MKBox display="flex" alignItems="center" gap={0.5}>
+                        <VerifiedUserOutlinedIcon sx={{ fontSize: 16, color: "#166534" }} />
+                        <MKTypography
+                          fontSize={{ xs: "0.8rem", sm: "0.86rem" }}
+                          sx={{ color: "#166534", fontWeight: 700, lineHeight: 1 }}
+                        >
+                          {donatePage.certified80gLabel}
+                        </MKTypography>
+                      </MKBox>
                     </MKBox>
-
-                    <Divider sx={{ my: 1.75, borderColor: "rgba(31, 42, 68, 0.08)" }} />
-
                     <MKTypography
                       component="p"
-                      fontSize={{ xs: "0.74rem", sm: "0.78rem" }}
-                      textAlign="left"
+                      fontSize={{ xs: "0.72rem", sm: "0.76rem" }}
                       sx={{
-                        color: "rgba(31, 42, 68, 0.62)",
-                        lineHeight: 1.65,
-                        m: 0,
+                        color: "rgba(31, 42, 68, 0.55)",
+                        lineHeight: 1.6,
+                        mt: 1.25,
+                        mb: 0,
                         whiteSpace: "pre-line",
+                        maxWidth: "32rem",
+                        mx: "auto",
                       }}
                     >
                       {donatePage.domesticDonationsFootnote}
