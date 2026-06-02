@@ -189,6 +189,7 @@ function Journey() {
                   title={homePage.journeySection.youtubeVideoPlayer}
                   posterQuality="hqdefault"
                   style={{ borderRadius: 0 }}
+                  forceActivateOnView
                 />
               </MKBox>
             </MKBox>

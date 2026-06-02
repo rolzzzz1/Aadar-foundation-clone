@@ -47,6 +47,7 @@ function LazyYouTube({
   preconnect = true,
   playWhenInView = true,
   pauseWhenOutOfView = true,
+  forceActivateOnView = false,
 }) {
   const videoId = extractVideoId(rawVideoId);
   const wrapperRef = useRef(null);
@@ -55,6 +56,7 @@ function LazyYouTube({
   const [warmHints, setWarmHints] = useState(false);
   const [isInView, setIsInView] = useState(false);
   const lastVisibilityRef = useRef(null);
+  const didAutoplayKickRef = useRef(false);
 
   const activate = useCallback(() => setActivated(true), []);
 
@@ -79,7 +81,7 @@ function LazyYouTube({
           setWarmHints(true);
 
           // Auto-activate once on good connections.
-          if (!activated && !shouldSkipHeavyMedia()) {
+          if (!activated && (forceActivateOnView || !shouldSkipHeavyMedia())) {
             setActivated(true);
           }
         });
@@ -121,6 +123,35 @@ function LazyYouTube({
       post("playVideo");
     }
   }, [activated, isInView, pauseWhenOutOfView, playWhenInView]);
+
+  // YouTube sometimes drops the very first play command until the iframe is
+  // fully ready. On the first time the user scrolls to the video, we "kick"
+  // autoplay a couple times after load (muted + playsinline) so it starts
+  // without requiring a click.
+  const kickAutoplay = useCallback(() => {
+    if (!activated) return;
+    if (!playWhenInView) return;
+    if (!isInView) return;
+    if (didAutoplayKickRef.current) return;
+    if (!iframeRef.current || !iframeRef.current.contentWindow) return;
+
+    didAutoplayKickRef.current = true;
+    const post = (func) => {
+      try {
+        iframeRef.current.contentWindow.postMessage(
+          JSON.stringify({ event: "command", func, args: [] }),
+          "*"
+        );
+      } catch (e) {
+        // ignore
+      }
+    };
+
+    // Immediate + a couple delayed retries.
+    post("playVideo");
+    window.setTimeout(() => post("playVideo"), 350);
+    window.setTimeout(() => post("playVideo"), 1200);
+  }, [activated, isInView, playWhenInView]);
 
   if (!videoId) {
     return null;
@@ -178,6 +209,7 @@ function LazyYouTube({
           allowFullScreen
           referrerPolicy="strict-origin-when-cross-origin"
           loading="eager"
+          onLoad={kickAutoplay}
           style={{
             border: 0,
             display: "block",
@@ -261,6 +293,7 @@ LazyYouTube.propTypes = {
   preconnect: PropTypes.bool,
   playWhenInView: PropTypes.bool,
   pauseWhenOutOfView: PropTypes.bool,
+  forceActivateOnView: PropTypes.bool,
 };
 
 export default LazyYouTube;
