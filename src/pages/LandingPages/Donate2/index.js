@@ -175,7 +175,7 @@ function Donate2() {
             color="white"
             textAlign="center"
             ml={-2}
-            fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
             fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
             mb={{ xs: 1, sm: 0 }}
           >
@@ -202,7 +202,7 @@ function Donate2() {
               <Grid item xs={12}>
                 <MKTypography
                   variant="h4"
-                  fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   sx={{
                     fontWeight: "500",
                     fontSize: { xs: "1.5rem", sm: "1.75rem", md: "1.875rem", lg: "1.875rem" },
@@ -227,7 +227,7 @@ function Donate2() {
                 >
                   <MKTypography
                     variant="h4"
-                    fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                    fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                     sx={{
                       fontWeight: "500",
                       fontSize: { xs: "1.2rem", sm: "1.5rem", md: "1.2rem", lg: "1.5rem" },
@@ -240,7 +240,7 @@ function Donate2() {
                     <MKTypography
                       display="inline"
                       variant="h4"
-                      fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                      fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                       sx={{
                         fontSize: { xs: "1.5rem", sm: "1.7rem", md: "1.7rem", lg: "2rem" },
                         fontWeight: "700",
@@ -492,7 +492,7 @@ function Donate2() {
                       }}
                     >
                       <MKTypography
-                        fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                        fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                         sx={{
                           fontSize: { xs: "1.4rem", sm: "1.6rem" },
                           fontWeight: 500,
@@ -731,7 +731,7 @@ function Donate2() {
                     >
                       <MKTypography
                         variant="h4"
-                        fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                        fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                         sx={{
                           fontWeight: 400,
                           fontSize: { xs: "1.25rem", sm: "1.4rem", md: "1.6rem" },
@@ -752,7 +752,7 @@ function Donate2() {
                           const el = document.getElementById("donate-widget");
                           if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
                         }}
-                        fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                        fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                         sx={{
                           mt: { xs: 1.75, sm: 2.25, md: 2.75 },
                           display: "inline-flex",
@@ -862,7 +862,7 @@ function Donate2() {
                   <MKTypography
                     variant="h4"
                     textAlign="center"
-                    fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                    fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                     sx={{
                       fontWeight: 400,
                       fontSize: { xs: "1.25rem", sm: "1.35rem", md: "1.5rem" },
@@ -1081,7 +1081,7 @@ function Donate2() {
                     <MKTypography
                       component="span"
                       variant="h4"
-                      fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                      fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                       sx={{
                         fontSize: { xs: "1.7rem", sm: "2.05rem", md: "2.15rem", lg: "2.35rem" },
                         fontWeight: "500",
@@ -1093,7 +1093,7 @@ function Donate2() {
                     <MKTypography
                       component="span"
                       variant="h4"
-                      fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                      fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                       sx={{
                         fontSize: { xs: "1.05rem", sm: "1.3rem", md: "1.45rem", lg: "1.65rem" },
                         fontWeight: "500",
@@ -1140,7 +1140,7 @@ function Donate2() {
                     }}
                   >
                     <MKTypography
-                      fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                      fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                       sx={{
                         fontSize: { xs: "1.1rem", sm: "1.3rem", md: "1.3rem", lg: "1.5rem" },
                         fontWeight: 400,

@@ -2,6 +2,7 @@ import React from "react";
 import * as ReactDOMClient from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "App";
+import MobileHomeFallback from "components/MobileHomeFallback";
 import "./i18n.js";
 import "./fonts.css";
 
@@ -92,35 +93,41 @@ if (!container) {
 // Create a root.
 const root = ReactDOMClient.createRoot(container);
 
-// Simple loading fallback
-const LoadingFallback = () => (
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      minHeight: "100vh",
-      backgroundColor: "#f5f5f5",
-    }}
-  >
+// Simple loading fallback — mobile uses hero shell for faster perceived LCP
+const LoadingFallback = () => {
+  if (typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches) {
+    return <MobileHomeFallback />;
+  }
+
+  return (
     <div
       style={{
-        width: "40px",
-        height: "40px",
-        border: "4px solid #f3f3f3",
-        borderTop: "4px solid #4fa953",
-        borderRadius: "50%",
-        animation: "spin 1s linear infinite",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+        backgroundColor: "#f5f5f5",
       }}
-    />
-    <style>{`
+    >
+      <div
+        style={{
+          width: "40px",
+          height: "40px",
+          border: "4px solid #f3f3f3",
+          borderTop: "4px solid #4fa953",
+          borderRadius: "50%",
+          animation: "spin 1s linear infinite",
+        }}
+      />
+      <style>{`
       @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
       }
     `}</style>
-  </div>
-);
+    </div>
+  );
+};
 
 root.render(
   <BrowserRouter>

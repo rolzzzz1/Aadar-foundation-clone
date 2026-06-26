@@ -1,3 +1,6 @@
+const axios = require("axios");
+const { getDevHttpsAgent } = require("./_lib/httpsAgent");
+
 module.exports = async function handler(req, res) {
   try {
     const accessToken = process.env.INSTAGRAM_ACCESS_TOKEN;
@@ -33,14 +36,14 @@ module.exports = async function handler(req, res) {
 
     const url = `https://graph.facebook.com/v23.0/${accountId}/media?${params.toString()}`;
 
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-      },
+    const agent = getDevHttpsAgent();
+    const response = await axios.get(url, {
+      headers: { Accept: "application/json" },
+      timeout: 30000,
+      ...(agent ? { httpsAgent: agent } : {}),
     });
 
-    const data = await response.json();
+    const data = response.data;
 
     if (data.error) {
       console.error("Instagram API Error:", JSON.stringify(data.error, null, 2));
@@ -55,6 +58,27 @@ module.exports = async function handler(req, res) {
 
     return res.status(200).json(data);
   } catch (err) {
-    return res.status(500).json({ error: err.message || "Error fetching posts" });
+    if (err.response && err.response.data) {
+      const data = err.response.data;
+      const apiError = data.error || data;
+      console.error("Instagram API HTTP error:", err.response.status, JSON.stringify(apiError));
+      return res.status(err.response.status || 500).json({
+        error: apiError.message || "Failed to fetch posts",
+        details: apiError,
+        code: apiError.code,
+      });
+    }
+
+    const cause = err && err.cause ? err.cause : err;
+    const code = cause && cause.code ? String(cause.code) : "";
+    const msg = err && err.message ? String(err.message) : "Error fetching posts";
+    console.error("instagram-posts error:", msg, code || "");
+    return res.status(500).json({
+      error:
+        code === "UNABLE_TO_VERIFY_LEAF_SIGNATURE"
+          ? "Cannot reach Instagram API (SSL certificate error). Set RAZORPAY_INSECURE_TLS=true in .env for local dev, then restart npm start."
+          : msg,
+      ...(code ? { code } : {}),
+    });
   }
 };

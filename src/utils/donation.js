@@ -300,14 +300,14 @@ export function validatePinIn(input) {
 }
 
 const PAN_REGEX = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
-/** Indian income-tax PAN (10 chars). */
+/** Indian income-tax PAN (10 chars). Optional — empty is allowed; partial/invalid values are rejected. */
 export function validatePan(input) {
   const raw = String(input ?? "")
     .replace(/\s/g, "")
     .toUpperCase()
     .replace(/[^A-Z0-9]/g, "");
   const s = raw.slice(0, PAN_LEN);
-  if (!s) return { ok: false, value: "", error: "PAN is required." };
+  if (!s) return { ok: true, value: "" };
   if (s.length !== PAN_LEN) {
     return { ok: false, value: s, error: "PAN must be 10 characters." };
   }

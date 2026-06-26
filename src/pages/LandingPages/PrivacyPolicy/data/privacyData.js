@@ -19,7 +19,7 @@ export default function privacyData() {
           sx={{ fontWeight: "500" }}
           pb={4}
           fontSize={{ xs: "1.5rem", sm: "1.75rem", md: "1.875rem", lg: "1.875rem" }}
-          fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+          fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
         >
           {privacyPolicyPage.title}
         </MKTypography>
@@ -49,7 +49,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
-            fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
             className="privacy-section-heading"
             sx={{
               letterSpacing: "0.05rem",
@@ -107,7 +107,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
-            fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
             className="privacy-section-heading"
             sx={{
               letterSpacing: "0.05rem",
@@ -151,7 +151,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
-            fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
             className="privacy-section-heading"
             sx={{
               letterSpacing: "0.05rem",
@@ -193,7 +193,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
-            fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
             className="privacy-section-heading"
             sx={{
               letterSpacing: "0.05rem",
@@ -228,7 +228,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
-            fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
             className="privacy-section-heading"
             sx={{
               letterSpacing: "0.05rem",
@@ -296,7 +296,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
-            fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
             className="privacy-section-heading"
             sx={{
               letterSpacing: "0.05rem",
@@ -331,7 +331,7 @@ export default function privacyData() {
             mt={1}
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
-            fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
             className="privacy-section-heading"
             sx={{
               letterSpacing: "0.05rem",

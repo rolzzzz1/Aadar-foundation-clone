@@ -40,7 +40,7 @@ import { getReceiptCopy } from "utils/receiptI18n";
 import { postJson } from "utils/api";
 
 const HEADING_FONT =
-  '"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif';
+  '"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif';
 const brandGreen = "#2e7d32";
 const payOrange = "#e67e22";
 

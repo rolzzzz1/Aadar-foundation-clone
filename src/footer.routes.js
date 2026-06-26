@@ -94,8 +94,7 @@ export default {
         Copyright &copy; {date} Aadar foundation - All rights reserved.
         <MKBox display="flex" justifyContent="center" alignItems="center" m={1}>
           <MKTypography variant="button" fontWeight="regular" fontSize="1rem" color="white" pr={2}>
-            Designed by{" "}
-            <AishxDevCreditButton />
+            Designed by <AishxDevCreditButton />
           </MKTypography>
         </MKBox>
       </MKTypography>

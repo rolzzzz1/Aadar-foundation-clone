@@ -182,7 +182,7 @@ function validatePan(input) {
     .toUpperCase()
     .replace(/[^A-Z0-9]/g, "")
     .slice(0, PAN_LEN);
-  if (!s) return { ok: false, value: "", error: "PAN is required." };
+  if (!s) return { ok: true, value: "" };
   if (s.length !== PAN_LEN) return { ok: false, value: s, error: "PAN must be 10 characters." };
   if (!PAN_REGEX.test(s)) return { ok: false, value: s, error: "Invalid PAN." };
   return { ok: true, value: s };
@@ -399,10 +399,22 @@ function applySecurityHeaders(res) {
   res.setHeader("Referrer-Policy", "no-referrer");
 }
 
-/** Human-readable message from Razorpay Node SDK errors. */
+/** Human-readable message from Razorpay Node SDK / transport errors. */
 function formatRazorpayError(err) {
   if (!err) return "Unknown Razorpay error";
   if (typeof err === "string") return err;
+  if (err.code === "transport_failed" && typeof err.message === "string") {
+    return err.message;
+  }
+  if (
+    typeof err.message === "string" &&
+    /reading 'status'/.test(err.message)
+  ) {
+    return (
+      "Cannot reach Razorpay API (network or SSL error). " +
+      "If your keys are correct, set RAZORPAY_INSECURE_TLS=true in .env for local dev only, or NODE_EXTRA_CA_CERTS for a corporate CA bundle, then restart npm start."
+    );
+  }
   if (err.error && typeof err.error === "object") {
     const desc = err.error.description || err.error.reason;
     const code = err.error.code;

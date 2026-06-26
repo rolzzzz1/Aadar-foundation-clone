@@ -27,7 +27,7 @@ function WhoWeAre() {
         variant="h3"
         py={5}
         fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
-        fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+        fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
         sx={{ letterSpacing: "0.05rem", fontWeight: 500 }}
       >
         {aboutUsPage.whoWeAreSection.title}
@@ -118,7 +118,7 @@ function WhoWeAre() {
           <MKTypography
             variant="body1"
             fontSize={{ xs: "1rem", md: "1.2rem" }}
-            fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
             sx={{ letterSpacing: "0.05rem", fontWeight: 500 }}
             textAlign="center"
             mx={"auto"}

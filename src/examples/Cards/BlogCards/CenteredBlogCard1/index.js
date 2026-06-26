@@ -112,7 +112,7 @@ function CenteredBlogCard({ image, title, action, description }) {
               // fontWeight="bold"
               pt={2}
               pb={1}
-              fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+              fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
               sx={{ fontWeight: "500", fontSize: { xs: "1rem", sm: "1.25rem" } }}
             >
               {title}

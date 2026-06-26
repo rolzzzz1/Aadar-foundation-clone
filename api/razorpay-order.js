@@ -1,4 +1,4 @@
-const Razorpay = require("razorpay");
+const { createOrder } = require("./_lib/razorpay");
 const {
   MAX_AMOUNT_PAISE,
   MIN_AMOUNT_PAISE,
@@ -115,8 +115,7 @@ module.exports = async function handler(req, res) {
   if (programLabel) notes.purpose = programLabel;
 
   try {
-    const razorpay = new Razorpay({ key_id: keyId, key_secret: keySecret });
-    const order = await razorpay.orders.create({
+    const order = await createOrder({
       amount: amountPaise,
       currency,
       receipt,

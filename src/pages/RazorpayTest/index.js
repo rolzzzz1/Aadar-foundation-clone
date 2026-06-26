@@ -128,7 +128,7 @@ const AADAR_ORG_PAN = "AAIAA2457N";
 const AADAR_80G_REG_NO = "AAIAA2457N24BP01";
 
 const HEADING_FONT =
-  '"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif';
+  '"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif';
 const BODY_FONT = '"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif';
 
 const INDIAN_STATES = [
@@ -1494,11 +1494,10 @@ export default function RazorpayTestPage() {
                     }}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} sx={{ mb: { xs: 1.5, sm: 2 } }}>
                   <TextField
                     fullWidth
                     size="small"
-                    required
                     label={form.panLabel}
                     placeholder={form.panPlaceholder}
                     value={pan}
@@ -1511,8 +1510,44 @@ export default function RazorpayTestPage() {
                     }
                     onBlur={markTouched("pan")}
                     error={showError("pan", panCheck)}
-                    helperText={showError("pan", panCheck) ? fieldHelper(panCheck) : " "}
-                    sx={formFieldSx}
+                    helperText={
+                      showError("pan", panCheck) ? fieldHelper(panCheck) : form.panExemptionNote
+                    }
+                    FormHelperTextProps={
+                      showError("pan", panCheck)
+                        ? undefined
+                        : {
+                            component: "p",
+                            sx: {
+                              color: "#c62828",
+                              mt: 0.75,
+                              mb: 0.5,
+                              mx: 0,
+                              px: 0,
+                              width: "100%",
+                              maxWidth: "100%",
+                              display: "block",
+                              textAlign: "justify",
+                              lineHeight: 1.55,
+                              fontSize: { xs: "0.72rem", sm: "0.78rem" },
+                              fontWeight: 500,
+                            },
+                          }
+                    }
+                    sx={{
+                      ...formFieldSx,
+                      "& .MuiFormHelperText-root": {
+                        minHeight: "unset",
+                        whiteSpace: "normal",
+                        marginLeft: 0,
+                        marginRight: 0,
+                        paddingLeft: { xs: 1.5, sm: 2 },
+                        paddingRight: { xs: 1.5, sm: 2 },
+                        width: "100%",
+                        maxWidth: "100%",
+                        boxSizing: "border-box",
+                      },
+                    }}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">

@@ -67,7 +67,7 @@ function About() {
           <Container sx={{ margin: "20px 1px", padding: "10px 20px" }}>
             <MKTypography
               variant="h3"
-              fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+              fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
               sx={{
                 letterSpacing: "0.05rem",
                 fontSize: { xs: "1.3rem", sm: "1.3rem", md: "1.75rem", lg: "1.875rem" },
@@ -78,7 +78,7 @@ function About() {
             </MKTypography>
             <MKTypography
               variant="h5"
-              fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+              fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
               sx={{
                 letterSpacing: "0.05rem",
                 fontSize: { xs: "0.8rem", sm: "0.8rem", md: "1rem", lg: "1.25rem" },

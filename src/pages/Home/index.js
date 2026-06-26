@@ -28,6 +28,13 @@ const Counters = lazy(() => import("pages/Home/sections/Home sections/Counters")
 // + images only start downloading when the section scrolls into view, so
 // the hero never has to fight 5 parallel chunk fetches on slow networks.
 import LazyVisible from "components/LazyMedia/LazyVisible";
+import CriticalImage from "components/CriticalImage";
+import {
+  mobileHeroCalcSx,
+  mobileHeroHeightSx,
+  sectionLazyRootMargin,
+} from "utils/mobilePerformance";
+import { BRAND_LOGOS, publicAsset } from "utils/brandAssets";
 
 // Routes
 import getRoutes from "routes1";
@@ -35,10 +42,7 @@ import getFooterRoutes from "footer.routes1";
 import { DONATE_PAGE_PATH } from "utils/donation";
 
 // Images
-const publicAsset = (path) => `${process.env.PUBLIC_URL || ""}${path}`;
 const bgImage = publicAsset("/assets/images/mainThemeImages/brushstroke.svg");
-const aadarHindiWhite = publicAsset("/assets/images/aadarHindiWhite.png");
-const aadarHindiYellow = publicAsset("/assets/images/aadarHindiYellow.png");
 
 // Icons and controls
 import IconButton from "@mui/material/IconButton";
@@ -52,9 +56,7 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 // Story back background - using public folder to avoid SVG processing issues
 import PropTypes from "prop-types";
 
-const blackAndWhiteHeroPng = publicAsset("/assets/images/mainThemeImages/aadar-main-black2.png");
 const blackAndWhiteHeroWebp = publicAsset("/assets/images/mainThemeImages/aadar-main-black2.webp");
-const blackAndWhiteHero = `image-set(url("${blackAndWhiteHeroWebp}") type("image/webp"), url("${blackAndWhiteHeroPng}") type("image/png"))`;
 
 /** image-set() must not be wrapped in url() — only plain paths use url(). */
 function heroBackgroundImage(src) {
@@ -89,15 +91,12 @@ const nirbhayVimeoId = VIDEO_URLS.nirbhayVimeo;
 const slide4VimeoId = VIDEO_URLS.slide4Vimeo;
 
 // Helper function to get Vimeo embed URL with minimal UI and fast loading
-const getVimeoEmbedUrl = (videoId) => {
+const getVimeoEmbedUrl = (videoId, autoplay = true) => {
   if (!videoId) return "";
-  // Optimized for fastest loading: 240p quality for instant load
-  // Always use preload=auto for faster video loading
-  // Note: If video asks to sign in, check Vimeo privacy settings:
-  // - Set video privacy to "Public"
-  // - Enable embedding to "Anywhere"
-  // - Set a content rating
-  return `https://player.vimeo.com/video/${videoId}?autoplay=1&muted=1&loop=1&controls=0&playsinline=1&quality=240p&responsive=1&dnt=1&title=0&byline=0&portrait=0&preload=auto&transparent=0`;
+  const preload = autoplay ? "auto" : "metadata";
+  return `https://player.vimeo.com/video/${videoId}?autoplay=${
+    autoplay ? 1 : 0
+  }&muted=1&loop=1&controls=0&playsinline=1&quality=240p&responsive=1&dnt=1&title=0&byline=0&portrait=0&preload=${preload}&transparent=0`;
 };
 
 function MobileSlidePhoto({ webpSrc, pngSrc, alt, eager }) {
@@ -116,6 +115,8 @@ function MobileSlidePhoto({ webpSrc, pngSrc, alt, eager }) {
       <img
         src={pngSrc}
         alt={alt}
+        width={310}
+        height={200}
         loading={eager ? "eager" : "lazy"}
         decoding="async"
         // eslint-disable-next-line react/no-unknown-property
@@ -162,6 +163,7 @@ const HeroSlide = memo(function HeroSlide({
   image,
   homePage,
   isFirstSlide,
+  showDesktopHeroLcp = false,
   ctaButtonText,
   slideIndex,
   isActive,
@@ -197,8 +199,8 @@ const HeroSlide = memo(function HeroSlide({
       <MKBox
         display="flex"
         flexDirection={{ xs: "column", sm: "column", md: "row" }}
-        height={{ xs: "100vh", sm: "100vh", md: "100vh" }}
-        minHeight={{ xs: "100vh", sm: "100vh", md: "100vh" }}
+        height={mobileHeroHeightSx}
+        minHeight={mobileHeroHeightSx}
         width="100%"
         sx={{
           position: "relative",
@@ -379,11 +381,7 @@ const HeroSlide = memo(function HeroSlide({
               sm: isTabletRange ? "none" : "none",
               md: "none",
             },
-            minHeight: {
-              xs: isMobile ? "calc(100vh - 80px)" : "calc(100vh - 80px)",
-              sm: isTabletRange ? "calc(100vh - 80px)" : "calc(100vh - 80px)",
-              md: "fit-content",
-            },
+            minHeight: mobileHeroCalcSx(80),
             overflow: { xs: "visible", sm: "visible", md: "visible" },
             mx: { xs: "auto", sm: "auto", md: 0 },
             mb: { xs: 0, sm: 0, md: 2, lg: 2.5 },
@@ -693,7 +691,7 @@ const HeroSlide = memo(function HeroSlide({
                 fontWeight: 500,
                 letterSpacing: { xs: "0.1px", sm: "0.15px", md: "0.2px", lg: "0.25px" },
                 fontFamily:
-                  '"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
+                  '"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
                 borderBottom: "3px solid #4FA953",
                 paddingBottom: { xs: 0.3, sm: 0.5, md: 0.7, lg: 0.9 },
                 paddingTop: { xs: 0, sm: 0, md: 0 },
@@ -740,7 +738,7 @@ const HeroSlide = memo(function HeroSlide({
                 overflowWrap: "break-word",
                 textAlign: { xs: "center", sm: "center", md: "left" },
                 fontFamily:
-                  '"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
+                  '"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
                 letterSpacing: { xs: "0.5px", sm: "0.7px", md: "0.9px", lg: "1.1px" },
               }}
             >
@@ -1325,8 +1323,8 @@ const HeroSlide = memo(function HeroSlide({
 
   return (
     <MKBox
-      minHeight={{ xs: "100vh", sm: "100vh", md: "100vh" }}
-      height={{ xs: "100vh", sm: "100vh", md: "100vh" }}
+      minHeight={mobileHeroHeightSx}
+      height={mobileHeroHeightSx}
       width="100%"
       sx={{
         // Prefer a real <img> for the first hero slide so it can be
@@ -1344,35 +1342,27 @@ const HeroSlide = memo(function HeroSlide({
         overflow: "hidden",
       }}
     >
-      {isFirstSlide && (
-        <picture
+      {isFirstSlide && showDesktopHeroLcp && (
+        <MKBox
+          component="img"
+          src={blackAndWhiteHeroWebp}
+          alt=""
           aria-hidden="true"
-          style={{
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
+          sx={{
             position: "absolute",
             inset: 0,
             width: "100%",
             height: "100%",
+            objectFit: "cover",
+            objectPosition: "top",
             zIndex: 0,
             pointerEvents: "none",
+            display: "block",
           }}
-        >
-          <source srcSet={blackAndWhiteHeroWebp} type="image/webp" />
-          <img
-            src={blackAndWhiteHeroPng}
-            alt=""
-            loading="eager"
-            decoding="async"
-            // eslint-disable-next-line react/no-unknown-property
-            fetchpriority="high"
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              objectPosition: "top",
-              display: "block",
-            }}
-          />
-        </picture>
+        />
       )}
 
       {/* Mobile view - centered */}
@@ -1388,20 +1378,18 @@ const HeroSlide = memo(function HeroSlide({
             mb: { xs: 10, sm: 0 },
           }}
         >
-          <MKBox
-            component="img"
-            src={aadarHindiYellow}
-            width={{ xs: "120px", sm: "100px", md: "120px", lg: "120px" }}
-            height={{ xs: "120px", sm: "100px", md: "120px", lg: "120px" }}
+          <CriticalImage
+            src={BRAND_LOGOS.hindiYellow.primary}
+            fallbackSrc={BRAND_LOGOS.hindiYellow.fallback}
+            reserveWidth={120}
+            reserveHeight={120}
             display={{ xs: "inline", sm: "none" }}
-            mb={2}
-            loading="eager"
-            fetchPriority="high"
-            decoding="async"
             alt="Aadar Foundation Logo"
             sx={{
+              width: { xs: "120px", sm: "100px", md: "120px", lg: "120px" },
+              height: { xs: "120px", sm: "100px", md: "120px", lg: "120px" },
+              mb: 2,
               filter: { xs: "drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))", sm: "none" },
-              objectFit: "contain",
             }}
           />
           <MKTypography
@@ -1576,7 +1564,7 @@ const HeroSlide = memo(function HeroSlide({
               md: "-5px 45%",
               lg: "-10px 45%",
             },
-            minHeight: { xs: "85vh", sm: "100vh", md: "100vh" },
+            minHeight: { xs: "85dvh", sm: "100dvh", md: "100vh" },
           }}
           position="relative"
           zIndex={2}
@@ -1594,19 +1582,17 @@ const HeroSlide = memo(function HeroSlide({
             fontFamily='"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
             sx={{ fontSize: { xs: "1.5rem", sm: "1.7rem", md: "2rem", lg: "2rem" } }}
           >
-            <MKBox
-              component="img"
-              src={aadarHindiWhite}
-              width={{ xs: "80px", sm: "100px", md: "120px", lg: "120px" }}
-              height="auto"
-              my={1}
-              mb={-2}
-              loading="eager"
-              fetchPriority="high"
-              decoding="async"
+            <CriticalImage
+              src={BRAND_LOGOS.hindiWhite.primary}
+              fallbackSrc={BRAND_LOGOS.hindiWhite.fallback}
+              reserveWidth={120}
+              reserveHeight={56}
               alt="Aadar Foundation Logo"
               sx={{
-                aspectRatio: "auto",
+                width: { xs: "80px", sm: "100px", md: "120px", lg: "120px" },
+                height: "auto",
+                my: 1,
+                mb: -2,
               }}
             />
           </MKTypography>
@@ -1892,30 +1878,8 @@ function Home() {
 
   const showHeroVimeo = isDesktopViewport && !skipHeroVideos;
 
-  // Slides 2–4 background — dynamic import keeps a large JPG out of the main JS chunk
+  // Slides 2–4 background — dynamic import keeps a large JPG out of the main JS chunk.
   const [heroSlideBg, setHeroSlideBg] = useState(null);
-  useEffect(() => {
-    let cancelled = false;
-    const load = () => {
-      import("assets/images/aboutPageImages/main1.jpg")
-        .then((mod) => {
-          if (!cancelled) setHeroSlideBg(mod.default);
-        })
-        .catch(() => {});
-    };
-    if ("requestIdleCallback" in window) {
-      const id = requestIdleCallback(load, { timeout: 2500 });
-      return () => {
-        cancelled = true;
-        cancelIdleCallback(id);
-      };
-    }
-    const tId = window.setTimeout(load, 800);
-    return () => {
-      cancelled = true;
-      window.clearTimeout(tId);
-    };
-  }, []);
 
   // State to let user pause/resume hero slider
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
@@ -1958,6 +1922,46 @@ function Home() {
     window.__homeActiveSlide = activeSlide;
   }, [activeSlide]);
 
+  // Defer slides 2–4 background until slide 1 has been seen or idle — never compete with hero LCP.
+  useEffect(() => {
+    if (heroSlideBg) return undefined;
+
+    let cancelled = false;
+    let idleId;
+    let timeoutId;
+
+    const load = () => {
+      import("assets/images/aboutPageImages/main1.jpg")
+        .then((mod) => {
+          if (!cancelled) setHeroSlideBg(mod.default);
+        })
+        .catch(() => {});
+    };
+
+    if (activeSlide >= 1) {
+      load();
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    if ("requestIdleCallback" in window) {
+      idleId = requestIdleCallback(load, { timeout: 10000 });
+    } else {
+      timeoutId = window.setTimeout(load, 8000);
+    }
+
+    return () => {
+      cancelled = true;
+      if (idleId != null && "cancelIdleCallback" in window) {
+        cancelIdleCallback(idleId);
+      }
+      if (timeoutId != null) {
+        window.clearTimeout(timeoutId);
+      }
+    };
+  }, [activeSlide, heroSlideBg]);
+
   // Treat very small screens as mobile (we hide hero videos there)
   const [isMobile, setIsMobile] = useState(
     typeof window !== "undefined" && window.innerWidth < 576
@@ -1966,6 +1970,8 @@ function Home() {
   const [isTabletRange, setIsTabletRange] = useState(
     typeof window !== "undefined" && window.innerWidth >= 576 && window.innerWidth < 768
   );
+  const isNarrowViewport = isMobile || isTabletRange;
+  const lazySectionMargin = sectionLazyRootMargin(isNarrowViewport);
   const [reduceMotion, setReduceMotion] = useState(false);
 
   useEffect(() => {
@@ -2570,9 +2576,18 @@ function Home() {
     return () => observer.disconnect();
   }, []);
 
-  // Warm Vimeo connection once desktop hero videos are enabled.
+  const activeHeroVideoSlide = activeSlide >= 1 && activeSlide <= 3 ? activeSlide : null;
+
+  // Warm Vimeo connection only when a video slide is active and hero is visible.
   useEffect(() => {
-    if (!showHeroVimeo || window.__vimeoPreconnectAdded) return undefined;
+    if (
+      !showHeroVimeo ||
+      !isHeroInView ||
+      activeHeroVideoSlide == null ||
+      window.__vimeoPreconnectAdded
+    ) {
+      return undefined;
+    }
 
     const addLink = (rel, href) => {
       const link = document.createElement("link");
@@ -2587,21 +2602,7 @@ function Home() {
     window.__vimeoPreconnectAdded = true;
 
     return undefined;
-  }, [showHeroVimeo]);
-
-  // Set fetchpriority attribute on video iframes after mount
-  useEffect(() => {
-    if (!showHeroVimeo) return;
-    if (maykiVideoRef.current) {
-      maykiVideoRef.current.setAttribute("fetchpriority", "high");
-    }
-    if (nirbhayVideoRef.current) {
-      nirbhayVideoRef.current.setAttribute("fetchpriority", "high");
-    }
-    if (slide4VideoRef.current) {
-      slide4VideoRef.current.setAttribute("fetchpriority", "high");
-    }
-  }, [showHeroVimeo]);
+  }, [showHeroVimeo, isHeroInView, activeHeroVideoSlide]);
 
   // Play/pause videos when slide changes - immediate control
   useEffect(() => {
@@ -2922,16 +2923,15 @@ function Home() {
       let imageUrls;
       if (isMobile) {
         imageUrls = [
-          publicAsset("/assets/images/aadarHindiYellow.png"),
-          blackAndWhiteHeroWebp,
+          BRAND_LOGOS.hindiYellow.fallback,
           slide2MobileBgWebp,
           slide3MobileBgWebp,
           slide4MobileBgWebp,
         ];
-      } else if (heroSlideBg) {
-        imageUrls = [blackAndWhiteHeroWebp, blackAndWhiteHeroPng, heroSlideBg];
       } else {
-        imageUrls = [blackAndWhiteHeroWebp, blackAndWhiteHeroPng];
+        imageUrls = heroSlideBg
+          ? [blackAndWhiteHeroWebp, BRAND_LOGOS.hindiWhite.fallback, heroSlideBg]
+          : [blackAndWhiteHeroWebp, BRAND_LOGOS.hindiWhite.fallback];
       }
       imageUrls.forEach((src) => {
         if (!src) return;
@@ -2950,15 +2950,18 @@ function Home() {
     return () => {
       window.clearTimeout(imageTimeoutId);
     };
-  }, [blackAndWhiteHeroWebp, blackAndWhiteHeroPng, heroSlideBg]);
+  }, [blackAndWhiteHeroWebp, heroSlideBg]);
 
   // Hero slides (slide 2, slide 3, and slide 4 share the same special video layout)
   const heroSlides = useMemo(() => {
-    const slideBg = heroSlideBg || blackAndWhiteHeroPng;
-    // Mobile: WebP only (~225 KB). Desktop: WebP + PNG fallback via image-set.
-    const slide1Bg = isDesktopViewport ? blackAndWhiteHero : blackAndWhiteHeroWebp;
-    return [{ image: slide1Bg }, { image: slideBg }, { image: slideBg }, { image: slideBg }];
-  }, [heroSlideBg, isDesktopViewport]);
+    const slideBg = heroSlideBg || blackAndWhiteHeroWebp;
+    return [
+      { image: blackAndWhiteHeroWebp },
+      { image: slideBg },
+      { image: slideBg },
+      { image: slideBg },
+    ];
+  }, [heroSlideBg]);
 
   return (
     <MKBox minWidth="320px">
@@ -2975,100 +2978,81 @@ function Home() {
       />
       {/* Hero Carousel */}
       <MKBox ref={heroCarouselRef} sx={{ position: "relative" }}>
-        {/* Desktop Vimeo overlays (hidden on mobile and when save-data is on). */}
-        {showHeroVimeo && (
-          <>
-            {/* Slide 2 video - positioned to match .hero-slide-video-1 */}
-            {maykiVimeoId && (
-              <iframe
-                ref={maykiVideoRef}
-                src={getVimeoEmbedUrl(maykiVimeoId)}
-                title="Vimeo video player - Slide 2"
-                frameBorder="0"
-                allow="autoplay; fullscreen; picture-in-picture"
-                allowFullScreen
-                webkitallowfullscreen="true"
-                mozallowfullscreen="true"
-                loading="eager"
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "100%",
-                  opacity: activeSlide === 1 ? 1 : 0,
-                  visibility: activeSlide === 1 ? "visible" : "hidden",
-                  pointerEvents: activeSlide === 1 ? "auto" : "none",
-                  zIndex: activeSlide === 1 ? 4 : -1,
-                  transform: activeSlide === 1 ? "scale(1)" : "scale(0.99)",
-                  filter: activeSlide === 1 ? "blur(0px)" : "blur(1px)",
-                  transition: activeSlide === 1 ? "all 1.2s cubic-bezier(0.16, 1, 0.3, 1)" : "none",
-                  willChange: "opacity, transform, filter",
-                }}
-                className="hero-video-overlay-1"
-              />
-            )}
-            {/* Slide 3 video - positioned to match .hero-slide-video-2 */}
-            {nirbhayVimeoId && (
-              <iframe
-                ref={nirbhayVideoRef}
-                src={getVimeoEmbedUrl(nirbhayVimeoId)}
-                title="Vimeo video player - Slide 3"
-                frameBorder="0"
-                allow="autoplay; fullscreen; picture-in-picture"
-                allowFullScreen
-                webkitallowfullscreen="true"
-                mozallowfullscreen="true"
-                loading="eager"
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "100%",
-                  opacity: activeSlide === 2 ? 1 : 0,
-                  visibility: activeSlide === 2 ? "visible" : "hidden",
-                  pointerEvents: activeSlide === 2 ? "auto" : "none",
-                  zIndex: activeSlide === 2 ? 4 : -1,
-                  transform: activeSlide === 2 ? "scale(1)" : "scale(0.99)",
-                  filter: activeSlide === 2 ? "blur(0px)" : "blur(1px)",
-                  transition: activeSlide === 2 ? "all 1.2s cubic-bezier(0.16, 1, 0.3, 1)" : "none",
-                  willChange: "opacity, transform, filter",
-                }}
-                className="hero-video-overlay-2"
-              />
-            )}
-            {/* Slide 4 video - positioned to match .hero-slide-video-3 */}
-            {slide4VimeoId && (
-              <iframe
-                ref={slide4VideoRef}
-                src={getVimeoEmbedUrl(slide4VimeoId)}
-                title="Vimeo video player - Slide 4"
-                frameBorder="0"
-                allow="autoplay; fullscreen; picture-in-picture"
-                allowFullScreen
-                webkitallowfullscreen="true"
-                mozallowfullscreen="true"
-                loading="eager"
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "100%",
-                  opacity: activeSlide === 3 ? 1 : 0,
-                  visibility: activeSlide === 3 ? "visible" : "hidden",
-                  pointerEvents: activeSlide === 3 ? "auto" : "none",
-                  zIndex: activeSlide === 3 ? 4 : -1,
-                  transform: activeSlide === 3 ? "scale(1)" : "scale(0.99)",
-                  filter: activeSlide === 3 ? "blur(0px)" : "blur(1px)",
-                  transition: activeSlide === 3 ? "all 1.2s cubic-bezier(0.16, 1, 0.3, 1)" : "none",
-                  willChange: "opacity, transform, filter",
-                }}
-                className="hero-video-overlay-3"
-              />
-            )}
-          </>
+        {/* Desktop Vimeo overlay — only mount the active slide's iframe (saves ~3 players on first paint). */}
+        {showHeroVimeo && isHeroInView && activeSlide === 1 && maykiVimeoId && (
+          <iframe
+            ref={maykiVideoRef}
+            src={getVimeoEmbedUrl(maykiVimeoId, true)}
+            title="Vimeo video player - Slide 2"
+            frameBorder="0"
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowFullScreen
+            loading="lazy"
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              opacity: 1,
+              visibility: "visible",
+              pointerEvents: "auto",
+              zIndex: 4,
+              borderRadius: "28px",
+              overflow: "hidden",
+            }}
+            className="hero-video-overlay-1"
+          />
+        )}
+        {showHeroVimeo && isHeroInView && activeSlide === 2 && nirbhayVimeoId && (
+          <iframe
+            ref={nirbhayVideoRef}
+            src={getVimeoEmbedUrl(nirbhayVimeoId, true)}
+            title="Vimeo video player - Slide 3"
+            frameBorder="0"
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowFullScreen
+            loading="lazy"
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              opacity: 1,
+              visibility: "visible",
+              pointerEvents: "auto",
+              zIndex: 4,
+              borderRadius: "28px",
+              overflow: "hidden",
+            }}
+            className="hero-video-overlay-2"
+          />
+        )}
+        {showHeroVimeo && isHeroInView && activeSlide === 3 && slide4VimeoId && (
+          <iframe
+            ref={slide4VideoRef}
+            src={getVimeoEmbedUrl(slide4VimeoId, true)}
+            title="Vimeo video player - Slide 4"
+            frameBorder="0"
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowFullScreen
+            loading="lazy"
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              opacity: 1,
+              visibility: "visible",
+              pointerEvents: "auto",
+              zIndex: 4,
+              borderRadius: "28px",
+              overflow: "hidden",
+            }}
+            className="hero-video-overlay-3"
+          />
         )}
 
         {/* Pause/Play and Mute/Unmute buttons for slides 2, 3, 4 - positioned above videos */}
@@ -3714,6 +3698,25 @@ function Home() {
             /* Outgoing slide animation */
             .react-material-ui-carousel .MuiPaper-root:not([class*="active"]) {
               animation: heroFadeOut 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            }
+
+            /* Mobile: disable full-viewport hero motion — major CLS source on phones */
+            @media (max-width: 767px) {
+              .react-material-ui-carousel .MuiPaper-root[class*="active"],
+              .react-material-ui-carousel .MuiPaper-root:not([class*="active"]) {
+                animation: none !important;
+                opacity: 1 !important;
+                transform: none !important;
+                filter: none !important;
+              }
+              .react-material-ui-carousel .MuiPaper-root {
+                transition: opacity 0.35s ease !important;
+              }
+              .react-material-ui-carousel img,
+              .react-material-ui-carousel video {
+                transition: opacity 0.35s ease !important;
+                transform: none !important;
+              }
             }
             
             /* Smooth transitions for all carousel children */
@@ -4369,7 +4372,7 @@ function Home() {
           cycleNavigation={true}
           fullHeightHover={false}
           swipe={true}
-          autoPlay={!isCarouselPaused}
+          autoPlay={!isCarouselPaused && !isNarrowViewport}
           index={activeSlide}
           onChange={(now) => {
             setActiveSlide(now);
@@ -4461,6 +4464,7 @@ function Home() {
               image={slide.image}
               homePage={homePage}
               isFirstSlide={index === 0}
+              showDesktopHeroLcp={isDesktopViewport}
               ctaButtonText={ctaButtonText}
               slideIndex={index}
               isActive={activeSlide === index}
@@ -4487,7 +4491,7 @@ function Home() {
           p: 2,
           pb: { xs: 4, sm: 8 },
           mx: { xs: 2, lg: 3 },
-          mt: { xs: -2, sm: -4, md: -6 },
+          mt: { xs: 0, sm: 0, md: -6 },
           mb: { xs: 2, sm: 4 },
           position: "relative",
           zIndex: 10,
@@ -4506,7 +4510,7 @@ function Home() {
             minHeight: { xs: 720, sm: 640, md: 560, lg: 520 },
           }}
         >
-          <LazyVisible rootMargin="500px" minHeight={520}>
+          <LazyVisible rootMargin={lazySectionMargin} minHeight={520}>
             <Suspense fallback={<SectionSkeleton minHeight={520} />}>
               <About />
             </Suspense>
@@ -4519,7 +4523,7 @@ function Home() {
             minHeight: { xs: 620, sm: 500, md: 360, lg: 340 },
           }}
         >
-          <LazyVisible rootMargin="500px" minHeight={340}>
+          <LazyVisible rootMargin={lazySectionMargin} minHeight={340}>
             <Suspense fallback={<SectionSkeleton minHeight={340} />}>
               <Counters />
             </Suspense>
@@ -4532,7 +4536,7 @@ function Home() {
             minHeight: { xs: 560, sm: 540, md: 520, lg: 500 },
           }}
         >
-          <LazyVisible rootMargin="500px" minHeight={500}>
+          <LazyVisible rootMargin={lazySectionMargin} minHeight={500}>
             <Suspense fallback={<SectionSkeleton minHeight={500} />}>
               <Journey />
             </Suspense>
@@ -4541,11 +4545,11 @@ function Home() {
         <MKBox
           sx={{
             contentVisibility: "auto",
-            containIntrinsicSize: "0 1100px",
+            containIntrinsicSize: { xs: "0 1500px", sm: "0 1100px", md: "0 780px" },
             minHeight: { xs: 1500, sm: 1100, md: 780, lg: 700 },
           }}
         >
-          <LazyVisible rootMargin="500px" minHeight={700}>
+          <LazyVisible rootMargin={lazySectionMargin} minHeight={700}>
             <Suspense fallback={<SectionSkeleton minHeight={700} />}>
               <Work />
             </Suspense>
@@ -4558,7 +4562,7 @@ function Home() {
             minHeight: { xs: 900, sm: 820, md: 720, lg: 680 },
           }}
         >
-          <LazyVisible rootMargin="500px" minHeight={680}>
+          <LazyVisible rootMargin={lazySectionMargin} minHeight={680}>
             <Suspense fallback={<SectionSkeleton minHeight={680} />}>
               <Events />
             </Suspense>
@@ -4579,6 +4583,7 @@ HeroSlide.propTypes = {
   image: PropTypes.string.isRequired,
   homePage: PropTypes.object.isRequired,
   isFirstSlide: PropTypes.bool.isRequired,
+  showDesktopHeroLcp: PropTypes.bool,
   ctaButtonText: PropTypes.string.isRequired,
   slideIndex: PropTypes.number.isRequired,
   isActive: PropTypes.bool.isRequired,

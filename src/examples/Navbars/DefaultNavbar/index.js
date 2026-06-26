@@ -29,7 +29,8 @@ import DefaultNavbarMobile from "examples/Navbars/DefaultNavbar/DefaultNavbarMob
 
 // Material Kit 2 React base styles
 import breakpoints from "assets/theme/base/breakpoints";
-import aadarLogo from "assets/images/logos/logo-aadar.jpg";
+import CriticalImage from "components/CriticalImage";
+import { BRAND_LOGOS } from "utils/brandAssets";
 import { DONATE_PAGE_PATH } from "utils/donation";
 
 function DefaultNavbar({
@@ -50,7 +51,9 @@ function DefaultNavbar({
   const [nestedDropdownName, setNestedDropdownName] = useState("");
   const [arrowRef, setArrowRef] = useState(null);
   const [mobileNavbar, setMobileNavbar] = useState(false);
-  const [mobileView, setMobileView] = useState(false);
+  const [mobileView, setMobileView] = useState(
+    () => typeof window !== "undefined" && window.innerWidth < breakpoints.values.lg
+  );
 
   const openMobileNavbar = () => setMobileNavbar(!mobileNavbar);
 
@@ -529,16 +532,18 @@ function DefaultNavbar({
           borderRadius="xl"
           display="flex"
         >
-          <MKBox
-            component="img"
-            src={aadarLogo}
-            width={{ xs: "50px", sm: "70px", md: "80px", lg: "80px", xl: "90px" }}
-            borderRadius="10px"
-            my={1}
+          <CriticalImage
+            src={BRAND_LOGOS.navbar.primary}
+            fallbackSrc={BRAND_LOGOS.navbar.fallback}
+            reserveWidth={90}
+            reserveHeight={90}
             alt="Aadar Foundation"
-            loading="eager"
-            decoding="async"
-            fetchPriority="high"
+            sx={{
+              width: { xs: "50px", sm: "70px", md: "80px", lg: "80px", xl: "90px" },
+              height: "auto",
+              borderRadius: "10px",
+              my: 1,
+            }}
           />
 
           {/* <img src={aadarLogo} width="130px" /> */}
@@ -700,7 +705,7 @@ function DefaultNavbar({
                   xl: "1.25rem",
                 }}
                 lineHeight={1.25}
-                fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
               >
                 {navbar.title}
               </MKTypography>

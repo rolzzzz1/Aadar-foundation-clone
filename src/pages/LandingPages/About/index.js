@@ -129,7 +129,7 @@ function About(props) {
             color="white"
             textAlign="center"
             ml={-2}
-            fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
             fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
             mb={{ xs: 1, sm: 0 }}
           >
@@ -166,7 +166,7 @@ function About(props) {
               <MKTypography
                 variant="h3"
                 fontSize={{ xs: "1.5rem", sm: "1.875rem" }}
-                fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                 sx={{ fontWeight: 500 }}
                 ref={workSection}
               >
@@ -176,7 +176,7 @@ function About(props) {
               <MKTypography
                 variant="h3"
                 fontSize="22px"
-                fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                 pt={4}
                 sx={{ fontWeight: 400 }}
               >
@@ -194,7 +194,7 @@ function About(props) {
               <MKTypography
                 variant="h3"
                 fontSize="22px"
-                fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                 pt={4}
                 sx={{ fontWeight: 400 }}
               >
@@ -210,7 +210,7 @@ function About(props) {
                       variant="h3"
                       py={1}
                       fontSize={{ xs: "1.1rem", sm: "1.3rem" }}
-                      fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                      fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                       sx={{ fontWeight: "500" }}
                     >
                       {aboutUsPage.ourWorkSection.keyAspectsSection.work1.title}
@@ -286,7 +286,7 @@ function About(props) {
                       variant="h3"
                       py={1}
                       fontSize={{ xs: "1.1rem", sm: "1.3rem" }}
-                      fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                      fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                       sx={{ fontWeight: "500" }}
                     >
                       {aboutUsPage.ourWorkSection.keyAspectsSection.work2.title}
@@ -343,7 +343,7 @@ function About(props) {
                       variant="h3"
                       py={1}
                       fontSize={{ xs: "1.1rem", sm: "1.3rem" }}
-                      fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                      fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                       sx={{ fontWeight: "500" }}
                     >
                       {aboutUsPage.ourWorkSection.keyAspectsSection.work3.title}
@@ -400,7 +400,7 @@ function About(props) {
                       variant="h3"
                       py={1}
                       fontSize={{ xs: "1.1rem", sm: "1.3rem" }}
-                      fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                      fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                       sx={{ fontWeight: "500" }}
                     >
                       {aboutUsPage.ourWorkSection.keyAspectsSection.work4.title}
@@ -457,7 +457,7 @@ function About(props) {
                       variant="h3"
                       py={1}
                       fontSize={{ xs: "1.1rem", sm: "1.3rem" }}
-                      fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                      fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                       sx={{ fontWeight: "500" }}
                     >
                       {aboutUsPage.ourWorkSection.keyAspectsSection.work5.title}
@@ -502,7 +502,7 @@ function About(props) {
                       variant="h3"
                       py={1}
                       fontSize={{ xs: "1.1rem", sm: "1.3rem" }}
-                      fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                      fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                       sx={{ fontWeight: "500" }}
                     >
                       {aboutUsPage.ourWorkSection.keyAspectsSection.work6.title}
@@ -573,7 +573,7 @@ function About(props) {
               <MKTypography
                 mx="auto"
                 paddingTop="60px"
-                fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                 sx={{ letterSpacing: "0.05rem", fontWeight: 500 }}
                 width="80%"
                 textAlign="center"
@@ -636,7 +636,7 @@ function About(props) {
                 variant="h3"
                 py={3}
                 fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
-                fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                 sx={{ fontWeight: 500 }}
               >
                 {aboutUsPage.howWeWorkSection.title}
@@ -653,7 +653,7 @@ function About(props) {
                 variant="h3"
                 fontSize={{ xs: "1.1rem", sm: "1.3rem" }}
                 paddingTop="20px"
-                fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                 sx={{ fontWeight: 500 }}
               >
                 {aboutUsPage.howWeWorkSection.work1.title}
@@ -669,7 +669,7 @@ function About(props) {
                 variant="h3"
                 fontSize={{ xs: "1.1rem", sm: "1.3rem" }}
                 paddingTop="20px"
-                fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                 sx={{ fontWeight: 500 }}
               >
                 {aboutUsPage.howWeWorkSection.work2.title}
@@ -686,7 +686,7 @@ function About(props) {
                 variant="h3"
                 fontSize={{ xs: "1.1rem", sm: "1.3rem" }}
                 paddingTop="20px"
-                fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                 sx={{ fontWeight: 500 }}
               >
                 {aboutUsPage.howWeWorkSection.work3.title}

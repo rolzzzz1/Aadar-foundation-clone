@@ -51,8 +51,17 @@ export function formatApiErrorMessage(data, status) {
   } else if (status === 500 && lower.includes("missing razorpay")) {
     msg += " Copy .env.example to .env.local, add your test keys, then restart npm start.";
   } else if (status === 502 && lower.includes("failed to create order")) {
-    msg +=
-      " Check RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET match your Razorpay test keys, then restart npm start.";
+    if (
+      lower.includes("ssl") ||
+      lower.includes("certificate") ||
+      lower.includes("cannot reach razorpay")
+    ) {
+      msg +=
+        " For local dev on Windows/VPN, add RAZORPAY_INSECURE_TLS=true to .env and restart npm start.";
+    } else {
+      msg +=
+        " Check RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET match your Razorpay test keys, then restart npm start.";
+    }
   } else if (lower.includes("authentication failed")) {
     msg += " Your key secret likely does not match the key id — update .env.local and restart.";
   } else if (status === 403) {

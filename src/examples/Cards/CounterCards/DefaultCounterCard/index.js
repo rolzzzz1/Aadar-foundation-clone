@@ -18,6 +18,7 @@ import PropTypes from "prop-types";
 
 // react-countup component
 import CountUp from "react-countup";
+import { isMobilePerfViewport } from "utils/mobilePerformance";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
@@ -40,7 +41,7 @@ function DefaultCounterCard({ color, count, title, description, ...rest }) {
           },
         }}
       >
-        <CountUp end={count} duration={1} {...rest} />
+        {isMobilePerfViewport() ? count : <CountUp end={count} duration={1} {...rest} />}
       </MKTypography>
       {title && (
         <MKTypography
@@ -48,7 +49,7 @@ function DefaultCounterCard({ color, count, title, description, ...rest }) {
           fontSize={{ xs: "1.1rem", sm: "1.25rem" }}
           mt={2}
           mb={1}
-          fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+          fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
           sx={{ fontWeight: "500" }}
         >
           {title}

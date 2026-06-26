@@ -83,20 +83,9 @@
       }
     </script>
     <!-- LCP hero image only — extra preloads compete for bandwidth.
-         The desktop hero PNG is heavy (~2 MB), so we only preload it on
-         viewports that will actually render it; mobile gets the smaller
-         Hindi-yellow logo.
-
-         We dropped `fetchpriority="high"` on the desktop PNG because a
-         2 MB high-priority fetch was crowding out the small CSS / JS
-         files the browser actually needs to paint anything — pushing
-         First Contentful Paint past 1.8 s. At default priority the PNG
-         still preloads, but it sits behind the HTML/CSS/JS in the queue
-         so FCP fires sooner. The `<img>` element itself sets
-         fetchPriority="high" once React mounts, so LCP is preserved.
-
-         The mobile logo is small (~30 KB), so it keeps the high
-         priority preload — there is no bandwidth conflict. -->
+         Desktop uses the ~225 KB WebP hero; mobile gets the smaller
+         Hindi-yellow logo (~30 KB). Both are preloaded at appropriate
+         priority for their viewport. -->
     <link
       rel="preload"
       as="image"
@@ -107,16 +96,22 @@
     <link
       rel="preload"
       as="image"
-      href="%PUBLIC_URL%/assets/images/mainThemeImages/aadar-main-black2.webp"
-      type="image/webp"
+      href="%PUBLIC_URL%/assets/images/aadarHindiYellow.png"
+      fetchpriority="high"
       media="(max-width: 767px)"
     />
     <link
       rel="preload"
       as="image"
-      href="%PUBLIC_URL%/assets/images/aadarHindiYellow.png"
+      href="%PUBLIC_URL%/assets/images/aadarHindiWhite.png"
       fetchpriority="high"
-      media="(max-width: 767px)"
+      media="(min-width: 768px)"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="%PUBLIC_URL%/assets/images/logos/logo-aadar.jpg"
+      fetchpriority="high"
     />
     <!-- DNS prefetch for external resources -->
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
@@ -124,8 +119,6 @@
     <link rel="dns-prefetch" href="https://www.youtube.com" />
     <link rel="dns-prefetch" href="https://www.youtube-nocookie.com" />
     <link rel="dns-prefetch" href="https://i.ytimg.com" />
-    <link rel="dns-prefetch" href="https://player.vimeo.com" />
-    <link rel="dns-prefetch" href="https://f.vimeocdn.com" />
     <!-- Preconnect for critical external domains -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -254,6 +247,16 @@
         size-adjust: 100.06%;
         ascent-override: 92.6%;
         descent-override: 24.4%;
+        line-gap-override: 0%;
+      }
+      @font-face {
+        font-family: "Pacifico-fallback";
+        font-style: normal;
+        font-weight: 400;
+        src: local("Segoe Script"), local("Brush Script MT"), local("cursive");
+        size-adjust: 108%;
+        ascent-override: 102%;
+        descent-override: 32%;
         line-gap-override: 0%;
       }
 
@@ -475,6 +478,17 @@
         div.btn-container.MuiBox-root {
           gap: 1rem !important;
           padding: 6px 12px !important;
+        }
+      }
+
+      /* Mobile Speed Insights: disable hero carousel motion before React hydrates */
+      @media (max-width: 767px) {
+        .react-material-ui-carousel .MuiPaper-root[class*="active"],
+        .react-material-ui-carousel .MuiPaper-root:not([class*="active"]) {
+          animation: none !important;
+          opacity: 1 !important;
+          transform: none !important;
+          filter: none !important;
         }
       }
     </style>

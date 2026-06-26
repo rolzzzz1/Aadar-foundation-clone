@@ -8,6 +8,7 @@
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const { applyDevTlsWorkaround } = require("./_lib/httpsAgent");
 
 const PORT = Number(process.env.PORT) || 3001;
 
@@ -58,6 +59,7 @@ function loadEnvFiles() {
 }
 
 const envFilesLoaded = loadEnvFiles();
+applyDevTlsWorkaround();
 
 function setCors(nodeReq, nodeRes) {
   const origin = nodeReq.headers.origin || "*";

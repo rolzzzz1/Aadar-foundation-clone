@@ -1,48 +1,130 @@
 /**
  * Shared Razorpay server client — order create, payment fetch, capture checks.
+ * Uses axios directly so network/SSL failures surface clear errors (the official
+ * SDK crashes with "reading 'status'" when axios has no HTTP response).
  */
 
-const Razorpay = require("razorpay");
+const axios = require("axios");
+const { getDevHttpsAgent } = require("./httpsAgent");
 const { formatRazorpayError } = require("./donation");
 
-function getRazorpayClient() {
+const RAZORPAY_API = "https://api.razorpay.com/v1";
+
+function getCredentials() {
   const keyId = process.env.RAZORPAY_KEY_ID;
   const keySecret = process.env.RAZORPAY_KEY_SECRET;
   if (!keyId || !keySecret) return null;
-  return new Razorpay({ key_id: keyId, key_secret: keySecret });
+  return { keyId, keySecret };
 }
 
-async function fetchPayment(paymentId) {
-  const client = getRazorpayClient();
-  if (!client) {
+function getRazorpayClient() {
+  return getCredentials();
+}
+
+function getHttpsAgent() {
+  return getDevHttpsAgent();
+}
+
+function formatTransportError(err) {
+  const code = err && err.code ? String(err.code) : "";
+  const msg = err && err.message ? String(err.message) : "";
+
+  if (
+    code === "UNABLE_TO_VERIFY_LEAF_SIGNATURE" ||
+    code === "CERT_HAS_EXPIRED" ||
+    /certificate/i.test(msg)
+  ) {
+    return (
+      "Cannot reach Razorpay (SSL certificate error). Common on corporate VPN or antivirus HTTPS scanning. " +
+      "Set NODE_EXTRA_CA_CERTS to your CA bundle, or for local dev only set RAZORPAY_INSECURE_TLS=true in .env and restart npm start."
+    );
+  }
+
+  if (code === "ENOTFOUND" || code === "ECONNREFUSED" || code === "ETIMEDOUT") {
+    return `Cannot reach Razorpay API (${code}). Check your internet connection and firewall.`;
+  }
+
+  if (/reading 'status'/.test(msg)) {
+    return (
+      "Cannot reach Razorpay API (network or SSL error). " +
+      "If your keys are correct, set RAZORPAY_INSECURE_TLS=true in .env for local dev only, then restart npm start."
+    );
+  }
+
+  return msg || code || "Network error contacting Razorpay";
+}
+
+function wrapRazorpayFailure(err, code) {
+  const wrapped = new Error(formatRazorpayError(err));
+  wrapped.code = code;
+  wrapped.cause = err;
+  throw wrapped;
+}
+
+async function razorpayRequest(method, path, data) {
+  const creds = getCredentials();
+  if (!creds) {
     const err = new Error("Razorpay is not configured");
     err.code = "not_configured";
     throw err;
   }
+
+  const agent = getHttpsAgent();
+  const config = {
+    method,
+    url: `${RAZORPAY_API}${path}`,
+    auth: { username: creds.keyId, password: creds.keySecret },
+    headers: { "Content-Type": "application/json", "User-Agent": "aadarfoundation-api" },
+    timeout: 30000,
+    ...(agent ? { httpsAgent: agent } : {}),
+    ...(data !== undefined ? { data } : {}),
+  };
+
   try {
-    return await client.payments.fetch(paymentId);
+    const res = await axios(config);
+    return res.data;
   } catch (err) {
-    const wrapped = new Error(formatRazorpayError(err));
-    wrapped.code = "fetch_failed";
-    wrapped.cause = err;
-    throw wrapped;
+    if (err.response) {
+      throw {
+        statusCode: err.response.status,
+        error:
+          (err.response.data && err.response.data.error) ||
+          { description: err.response.statusText || "Razorpay request failed" },
+      };
+    }
+
+    const transport = new Error(formatTransportError(err));
+    transport.code = "transport_failed";
+    transport.cause = err;
+    throw transport;
+  }
+}
+
+async function createOrder(payload) {
+  try {
+    const order = await razorpayRequest("POST", "/orders", payload);
+    if (!order || !order.id) {
+      throw new Error("Razorpay returned an empty order response");
+    }
+    return order;
+  } catch (err) {
+    wrapRazorpayFailure(err, "create_failed");
+  }
+}
+
+async function fetchPayment(paymentId) {
+  try {
+    return await razorpayRequest("GET", `/payments/${paymentId}`);
+  } catch (err) {
+    wrapRazorpayFailure(err, "fetch_failed");
   }
 }
 
 async function fetchOrder(orderId) {
-  const client = getRazorpayClient();
-  if (!client) {
-    const err = new Error("Razorpay is not configured");
-    err.code = "not_configured";
-    throw err;
-  }
   try {
-    return await client.orders.fetch(orderId);
+    return await razorpayRequest("GET", `/orders/${orderId}`);
   } catch (err) {
-    const wrapped = new Error(formatRazorpayError(err));
-    wrapped.code = "fetch_failed";
-    wrapped.cause = err;
-    throw wrapped;
+    wrapRazorpayFailure(err, "fetch_failed");
   }
 }
 
@@ -124,6 +206,7 @@ async function fetchPaymentUntilCaptured(paymentId, orderId, options = {}) {
 
 module.exports = {
   getRazorpayClient,
+  createOrder,
   fetchPayment,
   fetchOrder,
   fetchPaymentUntilCaptured,

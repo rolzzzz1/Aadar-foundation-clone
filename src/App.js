@@ -15,7 +15,9 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import theme from "assets/theme";
 
 import DeferredVitals from "components/DeferredVitals";
-import Home from "layouts/pages/home";
+import MobileHomeFallback from "components/MobileHomeFallback";
+
+const Home = lazy(() => import(/* webpackPreload: true */ "layouts/pages/home"));
 
 // Material Kit 2 React routes
 import routes from "routes";
@@ -334,7 +336,14 @@ export default function App() {
         <CssBaseline />
         <Routes>
           {getRoutes(routes)}
-          <Route path="/home" element={<Home />} />
+          <Route
+            path="/home"
+            element={
+              <Suspense fallback={<MobileHomeFallback />}>
+                <Home />
+              </Suspense>
+            }
+          />
           <Route
             path={DONATION_CHECKOUT_PATH}
             element={

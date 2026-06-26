@@ -62,7 +62,7 @@ export default function SponsorPrabhujiCtaCards({ sponsor }) {
   return (
     <MKBox sx={{ width: "100%" }}>
       <MKTypography
-        fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+        fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
         sx={{
           fontSize: { xs: "1.1rem", sm: "1.3rem", md: "1.3rem", lg: "1.5rem" },
           fontWeight: 400,

@@ -88,7 +88,7 @@ function HorizontalTeamCard({
             <MKTypography
               variant="h6"
               fontSize={{ xs: "0.8rem", sm: "1.1rem" }}
-              fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+              fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
               sx={{ fontWeight: 500, letterSpacing: "0.05rem" }}
             >
               {name.split(" ")[0]}
@@ -96,7 +96,7 @@ function HorizontalTeamCard({
             <MKTypography
               variant="h6"
               fontSize={{ xs: "0.8rem", sm: "1.1rem" }}
-              fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+              fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
               sx={{ fontWeight: 500, letterSpacing: "0.05rem" }}
             >
               {name.split(" ")[1]}

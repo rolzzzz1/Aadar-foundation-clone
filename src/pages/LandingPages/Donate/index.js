@@ -171,7 +171,7 @@ function Donate() {
             color="white"
             textAlign="center"
             ml={-2}
-            fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+            fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
             fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
             mb={{ xs: 1, sm: 0 }}
           >
@@ -197,7 +197,7 @@ function Donate() {
             <Grid lg={12}>
               <MKTypography
                 variant="h4"
-                fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                 sx={{
                   fontWeight: "500",
                   fontSize: { xs: "1.5rem", sm: "1.75rem", md: "1.875rem", lg: "1.875rem" },
@@ -212,7 +212,7 @@ function Donate() {
                 <MKBox>
                   <MKTypography
                     variant="h4"
-                    fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                    fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                     sx={{
                       fontWeight: "500",
                       fontSize: { xs: "1.2rem", sm: "1.5rem", md: "1.2rem", lg: "1.5rem" },
@@ -225,7 +225,7 @@ function Donate() {
                     <MKTypography
                       display="inline"
                       variant="h4"
-                      fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                      fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                       sx={{
                         fontSize: { xs: "1.5rem", sm: "1.7rem", md: "1.7rem", lg: "2rem" },
                         fontWeight: "700",
@@ -269,7 +269,7 @@ function Donate() {
                     variant="h5"
                     mt={1.5}
                     fontSize={{ xs: "1rem", md: "1.2rem" }}
-                    fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                    fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   >
                     <i>{donatePage.imageTagLine}</i>
                   </MKTypography>
@@ -348,7 +348,7 @@ function Donate() {
                 alignItems="stretch"
               >
                 <MKTypography
-                  fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   sx={{
                     fontSize: { xs: "1.2rem", sm: "1.4rem", md: "1.5rem" },
                     fontWeight: "500",
@@ -456,7 +456,7 @@ function Donate() {
               >
                 <MKTypography
                   variant="h4"
-                  fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   sx={{
                     fontSize: { sm: "1.8rem", md: "1.8rem", lg: "2rem" },
                     fontWeight: "500",
@@ -467,7 +467,7 @@ function Donate() {
                 </MKTypography>
                 <MKTypography
                   variant="h4"
-                  fontFamily='"Pacifico", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                  fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                   sx={{
                     fontSize: { xs: "1rem", sm: "1.2rem", md: "1.3rem", lg: "1.5rem" },
                     fontWeight: "500",
