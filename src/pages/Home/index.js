@@ -30,7 +30,6 @@ const Counters = lazy(() => import("pages/Home/sections/Home sections/Counters")
 import LazyVisible from "components/LazyMedia/LazyVisible";
 import CriticalImage from "components/CriticalImage";
 import {
-  mobileHeroCalcSx,
   mobileHeroHeightSx,
   mobileHeroSlide1HeightSx,
   sectionLazyRootMargin,
@@ -200,6 +199,7 @@ const HeroSlide = memo(function HeroSlide({
       <MKBox
         display="flex"
         flexDirection={{ xs: "column", sm: "column", md: "row" }}
+        alignItems={{ xs: "stretch", md: "center" }}
         height={mobileHeroHeightSx}
         minHeight={mobileHeroHeightSx}
         width="100%"
@@ -382,7 +382,11 @@ const HeroSlide = memo(function HeroSlide({
               sm: isTabletRange ? "none" : "none",
               md: "none",
             },
-            minHeight: mobileHeroCalcSx(80),
+            minHeight: {
+              xs: "calc(100dvh - 80px)",
+              sm: "calc(100dvh - 80px)",
+              md: "fit-content",
+            },
             overflow: { xs: "visible", sm: "visible", md: "visible" },
             mx: { xs: "auto", sm: "auto", md: 0 },
             mb: { xs: 0, sm: 0, md: 2, lg: 2.5 },
