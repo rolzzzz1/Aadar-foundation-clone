@@ -57,7 +57,7 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 // Story back background - using public folder to avoid SVG processing issues
 import PropTypes from "prop-types";
 
-const blackAndWhiteHeroWebp = publicAsset("/assets/images/mainThemeImages/aadar-main-black2.webp");
+const heroMainImage = publicAsset("/assets/images/mainThemeImages/aadar-main.jpg");
 
 /** image-set() must not be wrapped in url() — only plain paths use url(). */
 function heroBackgroundImage(src) {
@@ -1344,7 +1344,7 @@ const HeroSlide = memo(function HeroSlide({
       {isFirstSlide && showHeroLcp && (
         <MKBox
           component="img"
-          src={blackAndWhiteHeroWebp}
+          src={heroMainImage}
           alt=""
           aria-hidden="true"
           loading="eager"
@@ -1360,21 +1360,6 @@ const HeroSlide = memo(function HeroSlide({
             zIndex: 0,
             pointerEvents: "none",
             display: "block",
-          }}
-        />
-      )}
-      {isFirstSlide && showHeroLcp && (
-        <MKBox
-          aria-hidden
-          sx={{
-            position: "absolute",
-            inset: 0,
-            zIndex: 1,
-            pointerEvents: "none",
-            background: {
-              xs: "linear-gradient(180deg, rgba(16, 24, 38, 0.55) 0%, rgba(16, 24, 38, 0.82) 100%)",
-              md: "linear-gradient(180deg, rgba(16, 24, 38, 0.15) 0%, rgba(16, 24, 38, 0.45) 100%)",
-            },
           }}
         />
       )}
@@ -2938,7 +2923,7 @@ function Home() {
       let imageUrls;
       if (isMobile) {
         imageUrls = [
-          blackAndWhiteHeroWebp,
+          heroMainImage,
           BRAND_LOGOS.hindiYellow.fallback,
           slide2MobileBgWebp,
           slide3MobileBgWebp,
@@ -2946,15 +2931,15 @@ function Home() {
         ];
       } else {
         imageUrls = heroSlideBg
-          ? [blackAndWhiteHeroWebp, BRAND_LOGOS.hindiWhite.fallback, heroSlideBg]
-          : [blackAndWhiteHeroWebp, BRAND_LOGOS.hindiWhite.fallback];
+          ? [heroMainImage, BRAND_LOGOS.hindiWhite.fallback, heroSlideBg]
+          : [heroMainImage, BRAND_LOGOS.hindiWhite.fallback];
       }
       imageUrls.forEach((src) => {
         if (!src) return;
         const img = new Image();
         img.decoding = "async";
         img.loading = "eager";
-        if (!isMobile && src === blackAndWhiteHeroWebp) {
+        if (!isMobile && src === heroMainImage) {
           img.fetchPriority = "high";
         }
         img.src = src;
@@ -2966,18 +2951,13 @@ function Home() {
     return () => {
       window.clearTimeout(imageTimeoutId);
     };
-  }, [blackAndWhiteHeroWebp, heroSlideBg]);
+  }, [heroMainImage, heroSlideBg]);
 
   // Hero slides (slide 2, slide 3, and slide 4 share the same special video layout)
   const heroSlides = useMemo(() => {
-    const slideBg = heroSlideBg || blackAndWhiteHeroWebp;
-    return [
-      { image: blackAndWhiteHeroWebp },
-      { image: slideBg },
-      { image: slideBg },
-      { image: slideBg },
-    ];
-  }, [heroSlideBg]);
+    const slideBg = heroSlideBg || heroMainImage;
+    return [{ image: heroMainImage }, { image: slideBg }, { image: slideBg }, { image: slideBg }];
+  }, [heroSlideBg, heroMainImage]);
 
   return (
     <MKBox minWidth="320px">

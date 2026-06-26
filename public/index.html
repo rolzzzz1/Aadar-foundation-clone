@@ -82,23 +82,20 @@
         }
       }
     </script>
-    <!-- LCP hero image only — extra preloads compete for bandwidth.
-         Desktop uses the ~225 KB WebP hero; mobile gets the smaller
-         Hindi-yellow logo (~30 KB). Both are preloaded at appropriate
-         priority for their viewport. -->
+    <!-- LCP hero image — full-color photo for a lively hero (not the old B&W webp). -->
     <link
       rel="preload"
       as="image"
-      href="%PUBLIC_URL%/assets/images/mainThemeImages/aadar-main-black2.webp"
-      type="image/webp"
+      href="%PUBLIC_URL%/assets/images/mainThemeImages/aadar-main.jpg"
+      type="image/jpeg"
       media="(max-width: 767px)"
       fetchpriority="high"
     />
     <link
       rel="preload"
       as="image"
-      href="%PUBLIC_URL%/assets/images/mainThemeImages/aadar-main-black2.webp"
-      type="image/webp"
+      href="%PUBLIC_URL%/assets/images/mainThemeImages/aadar-main.jpg"
+      type="image/jpeg"
       media="(min-width: 768px)"
     />
     <link

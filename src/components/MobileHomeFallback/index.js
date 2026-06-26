@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import CriticalImage from "components/CriticalImage";
 import { BRAND_LOGOS, publicAsset } from "utils/brandAssets";
 
-const heroWebp = publicAsset("/assets/images/mainThemeImages/aadar-main-black2.webp");
+const heroImage = publicAsset("/assets/images/mainThemeImages/aadar-main.jpg");
 
 /** Static mobile hero shell shown while the Home chunk loads — improves mobile FCP/LCP. */
 export default function MobileHomeFallback() {
@@ -27,7 +27,7 @@ export default function MobileHomeFallback() {
     >
       <Box
         component="img"
-        src={heroWebp}
+        src={heroImage}
         alt=""
         sx={{
           position: "absolute",
@@ -36,14 +36,6 @@ export default function MobileHomeFallback() {
           height: "100%",
           objectFit: "cover",
           objectPosition: "top",
-        }}
-      />
-      <Box
-        sx={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "linear-gradient(180deg, rgba(16, 24, 38, 0.55) 0%, rgba(16, 24, 38, 0.82) 100%)",
         }}
       />
       <CriticalImage

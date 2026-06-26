@@ -172,7 +172,7 @@ export const watermarkAllImages = async (options = {}) => {
             img.dataset.watermarked === "true" ||
             img.src.includes("aadarHindiWhite") ||
             img.src.includes("aadarHindiYellow") ||
-            img.src.includes("aadar-main-black2") ||
+            img.src.includes("aadar-main") ||
             img.src.includes("brushstroke") ||
             img.src.startsWith("data:")
           ) {
