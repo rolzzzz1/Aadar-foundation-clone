@@ -14,12 +14,8 @@ import { useTranslation } from "react-i18next";
 import { ABOUT_PATH } from "utils/paths";
 
 // Images
-import work1 from "assets/images/ourWorkImages/aboutImg.webp";
-import work2 from "assets/images/ourWorkImages/treatment.webp";
-import work3 from "assets/images/ourWorkImages/shelter.webp";
-import work4 from "assets/images/ourWorkImages/food2.jpg";
-import work5 from "assets/images/ourWorkImages/care2.jpg";
-import work6 from "assets/images/ourWorkImages/rehabilitation1.jpg";
+import CriticalImage from "components/CriticalImage";
+import { WORK_STEP_IMAGES } from "utils/workAssets";
 
 function Work() {
   const { t } = useTranslation();
@@ -27,37 +23,37 @@ function Work() {
 
   const steps = [
     {
-      image: work1,
+      ...WORK_STEP_IMAGES[0],
       label: t("homePage.workSectionNew.step1.label"),
       title: t("homePage.workSectionNew.step1.title"),
       description: t("homePage.workSectionNew.step1.description"),
     },
     {
-      image: work2,
+      ...WORK_STEP_IMAGES[1],
       label: t("homePage.workSectionNew.step2.label"),
       title: t("homePage.workSectionNew.step2.title"),
       description: t("homePage.workSectionNew.step2.description"),
     },
     {
-      image: work3,
+      ...WORK_STEP_IMAGES[2],
       label: t("homePage.workSectionNew.step3.label"),
       title: t("homePage.workSectionNew.step3.title"),
       description: t("homePage.workSectionNew.step3.description"),
     },
     {
-      image: work4,
+      ...WORK_STEP_IMAGES[3],
       label: t("homePage.workSectionNew.step4.label"),
       title: t("homePage.workSectionNew.step4.title"),
       description: t("homePage.workSectionNew.step4.description"),
     },
     {
-      image: work5,
+      ...WORK_STEP_IMAGES[4],
       label: t("homePage.workSectionNew.step5.label"),
       title: t("homePage.workSectionNew.step5.title"),
       description: t("homePage.workSectionNew.step5.description"),
     },
     {
-      image: work6,
+      ...WORK_STEP_IMAGES[5],
       label: t("homePage.workSectionNew.step6.label"),
       title: t("homePage.workSectionNew.step6.title"),
       description: t("homePage.workSectionNew.step6.description"),
@@ -155,13 +151,13 @@ function Work() {
                     position: "relative",
                   }}
                 >
-                  <MKBox
-                    component="img"
-                    src={step.image}
+                  <CriticalImage
+                    src={step.primary}
+                    fallbackSrc={step.fallback}
+                    alternateSrc={step.alternate}
                     alt={step.title}
-                    loading="lazy"
+                    eager
                     sx={{
-                      objectFit: "cover",
                       objectPosition: { xs: "center top", sm: "center", md: "center" },
                       width: "100%",
                       height: "100%",

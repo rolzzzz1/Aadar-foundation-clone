@@ -14,7 +14,8 @@ import MKTypography from "components/MKTypography";
 import { ABOUT_PATH } from "utils/paths";
 
 // Images
-import aboutImg from "assets/images/ourWorkImages/aboutImg.webp";
+import CriticalImage from "components/CriticalImage";
+import { WORK_STEP_IMAGES } from "utils/workAssets";
 
 function About() {
   const { t } = useTranslation();
@@ -36,16 +37,17 @@ function About() {
               overflow: "hidden",
             }}
           >
-            <MKBox
-              component="img"
-              src={aboutImg}
+            <CriticalImage
+              src={WORK_STEP_IMAGES[0].primary}
+              fallbackSrc={WORK_STEP_IMAGES[0].fallback}
               alt="aboutImage"
-              width="100%"
-              height="100%"
-              borderRadius="15px"
-              loading="lazy"
-              decoding="async"
-              sx={{ objectFit: "cover", display: "block" }}
+              sx={{
+                width: "100%",
+                height: "100%",
+                borderRadius: "15px",
+                objectFit: "cover",
+                display: "block",
+              }}
             />
           </MKBox>
         </Grid>

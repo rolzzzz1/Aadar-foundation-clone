@@ -5,12 +5,12 @@ import MKBox from "components/MKBox";
 const MAX_RETRIES_PER_SRC = 2;
 
 /**
- * Above-the-fold brand image: retries on flaky networks and falls back to a
- * second URL so users never see a broken-image icon on logos.
+ * Resilient image loader: retries + multiple URL fallbacks for slow/flaky networks.
  */
 export default function CriticalImage({
   src,
   fallbackSrc,
+  alternateSrc,
   alt,
   sx,
   eager = true,
@@ -19,18 +19,19 @@ export default function CriticalImage({
   ...rest
 }) {
   const imgRef = useRef(null);
-  const sources = useMemo(() => [src, fallbackSrc].filter(Boolean), [src, fallbackSrc]);
+  const sources = useMemo(
+    () => [src, fallbackSrc, alternateSrc].filter(Boolean),
+    [src, fallbackSrc, alternateSrc]
+  );
   const [sourceIndex, setSourceIndex] = useState(0);
   const [retryCount, setRetryCount] = useState(0);
   const [loaded, setLoaded] = useState(false);
-  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     setSourceIndex(0);
     setRetryCount(0);
     setLoaded(false);
-    setFailed(false);
-  }, [src, fallbackSrc]);
+  }, [src, fallbackSrc, alternateSrc]);
 
   const activeSrc = sources[sourceIndex];
   const resolvedSrc = useMemo(() => {
@@ -38,20 +39,6 @@ export default function CriticalImage({
     const joiner = activeSrc.includes("?") ? "&" : "?";
     return `${activeSrc}${joiner}retry=${retryCount}`;
   }, [activeSrc, retryCount]);
-
-  // Images preloaded in <head> may finish before onLoad is attached.
-  useEffect(() => {
-    const img = imgRef.current;
-    if (img?.complete && img.naturalWidth > 0) {
-      setLoaded(true);
-      setFailed(false);
-    }
-  }, [resolvedSrc]);
-
-  const handleLoad = useCallback(() => {
-    setLoaded(true);
-    setFailed(false);
-  }, []);
 
   const handleError = useCallback(() => {
     if (retryCount < MAX_RETRIES_PER_SRC) {
@@ -61,12 +48,35 @@ export default function CriticalImage({
     if (sourceIndex < sources.length - 1) {
       setSourceIndex((index) => index + 1);
       setRetryCount(0);
-      return;
     }
-    setFailed(true);
   }, [retryCount, sourceIndex, sources.length]);
 
+  const handleLoad = useCallback(
+    (event) => {
+      const img = event?.currentTarget || imgRef.current;
+      if (!img || img.naturalWidth === 0) {
+        handleError();
+        return;
+      }
+      setLoaded(true);
+    },
+    [handleError]
+  );
+
+  useEffect(() => {
+    const img = imgRef.current;
+    if (!img?.complete) return;
+    if (img.naturalWidth > 0) {
+      setLoaded(true);
+      return;
+    }
+    handleError();
+  }, [resolvedSrc, handleError]);
+
   if (!resolvedSrc) return null;
+
+  const allFailed =
+    sourceIndex >= sources.length - 1 && retryCount >= MAX_RETRIES_PER_SRC && !loaded;
 
   return (
     <MKBox
@@ -83,10 +93,9 @@ export default function CriticalImage({
       width={reserveWidth}
       height={reserveHeight}
       sx={{
-        display: failed ? "none" : "block",
-        opacity: loaded ? 1 : 0.01,
-        transition: "opacity 0.25s ease",
-        objectFit: "contain",
+        objectFit: "cover",
+        opacity: allFailed ? 0.35 : 1,
+        backgroundColor: loaded ? "transparent" : "rgba(240, 242, 245, 0.8)",
         ...sx,
       }}
       {...rest}
@@ -97,6 +106,7 @@ export default function CriticalImage({
 CriticalImage.propTypes = {
   src: PropTypes.string.isRequired,
   fallbackSrc: PropTypes.string,
+  alternateSrc: PropTypes.string,
   alt: PropTypes.string.isRequired,
   sx: PropTypes.object,
   eager: PropTypes.bool,
