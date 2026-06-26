@@ -8,6 +8,13 @@ export function isMobilePerfViewport() {
 /** Stable hero height on mobile browsers (avoids address-bar 100vh jumps). */
 export const mobileHeroHeightSx = { xs: "100dvh", sm: "100dvh", md: "100vh" };
 
+/** Slide 1 on phones: shorter than full viewport so content isn't stranded at the bottom. */
+export const mobileHeroSlide1HeightSx = {
+  xs: "min(88dvh, 640px)",
+  sm: "min(90dvh, 700px)",
+  md: "100vh",
+};
+
 export function mobileHeroCalcSx(offsetPx) {
   return {
     xs: `calc(100dvh - ${offsetPx}px)`,

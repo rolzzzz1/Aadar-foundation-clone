@@ -32,6 +32,7 @@ import CriticalImage from "components/CriticalImage";
 import {
   mobileHeroCalcSx,
   mobileHeroHeightSx,
+  mobileHeroSlide1HeightSx,
   sectionLazyRootMargin,
 } from "utils/mobilePerformance";
 import { BRAND_LOGOS, publicAsset } from "utils/brandAssets";
@@ -163,7 +164,7 @@ const HeroSlide = memo(function HeroSlide({
   image,
   homePage,
   isFirstSlide,
-  showDesktopHeroLcp = false,
+  showHeroLcp = false,
   ctaButtonText,
   slideIndex,
   isActive,
@@ -1323,26 +1324,24 @@ const HeroSlide = memo(function HeroSlide({
 
   return (
     <MKBox
-      minHeight={mobileHeroHeightSx}
-      height={mobileHeroHeightSx}
+      minHeight={isFirstSlide ? mobileHeroSlide1HeightSx : mobileHeroHeightSx}
+      height={isFirstSlide ? mobileHeroSlide1HeightSx : mobileHeroHeightSx}
       width="100%"
       sx={{
         // Prefer a real <img> for the first hero slide so it can be
         // prioritized and counted as the page's LCP element.
-        backgroundImage: isFirstSlide
-          ? "linear-gradient(135deg, #101826 0%, #1f2a44 55%, #2a3658 100%)"
-          : heroBackgroundImage(image),
+        backgroundImage: isFirstSlide ? "none" : heroBackgroundImage(image),
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "top",
         display: "flex",
-        justifyContent: { xs: "center", sm: "end" },
-        alignItems: "end",
+        justifyContent: { xs: "center", sm: "center", md: "flex-end" },
+        alignItems: { xs: "center", sm: "center", md: "flex-end" },
         position: "relative",
         overflow: "hidden",
       }}
     >
-      {isFirstSlide && showDesktopHeroLcp && (
+      {isFirstSlide && showHeroLcp && (
         <MKBox
           component="img"
           src={blackAndWhiteHeroWebp}
@@ -1364,6 +1363,21 @@ const HeroSlide = memo(function HeroSlide({
           }}
         />
       )}
+      {isFirstSlide && showHeroLcp && (
+        <MKBox
+          aria-hidden
+          sx={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 1,
+            pointerEvents: "none",
+            background: {
+              xs: "linear-gradient(180deg, rgba(16, 24, 38, 0.55) 0%, rgba(16, 24, 38, 0.82) 100%)",
+              md: "linear-gradient(180deg, rgba(16, 24, 38, 0.15) 0%, rgba(16, 24, 38, 0.45) 100%)",
+            },
+          }}
+        />
+      )}
 
       {/* Mobile view - centered */}
       {isFirstSlide && (
@@ -1375,12 +1389,13 @@ const HeroSlide = memo(function HeroSlide({
           position="relative"
           zIndex={2}
           sx={{
-            mb: { xs: 10, sm: 0 },
+            py: { xs: 2, sm: 0 },
+            width: "100%",
           }}
         >
           <CriticalImage
-            src={BRAND_LOGOS.hindiYellow.primary}
-            fallbackSrc={BRAND_LOGOS.hindiYellow.fallback}
+            src={BRAND_LOGOS.hindiYellow.fallback}
+            fallbackSrc={BRAND_LOGOS.hindiYellow.primary}
             reserveWidth={120}
             reserveHeight={120}
             display={{ xs: "inline", sm: "none" }}
@@ -1409,7 +1424,7 @@ const HeroSlide = memo(function HeroSlide({
             data-hero-button="slide1-mobile"
             sx={{
               mt: 2,
-              mb: 3,
+              mb: { xs: 1, sm: 3 },
               px: { xs: 3 },
               py: { xs: 0.75 },
               fontWeight: "700",
@@ -2923,6 +2938,7 @@ function Home() {
       let imageUrls;
       if (isMobile) {
         imageUrls = [
+          blackAndWhiteHeroWebp,
           BRAND_LOGOS.hindiYellow.fallback,
           slide2MobileBgWebp,
           slide3MobileBgWebp,
@@ -4464,7 +4480,7 @@ function Home() {
               image={slide.image}
               homePage={homePage}
               isFirstSlide={index === 0}
-              showDesktopHeroLcp={isDesktopViewport}
+              showHeroLcp
               ctaButtonText={ctaButtonText}
               slideIndex={index}
               isActive={activeSlide === index}
@@ -4491,7 +4507,7 @@ function Home() {
           p: 2,
           pb: { xs: 4, sm: 8 },
           mx: { xs: 2, lg: 3 },
-          mt: { xs: 0, sm: 0, md: -6 },
+          mt: { xs: -2, sm: 0, md: -6 },
           mb: { xs: 2, sm: 4 },
           position: "relative",
           zIndex: 10,
@@ -4583,7 +4599,7 @@ HeroSlide.propTypes = {
   image: PropTypes.string.isRequired,
   homePage: PropTypes.object.isRequired,
   isFirstSlide: PropTypes.bool.isRequired,
-  showDesktopHeroLcp: PropTypes.bool,
+  showHeroLcp: PropTypes.bool,
   ctaButtonText: PropTypes.string.isRequired,
   slideIndex: PropTypes.number.isRequired,
   isActive: PropTypes.bool.isRequired,

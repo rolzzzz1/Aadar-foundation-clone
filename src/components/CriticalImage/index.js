@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import MKBox from "components/MKBox";
 
@@ -18,6 +18,7 @@ export default function CriticalImage({
   reserveHeight,
   ...rest
 }) {
+  const imgRef = useRef(null);
   const sources = useMemo(() => [src, fallbackSrc].filter(Boolean), [src, fallbackSrc]);
   const [sourceIndex, setSourceIndex] = useState(0);
   const [retryCount, setRetryCount] = useState(0);
@@ -37,6 +38,15 @@ export default function CriticalImage({
     const joiner = activeSrc.includes("?") ? "&" : "?";
     return `${activeSrc}${joiner}retry=${retryCount}`;
   }, [activeSrc, retryCount]);
+
+  // Images preloaded in <head> may finish before onLoad is attached.
+  useEffect(() => {
+    const img = imgRef.current;
+    if (img?.complete && img.naturalWidth > 0) {
+      setLoaded(true);
+      setFailed(false);
+    }
+  }, [resolvedSrc]);
 
   const handleLoad = useCallback(() => {
     setLoaded(true);
@@ -60,6 +70,7 @@ export default function CriticalImage({
 
   return (
     <MKBox
+      ref={imgRef}
       component="img"
       src={resolvedSrc}
       alt={alt}
@@ -73,7 +84,7 @@ export default function CriticalImage({
       height={reserveHeight}
       sx={{
         display: failed ? "none" : "block",
-        opacity: loaded ? 1 : 0,
+        opacity: loaded ? 1 : 0.01,
         transition: "opacity 0.25s ease",
         objectFit: "contain",
         ...sx,
