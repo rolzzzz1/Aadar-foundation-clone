@@ -57,7 +57,7 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 // Story back background - using public folder to avoid SVG processing issues
 import PropTypes from "prop-types";
 
-const heroMainImage = publicAsset("/assets/images/mainThemeImages/aadar-main.jpg");
+const heroMainImage = publicAsset("/assets/images/mainThemeImages/aadar-main-black2.webp");
 
 /** image-set() must not be wrapped in url() — only plain paths use url(). */
 function heroBackgroundImage(src) {

@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import CriticalImage from "components/CriticalImage";
 import { BRAND_LOGOS, publicAsset } from "utils/brandAssets";
 
-const heroImage = publicAsset("/assets/images/mainThemeImages/aadar-main.jpg");
+const heroImage = publicAsset("/assets/images/mainThemeImages/aadar-main-black2.webp");
 
 /** Static mobile hero shell shown while the Home chunk loads — improves mobile FCP/LCP. */
 export default function MobileHomeFallback() {
