@@ -1389,6 +1389,7 @@ const HeroSlide = memo(function HeroSlide({
               width: { xs: "120px", sm: "100px", md: "120px", lg: "120px" },
               height: { xs: "120px", sm: "100px", md: "120px", lg: "120px" },
               mb: 2,
+              objectFit: "contain",
               filter: { xs: "drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))", sm: "none" },
             }}
           />
@@ -1591,6 +1592,8 @@ const HeroSlide = memo(function HeroSlide({
               sx={{
                 width: { xs: "80px", sm: "100px", md: "120px", lg: "120px" },
                 height: "auto",
+                maxHeight: { xs: "80px", sm: "100px", md: "120px" },
+                objectFit: "contain",
                 my: 1,
                 mb: -2,
               }}
@@ -4485,7 +4488,7 @@ function Home() {
       <Card
         sx={{
           p: 2,
-          pb: { xs: 4, sm: 8 },
+          pb: { xs: 1, sm: 8 },
           mx: { xs: 2, lg: 3 },
           mt: { xs: -2, sm: 0, md: -6 },
           mb: { xs: 2, sm: 4 },
@@ -4554,11 +4557,11 @@ function Home() {
         <MKBox
           sx={{
             contentVisibility: "auto",
-            containIntrinsicSize: "0 820px",
-            minHeight: { xs: 900, sm: 820, md: 720, lg: 680 },
+            containIntrinsicSize: { xs: "0 460px", sm: "0 720px", md: "0 780px" },
+            minHeight: { xs: 0, sm: 720, md: 720, lg: 680 },
           }}
         >
-          <LazyVisible rootMargin={lazySectionMargin} minHeight={680}>
+          <LazyVisible rootMargin={lazySectionMargin} minHeight={360}>
             <Suspense fallback={<SectionSkeleton minHeight={680} />}>
               <Events />
             </Suspense>
@@ -4567,7 +4570,7 @@ function Home() {
       </Card>
 
       {/* Footer */}
-      <MKBox pt={2} px={0} mt={1}>
+      <MKBox pt={{ xs: 0.5, sm: 2 }} px={0} mt={{ xs: 0, sm: 1 }}>
         <DefaultFooter content={footerRoutes} />
       </MKBox>
     </MKBox>

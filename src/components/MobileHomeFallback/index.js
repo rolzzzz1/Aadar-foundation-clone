@@ -49,6 +49,7 @@ export default function MobileHomeFallback() {
           zIndex: 1,
           width: 120,
           height: 120,
+          objectFit: "contain",
           filter: "drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))",
           mb: 2,
         }}

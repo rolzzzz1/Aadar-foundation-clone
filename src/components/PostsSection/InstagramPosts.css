@@ -483,6 +483,25 @@
 }
 
 @media (max-width: 768px) {
+  .instagram-posts-container {
+    min-height: 0;
+    padding: 5px 5px 0;
+  }
+
+  .loading {
+    min-height: 200px;
+    padding: 24px 16px;
+  }
+
+  .posts-section {
+    margin-top: 8px;
+  }
+
+  .carousel-indicators {
+    margin-top: 12px;
+    margin-bottom: 0;
+  }
+
   .carousel-slide {
     gap: 20px;
   }

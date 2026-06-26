@@ -22,8 +22,8 @@ function Work() {
       variant="gradient"
       position="relative"
       mt={2}
-      py={4}
-      pb={2}
+      py={{ xs: 2, sm: 4 }}
+      pb={{ xs: 0.5, sm: 2 }}
       sx={{ backgroundColor: "#f0f2f5" }}
       borderRadius={"10px"}
       mx={0}
@@ -36,8 +36,8 @@ function Work() {
             md={12}
             sx={{
               textAlign: "center",
-              pb: 2,
-              pt: 3,
+              pb: { xs: 1, sm: 2 },
+              pt: { xs: 1, sm: 3 },
             }}
           >
             <MKTypography
@@ -51,8 +51,8 @@ function Work() {
           </Grid>
         </Grid>
         <Grid item container lg={12}>
-          <MKBox pt={1} width="100%">
-            <LazyVisible rootMargin="500px" minHeight={520}>
+          <MKBox pt={{ xs: 0, sm: 1 }} width="100%">
+            <LazyVisible rootMargin="500px" minHeight={280}>
               <InstagramPosts />
             </LazyVisible>
           </MKBox>
