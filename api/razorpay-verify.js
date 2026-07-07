@@ -8,10 +8,10 @@ const {
   paymentsDisabledResponse,
   validateRzpId,
   validateSignatureHex,
-} = require("./_lib/donation");
-const { fetchPaymentUntilCaptured, fetchOrder } = require("./_lib/razorpay");
-const { persistCapturedDonation } = require("./_lib/donationPersist");
-const { applyRateLimit, LIMITS } = require("./_lib/rateLimit");
+} = require("../server/_lib/donation");
+const { fetchPaymentUntilCaptured, fetchOrder } = require("../server/_lib/razorpay");
+const { persistCapturedDonation } = require("../server/_lib/donationPersist");
+const { applyRateLimit, LIMITS } = require("../server/_lib/rateLimit");
 
 const MAX_BODY_BYTES = 2 * 1024;
 

@@ -4,11 +4,15 @@ const {
   isProduction,
   originIsAllowed,
   validateRzpId,
-} = require("./_lib/donation");
-const { isStoreConfigured } = require("./_lib/donationRecord");
-const { donationRowToReceiptRecord } = require("./_lib/receiptRecord");
-const { applyRateLimit, LIMITS } = require("./_lib/rateLimit");
-const { parseContactLookup, contactMatchesRow, normalizePan } = require("./_lib/receiptContact");
+} = require("../server/_lib/donation");
+const { isStoreConfigured } = require("../server/_lib/donationRecord");
+const { donationRowToReceiptRecord } = require("../server/_lib/receiptRecord");
+const { applyRateLimit, LIMITS } = require("../server/_lib/rateLimit");
+const {
+  parseContactLookup,
+  contactMatchesRow,
+  normalizePan,
+} = require("../server/_lib/receiptContact");
 
 const MAX_BODY_BYTES = 2 * 1024;
 

@@ -8,7 +8,7 @@
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
-const { applyDevTlsWorkaround } = require("./_lib/httpsAgent");
+const { applyDevTlsWorkaround } = require("../server/_lib/httpsAgent");
 
 const PORT = Number(process.env.PORT) || 3001;
 

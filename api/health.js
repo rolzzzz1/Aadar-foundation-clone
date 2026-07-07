@@ -1,6 +1,6 @@
-const { isProduction, getAllowedOrigins, paymentsAreEnabled } = require("./_lib/donation");
-const { isStoreConfigured } = require("./_lib/donationRecord");
-const { isEmailConfigured } = require("./_lib/receiptEmail");
+const { isProduction, getAllowedOrigins, paymentsAreEnabled } = require("../server/_lib/donation");
+const { isStoreConfigured } = require("../server/_lib/donationRecord");
+const { isEmailConfigured } = require("../server/_lib/receiptEmail");
 
 module.exports = function handler(req, res) {
   res.setHeader("Content-Type", "application/json; charset=utf-8");

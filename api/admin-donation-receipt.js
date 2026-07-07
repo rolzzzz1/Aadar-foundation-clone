@@ -3,16 +3,16 @@ const {
   getJsonBody,
   isProduction,
   originIsAllowed,
-} = require("./_lib/donation");
+} = require("../server/_lib/donation");
 const {
   isStoreConfigured,
   fetchDonationByPaymentId,
   upsertDonationRecord,
-} = require("./_lib/donationRecord");
-const { donationRowToReceiptRecord } = require("./_lib/receiptRecord");
-const { trySendReceiptEmail, isEmailConfigured } = require("./_lib/receiptEmail");
-const { applyRateLimit, LIMITS } = require("./_lib/rateLimit");
-const { buildManualDonationRecord } = require("./_lib/manualReceipt");
+} = require("../server/_lib/donationRecord");
+const { donationRowToReceiptRecord } = require("../server/_lib/receiptRecord");
+const { trySendReceiptEmail, isEmailConfigured } = require("../server/_lib/receiptEmail");
+const { applyRateLimit, LIMITS } = require("../server/_lib/rateLimit");
+const { buildManualDonationRecord } = require("../server/_lib/manualReceipt");
 
 const MAX_BODY_BYTES = 8 * 1024;
 

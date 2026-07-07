@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { getDevHttpsAgent } = require("./_lib/httpsAgent");
+const { getDevHttpsAgent } = require("../server/_lib/httpsAgent");
 
 module.exports = async function handler(req, res) {
   try {

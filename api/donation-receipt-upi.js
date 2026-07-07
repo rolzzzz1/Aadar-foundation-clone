@@ -4,18 +4,22 @@ const {
   isProduction,
   originIsAllowed,
   sanitizeText,
-} = require("./_lib/donation");
-const { isStoreConfigured, fetchDonationByPaymentId, upsertDonationRecord } = require("./_lib/donationRecord");
-const { donationRowToReceiptRecord } = require("./_lib/receiptRecord");
-const { trySendReceiptEmail } = require("./_lib/receiptEmail");
-const { applyRateLimit, LIMITS } = require("./_lib/rateLimit");
+} = require("../server/_lib/donation");
+const {
+  isStoreConfigured,
+  fetchDonationByPaymentId,
+  upsertDonationRecord,
+} = require("../server/_lib/donationRecord");
+const { donationRowToReceiptRecord } = require("../server/_lib/receiptRecord");
+const { trySendReceiptEmail } = require("../server/_lib/receiptEmail");
+const { applyRateLimit, LIMITS } = require("../server/_lib/rateLimit");
 const {
   validateUtr,
   upiPaymentId,
   normalizePan,
   buildUpiDonationRecord,
-} = require("./_lib/upiReceipt");
-const { parseContactLookup, contactMatchesRow } = require("./_lib/receiptContact");
+} = require("../server/_lib/upiReceipt");
+const { parseContactLookup, contactMatchesRow } = require("../server/_lib/receiptContact");
 
 const MAX_BODY_BYTES = 4 * 1024;
 

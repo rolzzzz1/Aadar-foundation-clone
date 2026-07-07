@@ -1,9 +1,9 @@
 const crypto = require("crypto");
-const { applySecurityHeaders, isProduction, paymentsAreEnabled } = require("./_lib/donation");
-const { getWebhookRawBody } = require("./_lib/rawBody");
-const { fetchOrder, validateCapturedPayment } = require("./_lib/razorpay");
-const { updateDonationRecordStatus } = require("./_lib/donationRecord");
-const { persistCapturedDonation } = require("./_lib/donationPersist");
+const { applySecurityHeaders, isProduction, paymentsAreEnabled } = require("../server/_lib/donation");
+const { getWebhookRawBody } = require("../server/_lib/rawBody");
+const { fetchOrder, validateCapturedPayment } = require("../server/_lib/razorpay");
+const { updateDonationRecordStatus } = require("../server/_lib/donationRecord");
+const { persistCapturedDonation } = require("../server/_lib/donationPersist");
 
 const MAX_BODY_BYTES = 64 * 1024;
 

@@ -6,11 +6,15 @@ const {
   paymentsAreEnabled,
   paymentsDisabledResponse,
   validateRzpId,
-} = require("./_lib/donation");
-const { fetchPaymentUntilCaptured, fetchOrder, validateCapturedPayment } = require("./_lib/razorpay");
-const { applyRateLimit, LIMITS } = require("./_lib/rateLimit");
-const { normalizePan, buildClientReceiptFromRazorpay } = require("./_lib/receiptPayload");
-const { persistCapturedDonation } = require("./_lib/donationPersist");
+} = require("../server/_lib/donation");
+const {
+  fetchPaymentUntilCaptured,
+  fetchOrder,
+  validateCapturedPayment,
+} = require("../server/_lib/razorpay");
+const { applyRateLimit, LIMITS } = require("../server/_lib/rateLimit");
+const { normalizePan, buildClientReceiptFromRazorpay } = require("../server/_lib/receiptPayload");
+const { persistCapturedDonation } = require("../server/_lib/donationPersist");
 
 const MAX_BODY_BYTES = 2 * 1024;
 

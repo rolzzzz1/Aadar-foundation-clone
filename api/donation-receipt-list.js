@@ -3,10 +3,10 @@ const {
   getJsonBody,
   isProduction,
   originIsAllowed,
-} = require("./_lib/donation");
-const { isStoreConfigured, fetchDonationsByContact } = require("./_lib/donationRecord");
-const { applyRateLimit, LIMITS } = require("./_lib/rateLimit");
-const { parseContactLookup } = require("./_lib/receiptContact");
+} = require("../server/_lib/donation");
+const { isStoreConfigured, fetchDonationsByContact } = require("../server/_lib/donationRecord");
+const { applyRateLimit, LIMITS } = require("../server/_lib/rateLimit");
+const { parseContactLookup } = require("../server/_lib/receiptContact");
 
 const MAX_BODY_BYTES = 1024;
 
