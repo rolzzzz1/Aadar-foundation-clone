@@ -9,7 +9,7 @@ export const PAGE_HERO_DESKTOP = pageHeroDesktop;
  */
 export const PAGE_HERO_MOBILE = `${
   process.env.PUBLIC_URL || ""
-}/assets/images/mainThemeImages/page-hero-mobile.jpg?v=1`;
+}/assets/images/mainThemeImages/page-hero-mobile.jpg?v=2`;
 
 /** Pick the hero image URL for the current viewport (client-only). */
 export function getPageHeroSrcForViewport() {

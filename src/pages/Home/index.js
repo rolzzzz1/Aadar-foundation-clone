@@ -212,7 +212,7 @@ const HeroSlide = memo(function HeroSlide({
           position: "relative",
           overflow: { xs: "hidden", md: "hidden" },
           zIndex: 0,
-          paddingTop: { xs: "64px", sm: "76px", md: "110px", lg: "120px" },
+          paddingTop: { xs: "80px", sm: "96px", md: "128px", lg: "140px" },
           paddingBottom: { xs: 8, sm: 8, md: 0 },
           gap: { xs: 1.2, sm: 1.5, md: 1.5, lg: 1.5 },
         }}
