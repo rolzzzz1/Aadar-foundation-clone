@@ -35,6 +35,10 @@ import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 function DefaultFooter({ content }) {
+  if (!content || !content[0]) {
+    return null;
+  }
+
   const { brand, socials, menus, copyright } = content[0];
 
   const { t } = useTranslation();

@@ -1,5 +1,6 @@
 const { isProduction, getAllowedOrigins, paymentsAreEnabled } = require("./_lib/donation");
 const { isStoreConfigured } = require("./_lib/donationRecord");
+const { isEmailConfigured } = require("./_lib/receiptEmail");
 
 module.exports = function handler(req, res) {
   res.setHeader("Content-Type", "application/json; charset=utf-8");
@@ -15,6 +16,7 @@ module.exports = function handler(req, res) {
       razorpay_server_keys: !!(
         process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET
       ),
+      receipt_email: isEmailConfigured(),
     },
   };
 

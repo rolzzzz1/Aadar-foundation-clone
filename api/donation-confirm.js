@@ -10,6 +10,7 @@ const {
 const { fetchPaymentUntilCaptured, fetchOrder, validateCapturedPayment } = require("./_lib/razorpay");
 const { applyRateLimit, LIMITS } = require("./_lib/rateLimit");
 const { normalizePan, buildClientReceiptFromRazorpay } = require("./_lib/receiptPayload");
+const { persistCapturedDonation } = require("./_lib/donationPersist");
 
 const MAX_BODY_BYTES = 2 * 1024;
 
@@ -105,11 +106,25 @@ module.exports = async function handler(req, res) {
     });
   }
 
+  const persisted = await persistCapturedDonation({
+    payment,
+    order,
+    source: "confirm",
+    locale,
+  });
+
   return res.status(200).json({
     ok: true,
     verified: true,
     amount_paise: finalCheck.amount_paise,
     currency: finalCheck.currency,
     record: built.record,
+    record_saved: persisted.saved,
+    record_save_reason: persisted.saved ? undefined : persisted.reason,
+    receipt_email_sent: !!(persisted.receiptEmail && persisted.receiptEmail.sent),
+    receipt_email_reason:
+      persisted.receiptEmail && !persisted.receiptEmail.sent
+        ? persisted.receiptEmail.reason
+        : undefined,
   });
 };

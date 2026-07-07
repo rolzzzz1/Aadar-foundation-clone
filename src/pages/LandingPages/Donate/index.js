@@ -347,19 +347,37 @@ function Donate() {
                 flexDirection="column"
                 alignItems="stretch"
               >
-                <MKTypography
-                  fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
-                  sx={{
-                    fontSize: { xs: "1.2rem", sm: "1.4rem", md: "1.5rem" },
-                    fontWeight: "500",
-                    letterSpacing: "0.05rem",
-                  }}
-                  variant="h4"
-                  pb={3}
-                  textAlign="center"
-                >
-                  {donatePage.bankAccountDetails.title}
-                </MKTypography>
+                <MKBox sx={{ textAlign: "center", pb: 3 }}>
+                  <MKTypography
+                    fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                    sx={{
+                      fontSize: { xs: "1.2rem", sm: "1.4rem", md: "1.5rem" },
+                      fontWeight: "500",
+                      letterSpacing: "0.05rem",
+                      color: "#1f2a44",
+                      lineHeight: 1.25,
+                    }}
+                    variant="h4"
+                  >
+                    {donatePage.bankAccountDetails.title}
+                  </MKTypography>
+                  {donatePage.bankAccountDetails.subtitle ? (
+                    <MKTypography
+                      component="span"
+                      sx={{
+                        display: "block",
+                        mt: 0.4,
+                        fontSize: { xs: "0.78rem", sm: "0.82rem", md: "0.88rem" },
+                        fontWeight: 400,
+                        color: "rgba(31, 42, 68, 0.5)",
+                        letterSpacing: "0.02em",
+                        lineHeight: 1.3,
+                      }}
+                    >
+                      {donatePage.bankAccountDetails.subtitle}
+                    </MKTypography>
+                  ) : null}
+                </MKBox>
 
                 <BankDetailRow
                   label={`${donatePage.bankAccountDetails.acccountName.title} -`}

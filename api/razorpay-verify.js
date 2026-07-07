@@ -10,10 +10,7 @@ const {
   validateSignatureHex,
 } = require("./_lib/donation");
 const { fetchPaymentUntilCaptured, fetchOrder } = require("./_lib/razorpay");
-const {
-  buildRecordFromRazorpay,
-  saveDonationRecord,
-} = require("./_lib/donationRecord");
+const { persistCapturedDonation } = require("./_lib/donationPersist");
 const { applyRateLimit, LIMITS } = require("./_lib/rateLimit");
 
 const MAX_BODY_BYTES = 2 * 1024;
@@ -151,14 +148,17 @@ module.exports = async function handler(req, res) {
     });
   }
 
-  const record = buildRecordFromRazorpay({ payment, order, source: "verify" });
-  const saved = await saveDonationRecord(record);
+  const persisted = await persistCapturedDonation({
+    payment,
+    order,
+    source: "verify",
+  });
 
-  if (!saved.saved) {
+  if (!persisted.saved) {
     // eslint-disable-next-line no-console
     console.warn("[razorpay-verify] payment verified but donation not saved", {
       payment_id: paymentId,
-      reason: saved.reason,
+      reason: persisted.reason,
     });
   }
 
@@ -169,7 +169,12 @@ module.exports = async function handler(req, res) {
     payment_status: captureCheck.payment_status,
     amount_paise: captureCheck.amount_paise,
     currency: captureCheck.currency,
-    record_saved: saved.saved,
-    record_save_reason: saved.saved ? undefined : saved.reason,
+    record_saved: persisted.saved,
+    record_save_reason: persisted.saved ? undefined : persisted.reason,
+    receipt_email_sent: !!(persisted.receiptEmail && persisted.receiptEmail.sent),
+    receipt_email_reason:
+      persisted.receiptEmail && !persisted.receiptEmail.sent
+        ? persisted.receiptEmail.reason
+        : undefined,
   });
 };

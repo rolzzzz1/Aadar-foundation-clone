@@ -1907,11 +1907,14 @@ function Home() {
   const handleSetIsCarouselPaused = useCallback((value) => {
     setIsCarouselPaused(value);
   }, []);
-  // Use global flag to persist slide state across remounts for faster navigation
-  const [activeSlide, setActiveSlide] = useState(() => {
-    return window.__homeActiveSlide ?? 0;
-  });
-  const [slideInterval, setSlideInterval] = useState(8000);
+  // Use global flag to persist slide state across remounts for faster navigation.
+  // Keep the Carousel `index` prop stable (initial only). Feeding live activeSlide
+  // back into `index` re-triggers the library's setNext and aborts the in-progress
+  // fade (prevActive === active → outgoing slide display:none), which makes Next
+  // feel like it jumps one slide ahead instantly.
+  const initialHeroSlideRef = useRef(window.__homeActiveSlide ?? 0);
+  const [activeSlide, setActiveSlide] = useState(() => initialHeroSlideRef.current);
+  const slideInterval = 8000;
 
   // Persist animation flag across remounts using global state
   const [hasPlayedSlide1Animation, setHasPlayedSlide1Animation] = useState(() => {
@@ -2548,11 +2551,18 @@ function Home() {
     };
   }, [activeSlide, hasPlayedSlide1Animation]);
 
-  // Calculate interval based on current slide
-  // All slides: 8 seconds
-  useEffect(() => {
-    setSlideInterval(8000); // 8 seconds
-  }, [activeSlide]);
+  const handleHeroCarouselChange = useCallback(
+    (now) => {
+      setActiveSlide(now);
+      window.__homeActiveSlide = now;
+      // Track first time slide 1 is shown (only on initial page load)
+      if (now === 0 && !hasPlayedSlide1Animation) {
+        setHasPlayedSlide1Animation(true);
+        window.__homeHasPlayedAnimation = true;
+      }
+    },
+    [hasPlayedSlide1Animation]
+  );
 
   // Refs for video iframes to set fetchpriority attribute and position
   const maykiVideoRef = useRef(null);
@@ -3713,11 +3723,11 @@ function Home() {
                 filter: none !important;
               }
               .react-material-ui-carousel .MuiPaper-root {
-                transition: opacity 0.35s ease !important;
+                transition: opacity 0.5s ease !important;
               }
               .react-material-ui-carousel img,
               .react-material-ui-carousel video {
-                transition: opacity 0.35s ease !important;
+                transition: opacity 0.5s ease !important;
                 transform: none !important;
               }
             }
@@ -4368,7 +4378,8 @@ function Home() {
 
         <Carousel
           animation="fade"
-          duration={reduceMotion ? 0 : isMobile || isTabletRange ? 350 : 650}
+          // Keep in sync with hero CSS fade (0.65s desktop / 0.5s mobile)
+          duration={reduceMotion ? 0 : isMobile || isTabletRange ? 500 : 650}
           indicators={!isMobile && !isTabletRange}
           navButtonsAlwaysVisible={true}
           navButtonsAlwaysInvisible={false}
@@ -4376,16 +4387,8 @@ function Home() {
           fullHeightHover={false}
           swipe={true}
           autoPlay={!isCarouselPaused && !isNarrowViewport}
-          index={activeSlide}
-          onChange={(now) => {
-            setActiveSlide(now);
-            window.__homeActiveSlide = now;
-            // Track first time slide 1 is shown (only on initial page load)
-            if (now === 0 && !hasPlayedSlide1Animation) {
-              setHasPlayedSlide1Animation(true);
-              window.__homeHasPlayedAnimation = true;
-            }
-          }}
+          index={initialHeroSlideRef.current}
+          onChange={handleHeroCarouselChange}
           interval={slideInterval}
           stopAutoPlayOnHover={false}
           indicatorContainerProps={{

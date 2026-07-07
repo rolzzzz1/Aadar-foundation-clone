@@ -3,6 +3,11 @@
  * in Razorpay Dashboard + donor sessionStorage only (MVP).
  */
 
+const { isProduction } = require("./donation");
+
+const DONATION_SELECT_FIELDS =
+  "payment_id,order_id,receipt_no,amount_paise,currency,status,donor_name,donor_father_or_husband,donor_email,donor_contact,donor_pan,donor_address,donor_state,donor_city,donor_pin,program_label,purpose,fcra_declaration,source,created_at,receipt_email_sent_at";
+
 function isStoreConfigured() {
   return !!(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
 }
@@ -11,6 +16,10 @@ function pickNote(notes, key) {
   if (!notes || typeof notes !== "object") return "";
   const v = notes[key];
   return v == null ? "" : String(v).slice(0, 500);
+}
+
+function hasText(value) {
+  return value != null && String(value).trim() !== "";
 }
 
 /**
@@ -46,6 +55,42 @@ function buildRecordFromRazorpay({ payment, order, source }) {
   };
 }
 
+/**
+ * Prefer incoming non-empty values; always accept captured status from Razorpay.
+ */
+function mergeDonationRows(existing, incoming) {
+  const pick = (field) => (hasText(incoming[field]) ? incoming[field] : existing[field]);
+
+  const existingStatus = String(existing.status || "").toLowerCase();
+  const incomingStatus = String(incoming.status || "").toLowerCase();
+  let status = existing.status || incoming.status;
+  if (incomingStatus === "captured") status = "captured";
+  else if (!existingStatus && incomingStatus) status = incoming.status;
+
+  return {
+    payment_id: incoming.payment_id,
+    order_id: pick("order_id") || incoming.order_id,
+    receipt_no: pick("receipt_no") || incoming.receipt_no,
+    amount_paise: Number(incoming.amount_paise) || Number(existing.amount_paise) || 0,
+    currency: incoming.currency || existing.currency || "INR",
+    status,
+    donor_name: pick("donor_name"),
+    donor_father_or_husband: pick("donor_father_or_husband"),
+    donor_email: pick("donor_email"),
+    donor_contact: pick("donor_contact"),
+    donor_pan: pick("donor_pan"),
+    donor_address: pick("donor_address"),
+    donor_state: pick("donor_state"),
+    donor_city: pick("donor_city"),
+    donor_pin: pick("donor_pin"),
+    program_label: pick("program_label"),
+    purpose: pick("purpose"),
+    fcra_declaration: pick("fcra_declaration"),
+    source: incoming.source || existing.source,
+    updated_at: new Date().toISOString(),
+  };
+}
+
 function logSaveFailure(message, details) {
   // eslint-disable-next-line no-console
   console.error("[donation]", message, details);
@@ -61,42 +106,202 @@ function storeHeaders(extraPrefer) {
 }
 
 /**
- * Insert donation row (idempotent on payment_id).
- * @returns {Promise<{ saved: boolean, reason?: string }>}
+ * Fetch one donation row by payment_id.
+ * @returns {Promise<object|null>}
  */
-async function saveDonationRecord(record) {
+async function fetchDonationByPaymentId(paymentId) {
+  if (!isStoreConfigured() || !paymentId) return null;
+
+  const base = process.env.SUPABASE_URL.replace(/\/$/, "");
+  const url = `${base}/rest/v1/donations?payment_id=eq.${encodeURIComponent(
+    paymentId
+  )}&select=${DONATION_SELECT_FIELDS}&limit=1`;
+
+  try {
+    const res = await fetch(url, {
+      headers: {
+        apikey: process.env.SUPABASE_SERVICE_ROLE_KEY,
+        Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`,
+        Accept: "application/json",
+      },
+    });
+    if (!res.ok) {
+      if (!isProduction()) {
+        const text = await res.text().catch(() => "");
+        // eslint-disable-next-line no-console
+        console.warn("[donation] Supabase fetch failed", {
+          payment_id: paymentId,
+          status: res.status,
+          details: text.slice(0, 200),
+        });
+      }
+      return null;
+    }
+    const rows = await res.json().catch(() => []);
+    return Array.isArray(rows) && rows[0] ? rows[0] : null;
+  } catch (err) {
+    if (!isProduction()) {
+      // eslint-disable-next-line no-console
+      console.warn("[donation] Supabase fetch error", {
+        payment_id: paymentId,
+        message: err && err.message ? err.message : String(err),
+      });
+    }
+    return null;
+  }
+}
+
+/**
+ * Insert or merge donation row by payment_id.
+ * @returns {Promise<{ saved: boolean, reason?: string, row?: object, created?: boolean }>}
+ */
+async function upsertDonationRecord(record) {
   if (!isStoreConfigured()) {
     logSaveFailure("store not configured — skipping save", {
       payment_id: record && record.payment_id,
     });
     return { saved: false, reason: "not_configured" };
   }
+  if (!record || !record.payment_id) {
+    return { saved: false, reason: "missing_payment_id" };
+  }
 
+  const existing = await fetchDonationByPaymentId(record.payment_id);
   const base = process.env.SUPABASE_URL.replace(/\/$/, "");
-  const url = `${base}/rest/v1/donations?on_conflict=payment_id`;
+
+  if (!existing) {
+    const url = `${base}/rest/v1/donations?on_conflict=payment_id`;
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: storeHeaders("resolution=ignore-duplicates,return=representation"),
+        body: JSON.stringify(record),
+      });
+
+      if (res.ok) {
+        const rows = await res.json().catch(() => []);
+        const row = Array.isArray(rows) ? rows[0] : null;
+        return { saved: true, created: true, row: row || record };
+      }
+
+      if (res.status === 409) {
+        const raced = await fetchDonationByPaymentId(record.payment_id);
+        if (raced) {
+          const merged = mergeDonationRows(raced, record);
+          const patchUrl = `${base}/rest/v1/donations?payment_id=eq.${encodeURIComponent(
+            record.payment_id
+          )}`;
+          const patchRes = await fetch(patchUrl, {
+            method: "PATCH",
+            headers: storeHeaders("return=representation"),
+            body: JSON.stringify(merged),
+          });
+          if (patchRes.ok) {
+            const rows = await patchRes.json().catch(() => []);
+            const row = Array.isArray(rows) ? rows[0] : merged;
+            return { saved: true, created: false, row };
+          }
+        }
+      }
+
+      const text = await res.text().catch(() => "");
+      logSaveFailure("Supabase insert failed", {
+        status: res.status,
+        payment_id: record.payment_id,
+        detail: text.slice(0, 200),
+      });
+      return { saved: false, reason: `store_error_${res.status}` };
+    } catch (err) {
+      logSaveFailure("Supabase insert error", {
+        payment_id: record.payment_id,
+        message: err && err.message ? err.message : String(err),
+      });
+      return { saved: false, reason: "store_error" };
+    }
+  }
+
+  const merged = mergeDonationRows(existing, record);
+  const url = `${base}/rest/v1/donations?payment_id=eq.${encodeURIComponent(record.payment_id)}`;
 
   try {
     const res = await fetch(url, {
-      method: "POST",
-      headers: storeHeaders("resolution=ignore-duplicates,return=minimal"),
-      body: JSON.stringify(record),
+      method: "PATCH",
+      headers: storeHeaders("return=representation"),
+      body: JSON.stringify(merged),
     });
 
-    if (res.ok || res.status === 409) {
+    if (res.ok) {
+      const rows = await res.json().catch(() => []);
+      const row = Array.isArray(rows) ? rows[0] : merged;
+      return { saved: true, created: false, row };
+    }
+
+    const text = await res.text().catch(() => "");
+    logSaveFailure("Supabase merge patch failed", {
+      status: res.status,
+      payment_id: record.payment_id,
+      detail: text.slice(0, 200),
+    });
+    return { saved: false, reason: `store_error_${res.status}` };
+  } catch (err) {
+    logSaveFailure("Supabase merge patch error", {
+      payment_id: record.payment_id,
+      message: err && err.message ? err.message : String(err),
+    });
+    return { saved: false, reason: "store_error" };
+  }
+}
+
+/** @deprecated Use upsertDonationRecord */
+async function saveDonationRecord(record) {
+  return upsertDonationRecord(record);
+}
+
+/**
+ * Mark receipt email as sent (idempotent).
+ * @returns {Promise<{ saved: boolean, reason?: string }>}
+ */
+async function markReceiptEmailSent(paymentId) {
+  if (!isStoreConfigured()) {
+    return { saved: false, reason: "not_configured" };
+  }
+  if (!paymentId) {
+    return { saved: false, reason: "missing_payment_id" };
+  }
+
+  const base = process.env.SUPABASE_URL.replace(/\/$/, "");
+  const url = `${base}/rest/v1/donations?payment_id=eq.${encodeURIComponent(
+    paymentId
+  )}&receipt_email_sent_at=is.null`;
+
+  try {
+    const res = await fetch(url, {
+      method: "PATCH",
+      headers: storeHeaders("return=representation"),
+      body: JSON.stringify({
+        receipt_email_sent_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      }),
+    });
+
+    if (res.ok) {
+      const rows = await res.json().catch(() => []);
+      if (Array.isArray(rows) && rows.length === 0) {
+        return { saved: false, reason: "already_sent" };
+      }
       return { saved: true };
     }
 
     const text = await res.text().catch(() => "");
-    const snippet = text.slice(0, 200);
-    logSaveFailure("Supabase insert failed", {
+    logSaveFailure("Supabase receipt_email_sent_at patch failed", {
       status: res.status,
-      payment_id: record.payment_id,
-      detail: snippet,
+      payment_id: paymentId,
+      detail: text.slice(0, 200),
     });
     return { saved: false, reason: `store_error_${res.status}` };
   } catch (err) {
-    logSaveFailure("Supabase insert error", {
-      payment_id: record.payment_id,
+    logSaveFailure("Supabase receipt_email_sent_at patch error", {
+      payment_id: paymentId,
       message: err && err.message ? err.message : String(err),
     });
     return { saved: false, reason: "store_error" };
@@ -150,9 +355,61 @@ async function updateDonationRecordStatus(paymentId, patch) {
   }
 }
 
+/**
+ * List captured donations for a donor email or mobile (newest first).
+ * @returns {Promise<object[]>}
+ */
+async function fetchDonationsByContact(contact, limit = 25) {
+  if (!isStoreConfigured() || !contact?.ok) return [];
+
+  const safeLimit = Math.min(Math.max(Number(limit) || 25, 1), 25);
+  const base = process.env.SUPABASE_URL.replace(/\/$/, "");
+  const filter =
+    contact.type === "email"
+      ? `donor_email=eq.${encodeURIComponent(contact.value)}`
+      : `donor_contact=eq.${encodeURIComponent(contact.value)}`;
+
+  const url = `${base}/rest/v1/donations?${filter}&status=eq.captured&select=payment_id,receipt_no,amount_paise,currency,status,program_label,purpose,source,created_at&order=created_at.desc&limit=${safeLimit}`;
+
+  try {
+    const res = await fetch(url, {
+      headers: {
+        apikey: process.env.SUPABASE_SERVICE_ROLE_KEY,
+        Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`,
+        Accept: "application/json",
+      },
+    });
+    if (!res.ok) {
+      if (!isProduction()) {
+        const text = await res.text().catch(() => "");
+        // eslint-disable-next-line no-console
+        console.warn("[donation] Supabase list by contact failed", {
+          status: res.status,
+          details: text.slice(0, 200),
+        });
+      }
+      return [];
+    }
+    const rows = await res.json().catch(() => []);
+    return Array.isArray(rows) ? rows : [];
+  } catch (err) {
+    if (!isProduction()) {
+      // eslint-disable-next-line no-console
+      console.warn("[donation] Supabase list by contact error", {
+        message: err && err.message ? err.message : String(err),
+      });
+    }
+    return [];
+  }
+}
+
 module.exports = {
   isStoreConfigured,
   buildRecordFromRazorpay,
+  fetchDonationByPaymentId,
+  fetchDonationsByContact,
+  upsertDonationRecord,
   saveDonationRecord,
+  markReceiptEmailSent,
   updateDonationRecordStatus,
 };

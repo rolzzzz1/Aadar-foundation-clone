@@ -15,6 +15,10 @@ export const CONTACT_PATH = "/contact";
 export const PRIVACY_POLICY_PATH = "/privacy-policy";
 export const TERMS_CONDITIONS_PATH = "/terms-and-conditions";
 
+export const ADMIN_RECEIPT_PATH = "/admin/receipt";
+
+export const DONATION_RECEIPT_PATH = "/donate/receipt";
+
 export const DONATION_CHECKOUT_PATH = "/donate/checkout";
 export const DONATION_SUCCESS_PATH = "/donation/success";
 export const DONATION_FAILED_PATH = "/donation/failed";

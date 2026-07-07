@@ -53,7 +53,7 @@ export default function DonateSectionPricingList({
             fontSize: { xs: "1.1rem", sm: "1.3rem", md: "1.3rem", lg: "1.5rem" },
             fontWeight: "400",
             width: "100%",
-            textAlign: centered ? "center" : { xs: "left", sm: "center" },
+            textAlign: centered ? "center" : "left",
           }}
           pb={subtitle ? 0.75 : 2}
         >

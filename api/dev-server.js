@@ -19,6 +19,10 @@ const routes = {
   "/api/razorpay-verify": require("./razorpay-verify.js"),
   "/api/razorpay-webhook": require("./razorpay-webhook.js"),
   "/api/donation-receipt": require("./donation-receipt.js"),
+  "/api/donation-receipt-list": require("./donation-receipt-list.js"),
+  "/api/donation-receipt-upi": require("./donation-receipt-upi.js"),
+  "/api/admin-donation-receipt": require("./admin-donation-receipt.js"),
+  "/api/donation-receipt-resend": require("./donation-receipt-resend.js"),
   "/api/donation-confirm": require("./donation-confirm.js"),
   "/api/instagram-posts": require("./instagram-posts.js"),
 };
@@ -66,7 +70,7 @@ function setCors(nodeReq, nodeRes) {
   nodeRes.setHeader("Access-Control-Allow-Origin", origin);
   nodeRes.setHeader("Vary", "Origin");
   nodeRes.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-  nodeRes.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept");
+  nodeRes.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Admin-Receipt-Secret");
 }
 
 function createMockRes(nodeReq, nodeRes) {
@@ -170,6 +174,9 @@ server.listen(PORT, "127.0.0.1", () => {
   console.log("  POST /api/razorpay-webhook");
   // eslint-disable-next-line no-console
   console.log("  POST /api/donation-receipt");
+  console.log("  POST /api/donation-receipt-list");
+  console.log("  POST /api/donation-receipt-upi");
+  console.log("  POST /api/admin-donation-receipt");
   console.log("  POST /api/donation-confirm");
   // eslint-disable-next-line no-console
   console.log("  GET  /api/instagram-posts");

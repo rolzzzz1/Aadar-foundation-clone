@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
-import { ReactComponent as RazorpayLogoLight } from "assets/images/logos/razorpay-logo-light.svg";
+import razorpayLogoLight from "assets/images/logos/razorpay-logo-light.svg";
 
 const labelSx = {
   color: "#1f2a44",
@@ -18,20 +18,28 @@ const receiptSx = {
   fontWeight: 400,
   fontSize: { xs: "0.58rem", sm: "0.62rem", md: "0.65rem" },
   lineHeight: 1.2,
-  whiteSpace: { xs: "normal", sm: "nowrap" },
+  whiteSpace: "normal",
   textAlign: "center",
 };
 
 /** Trust block below Donate Now — two rows: payments + receipt. */
 export default function DonateTrustBanner() {
   const { t } = useTranslation();
-  const trustBanner = t("donatePage.trustBanner");
+  const trustBannerRaw = t("donatePage.trustBanner");
+  const trustBanner =
+    trustBannerRaw && typeof trustBannerRaw === "object"
+      ? trustBannerRaw
+      : {
+          securePaymentsPoweredBy: "Secure payments powered by",
+          receiptProvided:
+            "An official donation receipt will be generated and shared upon successful payment.",
+        };
 
   return (
     <MKBox
       sx={{
-        mt: 2,
-        pt: { xs: 1.25, sm: 1.5 },
+        mt: 1.25,
+        pt: { xs: 1, sm: 1.15 },
         borderTop: "1px solid rgba(46, 125, 50, 0.12)",
         display: "flex",
         flexDirection: "column",
@@ -56,13 +64,14 @@ export default function DonateTrustBanner() {
           {trustBanner.securePaymentsPoweredBy}
         </MKTypography>
         <MKBox
-          component={RazorpayLogoLight}
+          component="img"
+          src={razorpayLogoLight}
+          alt="Razorpay"
           sx={{
             height: { xs: 16, sm: 18, md: 20 },
             width: "auto",
             flexShrink: 0,
             display: "block",
-            "& svg": { height: "100%", width: "auto", display: "block" },
           }}
         />
       </MKBox>

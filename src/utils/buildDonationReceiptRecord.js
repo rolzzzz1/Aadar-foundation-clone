@@ -17,6 +17,7 @@ export function buildDonationReceiptRecord({
   keyId,
   verified,
   locale,
+  receiptEmailSent,
 }) {
   return {
     status,
@@ -37,6 +38,7 @@ export function buildDonationReceiptRecord({
     programLabel: programLabel || "",
     paidAt: new Date().toISOString(),
     verified: !!verified,
+    receiptEmailSent: !!receiptEmailSent,
     errorCode: errorCode || "",
     errorDescription: errorDescription || "",
     testMode: isRazorpayTestKey(keyId),

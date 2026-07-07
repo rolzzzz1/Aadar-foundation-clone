@@ -26,7 +26,9 @@ import {
   DONATE2_PAGE_PATH,
   DONATION_CHECKOUT_PATH,
   DONATION_FAILED_PATH,
+  DONATION_RECEIPT_PATH,
   DONATION_SUCCESS_PATH,
+  ADMIN_RECEIPT_PATH,
   isDonate2Enabled,
   LEGACY_PATH_REDIRECTS,
 } from "utils/paths";
@@ -74,6 +76,12 @@ const DonationResult = isPaymentsEnabled()
   : null;
 const Donate = lazy(() => import("layouts/pages/landing-pages/donate"));
 const Donate2 = isDonate2Enabled ? lazy(() => import("pages/LandingPages/Donate2")) : null;
+const DonationReceiptRetrieve = lazy(() =>
+  import(/* webpackChunkName: "donation-receipt-retrieve" */ "pages/DonationReceiptRetrieve")
+);
+const AdminDonationReceipt = lazy(() =>
+  import(/* webpackChunkName: "admin-donation-receipt" */ "pages/AdminDonationReceipt")
+);
 
 // Error boundary component
 class ErrorBoundary extends React.Component {
@@ -402,6 +410,22 @@ export default function App() {
               ) : (
                 <Navigate to={DONATE_PAGE_PATH} replace />
               )
+            }
+          />
+          <Route
+            path={DONATION_RECEIPT_PATH}
+            element={
+              <Suspense fallback={null}>
+                <DonationReceiptRetrieve />
+              </Suspense>
+            }
+          />
+          <Route
+            path={ADMIN_RECEIPT_PATH}
+            element={
+              <Suspense fallback={null}>
+                <AdminDonationReceipt />
+              </Suspense>
             }
           />
           <Route path="*" element={<Navigate to="/home" />} />

@@ -18,12 +18,14 @@ import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 
 export default styled(Typography)(({ theme, ownerState }) => {
-  const { palette, typography, functions } = theme;
+  const { palette = {}, typography = {}, functions = {} } = theme || {};
   const { color, textTransform, verticalAlign, fontWeight, opacity, textGradient } = ownerState;
 
-  const { gradients, transparent } = palette;
+  const { gradients = {}, transparent = { main: "transparent" } } = palette;
   const { fontWeightLight, fontWeightRegular, fontWeightMedium, fontWeightBold } = typography;
-  const { linearGradient } = functions;
+  const linearGradient =
+    functions.linearGradient ||
+    ((colorA, colorB, angle = 195) => `linear-gradient(${angle}deg, ${colorA}, ${colorB})`);
 
   // fontWeight styles
   const fontWeights = {
@@ -34,17 +36,27 @@ export default styled(Typography)(({ theme, ownerState }) => {
   };
 
   // styles for the typography with textGradient={true}
-  const gradientStyles = () => ({
-    backgroundImage:
-      color !== "inherit" && color !== "text" && color !== "white" && gradients[color]
-        ? linearGradient(gradients[color].main, gradients[color].state)
-        : linearGradient(gradients.dark.main, gradients.dark.state),
-    display: "inline-block",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: transparent.main,
-    position: "relative",
-    zIndex: 1,
-  });
+  const gradientStyles = () => {
+    let backgroundImageValue = "none";
+
+    const canUseColorGradient =
+      color !== "inherit" && color !== "text" && color !== "white" && Boolean(gradients[color]);
+
+    if (canUseColorGradient) {
+      backgroundImageValue = linearGradient(gradients[color].main, gradients[color].state);
+    } else if (gradients.dark) {
+      backgroundImageValue = linearGradient(gradients.dark.main, gradients.dark.state);
+    }
+
+    return {
+      backgroundImage: backgroundImageValue,
+      display: "inline-block",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: transparent.main,
+      position: "relative",
+      zIndex: 1,
+    };
+  };
 
   // color value
   const colorValue = color === "inherit" || !palette[color] ? "inherit" : palette[color].main;

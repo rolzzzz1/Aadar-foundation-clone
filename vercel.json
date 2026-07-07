@@ -3,6 +3,12 @@
   "outputDirectory": "build",
   "installCommand": "npm install",
   "framework": "create-react-app",
+  "functions": {
+    "api/**/*.js": {
+      "maxDuration": 60,
+      "memory": 1024
+    }
+  },
   "redirects": [
     { "source": "/pages/landing-pages/about-us", "destination": "/about", "permanent": true },
     { "source": "/pages/landing-pages/about", "destination": "/about", "permanent": true },

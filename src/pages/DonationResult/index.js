@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
@@ -49,7 +49,57 @@ const RECEIPT_LOOKUP_SUPPORT_EMAIL = "aadarfoundation.tech@gmail.com";
 const RECEIPT_LOOKUP_SUPPORT_PHONE = "+91 9826441863";
 
 function needsServerConfirm(r) {
+  if (!r) return false;
+  // Checkout already verified with Razorpay — no second confirm pass.
+  if (r.verified === true && r.status === "success") return false;
   return !!(r?.paymentId && r?.orderId && r?.donor?.pan && r?.status !== "failed");
+}
+
+function confirmFailureMessage(result, fallback) {
+  if (!result) return fallback;
+  const reason = result.reason;
+  switch (reason) {
+    case "invalid_pan":
+    case "pan_mismatch":
+      return "PAN on the receipt does not match our payment records. Please contact us with your payment ID.";
+    case "not_captured":
+      return `Payment was not captured yet (status: ${
+        result.payment_status || "unknown"
+      }). If money was debited, wait a minute and tap Get my receipt again, or contact us.`;
+    case "payment_fetch_failed":
+    case "order_fetch_failed":
+      return "We could not confirm this payment with Razorpay yet. Tap Get my receipt below to try again.";
+    default:
+      return fallback;
+  }
+}
+
+function mergeConfirmedRecord(initial, result) {
+  return {
+    ...initial,
+    ...result.record,
+    verified: true,
+    status: "success",
+    testMode: initial.testMode,
+    locale: initial.locale || result.record.locale,
+    receiptEmailSent: !!result.receipt_email_sent,
+  };
+}
+
+function isRetryableConfirmFailure(result) {
+  const reason = result?.reason;
+  return (
+    reason === "not_captured" ||
+    reason === "payment_fetch_failed" ||
+    reason === "order_fetch_failed"
+  );
+}
+
+const CONFIRM_RETRY_DELAY_MS = 2500;
+const CONFIRM_MAX_ATTEMPTS = 3;
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 const lookupFieldSx = {
@@ -116,7 +166,10 @@ export default function DonationResultPage() {
   const [record, setRecord] = useState(() => loadDonationReceipt());
   const [confirmBusy, setConfirmBusy] = useState(() => needsServerConfirm(loadDonationReceipt()));
   const [downloadMsg, setDownloadMsg] = useState("");
+  const [receiptEmailMsg, setReceiptEmailMsg] = useState("");
   const [lookupBusy, setLookupBusy] = useState(false);
+  const [retryBusy, setRetryBusy] = useState(false);
+  const [retryMsg, setRetryMsg] = useState("");
   const [lookupError, setLookupError] = useState("");
   const [lookupNotFound, setLookupNotFound] = useState(false);
   const [lookup, setLookup] = useState({
@@ -124,6 +177,45 @@ export default function DonationResultPage() {
     email: "",
     pan: "",
   });
+  const emailSendAttemptedRef = useRef(false);
+
+  const runServerConfirm = async (initial) => {
+    let lastResult = null;
+    let lastError = null;
+
+    for (let attempt = 0; attempt < CONFIRM_MAX_ATTEMPTS; attempt += 1) {
+      try {
+        const result = await postJson("/api/donation-confirm", {
+          payment_id: initial.paymentId,
+          order_id: initial.orderId,
+          donor_pan: initial.donor.pan,
+          locale: initial.locale || "en",
+        });
+
+        if (result?.ok && result?.record?.verified) {
+          return {
+            ok: true,
+            record: mergeConfirmedRecord(initial, result),
+            receiptEmailSent: !!result.receipt_email_sent,
+          };
+        }
+
+        lastResult = result;
+        if (!isRetryableConfirmFailure(result) || attempt >= CONFIRM_MAX_ATTEMPTS - 1) {
+          break;
+        }
+      } catch (err) {
+        lastError = err;
+        if (attempt >= CONFIRM_MAX_ATTEMPTS - 1) {
+          break;
+        }
+      }
+
+      await sleep(CONFIRM_RETRY_DELAY_MS);
+    }
+
+    return { ok: false, result: lastResult, error: lastError, initial };
+  };
 
   useEffect(() => {
     const initial = loadDonationReceipt();
@@ -136,59 +228,68 @@ export default function DonationResultPage() {
 
     (async () => {
       setConfirmBusy(true);
-      try {
-        const result = await postJson("/api/donation-confirm", {
-          payment_id: initial.paymentId,
-          order_id: initial.orderId,
-          donor_pan: initial.donor.pan,
-          locale: initial.locale || "en",
+      const outcome = await runServerConfirm(initial);
+
+      if (cancelled) return;
+
+      if (outcome.ok) {
+        saveDonationReceipt(outcome.record);
+        setRecord(outcome.record);
+        if (outcome.receiptEmailSent && outcome.record.donor?.email) {
+          setReceiptEmailMsg(
+            t(
+              "donationResult.receiptEmailed",
+              "A copy of your receipt has also been emailed to {{email}}.",
+              { email: outcome.record.donor.email }
+            )
+          );
+        }
+      } else if (initial.verified === true && initial.status === "success") {
+        setRecord(initial);
+      } else {
+        setRecord({
+          ...initial,
+          status: "unverified",
+          verified: false,
+          errorDescription:
+            (outcome.error && outcome.error.message) ||
+            confirmFailureMessage(
+              outcome.result,
+              t(
+                "donationResult.confirmFailed",
+                "Payment could not be verified with our records. Please contact us with your payment ID."
+              )
+            ),
         });
-
-        if (cancelled) return;
-
-        if (result?.ok && result?.record?.verified) {
-          const merged = {
-            ...initial,
-            ...result.record,
-            verified: true,
-            status: "success",
-            testMode: initial.testMode,
-            locale: initial.locale || result.record.locale,
-          };
-          saveDonationReceipt(merged);
-          setRecord(merged);
-        } else {
-          setRecord({
-            ...initial,
-            status: "unverified",
-            verified: false,
-            errorDescription: t(
-              "donationResult.confirmFailed",
-              "Payment could not be verified with our records. Please contact us with your payment ID."
-            ),
-          });
-        }
-      } catch {
-        if (!cancelled) {
-          setRecord({
-            ...initial,
-            status: "unverified",
-            verified: false,
-            errorDescription: t(
-              "donationResult.confirmFailed",
-              "Payment could not be verified with our records. Please contact us with your payment ID."
-            ),
-          });
-        }
-      } finally {
-        if (!cancelled) setConfirmBusy(false);
       }
+
+      if (!cancelled) setConfirmBusy(false);
     })();
 
     return () => {
       cancelled = true;
     };
   }, [t]);
+
+  useEffect(() => {
+    if (!record || record.verified) return;
+    setLookup((prev) => ({
+      paymentId: prev.paymentId || record.paymentId || "",
+      email: prev.email || record.donor?.email || "",
+      pan: prev.pan || record.donor?.pan || "",
+    }));
+  }, [record]);
+
+  useEffect(() => {
+    if (!record?.receiptEmailSent || !record?.donor?.email) return;
+    setReceiptEmailMsg(
+      t(
+        "donationResult.receiptEmailed",
+        "A copy of your receipt has also been emailed to {{email}}.",
+        { email: record.donor.email }
+      )
+    );
+  }, [record?.receiptEmailSent, record?.donor?.email, t]);
 
   useEffect(() => {
     if (!record?.locale) return;
@@ -204,12 +305,84 @@ export default function DonationResultPage() {
   const isUnverified = record?.status === "unverified";
   const isFailed = record?.status === "failed";
   const canDownloadReceipt = !!(record?.paymentId && isSuccess && record?.verified === true);
+  const canRecoverReceipt = !!(
+    isUnverified &&
+    record?.paymentId &&
+    record?.orderId &&
+    record?.donor?.pan
+  );
+
+  useEffect(() => {
+    if (confirmBusy) return undefined;
+    if (!record?.paymentId || !isSuccess || record.receiptEmailSent) return undefined;
+    if (emailSendAttemptedRef.current) return undefined;
+    emailSendAttemptedRef.current = true;
+
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const result = await postJson("/api/donation-receipt-resend", {
+          payment_id: record.paymentId,
+          locale: record.locale || "en",
+          force: false,
+        });
+        if (cancelled || !result?.ok) return;
+
+        const next = { ...record, receiptEmailSent: true };
+        saveDonationReceipt(next);
+        setRecord(next);
+      } catch {
+        emailSendAttemptedRef.current = false;
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [confirmBusy, isSuccess, record]);
 
   const title = useMemo(() => {
     if (isSuccess) return t("donationResult.titleSuccess");
     if (isUnverified) return t("donationResult.titleUnverified");
     return t("donationResult.titleFailed");
   }, [isSuccess, isUnverified, t]);
+
+  const handleGetReceipt = async () => {
+    if (!record || !canRecoverReceipt) return;
+    setRetryMsg("");
+    setRetryBusy(true);
+    try {
+      const outcome = await runServerConfirm(record);
+      if (outcome.ok) {
+        saveDonationReceipt(outcome.record);
+        setRecord(outcome.record);
+        if (outcome.receiptEmailSent && outcome.record.donor?.email) {
+          setReceiptEmailMsg(
+            t(
+              "donationResult.receiptEmailed",
+              "A copy of your receipt has also been emailed to {{email}}.",
+              { email: outcome.record.donor.email }
+            )
+          );
+        }
+        return;
+      }
+
+      setRetryMsg(
+        (outcome.error && outcome.error.message) ||
+          confirmFailureMessage(
+            outcome.result,
+            t(
+              "donationResult.getReceiptFailed",
+              "Could not fetch your receipt right now. Please try again in a minute or contact us with your Payment ID."
+            )
+          )
+      );
+    } finally {
+      setRetryBusy(false);
+    }
+  };
 
   const handleDownload = async () => {
     if (!record || !record.verified) {
@@ -821,7 +994,7 @@ export default function DonationResultPage() {
     >
       <Card
         sx={{
-          maxWidth: canDownloadReceipt ? 720 : 560,
+          maxWidth: canDownloadReceipt || canRecoverReceipt ? 720 : 560,
           mx: "auto",
           borderRadius: "18px",
           overflow: "hidden",
@@ -871,7 +1044,12 @@ export default function DonationResultPage() {
             {isSuccess
               ? t("donationResult.bodySuccess")
               : isUnverified
-              ? record.errorDescription || t("donationResult.bodyUnverified")
+              ? canRecoverReceipt
+                ? t(
+                    "donationResult.bodyUnverifiedRecoverable",
+                    "Your payment was successful. Tap Get my receipt below to download your 80G receipt."
+                  )
+                : record.errorDescription || t("donationResult.bodyUnverified")
               : record.errorDescription || t("donationResult.bodyFailedFallback")}
           </Typography>
           {record.testMode && (
@@ -935,6 +1113,104 @@ export default function DonationResultPage() {
             </>
           )}
 
+          {canRecoverReceipt ? (
+            <Stack spacing={2} mt={2.5}>
+              <Alert severity="success" icon={<CheckCircleIcon />} sx={{ textAlign: "left" }}>
+                <Typography sx={{ fontWeight: 700, fontSize: "0.875rem", mb: 0.25 }}>
+                  {t("donationResult.unverifiedPaidTitle", "Your payment went through")}
+                </Typography>
+                <Typography sx={{ fontSize: "0.8125rem", lineHeight: 1.55 }}>
+                  {t(
+                    "donationResult.unverifiedPaidBody",
+                    "We could not show your receipt automatically. Tap the button below — we will verify with Razorpay and open your receipt for download."
+                  )}
+                </Typography>
+              </Alert>
+
+              <MKButton
+                fullWidth
+                variant="contained"
+                color="success"
+                startIcon={retryBusy ? null : <ReceiptLongOutlinedIcon />}
+                onClick={handleGetReceipt}
+                disabled={retryBusy}
+                sx={{ py: 1.4, fontWeight: 800, textTransform: "none", borderRadius: "12px" }}
+              >
+                {retryBusy ? (
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <CircularProgress size={20} sx={{ color: "#fff" }} />
+                    <span>{t("donationResult.getMyReceiptBusy", "Fetching your receipt…")}</span>
+                  </Stack>
+                ) : (
+                  t("donationResult.getMyReceipt", "Get my receipt")
+                )}
+              </MKButton>
+
+              {retryMsg ? (
+                <Alert severity="warning" sx={{ textAlign: "left" }}>
+                  {retryMsg}
+                </Alert>
+              ) : null}
+
+              {record.errorDescription ? (
+                <Typography
+                  variant="caption"
+                  sx={{ color: "rgba(31,42,68,0.65)", lineHeight: 1.5 }}
+                >
+                  {record.errorDescription}
+                </Typography>
+              ) : null}
+
+              <Box
+                sx={{
+                  p: 2,
+                  borderRadius: "14px",
+                  bgcolor: "rgba(31,42,68,0.03)",
+                  border: "1px solid rgba(31,42,68,0.08)",
+                }}
+              >
+                <Typography sx={{ fontWeight: 700, fontSize: "0.875rem", color: "#1f2a44", mb: 1 }}>
+                  {t("donationResult.unverifiedStepsTitle", "Still need help?")}
+                </Typography>
+                <Typography
+                  component="ul"
+                  sx={{
+                    m: 0,
+                    pl: 2.25,
+                    fontSize: "0.8125rem",
+                    lineHeight: 1.65,
+                    color: "#475569",
+                  }}
+                >
+                  <li>
+                    {t(
+                      "donationResult.unverifiedStepRetry",
+                      "Wait one minute and tap Get my receipt again."
+                    )}
+                  </li>
+                  <li>
+                    {t(
+                      "donationResult.unverifiedStepEmail",
+                      "A copy may also arrive by email at {{email}} once verification completes.",
+                      { email: record.donor?.email || t("donationResult.yourEmail", "your email") }
+                    )}
+                  </li>
+                  <li>
+                    {t(
+                      "donationResult.unverifiedStepContact",
+                      "If the button keeps failing, email {{email}} or call {{phone}} with Payment ID {{paymentId}}.",
+                      {
+                        email: RECEIPT_LOOKUP_SUPPORT_EMAIL,
+                        phone: RECEIPT_LOOKUP_SUPPORT_PHONE,
+                        paymentId: record.paymentId,
+                      }
+                    )}
+                  </li>
+                </Typography>
+              </Box>
+            </Stack>
+          ) : null}
+
           {canDownloadReceipt && (
             <Stack spacing={1.5} mt={3}>
               <MKButton
@@ -950,6 +1226,11 @@ export default function DonationResultPage() {
               {downloadMsg ? (
                 <Typography variant="caption" sx={{ color: "rgba(31,42,68,0.65)" }}>
                   {downloadMsg}
+                </Typography>
+              ) : null}
+              {receiptEmailMsg ? (
+                <Typography variant="caption" sx={{ color: "#2e7d32", fontWeight: 600 }}>
+                  {receiptEmailMsg}
                 </Typography>
               ) : null}
             </Stack>

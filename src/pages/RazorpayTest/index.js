@@ -53,7 +53,7 @@ import {
   NOTE_MAX,
   PAN_LEN,
   PHONE_LEN,
-  DONATE_PAGE_PATH,
+  DONATE2_PAGE_PATH,
   DONATE_WIDGET_HASH,
   DONATION_CHECKOUT_PATH,
   hasCheckoutEntrySource,
@@ -448,7 +448,7 @@ export default function RazorpayTestPage() {
 
   const showPaymentOverlay = Boolean(busyPhase && busyPhase !== "awaitingPayment");
 
-  const donatePageTarget = `${DONATE_PAGE_PATH}#${DONATE_WIDGET_HASH}`;
+  const donatePageTarget = `${DONATE2_PAGE_PATH}#${DONATE_WIDGET_HASH}`;
 
   const isFormDirty = useMemo(
     () =>
@@ -674,6 +674,7 @@ export default function RazorpayTestPage() {
           donor_pin: pinCheck.value,
           fcra_declaration: "accepted",
           privacy_consent: "accepted",
+          donor_locale: isHi ? "hi" : "en",
         },
       };
 
@@ -751,6 +752,7 @@ export default function RazorpayTestPage() {
                 programLabel: orderProgram?.label,
                 keyId,
                 verified: paymentOk,
+                receiptEmailSent: !!(verification && verification.receipt_email_sent),
                 errorDescription: paymentOk
                   ? ""
                   : verificationFailureMessage(

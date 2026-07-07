@@ -3,46 +3,27 @@ const {
   getJsonBody,
   isProduction,
   originIsAllowed,
-  paymentsAreEnabled,
-  paymentsDisabledResponse,
-  sanitizeText,
   validateRzpId,
-  EMAIL_MAX,
-  NAME_MAX,
 } = require("./_lib/donation");
 const { isStoreConfigured } = require("./_lib/donationRecord");
+const { donationRowToReceiptRecord } = require("./_lib/receiptRecord");
 const { applyRateLimit, LIMITS } = require("./_lib/rateLimit");
+const { parseContactLookup, contactMatchesRow, normalizePan } = require("./_lib/receiptContact");
 
 const MAX_BODY_BYTES = 2 * 1024;
 
-function normalizeEmail(v) {
-  return String(v || "")
-    .trim()
-    .toLowerCase()
-    .slice(0, EMAIL_MAX);
+const NOT_FOUND = {
+  error: "Receipt not found. Please check your details or contact us with your payment ID.",
+};
+
+function normalizeDonorPan(value) {
+  return normalizePan(value);
 }
 
-function normalizePan(v) {
-  return String(v || "")
-    .trim()
-    .toUpperCase()
-    .replace(/[^A-Z0-9]/g, "")
-    .slice(0, 10);
+function panMatchesRow(row, pan) {
+  return normalizeDonorPan(row.donor_pan) === normalizeDonorPan(pan);
 }
 
-/**
- * Donor receipt lookup.
- *
- * SECURITY MODEL:
- * - Requires a payment id (Razorpay id format)
- * - Requires donor PAN to match what was saved in Razorpay order notes
- * - Donor email is optional (PAN is currently mandatory in the checkout UI)
- *   (and persisted to Supabase via verify/webhook)
- * - Returns a minimal, sanitized record suitable for building the PDF client-side
- *
- * NOTE: This is intentionally a POST (not GET) to avoid leaking identifiers
- * in URLs/referrers and to make it easier to rate-limit later if needed.
- */
 module.exports = async function handler(req, res) {
   applySecurityHeaders(res);
 
@@ -56,10 +37,6 @@ module.exports = async function handler(req, res) {
   }
 
   if (!applyRateLimit(req, res, LIMITS.receipt)) return;
-
-  if (!paymentsAreEnabled()) {
-    return res.status(503).json(paymentsDisabledResponse());
-  }
 
   const contentLength = Number(
     (req.headers && (req.headers["content-length"] || req.headers["Content-Length"])) || 0
@@ -80,10 +57,16 @@ module.exports = async function handler(req, res) {
   }
 
   const paymentId = String(body.payment_id || body.paymentId || "").trim();
-  const donorEmail = normalizeEmail(body.donor_email || body.email);
-  const donorPan = normalizePan(body.donor_pan || body.pan);
+  const contact = parseContactLookup(body);
+  const donorPan = normalizeDonorPan(body.donor_pan || body.pan);
 
-  if (!validateRzpId(paymentId) || donorPan.length !== 10) {
+  if (!validateRzpId(paymentId)) {
+    return res.status(400).json({ error: "Invalid lookup payload." });
+  }
+
+  const hasContact = contact.ok;
+  const hasPan = donorPan.length === 10;
+  if (!hasContact && !hasPan) {
     return res.status(400).json({ error: "Invalid lookup payload." });
   }
 
@@ -114,52 +97,22 @@ module.exports = async function handler(req, res) {
     const rows = await r.json().catch(() => []);
     const row = Array.isArray(rows) ? rows[0] : null;
 
-    // Always return a generic message on mismatch to avoid confirming if a payment id exists.
     if (!row) {
-      return res.status(404).json({
-        error: "Receipt not found. Please check your details or contact us with your payment ID.",
-      });
+      return res.status(404).json(NOT_FOUND);
     }
 
-    const matchPan = normalizePan(row.donor_pan) === donorPan;
-    const emailProvided = !!donorEmail && donorEmail.length >= 5;
-    const matchEmail = !emailProvided || normalizeEmail(row.donor_email) === donorEmail;
-    if (!matchPan || !matchEmail) {
-      return res.status(404).json({
-        error: "Receipt not found. Please check your details or contact us with your payment ID.",
-      });
+    const matchContact = hasContact && contactMatchesRow(row, contact);
+    const matchPan = hasPan && panMatchesRow(row, donorPan);
+    if (!matchContact && !matchPan) {
+      return res.status(404).json(NOT_FOUND);
     }
 
-    const captured = String(row.status || "").toLowerCase() === "captured";
+    const locale = body.locale === "hi" ? "hi" : "en";
+    const record = donationRowToReceiptRecord(row, { locale });
 
-    // Minimal + sanitized payload for client-side receipt generation.
     return res.status(200).json({
       ok: true,
-      record: {
-        status: captured ? "success" : "unverified",
-        amountInr: Math.round((Number(row.amount_paise) || 0) / 100),
-        currency: row.currency || "INR",
-        donor: {
-          name: sanitizeText(row.donor_name || "", NAME_MAX),
-          fatherOrHusbandName: sanitizeText(row.donor_father_or_husband || "", NAME_MAX),
-          email: emailProvided ? donorEmail : normalizeEmail(row.donor_email),
-          contact: sanitizeText(row.donor_contact || "", 20),
-          pan: donorPan,
-          address: sanitizeText(row.donor_address || "", 200),
-          state: sanitizeText(row.donor_state || "", 80),
-          city: sanitizeText(row.donor_city || "", 80),
-          pin: sanitizeText(row.donor_pin || "", 6),
-        },
-        paymentId: row.payment_id || paymentId,
-        orderId: row.order_id || "",
-        receiptNo: row.receipt_no || "",
-        purpose: row.purpose || "",
-        programLabel: row.program_label || "",
-        paidAt: row.created_at || new Date().toISOString(),
-        verified: captured,
-        testMode: undefined,
-        locale: "en",
-      },
+      record,
     });
   } catch (err) {
     if (!isProduction()) {

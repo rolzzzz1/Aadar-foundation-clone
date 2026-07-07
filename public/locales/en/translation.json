@@ -405,7 +405,7 @@
     "title": "Donate",
     "description": "We ensure that every donation is used with purpose and precision. Each decision we make is thoughtfully considered, and even the smallest contribution is directed toward initiatives where it will yield the greatest impact.",
     "clickToCopy": "Click to copy",
-    "emailMessage": "Please email your <1>name, mobile number and screenshot</1> of your transaction at <1>aadarfoundation2018@gmail.com</1> to get receipt of your contribution.",
+    "emailMessage": "For UPI / QR and bank transfer donations, email <1>aadarfoundation2018@gmail.com</1> with your full name, father/husband name, email, mobile number, PAN, complete address (house no., city, state, PIN), donation amount, payment date, transaction reference (UTR or bank ref), and a clear payment screenshot. We will verify your payment and email your 80G tax receipt.",
     "imageTagLine": "\" Help us increase number of these smiles \"",
     "makeADifferenceNow": "Make a Difference Now",
     "selectAmount": "Select Amount",
@@ -415,6 +415,27 @@
     "helpUsIncreaseSmilesLine1": "Help us increase",
     "helpUsIncreaseSmilesLine2": "number of these smiles.",
     "supportThemNow": "Support Them Now",
+    "impactBanner": {
+      "title": "Your Donation Creates Real Impact",
+      "items": {
+        "food": {
+          "title": "Nutritious Food",
+          "subtitle": "Every Day"
+        },
+        "shelter": {
+          "title": "Safe Shelter",
+          "subtitle": "& Dignity"
+        },
+        "healthcare": {
+          "title": "Healthcare",
+          "subtitle": "& Wellness"
+        },
+        "rehab": {
+          "title": "Rehabilitation",
+          "subtitle": "& Support"
+        }
+      }
+    },
     "donateInstantlyInstead": "Donate Instantly Instead (UPI / Card / Netbanking — India only)",
     "domesticDonationsNotice": "Online payments on this page are for donors in India only (INR). Aadar Foundation is not registered under FCRA and cannot accept foreign contributions here. If you are outside India, please contact us at aadarfoundation2018@gmail.com before donating.",
     "domesticDonationsFootnote": "We currently accept donations only from India in Indian Rupees (INR).\nForeign contributions cannot be accepted through this platform.",
@@ -442,10 +463,12 @@
     },
     "trustBanner": {
       "securePaymentsPoweredBy": "Secure payments powered by",
-      "receiptProvided": "Receipt will be provided in proper optimised way"
+      "receiptProvided": "An official donation receipt will be generated and shared upon successful payment."
     },
     "bankAccountDetails": {
-      "title": "Bank account details",
+      "title": "Direct Bank Transfer",
+      "subtitle": "(For offline donations)",
+      "receiptNote": "For UPI / QR and bank transfer donations, email aadarfoundation2018@gmail.com with your full name, father/husband name, email, mobile number, PAN, complete address (house no., city, state, PIN), donation amount, payment date, transaction reference (UTR or bank ref), and a clear payment screenshot. We will verify your payment and email your 80G tax receipt.",
       "acccountName": {
         "title": "Account name",
         "value": "Aadar foundation"
@@ -664,6 +687,18 @@
     "titleFailed": "Payment could not be completed",
     "bodySuccess": "Your payment was successful. Download your receipt below for your records.",
     "bodyUnverified": "We received your payment but could not verify it automatically. Please contact us with your payment ID.",
+    "bodyUnverifiedRecoverable": "Your payment was successful. Tap Get my receipt below to download your 80G receipt.",
+    "unverifiedPaidTitle": "Your payment went through",
+    "unverifiedPaidBody": "We could not show your receipt automatically. Tap the button below — we will verify with Razorpay and open your receipt for download.",
+    "getMyReceipt": "Get my receipt",
+    "getMyReceiptBusy": "Fetching your receipt…",
+    "getReceiptFailed": "Could not fetch your receipt right now. Please try again in a minute or contact us with your Payment ID.",
+    "unverifiedStepsTitle": "Still need help?",
+    "unverifiedStepRetry": "Wait one minute and tap Get my receipt again.",
+    "unverifiedStepEmail": "A copy may also arrive by email at {{email}} once verification completes.",
+    "unverifiedStepContact": "If the button keeps failing, email {{email}} or call {{phone}} with Payment ID {{paymentId}}.",
+    "yourEmail": "your email",
+    "receiptEmailed": "A copy of your receipt has also been emailed to {{email}}.",
     "confirmFailed": "Payment could not be verified with our records. Please contact us with your payment ID.",
     "confirmingPayment": "Verifying your payment…",
     "downloadNotVerified": "Receipt download is available only after payment is verified.",
@@ -693,6 +728,77 @@
     "orderId": "Order ID",
     "program": "Program",
     "purpose": "Purpose"
+  },
+  "receiptRetrieve": {
+    "title": "Retrieve your donation receipt",
+    "subtitle": "Download your official 80G receipt for online donations.",
+    "emailAddress": "Email address",
+    "emailPlaceholder": "Enter your email address",
+    "mobilePlaceholder": "Enter your mobile number",
+    "privacyNote": "We never share your information with anyone",
+    "cantFindTitle": "Can't find your receipt?",
+    "newHere": "New here?",
+    "or": "or",
+    "features": {
+      "official80G": {
+        "title": "Official 80G receipt",
+        "subtitle": "For income tax exemption"
+      },
+      "secure": {
+        "title": "Secure & Private",
+        "subtitle": "Your information is safe with us"
+      },
+      "quick": {
+        "title": "Quick & Easy",
+        "subtitle": "Find and download in seconds"
+      }
+    },
+    "tabOnline": "Online payment",
+    "tabUpi": "UPI / QR payment",
+    "onlineHint": "Online donations only. Enter the email or mobile number you used when donating to find your donations and download receipts.",
+    "contactEmail": "Email",
+    "contactMobile": "Mobile",
+    "contactInvalid": "Please enter a valid email or 10-digit mobile number.",
+    "findDonations": "Find my donations",
+    "listTitle": "Your donations",
+    "listEmpty": "No donations found for this email or mobile number.",
+    "viewReceipt": "View receipt",
+    "upiHint": "After paying via our UPI QR code, enter your bank/UPI transaction reference (UTR) to get your receipt.",
+    "upiTabLookup": "Download again",
+    "upiTabClaim": "First time after QR pay",
+    "paymentId": "Payment ID",
+    "emailOptional": "Email (optional)",
+    "pan": "PAN number",
+    "utr": "UPI transaction reference (UTR)",
+    "amount": "Amount (₹)",
+    "amountOptional": "Amount (₹, optional verification)",
+    "paidAt": "Payment date",
+    "name": "Full name",
+    "fatherHusband": "Father / husband name",
+    "email": "Email",
+    "mobile": "Mobile number",
+    "address": "Address",
+    "state": "State",
+    "city": "City",
+    "pin": "PIN code",
+    "purposeOptional": "Purpose (optional)",
+    "fetch": "Retrieve receipt",
+    "generate": "Generate my receipt",
+    "busy": "Retrieving…",
+    "onlineInvalid": "Please enter a valid email or 10-digit mobile number.",
+    "upiLookupInvalid": "Please enter a valid UPI transaction reference and the email or mobile used when registering.",
+    "upiClaimInvalid": "Please fill all required fields correctly.",
+    "notFound": "Receipt not found. Please check your details or contact us.",
+    "failed": "Could not fetch receipt right now. Please try again.",
+    "foundTitle": "Your receipt is ready",
+    "searchAgain": "Look up another receipt",
+    "yourEmail": "your email",
+    "cta": {
+      "title": "Need your donation receipt?",
+      "body": "Retrieve or download your official 80G receipt for online donations only.",
+      "bankTransferNote": "For UPI / QR and bank transfer donations, email us at aadarfoundation2018@gmail.com with your full name, father/husband name, email, mobile number, PAN, complete address (house no., city, state, PIN), donation amount, payment date, transaction reference (UTR or bank ref), and a clear payment screenshot. We will verify your payment and email your 80G tax receipt.",
+      "button": "Get my receipt"
+    }
   },
   "footer": {
     "title": "Aadar foundation",

@@ -3,7 +3,7 @@ import { Fragment, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 // react-router components
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -43,6 +43,7 @@ function DefaultNavbar({
   relative,
   center,
 }) {
+  const { pathname } = useLocation();
   const [dropdown, setDropdown] = useState("");
   const [dropdownEl, setDropdownEl] = useState("");
   const [dropdownName, setDropdownName] = useState("");
@@ -84,6 +85,15 @@ function DefaultNavbar({
     // Remove event listener on cleanup
     return () => window.removeEventListener("resize", displayMobileNavbar);
   }, []);
+
+  // Close mobile nav + any open dropdowns after navigation (prevents "blank white overlay" on mobile).
+  useEffect(() => {
+    setMobileNavbar(false);
+    setDropdown(null);
+    setDropdownName("");
+    setNestedDropdown(null);
+    setNestedDropdownName("");
+  }, [pathname]);
 
   const renderNavbarItems = routes.map(({ name, icon, href, route, collapse }) => {
     // return (

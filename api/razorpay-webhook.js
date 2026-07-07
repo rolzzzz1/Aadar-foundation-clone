@@ -2,11 +2,8 @@ const crypto = require("crypto");
 const { applySecurityHeaders, isProduction, paymentsAreEnabled } = require("./_lib/donation");
 const { getWebhookRawBody } = require("./_lib/rawBody");
 const { fetchOrder, validateCapturedPayment } = require("./_lib/razorpay");
-const {
-  buildRecordFromRazorpay,
-  saveDonationRecord,
-  updateDonationRecordStatus,
-} = require("./_lib/donationRecord");
+const { updateDonationRecordStatus } = require("./_lib/donationRecord");
+const { persistCapturedDonation } = require("./_lib/donationPersist");
 
 const MAX_BODY_BYTES = 64 * 1024;
 
@@ -66,17 +63,16 @@ async function handlePaymentCaptured(paymentEntity) {
     return;
   }
 
-  const record = buildRecordFromRazorpay({
+  const persisted = await persistCapturedDonation({
     payment: paymentEntity,
     order,
     source: "webhook",
   });
-  const saved = await saveDonationRecord(record);
-  if (!saved.saved) {
+  if (!persisted.saved) {
     // eslint-disable-next-line no-console
     console.warn("[razorpay-webhook] payment.captured but donation not saved", {
       payment_id: paymentEntity.id,
-      reason: saved.reason,
+      reason: persisted.reason,
     });
   }
 }
