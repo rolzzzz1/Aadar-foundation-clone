@@ -40,8 +40,7 @@ import getRoutes from "routes1";
 import getFooterRoutes from "footer.routes1";
 
 // Images
-import bgImage2 from "assets/images/mainThemeImages/swargSadanBlack.png";
-import bgImage from "assets/images/mainThemeImages/smallBrushstroke2.svg";
+import LandingPageHero from "components/LandingPageHero";
 import donate2UpiQr from "assets/images/donate2-upi-qr.png";
 import donateImg from "assets/images/donate-happy-faces.png";
 import MKButton from "components/MKButton";
@@ -60,6 +59,7 @@ import {
   sanitizeAmountInput,
   validateAmountInr,
 } from "utils/donation";
+import { getPageHeroSrcForViewport } from "utils/pageHeroAssets";
 
 function Donate2() {
   const { t } = useTranslation();
@@ -88,7 +88,7 @@ function Donate2() {
   // every page in `public/index.html`).
   React.useEffect(() => {
     if (typeof document === "undefined") return;
-    const href = bgImage2;
+    const href = getPageHeroSrcForViewport();
     if (!href) return;
     const existing = document.querySelector(`link[rel="preload"][as="image"][href="${href}"]`);
     if (existing) return;
@@ -130,73 +130,10 @@ function Donate2() {
         sticky
       />
 
-      {/* Main Image and text — hero image is rendered as an <img> with
-          decoding="async" + low fetchpriority so the page can paint
-          immediately on slow networks instead of blocking on a 260 KB
-          PNG background. The dark gradient acts as a placeholder until
-          the image arrives, so the headline is always readable. */}
-      <MKBox
+      <LandingPageHero
+        title={donatePage.tagLine}
         minHeight={{ xs: "55vh", sm: "65vh", md: "80vh" }}
-        width="100%"
-        sx={{
-          position: "relative",
-          backgroundColor: "#1f2a44",
-          backgroundImage: "linear-gradient(135deg, #1a2238 0%, #1f2a44 45%, #2a3658 100%)",
-          display: "flex",
-          justifyContent: "end",
-          alignItems: "end",
-          overflow: "hidden",
-        }}
-      >
-        <MKBox
-          component="img"
-          src={bgImage2}
-          alt=""
-          aria-hidden="true"
-          loading="eager"
-          decoding="async"
-          fetchPriority="high"
-          sx={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition: "left",
-            zIndex: 0,
-            pointerEvents: "none",
-          }}
-        />
-        <MKBox
-          color="white"
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-          sx={{
-            position: "relative",
-            zIndex: 1,
-            backgroundImage: `url(${bgImage})`,
-            backgroundSize: "contain",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
-            width: "40%",
-            minHeight: "40vh",
-          }}
-        >
-          <MKTypography
-            variant="h3"
-            color="white"
-            textAlign="center"
-            ml={-2}
-            fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
-            fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
-            mb={{ xs: 1, sm: 0 }}
-          >
-            {donatePage.tagLine}
-          </MKTypography>
-        </MKBox>
-      </MKBox>
+      />
 
       {/* Donate section */}
       <Card

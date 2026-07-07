@@ -9,16 +9,13 @@ import DefaultFooter from "examples/Footers/DefaultFooter";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
-import MKTypography from "components/MKTypography";
 
 // Routes
 import getRoutes from "routes1";
 import getFooterRoutes from "footer.routes1";
 import { DONATE_PAGE_PATH } from "utils/donation";
 
-// Images
-import bgImage2 from "assets/images/mainThemeImages/swargSadanBlack.png";
-import bgImage from "assets/images/mainThemeImages/smallBrushstroke2.svg";
+import LandingPageHero from "components/LandingPageHero";
 
 import termsData from "./data/termsData.js";
 
@@ -43,49 +40,12 @@ function TermsConditions() {
         sticky
       />
 
-      {/* Main Image and text */}
-      <MKBox
-        minHeight="80vh"
-        width="100%"
-        sx={{
-          backgroundImage: `url(${bgImage2})`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "left",
-          display: "flex",
-          justifyContent: "end",
-          alignItems: "end",
-        }}
-      >
-        <MKBox
-          color="white"
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-          sx={{
-            backgroundImage: `url(${bgImage})`,
-            backgroundSize: "contain",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "top",
-            width: "40%",
-            minHeight: "40vh",
-          }}
-        >
-          <MKTypography
-            variant="h3"
-            color="white"
-            textAlign="center"
-            ml={-2}
-            fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
-            fontSize={{ xs: "1.5rem", sm: "1.75rem", md: "1.875rem", lg: "1.875rem" }}
-            sx={{ fontWeight: "500" }}
-            mb={{ xs: 2, sm: 0 }}
-          >
-            {termsConditionsPage.title}
-          </MKTypography>
-        </MKBox>
-      </MKBox>
+      <LandingPageHero
+        title={termsConditionsPage.title}
+        brushBackgroundPosition="top"
+        titleFontSize={{ xs: "1.5rem", sm: "1.75rem", md: "1.875rem", lg: "1.875rem" }}
+        titleSx={{ fontWeight: "500", mb: { xs: 2, sm: 0 } }}
+      />
 
       {/* Contact section */}
       <Card

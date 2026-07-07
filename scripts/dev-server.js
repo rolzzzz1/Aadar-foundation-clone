@@ -12,19 +12,21 @@ const { applyDevTlsWorkaround } = require("../server/_lib/httpsAgent");
 
 const PORT = Number(process.env.PORT) || 3001;
 
+const apiDir = path.join(__dirname, "..", "api");
+
 const routes = {
-  "/api/test": require("./test.js"),
-  "/api/health": require("./health.js"),
-  "/api/razorpay-order": require("./razorpay-order.js"),
-  "/api/razorpay-verify": require("./razorpay-verify.js"),
-  "/api/razorpay-webhook": require("./razorpay-webhook.js"),
-  "/api/donation-receipt": require("./donation-receipt.js"),
-  "/api/donation-receipt-list": require("./donation-receipt-list.js"),
-  "/api/donation-receipt-upi": require("./donation-receipt-upi.js"),
-  "/api/admin-donation-receipt": require("./admin-donation-receipt.js"),
-  "/api/donation-receipt-resend": require("./donation-receipt-resend.js"),
-  "/api/donation-confirm": require("./donation-confirm.js"),
-  "/api/instagram-posts": require("./instagram-posts.js"),
+  "/api/test": require("./api-test.js"),
+  "/api/health": require(path.join(apiDir, "health.js")),
+  "/api/razorpay-order": require(path.join(apiDir, "razorpay-order.js")),
+  "/api/razorpay-verify": require(path.join(apiDir, "razorpay-verify.js")),
+  "/api/razorpay-webhook": require(path.join(apiDir, "razorpay-webhook.js")),
+  "/api/donation-receipt": require(path.join(apiDir, "donation-receipt.js")),
+  "/api/donation-receipt-list": require(path.join(apiDir, "donation-receipt-list.js")),
+  "/api/donation-receipt-upi": require(path.join(apiDir, "donation-receipt-upi.js")),
+  "/api/admin-donation-receipt": require(path.join(apiDir, "admin-donation-receipt.js")),
+  "/api/donation-receipt-resend": require(path.join(apiDir, "donation-receipt-resend.js")),
+  "/api/donation-confirm": require(path.join(apiDir, "donation-confirm.js")),
+  "/api/instagram-posts": require(path.join(apiDir, "instagram-posts.js")),
 };
 
 function loadEnvFiles() {

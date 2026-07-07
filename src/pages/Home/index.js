@@ -194,12 +194,17 @@ const HeroSlide = memo(function HeroSlide({
   );
 
   // Use the same special layout for slide 2, slide 3, and slide 4
+  const desktopHeroContentHeight = {
+    md: "calc(100vh - 160px)",
+    lg: "calc(100vh - 180px)",
+  };
+
   if (slideIndex === 1 || slideIndex === 2 || slideIndex === 3) {
     return (
       <MKBox
         display="flex"
         flexDirection={{ xs: "column", sm: "column", md: "row" }}
-        alignItems={{ xs: "stretch", md: "center" }}
+        alignItems="stretch"
         height={mobileHeroHeightSx}
         minHeight={mobileHeroHeightSx}
         width="100%"
@@ -275,15 +280,15 @@ const HeroSlide = memo(function HeroSlide({
             flex={{ xs: "0 0 auto", sm: "0 0 auto", md: "0 0 55%" }}
             width={{ xs: "100%", sm: "100%", md: "55%" }}
             display="flex"
-            alignItems="center"
-            justifyContent="center"
+            alignItems="stretch"
+            justifyContent="stretch"
             sx={{
               position: "relative",
               zIndex: 5,
               padding: { xs: 1, sm: 1.2, md: 2, lg: 2.5 },
               paddingX: { xs: 1.4, sm: 1.8, md: 2, lg: 2.5 },
-              height: { xs: "auto", sm: "auto", md: "calc(100vh - 160px)" },
-              minHeight: { xs: "220px", sm: "240px", md: "auto" },
+              height: { xs: "auto", sm: "auto", md: desktopHeroContentHeight },
+              minHeight: { xs: "220px", sm: "240px", md: desktopHeroContentHeight },
             }}
           >
             <MKBox
@@ -292,7 +297,9 @@ const HeroSlide = memo(function HeroSlide({
                 width: "100%",
                 maxWidth: { xs: "92%", sm: "75%", md: "95%", lg: "92%" },
                 ml: { xs: 0, sm: 0, md: 4, lg: 5 },
-                aspectRatio: { xs: "4/3", sm: "4/3", md: "16/9" },
+                flex: { md: 1 },
+                height: { md: "100%" },
+                aspectRatio: { xs: "4/3", sm: "4/3" },
                 maxHeight: { xs: "260px", sm: "240px", md: "none" },
                 borderRadius: { xs: "18px", sm: "22px", md: "28px", lg: "32px" },
                 overflow: "hidden",
@@ -358,9 +365,9 @@ const HeroSlide = memo(function HeroSlide({
               ? "center"
               : isTabletRange
               ? "center"
-              : { xs: "center", sm: "center", md: "center" }
+              : { xs: "center", sm: "center", md: "stretch" }
           }
-          alignItems={{ xs: "center", sm: "center", md: "flex-start" }}
+          alignItems={{ xs: "center", sm: "center", md: "stretch" }}
           sx={{
             position: "relative",
             zIndex: 10,
@@ -375,21 +382,21 @@ const HeroSlide = memo(function HeroSlide({
             height: {
               xs: isMobile ? "auto" : "auto",
               sm: isTabletRange ? "auto" : "auto",
-              md: "calc(100vh - 160px)",
+              md: desktopHeroContentHeight,
             },
             maxHeight: {
               xs: isMobile ? "none" : "none",
               sm: isTabletRange ? "none" : "none",
-              md: "none",
+              md: desktopHeroContentHeight,
             },
             minHeight: {
               xs: "calc(100dvh - 80px)",
               sm: "calc(100dvh - 80px)",
-              md: "fit-content",
+              md: desktopHeroContentHeight,
             },
             overflow: { xs: "visible", sm: "visible", md: "visible" },
             mx: { xs: "auto", sm: "auto", md: 0 },
-            mb: { xs: 0, sm: 0, md: 2, lg: 2.5 },
+            mb: 0,
           }}
         >
           {/* Horizontal rectangular image for slide 2 - positioned above text box (on xs and sm screens) */}
@@ -578,15 +585,14 @@ const HeroSlide = memo(function HeroSlide({
               maxWidth: { xs: "100%", sm: "100%", md: "92%", lg: "90%" },
               mx: { xs: "auto", sm: "auto", md: 0 },
               width: "100%",
+              flex: { md: 1 },
+              height: { md: "100%" },
               overflow:
                 slideIndex === 1 || slideIndex === 2 || slideIndex === 3
                   ? { md: "hidden", lg: "hidden" }
                   : "visible",
-              minHeight: { xs: "auto", sm: "auto", md: "fit-content" },
-              maxHeight:
-                slideIndex === 1 || slideIndex === 2 || slideIndex === 3
-                  ? { md: "calc(100vh - 200px)", lg: "calc(100vh - 220px)" }
-                  : "none",
+              minHeight: { xs: "auto", sm: "auto", md: "100%" },
+              maxHeight: { xs: "none", sm: "none", md: "100%" },
               display: "flex",
               flexDirection: "column",
             }}
@@ -731,11 +737,11 @@ const HeroSlide = memo(function HeroSlide({
                 fontSize: {
                   xs: "0.65rem",
                   sm: "0.72rem",
-                  md: "0.78rem",
-                  lg: "0.85rem",
-                  xl: "0.9rem",
+                  md: "0.84rem",
+                  lg: "0.9rem",
+                  xl: "0.95rem",
                 },
-                mb: { xs: 0.55, sm: 0.8, md: 1, lg: 1.2 },
+                mb: { xs: 0.55, sm: 0.8, md: 0.85, lg: 1 },
                 color: "#2A2A2A",
                 fontWeight: "500",
                 lineHeight: { xs: 1.35, sm: 1.45, md: 1.6 },
@@ -759,13 +765,13 @@ const HeroSlide = memo(function HeroSlide({
                 fontSize: {
                   xs: "0.7rem",
                   sm: "0.76rem",
-                  md: "0.84rem",
-                  lg: "0.9rem",
-                  xl: "0.94rem",
+                  md: "0.92rem",
+                  lg: "0.98rem",
+                  xl: "1.02rem",
                 },
                 mb:
                   slideIndex === 1 || slideIndex === 2 || slideIndex === 3
-                    ? { xs: 0.1, sm: 0.1, md: 1.4, lg: 1.6 }
+                    ? { xs: 0.1, sm: 0.1, md: 0.35, lg: 0.45 }
                     : { xs: 0.9, sm: 1.1, md: 1.4, lg: 1.6 },
                 color: "#555555",
                 wordWrap: "break-word",
@@ -804,7 +810,8 @@ const HeroSlide = memo(function HeroSlide({
                     ? {
                         xs: isParagraphExpanded ? 1.5 : 1.5,
                         sm: isParagraphExpanded ? 1.55 : 1.55,
-                        md: 1.65,
+                        md: 1.88,
+                        lg: 1.98,
                       }
                     : { xs: 1.5, sm: 1.55, md: 1.65, lg: 1.7 },
                 display:
@@ -833,12 +840,16 @@ const HeroSlide = memo(function HeroSlide({
                     : "unset",
                 width: "100%",
                 maxWidth: "100%",
-                flex: "1 1 auto",
+                flex:
+                  slideIndex === 1 || slideIndex === 2 || slideIndex === 3
+                    ? { xs: "1 1 auto", md: "1 1 0" }
+                    : "1 1 auto",
                 overflowY:
                   slideIndex === 1 || slideIndex === 2 || slideIndex === 3
                     ? { md: "auto", lg: "auto" }
                     : "visible",
-                minHeight: 0,
+                minHeight:
+                  slideIndex === 1 || slideIndex === 2 || slideIndex === 3 ? { md: 0, lg: 0 } : 0,
               }}
             >
               {slideIndex === 1

@@ -28,8 +28,7 @@ import Team from "pages/LandingPages/About/sections/Team";
 import WhoWeAre from "pages/LandingPages/About/sections/WhoWeAre";
 
 // Images
-import aboutBgImg from "assets/images/mainThemeImages/swargSadanBlack.png";
-import bgImage from "assets/images/mainThemeImages/smallBrushstroke2.svg";
+import LandingPageHero from "components/LandingPageHero";
 import food from "assets/images/aboutPageImages/foodAboutpage.jpg";
 import team from "assets/images/aboutPageImages/teamImg.jpg";
 import celebration from "assets/images/aboutPageImages/celebration.jpeg";
@@ -95,48 +94,7 @@ function About(props) {
         sticky
       />
 
-      {/* Main Image and text */}
-      <MKBox
-        minHeight="80vh"
-        width="100%"
-        sx={{
-          backgroundImage: `url(${aboutBgImg})`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "left",
-          display: "flex",
-          justifyContent: "end",
-          alignItems: "end",
-        }}
-      >
-        <MKBox
-          color="white"
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-          sx={{
-            backgroundImage: `url(${bgImage})`,
-            backgroundSize: "contain",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
-            width: "40%",
-            minHeight: "40vh",
-          }}
-        >
-          <MKTypography
-            variant="h3"
-            color="white"
-            textAlign="center"
-            ml={-2}
-            fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
-            fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
-            mb={{ xs: 1, sm: 0 }}
-          >
-            {aboutUsPage.title}
-          </MKTypography>
-        </MKBox>
-      </MKBox>
+      <LandingPageHero title={aboutUsPage.title} />
 
       {/* Main section of about/our work page */}
 

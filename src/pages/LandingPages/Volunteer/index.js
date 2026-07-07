@@ -40,8 +40,7 @@ import getFooterRoutes from "footer.routes1";
 import { DONATE_PAGE_PATH } from "utils/donation";
 
 // Images
-import bgImage2 from "assets/images/mainThemeImages/swargSadanBlack.png";
-import bgImage from "assets/images/mainThemeImages/smallBrushstroke2.svg";
+import LandingPageHero from "components/LandingPageHero";
 import team from "assets/images/aboutPageImages/teamImg.jpg";
 
 function Volunteer() {
@@ -220,48 +219,7 @@ function Volunteer() {
         sticky
       />
 
-      {/* Main Image and text */}
-      <MKBox
-        minHeight="80vh"
-        width="100%"
-        sx={{
-          backgroundImage: `url(${bgImage2})`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "left",
-          display: "flex",
-          justifyContent: "end",
-          alignItems: "end",
-        }}
-      >
-        <MKBox
-          color="white"
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-          sx={{
-            backgroundImage: `url(${bgImage})`,
-            backgroundSize: "contain",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
-            width: "40%",
-            minHeight: "40vh",
-          }}
-        >
-          <MKTypography
-            variant="h3"
-            color="white"
-            textAlign="center"
-            ml={-2}
-            fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
-            fontSize={{ xs: "1.2rem", sm: "1.875rem" }}
-            mb={{ xs: 1, sm: 0 }}
-          >
-            {volunteerPage.tagLine}
-          </MKTypography>
-        </MKBox>
-      </MKBox>
+      <LandingPageHero title={volunteerPage.tagLine} />
 
       {/* Contact section */}
       <Card
