@@ -454,7 +454,14 @@
     },
     "donateInstantlyInstead": "Donate Instantly Instead (UPI / Card / Netbanking — India only)",
     "domesticDonationsNotice": "Online payments on this page are for donors in India only (INR). Aadar Foundation is not registered under FCRA and cannot accept foreign contributions here. If you are outside India, please contact us at aadarfoundation2018@gmail.com before donating.",
-    "domesticDonationsFootnote": "We currently accept donations only from India in Indian Rupees (INR).\nForeign contributions cannot be accepted through this platform.",
+    "domesticDonationsFootnote": "We currently accept donations only from India in Indian Rupees (INR). Foreign contributions cannot be accepted through this platform.",
+    "heroHeadlineLead": "Your action today has",
+    "heroHeadlineAccent": "the power to transform a life.",
+    "heroSupportLead": "You can support our initiatives in multiple ways.",
+    "heroStrip": {
+      "contribution": "Your contribution brings hope, dignity and care to those who need it the most.",
+      "thankYou": "Thank you for being the reason someone smiles today."
+    },
     "trustBadges": {
       "taxBenefit80g": "80G Tax Benefit Available",
       "livesImpacted": "500+ Lives Impacted",
@@ -474,7 +481,7 @@
         "period": "one-time donation"
       },
       "monthlyCare": {
-        "title": "Monthly Care",
+        "title": "Monthly\nCare",
         "subtitle": "1 prabhuji / month",
         "amount": "₹3,001",
         "period": "per month"
@@ -592,7 +599,7 @@
           "subtitle": "Join as a regular supporter and help sustain the daily care of our residents."
         },
         "scanCard": {
-          "title": "Alternative: Scan and donate via UPI",
+          "title": "Alternative: Scan and donate",
           "subtitle": "UPI Payments via Razorpay"
         },
         "donateNowCta": "Donate Now",

@@ -62,10 +62,12 @@ export default function SponsorPrabhujiCtaCards({ sponsor }) {
   return (
     <MKBox sx={{ width: "100%" }}>
       <MKTypography
-        fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
         sx={{
-          fontSize: { xs: "1.1rem", sm: "1.3rem", md: "1.3rem", lg: "1.5rem" },
-          fontWeight: 400,
+          fontFamily:
+            '"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
+          fontSize: { xs: "1.1rem", sm: "1.25rem", md: "1.3rem", lg: "1.4rem" },
+          fontWeight: 500,
+          color: "#1f2a44",
           width: "100%",
           textAlign: "center",
         }}
@@ -78,7 +80,7 @@ export default function SponsorPrabhujiCtaCards({ sponsor }) {
           sx={{
             width: "100%",
             textAlign: "center",
-            mb: { xs: 3, sm: 3.5, md: 4 },
+            mb: { xs: 4, sm: 4.5, md: 5 },
             fontSize: { xs: "0.78rem", sm: "0.82rem", md: "0.85rem" },
             fontWeight: 400,
             color: "rgba(31, 42, 68, 0.6)",
@@ -130,7 +132,7 @@ export default function SponsorPrabhujiCtaCards({ sponsor }) {
             >
               <MKTypography
                 sx={{
-                  fontSize: { xs: "1rem", sm: "1.1rem", md: "1.2rem", lg: "1.25rem" },
+                  fontSize: { xs: "0.85rem", sm: "0.9rem", md: "0.95rem" },
                   fontWeight: 600,
                   color: "#1f2a44",
                   lineHeight: 1.4,
@@ -142,10 +144,10 @@ export default function SponsorPrabhujiCtaCards({ sponsor }) {
               </MKTypography>
               <MKTypography
                 sx={{
-                  mt: 1,
-                  fontSize: { xs: "0.82rem", sm: "0.88rem" },
+                  mt: 0.75,
+                  fontSize: { xs: "0.72rem", sm: "0.78rem" },
                   fontWeight: 500,
-                  color: "rgba(31, 42, 68, 0.75)",
+                  color: "rgba(31, 42, 68, 0.7)",
                   width: "100%",
                 }}
               >
@@ -153,9 +155,9 @@ export default function SponsorPrabhujiCtaCards({ sponsor }) {
               </MKTypography>
               <MKTypography
                 sx={{
-                  mt: 2,
+                  mt: 1.75,
                   mb: 2,
-                  fontSize: { xs: "0.95rem", sm: "1.05rem", md: "1.15rem" },
+                  fontSize: { xs: "0.88rem", sm: "0.95rem", md: "1rem" },
                   fontWeight: 700,
                   color: BRAND_GREEN,
                   letterSpacing: "0.01em",

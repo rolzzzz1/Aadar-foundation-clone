@@ -65,7 +65,9 @@ export default function DonateReceiptCta({ sx = {} }) {
           <MKBox sx={{ minWidth: 0 }}>
             <MKTypography
               sx={{
-                fontWeight: 700,
+                fontFamily:
+                  '"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
+                fontWeight: 500,
                 color: "#1f2a44",
                 fontSize: { xs: "1.05rem", sm: "1.15rem", md: "1.2rem" },
                 lineHeight: 1.3,
@@ -90,21 +92,41 @@ export default function DonateReceiptCta({ sx = {} }) {
         <MKButton
           component={RouterLink}
           to={DONATION_RECEIPT_PATH}
-          variant="contained"
-          color="success"
+          variant="outlined"
+          startIcon={<ReceiptLongOutlinedIcon />}
           sx={{
             flexShrink: 0,
-            fontWeight: 800,
+            fontWeight: 700,
             textTransform: "none",
             borderRadius: "12px",
-            px: { xs: 2.5, sm: 3 },
-            py: { xs: 1.05, sm: 1.15 },
-            fontSize: { xs: "0.875rem", sm: "0.9375rem" },
+            px: { xs: 2.75, sm: 3.25 },
+            py: { xs: 1.15, sm: 1.25 },
+            fontSize: { xs: "0.9rem", sm: "0.975rem" },
             width: { xs: "100%", sm: "auto" },
-            minWidth: { sm: 190, md: 210 },
-            maxWidth: { xs: 280, sm: "none" },
+            minWidth: { sm: 200, md: 220 },
+            maxWidth: { xs: 300, sm: "none" },
             mr: { sm: 2.5, md: 3.5 },
-            boxShadow: "0 8px 18px rgba(79, 169, 83, 0.22)",
+            color: "#2e7d32",
+            border: "1.5px solid rgba(46, 125, 50, 0.45)",
+            backgroundColor: "#ffffff",
+            boxShadow: "none",
+            letterSpacing: "0.01em",
+            "& .MuiSvgIcon-root": {
+              color: "#2e7d32",
+              fontSize: "1.3rem !important",
+            },
+            "&:hover": {
+              backgroundColor: "rgba(46, 125, 50, 0.06)",
+              border: "1.5px solid rgba(46, 125, 50, 0.65)",
+              boxShadow: "none",
+              color: "#1b5e20",
+            },
+            "&:focus, &.Mui-focusVisible, &:focus-visible, &:focus:not(:hover)": {
+              backgroundColor: "#ffffff",
+              border: "1.5px solid rgba(46, 125, 50, 0.65)",
+              boxShadow: "0 0 0 3px rgba(46, 125, 50, 0.12)",
+              outline: "none",
+            },
           }}
         >
           {copy.button || "Get my receipt"}
