@@ -15,6 +15,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import theme from "assets/theme";
 
 import DeferredVitals from "components/DeferredVitals";
+import PageLoadingFallback from "components/PageLoadingFallback";
 import MobileHomeFallback from "components/MobileHomeFallback";
 
 const Home = lazy(() => import(/* webpackPreload: true */ "layouts/pages/home"));
@@ -356,7 +357,7 @@ export default function App() {
             path={DONATION_CHECKOUT_PATH}
             element={
               isPaymentsEnabled() && RazorpayTest ? (
-                <Suspense fallback={null}>
+                <Suspense fallback={<PageLoadingFallback />}>
                   <RazorpayTest />
                 </Suspense>
               ) : (
@@ -372,7 +373,7 @@ export default function App() {
             path={DONATION_SUCCESS_PATH}
             element={
               isPaymentsEnabled() && DonationResult ? (
-                <Suspense fallback={null}>
+                <Suspense fallback={<PageLoadingFallback />}>
                   <DonationResult />
                 </Suspense>
               ) : (
@@ -384,7 +385,7 @@ export default function App() {
             path={DONATION_FAILED_PATH}
             element={
               isPaymentsEnabled() && DonationResult ? (
-                <Suspense fallback={null}>
+                <Suspense fallback={<PageLoadingFallback />}>
                   <DonationResult />
                 </Suspense>
               ) : (
@@ -395,7 +396,7 @@ export default function App() {
           <Route
             path={DONATE_PAGE_PATH}
             element={
-              <Suspense fallback={null}>
+              <Suspense fallback={<PageLoadingFallback />}>
                 <Donate />
               </Suspense>
             }
@@ -404,7 +405,7 @@ export default function App() {
             path={DONATE2_PAGE_PATH}
             element={
               isDonate2Enabled && Donate2 ? (
-                <Suspense fallback={null}>
+                <Suspense fallback={<PageLoadingFallback />}>
                   <Donate2 />
                 </Suspense>
               ) : (
@@ -415,7 +416,7 @@ export default function App() {
           <Route
             path={DONATION_RECEIPT_PATH}
             element={
-              <Suspense fallback={null}>
+              <Suspense fallback={<PageLoadingFallback />}>
                 <DonationReceiptRetrieve />
               </Suspense>
             }
@@ -423,7 +424,7 @@ export default function App() {
           <Route
             path={ADMIN_RECEIPT_PATH}
             element={
-              <Suspense fallback={null}>
+              <Suspense fallback={<PageLoadingFallback />}>
                 <AdminDonationReceipt />
               </Suspense>
             }

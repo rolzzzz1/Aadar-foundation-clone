@@ -1,4 +1,6 @@
 import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
+import BoltOutlinedIcon from "@mui/icons-material/BoltOutlined";
+import AccountBalanceOutlinedIcon from "@mui/icons-material/AccountBalanceOutlined";
 import PropTypes from "prop-types";
 import { Link as RouterLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -9,8 +11,6 @@ import MKTypography from "components/MKTypography";
 import { DONATION_RECEIPT_PATH } from "utils/donation";
 
 const BODY_FALLBACK = "Retrieve or download your official 80G receipt for online donations only.";
-const BANK_TRANSFER_FALLBACK =
-  "For UPI / QR and bank transfer donations, email us at aadarfoundation2018@gmail.com with your full name, father/husband name, email, mobile number, PAN, complete address (house no., city, state, PIN), donation amount, payment date, transaction reference (UTR or bank ref), and a clear payment screenshot. We will verify your payment and email your 80G tax receipt.";
 
 export default function DonateReceiptCta({ sx = {} }) {
   const { t } = useTranslation();
@@ -19,110 +19,233 @@ export default function DonateReceiptCta({ sx = {} }) {
   return (
     <MKBox
       sx={{
-        display: "flex",
-        flexDirection: { xs: "column", md: "row" },
-        alignItems: { xs: "center", md: "center" },
-        justifyContent: "space-between",
-        gap: { xs: 1.75, md: 2.5 },
-        p: { xs: 2.25, sm: 2.5, md: 3 },
         borderRadius: "22px",
         background:
           "linear-gradient(135deg, rgba(240, 253, 244, 0.95) 0%, rgba(236, 252, 243, 0.75) 55%, rgba(255, 255, 255, 0.9) 100%)",
         border: "1px solid rgba(46, 125, 50, 0.16)",
         boxShadow: "0 14px 34px rgba(31, 42, 68, 0.06)",
-        textAlign: { xs: "center", md: "left" },
+        p: { xs: 2, sm: 2.5, md: 3 },
         ...sx,
       }}
     >
+      {/* Header: icon + title/subtitle + CTA button */}
       <MKBox
         sx={{
           display: "flex",
           flexDirection: { xs: "column", sm: "row" },
-          alignItems: "center",
-          gap: { xs: 1.25, sm: 1.75 },
-          flex: 1,
-          minWidth: 0,
+          alignItems: { xs: "flex-start", sm: "center" },
+          justifyContent: "space-between",
+          gap: { xs: 1.5, sm: 2 },
+          mb: { xs: 2, sm: 2.25 },
         }}
       >
         <MKBox
           sx={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "center",
-            flexShrink: 0,
-            lineHeight: 0,
-            fontSize: { xs: 56, sm: 68, md: 72 },
+            gap: { xs: 1.25, sm: 1.75 },
+            minWidth: 0,
           }}
         >
-          <ReceiptLongOutlinedIcon
+          <MKBox
             sx={{
-              color: "#2e7d32",
-              fontSize: "1em",
-              width: "1em",
-              height: "1em",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+              lineHeight: 0,
+              fontSize: { xs: 58, sm: 68 },
             }}
-          />
+          >
+            <ReceiptLongOutlinedIcon
+              sx={{ color: "#2e7d32", fontSize: "1em", width: "1em", height: "1em" }}
+            />
+          </MKBox>
+
+          <MKBox sx={{ minWidth: 0 }}>
+            <MKTypography
+              sx={{
+                fontWeight: 700,
+                color: "#1f2a44",
+                fontSize: { xs: "1.05rem", sm: "1.15rem", md: "1.2rem" },
+                lineHeight: 1.3,
+              }}
+            >
+              {copy.title || "Need your donation receipt?"}
+            </MKTypography>
+            <MKTypography
+              sx={{
+                color: "rgba(31, 42, 68, 0.68)",
+                fontSize: { xs: "0.85rem", sm: "0.9rem" },
+                lineHeight: 1.5,
+                mt: 0.25,
+                maxWidth: 480,
+              }}
+            >
+              {copy.body || BODY_FALLBACK}
+            </MKTypography>
+          </MKBox>
         </MKBox>
 
-        <MKBox sx={{ minWidth: 0 }}>
+        <MKButton
+          component={RouterLink}
+          to={DONATION_RECEIPT_PATH}
+          variant="contained"
+          color="success"
+          sx={{
+            flexShrink: 0,
+            fontWeight: 800,
+            textTransform: "none",
+            borderRadius: "12px",
+            px: { xs: 2.5, sm: 3 },
+            py: { xs: 1.05, sm: 1.15 },
+            fontSize: { xs: "0.875rem", sm: "0.9375rem" },
+            width: { xs: "100%", sm: "auto" },
+            minWidth: { sm: 190, md: 210 },
+            maxWidth: { xs: 280, sm: "none" },
+            mr: { sm: 2.5, md: 3.5 },
+            boxShadow: "0 8px 18px rgba(79, 169, 83, 0.22)",
+          }}
+        >
+          {copy.button || "Get my receipt"}
+        </MKButton>
+      </MKBox>
+
+      {/* Two-column panel: online donations vs direct QR / bank transfer */}
+      <MKBox
+        sx={{
+          position: "relative",
+          borderRadius: "16px",
+          backgroundColor: "rgba(255, 255, 255, 0.6)",
+          border: "1px solid rgba(46, 125, 50, 0.14)",
+          p: { xs: 2, sm: 2.5, md: 2.75 },
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", md: "1fr auto 1fr" },
+          columnGap: { md: 3 },
+          rowGap: 2,
+        }}
+      >
+        <MKBox>
+          <MKBox sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.85 }}>
+            <MKBox
+              sx={{
+                width: 34,
+                height: 34,
+                borderRadius: "50%",
+                backgroundColor: "rgba(46, 125, 50, 0.12)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+              }}
+            >
+              <BoltOutlinedIcon sx={{ color: "#2e7d32", fontSize: 18 }} />
+            </MKBox>
+            <MKTypography sx={{ fontWeight: 700, color: "#1f2a44", fontSize: "0.9rem" }}>
+              Online Donations via Razorpay
+            </MKTypography>
+          </MKBox>
+          <MKTypography sx={{ fontWeight: 700, color: "#2e7d32", fontSize: "0.83rem", mb: 0.5 }}>
+            UPI, Cards, Net Banking
+          </MKTypography>
+          <MKTypography
+            sx={{ color: "rgba(31, 42, 68, 0.68)", fontSize: "0.8rem", lineHeight: 1.55 }}
+          >
+            Your donation details are captured automatically. Retrieve or download your 80G receipt
+            instantly.
+          </MKTypography>
+        </MKBox>
+
+        {/* Divider with "OR" badge — vertical on desktop, horizontal on mobile */}
+        <MKBox
+          sx={{
+            display: { xs: "flex", md: "none" },
+            alignItems: "center",
+            gap: 1,
+          }}
+        >
+          <MKBox sx={{ flex: 1, height: "1px", backgroundColor: "rgba(31, 42, 68, 0.12)" }} />
           <MKTypography
             sx={{
+              fontSize: "0.7rem",
               fontWeight: 700,
-              color: "#1f2a44",
-              fontSize: { xs: "1.02rem", sm: "1.08rem", md: "1.12rem" },
-              lineHeight: 1.3,
-              mb: 0.5,
+              color: "rgba(31, 42, 68, 0.5)",
+              letterSpacing: "0.04em",
             }}
           >
-            {copy.title || "Need your donation receipt?"}
+            OR
+          </MKTypography>
+          <MKBox sx={{ flex: 1, height: "1px", backgroundColor: "rgba(31, 42, 68, 0.12)" }} />
+        </MKBox>
+        <MKBox
+          sx={{
+            display: { xs: "none", md: "flex" },
+            alignItems: "center",
+            justifyContent: "center",
+            position: "relative",
+          }}
+        >
+          <MKBox sx={{ width: "1px", height: "100%", backgroundColor: "rgba(31, 42, 68, 0.12)" }} />
+          <MKBox
+            sx={{
+              position: "absolute",
+              width: 32,
+              height: 32,
+              borderRadius: "50%",
+              backgroundColor: "#ffffff",
+              border: "1px solid rgba(31, 42, 68, 0.14)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "0.68rem",
+              fontWeight: 700,
+              color: "rgba(31, 42, 68, 0.5)",
+            }}
+          >
+            OR
+          </MKBox>
+        </MKBox>
+
+        <MKBox>
+          <MKBox sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.85 }}>
+            <MKBox
+              sx={{
+                width: 34,
+                height: 34,
+                borderRadius: "50%",
+                backgroundColor: "rgba(236, 165, 51, 0.16)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+              }}
+            >
+              <AccountBalanceOutlinedIcon sx={{ color: "#b3791f", fontSize: 18 }} />
+            </MKBox>
+            <MKTypography sx={{ fontWeight: 700, color: "#1f2a44", fontSize: "0.9rem" }}>
+              Donated via Direct QR or Bank Transfer?
+            </MKTypography>
+          </MKBox>
+          <MKTypography
+            sx={{ color: "rgba(31, 42, 68, 0.68)", fontSize: "0.8rem", lineHeight: 1.6 }}
+          >
+            Email{" "}
+            <MKBox component="span" sx={{ color: "#2e7d32", fontWeight: 700 }}>
+              aadarfoundation2018@gmail.com
+            </MKBox>{" "}
+            with your name, father/husband name, mobile, email,{" "}
+            <MKBox component="span" sx={{ fontWeight: 700, color: "#1f2a44" }}>
+              PAN (required)
+            </MKBox>
+            , address, donation amount, payment date, UTR/Bank Reference, and payment screenshot.
           </MKTypography>
           <MKTypography
-            sx={{
-              color: "rgba(31, 42, 68, 0.72)",
-              fontSize: { xs: "0.84rem", sm: "0.9rem" },
-              lineHeight: 1.55,
-              maxWidth: 560,
-            }}
+            sx={{ color: "rgba(31, 42, 68, 0.68)", fontSize: "0.8rem", lineHeight: 1.6, mt: 1 }}
           >
-            {copy.body || BODY_FALLBACK}
-          </MKTypography>
-          <MKTypography
-            component="p"
-            sx={{
-              mt: 1,
-              color: "rgba(31, 42, 68, 0.58)",
-              fontSize: { xs: "0.78rem", sm: "0.82rem" },
-              lineHeight: 1.5,
-              fontStyle: "italic",
-              maxWidth: 560,
-            }}
-          >
-            {copy.bankTransferNote || BANK_TRANSFER_FALLBACK}
+            After verification, we&apos;ll email your 80G tax receipt.
           </MKTypography>
         </MKBox>
       </MKBox>
-
-      <MKButton
-        component={RouterLink}
-        to={DONATION_RECEIPT_PATH}
-        variant="contained"
-        color="success"
-        sx={{
-          flexShrink: 0,
-          fontWeight: 800,
-          textTransform: "none",
-          borderRadius: "12px",
-          px: { xs: 2.5, sm: 3 },
-          py: { xs: 1.05, sm: 1.15 },
-          fontSize: { xs: "0.875rem", sm: "0.9375rem" },
-          width: { xs: "100%", sm: "auto" },
-          maxWidth: { xs: 280, sm: "none" },
-          mr: { md: 4.5 },
-          boxShadow: "0 8px 18px rgba(79, 169, 83, 0.22)",
-        }}
-      >
-        {copy.button || "Get my receipt"}
-      </MKButton>
     </MKBox>
   );
 }

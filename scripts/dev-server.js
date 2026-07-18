@@ -24,9 +24,16 @@ const routes = {
   "/api/donation-receipt-list": require(path.join(apiDir, "donation-receipt-list.js")),
   "/api/donation-receipt-upi": require(path.join(apiDir, "donation-receipt-upi.js")),
   "/api/admin-donation-receipt": require(path.join(apiDir, "admin-donation-receipt.js")),
+  "/api/admin-receipt-auth": require(path.join(apiDir, "admin-receipt-auth.js")),
   "/api/donation-receipt-resend": require(path.join(apiDir, "donation-receipt-resend.js")),
   "/api/donation-confirm": require(path.join(apiDir, "donation-confirm.js")),
   "/api/instagram-posts": require(path.join(apiDir, "instagram-posts.js")),
+  "/api/membership-subscription-create": require(
+    path.join(apiDir, "membership-subscription-create.js")
+  ),
+  "/api/membership-subscription-verify": require(
+    path.join(apiDir, "membership-subscription-verify.js")
+  ),
 };
 
 function loadEnvFiles() {
@@ -72,7 +79,10 @@ function setCors(nodeReq, nodeRes) {
   nodeRes.setHeader("Access-Control-Allow-Origin", origin);
   nodeRes.setHeader("Vary", "Origin");
   nodeRes.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-  nodeRes.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Admin-Receipt-Secret");
+  nodeRes.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Accept, X-Admin-Receipt-Secret, X-Admin-Receipt-Username"
+  );
 }
 
 function createMockRes(nodeReq, nodeRes) {
@@ -179,14 +189,16 @@ server.listen(PORT, "127.0.0.1", () => {
   console.log("  POST /api/donation-receipt-list");
   console.log("  POST /api/donation-receipt-upi");
   console.log("  POST /api/admin-donation-receipt");
+  console.log("  POST /api/admin-receipt-auth");
+  console.log("  POST /api/donation-receipt-resend");
   console.log("  POST /api/donation-confirm");
+  console.log("  POST /api/membership-subscription-create");
+  console.log("  POST /api/membership-subscription-verify");
   // eslint-disable-next-line no-console
   console.log("  GET  /api/instagram-posts");
   // eslint-disable-next-line no-console
   console.log("  GET  /api/health");
-  const hasInstagram = !!(
-    process.env.INSTAGRAM_ACCESS_TOKEN && process.env.INSTAGRAM_ACCOUNT_ID
-  );
+  const hasInstagram = !!(process.env.INSTAGRAM_ACCESS_TOKEN && process.env.INSTAGRAM_ACCOUNT_ID);
   // eslint-disable-next-line no-console
   console.log(`  Instagram: ${hasInstagram ? "ok" : "MISSING (set INSTAGRAM_* in .env.local)"}`);
 });

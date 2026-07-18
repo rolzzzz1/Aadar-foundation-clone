@@ -4,6 +4,7 @@ const { getWebhookRawBody } = require("../server/_lib/rawBody");
 const { fetchOrder, validateCapturedPayment } = require("../server/_lib/razorpay");
 const { updateDonationRecordStatus } = require("../server/_lib/donationRecord");
 const { persistCapturedDonation } = require("../server/_lib/donationPersist");
+const { updateSubscriptionRecord } = require("../server/_lib/membershipRecord");
 
 const MAX_BODY_BYTES = 64 * 1024;
 
@@ -111,6 +112,95 @@ async function handleRefund(refundEntity, event) {
   }
 }
 
+function unixToIso(seconds) {
+  if (!Number.isFinite(Number(seconds))) return null;
+  return new Date(Number(seconds) * 1000).toISOString();
+}
+
+function subscriptionCyclePatch(subscriptionEntity, source) {
+  return {
+    status: subscriptionEntity.status,
+    current_start: unixToIso(subscriptionEntity.current_start),
+    current_end: unixToIso(subscriptionEntity.current_end),
+    charge_at: unixToIso(subscriptionEntity.charge_at),
+    paid_count: subscriptionEntity.paid_count,
+    source,
+  };
+}
+
+/**
+ * Each successful recurring charge (including the first, authorising one) fires
+ * `subscription.charged` with both the subscription and payment entities inline —
+ * persisted as a `donations` row so it appears in receipts/admin tools like any other gift.
+ */
+async function handleSubscriptionCharged(subscriptionEntity, paymentEntity) {
+  if (!subscriptionEntity || !subscriptionEntity.id || !paymentEntity || !paymentEntity.id) {
+    logWebhookSkip("subscription.charged", "missing_subscription_or_payment", {
+      subscription_id: subscriptionEntity && subscriptionEntity.id,
+      payment_id: paymentEntity && paymentEntity.id,
+    });
+    return;
+  }
+
+  const status = String(paymentEntity.status || "").toLowerCase();
+  if (status !== "captured") {
+    logWebhookSkip("subscription.charged", "not_captured", {
+      subscription_id: subscriptionEntity.id,
+      payment_id: paymentEntity.id,
+      payment_status: status,
+    });
+    return;
+  }
+
+  const subsNotes = subscriptionEntity.notes || {};
+  const persisted = await persistCapturedDonation({
+    payment: paymentEntity,
+    order: { notes: subsNotes, receipt: subscriptionEntity.id },
+    source: "subscription_webhook",
+    subscriptionId: subscriptionEntity.id,
+    frequency: subsNotes.frequency || null,
+  });
+  if (!persisted.saved) {
+    // eslint-disable-next-line no-console
+    console.warn("[razorpay-webhook] subscription.charged but donation not saved", {
+      subscription_id: subscriptionEntity.id,
+      payment_id: paymentEntity.id,
+      reason: persisted.reason,
+    });
+  }
+
+  const saved = await updateSubscriptionRecord(
+    subscriptionEntity.id,
+    subscriptionCyclePatch(subscriptionEntity, "webhook")
+  );
+  if (!saved.saved && saved.reason !== "not_configured") {
+    // eslint-disable-next-line no-console
+    console.warn("[razorpay-webhook] subscription.charged record not updated", {
+      subscription_id: subscriptionEntity.id,
+      reason: saved.reason,
+    });
+  }
+}
+
+/** Lifecycle-only events (no payment attached) — just sync status/cycle dates. */
+async function handleSubscriptionStatusEvent(subscriptionEntity, event) {
+  if (!subscriptionEntity || !subscriptionEntity.id) {
+    logWebhookSkip(event, "missing_subscription", {});
+    return;
+  }
+  const saved = await updateSubscriptionRecord(
+    subscriptionEntity.id,
+    subscriptionCyclePatch(subscriptionEntity, "webhook")
+  );
+  if (!saved.saved && saved.reason !== "not_configured") {
+    // eslint-disable-next-line no-console
+    console.warn(`[razorpay-webhook] ${event} record not updated`, {
+      subscription_id: subscriptionEntity.id,
+      reason: saved.reason,
+    });
+  }
+}
+
 async function handleDispute(paymentEntity) {
   if (!paymentEntity || !paymentEntity.id) return;
 
@@ -196,6 +286,11 @@ module.exports = async function handler(req, res) {
     payload.payload &&
     payload.payload.refund &&
     payload.payload.refund.entity;
+  const subscriptionEntity =
+    payload &&
+    payload.payload &&
+    payload.payload.subscription &&
+    payload.payload.subscription.entity;
 
   try {
     if (event === "payment.captured") {
@@ -214,6 +309,18 @@ module.exports = async function handler(req, res) {
       event === "payment.dispute.lost"
     ) {
       await handleDispute(paymentEntity);
+    } else if (event === "subscription.charged") {
+      await handleSubscriptionCharged(subscriptionEntity, paymentEntity);
+    } else if (
+      event === "subscription.activated" ||
+      event === "subscription.completed" ||
+      event === "subscription.cancelled" ||
+      event === "subscription.halted" ||
+      event === "subscription.paused" ||
+      event === "subscription.resumed" ||
+      event === "subscription.pending"
+    ) {
+      await handleSubscriptionStatusEvent(subscriptionEntity, event);
     }
   } catch (err) {
     // eslint-disable-next-line no-console

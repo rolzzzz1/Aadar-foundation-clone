@@ -117,6 +117,7 @@ function buildManualDonationRecord(body) {
       program_label: sanitizeText(body.program_label || body.programLabel || "", 120),
       purpose: sanitizeText(body.purpose || body.note || "", 240),
       fcra_declaration: "",
+      payment_method: isBank ? "bank_transfer" : "upi_qr",
       source,
       created_at: paidAtCheck.value,
       updated_at: new Date().toISOString(),

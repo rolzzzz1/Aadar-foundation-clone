@@ -47,6 +47,10 @@ Backup path: saves donations to Supabase if the browser never hits `/api/razorpa
    - **`payment.failed`** (updates Supabase status)
    - **`refund.created`** and **`refund.processed`** (marks donations refunded)
    - Optional: **`payment.dispute.created`** (marks disputes)
+   - Recurring memberships: **`subscription.charged`**, **`subscription.activated`**,
+     **`subscription.completed`**, **`subscription.cancelled`**, **`subscription.halted`**,
+     **`subscription.paused`**, **`subscription.resumed`**, **`subscription.pending`**
+     (same webhook + secret — see §8)
 4. **Active** → Save
 5. Copy **Webhook Secret** (shown once)
 
@@ -231,3 +235,71 @@ Redeploy after changing any variable.
 - Public “Retrieve my receipt” page wired to `POST /api/donation-receipt`.
 - `payment.failed` webhook logging (updates existing Supabase rows to `failed`).
 - Refund / dispute webhooks update Supabase status to `refunded` or `disputed`.
+
+---
+
+## 8. Recurring memberships (Razorpay Subscriptions)
+
+Adds monthly/yearly membership tiers (Supporter/Sustainer/Patron) alongside one-time donations,
+using Razorpay's **Subscriptions API** (plans + subscriptions, auto-charged each cycle).
+
+### How it works
+
+```mermaid
+sequenceDiagram
+  participant Donor
+  participant Donate2 as /donate2
+  participant Checkout as /donate/checkout
+  participant CreateAPI as POST /api/membership-subscription-create
+  participant Razorpay
+  participant VerifyAPI as POST /api/membership-subscription-verify
+  participant Webhook as POST /api/razorpay-webhook
+  participant Supabase
+
+  Donor->>Donate2: Pick tier + Monthly/Yearly
+  Donate2->>Checkout: navigate with { membership: { tierKey, frequency } }
+  Checkout->>CreateAPI: donor details + tier/frequency
+  CreateAPI->>Razorpay: plans.create (cached in Supabase) + subscriptions.create
+  CreateAPI->>Supabase: insert membership_subscriptions row (status: created)
+  CreateAPI-->>Checkout: subscription_id
+  Checkout->>Razorpay: Checkout modal (subscription_id, not order_id)
+  Razorpay-->>Checkout: payment_id + signature (first authorization charge)
+  Checkout->>VerifyAPI: verify signature (payment_id|subscription_id)
+  VerifyAPI->>Razorpay: payments.fetch + subscriptions.fetch
+  VerifyAPI->>Supabase: insert donations row (is_recurring: true) + update membership_subscriptions
+  Note over Webhook,Supabase: Every future cycle (no donor action)
+  Razorpay->>Webhook: subscription.charged
+  Webhook->>Supabase: insert donations row for that cycle's payment
+  Razorpay->>Webhook: subscription.cancelled / halted / paused / resumed
+  Webhook->>Supabase: update membership_subscriptions status
+```
+
+- Each recurring charge (including the first) becomes its own row in `donations`, tagged with
+  `subscription_id`, `is_recurring: true`, and `frequency` — so existing receipt/PDF flows work
+  unchanged for recurring charges.
+- `membership_subscriptions` tracks the subscription lifecycle (status, current cycle dates,
+  cancellation state) independent of individual donation rows.
+- `membership_plans` caches Razorpay `plan_id`s per tier+frequency so repeat checkouts reuse the
+  same plan instead of creating duplicates on Razorpay.
+
+### Setup checklist
+
+- [ ] Run `supabase/membership.sql` in Supabase **SQL Editor** (adds `membership_plans`,
+      `membership_subscriptions`, and `subscription_id`/`is_recurring`/`frequency` columns on
+      `donations`). Safe to re-run (`create table if not exists` / `add column if not exists`).
+- [ ] Add the `subscription.*` events listed in §2 to your existing Razorpay webhook (same URL +
+      secret as one-time payments — no new env var needed).
+- [ ] No new Razorpay API keys required — subscriptions reuse `RAZORPAY_KEY_ID` /
+      `RAZORPAY_KEY_SECRET` / `REACT_APP_RAZORPAY_KEY_ID`.
+- [ ] Test in **Test mode**: Donate2 → Monthly or Yearly → pick a tier → Become a Member →
+      complete the authorization charge with a Razorpay test card → confirm rows appear in both
+      `donations` and `membership_subscriptions`.
+- [ ] Test mode subscriptions can be charged instantly via Razorpay Dashboard → Subscriptions →
+      your subscription → to confirm `subscription.charged` reaches the webhook.
+
+### Not built yet (optional improvements)
+
+- Donor-facing "manage/cancel my membership" self-service page (cancellation today is via
+  Razorpay Dashboard or a direct call to `cancelSubscription` from `server/_lib/razorpaySubscriptions.js`).
+- Dunning/retry emails on `subscription.halted` (payment method failing repeatedly).
+- Admin view of active memberships (Supabase Studio works for now: `membership_subscriptions` table).

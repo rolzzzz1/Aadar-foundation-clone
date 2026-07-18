@@ -412,6 +412,22 @@
     "mostPopular": "Most Popular",
     "enterCustomAmount": "Enter custom amount",
     "donateNow": "Donate Now",
+    "membership": {
+      "chooseTitle": "Choose your membership",
+      "toggleOneTime": "One-time",
+      "toggleMonthly": "Monthly",
+      "toggleYearly": "Yearly",
+      "recurringNotice": "Recurring memberships are billed automatically via Razorpay — cancel anytime.",
+      "becomeMember": "Become a Member",
+      "becomeMemberAriaLabel": "Become a member for ₹{{amount}}/{{period}}",
+      "tiers": {
+        "supporter": "Supporter",
+        "sustainer": "Sustainer",
+        "patron": "Patron"
+      },
+      "perMonthShort": "month",
+      "perYearShort": "year"
+    },
     "helpUsIncreaseSmilesLine1": "Help us increase",
     "helpUsIncreaseSmilesLine2": "number of these smiles.",
     "supportThemNow": "Support Them Now",
@@ -446,19 +462,22 @@
     },
     "quickGiveCards": {
       "membership": {
-        "title": "Membership",
-        "subtitle": "Regular support",
-        "amount": "₹101 / 201 / 501"
+        "title": "Membership Program",
+        "subtitle": "Regular support for Aadar",
+        "amount": "₹501",
+        "period": "Starting ₹101/month"
       },
       "mealSponsorship": {
         "title": "Meal Sponsorship",
         "subtitle": "50 prabhuji breakfast",
-        "amount": "₹1,501"
+        "amount": "₹1,501",
+        "period": "one-time donation"
       },
       "monthlyCare": {
         "title": "Monthly Care",
         "subtitle": "1 prabhuji / month",
-        "amount": "₹3,001"
+        "amount": "₹3,001",
+        "period": "per month"
       }
     },
     "trustBanner": {
@@ -560,6 +579,36 @@
             "amount": "Rs 15,001"
           }
         ]
+      },
+      "directGiving": {
+        "title": "Direct Giving Options",
+        "subtitle": "Support meals, resident care, or donate instantly via UPI.",
+        "foodCard": {
+          "title": "Food Sponsorship",
+          "subtitle": "Sponsor nutritious meals and bring smiles to those in need."
+        },
+        "membershipCard": {
+          "title": "Membership Support",
+          "subtitle": "Join as a regular supporter and help sustain the daily care of our residents."
+        },
+        "scanCard": {
+          "title": "Alternative: Scan and donate via UPI",
+          "subtitle": "UPI Payments via Razorpay"
+        },
+        "donateNowCta": "Donate Now",
+        "donateNowBadge": "Recommended",
+        "donateNowMethods": "UPI • Cards • Net Banking",
+        "foodItems": [
+          { "title": "Breakfast", "detail": "50 Prabhuji" },
+          { "title": "Lunch / Dinner", "detail": "50 Prabhuji" },
+          { "title": "100 Meals", "detail": "100 Prabhuji" },
+          { "title": "Full Day Meals", "detail": "100 Prabhuji" }
+        ],
+        "membershipItems": [
+          { "title": "Monthly Support" },
+          { "title": "6-Month Support" },
+          { "title": "Annual Support" }
+        ]
       }
     }
   },
@@ -625,6 +674,13 @@
     "cancelDonationStay": "No, continue donating",
     "cancelDonationConfirm": "Yes, cancel donation",
     "cannotLeaveDuringPayment": "Please finish or close the payment window before cancelling your donation.",
+    "membership": {
+      "titleSuffix": "{{tier}} Membership",
+      "billedMonthly": "Billed monthly — cancel anytime",
+      "billedYearly": "Billed yearly — cancel anytime",
+      "perMonthShort": "mo",
+      "perYearShort": "yr"
+    },
     "sidebar": {
       "orgName": "Aadar Foundation",
       "ashramName": "Aashram Swarg Sadan",
@@ -745,6 +801,21 @@
     "contactMobile": "Mobile",
     "contactInvalid": "Please enter a valid email or 10-digit mobile number.",
     "findDonations": "Find my donations",
+    "findMyReceipt": "Find My Receipt",
+    "thankYouPrefix": "Thank you for choosing",
+    "thankYouHighlight": "kindness",
+    "thankYouSubtitle": "Your support helps us bring food, shelter and dignity to those who need it most.",
+    "trustBadge": "Aadar Foundation is a registered NGO committed to transparency and accountability.",
+    "knowMore": "Know more about us",
+    "impactTitle": "Your Impact in Action",
+    "cardSubtitle": "Enter the email address or mobile number used during your donation.",
+    "dataSafeNote": "Your data is safe with us. We use it only to help you retrieve your receipt.",
+    "impact": {
+      "lives": { "title": "Thousands", "subtitle": "Lives touched with care" },
+      "meals": { "title": "Daily Meals", "subtitle": "Served with dignity" },
+      "shelter": { "title": "Shelter & Support", "subtitle": "For the homeless & unclaimed" },
+      "transparent": { "title": "100% Transparent", "subtitle": "Use of every donation" }
+    },
     "listTitle": "Your donations",
     "listEmpty": "No donations found for this email or mobile number.",
     "viewReceipt": "View receipt",
@@ -781,7 +852,7 @@
     "cta": {
       "title": "Need your donation receipt?",
       "body": "Retrieve or download your official 80G receipt for online donations only.",
-      "bankTransferNote": "For UPI / QR and bank transfer donations, email us at aadarfoundation2018@gmail.com with your full name, father/husband name, email, mobile number, PAN, complete address (house no., city, state, PIN), donation amount, payment date, transaction reference (UTR or bank ref), and a clear payment screenshot. We will verify your payment and email your 80G tax receipt.",
+      "bankTransferNote": "For UPI/QR or bank transfer donations, email aadarfoundation2018@gmail.com with your donor details (name, father/husband name, email, mobile, PAN, address), donation details (amount and date), transaction reference (UTR/Bank Ref), and payment screenshot. We will verify the payment and email your 80G tax receipt.",
       "button": "Get my receipt"
     }
   },

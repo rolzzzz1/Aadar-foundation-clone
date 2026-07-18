@@ -69,6 +69,58 @@ export function buildRazorpayCheckoutOptions({
   };
 }
 
+/**
+ * Standard Checkout options for a recurring membership authorisation (Razorpay Subscriptions).
+ * Same shape as `buildRazorpayCheckoutOptions` but passes `subscription_id` instead of
+ * `order_id`/`amount` — Razorpay reads the amount from the Subscription's Plan.
+ */
+export function buildRazorpaySubscriptionCheckoutOptions({
+  keyId,
+  subscriptionId,
+  tierLabel,
+  frequencyLabel,
+  name,
+  email,
+  contact,
+  onSuccess,
+  onDismiss,
+}) {
+  const testMode = isRazorpayTestKey(keyId);
+  const orgName = testMode ? "Aadar Foundation (Test)" : "Aadar Foundation";
+
+  return {
+    key: keyId,
+    subscription_id: subscriptionId,
+    recurring: 1,
+    name: orgName,
+    description: tierLabel
+      ? `${tierLabel} Membership — ${frequencyLabel || ""}`.trim()
+      : testMode
+      ? "Membership — test mode (India only, no real money)"
+      : "Membership — Aadar Foundation (India only, INR)",
+    prefill: { name, email, contact },
+    theme: { color: "#4FA953" },
+    method: {
+      upi: true,
+      card: true,
+      netbanking: true,
+      wallet: !testMode,
+      emi: false,
+      paylater: false,
+    },
+    config: {
+      display: {
+        preferences: {
+          show_default_blocks: true,
+        },
+      },
+    },
+    retry: { enabled: false },
+    handler: onSuccess,
+    modal: { ondismiss: onDismiss },
+  };
+}
+
 /** User-facing message from Razorpay `payment.failed` payload. */
 export function formatRazorpayPaymentFailedError(err, { testMode = false } = {}) {
   const description = (err && (err.description || err.reason)) || "";

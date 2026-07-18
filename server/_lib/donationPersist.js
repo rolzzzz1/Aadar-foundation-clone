@@ -16,7 +16,7 @@ function resolveReceiptLocale(order, explicit) {
  * Persist a captured Razorpay payment to Supabase and email the receipt when eligible.
  * Safe to call from verify, webhook, and confirm — merges rows and skips duplicate emails.
  *
- * @param {{ payment: object, order: object, source: string, locale?: string, sendEmail?: boolean }} params
+ * @param {{ payment: object, order: object, source: string, locale?: string, sendEmail?: boolean, subscriptionId?: string, frequency?: string }} params
  * @returns {Promise<{ saved: boolean, reason?: string, row?: object, receiptEmail?: object }>}
  */
 async function persistCapturedDonation({
@@ -25,12 +25,14 @@ async function persistCapturedDonation({
   source,
   locale,
   sendEmail = true,
+  subscriptionId,
+  frequency,
 }) {
   if (!payment || !payment.id) {
     return { saved: false, reason: "missing_payment" };
   }
 
-  const record = buildRecordFromRazorpay({ payment, order, source });
+  const record = buildRecordFromRazorpay({ payment, order, source, subscriptionId, frequency });
   const saved = await upsertDonationRecord(record);
 
   if (!saved.saved) {

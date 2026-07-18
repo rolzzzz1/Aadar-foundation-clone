@@ -6,7 +6,7 @@
 const { isProduction } = require("./donation");
 
 const DONATION_SELECT_FIELDS =
-  "payment_id,order_id,receipt_no,amount_paise,currency,status,donor_name,donor_father_or_husband,donor_email,donor_contact,donor_pan,donor_address,donor_state,donor_city,donor_pin,program_label,purpose,fcra_declaration,source,created_at,receipt_email_sent_at";
+  "payment_id,order_id,receipt_no,amount_paise,currency,status,donor_name,donor_father_or_husband,donor_email,donor_contact,donor_pan,donor_address,donor_state,donor_city,donor_pin,program_label,purpose,fcra_declaration,payment_method,source,subscription_id,is_recurring,frequency,created_at,receipt_email_sent_at";
 
 function isStoreConfigured() {
   return !!(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
@@ -24,12 +24,16 @@ function hasText(value) {
 
 /**
  * Build a row from Razorpay payment + order notes.
+ * `subscriptionId`/`frequency` are passed explicitly (not read from notes) for recurring
+ * membership charges — see api/membership-subscription-verify.js and the webhook handler.
  */
-function buildRecordFromRazorpay({ payment, order, source }) {
+function buildRecordFromRazorpay({ payment, order, source, subscriptionId, frequency }) {
   const notes = {
     ...(order && order.notes),
     ...(payment && payment.notes),
   };
+
+  const paymentMethod = payment && payment.method ? String(payment.method).toLowerCase() : "";
 
   return {
     payment_id: payment.id,
@@ -50,7 +54,11 @@ function buildRecordFromRazorpay({ payment, order, source }) {
     program_label: pickNote(notes, "purpose"),
     purpose: pickNote(notes, "note"),
     fcra_declaration: pickNote(notes, "fcra_declaration"),
+    payment_method: paymentMethod,
     source: source || "webhook",
+    subscription_id: subscriptionId || null,
+    is_recurring: !!subscriptionId,
+    frequency: frequency || null,
     updated_at: new Date().toISOString(),
   };
 }
@@ -86,7 +94,11 @@ function mergeDonationRows(existing, incoming) {
     program_label: pick("program_label"),
     purpose: pick("purpose"),
     fcra_declaration: pick("fcra_declaration"),
+    payment_method: pick("payment_method"),
     source: incoming.source || existing.source,
+    subscription_id: incoming.subscription_id || existing.subscription_id || null,
+    is_recurring: incoming.is_recurring || existing.is_recurring || false,
+    frequency: incoming.frequency || existing.frequency || null,
     updated_at: new Date().toISOString(),
   };
 }

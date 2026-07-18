@@ -25,13 +25,30 @@ function adminSecretFromRequest(req, body) {
   ).trim();
 }
 
+function adminUsernameFromRequest(req, body) {
+  return String(
+    (body && (body.username || body.admin_username)) ||
+      (req.headers &&
+        (req.headers["x-admin-receipt-username"] || req.headers["X-Admin-Receipt-Username"])) ||
+      ""
+  ).trim();
+}
+
 function verifyAdminSecret(req, body) {
   const configured = String(process.env.ADMIN_RECEIPT_SECRET || "").trim();
+  const configuredUsername = String(process.env.ADMIN_RECEIPT_USERNAME || "").trim();
   if (!configured) {
     if (isProduction()) {
       return { ok: false, status: 503, error: "Admin receipt issuing is not enabled." };
     }
     return { ok: true };
+  }
+
+  if (configuredUsername) {
+    const providedUser = adminUsernameFromRequest(req, body);
+    if (providedUser !== configuredUsername) {
+      return { ok: false, status: 403, error: "Invalid admin credentials." };
+    }
   }
 
   const provided = adminSecretFromRequest(req, body);

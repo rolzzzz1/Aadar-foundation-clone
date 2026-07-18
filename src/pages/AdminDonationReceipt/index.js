@@ -8,6 +8,8 @@ import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
 import Stack from "@mui/material/Stack";
 import Switch from "@mui/material/Switch";
 import Tab from "@mui/material/Tab";
@@ -16,12 +18,22 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import DashboardCustomizeOutlinedIcon from "@mui/icons-material/DashboardCustomizeOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
+import VerifiedOutlinedIcon from "@mui/icons-material/VerifiedOutlined";
+import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 
 import DonationReceiptSheet from "components/DonationReceiptSheet";
 import MKButton from "components/MKButton";
 import MKBox from "components/MKBox";
+import AdminReceiptRetrieve from "pages/AdminDonationReceipt/AdminReceiptRetrieve";
 import aadarLogo from "assets/images/logos/logo-aadar.jpg";
 import { formatApiErrorMessage, getApiUrl } from "utils/api";
 import {
@@ -65,7 +77,7 @@ function todayIsoDate() {
   return new Date().toISOString().slice(0, 10);
 }
 
-async function postAdminReceipt(body, secret) {
+async function postAdminReceipt(body, { secret, username }) {
   const url = getApiUrl("/api/admin-donation-receipt");
   const res = await fetch(url, {
     method: "POST",
@@ -73,9 +85,30 @@ async function postAdminReceipt(body, secret) {
       "Content-Type": "application/json",
       Accept: "application/json",
       "X-Admin-Receipt-Secret": secret,
+      "X-Admin-Receipt-Username": username || "",
     },
     credentials: "same-origin",
-    body: JSON.stringify({ ...body, secret }),
+    body: JSON.stringify({ ...body, secret, username }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(formatApiErrorMessage(data, res.status));
+  }
+  return data;
+}
+
+async function verifyAdminLogin({ secret, username }) {
+  const url = getApiUrl("/api/admin-receipt-auth");
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "X-Admin-Receipt-Secret": secret,
+      "X-Admin-Receipt-Username": username || "",
+    },
+    credentials: "same-origin",
+    body: JSON.stringify({ secret, username }),
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
@@ -155,8 +188,12 @@ function buildPayload(form) {
 
 export default function AdminDonationReceiptPage() {
   const [adminSecret, setAdminSecret] = useState("");
+  const [adminUsername, setAdminUsername] = useState("");
   const [secretInput, setSecretInput] = useState("");
+  const [isSecretVisible, setIsSecretVisible] = useState(false);
+  const [authBusy, setAuthBusy] = useState(false);
   const [unlocked, setUnlocked] = useState(false);
+  const [adminView, setAdminView] = useState("menu"); // 'menu' | 'create' | 'retrieve'
   const [form, setForm] = useState({ ...emptyForm, paidAt: todayIsoDate() });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -166,8 +203,15 @@ export default function AdminDonationReceiptPage() {
     try {
       const stored = sessionStorage.getItem(ADMIN_SECRET_KEY);
       if (stored) {
-        setAdminSecret(stored);
+        // Keep session unlock, but never prefill login fields.
+        if (stored.trim().startsWith("{")) {
+          const parsed = JSON.parse(stored);
+          setAdminSecret(String(parsed?.secret || "").trim());
+        } else {
+          setAdminSecret(stored);
+        }
         setUnlocked(true);
+        setAdminView("menu");
       }
     } catch {
       /* ignore */
@@ -176,17 +220,34 @@ export default function AdminDonationReceiptPage() {
 
   const previewRecord = useMemo(() => result?.record || null, [result]);
 
-  const handleUnlock = () => {
+  const handleUnlock = async () => {
+    const username = adminUsername.trim();
     const trimmed = secretInput.trim();
+    if (!username) {
+      setError("Enter the admin username.");
+      return;
+    }
     if (!trimmed) {
       setError("Enter the admin password.");
       return;
     }
     setError("");
+
+    try {
+      setAuthBusy(true);
+      await verifyAdminLogin({ username, secret: trimmed });
+    } catch (err) {
+      setError("Invalid username or password.");
+      return;
+    } finally {
+      setAuthBusy(false);
+    }
+
     setAdminSecret(trimmed);
     setUnlocked(true);
+    setAdminView("menu");
     try {
-      sessionStorage.setItem(ADMIN_SECRET_KEY, trimmed);
+      sessionStorage.setItem(ADMIN_SECRET_KEY, JSON.stringify({ username, secret: trimmed }));
     } catch {
       /* ignore */
     }
@@ -195,9 +256,11 @@ export default function AdminDonationReceiptPage() {
   const handleLogout = () => {
     setUnlocked(false);
     setAdminSecret("");
+    setAdminUsername("");
     setSecretInput("");
     setResult(null);
     setError("");
+    setAdminView("menu");
     try {
       sessionStorage.removeItem(ADMIN_SECRET_KEY);
     } catch {
@@ -224,7 +287,10 @@ export default function AdminDonationReceiptPage() {
     setBusy(true);
     try {
       const payload = buildPayload(form);
-      const response = await postAdminReceipt(payload, adminSecret);
+      const response = await postAdminReceipt(payload, {
+        secret: adminSecret,
+        username: adminUsername,
+      });
       setResult(response);
       if (!response.receipt_email_sent) {
         setError(
@@ -248,43 +314,602 @@ export default function AdminDonationReceiptPage() {
 
   if (!unlocked) {
     return (
-      <MKBox minHeight="100vh" sx={{ bgcolor: "#eef1f6", pt: { xs: 8, md: 10 }, pb: 6 }}>
-        <Container maxWidth="sm">
-          <Card sx={{ p: { xs: 2.5, sm: 3.5 }, borderRadius: "18px" }}>
-            <Stack spacing={2} alignItems="center" textAlign="center">
-              <LockOutlinedIcon sx={{ fontSize: 40, color: "#2e7d32" }} />
-              <Typography sx={{ fontWeight: 800, color: "#1f2a44", fontSize: "1.2rem" }}>
-                Admin — Issue donation receipt
-              </Typography>
-              <Typography sx={{ color: "#64748b", fontSize: "0.9rem", lineHeight: 1.55 }}>
-                Enter the admin password to create and email 80G receipts for verified UPI / QR and
-                bank transfer donations.
-              </Typography>
-              <TextField
-                label="Admin password"
-                type="password"
-                value={secretInput}
-                onChange={(e) => setSecretInput(e.target.value)}
-                fullWidth
-                sx={fieldSx}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleUnlock();
+      <MKBox
+        minHeight="100vh"
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          py: { xs: 2.5, sm: 3 },
+          background: `
+            radial-gradient(ellipse 60% 40% at 18% 18%, rgba(46, 125, 50, 0.08) 0%, transparent 60%),
+            radial-gradient(ellipse 55% 40% at 88% 22%, rgba(46, 125, 50, 0.06) 0%, transparent 55%),
+            linear-gradient(180deg, #f7fbf7 0%, #eef4f2 55%, #f2f6fb 100%)
+          `,
+        }}
+      >
+        <Container
+          maxWidth={false}
+          sx={{
+            width: "80%",
+            maxWidth: 1400,
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Card
+            sx={{
+              width: { xs: "100%", sm: "92%", md: "80%" },
+              maxWidth: 1200,
+              p: { xs: 2, sm: 2.4 },
+              borderRadius: "22px",
+              border: "1px solid rgba(31, 42, 68, 0.07)",
+              boxShadow: "0 24px 80px rgba(31, 42, 68, 0.14)",
+            }}
+          >
+            <Grid container spacing={0} sx={{ borderRadius: "18px", overflow: "hidden" }}>
+              <Grid
+                item
+                xs={12}
+                md={5}
+                sx={{
+                  p: { xs: 2, sm: 2.75, md: 3 },
+                  background:
+                    "linear-gradient(180deg, rgba(46,125,50,0.08) 0%, rgba(46,125,50,0.03) 55%, rgba(255,255,255,0.8) 100%)",
+                  borderRight: { md: "1px solid rgba(31, 42, 68, 0.08)" },
                 }}
-              />
-              {error ? <Alert severity="error">{error}</Alert> : null}
-              <MKButton
-                variant="contained"
-                color="success"
-                onClick={handleUnlock}
-                sx={{ fontWeight: 800, textTransform: "none", borderRadius: "12px", px: 3 }}
               >
-                Continue
-              </MKButton>
+                <Stack spacing={1.5} alignItems={{ xs: "center", md: "flex-start" }}>
+                  <Box
+                    sx={{
+                      px: 1.5,
+                      py: 1.25,
+                      borderRadius: "20px",
+                      bgcolor: "#fff",
+                      border: "1px solid rgba(31, 42, 68, 0.1)",
+                      boxShadow: "0 12px 28px rgba(31, 42, 68, 0.08)",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Box
+                      component="img"
+                      src={aadarLogo}
+                      alt="Aadar Foundation"
+                      sx={{
+                        width: { xs: 170, sm: 200, md: 190 },
+                        height: "auto",
+                        display: "block",
+                        objectFit: "contain",
+                      }}
+                    />
+                  </Box>
+
+                  <Box sx={{ textAlign: { xs: "center", md: "left" } }}>
+                    <Typography sx={{ fontWeight: 900, color: "#1f2a44", fontSize: "1.35rem" }}>
+                      Admin Portal
+                    </Typography>
+                    <Box
+                      sx={{
+                        width: 44,
+                        height: 3,
+                        borderRadius: 999,
+                        bgcolor: "#2e7d32",
+                        opacity: 0.75,
+                        mt: 1,
+                        mx: { xs: "auto", md: 0 },
+                      }}
+                    />
+                    <Typography
+                      sx={{
+                        color: "rgba(100,116,139,0.95)",
+                        fontSize: "0.86rem",
+                        mt: 0.45,
+                        lineHeight: 1.55,
+                        maxWidth: 320,
+                      }}
+                    >
+                      Secure access to manage and retrieve donation receipts and organizational
+                      operations.
+                    </Typography>
+                  </Box>
+
+                  <Box
+                    sx={{
+                      mt: 0.75,
+                      p: 1.25,
+                      borderRadius: "16px",
+                      bgcolor: "rgba(46, 125, 50, 0.06)",
+                      border: "1px solid rgba(46, 125, 50, 0.12)",
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: 1,
+                      width: "100%",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: "14px",
+                        display: "grid",
+                        placeItems: "center",
+                        bgcolor: "rgba(46, 125, 50, 0.1)",
+                        flexShrink: 0,
+                      }}
+                    >
+                      <VerifiedOutlinedIcon sx={{ fontSize: 20, color: "#2e7d32" }} />
+                    </Box>
+                    <Box sx={{ minWidth: 0 }}>
+                      <Typography sx={{ fontWeight: 900, fontSize: "0.92rem", color: "#2e7d32" }}>
+                        Secure Admin Access
+                      </Typography>
+                      <Typography
+                        sx={{ color: "rgba(31,42,68,0.72)", fontSize: "0.82rem", mt: 0.25 }}
+                      >
+                        Restricted to authorized administrators only.
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Stack>
+              </Grid>
+
+              <Grid
+                item
+                xs={12}
+                md={7}
+                sx={{
+                  p: { xs: 2, sm: 2.75, md: 3 },
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <Box
+                  component="form"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (!authBusy) handleUnlock();
+                  }}
+                  sx={{ width: "100%", maxWidth: 520, mx: "auto" }}
+                >
+                  <Stack spacing={1.1} sx={{ width: "100%", textAlign: "left" }}>
+                    <Box sx={{ textAlign: "center", mb: 0.75 }}>
+                      <Box
+                        sx={{
+                          width: 56,
+                          height: 56,
+                          borderRadius: "999px",
+                          mx: "auto",
+                          display: "grid",
+                          placeItems: "center",
+                          bgcolor: "rgba(46, 125, 50, 0.08)",
+                          border: "1px solid rgba(46, 125, 50, 0.14)",
+                        }}
+                      >
+                        <VerifiedOutlinedIcon sx={{ fontSize: 26, color: "#2e7d32" }} />
+                      </Box>
+                      <Typography
+                        sx={{ fontWeight: 900, color: "#1f2a44", fontSize: "1.55rem", mt: 1.1 }}
+                      >
+                        Welcome Back
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "rgba(100,116,139,0.9)",
+                          fontSize: "0.86rem",
+                          mt: 0.35,
+                          lineHeight: 1.55,
+                        }}
+                      >
+                        Enter your admin credentials to continue.
+                      </Typography>
+                    </Box>
+                    <Typography sx={{ fontWeight: 800, fontSize: "0.9rem", color: "#1f2a44" }}>
+                      Admin Username
+                    </Typography>
+                    <TextField
+                      label=""
+                      value={adminUsername}
+                      onChange={(e) => setAdminUsername(e.target.value)}
+                      fullWidth
+                      sx={{
+                        ...fieldSx,
+                        "& .MuiOutlinedInput-root": {
+                          ...(fieldSx["& .MuiOutlinedInput-root"] || {}),
+                          backgroundColor: "#fff",
+                        },
+                      }}
+                      disabled={authBusy}
+                      autoComplete="username"
+                      placeholder="Enter admin username"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <PersonOutlineOutlinedIcon
+                              sx={{ fontSize: 20, color: "rgba(31,42,68,0.45)" }}
+                            />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+
+                    <Typography
+                      sx={{ fontWeight: 800, fontSize: "0.9rem", color: "#1f2a44", mt: 0.35 }}
+                    >
+                      Admin Password
+                    </Typography>
+                    <TextField
+                      label=""
+                      type={isSecretVisible ? "text" : "password"}
+                      value={secretInput}
+                      onChange={(e) => setSecretInput(e.target.value)}
+                      fullWidth
+                      sx={{
+                        ...fieldSx,
+                        "& .MuiOutlinedInput-root": {
+                          ...(fieldSx["& .MuiOutlinedInput-root"] || {}),
+                          backgroundColor: "#fff",
+                        },
+                      }}
+                      disabled={authBusy}
+                      autoComplete="current-password"
+                      placeholder="Enter password"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <LockOutlinedIcon sx={{ fontSize: 20, color: "rgba(31,42,68,0.45)" }} />
+                          </InputAdornment>
+                        ),
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label={isSecretVisible ? "Hide password" : "Show password"}
+                              edge="end"
+                              onClick={() => setIsSecretVisible((v) => !v)}
+                              tabIndex={-1}
+                            >
+                              {isSecretVisible ? (
+                                <VisibilityOffOutlinedIcon fontSize="small" />
+                              ) : (
+                                <VisibilityOutlinedIcon fontSize="small" />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+
+                    {error ? (
+                      <Alert severity="error" sx={{ textAlign: "left" }}>
+                        {error}
+                      </Alert>
+                    ) : null}
+
+                    <MKButton
+                      type="submit"
+                      variant="contained"
+                      color="success"
+                      disabled={authBusy}
+                      sx={{
+                        fontWeight: 800,
+                        textTransform: "none",
+                        borderRadius: "14px",
+                        px: 3,
+                        py: 1.25,
+                        background:
+                          "linear-gradient(90deg, rgba(24, 124, 54, 1) 0%, rgba(34, 163, 75, 1) 100%)",
+                        boxShadow: "0 14px 28px rgba(46, 125, 50, 0.28)",
+                        "&:hover": {
+                          background:
+                            "linear-gradient(90deg, rgba(20, 106, 46, 1) 0%, rgba(30, 142, 65, 1) 100%)",
+                        },
+                      }}
+                      startIcon={
+                        authBusy ? (
+                          <CircularProgress size={18} color="inherit" thickness={5} />
+                        ) : (
+                          <LockOutlinedIcon sx={{ fontSize: 18 }} />
+                        )
+                      }
+                    >
+                      {authBusy ? "Checking…" : "Login"}
+                    </MKButton>
+
+                    <Stack
+                      direction="row"
+                      spacing={1}
+                      alignItems="center"
+                      justifyContent="center"
+                      sx={{
+                        pt: 1.25,
+                        mt: 0.25,
+                        borderTop: "1px solid rgba(31, 42, 68, 0.08)",
+                      }}
+                    >
+                      <VerifiedOutlinedIcon
+                        sx={{ fontSize: 18, color: "rgba(46, 125, 50, 0.8)" }}
+                      />
+                      <Typography sx={{ fontSize: "0.84rem", color: "rgba(31,42,68,0.6)" }}>
+                        Authorized administrators only
+                      </Typography>
+                    </Stack>
+                  </Stack>
+                </Box>
+              </Grid>
+            </Grid>
+          </Card>
+        </Container>
+      </MKBox>
+    );
+  }
+
+  if (unlocked && adminView === "menu") {
+    return (
+      <MKBox
+        minHeight="100vh"
+        sx={{
+          bgcolor: "#eef1f6",
+          display: "flex",
+          alignItems: "center",
+          py: { xs: 1.5, md: 2 },
+        }}
+      >
+        <Container maxWidth="lg">
+          <Card
+            sx={{
+              p: { xs: 1.75, sm: 2.25, md: 2.5 },
+              borderRadius: "22px",
+              border: "1px solid rgba(31, 42, 68, 0.08)",
+              boxShadow: "0 18px 60px rgba(31, 42, 68, 0.12)",
+            }}
+          >
+            <Stack spacing={2.25}>
+              <Stack direction="row" alignItems="center" justifyContent="space-between">
+                <Stack direction="row" spacing={1.25} alignItems="center">
+                  <Box
+                    component="img"
+                    src={aadarLogo}
+                    alt="Aadar Foundation"
+                    sx={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: "12px",
+                      bgcolor: "#fff",
+                      border: "1px solid rgba(31, 42, 68, 0.08)",
+                      objectFit: "contain",
+                      p: 0.5,
+                    }}
+                  />
+                  <Box>
+                    <Typography sx={{ fontWeight: 900, color: "#1f2a44", fontSize: "1rem" }}>
+                      Aadar Foundation
+                    </Typography>
+                    <Typography sx={{ color: "#64748b", fontSize: "0.85rem" }}>
+                      Admin Portal
+                    </Typography>
+                  </Box>
+                </Stack>
+
+                <Stack direction="row" spacing={1.25} alignItems="center">
+                  <Box
+                    sx={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: "16px",
+                      display: "grid",
+                      placeItems: "center",
+                      bgcolor: "rgba(46, 125, 50, 0.1)",
+                      border: "1px solid rgba(46, 125, 50, 0.14)",
+                    }}
+                  >
+                    <PersonOutlineOutlinedIcon sx={{ fontSize: 20, color: "#2e7d32" }} />
+                  </Box>
+                  <Box sx={{ textAlign: "right" }}>
+                    <Typography sx={{ color: "#64748b", fontSize: "0.85rem" }}>Welcome,</Typography>
+                    <Typography sx={{ fontWeight: 900, color: "#1f2a44", fontSize: "0.95rem" }}>
+                      {adminUsername || "admin"}
+                    </Typography>
+                  </Box>
+                </Stack>
+              </Stack>
+
+              <Stack spacing={0.5} alignItems="center" textAlign="center" sx={{ pt: 0 }}>
+                <Box
+                  sx={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: "16px",
+                    display: "grid",
+                    placeItems: "center",
+                    bgcolor: "rgba(46, 125, 50, 0.08)",
+                    border: "1px solid rgba(46, 125, 50, 0.12)",
+                  }}
+                >
+                  <DashboardCustomizeOutlinedIcon sx={{ fontSize: 24, color: "#2e7d32" }} />
+                </Box>
+                <Typography
+                  sx={{ fontWeight: 900, color: "#1f2a44", fontSize: "1.45rem", mt: 0.75 }}
+                >
+                  Admin Tools
+                </Typography>
+                <Typography sx={{ color: "#64748b", fontSize: "0.9rem" }}>
+                  Choose what you want to do.
+                </Typography>
+              </Stack>
+
+              <Box sx={{ width: "100%", display: "flex", justifyContent: "center", pt: 0.5 }}>
+                <Stack spacing={1.25} alignItems="center" sx={{ width: "100%", maxWidth: 760 }}>
+                  <Card
+                    onClick={() => setAdminView("retrieve")}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") setAdminView("retrieve");
+                    }}
+                    sx={{
+                      width: "100%",
+                      p: { xs: 2, sm: 2.25 },
+                      borderRadius: "16px",
+                      border: "1px solid rgba(31,42,68,0.08)",
+                      bgcolor: "rgba(46, 125, 50, 0.05)",
+                      cursor: "pointer",
+                      transition: "transform 0.15s ease, box-shadow 0.15s ease",
+                      "&:hover": {
+                        transform: "translateY(-2px)",
+                        boxShadow: "0 14px 40px rgba(31,42,68,0.12)",
+                      },
+                    }}
+                  >
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      justifyContent="space-between"
+                      spacing={2}
+                    >
+                      <Stack direction="row" spacing={1.5} alignItems="center">
+                        <Box
+                          sx={{
+                            width: 52,
+                            height: 52,
+                            borderRadius: "16px",
+                            display: "grid",
+                            placeItems: "center",
+                            bgcolor: "rgba(46, 125, 50, 0.12)",
+                          }}
+                        >
+                          <DescriptionOutlinedIcon sx={{ fontSize: 26, color: "#2e7d32" }} />
+                        </Box>
+                        <Box>
+                          <Typography sx={{ fontWeight: 900, color: "#1f2a44" }}>
+                            Retrieve Receipt
+                          </Typography>
+                          <Typography sx={{ color: "#64748b", fontSize: "0.88rem", mt: 0.25 }}>
+                            Search and retrieve existing donation receipts.
+                          </Typography>
+                        </Box>
+                      </Stack>
+                      <Box
+                        sx={{
+                          width: 44,
+                          height: 44,
+                          borderRadius: "14px",
+                          display: "grid",
+                          placeItems: "center",
+                          bgcolor: "rgba(46, 125, 50, 0.12)",
+                          border: "1px solid rgba(46, 125, 50, 0.18)",
+                        }}
+                      >
+                        <ChevronRightIcon sx={{ fontSize: 26, color: "#2e7d32" }} />
+                      </Box>
+                    </Stack>
+                  </Card>
+
+                  <Card
+                    onClick={() => setAdminView("create")}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") setAdminView("create");
+                    }}
+                    sx={{
+                      width: "100%",
+                      p: { xs: 2, sm: 2.25 },
+                      borderRadius: "16px",
+                      border: "1px solid rgba(31,42,68,0.08)",
+                      bgcolor: "#fff",
+                      cursor: "pointer",
+                      transition: "transform 0.15s ease, box-shadow 0.15s ease",
+                      "&:hover": {
+                        transform: "translateY(-2px)",
+                        boxShadow: "0 14px 40px rgba(31,42,68,0.12)",
+                      },
+                    }}
+                  >
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      justifyContent="space-between"
+                      spacing={2}
+                    >
+                      <Stack direction="row" spacing={1.5} alignItems="center">
+                        <Box
+                          sx={{
+                            width: 52,
+                            height: 52,
+                            borderRadius: "16px",
+                            display: "grid",
+                            placeItems: "center",
+                            bgcolor: "rgba(46, 125, 50, 0.12)",
+                          }}
+                        >
+                          <AddOutlinedIcon sx={{ fontSize: 28, color: "#2e7d32" }} />
+                        </Box>
+                        <Box>
+                          <Typography sx={{ fontWeight: 900, color: "#1f2a44" }}>
+                            Create Receipt
+                          </Typography>
+                          <Typography sx={{ color: "#64748b", fontSize: "0.88rem", mt: 0.25 }}>
+                            Create a new donation receipt.
+                          </Typography>
+                        </Box>
+                      </Stack>
+                      <Box
+                        sx={{
+                          width: 44,
+                          height: 44,
+                          borderRadius: "14px",
+                          display: "grid",
+                          placeItems: "center",
+                          bgcolor: "rgba(46, 125, 50, 0.12)",
+                          border: "1px solid rgba(46, 125, 50, 0.18)",
+                        }}
+                      >
+                        <ChevronRightIcon sx={{ fontSize: 26, color: "#2e7d32" }} />
+                      </Box>
+                    </Stack>
+                  </Card>
+                </Stack>
+              </Box>
+
+              <Stack alignItems="center" sx={{ pt: 0.75 }}>
+                <Box
+                  sx={{ width: "100%", maxWidth: 760, borderTop: "1px solid rgba(31,42,68,0.08)" }}
+                />
+                <MKButton
+                  variant="text"
+                  color="dark"
+                  onClick={handleLogout}
+                  startIcon={<LogoutOutlinedIcon />}
+                  sx={{ textTransform: "none", fontWeight: 800, mt: 0.9 }}
+                >
+                  Logout
+                </MKButton>
+              </Stack>
             </Stack>
           </Card>
         </Container>
       </MKBox>
     );
+  }
+
+  if (unlocked && adminView === "retrieve") {
+    return (
+      <MKBox minHeight="100vh" sx={{ bgcolor: "#eef1f6", pt: { xs: 3, md: 4 }, pb: 6 }}>
+        <Container maxWidth="md">
+          <AdminReceiptRetrieve
+            onBack={() => {
+              setAdminView("menu");
+              setError("");
+            }}
+            onLogout={handleLogout}
+          />
+        </Container>
+      </MKBox>
+    );
+  }
+
+  if (!unlocked || adminView !== "create") {
+    return null;
   }
 
   return (
@@ -305,14 +930,28 @@ export default function AdminDonationReceiptPage() {
               For verified UPI / QR and bank transfer donations only.
             </Typography>
           </Box>
-          <MKButton
-            variant="outlined"
-            color="dark"
-            onClick={handleLogout}
-            sx={{ alignSelf: { xs: "flex-start", sm: "center" }, textTransform: "none" }}
-          >
-            Lock page
-          </MKButton>
+          <Stack direction="row" spacing={1} sx={{ flexShrink: 0 }}>
+            <MKButton
+              variant="outlined"
+              color="dark"
+              onClick={() => {
+                setAdminView("menu");
+                setResult(null);
+                setError("");
+              }}
+              sx={{ textTransform: "none", fontWeight: 700 }}
+            >
+              Back
+            </MKButton>
+            <MKButton
+              variant="text"
+              color="dark"
+              onClick={handleLogout}
+              sx={{ textTransform: "none", fontWeight: 700 }}
+            >
+              Logout
+            </MKButton>
+          </Stack>
         </Stack>
 
         {!result ? (

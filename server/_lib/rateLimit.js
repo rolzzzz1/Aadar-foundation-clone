@@ -85,6 +85,8 @@ const LIMITS = Object.freeze({
   receiptUpi: { bucket: "donation-receipt-upi", max: 10, windowMs: 15 * 60 * 1000 },
   confirm: { bucket: "donation-confirm", max: 20, windowMs: 15 * 60 * 1000 },
   adminReceipt: { bucket: "admin-donation-receipt", max: 15, windowMs: 15 * 60 * 1000 },
+  membershipCreate: { bucket: "membership-subscription-create", max: 15, windowMs: 15 * 60 * 1000 },
+  membershipVerify: { bucket: "membership-subscription-verify", max: 30, windowMs: 15 * 60 * 1000 },
 });
 
 module.exports = {

@@ -206,6 +206,9 @@ async function fetchPaymentUntilCaptured(paymentId, orderId, options = {}) {
 
 module.exports = {
   getRazorpayClient,
+  getCredentials,
+  razorpayRequest,
+  wrapRazorpayFailure,
   createOrder,
   fetchPayment,
   fetchOrder,

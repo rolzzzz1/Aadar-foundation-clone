@@ -21,11 +21,17 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import AccountBalanceOutlinedIcon from "@mui/icons-material/AccountBalanceOutlined";
 import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
 import CreditCardOutlinedIcon from "@mui/icons-material/CreditCardOutlined";
-import BoltOutlinedIcon from "@mui/icons-material/BoltOutlined";
 import RestaurantOutlinedIcon from "@mui/icons-material/RestaurantOutlined";
 import VolunteerActivismOutlinedIcon from "@mui/icons-material/VolunteerActivismOutlined";
+import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import SpaOutlinedIcon from "@mui/icons-material/SpaOutlined";
+import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
+import SunriseOutlinedIcon from "components/Icons/SunriseOutlinedIcon";
+import MealCoverIcon from "components/Icons/MealCoverIcon";
+import QrCodeScannerOutlinedIcon from "@mui/icons-material/QrCodeScannerOutlined";
+import StarRoundedIcon from "@mui/icons-material/StarRounded";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 // Material Kit 2 React examples
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
@@ -45,7 +51,6 @@ import donate2UpiQr from "assets/images/donate2-upi-qr.png";
 import donateImg from "assets/images/donate-happy-faces.png";
 import MKButton from "components/MKButton";
 
-import DonateSectionPricingList from "pages/LandingPages/shared/DonateSectionPricingList";
 import DonateTrustBanner from "pages/LandingPages/shared/DonateTrustBanner";
 import DonateReceiptCta from "pages/LandingPages/shared/DonateReceiptCta";
 import SponsorPrabhujiCtaCards from "pages/LandingPages/shared/SponsorPrabhujiCtaCards";
@@ -55,10 +60,16 @@ import {
   DONATE_PAGE_PATH,
   DONATE_WIDGET_PRESET_PURPOSE,
   getDonationCheckoutNavigation,
-  QUICK_GIVE_CARD_PURPOSE,
   sanitizeAmountInput,
   validateAmountInr,
 } from "utils/donation";
+import {
+  MEMBERSHIP_TIERS,
+  MEMBERSHIP_TIER_ORDER,
+  MEMBERSHIP_FREQUENCIES,
+  getMembershipAmountInr,
+  getMembershipCheckoutNavigation,
+} from "utils/membership";
 import { getPageHeroSrcForViewport } from "utils/pageHeroAssets";
 
 function Donate2() {
@@ -83,6 +94,13 @@ function Donate2() {
   const [selectedAmount, setSelectedAmount] = React.useState(1001);
   const [customAmount, setCustomAmount] = React.useState("");
 
+  // Recurring membership widget mode: "onetime" | "monthly" | "yearly".
+  const [givingMode, setGivingMode] = React.useState("onetime");
+  const [selectedTier, setSelectedTier] = React.useState("supporter");
+  const isRecurringMode = givingMode !== "onetime";
+  const membershipFrequency = givingMode === "yearly" ? "yearly" : "monthly";
+  const membershipAmountInr = getMembershipAmountInr(selectedTier, membershipFrequency);
+
   // Help LCP on direct loads: ask the browser to fetch the hero image as early
   // as possible once this route mounts (without globally preloading it for
   // every page in `public/index.html`).
@@ -106,7 +124,7 @@ function Donate2() {
   const widgetPresetPurpose = !usingCustomAmount
     ? DONATE_WIDGET_PRESET_PURPOSE[selectedAmount]
     : null;
-  const donateCheckoutNav = React.useMemo(
+  const oneTimeCheckoutNav = React.useMemo(
     () =>
       getDonationCheckoutNavigation({
         purpose: widgetPresetPurpose,
@@ -115,6 +133,13 @@ function Donate2() {
       }),
     [widgetPresetPurpose, amountCheck.ok, amountCheck.valueInr, usingCustomAmount]
   );
+  const membershipCheckoutNav = React.useMemo(
+    () =>
+      getMembershipCheckoutNavigation({ tierKey: selectedTier, frequency: membershipFrequency }),
+    [selectedTier, membershipFrequency]
+  );
+  const donateCheckoutNav = isRecurringMode ? membershipCheckoutNav : oneTimeCheckoutNav;
+  const checkoutIsReady = isRecurringMode ? membershipAmountInr > 0 : amountCheck.ok;
 
   return (
     <MKBox minWidth="320px">
@@ -147,7 +172,7 @@ function Donate2() {
           boxShadow: ({ boxShadows: { xxl } }) => xxl,
         }}
       >
-        <MKBox component="section" my={{ xs: 2, sm: 2.5 }}>
+        <MKBox component="section" my={{ xs: 1.5, sm: 1.75, md: 2 }}>
           <Container>
             <Grid container>
               <Grid item xs={12}>
@@ -158,7 +183,8 @@ function Donate2() {
                     fontWeight: "500",
                     fontSize: { xs: "1.5rem", sm: "1.75rem", md: "1.875rem", lg: "1.875rem" },
                   }}
-                  pb={{ xs: 3, sm: 3.5, md: 4 }}
+                  pt={{ xs: 1, sm: 1.25, md: 1.5 }}
+                  pb={{ xs: 2.75, sm: 3.25, md: 3.75 }}
                 >
                   {donatePage.title}
                 </MKTypography>
@@ -167,17 +193,11 @@ function Donate2() {
 
             <Grid
               container
-              pt={{ xs: 2, sm: 2.5, md: 3 }}
+              pt={{ xs: 1.25, sm: 1.5, md: 1.75 }}
               spacing={{ xs: 2.5, md: 3 }}
               alignItems="stretch"
             >
-              <Grid
-                item
-                xs={12}
-                lg={6}
-                xl={6}
-                sx={{ display: "flex", pt: { xs: 2.5, sm: 3, md: 3.5 } }}
-              >
+              <Grid item xs={12} lg={6} xl={6} sx={{ display: "flex" }}>
                 <MKBox
                   sx={{
                     pr: { xs: 0, sm: 0, md: 2 },
@@ -194,7 +214,8 @@ function Donate2() {
                     fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                     sx={{
                       fontWeight: "500",
-                      fontSize: { xs: "1.2rem", sm: "1.5rem", md: "1.2rem", lg: "1.5rem" },
+                      fontSize: { xs: "1.2rem", sm: "1.4rem", md: "1.5rem", lg: "1.6rem" },
+                      lineHeight: 1.3,
                     }}
                   >
                     {i18n.language === "hi" ? "आपके आज के कार्य में" : "Your action today has"}{" "}
@@ -205,7 +226,7 @@ function Donate2() {
                       variant="h4"
                       fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                       sx={{
-                        fontSize: { xs: "1.5rem", sm: "1.7rem", md: "1.7rem", lg: "2rem" },
+                        fontSize: { xs: "1.45rem", sm: "1.65rem", md: "1.75rem", lg: "1.9rem" },
                         fontWeight: "700",
                         color: "#ECA533",
                       }}
@@ -216,16 +237,16 @@ function Donate2() {
                     </MKTypography>
                     <MKTypography
                       variant="body1"
-                      fontSize={{ xs: "0.8rem", sm: "0.85rem", md: "0.92rem", lg: "0.95rem" }}
+                      fontSize={{ xs: "0.8rem", sm: "0.85rem", md: "0.88rem", lg: "0.92rem" }}
                       fontFamily='"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                       sx={{
                         letterSpacing: "0.03rem",
-                        lineHeight: 1.55,
+                        lineHeight: 1.5,
                         color: "#1f2a44",
                         maxWidth: 640,
-                        paddingTop: { xs: "12px", sm: "12px", md: "8px", lg: "0px" },
+                        paddingTop: { xs: "10px", sm: "10px", md: "8px", lg: "6px" },
                       }}
-                      mt={{ md: 1.5, lg: 2 }}
+                      mt={{ md: 1, lg: 1.25 }}
                     >
                       {donatePage.description}
                     </MKTypography>
@@ -234,13 +255,13 @@ function Donate2() {
                     sx={{
                       width: "100%",
                       maxWidth: 640,
-                      mt: { xs: 1.25, sm: 1.5, lg: "auto" },
-                      pt: { lg: 2 },
+                      mt: { xs: 1.5, sm: 1.75, md: 2, lg: "auto" },
+                      pt: { lg: 2.25 },
                     }}
                   >
                     <Grid
                       container
-                      spacing={{ xs: 1, sm: 1.2 }}
+                      spacing={{ xs: 0.85, sm: 1 }}
                       mr={{ xs: 0, sm: 0 }}
                       sx={{ maxWidth: 640 }}
                     >
@@ -267,7 +288,7 @@ function Donate2() {
                             alignItems="center"
                             gap={1}
                             px={1.1}
-                            py={0.7}
+                            py={0.85}
                             sx={{
                               backgroundColor: "rgba(31, 42, 68, 0.035)",
                               borderRadius: "999px",
@@ -310,8 +331,8 @@ function Donate2() {
                     </Grid>
                     <Grid
                       container
-                      spacing={{ xs: 1, sm: 1.2 }}
-                      mt={{ xs: 1, sm: 1.25 }}
+                      spacing={{ xs: 0.85, sm: 1.25 }}
+                      mt={{ xs: 0.85, sm: 1 }}
                       sx={{ maxWidth: 640 }}
                     >
                       {[
@@ -330,91 +351,112 @@ function Donate2() {
                           Icon: VolunteerActivismOutlinedIcon,
                           ...donatePage.quickGiveCards.monthlyCare,
                         },
-                      ].map(({ id, Icon, title, subtitle, amount }) => {
-                        const quickGiveNav = getDonationCheckoutNavigation({
-                          purpose: QUICK_GIVE_CARD_PURPOSE[id],
-                        });
+                      ].map(({ id, Icon, title, subtitle, amount, period }) => {
                         return (
                           <Grid item xs={12} sm={4} key={id}>
                             <MKBox
-                              component={Link}
-                              to={quickGiveNav.pathname}
-                              state={quickGiveNav.state}
                               display="flex"
-                              alignItems="center"
-                              gap={1.5}
+                              flexDirection="column"
                               pl={2}
                               pr={1.75}
-                              py={1.5}
+                              py={{ xs: 1.5, sm: 1.5 }}
                               sx={{
                                 backgroundColor: "#ffffff",
                                 borderRadius: "14px",
                                 border: "1px solid rgba(31, 42, 68, 0.06)",
                                 boxShadow:
-                                  "inset 4px 0 0 #ECA533, 0 12px 30px rgba(31, 42, 68, 0.10), 0 3px 8px rgba(31, 42, 68, 0.05)",
+                                  "inset 3px 0 0 rgba(236, 165, 51, 0.45), 0 8px 20px rgba(31, 42, 68, 0.06), 0 2px 5px rgba(31, 42, 68, 0.03)",
                                 height: "100%",
                                 textDecoration: "none",
                                 color: "inherit",
-                                transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                                "&:hover": {
-                                  transform: "translateY(-1px)",
-                                  boxShadow:
-                                    "inset 4px 0 0 #ECA533, 0 16px 38px rgba(31, 42, 68, 0.12), 0 4px 12px rgba(31, 42, 68, 0.06)",
-                                },
+                                cursor: "default",
                               }}
                             >
-                              <MKBox
-                                display="flex"
-                                alignItems="center"
-                                justifyContent="center"
-                                sx={{
-                                  width: 34,
-                                  height: 34,
-                                  borderRadius: "10px",
-                                  backgroundColor: "rgba(79, 169, 83, 0.10)",
-                                  color: "#2e7d32",
-                                  flex: "0 0 auto",
-                                }}
-                              >
-                                <Icon sx={{ fontSize: 20 }} />
+                              <MKBox display="flex" alignItems="flex-start" gap={1.25}>
+                                <MKBox
+                                  display="flex"
+                                  alignItems="center"
+                                  justifyContent="center"
+                                  sx={{
+                                    width: { xs: 38, sm: 40 },
+                                    height: { xs: 38, sm: 40 },
+                                    borderRadius: "10px",
+                                    backgroundColor: "rgba(79, 169, 83, 0.08)",
+                                    color: "#4fa953",
+                                    flex: "0 0 auto",
+                                  }}
+                                >
+                                  <Icon sx={{ fontSize: { xs: 21, sm: 22 } }} />
+                                </MKBox>
+                                <MKBox
+                                  sx={{ display: "flex", flexDirection: "column", minWidth: 0 }}
+                                >
+                                  <MKTypography
+                                    variant="button"
+                                    sx={{
+                                      fontWeight: 800,
+                                      fontSize: { xs: "0.8rem", sm: "0.84rem" },
+                                      lineHeight: 1.15,
+                                      letterSpacing: "0.01rem",
+                                      textTransform: "none",
+                                      color: "rgba(31, 42, 68, 0.82)",
+                                      minHeight: { xs: "auto", sm: "2.3em" },
+                                      overflowWrap: "normal",
+                                      wordBreak: "normal",
+                                      whiteSpace: "normal",
+                                    }}
+                                  >
+                                    {title}
+                                  </MKTypography>
+                                  <MKTypography
+                                    sx={{
+                                      fontSize: { xs: "0.64rem", sm: "0.68rem" },
+                                      fontWeight: 500,
+                                      color: "rgba(31, 42, 68, 0.6)",
+                                      lineHeight: 1.2,
+                                      mt: "3px",
+                                      minHeight: { xs: "auto", sm: "2.4em" },
+                                      overflowWrap: "normal",
+                                      wordBreak: "normal",
+                                    }}
+                                  >
+                                    {subtitle}
+                                  </MKTypography>
+                                </MKBox>
                               </MKBox>
-                              <MKBox sx={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
+
+                              <MKBox
+                                sx={{
+                                  borderTop: "1px dashed rgba(31, 42, 68, 0.16)",
+                                  my: { xs: 1, sm: 1.1 },
+                                }}
+                              />
+
+                              <MKBox display="flex" alignItems="baseline" flexWrap="wrap" gap="6px">
                                 <MKTypography
-                                  variant="button"
                                   sx={{
-                                    fontWeight: 800,
-                                    fontSize: "0.7rem",
+                                    fontSize: { xs: "0.74rem", sm: "0.82rem" },
+                                    fontWeight: 700,
+                                    color: "#4fa953",
                                     lineHeight: 1.2,
-                                    letterSpacing: "0.02rem",
-                                    textTransform: "none",
-                                    color: "#1f2a44",
-                                  }}
-                                >
-                                  {title}
-                                </MKTypography>
-                                <MKTypography
-                                  sx={{
-                                    fontSize: "0.58rem",
-                                    fontWeight: 500,
-                                    color: "rgba(31, 42, 68, 0.6)",
-                                    lineHeight: 1.25,
-                                    mt: "4px",
-                                  }}
-                                >
-                                  {subtitle}
-                                </MKTypography>
-                                <MKTypography
-                                  sx={{
-                                    fontSize: "0.7rem",
-                                    fontWeight: 800,
-                                    color: "#2e7d32",
-                                    lineHeight: 1.2,
-                                    mt: "6px",
                                     fontVariantNumeric: "tabular-nums",
+                                    whiteSpace: "nowrap",
                                   }}
                                 >
                                   {amount}
                                 </MKTypography>
+                                {period && (
+                                  <MKTypography
+                                    sx={{
+                                      fontSize: { xs: "0.62rem", sm: "0.66rem" },
+                                      fontWeight: 500,
+                                      color: "rgba(31, 42, 68, 0.55)",
+                                      lineHeight: 1.2,
+                                    }}
+                                  >
+                                    {period}
+                                  </MKTypography>
+                                )}
                               </MKBox>
                             </MKBox>
                           </Grid>
@@ -425,13 +467,7 @@ function Donate2() {
                 </MKBox>
               </Grid>
 
-              <Grid
-                item
-                xs={12}
-                lg={6}
-                xl={6}
-                sx={{ display: "flex", pt: { xs: 2.5, sm: 3, md: 3.5 } }}
-              >
+              <Grid item xs={12} lg={6} xl={6} sx={{ display: "flex" }}>
                 <MKBox
                   sx={{
                     maxWidth: 560,
@@ -460,8 +496,8 @@ function Donate2() {
                   >
                     <MKBox
                       px={2.5}
-                      pt={2.5}
-                      pb={1.25}
+                      pt={2}
+                      pb={1}
                       textAlign="center"
                       sx={{
                         background:
@@ -471,7 +507,7 @@ function Donate2() {
                       <MKTypography
                         fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                         sx={{
-                          fontSize: { xs: "1.4rem", sm: "1.6rem" },
+                          fontSize: { xs: "1.3rem", sm: "1.45rem" },
                           fontWeight: 500,
                           color: "#24324f",
                         }}
@@ -488,7 +524,7 @@ function Donate2() {
                           <FavoriteBorderIcon
                             sx={{
                               color: "#ff4d4f",
-                              fontSize: { xs: 22, sm: 24 },
+                              fontSize: { xs: 20, sm: 22 },
                               transform: "translateY(1px) rotate(12deg)",
                             }}
                           />
@@ -496,154 +532,320 @@ function Donate2() {
                       </MKTypography>
                       <MKTypography
                         sx={{
-                          mt: 0.8,
+                          mt: 0.6,
                           fontWeight: 600,
                           fontSize: "0.85rem",
                           color: "rgba(66, 86, 122, 0.75)",
                         }}
                       >
-                        {donatePage.selectAmount}
+                        {isRecurringMode
+                          ? donatePage.membership.chooseTitle
+                          : donatePage.selectAmount}
                       </MKTypography>
                     </MKBox>
 
                     <MKBox
                       px={2.5}
-                      pb={{ xs: 2, sm: 2.25, md: 2.5 }}
+                      pb={{ xs: 1.75, sm: 2, md: 2.25 }}
                       sx={{
                         flex: 1,
                         display: "flex",
                         flexDirection: "column",
                       }}
                     >
-                      <Grid container spacing={1.25} mt={0.25}>
-                        {[501, 1001, 3001].map((amt) => {
-                          const active = selectedAmount === amt && !customAmount;
+                      <MKBox
+                        display="flex"
+                        sx={{
+                          backgroundColor: "#f5f7fa",
+                          border: "1px solid rgba(31, 42, 68, 0.08)",
+                          borderRadius: "999px",
+                          p: "4px",
+                          mb: 1.25,
+                          gap: 0.25,
+                        }}
+                      >
+                        {[
+                          { id: "onetime", label: donatePage.membership.toggleOneTime },
+                          { id: "monthly", label: donatePage.membership.toggleMonthly },
+                          { id: "yearly", label: donatePage.membership.toggleYearly },
+                        ].map(({ id, label }) => {
+                          const active = givingMode === id;
                           return (
-                            <Grid item xs={4} key={amt}>
-                              <MKBox sx={{ position: "relative" }}>
-                                {amt === 1001 && (
-                                  <MKBox
-                                    sx={{
-                                      position: "absolute",
-                                      top: -10,
-                                      left: "50%",
-                                      transform: "translateX(-50%)",
-                                      backgroundColor: "#eaf7ea",
-                                      color: "#2e7d32",
-                                      border: "1px solid rgba(46, 125, 50, 0.25)",
-                                      px: 1.2,
-                                      py: 0.3,
-                                      borderRadius: "999px",
-                                      fontSize: "0.65rem",
-                                      fontWeight: 800,
-                                      zIndex: 2,
-                                      whiteSpace: "nowrap",
-                                    }}
-                                  >
-                                    {donatePage.mostPopular}
-                                  </MKBox>
-                                )}
-                                <MKButton
-                                  fullWidth
-                                  variant="outlined"
-                                  color="dark"
-                                  onClick={() => {
-                                    setCustomAmount("");
-                                    setSelectedAmount(amt);
-                                  }}
+                            <MKBox
+                              key={id}
+                              component="button"
+                              type="button"
+                              onClick={() => setGivingMode(id)}
+                              sx={{
+                                flex: 1,
+                                position: "relative",
+                                border: "none",
+                                outline: "none",
+                                backgroundColor: active ? "rgba(79, 169, 83, 0.1)" : "transparent",
+                                borderRadius: "10px",
+                                py: 1,
+                                px: 1,
+                                cursor: "pointer",
+                                transition: "background-color 0.18s ease",
+                                "&:hover": {
+                                  backgroundColor: active
+                                    ? "rgba(79, 169, 83, 0.14)"
+                                    : "rgba(31, 42, 68, 0.05)",
+                                },
+                              }}
+                            >
+                              <MKTypography
+                                sx={{
+                                  fontSize: "0.85rem",
+                                  fontWeight: active ? 800 : 600,
+                                  color: active ? "#2e7d32" : "rgba(31, 42, 68, 0.55)",
+                                  lineHeight: 1.3,
+                                }}
+                              >
+                                {label}
+                              </MKTypography>
+                              {active && (
+                                <MKBox
                                   sx={{
-                                    "&&": {
-                                      background: active ? "#fff8ec" : "#ffffff",
-                                      backgroundColor: active ? "#fff8ec" : "#ffffff",
-                                      color: active ? "#8a5a12" : "#24324f",
-                                      border: active
-                                        ? "2px solid #ECA533"
-                                        : "1px solid rgba(31, 42, 68, 0.14)",
-                                      boxShadow: active
-                                        ? "0 0 0 4px rgba(236, 165, 51, 0.22), 0 6px 14px rgba(236, 165, 51, 0.15)"
-                                        : "0 1px 2px rgba(31, 42, 68, 0.04)",
-                                      borderRadius: "10px",
-                                      py: 1.4,
-                                      fontWeight: active ? 900 : 700,
-                                      fontSize: {
-                                        xs: active ? "1rem" : "0.95rem",
-                                        sm: active ? "1.05rem" : "1rem",
-                                        md: active ? "1.1rem" : "1.05rem",
-                                      },
-                                      letterSpacing: "0.01em",
-                                      minHeight: 50,
-                                      transform: active ? "translateY(-1px)" : "none",
-                                      transition:
-                                        "border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease, transform 0.18s ease",
-                                      "&:hover, &:focus, &:focus-visible, &:active": {
-                                        background: active ? "#fff3dc" : "#faf6ef",
-                                        backgroundColor: active ? "#fff3dc" : "#faf6ef",
-                                        borderColor: active ? "#d9962e" : "rgba(31, 42, 68, 0.28)",
-                                        color: active ? "#8a5a12" : "#24324f",
-                                        boxShadow: active
-                                          ? "0 0 0 5px rgba(236, 165, 51, 0.26), 0 8px 18px rgba(236, 165, 51, 0.18)"
-                                          : "0 1px 2px rgba(31, 42, 68, 0.06)",
-                                      },
-                                    },
+                                    position: "absolute",
+                                    bottom: 4,
+                                    left: "50%",
+                                    transform: "translateX(-50%)",
+                                    width: 26,
+                                    height: 2.5,
+                                    borderRadius: "999px",
+                                    backgroundColor: "#2e7d32",
                                   }}
-                                >
-                                  ₹{amt}
-                                </MKButton>
-                              </MKBox>
-                            </Grid>
+                                />
+                              )}
+                            </MKBox>
                           );
                         })}
-                      </Grid>
+                      </MKBox>
 
-                      <TextField
-                        fullWidth
-                        value={customAmount}
-                        onChange={(e) => {
-                          const v = sanitizeAmountInput(e.target.value);
-                          setCustomAmount(v);
-                          if (v) setSelectedAmount(Number(v));
-                        }}
-                        placeholder={donatePage.enterCustomAmount}
-                        variant="outlined"
-                        error={!!customAmount && !amountCheck.ok}
-                        helperText={customAmount && !amountCheck.ok ? amountCheck.error : undefined}
-                        inputProps={{ inputMode: "numeric", maxLength: 7, pattern: "[0-9]*" }}
-                        sx={{
-                          mt: 1.5,
-                          "& .MuiOutlinedInput-root": {
-                            borderRadius: "12px",
-                            backgroundColor: "#ffffff",
-                            borderColor: "rgba(31, 42, 68, 0.14)",
-                          },
-                        }}
-                        InputProps={{
-                          startAdornment: (
-                            <MKBox
-                              component="span"
-                              sx={{ mr: 1, color: "#5a6b8a", fontWeight: 700 }}
-                            >
-                              ₹
-                            </MKBox>
-                          ),
-                        }}
-                      />
+                      {isRecurringMode && (
+                        <MKTypography
+                          sx={{
+                            mb: 1,
+                            fontSize: "0.68rem",
+                            fontWeight: 600,
+                            color: "rgba(31, 42, 68, 0.55)",
+                          }}
+                        >
+                          {donatePage.membership.recurringNotice}
+                        </MKTypography>
+                      )}
+
+                      {isRecurringMode && (
+                        <Grid container spacing={1.25} mt={0.25}>
+                          {MEMBERSHIP_TIER_ORDER.map((tierKey) => {
+                            const tier = MEMBERSHIP_TIERS[tierKey];
+                            const tierAmount = getMembershipAmountInr(tierKey, membershipFrequency);
+                            const active = selectedTier === tierKey;
+                            return (
+                              <Grid item xs={12} sm={4} key={tierKey}>
+                                <MKBox
+                                  component="button"
+                                  type="button"
+                                  onClick={() => setSelectedTier(tierKey)}
+                                  sx={{
+                                    width: "100%",
+                                    cursor: "pointer",
+                                    textAlign: "center",
+                                    border: active
+                                      ? "2px solid #ECA533"
+                                      : "1px solid rgba(31, 42, 68, 0.14)",
+                                    backgroundColor: active ? "#fff8ec" : "#ffffff",
+                                    borderRadius: "10px",
+                                    py: 1.25,
+                                    px: 1,
+                                    boxShadow: active
+                                      ? "0 0 0 4px rgba(236, 165, 51, 0.22), 0 6px 14px rgba(236, 165, 51, 0.15)"
+                                      : "0 1px 2px rgba(31, 42, 68, 0.04)",
+                                    transition:
+                                      "border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease",
+                                  }}
+                                >
+                                  <MKTypography
+                                    sx={{
+                                      fontWeight: active ? 900 : 700,
+                                      fontSize: "0.85rem",
+                                      color: active ? "#8a5a12" : "#24324f",
+                                    }}
+                                  >
+                                    {donatePage.membership.tiers[tierKey] || tier.label}
+                                  </MKTypography>
+                                  <MKTypography
+                                    sx={{
+                                      fontWeight: 800,
+                                      fontSize: "1rem",
+                                      color: active ? "#8a5a12" : "#2e7d32",
+                                      mt: 0.25,
+                                    }}
+                                  >
+                                    ₹{tierAmount.toLocaleString("en-IN")}
+                                    <MKTypography component="span" sx={{ fontSize: "0.62rem" }}>
+                                      /
+                                      {MEMBERSHIP_FREQUENCIES[membershipFrequency].suffix.replace(
+                                        "/",
+                                        ""
+                                      )}
+                                    </MKTypography>
+                                  </MKTypography>
+                                </MKBox>
+                              </Grid>
+                            );
+                          })}
+                        </Grid>
+                      )}
+
+                      {!isRecurringMode && (
+                        <>
+                          <Grid container spacing={1.25} mt={0.25}>
+                            {[501, 1001, 3001].map((amt) => {
+                              const active = selectedAmount === amt && !customAmount;
+                              return (
+                                <Grid item xs={4} key={amt}>
+                                  <MKBox sx={{ position: "relative" }}>
+                                    {amt === 1001 && (
+                                      <MKBox
+                                        sx={{
+                                          position: "absolute",
+                                          top: -10,
+                                          left: "50%",
+                                          transform: "translateX(-50%)",
+                                          backgroundColor: "#eaf7ea",
+                                          color: "#2e7d32",
+                                          border: "1px solid rgba(46, 125, 50, 0.25)",
+                                          px: 1.2,
+                                          py: 0.3,
+                                          borderRadius: "999px",
+                                          fontSize: "0.65rem",
+                                          fontWeight: 800,
+                                          zIndex: 2,
+                                          whiteSpace: "nowrap",
+                                        }}
+                                      >
+                                        {donatePage.mostPopular}
+                                      </MKBox>
+                                    )}
+                                    <MKButton
+                                      fullWidth
+                                      variant="outlined"
+                                      color="dark"
+                                      onClick={() => {
+                                        setCustomAmount("");
+                                        setSelectedAmount(amt);
+                                      }}
+                                      sx={{
+                                        "&&": {
+                                          background: active ? "#fff8ec" : "#ffffff",
+                                          backgroundColor: active ? "#fff8ec" : "#ffffff",
+                                          color: active ? "#8a5a12" : "#24324f",
+                                          border: active
+                                            ? "2px solid #ECA533"
+                                            : "1px solid rgba(31, 42, 68, 0.14)",
+                                          boxShadow: active
+                                            ? "0 0 0 4px rgba(236, 165, 51, 0.22), 0 6px 14px rgba(236, 165, 51, 0.15)"
+                                            : "0 1px 2px rgba(31, 42, 68, 0.04)",
+                                          borderRadius: "10px",
+                                          py: 1.15,
+                                          fontWeight: active ? 900 : 700,
+                                          fontSize: {
+                                            xs: active ? "1rem" : "0.95rem",
+                                            sm: active ? "1.05rem" : "1rem",
+                                            md: active ? "1.1rem" : "1.05rem",
+                                          },
+                                          letterSpacing: "0.01em",
+                                          minHeight: 46,
+                                          transform: active ? "translateY(-1px)" : "none",
+                                          transition:
+                                            "border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease, transform 0.18s ease",
+                                          "&:hover, &:focus, &:focus-visible, &:active": {
+                                            background: active ? "#fff3dc" : "#faf6ef",
+                                            backgroundColor: active ? "#fff3dc" : "#faf6ef",
+                                            borderColor: active
+                                              ? "#d9962e"
+                                              : "rgba(31, 42, 68, 0.28)",
+                                            color: active ? "#8a5a12" : "#24324f",
+                                            boxShadow: active
+                                              ? "0 0 0 5px rgba(236, 165, 51, 0.26), 0 8px 18px rgba(236, 165, 51, 0.18)"
+                                              : "0 1px 2px rgba(31, 42, 68, 0.06)",
+                                          },
+                                        },
+                                      }}
+                                    >
+                                      ₹{amt}
+                                    </MKButton>
+                                  </MKBox>
+                                </Grid>
+                              );
+                            })}
+                          </Grid>
+
+                          <TextField
+                            fullWidth
+                            value={customAmount}
+                            onChange={(e) => {
+                              const v = sanitizeAmountInput(e.target.value);
+                              setCustomAmount(v);
+                              if (v) setSelectedAmount(Number(v));
+                            }}
+                            placeholder={donatePage.enterCustomAmount}
+                            variant="outlined"
+                            error={!!customAmount && !amountCheck.ok}
+                            helperText={
+                              customAmount && !amountCheck.ok ? amountCheck.error : undefined
+                            }
+                            inputProps={{ inputMode: "numeric", maxLength: 7, pattern: "[0-9]*" }}
+                            sx={{
+                              mt: 1.25,
+                              "& .MuiOutlinedInput-root": {
+                                borderRadius: "12px",
+                                backgroundColor: "#ffffff",
+                                borderColor: "rgba(31, 42, 68, 0.14)",
+                              },
+                            }}
+                            InputProps={{
+                              startAdornment: (
+                                <MKBox
+                                  component="span"
+                                  sx={{ mr: 1, color: "#5a6b8a", fontWeight: 700 }}
+                                >
+                                  ₹
+                                </MKBox>
+                              ),
+                            }}
+                          />
+                        </>
+                      )}
 
                       <MKButton
                         component={Link}
                         to={donateCheckoutNav.pathname}
                         state={donateCheckoutNav.state}
                         onClick={(e) => {
-                          if (!amountCheck.ok) e.preventDefault();
+                          if (!checkoutIsReady) e.preventDefault();
                         }}
-                        disabled={!amountCheck.ok}
-                        aria-disabled={!amountCheck.ok}
-                        aria-label={`Donate ₹${amountCheck.ok ? amountCheck.valueInr : ""} now`}
+                        disabled={!checkoutIsReady}
+                        aria-disabled={!checkoutIsReady}
+                        aria-label={
+                          isRecurringMode
+                            ? t("donatePage.membership.becomeMemberAriaLabel", {
+                                amount: membershipAmountInr,
+                                period:
+                                  membershipFrequency === "yearly"
+                                    ? donatePage.membership.perYearShort
+                                    : donatePage.membership.perMonthShort,
+                              })
+                            : `Donate ₹${amountCheck.ok ? amountCheck.valueInr : ""} now`
+                        }
                         fullWidth
                         variant="contained"
                         sx={{
-                          mt: 1.5,
+                          mt: 1.25,
                           borderRadius: "12px",
-                          py: 1.5,
+                          py: 1.35,
                           fontSize: { xs: "0.95rem", sm: "1rem" },
                           fontWeight: 800,
                           background:
@@ -684,10 +886,12 @@ function Donate2() {
                           },
                         }}
                       >
-                        {donatePage.donateNow}
+                        {isRecurringMode
+                          ? donatePage.membership.becomeMember
+                          : donatePage.donateNow}
                       </MKButton>
 
-                      <MKBox sx={{ mt: { xs: 1.25, lg: "auto" }, pt: { lg: 1 } }}>
+                      <MKBox sx={{ mt: { xs: 1, lg: "auto" }, pt: { lg: 0.75 } }}>
                         <DonateTrustBanner />
                       </MKBox>
                     </MKBox>
@@ -1057,7 +1261,7 @@ function Donate2() {
                 sx={{
                   width: "100%",
                   px: { xs: 1, sm: 2, md: 2 },
-                  pt: { xs: 2, sm: 2.5, md: 3 },
+                  pt: { xs: 3.5, sm: 4, md: 4.5 },
                   pb: { xs: 0.5, sm: 1 },
                 }}
               >
@@ -1072,210 +1276,6 @@ function Donate2() {
                 spacing={{ xs: 2, lg: 3 }}
                 alignItems="stretch"
               >
-                <Grid item xs={12} lg={7}>
-                  <MKBox
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "stretch",
-                      textAlign: "left",
-                      width: "100%",
-                      maxWidth: { lg: 640 },
-                      mx: { xs: "auto", lg: 0 },
-                      px: { xs: 2, sm: 3 },
-                      pr: { lg: 2 },
-                    }}
-                  >
-                    <MKTypography
-                      fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
-                      sx={{
-                        fontSize: { xs: "1.1rem", sm: "1.3rem", md: "1.3rem", lg: "1.5rem" },
-                        fontWeight: 400,
-                        width: "100%",
-                        textAlign: "left",
-                      }}
-                    >
-                      {donatePage.membershipSection.foodSponsorship.title}
-                    </MKTypography>
-                    <MKTypography
-                      sx={{
-                        mt: 0.5,
-                        mb: { xs: 1.25, sm: 1.5 },
-                        fontSize: { xs: "0.78rem", sm: "0.82rem", md: "0.85rem" },
-                        fontWeight: 400,
-                        color: "rgba(31, 42, 68, 0.6)",
-                        lineHeight: 1.5,
-                        letterSpacing: "0.02em",
-                        width: "100%",
-                        textAlign: "left",
-                      }}
-                    >
-                      {donatePage.membershipSection.foodSponsorship.subtitle}
-                    </MKTypography>
-                    <MKBox
-                      component="ul"
-                      sx={{
-                        listStyle: "none",
-                        m: 0,
-                        p: 0,
-                        width: "100%",
-                        pl: { xs: 0, lg: 0.5 },
-                      }}
-                    >
-                      {donatePage.membershipSection.foodSponsorship.items.map((row, idx, arr) => (
-                        <MKBox
-                          key={row.label}
-                          component="li"
-                          sx={{
-                            display: "grid",
-                            gridTemplateColumns: {
-                              xs: "minmax(0, 1fr) minmax(5rem, 5.75rem)",
-                              sm: "minmax(0, 1fr) 6.75rem",
-                              md: "minmax(0, 1fr) 7rem",
-                            },
-                            columnGap: { xs: 1.25, sm: 2 },
-                            alignItems: "center",
-                            py: 1.1,
-                            letterSpacing: "0.05rem",
-                            borderBottom:
-                              idx < arr.length - 1 ? "1px solid rgba(31, 42, 68, 0.08)" : "none",
-                          }}
-                        >
-                          <MKTypography
-                            component="span"
-                            fontSize={{
-                              xs: "0.8rem",
-                              sm: "0.9rem",
-                              md: "0.9rem",
-                              lg: "1rem",
-                            }}
-                            sx={{
-                              minWidth: 0,
-                              fontWeight: 500,
-                              color: "#1f2a44",
-                              lineHeight: 1.45,
-                              pr: { xs: 0.5, sm: 1 },
-                            }}
-                          >
-                            {row.label}
-                          </MKTypography>
-                          <MKTypography
-                            component="span"
-                            fontSize={{
-                              xs: "0.8rem",
-                              sm: "0.9rem",
-                              md: "0.95rem",
-                              lg: "1rem",
-                            }}
-                            sx={{
-                              fontWeight: 700,
-                              color: "#2e7d32",
-                              whiteSpace: "nowrap",
-                              textAlign: "right",
-                              justifySelf: "stretch",
-                              fontVariantNumeric: "tabular-nums",
-                            }}
-                          >
-                            {row.amount}
-                          </MKTypography>
-                        </MKBox>
-                      ))}
-                    </MKBox>
-
-                    <MKBox
-                      sx={{
-                        width: "100%",
-                        pl: { xs: 0, lg: 0.5 },
-                        pt: { xs: 1.5, sm: 2, md: 2.5, lg: 2.5 },
-                      }}
-                    >
-                      <DonateSectionPricingList
-                        title={donatePage.membershipSection.membership.title}
-                        subtitle={donatePage.membershipSection.membership.subtitle}
-                        items={donatePage.membershipSection.membership.items}
-                        wideAmountColumn
-                      />
-                    </MKBox>
-                  </MKBox>
-                </Grid>
-
-                <Grid item xs={12} lg={5}>
-                  <MKBox
-                    display="flex"
-                    flexDirection="column"
-                    justifyContent="flex-start"
-                    alignItems="center"
-                    sx={{
-                      height: "100%",
-                      pt: { xs: 1, lg: 0.5 },
-                      pl: { xs: 0, lg: 2 },
-                      pr: { xs: 0, lg: 1 },
-                      px: { xs: 2, sm: 3 },
-                      backgroundColor: "transparent",
-                      backgroundImage: "none",
-                      boxShadow: "none",
-                    }}
-                  >
-                    <MKBox
-                      component="figure"
-                      sx={{
-                        m: 0,
-                        mx: "auto",
-                        p: 0,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        width: { xs: "100%", sm: "90%", md: "85%", lg: "100%" },
-                        maxWidth: { xs: 260, sm: 280, md: 280, lg: 320 },
-                        overflow: "hidden",
-                        backgroundColor: "transparent",
-                        backgroundImage: "none",
-                        boxShadow: "none",
-                        border: "none",
-                      }}
-                    >
-                      <MKBox
-                        component="img"
-                        src={donate2UpiQr}
-                        alt="Aadar Foundation UPI QR — scan to donate"
-                        width="674"
-                        height="1090"
-                        loading="lazy"
-                        decoding="async"
-                        fetchPriority="low"
-                        sx={{
-                          display: "block",
-                          width: "100%",
-                          maxWidth: { xs: 260, sm: 280, md: 280, lg: 320 },
-                          aspectRatio: "674 / 1090",
-                          height: "auto",
-                          objectFit: "contain",
-                          objectPosition: "center",
-                          p: 0,
-                          m: 0,
-                          border: "1.5px solid rgba(100, 149, 237, 0.45)",
-                          borderRadius: "12px",
-                          boxShadow:
-                            "0 8px 24px rgba(31, 42, 68, 0.1), 0 2px 8px rgba(31, 42, 68, 0.06)",
-                          backgroundColor: "#fff",
-                        }}
-                      />
-                    </MKBox>
-                  </MKBox>
-                </Grid>
-
-                <Grid item xs={12}>
-                  <MKBox
-                    sx={{
-                      px: { xs: 0.5, sm: 1, md: 1.5 },
-                      mt: { xs: 1.5, sm: 2 },
-                      mb: { xs: 0.5, sm: 1 },
-                    }}
-                  >
-                    <DonateReceiptCta />
-                  </MKBox>
-                </Grid>
-
                 <Grid item xs={12}>
                   <LazyVisible
                     rootMargin="700px"
@@ -1302,7 +1302,7 @@ function Donate2() {
                         <MKBox
                           sx={{
                             textAlign: "center",
-                            mb: { xs: 1.5, sm: 1.75 },
+                            mb: { xs: 2.25, sm: 2.5 },
                           }}
                         >
                           <MKTypography
@@ -1444,80 +1444,559 @@ function Donate2() {
                             </Grid>
                           ))}
                         </Grid>
-
-                        <MKBox display="flex" justifyContent="center" mt={{ xs: 2.2, sm: 2.6 }}>
-                          <MKButton
-                            component={Link}
-                            to={donateCheckoutNav.pathname}
-                            state={donateCheckoutNav.state}
-                            disabled={!amountCheck.ok}
-                            aria-disabled={!amountCheck.ok}
-                            variant="contained"
-                            startIcon={<BoltOutlinedIcon />}
-                            sx={{
-                              borderRadius: "10px",
-                              py: { xs: 0.85, sm: 0.95 },
-                              px: { xs: 2.25, sm: 2.75 },
-                              fontSize: { xs: "0.78rem", sm: "0.82rem" },
-                              fontWeight: 700,
-                              background:
-                                "linear-gradient(90deg, #4FA953 0%, #45a049 55%, #4FA953 100%)",
-                              color: "#ffffff !important",
-                              boxShadow: "0 8px 18px rgba(79, 169, 83, 0.20)",
-                              textTransform: "none",
-                              textDecoration: "none",
-                              letterSpacing: "0.2px",
-                              transition:
-                                "transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease",
-                              "&&": {
-                                color: "#ffffff",
-                              },
-                              "& *": {
-                                color: "#ffffff",
-                              },
-                              "& .MuiSvgIcon-root": {
-                                color: "#ffffff",
-                              },
-                              "&:hover": {
-                                background:
-                                  "linear-gradient(90deg, #45a049 0%, #3d8a41 55%, #45a049 100%)",
-                                boxShadow: "0 12px 24px rgba(79, 169, 83, 0.26)",
-                                textDecoration: "none",
-                                transform: "translateY(-1px)",
-                              },
-                              "&:active": {
-                                transform: "translateY(0px)",
-                                boxShadow: "0 6px 14px rgba(79, 169, 83, 0.22)",
-                              },
-                              "&:focus, &.Mui-focusVisible, &:focus-visible, &:focus:not(:hover)": {
-                                background:
-                                  "linear-gradient(90deg, #4FA953 0%, #45a049 55%, #4FA953 100%)",
-                                color: "#ffffff",
-                                boxShadow: "0 8px 18px rgba(79, 169, 83, 0.20)",
-                                outline: "none",
-                              },
-                              "& .MuiButton-startIcon": {
-                                marginRight: { xs: 0.6, sm: 0.75 },
-                              },
-                              "& .MuiButton-startIcon .MuiSvgIcon-root": {
-                                fontSize: { xs: 16, sm: 18 },
-                              },
-                            }}
-                          >
-                            {donatePage.donateInstantlyInstead}
-                          </MKButton>
-                        </MKBox>
                       </MKBox>
                     </MKBox>
                   </LazyVisible>
                 </Grid>
 
+                <Grid item xs={12} sx={{ mt: { xs: 3, sm: 3.5, lg: 4 } }}>
+                  <MKBox
+                    sx={{
+                      borderRadius: "20px",
+                      backgroundColor: "#f7f8fa",
+                      border: "none",
+                      boxShadow: "0 8px 20px rgba(31, 42, 68, 0.04)",
+                      p: { xs: 2, sm: 3 },
+                      mx: { xs: 2, sm: 3, lg: 0 },
+                    }}
+                  >
+                    {/* Section heading — spans both columns so Food Sponsorship and the
+                        UPI alternative below start at the same vertical level */}
+                    <MKBox
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        mt: { xs: 1, sm: 1.5 },
+                        mb: 1,
+                      }}
+                    >
+                      <MKTypography
+                        fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                        sx={{
+                          fontSize: { xs: "1.2rem", sm: "1.4rem", md: "1.5rem" },
+                          fontWeight: 400,
+                          color: "#1f2a44",
+                          textAlign: "center",
+                        }}
+                      >
+                        {donatePage.membershipSection.directGiving.title}
+                      </MKTypography>
+                    </MKBox>
+                    <MKTypography
+                      sx={{
+                        mb: { xs: 3.5, sm: 4 },
+                        fontSize: { xs: "0.8rem", sm: "0.85rem" },
+                        color: "rgba(31, 42, 68, 0.6)",
+                        lineHeight: 1.5,
+                        textAlign: "center",
+                      }}
+                    >
+                      {donatePage.membershipSection.directGiving.subtitle}
+                    </MKTypography>
+
+                    <MKBox
+                      sx={{
+                        display: "grid",
+                        gridTemplateColumns: { xs: "1fr", lg: "minmax(0, 7fr) minmax(0, 5fr)" },
+                        columnGap: { lg: 5 },
+                        rowGap: { xs: 3, sm: 3.5 },
+                        alignItems: "stretch",
+                      }}
+                    >
+                      <MKBox
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          minHeight: 0,
+                        }}
+                      >
+                        {/* Food Sponsorship section */}
+                        <MKBox sx={{ display: "flex", alignItems: "center", gap: 1.25, mb: 0.75 }}>
+                          <MKBox
+                            sx={{
+                              width: 40,
+                              height: 40,
+                              borderRadius: "50%",
+                              backgroundColor: "rgba(79, 169, 83, 0.1)",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              flexShrink: 0,
+                            }}
+                          >
+                            <RestaurantOutlinedIcon sx={{ color: "#2e7d32", fontSize: 20 }} />
+                          </MKBox>
+                          <MKTypography
+                            sx={{ fontWeight: 700, color: "#1f2a44", fontSize: "1rem" }}
+                          >
+                            {donatePage.membershipSection.directGiving.foodCard.title}
+                          </MKTypography>
+                        </MKBox>
+                        <MKTypography
+                          sx={{
+                            fontSize: "0.8rem",
+                            color: "rgba(31, 42, 68, 0.6)",
+                            lineHeight: 1.5,
+                            mb: 2,
+                          }}
+                        >
+                          {donatePage.membershipSection.directGiving.foodCard.subtitle}
+                        </MKTypography>
+
+                        <MKBox
+                          sx={{
+                            display: "grid",
+                            gridTemplateColumns: { xs: "1fr 1fr", sm: "repeat(4, 1fr)" },
+                            gap: { xs: 1.25, sm: 1.5 },
+                          }}
+                        >
+                          {[
+                            { Icon: SunriseOutlinedIcon },
+                            { Icon: MealCoverIcon },
+                            { Icon: GroupsOutlinedIcon },
+                            { Icon: MealCoverIcon },
+                          ].map(({ Icon }, idx) => {
+                            const item = donatePage.membershipSection.foodSponsorship.items[idx];
+                            const meta = donatePage.membershipSection.directGiving.foodItems[idx];
+                            if (!item || !meta) return null;
+                            return (
+                              <MKBox
+                                key={meta.title}
+                                sx={{
+                                  textAlign: "center",
+                                  borderRadius: "14px",
+                                  backgroundColor: "#ffffff",
+                                  border: "1px solid rgba(31, 42, 68, 0.06)",
+                                  px: 1,
+                                  py: 1.5,
+                                }}
+                              >
+                                <Icon sx={{ color: "#4fa953", fontSize: 44 }} />
+                                <MKTypography
+                                  sx={{
+                                    mt: 0.6,
+                                    fontWeight: 700,
+                                    color: "#1f2a44",
+                                    fontSize: "0.82rem",
+                                    lineHeight: 1.3,
+                                  }}
+                                >
+                                  {meta.title}
+                                </MKTypography>
+                                <MKBox
+                                  sx={{
+                                    borderTop: "1px dashed rgba(31, 42, 68, 0.14)",
+                                    my: 0.75,
+                                  }}
+                                />
+                                <MKTypography
+                                  sx={{
+                                    fontWeight: 800,
+                                    color: "#2e7d32",
+                                    fontSize: "0.92rem",
+                                    fontVariantNumeric: "tabular-nums",
+                                  }}
+                                >
+                                  ₹{item.amount.replace(/^Rs\s*/i, "")}
+                                </MKTypography>
+                                <MKTypography
+                                  sx={{
+                                    mt: 0.25,
+                                    fontSize: "0.68rem",
+                                    color: "rgba(31, 42, 68, 0.55)",
+                                  }}
+                                >
+                                  {meta.detail}
+                                </MKTypography>
+                              </MKBox>
+                            );
+                          })}
+                        </MKBox>
+
+                        {/* Membership Support section */}
+                        <MKBox
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1.25,
+                            mt: { xs: 4, sm: 4.5 },
+                            mb: 0.75,
+                          }}
+                        >
+                          <MKBox
+                            sx={{
+                              width: 40,
+                              height: 40,
+                              borderRadius: "50%",
+                              backgroundColor: "rgba(79, 169, 83, 0.1)",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              flexShrink: 0,
+                            }}
+                          >
+                            <PersonOutlineIcon sx={{ color: "#2e7d32", fontSize: 20 }} />
+                          </MKBox>
+                          <MKTypography
+                            sx={{ fontWeight: 700, color: "#1f2a44", fontSize: "1rem" }}
+                          >
+                            {donatePage.membershipSection.directGiving.membershipCard.title}
+                          </MKTypography>
+                        </MKBox>
+                        <MKTypography
+                          sx={{
+                            fontSize: "0.8rem",
+                            color: "rgba(31, 42, 68, 0.6)",
+                            lineHeight: 1.5,
+                            mb: 2,
+                          }}
+                        >
+                          {donatePage.membershipSection.directGiving.membershipCard.subtitle}
+                        </MKTypography>
+
+                        <MKBox
+                          sx={{
+                            display: "grid",
+                            gridTemplateColumns: { xs: "1fr", sm: "repeat(3, 1fr)" },
+                            gap: { xs: 1.25, sm: 1.5 },
+                          }}
+                        >
+                          {donatePage.membershipSection.membership.items.map((item, idx) => {
+                            const meta =
+                              donatePage.membershipSection.directGiving.membershipItems[idx];
+                            if (!meta) return null;
+                            const price = item.amount
+                              .replace(/^Rs\s*/i, "")
+                              .replace(/\s*\/\s*/g, " / ");
+                            return (
+                              <MKBox
+                                key={meta.title}
+                                sx={{
+                                  textAlign: "center",
+                                  borderRadius: "14px",
+                                  backgroundColor: "#ffffff",
+                                  border: "1px solid rgba(31, 42, 68, 0.06)",
+                                  px: 1,
+                                  py: 1.5,
+                                }}
+                              >
+                                <MKTypography
+                                  sx={{
+                                    fontWeight: 700,
+                                    color: "#1f2a44",
+                                    fontSize: "0.85rem",
+                                    lineHeight: 1.3,
+                                  }}
+                                >
+                                  {meta.title}
+                                </MKTypography>
+                                {item.detail ? (
+                                  <MKTypography
+                                    sx={{
+                                      fontSize: "0.68rem",
+                                      color: "rgba(31, 42, 68, 0.5)",
+                                      mt: 0.15,
+                                    }}
+                                  >
+                                    {item.detail.replace(/[()]/g, "").trim()}
+                                  </MKTypography>
+                                ) : null}
+                                <MKBox
+                                  sx={{
+                                    borderTop: "1px dashed rgba(31, 42, 68, 0.14)",
+                                    my: 0.75,
+                                  }}
+                                />
+                                <MKTypography
+                                  sx={{
+                                    fontWeight: 800,
+                                    color: "#2e7d32",
+                                    fontSize: "0.92rem",
+                                    fontVariantNumeric: "tabular-nums",
+                                  }}
+                                >
+                                  ₹{price}
+                                </MKTypography>
+                              </MKBox>
+                            );
+                          })}
+                        </MKBox>
+
+                        <MKBox
+                          sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            mt: { xs: 3.5, sm: 4, lg: "auto" },
+                            pt: { lg: 2.5 },
+                            mb: 0,
+                          }}
+                        >
+                          <MKBox sx={{ position: "relative", width: "100%", maxWidth: 300 }}>
+                            {/* Recommended badge — sits on top edge */}
+                            <MKBox
+                              sx={{
+                                position: "absolute",
+                                top: 0,
+                                left: "50%",
+                                transform: "translate(-50%, -50%)",
+                                zIndex: 2,
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: 0.3,
+                                px: 0.7,
+                                py: 0.15,
+                                borderRadius: "999px",
+                                backgroundColor: "#ffffff",
+                                border: "1px solid rgba(126, 201, 132, 0.65)",
+                                boxShadow: "0 1px 4px rgba(31, 42, 68, 0.06)",
+                                whiteSpace: "nowrap",
+                              }}
+                            >
+                              <StarRoundedIcon
+                                sx={{ fontSize: 9, color: "#43a047", display: "block" }}
+                              />
+                              <MKTypography
+                                component="span"
+                                sx={{
+                                  fontSize: "0.5rem",
+                                  fontWeight: 600,
+                                  color: "rgba(46, 125, 50, 0.7) !important",
+                                  lineHeight: 1,
+                                  letterSpacing: "0.01em",
+                                }}
+                              >
+                                {donatePage.membershipSection.directGiving.donateNowBadge}
+                              </MKTypography>
+                            </MKBox>
+
+                            <MKBox
+                              component={Link}
+                              to={donateCheckoutNav.pathname}
+                              state={donateCheckoutNav.state}
+                              onClick={(event) => {
+                                if (!checkoutIsReady) event.preventDefault();
+                              }}
+                              aria-disabled={!checkoutIsReady}
+                              tabIndex={checkoutIsReady ? 0 : -1}
+                              sx={{
+                                position: "relative",
+                                display: "grid",
+                                gridTemplateColumns: "40px minmax(0, 1fr) 40px",
+                                "& .MuiSvgIcon-root": {
+                                  fontSize: "30px !important",
+                                  width: "30px !important",
+                                  height: "30px !important",
+                                },
+                                alignItems: "center",
+                                width: "100%",
+                                minHeight: { xs: 64, sm: 68 },
+                                boxSizing: "border-box",
+                                textDecoration: "none",
+                                cursor: checkoutIsReady ? "pointer" : "not-allowed",
+                                opacity: checkoutIsReady ? 1 : 0.6,
+                                pointerEvents: checkoutIsReady ? "auto" : "none",
+                                borderRadius: "12px",
+                                py: { xs: 1.4, sm: 1.55 },
+                                px: { xs: 1.35, sm: 1.5 },
+                                background:
+                                  "linear-gradient(90deg, #4FA953 0%, #45a049 55%, #4FA953 100%)",
+                                boxShadow: "0 6px 14px rgba(79, 169, 83, 0.16)",
+                                transition:
+                                  "transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease",
+                                "&:hover": {
+                                  background:
+                                    "linear-gradient(90deg, #45a049 0%, #3d8a41 55%, #45a049 100%)",
+                                  boxShadow: "0 8px 18px rgba(79, 169, 83, 0.2)",
+                                  transform: "translateY(-1px)",
+                                },
+                                "&:active": {
+                                  transform: "translateY(0px)",
+                                  boxShadow: "0 4px 10px rgba(79, 169, 83, 0.16)",
+                                },
+                              }}
+                            >
+                              {/* Left — hand + heart */}
+                              <MKBox
+                                sx={{
+                                  width: 40,
+                                  height: 40,
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  justifySelf: "start",
+                                  opacity: 0.92,
+                                }}
+                              >
+                                <VolunteerActivismIcon
+                                  sx={{ color: "#ffffff", display: "block" }}
+                                />
+                              </MKBox>
+
+                              {/* Center — title + methods */}
+                              <MKBox
+                                sx={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  textAlign: "center",
+                                  px: 0.5,
+                                }}
+                              >
+                                <MKTypography
+                                  component="span"
+                                  sx={{
+                                    fontSize: { xs: "0.95rem", sm: "1.02rem" },
+                                    fontWeight: 700,
+                                    lineHeight: 1.1,
+                                    color: "#ffffff !important",
+                                    letterSpacing: "0.01em",
+                                  }}
+                                >
+                                  {donatePage.membershipSection.directGiving.donateNowCta}
+                                </MKTypography>
+                                <MKTypography
+                                  component="span"
+                                  sx={{
+                                    fontSize: { xs: "0.58rem", sm: "0.64rem" },
+                                    fontWeight: 500,
+                                    lineHeight: 1.2,
+                                    mt: 0.3,
+                                    color: "rgba(255, 255, 255, 0.82) !important",
+                                  }}
+                                >
+                                  {donatePage.membershipSection.directGiving.donateNowMethods}
+                                </MKTypography>
+                              </MKBox>
+
+                              {/* Right — arrow */}
+                              <MKBox
+                                sx={{
+                                  width: 40,
+                                  height: 40,
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  justifySelf: "end",
+                                  opacity: 0.92,
+                                }}
+                              >
+                                <ArrowForwardIcon sx={{ color: "#ffffff", display: "block" }} />
+                              </MKBox>
+                            </MKBox>
+                          </MKBox>
+                        </MKBox>
+                      </MKBox>
+
+                      <MKBox
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          minHeight: 0,
+                        }}
+                      >
+                        <MKBox
+                          sx={{
+                            width: "100%",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1.25,
+                            mb: 2,
+                          }}
+                        >
+                          <MKBox
+                            sx={{
+                              width: 40,
+                              height: 40,
+                              borderRadius: "50%",
+                              backgroundColor: "rgba(79, 169, 83, 0.1)",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              flexShrink: 0,
+                            }}
+                          >
+                            <QrCodeScannerOutlinedIcon sx={{ color: "#2e7d32", fontSize: 20 }} />
+                          </MKBox>
+                          <MKBox sx={{ minWidth: 0 }}>
+                            <MKTypography
+                              sx={{ fontWeight: 700, color: "#1f2a44", fontSize: "1rem" }}
+                            >
+                              {donatePage.membershipSection.directGiving.scanCard.title}
+                            </MKTypography>
+                          </MKBox>
+                        </MKBox>
+
+                        <MKBox
+                          component="figure"
+                          sx={{
+                            m: 0,
+                            mx: "auto",
+                            mb: 0,
+                            mt: { lg: "auto" },
+                            p: 0,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: "100%",
+                            maxWidth: { xs: 260, sm: 280, md: 280, lg: 300 },
+                            overflow: "hidden",
+                          }}
+                        >
+                          <MKBox
+                            component="img"
+                            src={donate2UpiQr}
+                            alt="Aadar Foundation UPI QR — scan to donate"
+                            width="674"
+                            height="1090"
+                            loading="lazy"
+                            decoding="async"
+                            fetchPriority="low"
+                            sx={{
+                              display: "block",
+                              width: "100%",
+                              maxWidth: { xs: 260, sm: 280, md: 280, lg: 300 },
+                              aspectRatio: "674 / 1090",
+                              height: "auto",
+                              objectFit: "contain",
+                              objectPosition: "center",
+                              p: 0,
+                              m: 0,
+                              border: "1.5px solid rgba(100, 149, 237, 0.45)",
+                              borderRadius: "12px",
+                              boxShadow:
+                                "0 8px 24px rgba(31, 42, 68, 0.1), 0 2px 8px rgba(31, 42, 68, 0.06)",
+                              backgroundColor: "#fff",
+                            }}
+                          />
+                        </MKBox>
+                      </MKBox>
+                    </MKBox>
+                  </MKBox>
+                </Grid>
+
                 <Grid item xs={12}>
                   <MKBox
-                    width={{ xs: "100%", sm: "88%", md: "72%" }}
-                    p={{ xs: 1.5, sm: 1.75 }}
+                    sx={{
+                      px: { xs: 0.5, sm: 1, md: 1.5 },
+                      mt: { xs: 3, sm: 3.5, md: 4 },
+                      mb: { xs: 0.5, sm: 1 },
+                    }}
+                  >
+                    <DonateReceiptCta />
+                  </MKBox>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <MKBox
+                    width="100%"
+                    maxWidth={{ xs: "100%", sm: "52rem", md: "58rem" }}
+                    px={{ xs: 1.25, sm: 1.5 }}
+                    py={{ xs: 0.75, sm: 1 }}
                     mx="auto"
-                    mt={{ xs: 1.5, sm: 2 }}
+                    mt={{ xs: 1, sm: 1.25 }}
                     textAlign="center"
                     sx={{
                       border: "none",
@@ -1525,66 +2004,63 @@ function Donate2() {
                     }}
                   >
                     <MKTypography
-                      fontSize={{ xs: "0.78rem", sm: "0.84rem" }}
+                      fontSize={{ xs: "0.76rem", sm: "0.8rem" }}
                       sx={{
                         color: "rgba(31, 42, 68, 0.78)",
-                        lineHeight: 1.65,
+                        lineHeight: 1.45,
                         m: 0,
-                        maxWidth: "36rem",
-                        mx: "auto",
                       }}
                     >
                       {donatePage.message80g}
                     </MKTypography>
                     <MKBox
-                      display="inline-flex"
+                      display="flex"
                       alignItems="center"
                       justifyContent="center"
                       flexWrap="wrap"
-                      gap={{ xs: 0.65, sm: 0.9 }}
-                      mt={1.5}
-                      px={{ xs: 1.25, sm: 1.75 }}
-                      py={{ xs: 0.7, sm: 0.85 }}
+                      gap={{ xs: 0.6, sm: 0.85 }}
+                      mt={0.85}
                       mx="auto"
-                      sx={{
-                        borderRadius: "999px",
-                        backgroundColor: "rgba(79, 169, 83, 0.1)",
-                        border: "1px solid rgba(79, 169, 83, 0.24)",
-                      }}
                     >
-                      <MKTypography
-                        fontSize={{ xs: "0.8rem", sm: "0.86rem" }}
-                        sx={{ color: "#166534", fontWeight: 700, lineHeight: 1 }}
-                      >
-                        {donatePage.panLabel}:
-                      </MKTypography>
-                      <MKTypography
-                        component="span"
-                        fontSize={{ xs: "0.82rem", sm: "0.88rem" }}
-                        sx={{
-                          color: "#14532d",
-                          fontWeight: 800,
-                          fontFamily: '"Roboto Mono", "Consolas", monospace',
-                          letterSpacing: "0.06em",
-                          lineHeight: 1,
-                        }}
-                      >
-                        {donatePage.panValue}
-                      </MKTypography>
                       <MKBox
-                        aria-hidden
+                        display="inline-flex"
+                        alignItems="center"
+                        gap={0.65}
+                        px={{ xs: 1.2, sm: 1.4 }}
+                        py={{ xs: 0.45, sm: 0.5 }}
                         sx={{
-                          width: "1px",
-                          height: 16,
-                          backgroundColor: "rgba(22, 101, 52, 0.28)",
-                          display: { xs: "none", sm: "block" },
+                          borderRadius: "999px",
+                          backgroundColor: "rgba(236, 165, 51, 0.1)",
+                          border: "1px solid rgba(236, 165, 51, 0.32)",
+                          boxShadow: "0 2px 8px rgba(236, 165, 51, 0.14)",
                         }}
-                      />
-                      <MKBox display="flex" alignItems="center" gap={0.5}>
-                        <VerifiedUserOutlinedIcon sx={{ fontSize: 16, color: "#166534" }} />
+                      >
+                        <BadgeOutlinedIcon sx={{ fontSize: 15, color: "#a3690a" }} />
                         <MKTypography
-                          fontSize={{ xs: "0.8rem", sm: "0.86rem" }}
-                          sx={{ color: "#166534", fontWeight: 700, lineHeight: 1 }}
+                          fontSize={{ xs: "0.74rem", sm: "0.8rem" }}
+                          sx={{ color: "#a3690a", fontWeight: 700, lineHeight: 1 }}
+                        >
+                          {donatePage.panLabel}: {donatePage.panValue}
+                        </MKTypography>
+                      </MKBox>
+
+                      <MKBox
+                        display="inline-flex"
+                        alignItems="center"
+                        gap={0.65}
+                        px={{ xs: 1.2, sm: 1.4 }}
+                        py={{ xs: 0.45, sm: 0.5 }}
+                        sx={{
+                          borderRadius: "999px",
+                          backgroundColor: "rgba(79, 169, 83, 0.1)",
+                          border: "1px solid rgba(79, 169, 83, 0.32)",
+                          boxShadow: "0 2px 8px rgba(79, 169, 83, 0.14)",
+                        }}
+                      >
+                        <VerifiedUserOutlinedIcon sx={{ fontSize: 15, color: "#2e7d32" }} />
+                        <MKTypography
+                          fontSize={{ xs: "0.74rem", sm: "0.8rem" }}
+                          sx={{ color: "#2e7d32", fontWeight: 700, lineHeight: 1 }}
                         >
                           {donatePage.certified80gLabel}
                         </MKTypography>
@@ -1592,15 +2068,13 @@ function Donate2() {
                     </MKBox>
                     <MKTypography
                       component="p"
-                      fontSize={{ xs: "0.72rem", sm: "0.76rem" }}
+                      fontSize={{ xs: "0.7rem", sm: "0.74rem" }}
                       sx={{
                         color: "rgba(31, 42, 68, 0.55)",
-                        lineHeight: 1.6,
-                        mt: 1.25,
+                        lineHeight: 1.45,
+                        mt: 0.75,
                         mb: 0,
                         whiteSpace: "pre-line",
-                        maxWidth: "32rem",
-                        mx: "auto",
                       }}
                     >
                       {donatePage.domesticDonationsFootnote}

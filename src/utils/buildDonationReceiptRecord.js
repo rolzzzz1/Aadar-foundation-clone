@@ -18,6 +18,8 @@ export function buildDonationReceiptRecord({
   verified,
   locale,
   receiptEmailSent,
+  subscriptionId,
+  frequency,
 }) {
   return {
     status,
@@ -42,5 +44,8 @@ export function buildDonationReceiptRecord({
     errorCode: errorCode || "",
     errorDescription: errorDescription || "",
     testMode: isRazorpayTestKey(keyId),
+    subscriptionId: subscriptionId || "",
+    isRecurring: !!subscriptionId,
+    frequency: frequency || "",
   };
 }

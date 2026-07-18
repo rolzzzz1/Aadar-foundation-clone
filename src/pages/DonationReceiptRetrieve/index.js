@@ -1,9 +1,11 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 
+import Grid from "@mui/material/Grid";
 import Alert from "@mui/material/Alert";
+import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -15,17 +17,18 @@ import Tabs from "@mui/material/Tabs";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
-import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import PhoneIphoneOutlinedIcon from "@mui/icons-material/PhoneIphoneOutlined";
 import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 import ReplayOutlinedIcon from "@mui/icons-material/ReplayOutlined";
+import RestaurantOutlinedIcon from "@mui/icons-material/RestaurantOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import ShieldOutlinedIcon from "@mui/icons-material/ShieldOutlined";
 import VerifiedOutlinedIcon from "@mui/icons-material/VerifiedOutlined";
@@ -39,40 +42,116 @@ import aadarLogo from "assets/images/logos/logo-aadar.jpg";
 import getRoutes from "routes1";
 import getFooterRoutes from "footer.routes1";
 import { DONATE_PAGE_PATH } from "utils/donation";
+import { ABOUT_PATH } from "utils/paths";
 import { postJson } from "utils/api";
 import { validateEmail } from "utils/donation";
 import { formatInr } from "utils/receiptFormat";
 
 const brandGreen = "#1e6b35";
 const brandGreenDark = "#174f28";
+const brandGreenLight = "#2d8a4e";
+const brandYellow = "#ECA533";
+const brandYellowSoft = "#FFF8EC";
+const yellowTint = "rgba(236, 165, 51, 0.12)";
+const yellowTintStrong = "rgba(236, 165, 51, 0.2)";
+const yellowBorder = "rgba(236, 165, 51, 0.35)";
 const panelGreen = "#edf7ee";
-const panelGreenDeep = "#dcefe0";
+const panelGreenSoft = "#f6fbf7";
+const panelWarm = "#faf8f2";
+const ink = "#1f2a44";
 
 const fieldSx = {
-  "& .MuiInputBase-input": { fontSize: { xs: "0.9375rem", sm: "0.975rem" }, py: 1.35 },
+  "& .MuiInputBase-input": { fontSize: { xs: "0.9375rem", sm: "0.975rem" }, py: 1.45 },
   "& .MuiInputLabel-root": { fontSize: { xs: "0.875rem", sm: "0.9375rem" }, fontWeight: 600 },
   "& .MuiOutlinedInput-root": {
-    borderRadius: "10px",
+    borderRadius: "12px",
     backgroundColor: "#fff",
-    "& fieldset": { borderColor: "rgba(30, 107, 53, 0.18)" },
-    "&:hover fieldset": { borderColor: "rgba(30, 107, 53, 0.35)" },
-    "&.Mui-focused fieldset": { borderColor: brandGreen },
+    boxShadow: "0 2px 8px rgba(30, 107, 53, 0.04)",
+    "& fieldset": { borderColor: "rgba(30, 107, 53, 0.16)" },
+    "&:hover fieldset": { borderColor: yellowBorder },
+    "&.Mui-focused fieldset": {
+      borderColor: brandGreen,
+      borderWidth: "1.5px",
+    },
+    "&.Mui-focused": {
+      boxShadow: `0 0 0 3px ${yellowTintStrong}`,
+    },
   },
 };
 
 const tabSx = {
-  minHeight: 44,
-  borderBottom: "1px solid rgba(30, 107, 53, 0.12)",
+  minHeight: 48,
+  p: 0.5,
+  borderRadius: "14px",
+  bgcolor: "rgba(236, 165, 51, 0.07)",
+  border: `1px solid ${yellowBorder}`,
+  "& .MuiTabs-flexContainer": { gap: 0.5 },
   "& .MuiTab-root": {
-    minHeight: 44,
+    minHeight: 42,
+    flex: 1,
     textTransform: "none",
     fontWeight: 600,
     fontSize: "0.9rem",
-    color: "rgba(31, 42, 68, 0.45)",
+    color: "rgba(31, 42, 68, 0.5)",
     gap: 0.75,
-    "&.Mui-selected": { color: brandGreen, fontWeight: 700 },
+    borderRadius: "11px",
+    transition: "background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease",
+    "&.Mui-selected": {
+      color: brandGreenDark,
+      fontWeight: 700,
+      bgcolor: "#fff",
+      boxShadow: `0 3px 12px rgba(30, 107, 53, 0.1), inset 0 -2px 0 ${brandYellow}`,
+    },
   },
-  "& .MuiTabs-indicator": { backgroundColor: brandGreen, height: 3, borderRadius: "3px 3px 0 0" },
+  "& .MuiTabs-indicator": { display: "none" },
+};
+
+const findReceiptBtnSx = {
+  py: 1.55,
+  px: 2.5,
+  minHeight: 52,
+  fontWeight: 800,
+  letterSpacing: "0.015em",
+  textTransform: "none",
+  borderRadius: "14px",
+  fontSize: { xs: "0.95rem", sm: "1rem" },
+  color: "#fff",
+  background: `linear-gradient(135deg, ${brandGreenLight} 0%, ${brandGreen} 50%, ${brandGreenDark} 100%)`,
+  border: "1px solid rgba(255, 255, 255, 0.2)",
+  boxShadow: `
+    0 10px 24px rgba(30, 107, 53, 0.26),
+    0 4px 12px rgba(236, 165, 51, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2)
+  `,
+  transition: "transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease",
+  "& .MuiButton-startIcon": {
+    marginRight: "10px",
+    marginLeft: "-2px",
+  },
+  "&:hover": {
+    transform: "translateY(-2px)",
+    filter: "brightness(1.03)",
+    background: `linear-gradient(135deg, ${brandGreen} 0%, ${brandGreenDark} 70%, ${brandYellow} 100%)`,
+    boxShadow: `
+      0 14px 32px rgba(30, 107, 53, 0.3),
+      0 6px 18px rgba(236, 165, 51, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.26)
+    `,
+  },
+  "&:active": {
+    transform: "translateY(0)",
+    boxShadow: "0 6px 16px rgba(30, 107, 53, 0.22)",
+  },
+  "&:focus-visible": {
+    outline: `3px solid ${yellowTintStrong}`,
+    outlineOffset: 2,
+  },
+  "&.Mui-disabled": {
+    color: "rgba(255,255,255,0.92)",
+    background: `linear-gradient(135deg, rgba(45,138,78,0.6) 0%, rgba(30,107,53,0.6) 100%)`,
+    boxShadow: "none",
+    transform: "none",
+  },
 };
 
 const emptyContactLookup = { method: "email", value: "" };
@@ -108,160 +187,281 @@ function isContactValid(method, value) {
   return validateEmail(value).ok;
 }
 
-function ReceiptIllustration() {
+function BotanicalLeaf({ flip, sx }) {
+  const gradId = React.useId();
+
   return (
     <Box
-      sx={{
-        position: "relative",
-        width: "100%",
-        maxWidth: 220,
-        mx: "auto",
-        mb: 2.5,
-        aspectRatio: "1 / 1",
-      }}
+      component="svg"
+      viewBox="0 0 56 88"
       aria-hidden
+      sx={{
+        width: 56,
+        height: 88,
+        transform: flip ? "scaleX(-1)" : undefined,
+        ...sx,
+      }}
+    >
+      <defs>
+        <linearGradient id={gradId} x1="20%" y1="0%" x2="80%" y2="100%">
+          <stop offset="0%" stopColor={brandGreenLight} stopOpacity="0.62" />
+          <stop offset="55%" stopColor={brandGreen} stopOpacity="0.48" />
+          <stop offset="100%" stopColor={brandYellow} stopOpacity="0.32" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M28 6 C16 8 8 20 8 34 C8 50 16 68 28 82 C40 68 48 50 48 34 C48 20 40 8 28 6 Z"
+        fill={`url(#${gradId})`}
+      />
+      <path
+        d="M28 12 L28 76 M28 22 C22 26 16 34 14 44 M28 22 C34 26 40 34 42 44 M28 38 C24 46 20 54 18 62 M28 38 C32 46 36 54 38 62"
+        stroke="rgba(255,255,255,0.42)"
+        strokeWidth="1.2"
+        fill="none"
+        strokeLinecap="round"
+      />
+    </Box>
+  );
+}
+
+BotanicalLeaf.propTypes = {
+  flip: PropTypes.bool,
+  sx: PropTypes.object,
+};
+
+BotanicalLeaf.defaultProps = {
+  flip: false,
+  sx: undefined,
+};
+
+const vineTone = {
+  stroke: "rgba(31, 42, 68, 0.18)",
+  strokeSoft: "rgba(31, 42, 68, 0.12)",
+  leafFill: "rgba(31, 42, 68, 0.08)",
+  leafFillDeep: "rgba(31, 42, 68, 0.11)",
+  vein: "rgba(255, 255, 255, 0.38)",
+};
+
+function SideVine({ flip, sx }) {
+  const { transform: sxTransform, ...restSx } = sx || {};
+  const transform =
+    [flip ? "scaleX(-1)" : null, sxTransform].filter(Boolean).join(" ") || undefined;
+
+  return (
+    <Box
+      component="span"
+      aria-hidden
+      sx={{
+        display: "block",
+        lineHeight: 0,
+        transform,
+        ...restSx,
+      }}
     >
       <Box
-        sx={{
-          position: "absolute",
-          inset: "8% 10% 12%",
-          borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(30,107,53,0.12) 0%, rgba(30,107,53,0.02) 70%)",
-        }}
-      />
-      <Box
-        sx={{
-          position: "absolute",
-          left: "18%",
-          top: "22%",
-          width: "52%",
-          height: "58%",
-          borderRadius: "14px",
-          bgcolor: "#fff",
-          border: "2px solid rgba(30,107,53,0.15)",
-          boxShadow: "0 12px 28px rgba(30,107,53,0.12)",
-          transform: "rotate(-6deg)",
-          overflow: "hidden",
-        }}
-      >
-        <Box sx={{ height: 14, bgcolor: panelGreenDeep }} />
-        <Box sx={{ p: 1.25 }}>
-          <Typography
-            sx={{
-              fontSize: "0.55rem",
-              fontWeight: 800,
-              color: brandGreen,
-              letterSpacing: "0.04em",
-              lineHeight: 1.2,
-            }}
-          >
-            80G TAX
-            <br />
-            RECEIPT
-          </Typography>
-          {[1, 2, 3].map((i) => (
-            <Box
-              key={i}
-              sx={{
-                mt: 0.6,
-                height: 4,
-                borderRadius: 2,
-                bgcolor: "rgba(30,107,53,0.1)",
-                width: i === 3 ? "60%" : "85%",
-              }}
-            />
-          ))}
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          position: "absolute",
-          right: "14%",
-          top: "18%",
-          width: 44,
-          height: 44,
-          borderRadius: "50%",
-          bgcolor: brandGreen,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          boxShadow: "0 8px 20px rgba(30,107,53,0.28)",
-        }}
-      >
-        <VerifiedOutlinedIcon sx={{ color: "#fff", fontSize: 26 }} />
-      </Box>
-      <Box
         component="svg"
-        viewBox="0 0 80 80"
-        sx={{
-          position: "absolute",
-          left: "8%",
-          bottom: "18%",
-          width: 56,
-          height: 56,
-          opacity: 0.35,
-        }}
+        viewBox="0 0 140 560"
+        sx={{ width: "100%", height: "100%", display: "block" }}
       >
         <path
-          d="M40 8 C28 8 20 18 20 28 C20 38 40 58 40 58 C40 58 60 38 60 28 C60 18 52 8 40 8 Z"
-          fill={brandGreen}
+          d="M84 18 C72 56 58 84 44 112 C30 140 22 174 30 214 C38 252 52 282 64 312 C78 346 86 382 80 420 C74 458 56 496 40 540"
+          stroke={vineTone.stroke}
+          strokeWidth="2.2"
+          fill="none"
+          strokeLinecap="round"
         />
-      </Box>
-      <Box
-        component="svg"
-        viewBox="0 0 80 80"
-        sx={{
-          position: "absolute",
-          right: "6%",
-          bottom: "12%",
-          width: 48,
-          height: 48,
-          opacity: 0.25,
-        }}
-      >
         <path
-          d="M40 8 C28 8 20 18 20 28 C20 38 40 58 40 58 C40 58 60 38 60 28 C60 18 52 8 40 8 Z"
-          fill={brandGreen}
+          d="M52 132 C36 128 22 118 12 104"
+          stroke={vineTone.strokeSoft}
+          strokeWidth="1.6"
+          fill="none"
+          strokeLinecap="round"
         />
+        <path
+          d="M64 312 C84 320 100 336 110 356"
+          stroke={vineTone.strokeSoft}
+          strokeWidth="1.6"
+          fill="none"
+          strokeLinecap="round"
+        />
+
+        <g transform="translate(42 106) rotate(-18)">
+          <path
+            d="M0 0 C-16 -6 -28 8 -28 24 C-16 14 -8 6 0 0 C10 4 18 12 28 24 C28 8 16 -6 0 0 Z"
+            fill={vineTone.leafFillDeep}
+          />
+          <path
+            d="M0 4 L0 22 M0 9 C-7 14 -12 18 -14 22"
+            stroke={vineTone.vein}
+            strokeWidth="0.8"
+            fill="none"
+            strokeLinecap="round"
+          />
+        </g>
+        <g transform="translate(70 152) rotate(22)">
+          <path
+            d="M0 0 C-14 -5 -24 8 -24 22 C-14 14 -7 7 0 0 C9 4 16 11 24 22 C24 8 14 -5 0 0 Z"
+            fill={vineTone.leafFill}
+          />
+          <path
+            d="M0 4 L0 20"
+            stroke={vineTone.vein}
+            strokeWidth="0.7"
+            fill="none"
+            strokeLinecap="round"
+          />
+        </g>
+        <g transform="translate(32 226) rotate(-30)">
+          <path
+            d="M0 0 C-15 -5 -26 9 -26 24 C-15 15 -7 7 0 0 C10 4 17 12 26 24 C26 9 15 -5 0 0 Z"
+            fill={vineTone.leafFill}
+          />
+        </g>
+        <g transform="translate(76 268) rotate(34)">
+          <path
+            d="M0 0 C-12 -4 -20 7 -20 18 C-12 12 -6 6 0 0 C7 3 13 9 20 18 C20 7 12 -4 0 0 Z"
+            fill={vineTone.leafFillDeep}
+          />
+        </g>
+        <g transform="translate(56 342) rotate(-16)">
+          <path
+            d="M0 0 C-14 -5 -24 8 -24 22 C-14 14 -7 7 0 0 C9 4 16 11 24 22 C24 8 14 -5 0 0 Z"
+            fill={vineTone.leafFill}
+          />
+          <path
+            d="M0 3 L0 19"
+            stroke={vineTone.vein}
+            strokeWidth="0.7"
+            fill="none"
+            strokeLinecap="round"
+          />
+        </g>
+        <g transform="translate(28 412) rotate(-40)">
+          <path
+            d="M0 0 C-15 -5 -26 10 -26 26 C-15 16 -7 8 0 0 C10 4 18 12 26 26 C26 10 15 -5 0 0 Z"
+            fill={vineTone.leafFillDeep}
+          />
+        </g>
+        <g transform="translate(66 458) rotate(18)">
+          <path
+            d="M0 0 C-13 -4 -22 8 -22 20 C-13 13 -6 6 0 0 C8 4 14 10 22 20 C22 8 13 -4 0 0 Z"
+            fill={vineTone.leafFill}
+          />
+        </g>
       </Box>
     </Box>
   );
 }
 
-function FeatureRow({ icon: Icon, title, subtitle }) {
+SideVine.propTypes = {
+  flip: PropTypes.bool,
+  sx: PropTypes.object,
+};
+
+SideVine.defaultProps = {
+  flip: false,
+  sx: undefined,
+};
+
+function CardHeaderFlourish() {
   return (
-    <Stack direction="row" spacing={1.5} alignItems="flex-start">
+    <>
+      <SideVine
+        sx={{
+          position: "absolute",
+          top: { xs: -6, sm: -10 },
+          left: { xs: -6, sm: -2 },
+          width: { xs: 76, sm: 92 },
+          height: { xs: 140, sm: 160 },
+          opacity: { xs: 0.34, sm: 0.4 },
+          transform: "rotate(-8deg)",
+          pointerEvents: "none",
+        }}
+      />
+    </>
+  );
+}
+
+function ReceiptPageFoliage() {
+  return (
+    <>
+      <SideVine
+        sx={{
+          position: "absolute",
+          top: { xs: 86, md: 98 },
+          left: { xs: -48, md: -38 },
+          height: { xs: 540, md: 580 },
+          width: { xs: 120, md: 140 },
+          opacity: { xs: 0.14, md: 0.16 },
+          pointerEvents: "none",
+        }}
+      />
+      <SideVine
+        flip
+        sx={{
+          position: "absolute",
+          top: { xs: 86, md: 98 },
+          right: { xs: -48, md: -38 },
+          height: { xs: 540, md: 580 },
+          width: { xs: 120, md: 140 },
+          opacity: { xs: 0.14, md: 0.16 },
+          pointerEvents: "none",
+        }}
+      />
+    </>
+  );
+}
+
+function ImpactStat({ icon: Icon, title, subtitle }) {
+  const isTransparency = /100%\s*transparent/i.test(title);
+
+  return (
+    <Box
+      sx={{
+        textAlign: "center",
+        px: { xs: 0.5, sm: 1 },
+        py: 0.85,
+        borderRadius: "14px",
+        bgcolor: "rgba(255,255,255,0.72)",
+        border: "1px solid rgba(30, 107, 53, 0.1)",
+        height: "100%",
+        transition: "transform 0.2s ease, box-shadow 0.2s ease",
+        "&:hover": {
+          transform: "translateY(-2px)",
+          boxShadow: "0 8px 20px rgba(30, 107, 53, 0.08)",
+        },
+      }}
+    >
       <Box
         sx={{
-          width: 36,
-          height: 36,
-          borderRadius: "10px",
-          bgcolor: "rgba(30, 107, 53, 0.1)",
+          width: 38,
+          height: 38,
+          borderRadius: "12px",
+          background: `linear-gradient(145deg, rgba(30, 107, 53, 0.1) 0%, ${yellowTint} 100%)`,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          flexShrink: 0,
+          mx: "auto",
+          mb: 0.8,
         }}
       >
         <Icon sx={{ fontSize: 20, color: brandGreen }} />
       </Box>
-      <Box sx={{ minWidth: 0 }}>
-        <Typography
-          sx={{ fontWeight: 700, fontSize: "0.875rem", color: brandGreenDark, lineHeight: 1.3 }}
-        >
-          {title}
-        </Typography>
-        <Typography
-          sx={{ fontSize: "0.78rem", color: "rgba(31, 42, 68, 0.55)", lineHeight: 1.4, mt: 0.15 }}
-        >
-          {subtitle}
-        </Typography>
-      </Box>
-    </Stack>
+      <Typography
+        sx={{ fontWeight: 800, fontSize: "0.9rem", color: brandGreenDark, lineHeight: 1.25 }}
+      >
+        {isTransparency ? title.replace(/^100%\s*/i, "") : title}
+      </Typography>
+      <Typography
+        sx={{ fontSize: "0.72rem", color: "rgba(31, 42, 68, 0.58)", lineHeight: 1.4, mt: 0.4 }}
+      >
+        {subtitle}
+      </Typography>
+    </Box>
   );
 }
 
-FeatureRow.propTypes = {
+ImpactStat.propTypes = {
   icon: PropTypes.elementType.isRequired,
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string.isRequired,
@@ -285,7 +485,55 @@ export default function DonationReceiptRetrievePage() {
 
   const copy = useMemo(() => t("receiptRetrieve", { returnObjects: true }), [t]);
   const ctaCopy = copy.cta || {};
-  const features = copy.features || {};
+
+  const donationsHeadingRef = useRef(null);
+  const prevDonationsCountRef = useRef(0);
+  const receiptCardRef = useRef(null);
+
+  useEffect(() => {
+    const count = Array.isArray(donationsList) ? donationsList.length : 0;
+    const prev = prevDonationsCountRef.current;
+    prevDonationsCountRef.current = count;
+    if (!count || count === prev) return;
+
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Wait until list renders, then scroll near heading (offset for sticky navbar).
+    const behavior = prefersReducedMotion ? "auto" : "smooth";
+    const offset = 170;
+    window.requestAnimationFrame(() => {
+      const el = donationsHeadingRef.current;
+      if (!el) return;
+      const top = window.scrollY + el.getBoundingClientRect().top - offset;
+      window.scrollTo({ top: Math.max(0, top), behavior });
+    });
+  }, [donationsList]);
+
+  const scrollToReceiptCardTop = () => {
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Scroll up to the top of the receipt card (offset for sticky navbar).
+    const behavior = prefersReducedMotion ? "auto" : "smooth";
+    const offset = 110;
+    window.requestAnimationFrame(() => {
+      const el = receiptCardRef.current;
+      if (!el) return;
+      const top = window.scrollY + el.getBoundingClientRect().top - offset;
+      window.scrollTo({ top: Math.max(0, top), behavior });
+    });
+  };
+
+  useEffect(() => {
+    if (!record) return;
+    // Once the receipt is ready, scroll up to the top of the receipt card.
+    scrollToReceiptCardTop();
+  }, [record]);
 
   const resetResult = () => {
     setRecord(null);
@@ -382,12 +630,20 @@ export default function DonationReceiptRetrievePage() {
           startIcon={<DownloadOutlinedIcon />}
           onClick={handleDownload}
           sx={{
-            py: 1.25,
-            fontWeight: 800,
+            py: 1.1,
+            fontWeight: 700,
+            fontSize: "0.9rem",
             textTransform: "none",
             borderRadius: "10px",
-            bgcolor: brandGreen,
-            "&:hover": { bgcolor: brandGreenDark },
+            background: brandGreen,
+            color: "#ffffff !important",
+            boxShadow: "none",
+            transition: "background 0.18s ease",
+            "& *": { color: "#ffffff" },
+            "&:hover": {
+              background: brandGreenDark,
+              boxShadow: "none",
+            },
           }}
         >
           {t("donationResult.downloadPdf")}
@@ -396,14 +652,22 @@ export default function DonationReceiptRetrievePage() {
           fullWidth
           variant="outlined"
           startIcon={<ReplayOutlinedIcon />}
-          onClick={resetResult}
+          onClick={() => {
+            resetResult();
+            scrollToReceiptCardTop();
+          }}
           sx={{
-            py: 1.25,
-            fontWeight: 700,
+            py: 1.1,
+            fontWeight: 600,
+            fontSize: "0.9rem",
             textTransform: "none",
             borderRadius: "10px",
-            borderColor: "rgba(31,42,68,0.2)",
-            color: "#1f2a44",
+            borderColor: "rgba(31,42,68,0.14)",
+            color: "rgba(31, 42, 68, 0.6)",
+            "&:hover": {
+              borderColor: "rgba(31,42,68,0.24)",
+              bgcolor: "rgba(31,42,68,0.03)",
+            },
           }}
         >
           {copy.searchAgain || "Look up another receipt"}
@@ -422,199 +686,222 @@ export default function DonationReceiptRetrievePage() {
   ) : null;
 
   const lookupForm = (
-    <Stack spacing={2.25}>
+    <Stack spacing={2.25} sx={{ width: "100%", alignItems: "center" }}>
       <Box
         sx={{
+          width: "100%",
           display: "flex",
-          gap: 1.25,
-          alignItems: "flex-start",
-          p: 1.5,
-          borderRadius: "10px",
-          bgcolor: panelGreen,
-          border: "1px solid rgba(30, 107, 53, 0.12)",
+          justifyContent: "center",
         }}
       >
-        <InfoOutlinedIcon sx={{ fontSize: 20, color: brandGreen, mt: 0.15, flexShrink: 0 }} />
-        <Typography
-          sx={{ fontSize: "0.8125rem", color: "rgba(31, 42, 68, 0.72)", lineHeight: 1.55 }}
-        >
-          {copy.onlineHint ||
-            "For online donations only. Enter the email or mobile number you used when donating to find your donations and download receipts."}
-        </Typography>
-      </Box>
-
-      <Tabs
-        value={contactLookup.method}
-        onChange={(_, value) => {
-          setContactLookup({ method: value, value: "" });
-          setError("");
-          setDonationsList(null);
-        }}
-        sx={tabSx}
-      >
-        <Tab
-          value="email"
-          icon={<EmailOutlinedIcon sx={{ fontSize: 18 }} />}
-          iconPosition="start"
-          label={copy.contactEmail || "Email"}
-        />
-        <Tab
-          value="mobile"
-          icon={<PhoneIphoneOutlinedIcon sx={{ fontSize: 18 }} />}
-          iconPosition="start"
-          label={copy.contactMobile || "Mobile"}
-        />
-      </Tabs>
-
-      <TextField
-        label={
-          contactLookup.method === "mobile"
-            ? copy.mobile || t("donationResult.mobile")
-            : copy.emailAddress || copy.email || t("donationResult.email")
-        }
-        value={contactLookup.value}
-        onChange={(e) => setContactLookup((prev) => ({ ...prev, value: e.target.value }))}
-        placeholder={
-          contactLookup.method === "mobile"
-            ? copy.mobilePlaceholder || "9826441863"
-            : copy.emailPlaceholder || "Enter your email address"
-        }
-        type={contactLookup.method === "mobile" ? "tel" : "email"}
-        fullWidth
-        sx={fieldSx}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              {contactLookup.method === "mobile" ? (
-                <PhoneIphoneOutlinedIcon sx={{ fontSize: 20, color: "rgba(31,42,68,0.35)" }} />
-              ) : (
-                <EmailOutlinedIcon sx={{ fontSize: 20, color: "rgba(31,42,68,0.35)" }} />
-              )}
-            </InputAdornment>
-          ),
-        }}
-      />
-
-      <MKButton
-        variant="contained"
-        disabled={busy}
-        fullWidth
-        startIcon={busy ? <CircularProgress size={18} color="inherit" /> : <SearchOutlinedIcon />}
-        onClick={handleFindDonations}
-        sx={{
-          py: 1.45,
-          fontWeight: 800,
-          textTransform: "none",
-          borderRadius: "10px",
-          fontSize: "0.9375rem",
-          bgcolor: brandGreen,
-          boxShadow: "0 6px 16px rgba(30, 107, 53, 0.22)",
-          "&:hover": { bgcolor: brandGreenDark },
-        }}
-      >
-        {busy
-          ? copy.busy || t("donationResult.lookupBusy")
-          : copy.findDonations || "Find my donations"}
-      </MKButton>
-
-      <Stack direction="row" spacing={0.75} alignItems="center" justifyContent="center">
-        <ShieldOutlinedIcon sx={{ fontSize: 16, color: "rgba(31,42,68,0.4)" }} />
-        <Typography sx={{ fontSize: "0.78rem", color: "rgba(31,42,68,0.5)" }}>
-          {copy.privacyNote || "We never share your information with anyone"}
-        </Typography>
-      </Stack>
-
-      {donationsList?.length ? (
-        <Box>
-          <Typography sx={{ fontWeight: 800, color: "#1f2a44", mb: 1.25, fontSize: "0.9375rem" }}>
-            {copy.listTitle || "Your donations"}
-          </Typography>
-          <Stack spacing={1.25}>
-            {donationsList.map((item) => (
-              <Box
-                key={item.paymentId}
-                sx={{
-                  p: 1.5,
-                  borderRadius: "12px",
-                  border: "1px solid rgba(30,107,53,0.12)",
-                  bgcolor: panelGreen,
-                  display: "flex",
-                  flexDirection: { xs: "column", sm: "row" },
-                  alignItems: { xs: "stretch", sm: "center" },
-                  justifyContent: "space-between",
-                  gap: 1.25,
-                }}
-              >
-                <Box sx={{ minWidth: 0 }}>
-                  <Typography sx={{ fontWeight: 800, color: brandGreen }}>
-                    {formatInr(item.amountInr)}
-                  </Typography>
-                  <Typography sx={{ fontSize: "0.875rem", color: "#64748b" }}>
-                    {formatPaidAt(item.paidAt)}
-                    {item.programLabel ? ` · ${item.programLabel}` : ""}
-                  </Typography>
-                  {item.paymentId ? (
-                    <Typography
-                      sx={{
-                        fontSize: "0.75rem",
-                        color: "rgba(31,42,68,0.55)",
-                        mt: 0.25,
-                        wordBreak: "break-all",
-                      }}
-                    >
-                      {item.paymentId}
-                    </Typography>
-                  ) : null}
-                </Box>
-                <MKButton
-                  variant="outlined"
-                  size="small"
-                  disabled={busy}
-                  startIcon={<ReceiptLongOutlinedIcon />}
-                  onClick={() => handleSelectDonation(item.paymentId)}
-                  sx={{
-                    flexShrink: 0,
-                    fontWeight: 700,
-                    textTransform: "none",
-                    borderRadius: "10px",
-                    borderColor: brandGreen,
-                    color: brandGreen,
-                  }}
-                >
-                  {copy.viewReceipt || "View receipt"}
-                </MKButton>
-              </Box>
-            ))}
-          </Stack>
-        </Box>
-      ) : null}
-
-      {error ? (
-        <Alert severity="error" sx={{ borderRadius: "10px" }}>
-          {error}
-        </Alert>
-      ) : null}
-
-      <Box sx={{ textAlign: "center", pt: 1 }}>
-        <Typography sx={{ fontWeight: 700, fontSize: "0.875rem", color: "#1f2a44", mb: 1 }}>
-          {copy.cantFindTitle || "Can't find your receipt?"}
-        </Typography>
-        <Typography
+        <Stack
+          spacing={2.25}
           sx={{
-            fontSize: "0.78rem",
-            color: "rgba(31, 42, 68, 0.58)",
-            lineHeight: 1.55,
-            fontStyle: "italic",
-            maxWidth: 420,
-            mx: "auto",
+            width: "100%",
+            maxWidth: 640,
+            alignItems: "center",
+            py: { xs: 1.25, sm: 1.75 },
           }}
         >
-          {ctaCopy.bankTransferNote ||
-            "For UPI / QR and bank transfer donations, email us at aadarfoundation2018@gmail.com with your full name, father/husband name, email, mobile number, PAN, complete address (house no., city, state, PIN), donation amount, payment date, transaction reference (UTR or bank ref), and a clear payment screenshot. We will verify your payment and email your 80G tax receipt."}
-        </Typography>
+          <Tabs
+            value={contactLookup.method}
+            onChange={(_, value) => {
+              setContactLookup({ method: value, value: "" });
+              setError("");
+              setDonationsList(null);
+            }}
+            sx={{ ...tabSx, width: "100%", mx: "auto", alignSelf: "center" }}
+          >
+            <Tab
+              value="email"
+              icon={<EmailOutlinedIcon sx={{ fontSize: 18 }} />}
+              iconPosition="start"
+              label={copy.contactEmail || "Email"}
+            />
+            <Tab
+              value="mobile"
+              icon={<PhoneIphoneOutlinedIcon sx={{ fontSize: 18 }} />}
+              iconPosition="start"
+              label={copy.contactMobile || "Mobile"}
+            />
+          </Tabs>
+
+          <Box
+            component="form"
+            sx={{ width: "100%", mx: "auto", alignSelf: "center", pb: { xs: 0.5, sm: 0.75 } }}
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (!busy) handleFindDonations();
+            }}
+          >
+            <TextField
+              label={
+                contactLookup.method === "mobile"
+                  ? copy.mobile || t("donationResult.mobile")
+                  : copy.emailAddress || copy.email || t("donationResult.email")
+              }
+              value={contactLookup.value}
+              onChange={(e) => setContactLookup((prev) => ({ ...prev, value: e.target.value }))}
+              placeholder={
+                contactLookup.method === "mobile"
+                  ? copy.mobilePlaceholder || "9826441863"
+                  : copy.emailPlaceholder || "Enter your email address"
+              }
+              type={contactLookup.method === "mobile" ? "tel" : "email"}
+              fullWidth
+              sx={{ ...fieldSx, mb: 2.25 }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    {contactLookup.method === "mobile" ? (
+                      <PhoneIphoneOutlinedIcon
+                        sx={{ fontSize: 20, color: "rgba(31,42,68,0.35)" }}
+                      />
+                    ) : (
+                      <EmailOutlinedIcon sx={{ fontSize: 20, color: "rgba(31,42,68,0.35)" }} />
+                    )}
+                  </InputAdornment>
+                ),
+              }}
+            />
+
+            <MKButton
+              type="submit"
+              variant="contained"
+              disabled={busy}
+              fullWidth
+              aria-busy={busy}
+              startIcon={
+                busy ? (
+                  <CircularProgress size={20} color="inherit" thickness={5} />
+                ) : (
+                  <SearchOutlinedIcon sx={{ fontSize: 22 }} />
+                )
+              }
+              sx={findReceiptBtnSx}
+            >
+              {busy
+                ? copy.busy || t("donationResult.lookupBusy")
+                : copy.findMyReceipt || copy.findDonations || "Find My Receipt"}
+            </MKButton>
+          </Box>
+
+          {error ? (
+            <Alert severity="error" sx={{ width: "100%", borderRadius: "10px" }}>
+              {error}
+            </Alert>
+          ) : null}
+
+          {donationsList?.length ? (
+            <Box sx={{ width: "100%" }}>
+              <Typography
+                ref={donationsHeadingRef}
+                sx={{ fontWeight: 800, color: "#1f2a44", mb: 1.25, fontSize: "0.9375rem" }}
+              >
+                {copy.listTitle || "Your donations"}
+              </Typography>
+              <Stack spacing={1.25}>
+                {donationsList.map((item) => (
+                  <Box
+                    key={item.paymentId}
+                    sx={{
+                      p: 1.5,
+                      borderRadius: "12px",
+                      border: "1px solid rgba(30,107,53,0.12)",
+                      bgcolor: panelGreen,
+                      display: "flex",
+                      flexDirection: { xs: "column", sm: "row" },
+                      alignItems: { xs: "stretch", sm: "center" },
+                      justifyContent: "space-between",
+                      gap: 1.25,
+                    }}
+                  >
+                    <Box sx={{ minWidth: 0 }}>
+                      <Typography sx={{ fontWeight: 800, color: brandGreen }}>
+                        {formatInr(item.amountInr)}
+                      </Typography>
+                      <Typography sx={{ fontSize: "0.875rem", color: "#64748b" }}>
+                        {formatPaidAt(item.paidAt)}
+                        {item.programLabel ? ` · ${item.programLabel}` : ""}
+                      </Typography>
+                      {item.paymentId ? (
+                        <Typography
+                          sx={{
+                            fontSize: "0.75rem",
+                            color: "rgba(31,42,68,0.55)",
+                            mt: 0.25,
+                            wordBreak: "break-all",
+                          }}
+                        >
+                          {item.paymentId}
+                        </Typography>
+                      ) : null}
+                    </Box>
+                    <MKButton
+                      variant="outlined"
+                      size="small"
+                      disabled={busy}
+                      startIcon={<ReceiptLongOutlinedIcon />}
+                      onClick={() => handleSelectDonation(item.paymentId)}
+                      sx={{
+                        flexShrink: 0,
+                        fontWeight: 700,
+                        textTransform: "none",
+                        borderRadius: "10px",
+                        borderColor: brandGreen,
+                        color: brandGreen,
+                      }}
+                    >
+                      {copy.viewReceipt || "View receipt"}
+                    </MKButton>
+                  </Box>
+                ))}
+              </Stack>
+            </Box>
+          ) : null}
+
+          <Box sx={{ textAlign: "center", pt: 1.5 }}>
+            <Typography
+              sx={{
+                fontWeight: 700,
+                fontSize: "0.875rem",
+                color: ink,
+                mb: 1,
+              }}
+            >
+              {copy.cantFindTitle || "Can't find your receipt?"}
+            </Typography>
+            <Box
+              sx={{
+                px: { xs: 1.5, sm: 2 },
+                py: 1.25,
+                borderRadius: "12px",
+                bgcolor: "rgba(30, 107, 53, 0.04)",
+                border: "1px dashed rgba(30, 107, 53, 0.16)",
+                width: "100%",
+                maxWidth: 640,
+                mx: "auto",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: "0.78rem",
+                  color: "rgba(31, 42, 68, 0.62)",
+                  lineHeight: 1.5,
+                  fontStyle: "italic",
+                }}
+              >
+                {ctaCopy.bankTransferNote ||
+                  "For UPI/QR or bank transfer donations, email aadarfoundation2018@gmail.com with your donor details (name, father/husband name, email, mobile, PAN, address), donation details (amount and date), transaction reference (UTR/Bank Ref), and payment screenshot. We will verify the payment and email your 80G tax receipt."}
+              </Typography>
+            </Box>
+          </Box>
+        </Stack>
       </Box>
     </Stack>
   );
+
+  const impact = copy.impact || {};
 
   return (
     <MKBox minWidth="320px">
@@ -630,180 +917,398 @@ export default function DonationReceiptRetrievePage() {
       />
       <MKBox
         minHeight="100vh"
-        pt={{ xs: 14, sm: 16, md: 18 }}
-        pb={{ xs: 6, md: 8 }}
-        sx={{ background: "linear-gradient(180deg, #f4f7f4 0%, #eef1f6 100%)" }}
+        pt={{ xs: 16, sm: 17.5, md: 19 }}
+        pb={{ xs: 4, md: 5 }}
+        sx={{
+          position: "relative",
+          overflow: "hidden",
+          background: `
+            radial-gradient(ellipse 80% 50% at 15% 0%, rgba(30, 107, 53, 0.06) 0%, transparent 55%),
+            radial-gradient(ellipse 60% 45% at 92% 6%, ${yellowTintStrong} 0%, transparent 50%),
+            radial-gradient(ellipse 50% 35% at 8% 92%, ${yellowTint} 0%, transparent 52%),
+            linear-gradient(180deg, #fffdf9 0%, ${panelWarm} 44%, ${panelGreenSoft} 100%)
+          `,
+        }}
       >
-        <Container maxWidth="md" sx={{ maxWidth: { md: 920 } }}>
-          <Card
-            sx={{
-              overflow: "hidden",
-              borderRadius: "20px",
-              border: "1px solid rgba(30, 107, 53, 0.1)",
-              boxShadow: "0 24px 64px rgba(31, 42, 68, 0.1)",
-            }}
+        <ReceiptPageFoliage />
+
+        <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1 }}>
+          <Grid
+            container
+            spacing={{ xs: 2, md: 2.5 }}
+            alignItems="stretch"
+            sx={{ mb: { xs: 2, md: 2.5 } }}
           >
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: { xs: "column", md: "row" },
-                minHeight: { md: 520 },
-              }}
-            >
-              {/* Left panel */}
+            <Grid item xs={12} md={6}>
               <Box
                 sx={{
-                  flex: { md: "0 0 42%" },
-                  bgcolor: panelGreen,
-                  p: { xs: 3, sm: 3.5, md: 4 },
+                  height: "100%",
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
-                  borderRight: { md: "1px solid rgba(30, 107, 53, 0.08)" },
                 }}
               >
-                <ReceiptIllustration />
+                <Stack direction="row" spacing={0.75} alignItems="center" flexWrap="wrap" mb={1.5}>
+                  <Typography
+                    component="h1"
+                    sx={{
+                      fontWeight: 800,
+                      fontSize: { xs: "1.7rem", sm: "2rem", md: "2.15rem" },
+                      color: ink,
+                      lineHeight: 1.15,
+                      letterSpacing: "-0.02em",
+                    }}
+                  >
+                    {copy.thankYouPrefix || "Thank you for choosing"}{" "}
+                    <Box
+                      component="span"
+                      sx={{
+                        color: brandGreen,
+                        background: `linear-gradient(120deg, ${brandGreenLight} 0%, ${brandYellow} 100%)`,
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                      }}
+                    >
+                      {copy.thankYouHighlight || "kindness"}
+                    </Box>
+                    .
+                  </Typography>
+                  <FavoriteIcon sx={{ fontSize: 22, color: brandYellow, opacity: 0.88 }} />
+                </Stack>
+
+                <Typography
+                  sx={{
+                    fontSize: { xs: "0.95rem", sm: "1rem" },
+                    color: "rgba(31, 42, 68, 0.68)",
+                    lineHeight: 1.6,
+                    maxWidth: 520,
+                    mb: 1.5,
+                  }}
+                >
+                  {copy.thankYouSubtitle ||
+                    "Your support helps us bring food, shelter and dignity to those who need it most."}
+                </Typography>
+
+                <Stack
+                  direction="row"
+                  spacing={1.25}
+                  alignItems="flex-start"
+                  mb={1.5}
+                  sx={{
+                    p: 1.1,
+                    borderRadius: "14px",
+                    bgcolor: brandYellowSoft,
+                    border: `1px solid ${yellowBorder}`,
+                    borderLeft: `3px solid ${brandYellow}`,
+                    boxShadow: `0 4px 16px ${yellowTint}`,
+                    maxWidth: 520,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: 32,
+                      height: 32,
+                      borderRadius: "10px",
+                      bgcolor: yellowTint,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
+                    }}
+                  >
+                    <ShieldOutlinedIcon sx={{ fontSize: 18, color: brandYellow }} />
+                  </Box>
+                  <Typography
+                    sx={{ fontSize: "0.875rem", color: "rgba(31, 42, 68, 0.68)", lineHeight: 1.6 }}
+                  >
+                    {copy.trustBadge ||
+                      "Aadar Foundation is a registered NGO committed to transparency and accountability."}
+                  </Typography>
+                </Stack>
+
+                <Link
+                  component={RouterLink}
+                  to={ABOUT_PATH}
+                  underline="none"
+                  sx={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 0.5,
+                    fontWeight: 700,
+                    fontSize: "0.9375rem",
+                    color: brandGreen,
+                    width: "fit-content",
+                    "&:hover": { color: brandYellow },
+                  }}
+                >
+                  {copy.knowMore || "Know more about us"}
+                  <ArrowForwardIcon sx={{ fontSize: 18 }} />
+                </Link>
+              </Box>
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <Box
+                sx={{
+                  height: "100%",
+                  background: `linear-gradient(160deg, ${brandYellowSoft} 0%, ${panelGreen} 50%, #e8f3ea 100%)`,
+                  borderRadius: "20px",
+                  border: `1px solid ${yellowBorder}`,
+                  p: { xs: 1.75, sm: 2.25 },
+                  boxShadow: `0 16px 40px rgba(30, 107, 53, 0.07), 0 6px 20px ${yellowTint}`,
+                  position: "relative",
+                  overflow: "hidden",
+                }}
+              >
+                <BotanicalLeaf
+                  flip
+                  sx={{
+                    position: "absolute",
+                    top: -8,
+                    right: -6,
+                    width: 56,
+                    color: brandGreen,
+                    opacity: 0.12,
+                    transform: "rotate(24deg)",
+                    pointerEvents: "none",
+                  }}
+                />
+                <Typography
+                  sx={{
+                    textAlign: "center",
+                    fontWeight: 800,
+                    fontSize: { xs: "1.05rem", sm: "1.125rem" },
+                    color: brandGreenDark,
+                    mb: 1.5,
+                    position: "relative",
+                    "&::after": {
+                      content: '""',
+                      display: "block",
+                      width: 44,
+                      height: 2,
+                      borderRadius: 2,
+                      background: `linear-gradient(90deg, ${brandGreen}, ${brandYellow})`,
+                      mx: "auto",
+                      mt: 0.75,
+                    },
+                  }}
+                >
+                  {copy.impactTitle || "Your Impact in Action"}
+                </Typography>
+
+                <Grid container spacing={1.25}>
+                  <Grid item xs={6} sm={3} md={6} lg={3}>
+                    <ImpactStat
+                      icon={GroupsOutlinedIcon}
+                      title={impact.lives?.title || "Thousands"}
+                      subtitle={impact.lives?.subtitle || "Lives touched with care"}
+                    />
+                  </Grid>
+                  <Grid item xs={6} sm={3} md={6} lg={3}>
+                    <ImpactStat
+                      icon={RestaurantOutlinedIcon}
+                      title={impact.meals?.title || "Daily Meals"}
+                      subtitle={impact.meals?.subtitle || "Served with dignity"}
+                    />
+                  </Grid>
+                  <Grid item xs={6} sm={3} md={6} lg={3}>
+                    <ImpactStat
+                      icon={LockOutlinedIcon}
+                      title={impact.shelter?.title || "Shelter & Support"}
+                      subtitle={impact.shelter?.subtitle || "For the homeless & unclaimed"}
+                    />
+                  </Grid>
+                  <Grid item xs={6} sm={3} md={6} lg={3}>
+                    <ImpactStat
+                      icon={VerifiedOutlinedIcon}
+                      title={impact.transparent?.title || "100% Transparent"}
+                      subtitle={impact.transparent?.subtitle || "Use of every donation"}
+                    />
+                  </Grid>
+                </Grid>
 
                 <Stack
                   direction="row"
                   spacing={0.75}
                   alignItems="center"
                   justifyContent="center"
-                  mb={0.75}
+                  mt={1.5}
                 >
-                  <Typography
-                    sx={{
-                      fontWeight: 800,
-                      fontSize: { xs: "1.15rem", sm: "1.25rem" },
-                      color: brandGreenDark,
-                      textAlign: "center",
-                      lineHeight: 1.3,
-                    }}
-                  >
-                    {copy.title || "Retrieve your donation receipt"}
+                  <ShieldOutlinedIcon sx={{ fontSize: 16, color: brandYellow, opacity: 0.75 }} />
+                  <Typography sx={{ fontSize: "0.78rem", color: "rgba(31,42,68,0.55)" }}>
+                    {copy.privacyNote || "We never share your information with anyone."}
                   </Typography>
-                  <FavoriteIcon sx={{ fontSize: 18, color: brandGreen, opacity: 0.85 }} />
-                </Stack>
-
-                <Typography
-                  sx={{
-                    textAlign: "center",
-                    fontSize: "0.8125rem",
-                    color: "rgba(31, 42, 68, 0.6)",
-                    lineHeight: 1.55,
-                    mb: 3,
-                    px: 1,
-                  }}
-                >
-                  {copy.subtitle || "Download your official 80G receipt for online donations."}
-                </Typography>
-
-                <Stack spacing={2} sx={{ maxWidth: 280, mx: "auto", width: "100%" }}>
-                  <FeatureRow
-                    icon={ShieldOutlinedIcon}
-                    title={features.official80G?.title || "Official 80G receipt"}
-                    subtitle={features.official80G?.subtitle || "For income tax exemption"}
-                  />
-                  <FeatureRow
-                    icon={LockOutlinedIcon}
-                    title={features.secure?.title || "Secure & Private"}
-                    subtitle={features.secure?.subtitle || "Your information is safe with us"}
-                  />
-                  <FeatureRow
-                    icon={AccessTimeOutlinedIcon}
-                    title={features.quick?.title || "Quick & Easy"}
-                    subtitle={features.quick?.subtitle || "Find and download in seconds"}
-                  />
                 </Stack>
               </Box>
+            </Grid>
+          </Grid>
 
-              {/* Right panel */}
+          <Card
+            ref={receiptCardRef}
+            sx={{
+              overflow: "hidden",
+              borderRadius: "22px",
+              border: `1px solid ${yellowBorder}`,
+              boxShadow: `0 28px 70px rgba(31, 42, 68, 0.08), 0 8px 24px ${yellowTint}`,
+              position: "relative",
+              bgcolor: "#fff",
+              mx: "auto",
+              maxWidth: 980,
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 3,
+                background: `linear-gradient(90deg, ${brandGreenDark} 0%, ${brandGreen} 32%, ${brandYellow} 50%, ${brandGreen} 68%, ${brandGreenDark} 100%)`,
+                zIndex: 2,
+              },
+            }}
+          >
+            <Box sx={{ position: "relative", zIndex: 1, p: { xs: 3, sm: 3.75, md: 4.25 } }}>
               <Box
                 sx={{
-                  flex: 1,
-                  bgcolor: "#fff",
-                  p: { xs: 3, sm: 3.5, md: 4 },
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
+                  position: "relative",
+                  textAlign: "center",
+                  mb: 2.5,
+                  pt: { xs: 1, sm: 1.25 },
+                  px: { xs: 2, sm: 4 },
                 }}
               >
-                {record ? resultView : lookupForm}
-              </Box>
-            </Box>
-
-            {/* Footer strip */}
-            <Box
-              sx={{
-                bgcolor: panelGreen,
-                borderTop: "1px solid rgba(30, 107, 53, 0.1)",
-                px: { xs: 2.5, sm: 3.5 },
-                py: { xs: 2, sm: 2.25 },
-                display: "flex",
-                flexDirection: { xs: "column", sm: "row" },
-                alignItems: "center",
-                justifyContent: "center",
-                gap: { xs: 1.25, sm: 2 },
-              }}
-            >
-              <Stack direction="row" spacing={1.25} alignItems="center">
+                <CardHeaderFlourish />
                 <Typography
-                  sx={{ fontSize: "0.875rem", color: "rgba(31,42,68,0.65)", fontWeight: 500 }}
-                >
-                  {copy.newHere || "New here?"}
-                </Typography>
-                <MKButton
-                  component={RouterLink}
-                  to={DONATE_PAGE_PATH}
-                  variant="outlined"
-                  startIcon={<FavoriteIcon sx={{ fontSize: 16 }} />}
+                  component="h2"
                   sx={{
-                    fontWeight: 700,
-                    textTransform: "none",
-                    borderRadius: "10px",
-                    borderColor: brandGreen,
-                    color: brandGreen,
-                    px: 2,
-                    py: 0.75,
-                    fontSize: "0.875rem",
-                    "&:hover": { borderColor: brandGreenDark, bgcolor: "rgba(30,107,53,0.04)" },
+                    fontWeight: 800,
+                    fontSize: { xs: "1.25rem", sm: "1.4rem" },
+                    color: brandGreenDark,
+                    mb: 0.75,
+                    letterSpacing: "-0.01em",
+                    lineHeight: 1.25,
                   }}
                 >
-                  {t("donatePage.donateNow") || "Donate Now"}
-                </MKButton>
-              </Stack>
+                  {copy.title || "Retrieve your donation receipt"}
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: "0.9rem",
+                    color: "rgba(31, 42, 68, 0.62)",
+                    lineHeight: 1.55,
+                    maxWidth: 480,
+                    mx: "auto",
+                  }}
+                >
+                  {copy.cardSubtitle ||
+                    "Enter the email address or mobile number used during your donation."}
+                </Typography>
+              </Box>
 
-              <Typography
-                sx={{
-                  fontSize: "0.8125rem",
-                  color: "rgba(31,42,68,0.4)",
-                  display: { xs: "none", sm: "block" },
-                }}
-              >
-                {copy.or || "or"}
-              </Typography>
-
-              <MKButton
-                component={RouterLink}
-                to="/home"
-                variant="outlined"
-                startIcon={<HomeOutlinedIcon sx={{ fontSize: 18 }} />}
-                sx={{
-                  fontWeight: 700,
-                  textTransform: "none",
-                  borderRadius: "10px",
-                  borderColor: "rgba(31,42,68,0.18)",
-                  color: "#1f2a44",
-                  px: 2,
-                  py: 0.75,
-                  fontSize: "0.875rem",
-                  "&:hover": { bgcolor: "rgba(31,42,68,0.03)" },
-                }}
-              >
-                {t("donationResult.backHome") || "Back to Home"}
-              </MKButton>
+              {record ? resultView : lookupForm}
             </Box>
+
+            {!record ? (
+              <Box
+                sx={{
+                  background: `linear-gradient(180deg, ${brandYellowSoft} 0%, ${panelGreen} 100%)`,
+                  borderTop: `1px solid ${yellowBorder}`,
+                  px: { xs: 2.5, sm: 3.5 },
+                  py: { xs: 1.6, sm: 1.85 },
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 1,
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 30,
+                    height: 30,
+                    borderRadius: "9px",
+                    bgcolor: "rgba(255,255,255,0.75)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                >
+                  <LockOutlinedIcon sx={{ fontSize: 16, color: brandYellow }} />
+                </Box>
+                <Typography
+                  sx={{
+                    fontSize: "0.8125rem",
+                    color: "rgba(31, 42, 68, 0.68)",
+                    textAlign: "center",
+                  }}
+                >
+                  {copy.dataSafeNote ||
+                    "Your data is safe with us. We use it only to help you retrieve your receipt."}
+                </Typography>
+              </Box>
+            ) : null}
           </Card>
+
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            spacing={1.5}
+            alignItems="center"
+            justifyContent="center"
+            sx={{
+              mt: 3.5,
+              pt: 2.5,
+              borderTop: `1px dashed ${yellowBorder}`,
+            }}
+          >
+            <MKButton
+              component={RouterLink}
+              to={DONATE_PAGE_PATH}
+              variant="contained"
+              startIcon={<FavoriteIcon sx={{ fontSize: 18 }} />}
+              sx={{
+                fontWeight: 800,
+                textTransform: "none",
+                borderRadius: "12px",
+                background: "linear-gradient(90deg, #4FA953 0%, #45a049 100%)",
+                color: "#ffffff !important",
+                px: 3.5,
+                py: 1.2,
+                fontSize: "0.95rem",
+                width: { xs: "100%", sm: "auto" },
+                boxShadow: "0 12px 26px rgba(79, 169, 83, 0.36)",
+                transition: "transform 0.18s ease, box-shadow 0.18s ease",
+                "& *": { color: "#ffffff" },
+                "&:hover": {
+                  background: "linear-gradient(90deg, #45a049 0%, #3d8a41 100%)",
+                  boxShadow: "0 16px 32px rgba(79, 169, 83, 0.44)",
+                  transform: "translateY(-2px)",
+                },
+              }}
+            >
+              {t("donatePage.donateNow") || "Donate Now"}
+            </MKButton>
+            <MKButton
+              component={RouterLink}
+              to="/home"
+              variant="text"
+              startIcon={<HomeOutlinedIcon sx={{ fontSize: 16 }} />}
+              sx={{
+                fontWeight: 600,
+                textTransform: "none",
+                borderRadius: "10px",
+                color: "rgba(31, 42, 68, 0.55)",
+                px: 2,
+                py: 1,
+                fontSize: "0.85rem",
+                width: { xs: "100%", sm: "auto" },
+                "&:hover": {
+                  color: "rgba(31, 42, 68, 0.75)",
+                  bgcolor: "rgba(31,42,68,0.04)",
+                },
+              }}
+            >
+              {t("donationResult.backHome") || "Back to Home"}
+            </MKButton>
+          </Stack>
         </Container>
       </MKBox>
       <DefaultFooter content={footerRoutes} />

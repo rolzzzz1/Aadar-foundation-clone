@@ -75,10 +75,12 @@ import {
 import { getApiUrl, postJson } from "utils/api";
 import {
   buildRazorpayCheckoutOptions,
+  buildRazorpaySubscriptionCheckoutOptions,
   formatRazorpayPaymentFailedError,
   getRazorpayKeyMode,
   isRazorpayTestKey,
 } from "utils/razorpayCheckout";
+import { resolveMembershipEntry, getMembershipAmountInr } from "utils/membership";
 import { buildDonationReceiptRecord } from "utils/buildDonationReceiptRecord";
 import { saveDonationReceipt } from "utils/donationReceiptStorage";
 
@@ -391,6 +393,20 @@ export default function RazorpayTestPage() {
   const purposeKey = checkoutEntry.purposeKey;
   const programFromUrl = checkoutEntry.programFromEntry;
 
+  // Recurring membership mode (Donate2 "Become a member" → checkout with router state).
+  const membershipEntry = useMemo(() => resolveMembershipEntry(location), [location]);
+  const isMembershipMode = !!membershipEntry;
+  const membershipTierKey = membershipEntry?.tierKey || null;
+  const membershipFrequency = membershipEntry?.frequency || null;
+  const membershipAmountInr = isMembershipMode
+    ? getMembershipAmountInr(membershipTierKey, membershipFrequency)
+    : 0;
+  const membershipTierLabels = t("donatePage.membership.tiers");
+  const membershipTierLabel = membershipTierKey
+    ? membershipTierLabels?.[membershipTierKey] ||
+      membershipTierKey.charAt(0).toUpperCase() + membershipTierKey.slice(1)
+    : "";
+
   const presetForInr = (inr) => (PRESET_AMOUNTS.includes(inr) ? inr : null);
 
   const initialAmount = String(checkoutEntry.amountInr);
@@ -485,7 +501,7 @@ export default function RazorpayTestPage() {
   const shouldConfirmLeave = isFormDirty || paymentBusy;
 
   useEffect(() => {
-    if (hasCheckoutEntrySource(location)) return;
+    if (hasCheckoutEntrySource(location) || resolveMembershipEntry(location)) return;
     navigate(donatePageTarget, { replace: true });
   }, [location, navigate, donatePageTarget]);
 
@@ -572,7 +588,14 @@ export default function RazorpayTestPage() {
     };
   }, []);
 
-  const amountCheck = useMemo(() => validateAmountInr(amountInr), [amountInr]);
+  const amountCheck = useMemo(() => {
+    if (isMembershipMode) {
+      return membershipAmountInr > 0
+        ? { ok: true, valueInr: membershipAmountInr }
+        : { ok: false, valueInr: 0, error: "This membership option is not available." };
+    }
+    return validateAmountInr(amountInr);
+  }, [isMembershipMode, membershipAmountInr, amountInr]);
   const nameCheck = useMemo(() => validateName(name), [name]);
   const fatherOrHusbandNameCheck = useMemo(
     () => validateFatherOrHusbandName(fatherOrHusbandName),
@@ -656,6 +679,152 @@ export default function RazorpayTestPage() {
     setBusyPhase("opening");
     try {
       await loadRazorpayCheckoutScript();
+
+      if (isMembershipMode) {
+        const receiptNo = `rcpt_${Date.now()}`;
+        const donor = {
+          name: nameCheck.value,
+          fatherOrHusbandName: fatherOrHusbandNameCheck.value,
+          email: emailCheck.value,
+          contact: contactCheck.value,
+          pan: panCheck.value,
+        };
+
+        const subscription = await postJson("/api/membership-subscription-create", {
+          tierKey: membershipTierKey,
+          frequency: membershipFrequency,
+          notes: {
+            note: buildOrderNote(),
+            donor_name: nameCheck.value,
+            donor_father_or_husband: fatherOrHusbandNameCheck.value,
+            donor_email: emailCheck.value,
+            donor_contact: contactCheck.value,
+            donor_pan: panCheck.value,
+            donor_address: addressCheck.value,
+            donor_state: stateCheck.value,
+            donor_city: cityCheck.value,
+            donor_pin: pinCheck.value,
+            fcra_declaration: "accepted",
+            privacy_consent: "accepted",
+            donor_locale: isHi ? "hi" : "en",
+          },
+        });
+
+        const membershipProgramLabel = `${subscription.tier_label} Membership (${subscription.frequency_label})`;
+
+        const options = buildRazorpaySubscriptionCheckoutOptions({
+          keyId,
+          subscriptionId: subscription.subscription_id,
+          tierLabel: subscription.tier_label,
+          frequencyLabel: subscription.frequency_label,
+          name: nameCheck.value,
+          email: emailCheck.value,
+          contact: contactCheck.value,
+          onDismiss: () => resetPaymentUi(),
+          onSuccess: async (response) => {
+            setBusyPhase("processing");
+            const processingStartedAt = Date.now();
+            try {
+              const verification = await postJson("/api/membership-subscription-verify", {
+                razorpay_subscription_id: response.razorpay_subscription_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+              });
+
+              await waitAtLeast(750, processingStartedAt);
+              const paymentOk = !!(verification && verification.verified);
+              const confirmedAmountInr =
+                paymentOk && verification.amount_paise
+                  ? Math.round(Number(verification.amount_paise) / 100)
+                  : membershipAmountInr;
+              setBusyPhase("creatingReceipt");
+              const receiptStartedAt = Date.now();
+              await waitAtLeast(650, receiptStartedAt);
+              setBusyPhase("redirecting");
+              goToDonationResult(
+                buildDonationReceiptRecord({
+                  status: paymentOk ? "success" : "unverified",
+                  locale: isHi ? "hi" : "en",
+                  amountInr: confirmedAmountInr,
+                  donor,
+                  paymentId: response.razorpay_payment_id,
+                  orderId:
+                    (verification && verification.order_id) || response.razorpay_subscription_id,
+                  receiptNo,
+                  purpose: purposeCheck.value,
+                  programLabel: membershipProgramLabel,
+                  keyId,
+                  verified: paymentOk,
+                  receiptEmailSent: !!(verification && verification.receipt_email_sent),
+                  subscriptionId: response.razorpay_subscription_id,
+                  frequency: membershipFrequency,
+                  errorDescription: paymentOk
+                    ? ""
+                    : verificationFailureMessage(
+                        verification,
+                        "Payment could not be verified. Please contact us with your payment ID."
+                      ),
+                })
+              );
+            } catch (e) {
+              await waitAtLeast(750, processingStartedAt);
+              setBusyPhase("creatingReceipt");
+              const receiptStartedAt = Date.now();
+              await waitAtLeast(650, receiptStartedAt);
+              setBusyPhase("redirecting");
+              goToDonationResult(
+                buildDonationReceiptRecord({
+                  status: "unverified",
+                  locale: isHi ? "hi" : "en",
+                  amountInr: membershipAmountInr,
+                  donor,
+                  paymentId: response.razorpay_payment_id,
+                  orderId: response.razorpay_subscription_id,
+                  receiptNo,
+                  purpose: purposeCheck.value,
+                  programLabel: membershipProgramLabel,
+                  keyId,
+                  verified: false,
+                  subscriptionId: response.razorpay_subscription_id,
+                  frequency: membershipFrequency,
+                  errorDescription: (e && e.message) || String(e),
+                })
+              );
+            }
+          },
+        });
+
+        const rzp = new window.Razorpay(options);
+        rzp.on("payment.failed", (resp) => {
+          setBusyPhase("redirecting");
+          const err = (resp && resp.error) || {};
+          goToDonationResult(
+            buildDonationReceiptRecord({
+              status: "failed",
+              locale: isHi ? "hi" : "en",
+              amountInr: membershipAmountInr,
+              donor,
+              orderId:
+                (resp && resp.error && resp.error.metadata && resp.error.metadata.order_id) ||
+                subscription.subscription_id,
+              receiptNo,
+              purpose: purposeCheck.value,
+              programLabel: membershipProgramLabel,
+              keyId,
+              subscriptionId: subscription.subscription_id,
+              frequency: membershipFrequency,
+              errorCode: err.code || "",
+              errorDescription: formatRazorpayPaymentFailedError(err, {
+                testMode: isRazorpayTestKey(keyId),
+              }),
+            })
+          );
+        });
+
+        rzp.open();
+        setBusyPhase("awaitingPayment");
+        return;
+      }
 
       const receiptNo = `rcpt_${Date.now()}`;
       const orderRequest = {
@@ -836,6 +1005,10 @@ export default function RazorpayTestPage() {
     emailCheck.value,
     contactCheck.value,
     panCheck.value,
+    addressCheck.value,
+    stateCheck.value,
+    cityCheck.value,
+    pinCheck.value,
     buildOrderNote,
     programFromUrl,
     purposeKey,
@@ -844,6 +1017,10 @@ export default function RazorpayTestPage() {
     goToDonationResult,
     form.fixFieldsError,
     resetPaymentUi,
+    isMembershipMode,
+    membershipTierKey,
+    membershipFrequency,
+    membershipAmountInr,
   ]);
 
   const markTouched = (field) => () => setTouched((t) => ({ ...t, [field]: true }));
@@ -1230,6 +1407,44 @@ export default function RazorpayTestPage() {
                   </Alert>
                 )}
 
+              {isMembershipMode && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: 1.5,
+                    p: { xs: 1.5, sm: 1.75 },
+                    mb: 2,
+                    borderRadius: "12px",
+                    backgroundColor: "rgba(79, 169, 83, 0.08)",
+                    border: "1px solid rgba(79, 169, 83, 0.22)",
+                  }}
+                >
+                  <Box>
+                    <Typography sx={{ fontWeight: 800, color: "#1f2a44", fontSize: "1rem" }}>
+                      {t("donationForm.membership.titleSuffix", { tier: membershipTierLabel })}
+                    </Typography>
+                    <Typography sx={{ color: formTextMuted, fontSize: "0.8rem", fontWeight: 600 }}>
+                      {membershipFrequency === "yearly"
+                        ? t("donationForm.membership.billedYearly")
+                        : t("donationForm.membership.billedMonthly")}
+                    </Typography>
+                  </Box>
+                  <Typography
+                    sx={{ fontWeight: 900, color: brandGreen, fontSize: "1.3rem", flexShrink: 0 }}
+                  >
+                    ₹{membershipAmountInr.toLocaleString("en-IN")}
+                    <Typography component="span" sx={{ fontSize: "0.75rem", fontWeight: 700 }}>
+                      /
+                      {membershipFrequency === "yearly"
+                        ? t("donationForm.membership.perYearShort")
+                        : t("donationForm.membership.perMonthShort")}
+                    </Typography>
+                  </Typography>
+                </Box>
+              )}
+
               <Box
                 sx={{
                   display: "flex",
@@ -1263,140 +1478,151 @@ export default function RazorpayTestPage() {
                 </Typography>
               </Box>
 
-              <Typography
-                variant="subtitle1"
-                sx={{
-                  fontFamily: HEADING_FONT,
-                  fontWeight: 500,
-                  fontSize: { xs: "1rem", sm: "1.1rem" },
-                  color: "#1f2a44",
-                  mb: 1.5,
-                }}
-              >
-                {form.selectAmountTitle}
-              </Typography>
+              {!isMembershipMode && (
+                <>
+                  <Typography
+                    variant="subtitle1"
+                    sx={{
+                      fontFamily: HEADING_FONT,
+                      fontWeight: 500,
+                      fontSize: { xs: "1rem", sm: "1.1rem" },
+                      color: "#1f2a44",
+                      mb: 1.5,
+                    }}
+                  >
+                    {form.selectAmountTitle}
+                  </Typography>
 
-              <Stack direction="row" flexWrap="wrap" useFlexGap sx={{ gap: 1.1, mb: 1.5 }}>
-                {PRESET_AMOUNTS.map((amt) => {
-                  const active = selectedPreset === amt && amountInr === String(amt);
-                  return (
-                    <Box key={amt} sx={{ position: "relative", flex: "1 1 88px", minWidth: 72 }}>
-                      {amt === MOST_CHOSEN_AMOUNT && (
+                  <Stack direction="row" flexWrap="wrap" useFlexGap sx={{ gap: 1.1, mb: 1.5 }}>
+                    {PRESET_AMOUNTS.map((amt) => {
+                      const active = selectedPreset === amt && amountInr === String(amt);
+                      return (
                         <Box
-                          sx={{
-                            position: "absolute",
-                            top: -11,
-                            left: "50%",
-                            transform: "translateX(-50%)",
-                            backgroundColor: "#eaf7ea",
-                            color: brandGreen,
-                            border: "1px solid rgba(46, 125, 50, 0.28)",
-                            px: 1,
-                            py: 0.25,
-                            borderRadius: "999px",
-                            fontSize: "0.62rem",
-                            fontWeight: 800,
-                            whiteSpace: "nowrap",
-                            zIndex: 1,
-                          }}
+                          key={amt}
+                          sx={{ position: "relative", flex: "1 1 88px", minWidth: 72 }}
                         >
-                          {form.mostPopular}
+                          {amt === MOST_CHOSEN_AMOUNT && (
+                            <Box
+                              sx={{
+                                position: "absolute",
+                                top: -11,
+                                left: "50%",
+                                transform: "translateX(-50%)",
+                                backgroundColor: "#eaf7ea",
+                                color: brandGreen,
+                                border: "1px solid rgba(46, 125, 50, 0.28)",
+                                px: 1,
+                                py: 0.25,
+                                borderRadius: "999px",
+                                fontSize: "0.62rem",
+                                fontWeight: 800,
+                                whiteSpace: "nowrap",
+                                zIndex: 1,
+                              }}
+                            >
+                              {form.mostPopular}
+                            </Box>
+                          )}
+                          <MKButton
+                            fullWidth
+                            variant="outlined"
+                            onClick={() => onSelectPreset(amt)}
+                            sx={{
+                              py: 1.1,
+                              borderRadius: "10px",
+                              fontWeight: 800,
+                              borderWidth: active ? 2 : 1,
+                              borderColor: active ? brandGreen : "rgba(31,42,68,0.18)",
+                              color: active ? brandGreen : "#24324f",
+                              backgroundColor: active ? "rgba(79, 169, 83, 0.06)" : "#fff",
+                              "&:hover": {
+                                borderColor: brandGreen,
+                                backgroundColor: "rgba(79, 169, 83, 0.08)",
+                              },
+                            }}
+                          >
+                            ₹{amt.toLocaleString("en-IN")}
+                          </MKButton>
                         </Box>
-                      )}
-                      <MKButton
-                        fullWidth
-                        variant="outlined"
-                        onClick={() => onSelectPreset(amt)}
-                        sx={{
-                          py: 1.1,
-                          borderRadius: "10px",
-                          fontWeight: 800,
-                          borderWidth: active ? 2 : 1,
-                          borderColor: active ? brandGreen : "rgba(31,42,68,0.18)",
-                          color: active ? brandGreen : "#24324f",
-                          backgroundColor: active ? "rgba(79, 169, 83, 0.06)" : "#fff",
-                          "&:hover": {
-                            borderColor: brandGreen,
-                            backgroundColor: "rgba(79, 169, 83, 0.08)",
-                          },
-                        }}
-                      >
-                        ₹{amt.toLocaleString("en-IN")}
-                      </MKButton>
-                    </Box>
-                  );
-                })}
-              </Stack>
+                      );
+                    })}
+                  </Stack>
 
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  my: 1.35,
-                  gap: { xs: 1.25, sm: 1.75 },
-                  width: "100%",
-                }}
-              >
-                <Box
-                  component="span"
-                  aria-hidden
-                  sx={{
-                    flex: 1,
-                    height: "1px",
-                    minWidth: 0,
-                    bgcolor: "rgba(31, 42, 68, 0.22)",
-                  }}
-                />
-                <Typography
-                  variant="body2"
-                  component="span"
-                  sx={{
-                    flexShrink: 0,
-                    fontWeight: 700,
-                    letterSpacing: "0.08em",
-                    color: formTextPrimary,
-                    fontSize: "0.8125rem",
-                    lineHeight: 1,
-                  }}
-                >
-                  {form.orDivider}
-                </Typography>
-                <Box
-                  component="span"
-                  aria-hidden
-                  sx={{
-                    flex: 1,
-                    height: "1px",
-                    minWidth: 0,
-                    bgcolor: "rgba(31, 42, 68, 0.22)",
-                  }}
-                />
-              </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      my: 1.35,
+                      gap: { xs: 1.25, sm: 1.75 },
+                      width: "100%",
+                    }}
+                  >
+                    <Box
+                      component="span"
+                      aria-hidden
+                      sx={{
+                        flex: 1,
+                        height: "1px",
+                        minWidth: 0,
+                        bgcolor: "rgba(31, 42, 68, 0.22)",
+                      }}
+                    />
+                    <Typography
+                      variant="body2"
+                      component="span"
+                      sx={{
+                        flexShrink: 0,
+                        fontWeight: 700,
+                        letterSpacing: "0.08em",
+                        color: formTextPrimary,
+                        fontSize: "0.8125rem",
+                        lineHeight: 1,
+                      }}
+                    >
+                      {form.orDivider}
+                    </Typography>
+                    <Box
+                      component="span"
+                      aria-hidden
+                      sx={{
+                        flex: 1,
+                        height: "1px",
+                        minWidth: 0,
+                        bgcolor: "rgba(31, 42, 68, 0.22)",
+                      }}
+                    />
+                  </Box>
 
-              <TextField
-                fullWidth
-                size="small"
-                label={form.customAmountLabel}
-                placeholder={form.customAmountPlaceholder}
-                value={amountInr}
-                onChange={onCustomAmountChange}
-                onBlur={markTouched("amount")}
-                error={showError("amount", amountCheck)}
-                helperText={showError("amount", amountCheck) ? fieldHelper(amountCheck) : " "}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Typography
-                        sx={{ fontWeight: 700, color: formTextMuted, fontSize: formInputFontSize }}
-                      >
-                        ₹
-                      </Typography>
-                    </InputAdornment>
-                  ),
-                  inputProps: { inputMode: "numeric", maxLength: 7, pattern: "[0-9]*" },
-                }}
-                sx={{ mb: 1, ...formFieldSx }}
-              />
+                  <TextField
+                    fullWidth
+                    size="small"
+                    label={form.customAmountLabel}
+                    placeholder={form.customAmountPlaceholder}
+                    value={amountInr}
+                    onChange={onCustomAmountChange}
+                    onBlur={markTouched("amount")}
+                    error={showError("amount", amountCheck)}
+                    helperText={showError("amount", amountCheck) ? fieldHelper(amountCheck) : " "}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Typography
+                            sx={{
+                              fontWeight: 700,
+                              color: formTextMuted,
+                              fontSize: formInputFontSize,
+                            }}
+                          >
+                            ₹
+                          </Typography>
+                        </InputAdornment>
+                      ),
+                      inputProps: { inputMode: "numeric", maxLength: 7, pattern: "[0-9]*" },
+                    }}
+                    sx={{ mb: 1, ...formFieldSx }}
+                  />
+                </>
+              )}
 
               <Grid container spacing={formGridSpacing} alignItems="flex-start">
                 <Grid item xs={12} sm={6}>

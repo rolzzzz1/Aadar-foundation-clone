@@ -31,7 +31,8 @@
 // import Home from "layouts/pages/home";
 
 // Lazy load routes for code splitting and faster initial load
-import { lazy } from "react";
+import { lazy, Suspense } from "react";
+import PageLoadingFallback from "components/PageLoadingFallback";
 import {
   ABOUT_PATH,
   WORK_PATH,
@@ -76,7 +77,11 @@ const TermsConditions = lazy(() => import("layouts/pages/landing-pages/terms-con
 
 // Helper function to create lazy-loaded route components with props
 const createLazyRoute = (LazyComponent, props = {}) => {
-  return <LazyComponent {...props} />;
+  return (
+    <Suspense fallback={<PageLoadingFallback />}>
+      <LazyComponent {...props} />
+    </Suspense>
+  );
 };
 
 const routes = [
