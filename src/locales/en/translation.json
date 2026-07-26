@@ -403,7 +403,7 @@
   "donatePage": {
     "tagLine": "Donate",
     "title": "Donate",
-    "description": "We ensure that every donation is used with purpose and precision. Each decision we make is thoughtfully considered, and even the smallest contribution is directed toward initiatives where it will yield the greatest impact.",
+    "description": "Every donation directly supports food, shelter, healthcare and rehabilitation for homeless residents. Every contribution creates lasting impact.",
     "clickToCopy": "Click to copy",
     "emailMessage": "For UPI / QR and bank transfer donations, email <1>aadarfoundation2018@gmail.com</1> with your full name, father/husband name, email, mobile number, PAN, complete address (house no., city, state, PIN), donation amount, payment date, transaction reference (UTR or bank ref), and a clear payment screenshot. We will verify your payment and email your 80G tax receipt.",
     "imageTagLine": "\" Help us increase number of these smiles \"",
@@ -433,6 +433,31 @@
     "supportThemNow": "Support Them Now",
     "impactBanner": {
       "title": "Your Donation Creates Real Impact",
+      "livesSupported": "600+",
+      "livesSupportedLabel": "Lives Supported",
+      "impactMessage": "Making a difference together, one life at a time.",
+      "testimonials": [
+        {
+          "quote": "When I came here, I had nothing. Today I have food, a place to sleep, and people who care for me like family.",
+          "author": "Ramesh Prabhuji",
+          "role": "Resident, Aadar Foundation"
+        },
+        {
+          "quote": "I was alone on the streets for years. Here I found warmth, medicines, and someone who listens every day.",
+          "author": "Suresh Prabhuji",
+          "role": "Resident, Aadar Foundation"
+        },
+        {
+          "quote": "The volunteers treat us with dignity. A simple meal and clean clothes made me feel human again.",
+          "author": "Mohan Prabhuji",
+          "role": "Resident, Aadar Foundation"
+        },
+        {
+          "quote": "After my treatment, I began to smile again. Support from donors gave me a second chance at life.",
+          "author": "Gopal Prabhuji",
+          "role": "Resident, Aadar Foundation"
+        }
+      ],
       "items": {
         "food": {
           "title": "Nutritious Food",
@@ -468,9 +493,13 @@
       "securePayments": "Secure Payments via Razorpay"
     },
     "quickGiveCards": {
+      "heading": "Ways to Support",
+      "selectHint": "Choose how you'd like to help",
+      "selectAction": "Select",
+      "selectedAction": "Selected",
       "membership": {
-        "title": "Membership Program",
-        "subtitle": "Regular support for Aadar",
+        "title": "Monthly Donation",
+        "subtitle": "Monthly support",
         "amount": "₹501",
         "period": "Starting ₹101/month"
       },
@@ -605,6 +634,8 @@
         "donateNowCta": "Donate Now",
         "donateNowBadge": "Recommended",
         "donateNowMethods": "UPI • Cards • Net Banking",
+        "annualMembershipCta": "Annual Membership",
+        "annualMembershipMethods": "Yearly support • Auto-renew",
         "foodItems": [
           { "title": "Breakfast", "detail": "50 Prabhuji" },
           { "title": "Lunch / Dinner", "detail": "50 Prabhuji" },

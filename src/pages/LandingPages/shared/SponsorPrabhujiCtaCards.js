@@ -65,7 +65,7 @@ export default function SponsorPrabhujiCtaCards({ sponsor }) {
         sx={{
           fontFamily:
             '"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
-          fontSize: { xs: "1.1rem", sm: "1.25rem", md: "1.3rem", lg: "1.4rem" },
+          fontSize: { xs: "1.3rem", sm: "1.45rem", md: "1.55rem", lg: "1.65rem" },
           fontWeight: 500,
           color: "#1f2a44",
           width: "100%",
@@ -81,7 +81,7 @@ export default function SponsorPrabhujiCtaCards({ sponsor }) {
             width: "100%",
             textAlign: "center",
             mb: { xs: 4, sm: 4.5, md: 5 },
-            fontSize: { xs: "0.78rem", sm: "0.82rem", md: "0.85rem" },
+            fontSize: { xs: "0.88rem", sm: "0.95rem", md: "1rem" },
             fontWeight: 400,
             color: "rgba(31, 42, 68, 0.6)",
             lineHeight: 1.5,

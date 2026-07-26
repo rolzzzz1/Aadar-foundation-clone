@@ -69,7 +69,7 @@ export default function DonateReceiptCta({ sx = {} }) {
                   '"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
                 fontWeight: 500,
                 color: "#1f2a44",
-                fontSize: { xs: "1.05rem", sm: "1.15rem", md: "1.2rem" },
+                fontSize: { xs: "1.25rem", sm: "1.4rem", md: "1.5rem" },
                 lineHeight: 1.3,
               }}
             >
