@@ -48,11 +48,11 @@ export const PAN_LEN = 10;
  */
 export const PROGRAMS = Object.freeze({
   "donate-501": {
-    label: "Membership — ₹501",
+    label: "Membership Support — ₹501",
     amountInr: 501,
   },
   "donate-1001": {
-    label: "Donation — ₹1,001",
+    label: "General Donation — ₹1,001",
     amountInr: 1001,
   },
   "meal-sponsorship": {
@@ -60,14 +60,25 @@ export const PROGRAMS = Object.freeze({
     amountInr: 1501,
   },
   "sponsor-prabhuji-month": {
-    label: "Sponsor a Prabhuji (1 month)",
+    label: "Sponsor a Prabhuji (1 month) — ₹3,001",
     amountInr: 3001,
   },
   "sponsor-prabhuji-year": {
-    label: "Sponsor a Prabhuji (1 year)",
+    label: "Sponsor a Prabhuji (1 year) — ₹30,001",
     amountInr: 30001,
   },
 });
+
+/** Label used when checkout has a free/custom amount (no PROGRAMS purpose key). */
+export function formatGeneralDonationLabel(amountInr) {
+  const n = Number(amountInr);
+  if (!Number.isFinite(n) || n <= 0) return "General Donation";
+  // ASCII-only so Razorpay notes / DB never drop the value due to locale separators.
+  const formatted = Math.round(n)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return `General Donation - Rs ${formatted}`;
+}
 
 /** Make a Difference widget presets → server `purpose` keys (amount locked on API). */
 export const DONATE_WIDGET_PRESET_PURPOSE = Object.freeze({
@@ -190,7 +201,8 @@ const ZERO_WIDTH = /[\u200B-\u200D\uFEFF]/g;
 
 export function sanitizeText(input, maxLen = 256) {
   if (input == null) return "";
-  const s = String(input).replace(CONTROL_CHARS, "").replace(ZERO_WIDTH, "").trim();
+  // Do not trim here — onChange uses this while typing; trimming would block spaces.
+  const s = String(input).replace(CONTROL_CHARS, "").replace(ZERO_WIDTH, "");
   return s.slice(0, Math.max(0, maxLen));
 }
 
@@ -238,7 +250,7 @@ export function toPaise(inrInteger) {
 
 const NAME_REGEX = /^[\p{L}\p{M}\s'.-]{2,}$/u;
 export function validateName(input) {
-  const s = sanitizeText(input, NAME_MAX);
+  const s = sanitizeText(input, NAME_MAX).trim();
   if (!s) return { ok: false, value: "", error: "Name is required." };
   if (s.length < 2) return { ok: false, value: s, error: "Name is too short." };
   if (!NAME_REGEX.test(s)) {
@@ -249,7 +261,7 @@ export function validateName(input) {
 
 /** Father's or husband's name (required on donation / 80G forms). */
 export function validateFatherOrHusbandName(input) {
-  const s = sanitizeText(input, NAME_MAX);
+  const s = sanitizeText(input, NAME_MAX).trim();
   if (!s) {
     return { ok: false, value: "", error: "Father's / husband's name is required." };
   }
@@ -262,7 +274,7 @@ export function validateFatherOrHusbandName(input) {
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 export function validateEmail(input) {
-  const s = sanitizeText(input, EMAIL_MAX).toLowerCase();
+  const s = sanitizeText(input, EMAIL_MAX).trim().toLowerCase();
   if (!s) return { ok: false, value: "", error: "Email is required." };
   if (!EMAIL_REGEX.test(s)) {
     return { ok: false, value: s, error: "Enter a valid email address." };
@@ -283,7 +295,7 @@ export function validateContactIN(input) {
 }
 
 export function validateAddressLine(input) {
-  const s = sanitizeText(input, ADDRESS_MAX);
+  const s = sanitizeText(input, ADDRESS_MAX).trim();
   if (!s) return { ok: false, value: "", error: "Address is required." };
   if (s.length < 5) {
     return { ok: false, value: s, error: "Enter house no., street, locality, or landmark." };
@@ -292,7 +304,7 @@ export function validateAddressLine(input) {
 }
 
 export function validateRequiredSelection(input, fieldLabel) {
-  const s = sanitizeText(input, 80);
+  const s = sanitizeText(input, 80).trim();
   if (!s) return { ok: false, value: "", error: `${fieldLabel} is required.` };
   return { ok: true, value: s };
 }
@@ -325,7 +337,7 @@ export function validatePan(input) {
 }
 
 export function validateNote(input) {
-  const s = sanitizeText(input, NOTE_MAX);
+  const s = sanitizeText(input, NOTE_MAX).trim();
   return { ok: true, value: s };
 }
 

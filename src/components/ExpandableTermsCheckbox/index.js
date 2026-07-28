@@ -15,7 +15,7 @@ const termsCheckboxUncheckedIcon = (
     sx={{
       width: 20,
       height: 20,
-      borderRadius: "3px",
+      borderRadius: "4px",
       border: "1.5px solid #9ca3af",
       bgcolor: "#fff",
       boxSizing: "border-box",
@@ -24,12 +24,12 @@ const termsCheckboxUncheckedIcon = (
   />
 );
 
-const termsCheckboxCheckedIcon = <CheckBoxIcon sx={{ fontSize: 22, color: "#1976d2" }} />;
+const termsCheckboxCheckedIcon = <CheckBoxIcon sx={{ fontSize: 22, color: "#2e7d32" }} />;
 
 const labelSx = {
-  color: "rgba(31, 42, 68, 0.78)",
-  lineHeight: 1.55,
-  fontSize: "0.78rem",
+  color: "rgba(31, 42, 68, 0.72)",
+  lineHeight: 1.5,
+  fontSize: "0.8125rem",
 };
 
 /**
@@ -56,10 +56,11 @@ export default function ExpandableTermsCheckbox({
       sx={{
         mt: 0,
         mx: 0,
-        mb: 1.25,
+        mb: 1.5,
         alignItems: "flex-start",
         display: "flex",
         flexDirection: "row",
+        "&:last-of-type": { mb: 0 },
       }}
       control={
         <Checkbox
@@ -67,7 +68,7 @@ export default function ExpandableTermsCheckbox({
           onChange={onChange}
           icon={termsCheckboxUncheckedIcon}
           checkedIcon={termsCheckboxCheckedIcon}
-          sx={{ p: 0.5, mr: 0.75, mt: 0.15 }}
+          sx={{ p: 0.5, mr: 0.75, mt: 0.1 }}
         />
       }
       label={
@@ -79,11 +80,11 @@ export default function ExpandableTermsCheckbox({
             component="button"
             type="button"
             onClick={toggleExpand}
-            underline="always"
+            underline="hover"
             sx={{
-              fontWeight: 600,
-              color: "#1565c0",
-              fontSize: "0.78rem",
+              fontWeight: 700,
+              color: "#2e7d32",
+              fontSize: "0.8125rem",
               verticalAlign: "baseline",
               p: 0,
               border: 0,

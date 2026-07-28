@@ -32,6 +32,8 @@ import MealCoverIcon from "components/Icons/MealCoverIcon";
 import StarRoundedIcon from "@mui/icons-material/StarRounded";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 // Material Kit 2 React examples
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
@@ -49,7 +51,35 @@ import getFooterRoutes from "footer.routes1";
 import LandingPageHero from "components/LandingPageHero";
 import donate2UpiQr from "assets/images/donate2-upi-qr.png";
 import donateImg from "assets/images/donate-happy-faces.png";
+import sponsorLeafGold from "assets/images/sponsor-leaf-gold.png";
+import donate2Carousel1 from "assets/images/donate2-carousel-1.png";
+import donate2Carousel2 from "assets/images/donate2-carousel-2.png";
+import donate2Carousel3 from "assets/images/donate2-carousel-3.png";
+import donate2Carousel4 from "assets/images/donate2-carousel-4.png";
 import MKButton from "components/MKButton";
+
+const DONATE2_IMPACT_PHOTOS = [
+  {
+    src: donate2Carousel1,
+    altKey: "aadarshGram",
+    captionKey: "aadarshGram",
+  },
+  {
+    src: donate2Carousel2,
+    altKey: "mediaCoverage",
+    captionKey: "mediaCoverage",
+  },
+  {
+    src: donate2Carousel3,
+    altKey: "careTransformation",
+    captionKey: "careTransformation",
+  },
+  {
+    src: donate2Carousel4,
+    altKey: "holiCelebration",
+    captionKey: "holiCelebration",
+  },
+];
 
 import DonateTrustBanner from "pages/LandingPages/shared/DonateTrustBanner";
 import DonateReceiptCta from "pages/LandingPages/shared/DonateReceiptCta";
@@ -343,6 +373,403 @@ ImpactTestimonialCarousel.propTypes = {
       role: PropTypes.string,
     })
   ),
+};
+
+function ImpactPhotosCarousel({ gallery }) {
+  const photos = DONATE2_IMPACT_PHOTOS;
+  const [index, setIndex] = React.useState(0);
+  const [paused, setPaused] = React.useState(false);
+  const active = photos[index] || photos[0];
+  const alts = gallery?.alts || {};
+  const captions = gallery?.captions || {};
+  const title = gallery?.title || "Moments from our work";
+  const subtitle = gallery?.subtitle || "";
+  const activeCaption = captions[active.captionKey] || alts[active.altKey] || "";
+
+  React.useEffect(() => {
+    if (photos.length <= 1 || paused) return undefined;
+    const timer = window.setInterval(() => {
+      setIndex((prev) => (prev + 1) % photos.length);
+    }, 4500);
+    return () => window.clearInterval(timer);
+  }, [photos.length, paused]);
+
+  const goTo = (nextIndex) => {
+    setIndex((nextIndex + photos.length) % photos.length);
+  };
+
+  return (
+    <MKBox
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      sx={{
+        mb: { xs: 9, sm: 10, md: 11 },
+        position: "relative",
+        borderRadius: { xs: "16px", sm: "18px" },
+        overflow: "hidden",
+        background:
+          "radial-gradient(120% 90% at 0% 0%, rgba(236,165,51,0.14) 0%, transparent 45%), linear-gradient(135deg, #fffaf1 0%, #fff6e8 48%, #f7f0e4 100%)",
+        border: "1px solid rgba(236, 165, 51, 0.22)",
+        boxShadow: "0 16px 36px rgba(31, 42, 68, 0.1)",
+        "&:hover .impact-nav": { opacity: 1 },
+        "&::before": {
+          content: '""',
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
+          background:
+            "linear-gradient(90deg, transparent 0%, transparent 58%, rgba(236,165,51,0.05) 100%)",
+          zIndex: 0,
+        },
+      }}
+    >
+      <MKBox
+        sx={{
+          position: "relative",
+          zIndex: 1,
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          alignItems: "stretch",
+        }}
+      >
+        <MKBox
+          sx={{
+            position: "relative",
+            flex: { xs: "none", md: "1 1 64%" },
+            width: { xs: "100%", md: "64%" },
+            maxWidth: { md: "64%" },
+            height: { xs: 210, sm: 260, md: 286 },
+            background:
+              "radial-gradient(ellipse at center, rgba(255,255,255,0.08) 0%, transparent 65%), #151b2b",
+            boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.06)",
+          }}
+        >
+          <MKBox
+            aria-hidden="true"
+            sx={{
+              position: "absolute",
+              top: 10,
+              left: 10,
+              width: 18,
+              height: 18,
+              borderTop: "2px solid rgba(236,165,51,0.75)",
+              borderLeft: "2px solid rgba(236,165,51,0.75)",
+              zIndex: 2,
+              pointerEvents: "none",
+            }}
+          />
+          <MKBox
+            aria-hidden="true"
+            sx={{
+              position: "absolute",
+              bottom: 10,
+              right: 10,
+              width: 18,
+              height: 18,
+              borderBottom: "2px solid rgba(236,165,51,0.75)",
+              borderRight: "2px solid rgba(236,165,51,0.75)",
+              zIndex: 2,
+              pointerEvents: "none",
+            }}
+          />
+
+          {photos.map((photo, photoIndex) => {
+            const isActive = photoIndex === index;
+            return (
+              <MKBox
+                key={photo.src}
+                component="img"
+                src={photo.src}
+                alt={alts[photo.altKey] || title}
+                sx={{
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                  objectPosition: "center",
+                  opacity: isActive ? 1 : 0,
+                  transform: isActive ? "translateY(0) scale(1)" : "translateY(6px) scale(0.985)",
+                  transition: "opacity 0.5s ease, transform 0.55s ease",
+                  pointerEvents: isActive ? "auto" : "none",
+                  p: { xs: 0.75, sm: 1 },
+                  filter: isActive ? "none" : "blur(1px)",
+                }}
+              />
+            );
+          })}
+
+          <MKBox
+            component="button"
+            type="button"
+            className="impact-nav"
+            aria-label="Previous photo"
+            onClick={() => goTo(index - 1)}
+            sx={{
+              position: "absolute",
+              left: { xs: 8, sm: 10 },
+              top: "50%",
+              transform: "translateY(-50%)",
+              zIndex: 3,
+              width: { xs: 30, sm: 34 },
+              height: { xs: 30, sm: 34 },
+              p: 0,
+              border: "1px solid rgba(255,255,255,0.22)",
+              borderRadius: "50%",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#fff",
+              backgroundColor: "rgba(15, 22, 38, 0.55)",
+              backdropFilter: "blur(8px)",
+              opacity: { xs: 1, md: 0.65 },
+              transition: "opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease",
+              "&:hover": {
+                opacity: 1,
+                backgroundColor: "rgba(15, 22, 38, 0.78)",
+                transform: "translateY(-50%) scale(1.06)",
+              },
+            }}
+          >
+            <ChevronLeftIcon sx={{ fontSize: { xs: 18, sm: 20 } }} />
+          </MKBox>
+
+          <MKBox
+            component="button"
+            type="button"
+            className="impact-nav"
+            aria-label="Next photo"
+            onClick={() => goTo(index + 1)}
+            sx={{
+              position: "absolute",
+              right: { xs: 8, sm: 10 },
+              top: "50%",
+              transform: "translateY(-50%)",
+              zIndex: 3,
+              width: { xs: 30, sm: 34 },
+              height: { xs: 30, sm: 34 },
+              p: 0,
+              border: "1px solid rgba(255,255,255,0.22)",
+              borderRadius: "50%",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#fff",
+              backgroundColor: "rgba(15, 22, 38, 0.55)",
+              backdropFilter: "blur(8px)",
+              opacity: { xs: 1, md: 0.65 },
+              transition: "opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease",
+              "&:hover": {
+                opacity: 1,
+                backgroundColor: "rgba(15, 22, 38, 0.78)",
+                transform: "translateY(-50%) scale(1.06)",
+              },
+            }}
+          >
+            <ChevronRightIcon sx={{ fontSize: { xs: 18, sm: 20 } }} />
+          </MKBox>
+
+          <MKBox
+            aria-hidden="true"
+            sx={{
+              position: "absolute",
+              left: 0,
+              right: 0,
+              bottom: 0,
+              height: 3,
+              zIndex: 3,
+              backgroundColor: "rgba(255,255,255,0.12)",
+            }}
+          >
+            <MKBox
+              key={`progress-${index}-${paused}`}
+              sx={{
+                height: "100%",
+                width: paused ? `${((index + 1) / photos.length) * 100}%` : "100%",
+                background: "linear-gradient(90deg, #eca533 0%, #f5c56a 100%)",
+                transformOrigin: "left center",
+                animation: paused ? "none" : "impactPhotoProgress 4.5s linear",
+                "@keyframes impactPhotoProgress": {
+                  from: { transform: "scaleX(0)" },
+                  to: { transform: "scaleX(1)" },
+                },
+              }}
+            />
+          </MKBox>
+        </MKBox>
+
+        <MKBox
+          sx={{
+            flex: { xs: "none", md: "1 1 36%" },
+            width: { xs: "100%", md: "36%" },
+            maxWidth: { md: "36%" },
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: { xs: "flex-start", md: "center" },
+            px: { xs: 1.5, sm: 1.85, md: 2 },
+            py: { xs: 1.15, sm: 1.35, md: 1.5 },
+            borderLeft: {
+              xs: "none",
+              md: "1px solid rgba(236, 165, 51, 0.2)",
+            },
+            borderTop: {
+              xs: "1px solid rgba(236, 165, 51, 0.2)",
+              md: "none",
+            },
+          }}
+        >
+          <MKBox
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 0.75,
+              mb: 0.65,
+            }}
+          >
+            <MKBox
+              component="img"
+              src={sponsorLeafGold}
+              alt=""
+              aria-hidden="true"
+              sx={{
+                width: { xs: 16, sm: 18 },
+                height: "auto",
+                flexShrink: 0,
+                filter: "drop-shadow(0 1px 2px rgba(138, 90, 18, 0.25))",
+              }}
+            />
+            <MKTypography
+              sx={{
+                fontSize: { xs: "0.66rem", sm: "0.7rem" },
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                color: "#8a5a12",
+                lineHeight: 1.2,
+              }}
+            >
+              {index + 1} / {photos.length}
+            </MKTypography>
+          </MKBox>
+
+          <MKTypography
+            variant="h4"
+            sx={{
+              fontFamily:
+                '"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
+              fontWeight: 500,
+              fontSize: { xs: "1.2rem", sm: "1.32rem", md: "1.4rem" },
+              color: "#1f2a44",
+              lineHeight: 1.2,
+            }}
+          >
+            {title}
+          </MKTypography>
+
+          {subtitle ? (
+            <MKTypography
+              sx={{
+                mt: 0.45,
+                fontSize: { xs: "0.8rem", sm: "0.86rem" },
+                fontWeight: 400,
+                color: "rgba(31, 42, 68, 0.55)",
+                letterSpacing: "0.01em",
+                lineHeight: 1.35,
+              }}
+            >
+              {subtitle}
+            </MKTypography>
+          ) : null}
+
+          {activeCaption ? (
+            <MKTypography
+              key={active.captionKey + index}
+              sx={{
+                mt: 1,
+                fontSize: { xs: "0.78rem", sm: "0.84rem" },
+                fontWeight: 600,
+                color: "#2e4a2f",
+                lineHeight: 1.4,
+                pl: 1,
+                borderLeft: "2px solid rgba(236, 165, 51, 0.7)",
+                animation: "impactCaptionIn 0.4s ease",
+                "@keyframes impactCaptionIn": {
+                  from: { opacity: 0, transform: "translateY(4px)" },
+                  to: { opacity: 1, transform: "translateY(0)" },
+                },
+              }}
+            >
+              {activeCaption}
+            </MKTypography>
+          ) : null}
+
+          <MKBox
+            role="tablist"
+            aria-label={title}
+            sx={{
+              mt: { xs: 1.1, sm: 1.25 },
+              display: "flex",
+              alignItems: "center",
+              gap: 0.65,
+            }}
+          >
+            {photos.map((photo, thumbIndex) => {
+              const isActive = thumbIndex === index;
+              return (
+                <MKBox
+                  key={photo.src}
+                  component="button"
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-label={`Show photo ${thumbIndex + 1}`}
+                  onClick={() => setIndex(thumbIndex)}
+                  sx={{
+                    p: 0,
+                    width: { xs: 38, sm: 44 },
+                    height: { xs: 28, sm: 32 },
+                    borderRadius: "7px",
+                    overflow: "hidden",
+                    cursor: "pointer",
+                    border: isActive ? "2px solid #eca533" : "2px solid rgba(31, 42, 68, 0.1)",
+                    boxShadow: isActive ? "0 0 0 2px rgba(236,165,51,0.22)" : "none",
+                    opacity: isActive ? 1 : 0.72,
+                    transition: "opacity 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease",
+                    backgroundColor: "#151b2b",
+                    "&:hover": { opacity: 1 },
+                  }}
+                >
+                  <MKBox
+                    component="img"
+                    src={photo.src}
+                    alt=""
+                    aria-hidden="true"
+                    sx={{
+                      display: "block",
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                </MKBox>
+              );
+            })}
+          </MKBox>
+        </MKBox>
+      </MKBox>
+    </MKBox>
+  );
+}
+
+ImpactPhotosCarousel.propTypes = {
+  gallery: PropTypes.shape({
+    title: PropTypes.string,
+    subtitle: PropTypes.string,
+    alts: PropTypes.objectOf(PropTypes.string),
+    captions: PropTypes.objectOf(PropTypes.string),
+  }),
 };
 
 function Donate2() {
@@ -1592,15 +2019,17 @@ function Donate2() {
                 <Grid item xs={12}>
                   <LazyVisible
                     rootMargin="700px"
-                    minHeight={{ xs: 360, sm: 300, md: 280, lg: 260 }}
+                    minHeight={{ xs: 460, sm: 500, md: 540, lg: 560 }}
                   >
                     <MKBox
                       sx={{
-                        mt: { xs: 1, sm: 1.5 },
-                        mb: { xs: 0.5, sm: 1 },
-                        px: { xs: 0.5, sm: 1, md: 1.5 },
+                        mt: 0,
+                        mb: { xs: 0.25, sm: 0.5 },
+                        px: { xs: 0.15, sm: 0.35, md: 0.5 },
                       }}
                     >
+                      <ImpactPhotosCarousel gallery={donatePage.impactPhotos} />
+
                       <MKBox
                         sx={{
                           borderRadius: "22px",
@@ -1789,7 +2218,7 @@ function Donate2() {
                         sx={{
                           fontFamily:
                             '"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
-                          fontSize: { xs: "1.35rem", sm: "1.5rem", md: "1.65rem" },
+                          fontSize: { xs: "1.3rem", sm: "1.52rem", md: "1.72rem" },
                           fontWeight: 500,
                           color: "#1f2a44",
                           textAlign: "center",
@@ -1800,7 +2229,7 @@ function Donate2() {
                     </MKBox>
                     <MKTypography
                       sx={{
-                        mb: { xs: 3.5, sm: 4 },
+                        mb: { xs: 0.35, sm: 0.5 },
                         fontSize: { xs: "0.9rem", sm: "0.98rem", md: "1.05rem" },
                         color: "rgba(31, 42, 68, 0.6)",
                         lineHeight: 1.5,
@@ -1809,6 +2238,77 @@ function Donate2() {
                     >
                       {donatePage.membershipSection.directGiving.subtitle}
                     </MKTypography>
+                    <MKBox
+                      sx={{
+                        position: "relative",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        minHeight: { xs: 28, sm: 34 },
+                        mb: { xs: 3.5, sm: 4 },
+                      }}
+                    >
+                      <MKBox
+                        component="img"
+                        src={sponsorLeafGold}
+                        alt=""
+                        aria-hidden="true"
+                        sx={{
+                          position: "absolute",
+                          left: { xs: 0, sm: 10 },
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                          width: { xs: 116, sm: 162 },
+                          height: "auto",
+                          opacity: 0.9,
+                          objectFit: "contain",
+                        }}
+                      />
+                      <MKBox
+                        component="img"
+                        src={sponsorLeafGold}
+                        alt=""
+                        aria-hidden="true"
+                        sx={{
+                          position: "absolute",
+                          right: { xs: 0, sm: 10 },
+                          top: "50%",
+                          transform: "translateY(-50%) scaleX(-1)",
+                          width: { xs: 116, sm: 162 },
+                          height: "auto",
+                          opacity: 0.9,
+                          objectFit: "contain",
+                        }}
+                      />
+                      <MKBox
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: 1,
+                          position: "relative",
+                          zIndex: 1,
+                        }}
+                      >
+                        <MKBox
+                          sx={{ width: 94, height: 1.5, bgcolor: "rgba(82, 125, 62, 0.28)" }}
+                        />
+                        <MKBox
+                          component="svg"
+                          viewBox="0 0 24 16"
+                          aria-hidden
+                          sx={{ width: 20, height: "auto", color: "#c7b238" }}
+                        >
+                          <path
+                            d="M12 13c0-4 1.6-6.7 6-8-1 4.8-3.4 7.2-6 8zm0 0C12 9 10.4 6.3 6 5c1 4.8 3.4 7.2 6 8z"
+                            fill="currentColor"
+                          />
+                        </MKBox>
+                        <MKBox
+                          sx={{ width: 94, height: 1.5, bgcolor: "rgba(82, 125, 62, 0.28)" }}
+                        />
+                      </MKBox>
+                    </MKBox>
 
                     <MKBox
                       sx={{
@@ -1827,7 +2327,7 @@ function Donate2() {
                         }}
                       >
                         {/* Food Sponsorship section */}
-                        <MKBox sx={{ mb: 0.75, mt: { xs: 1.5, sm: 2 } }}>
+                        <MKBox sx={{ mb: 0.75, mt: { xs: 2.7, sm: 3.4 } }}>
                           <MKTypography
                             sx={{
                               fontWeight: 700,
@@ -2208,7 +2708,7 @@ function Donate2() {
                           sx={{
                             width: "100%",
                             maxWidth: { xs: "100%", lg: 300 },
-                            mt: { xs: 1.5, sm: 2 },
+                            mt: { xs: 2.7, sm: 3.4 },
                             mb: 2,
                           }}
                         >

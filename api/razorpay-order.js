@@ -12,6 +12,7 @@ const {
   sanitizeReceipt,
   validateAmountPaise,
   validateOrderNotes,
+  formatGeneralDonationLabel,
   formatRazorpayError,
 } = require("../server/_lib/donation");
 const { applyRateLimit, LIMITS } = require("../server/_lib/rateLimit");
@@ -112,7 +113,12 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: notesResult.error });
   }
   const notes = notesResult.notes;
-  if (programLabel) notes.purpose = programLabel;
+  const fallbackLabel =
+    programLabel || formatGeneralDonationLabel(Math.round(amountPaise / 100));
+  notes.purpose = fallbackLabel;
+  if (!notes.note) {
+    notes.note = fallbackLabel;
+  }
 
   try {
     const order = await createOrder({

@@ -3,10 +3,13 @@
  * in Razorpay Dashboard + donor sessionStorage only (MVP).
  */
 
-const { isProduction } = require("./donation");
+const { isProduction, formatGeneralDonationLabel } = require("./donation");
 
 const DONATION_SELECT_FIELDS =
-  "payment_id,order_id,receipt_no,amount_paise,currency,status,donor_name,donor_father_or_husband,donor_email,donor_contact,donor_pan,donor_address,donor_state,donor_city,donor_pin,program_label,purpose,fcra_declaration,payment_method,source,subscription_id,is_recurring,frequency,created_at,receipt_email_sent_at";
+  "payment_id,order_id,receipt_no,amount_paise,currency,status,donor_name,donor_father_or_husband,donor_email,donor_contact,donor_pan,donor_address,donor_state,donor_city,donor_pin,program_label,purpose,fcra_declaration,payment_method,source,created_at,receipt_email_sent_at";
+
+/** Extra columns from supabase/membership.sql — only written when present on the row. */
+const DONATION_MEMBERSHIP_FIELDS = ["subscription_id", "is_recurring", "frequency"];
 
 function isStoreConfigured() {
   return !!(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
@@ -22,6 +25,19 @@ function hasText(value) {
   return value != null && String(value).trim() !== "";
 }
 
+/** Drop membership columns so inserts work before membership.sql has been applied. */
+function stripUnsetMembershipFields(record) {
+  if (!record || typeof record !== "object") return record;
+  const out = { ...record };
+  const hasSubscription = hasText(out.subscription_id);
+  if (!hasSubscription) {
+    DONATION_MEMBERSHIP_FIELDS.forEach((field) => {
+      delete out[field];
+    });
+  }
+  return out;
+}
+
 /**
  * Build a row from Razorpay payment + order notes.
  * `subscriptionId`/`frequency` are passed explicitly (not read from notes) for recurring
@@ -35,7 +51,7 @@ function buildRecordFromRazorpay({ payment, order, source, subscriptionId, frequ
 
   const paymentMethod = payment && payment.method ? String(payment.method).toLowerCase() : "";
 
-  return {
+  const record = {
     payment_id: payment.id,
     order_id: payment.order_id,
     receipt_no: (order && order.receipt) || "",
@@ -51,16 +67,24 @@ function buildRecordFromRazorpay({ payment, order, source, subscriptionId, frequ
     donor_state: pickNote(notes, "donor_state"),
     donor_city: pickNote(notes, "donor_city"),
     donor_pin: pickNote(notes, "donor_pin"),
-    program_label: pickNote(notes, "purpose"),
-    purpose: pickNote(notes, "note"),
+    program_label:
+      pickNote(notes, "purpose") ||
+      formatGeneralDonationLabel(Math.round(Number(payment.amount) / 100)),
+    purpose: pickNote(notes, "note") || pickNote(notes, "purpose") ||
+      formatGeneralDonationLabel(Math.round(Number(payment.amount) / 100)),
     fcra_declaration: pickNote(notes, "fcra_declaration"),
     payment_method: paymentMethod,
     source: source || "webhook",
-    subscription_id: subscriptionId || null,
-    is_recurring: !!subscriptionId,
-    frequency: frequency || null,
     updated_at: new Date().toISOString(),
   };
+
+  if (subscriptionId) {
+    record.subscription_id = subscriptionId;
+    record.is_recurring = true;
+    record.frequency = frequency || null;
+  }
+
+  return record;
 }
 
 /**
@@ -96,10 +120,14 @@ function mergeDonationRows(existing, incoming) {
     fcra_declaration: pick("fcra_declaration"),
     payment_method: pick("payment_method"),
     source: incoming.source || existing.source,
-    subscription_id: incoming.subscription_id || existing.subscription_id || null,
-    is_recurring: incoming.is_recurring || existing.is_recurring || false,
-    frequency: incoming.frequency || existing.frequency || null,
     updated_at: new Date().toISOString(),
+    ...(hasText(incoming.subscription_id) || hasText(existing.subscription_id)
+      ? {
+          subscription_id: incoming.subscription_id || existing.subscription_id || null,
+          is_recurring: incoming.is_recurring || existing.is_recurring || false,
+          frequency: incoming.frequency || existing.frequency || null,
+        }
+      : {}),
   };
 }
 
@@ -180,6 +208,7 @@ async function upsertDonationRecord(record) {
 
   const existing = await fetchDonationByPaymentId(record.payment_id);
   const base = process.env.SUPABASE_URL.replace(/\/$/, "");
+  const payload = stripUnsetMembershipFields(record);
 
   if (!existing) {
     const url = `${base}/rest/v1/donations?on_conflict=payment_id`;
@@ -187,7 +216,7 @@ async function upsertDonationRecord(record) {
       const res = await fetch(url, {
         method: "POST",
         headers: storeHeaders("resolution=ignore-duplicates,return=representation"),
-        body: JSON.stringify(record),
+        body: JSON.stringify(payload),
       });
 
       if (res.ok) {
@@ -199,7 +228,7 @@ async function upsertDonationRecord(record) {
       if (res.status === 409) {
         const raced = await fetchDonationByPaymentId(record.payment_id);
         if (raced) {
-          const merged = mergeDonationRows(raced, record);
+          const merged = stripUnsetMembershipFields(mergeDonationRows(raced, record));
           const patchUrl = `${base}/rest/v1/donations?payment_id=eq.${encodeURIComponent(
             record.payment_id
           )}`;
@@ -232,7 +261,7 @@ async function upsertDonationRecord(record) {
     }
   }
 
-  const merged = mergeDonationRows(existing, record);
+  const merged = stripUnsetMembershipFields(mergeDonationRows(existing, record));
   const url = `${base}/rest/v1/donations?payment_id=eq.${encodeURIComponent(record.payment_id)}`;
 
   try {

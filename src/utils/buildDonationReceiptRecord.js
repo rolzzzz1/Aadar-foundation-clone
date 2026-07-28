@@ -1,4 +1,5 @@
 import { isRazorpayTestKey } from "utils/razorpayCheckout";
+import { formatGeneralDonationLabel } from "utils/donation";
 
 /**
  * Build a receipt record to store before redirecting to success/failure pages.
@@ -21,10 +22,11 @@ export function buildDonationReceiptRecord({
   subscriptionId,
   frequency,
 }) {
+  const amount = Number(amountInr) || 0;
   return {
     status,
     locale: locale === "hi" ? "hi" : "en",
-    amountInr: Number(amountInr) || 0,
+    amountInr: amount,
     currency: "INR",
     donor: {
       name: donor.name || "",
@@ -36,8 +38,8 @@ export function buildDonationReceiptRecord({
     paymentId: paymentId || "",
     orderId: orderId || "",
     receiptNo: receiptNo || "",
-    purpose: purpose || "",
-    programLabel: programLabel || "",
+    purpose: purpose || formatGeneralDonationLabel(amount),
+    programLabel: programLabel || formatGeneralDonationLabel(amount),
     paidAt: new Date().toISOString(),
     verified: !!verified,
     receiptEmailSent: !!receiptEmailSent,

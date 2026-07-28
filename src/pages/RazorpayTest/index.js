@@ -1,5 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import PropTypes from "prop-types";
+import {
+  Link,
+  unstable_useBlocker as useBlocker,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { Trans, useTranslation } from "react-i18next";
 
 import Alert from "@mui/material/Alert";
@@ -22,9 +28,9 @@ import Typography from "@mui/material/Typography";
 import MuiLink from "@mui/material/Link";
 
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import CardGiftcardOutlinedIcon from "@mui/icons-material/CardGiftcardOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import LocationCityOutlinedIcon from "@mui/icons-material/LocationCityOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
@@ -36,13 +42,13 @@ import ShieldOutlinedIcon from "@mui/icons-material/ShieldOutlined";
 import VolunteerActivismOutlinedIcon from "@mui/icons-material/VolunteerActivismOutlined";
 import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
 import GppGoodOutlinedIcon from "@mui/icons-material/GppGoodOutlined";
-import HouseOutlinedIcon from "@mui/icons-material/HouseOutlined";
 import LanguageIcon from "@mui/icons-material/Language";
 
 import MKBox from "components/MKBox";
 import MKButton from "components/MKButton";
 import ExpandableTermsCheckbox from "components/ExpandableTermsCheckbox";
 import aadarLogo from "assets/images/logos/logo-aadar.jpg";
+import kindnessHelpingHands from "assets/images/kindness-helping-hands.png";
 import { ReactComponent as RazorpayLogoLight } from "assets/images/logos/razorpay-logo-light.svg";
 import { PRIVACY_POLICY_PATH, TERMS_CONDITIONS_PATH } from "utils/paths";
 
@@ -56,6 +62,7 @@ import {
   DONATE2_PAGE_PATH,
   DONATE_WIDGET_HASH,
   DONATION_CHECKOUT_PATH,
+  formatGeneralDonationLabel,
   hasCheckoutEntrySource,
   resolveCheckoutEntry,
   sanitizeAmountInput,
@@ -211,56 +218,70 @@ function waitAtLeast(ms, startedAt) {
 const formTextMuted = "#4a5568";
 const formTextPlaceholder = "#5c6b82";
 const formTextPrimary = "#1f2a44";
-const formIconColor = "#4f5d73";
+const formIconColor = "#6b7a90";
 
-/** Shared type size for labels, values, and placeholders in donation fields. */
-const formInputFontSize = "0.875rem";
-const formInputMinHeight = 40;
+/** Typed value size; labels read larger, placeholders stay quieter. */
+const formInputFontSize = "0.9375rem";
+const formLabelFontSize = "1rem";
+const formPlaceholderFontSize = "0.8125rem";
+const formInputMinHeight = 48;
 
 const formFieldSx = {
   "& .MuiOutlinedInput-root": {
-    borderRadius: "10px",
+    borderRadius: "12px",
     backgroundColor: "#ffffff",
     fontSize: formInputFontSize,
     minHeight: formInputMinHeight,
     alignItems: "center",
     boxSizing: "border-box",
+    transition: "border-color 0.15s ease, box-shadow 0.15s ease",
+    "& fieldset": {
+      borderColor: "rgba(31, 42, 68, 0.14)",
+    },
+    "&:hover fieldset": {
+      borderColor: "rgba(46, 125, 50, 0.35)",
+    },
+    "&.Mui-focused": {
+      boxShadow: "0 0 0 3px rgba(46, 125, 50, 0.1)",
+    },
     "& .MuiOutlinedInput-input": {
-      py: 0.875,
+      py: 1.15,
       fontSize: formInputFontSize,
-      fontWeight: 400,
-      lineHeight: 1.43,
+      fontWeight: 500,
+      lineHeight: 1.45,
     },
     "& .MuiAutocomplete-input": {
-      py: 0.875,
+      py: 1.15,
       fontSize: formInputFontSize,
-      fontWeight: 400,
+      fontWeight: 500,
     },
     "& input, & textarea": {
       color: formTextPrimary,
       fontSize: formInputFontSize,
-      fontWeight: 400,
+      fontWeight: 500,
     },
     "& input::placeholder, & textarea::placeholder": {
       color: formTextPlaceholder,
       opacity: 1,
-      fontSize: formInputFontSize,
+      fontSize: `${formPlaceholderFontSize} !important`,
       fontWeight: 400,
     },
     "& .MuiInputAdornment-positionStart": {
-      marginRight: 0,
+      marginRight: 0.5,
       alignSelf: "center",
     },
   },
   "& .MuiInputLabel-root": {
     color: formTextMuted,
-    fontWeight: 500,
-    fontSize: formInputFontSize,
-    lineHeight: 1.43,
+    fontWeight: 600,
+    fontSize: formLabelFontSize,
+    lineHeight: 1.35,
     "&.MuiInputLabel-shrink": {
-      fontSize: formInputFontSize,
-      fontWeight: 500,
-      lineHeight: 1.43,
+      fontSize: formLabelFontSize,
+      fontWeight: 700,
+      lineHeight: 1.35,
+      /* MUI default scale(0.75) makes labels too small — keep them readable */
+      transform: "translate(14px, -9px) scale(0.88)",
     },
     "&.Mui-focused": {
       color: "#2e7d32",
@@ -272,10 +293,10 @@ const formFieldSx = {
   "& .MuiFormHelperText-root": {
     color: formTextMuted,
     fontWeight: 500,
-    marginLeft: 0,
-    marginTop: 0,
-    minHeight: "12px",
-    lineHeight: 1.2,
+    marginLeft: 0.25,
+    marginTop: 0.35,
+    minHeight: "0.85em",
+    lineHeight: 1.35,
     fontSize: "0.75rem",
     "&.Mui-error": {
       color: "#d32f2f",
@@ -283,13 +304,112 @@ const formFieldSx = {
   },
 };
 
-const formIconSx = { color: formIconColor, fontSize: 21 };
-/** Vertical gap between rows in the compact donation field grid. */
-const formGridSpacing = 0.5;
+const formIconSx = { color: formIconColor, fontSize: 20 };
+/** Vertical gap between donation field rows — room to breathe. */
+const formGridSpacing = 1.75;
 const autocompleteFieldSx = {
   display: "block",
   width: "100%",
   "& .MuiOutlinedInput-root": { minHeight: formInputMinHeight },
+};
+
+const formSectionTitleSx = {
+  fontFamily: BODY_FONT,
+  fontWeight: 700,
+  fontSize: "0.95rem",
+  letterSpacing: 0,
+  textTransform: "none",
+  color: "#1f2a44",
+  mb: 1.75,
+  lineHeight: 1.3,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-start",
+  textAlign: "left",
+  width: "100%",
+  gap: 1,
+};
+
+function FormStepTitle({ step, children, sx: sxProp }) {
+  return (
+    <Typography component="h2" sx={{ ...formSectionTitleSx, ...sxProp }}>
+      <Box
+        component="span"
+        aria-hidden
+        sx={{
+          width: 26,
+          height: 26,
+          borderRadius: "50%",
+          backgroundColor: "#2e7d32",
+          color: "#fff",
+          fontSize: "0.75rem",
+          fontWeight: 800,
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexShrink: 0,
+          lineHeight: 1,
+        }}
+      >
+        {step}
+      </Box>
+      {children}
+    </Typography>
+  );
+}
+
+FormStepTitle.propTypes = {
+  step: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  children: PropTypes.node.isRequired,
+  sx: PropTypes.object,
+};
+
+function DiyaIcon({ sx }) {
+  return (
+    <Box
+      component="svg"
+      viewBox="0 0 24 24"
+      aria-hidden
+      sx={{ width: 22, height: 22, flexShrink: 0, ...sx }}
+    >
+      <path
+        fill="#e67e22"
+        d="M12 3c1.1 1.6 1.6 2.8 1.6 3.8 0 1.1-.7 2-1.6 2s-1.6-.9-1.6-2C10.4 5.8 10.9 4.6 12 3z"
+      />
+      <path
+        fill="#f4a261"
+        d="M5.5 14.5c0-2.2 2.9-4 6.5-4s6.5 1.8 6.5 4c0 .4-.2.8-.5 1H6c-.3-.2-.5-.6-.5-1z"
+      />
+      <path fill="#e67e22" d="M6 16.2h12c.4 1.4-1.6 2.8-6 2.8s-6.4-1.4-6-2.8z" />
+    </Box>
+  );
+}
+
+DiyaIcon.propTypes = {
+  sx: PropTypes.object,
+};
+
+function KindnessIllustration({ sx }) {
+  return (
+    <Box
+      component="img"
+      src={kindnessHelpingHands}
+      alt=""
+      aria-hidden
+      sx={{
+        width: "100%",
+        maxWidth: 280,
+        height: "auto",
+        display: "block",
+        objectFit: "contain",
+        ...sx,
+      }}
+    />
+  );
+}
+
+KindnessIllustration.propTypes = {
+  sx: PropTypes.object,
 };
 
 const policyLinkSx = { fontWeight: 600, color: "#1565c0", fontSize: "0.78rem" };
@@ -426,7 +546,6 @@ export default function RazorpayTestPage() {
   const [pin, setPin] = useState("");
   const [purposeText, setPurposeText] = useState("");
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
-  const [declarationAccepted, setDeclarationAccepted] = useState(false);
 
   const [touched, setTouched] = useState({});
 
@@ -435,14 +554,28 @@ export default function RazorpayTestPage() {
     setAmountInr(String(entry.amountInr));
     setAmountClamped(entry.amountClamped);
     setSelectedPreset(presetForInr(entry.amountInr));
+    // Prefill purpose so custom amounts never show an empty program/purpose.
+    if (!entry.programFromEntry && entry.amountInr) {
+      setPurposeText((prev) => prev || formatGeneralDonationLabel(entry.amountInr));
+    } else if (entry.programFromEntry) {
+      setPurposeText((prev) => prev || entry.programFromEntry.label);
+    }
   }, [location]);
 
   const [busyPhase, setBusyPhase] = useState(null);
   const [error, setError] = useState("");
   const [apiSetupWarning, setApiSetupWarning] = useState("");
   const [leaveDialogOpen, setLeaveDialogOpen] = useState(false);
+  const leaveAllowedRef = useRef(false);
 
   const paymentBusy = Boolean(busyPhase);
+  const blocker = useBlocker(
+    ({ currentLocation, nextLocation }) =>
+      !leaveAllowedRef.current &&
+      currentLocation.pathname === DONATION_CHECKOUT_PATH &&
+      (currentLocation.pathname !== nextLocation.pathname ||
+        currentLocation.search !== nextLocation.search)
+  );
 
   const resetPaymentUi = useCallback(() => {
     setBusyPhase(null);
@@ -457,10 +590,6 @@ export default function RazorpayTestPage() {
     if (busyPhase === "redirecting") return form.redirecting || "Almost done…";
     return "";
   }, [busyPhase, form]);
-
-  const paymentButtonLabel = paymentBusy
-    ? paymentProgressMessage || form.openingCheckout
-    : form.proceedPayment;
 
   const showPaymentOverlay = Boolean(busyPhase && busyPhase !== "awaitingPayment");
 
@@ -479,8 +608,7 @@ export default function RazorpayTestPage() {
           citySel ||
           pin.trim() ||
           purposeText.trim() ||
-          privacyAccepted ||
-          declarationAccepted
+          privacyAccepted
       ),
     [
       name,
@@ -494,7 +622,6 @@ export default function RazorpayTestPage() {
       pin,
       purposeText,
       privacyAccepted,
-      declarationAccepted,
     ]
   );
 
@@ -502,6 +629,7 @@ export default function RazorpayTestPage() {
 
   useEffect(() => {
     if (hasCheckoutEntrySource(location) || resolveMembershipEntry(location)) return;
+    leaveAllowedRef.current = true;
     navigate(donatePageTarget, { replace: true });
   }, [location, navigate, donatePageTarget]);
 
@@ -517,19 +645,14 @@ export default function RazorpayTestPage() {
   }, [shouldConfirmLeave]);
 
   useEffect(() => {
-    window.history.pushState({ checkoutLeaveGuard: true }, "");
-    const onPopState = () => {
-      if (paymentBusy) {
-        window.history.pushState({ checkoutLeaveGuard: true }, "");
-        setError(form.cannotLeaveDuringPayment);
-        return;
-      }
-      setLeaveDialogOpen(true);
-      window.history.pushState({ checkoutLeaveGuard: true }, "");
-    };
-    window.addEventListener("popstate", onPopState);
-    return () => window.removeEventListener("popstate", onPopState);
-  }, [paymentBusy, form.cannotLeaveDuringPayment]);
+    if (blocker.state !== "blocked") return;
+    if (paymentBusy) {
+      setError(form.cannotLeaveDuringPayment);
+      blocker.reset();
+      return;
+    }
+    setLeaveDialogOpen(true);
+  }, [blocker, paymentBusy, form.cannotLeaveDuringPayment]);
 
   const requestLeaveCheckout = useCallback(() => {
     if (paymentBusy) {
@@ -540,9 +663,19 @@ export default function RazorpayTestPage() {
   }, [paymentBusy, form.cannotLeaveDuringPayment]);
 
   const confirmLeaveCheckout = useCallback(() => {
+    leaveAllowedRef.current = true;
     setLeaveDialogOpen(false);
-    navigate(donatePageTarget);
-  }, [navigate, donatePageTarget]);
+    if (blocker.state === "blocked") {
+      blocker.proceed();
+      return;
+    }
+    navigate(donatePageTarget, { replace: true });
+  }, [blocker, navigate, donatePageTarget]);
+
+  const stayOnCheckout = useCallback(() => {
+    setLeaveDialogOpen(false);
+    if (blocker.state === "blocked") blocker.reset();
+  }, [blocker]);
 
   useEffect(() => {
     loadRazorpayCheckoutScript().catch(() => {});
@@ -596,6 +729,22 @@ export default function RazorpayTestPage() {
     }
     return validateAmountInr(amountInr);
   }, [isMembershipMode, membershipAmountInr, amountInr]);
+
+  useEffect(() => {
+    if (isMembershipMode || programFromUrl) return;
+    if (!amountCheck.ok) return;
+    const nextLabel = formatGeneralDonationLabel(amountCheck.valueInr);
+    setPurposeText((prev) => {
+      const trimmed = (prev || "").trim();
+      if (!trimmed || /^General Donation\b/i.test(trimmed)) return nextLabel;
+      return prev;
+    });
+  }, [amountCheck.ok, amountCheck.valueInr, isMembershipMode, programFromUrl]);
+
+  const paymentButtonLabel = paymentBusy
+    ? paymentProgressMessage || form.openingCheckout
+    : form.proceedPayment;
+
   const nameCheck = useMemo(() => validateName(name), [name]);
   const fatherOrHusbandNameCheck = useMemo(
     () => validateFatherOrHusbandName(fatherOrHusbandName),
@@ -617,6 +766,16 @@ export default function RazorpayTestPage() {
 
   const amountPaise = amountCheck.ok ? toPaise(amountCheck.valueInr) : 0;
 
+  const resolvedProgramLabel = useMemo(() => {
+    if (programFromUrl && amountCheck.ok && amountCheck.valueInr === programFromUrl.amountInr) {
+      return programFromUrl.label;
+    }
+    if (amountCheck.ok) {
+      return formatGeneralDonationLabel(amountCheck.valueInr);
+    }
+    return formatGeneralDonationLabel(0);
+  }, [programFromUrl, amountCheck.ok, amountCheck.valueInr]);
+
   const formValid =
     amountCheck.ok &&
     nameCheck.ok &&
@@ -628,17 +787,24 @@ export default function RazorpayTestPage() {
     stateCheck.ok &&
     cityCheck.ok &&
     pinCheck.ok &&
-    privacyAccepted &&
-    declarationAccepted;
+    privacyAccepted;
 
   const buildOrderNote = useCallback(() => {
-    if (!purposeCheck.value) return "";
-    return sanitizeText(purposeCheck.value, NOTE_MAX);
-  }, [purposeCheck.value]);
+    if (purposeCheck.value) return sanitizeText(purposeCheck.value, NOTE_MAX);
+    // Custom / free amount: never leave purpose blank on the order notes.
+    if (!programFromUrl && amountCheck.ok) {
+      return sanitizeText(formatGeneralDonationLabel(amountCheck.valueInr), NOTE_MAX);
+    }
+    if (programFromUrl && amountCheck.ok) {
+      return sanitizeText(programFromUrl.label, NOTE_MAX);
+    }
+    return "";
+  }, [purposeCheck.value, programFromUrl, amountCheck.ok, amountCheck.valueInr]);
 
   const goToDonationResult = useCallback(
     (record) => {
       saveDonationReceipt(record);
+      leaveAllowedRef.current = true;
       navigate(record.status === "success" ? "/donation/success" : "/donation/failed");
     },
     [navigate]
@@ -827,11 +993,13 @@ export default function RazorpayTestPage() {
       }
 
       const receiptNo = `rcpt_${Date.now()}`;
+      const programLabelForOrder = resolvedProgramLabel;
       const orderRequest = {
         currency: "INR",
         receipt: receiptNo,
         notes: {
-          note: buildOrderNote(),
+          note: buildOrderNote() || programLabelForOrder,
+          purpose: programLabelForOrder,
           donor_name: nameCheck.value,
           donor_father_or_husband: fatherOrHusbandNameCheck.value,
           donor_email: emailCheck.value,
@@ -874,11 +1042,11 @@ export default function RazorpayTestPage() {
       const options = buildRazorpayCheckoutOptions({
         keyId,
         order,
-        program: orderProgram,
+        program: orderProgram || { label: programLabelForOrder, amountInr: amountCheck.valueInr },
         name: nameCheck.value,
         email: emailCheck.value,
         contact: contactCheck.value,
-        note: buildOrderNote(),
+        note: buildOrderNote() || programLabelForOrder,
         onDismiss: () => resetPaymentUi(),
         onSuccess: async (response) => {
           setBusyPhase("processing");
@@ -917,8 +1085,8 @@ export default function RazorpayTestPage() {
                 paymentId: response.razorpay_payment_id,
                 orderId: response.razorpay_order_id,
                 receiptNo,
-                purpose: purposeCheck.value,
-                programLabel: orderProgram?.label,
+                purpose: purposeCheck.value || formatGeneralDonationLabel(confirmedAmountInr),
+                programLabel: orderProgram?.label || formatGeneralDonationLabel(confirmedAmountInr),
                 keyId,
                 verified: paymentOk,
                 receiptEmailSent: !!(verification && verification.receipt_email_sent),
@@ -945,8 +1113,9 @@ export default function RazorpayTestPage() {
                 paymentId: response.razorpay_payment_id,
                 orderId: response.razorpay_order_id,
                 receiptNo,
-                purpose: purposeCheck.value,
-                programLabel: orderProgram?.label,
+                purpose: purposeCheck.value || formatGeneralDonationLabel(amountCheck.valueInr),
+                programLabel:
+                  orderProgram?.label || formatGeneralDonationLabel(amountCheck.valueInr),
                 keyId,
                 verified: false,
                 errorDescription: (e && e.message) || String(e),
@@ -975,11 +1144,8 @@ export default function RazorpayTestPage() {
             orderId:
               (resp && resp.error && resp.error.metadata && resp.error.metadata.order_id) || "",
             receiptNo,
-            purpose: purposeCheck.value,
-            programLabel:
-              programFromUrl && amountCheck.valueInr === programFromUrl.amountInr
-                ? programFromUrl.label
-                : "",
+            purpose: purposeCheck.value || resolvedProgramLabel,
+            programLabel: resolvedProgramLabel,
             keyId,
             errorCode: err.code || "",
             errorDescription: formatRazorpayPaymentFailedError(err, {
@@ -1014,6 +1180,7 @@ export default function RazorpayTestPage() {
     purposeKey,
     purposeCheck.value,
     amountCheck.valueInr,
+    resolvedProgramLabel,
     goToDonationResult,
     form.fixFieldsError,
     resetPaymentUi,
@@ -1047,18 +1214,18 @@ export default function RazorpayTestPage() {
       minHeight="100vh"
       sx={{
         background: "linear-gradient(180deg, #f4f7f4 0%, #eef1f6 55%, #e8ecf3 100%)",
-        py: { xs: 2, sm: 4 },
-        px: { xs: 1.5, sm: 2 },
+        py: { xs: 2.5, sm: 5 },
+        px: { xs: 1.5, sm: 2.5 },
       }}
     >
       <Card
         elevation={0}
         sx={{
-          maxWidth: 1120,
+          maxWidth: 1180,
           mx: "auto",
-          borderRadius: "18px",
-          border: "1px solid rgba(31, 42, 68, 0.08)",
-          boxShadow: "0 18px 48px rgba(31, 42, 68, 0.08)",
+          borderRadius: "22px",
+          border: "1px solid rgba(31, 42, 68, 0.07)",
+          boxShadow: "0 24px 56px rgba(31, 42, 68, 0.07)",
           overflow: "hidden",
         }}
       >
@@ -1067,30 +1234,30 @@ export default function RazorpayTestPage() {
           <Grid
             item
             xs={12}
-            md={5}
+            md={3}
             sx={{
-              background: "linear-gradient(165deg, #f6fff6 0%, #eef6ee 45%, #e8f2ea 100%)",
-              borderRight: { md: "1px solid rgba(46, 125, 50, 0.12)" },
-              borderBottom: { xs: "1px solid rgba(46, 125, 50, 0.12)", md: "none" },
+              background: "linear-gradient(165deg, #f8fcf8 0%, #f1f7f2 50%, #eaf3ec 100%)",
+              borderRight: { md: "1px solid rgba(46, 125, 50, 0.1)" },
+              borderBottom: { xs: "1px solid rgba(46, 125, 50, 0.1)", md: "none" },
             }}
           >
             <MKBox
               sx={{
-                px: { xs: 2, sm: 2.5, md: 3 },
-                pb: { xs: 2.5, sm: 3, md: 3.75 },
-                pt: { xs: 1, sm: 1.25, md: 1.5 },
+                px: { xs: 2.5, sm: 3, md: 3.25 },
+                pb: { xs: 3, sm: 3.5, md: 4.5 },
+                pt: { xs: 2, sm: 2.5, md: 3 },
                 height: "100%",
               }}
             >
-              <Stack spacing={{ xs: 1.75, sm: 2 }} alignItems="center" textAlign="center">
+              <Stack spacing={{ xs: 2.25, sm: 2.75 }} alignItems="center" textAlign="center">
                 <Box
                   sx={{
-                    width: { xs: "min(88%, 168px)", sm: "min(82%, 188px)" },
+                    width: { xs: "min(72%, 140px)", sm: "min(68%, 152px)" },
                     aspectRatio: "1",
                     borderRadius: "50%",
                     p: "2px",
                     background: `linear-gradient(145deg, ${brandGreen} 0%, #1b5e20 55%, ${brandGreen} 100%)`,
-                    boxShadow: "0 10px 30px rgba(46, 125, 50, 0.28)",
+                    boxShadow: "0 8px 24px rgba(46, 125, 50, 0.18)",
                     mx: "auto",
                     overflow: "hidden",
                   }}
@@ -1111,15 +1278,15 @@ export default function RazorpayTestPage() {
                   />
                 </Box>
 
-                <Box sx={{ maxWidth: 360, px: 0.5 }}>
+                <Box sx={{ maxWidth: 340, px: 0.5 }}>
                   <Typography
                     variant="h5"
                     sx={{
                       fontFamily: HEADING_FONT,
                       fontWeight: 500,
                       color: brandGreen,
-                      fontSize: { xs: "1.4rem", sm: "1.55rem" },
-                      lineHeight: 1.2,
+                      fontSize: { xs: "1.35rem", sm: "1.5rem" },
+                      lineHeight: 1.25,
                     }}
                   >
                     {sidebar.orgName}
@@ -1130,66 +1297,81 @@ export default function RazorpayTestPage() {
                       fontFamily: BODY_FONT,
                       color: "#1f2a44",
                       fontWeight: 700,
-                      mt: 0.75,
-                      mb: 2.5,
-                      fontSize: { xs: "0.95rem", sm: "1.02rem" },
+                      mt: 0.6,
+                      mb: 1.75,
+                      fontSize: { xs: "0.92rem", sm: "0.98rem" },
                     }}
                   >
                     {sidebar.ashramName}
                   </Typography>
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="center"
-                    spacing={0.85}
-                    sx={{ mt: 0 }}
-                  >
-                    <HouseOutlinedIcon sx={{ fontSize: 22, color: brandGreen }} aria-hidden />
-                    <Typography
-                      variant="body2"
-                      component="p"
-                      sx={{
-                        fontFamily: BODY_FONT,
-                        color: brandGreen,
-                        fontWeight: 600,
-                        fontSize: "0.84rem",
-                        lineHeight: 1.35,
-                        m: 0,
-                        textAlign: "left",
-                      }}
-                    >
-                      {sidebar.tagline}
-                    </Typography>
-                  </Stack>
                   <Typography
                     variant="body2"
                     component="p"
                     sx={{
                       fontFamily: BODY_FONT,
-                      color: "#4a5568",
-                      fontWeight: 500,
-                      lineHeight: 1.6,
-                      mt: 1.5,
-                      fontSize: "0.875rem",
+                      color: brandGreen,
+                      fontWeight: 800,
+                      fontSize: { xs: "0.95rem", sm: "1.02rem" },
+                      lineHeight: 1.35,
+                      letterSpacing: "0.01em",
                       m: 0,
+                      mt: 0.25,
+                      textAlign: "center",
+                    }}
+                  >
+                    {sidebar.tagline}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    component="p"
+                    sx={{
+                      fontFamily: BODY_FONT,
+                      color: "#7a8799",
+                      fontWeight: 400,
+                      lineHeight: 1.7,
+                      mt: 1.25,
+                      fontSize: "0.8125rem",
+                      m: 0,
+                      textAlign: "center",
+                      maxWidth: 300,
+                      mx: "auto",
                     }}
                   >
                     {sidebar.supportMessage}
                   </Typography>
                 </Box>
 
+                <Box sx={{ width: "100%", pt: 0.5, textAlign: "center" }}>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontFamily: BODY_FONT,
+                      color: "#5a6b82",
+                      fontWeight: 500,
+                      fontStyle: "italic",
+                      fontSize: "0.8rem",
+                      lineHeight: 1.55,
+                      px: 1,
+                      mb: 1.25,
+                    }}
+                  >
+                    {sidebar.kindnessQuote}
+                  </Typography>
+                  <KindnessIllustration sx={{ mx: "auto" }} />
+                </Box>
+
                 <Box
                   sx={{
                     width: "100%",
-                    borderRadius: "14px",
-                    p: { xs: 1.75, sm: 2 },
-                    backgroundColor: "rgba(79, 169, 83, 0.1)",
-                    border: "1px solid rgba(79, 169, 83, 0.22)",
+                    borderRadius: "16px",
+                    p: { xs: 2, sm: 2.25 },
+                    backgroundColor: "rgba(255, 255, 255, 0.65)",
+                    border: "1px solid rgba(79, 169, 83, 0.16)",
                   }}
                 >
                   <Stack direction="row" spacing={1.25} alignItems="flex-start">
                     <GppGoodOutlinedIcon
-                      sx={{ fontSize: 30, color: brandGreen, flexShrink: 0, mt: 0.15 }}
+                      sx={{ fontSize: 26, color: brandGreen, flexShrink: 0, mt: 0.1 }}
                       aria-hidden
                     />
                     <Typography
@@ -1199,8 +1381,8 @@ export default function RazorpayTestPage() {
                         fontFamily: BODY_FONT,
                         fontWeight: 500,
                         color: "#1f2a44",
-                        lineHeight: 1.55,
-                        fontSize: "0.8rem",
+                        lineHeight: 1.6,
+                        fontSize: "0.8125rem",
                         textAlign: "left",
                         m: 0,
                       }}
@@ -1213,119 +1395,82 @@ export default function RazorpayTestPage() {
                       />
                     </Typography>
                   </Stack>
-                  <Divider sx={{ my: 1.25 }} />
-                  <Stack
-                    direction="row"
-                    justifyContent="center"
-                    flexWrap="wrap"
-                    useFlexGap
-                    sx={{ gap: 1 }}
-                  >
+                  <Divider sx={{ my: 1.5, borderColor: "rgba(46, 125, 50, 0.12)" }} />
+                  <Stack spacing={0.5} alignItems="center">
                     <Typography
                       variant="caption"
-                      sx={{ fontWeight: 700, color: "#1f2a44", letterSpacing: "0.03em" }}
+                      sx={{ fontWeight: 600, color: "#1f2a44", letterSpacing: "0.02em" }}
                     >
                       {sidebar.panLabel}{" "}
-                      <Box component="span" sx={{ fontWeight: 800, color: brandGreen }}>
+                      <Box component="span" sx={{ fontWeight: 700, color: brandGreen }}>
                         {AADAR_ORG_PAN}
                       </Box>
                     </Typography>
-                    <Typography variant="caption" sx={{ color: "rgba(31,42,68,0.35)" }}>
-                      |
-                    </Typography>
                     <Typography
                       variant="caption"
-                      sx={{ fontWeight: 700, color: "#1f2a44", letterSpacing: "0.03em" }}
+                      sx={{ fontWeight: 600, color: "#1f2a44", letterSpacing: "0.02em" }}
                     >
                       {sidebar.reg80gLabel}{" "}
-                      <Box component="span" sx={{ fontWeight: 800, color: brandGreen }}>
+                      <Box component="span" sx={{ fontWeight: 700, color: brandGreen }}>
                         {AADAR_80G_REG_NO}
                       </Box>
                     </Typography>
                   </Stack>
                 </Box>
 
-                <Stack spacing={1.15} alignItems="center" sx={{ width: "100%", pt: 0.25 }}>
-                  <Stack
-                    direction="row"
-                    flexWrap="wrap"
-                    justifyContent="center"
-                    useFlexGap
-                    sx={{ gap: 1 }}
-                  >
-                    <Stack
-                      direction="row"
-                      spacing={0.6}
-                      alignItems="center"
+                <Stack
+                  direction={{ xs: "column", sm: "row", md: "column" }}
+                  spacing={1}
+                  sx={{ width: "100%", pt: 0.5 }}
+                >
+                  {[
+                    { icon: ShieldOutlinedIcon, label: sidebar.securePayments },
+                    { icon: LockOutlinedIcon, label: sidebar.sslSecured },
+                    { icon: VolunteerActivismOutlinedIcon, label: sidebar.donationImpact },
+                  ].map(({ icon: Icon, label }) => (
+                    <Box
+                      key={label}
                       sx={{
+                        flex: 1,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
                         px: 1.25,
-                        py: 0.65,
-                        borderRadius: "999px",
+                        py: 1.1,
+                        borderRadius: "12px",
                         backgroundColor: "#fff",
-                        border: "1px solid rgba(31,42,68,0.08)",
-                        boxShadow: "0 2px 8px rgba(31,42,68,0.06)",
+                        border: "1px solid rgba(31, 42, 68, 0.08)",
+                        boxShadow: "0 2px 8px rgba(31, 42, 68, 0.04)",
                       }}
                     >
-                      <ShieldOutlinedIcon sx={{ fontSize: 17, color: accentOrange }} />
-                      <Typography variant="caption" sx={{ fontWeight: 600, color: "#5a6b8a" }}>
-                        {sidebar.securePayments}
+                      <Icon sx={{ fontSize: 18, color: accentOrange, flexShrink: 0 }} />
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          fontWeight: 700,
+                          color: "#4a5568",
+                          fontSize: "0.72rem",
+                          lineHeight: 1.3,
+                        }}
+                      >
+                        {label}
                       </Typography>
-                    </Stack>
-                    <Stack
-                      direction="row"
-                      spacing={0.6}
-                      alignItems="center"
-                      sx={{
-                        px: 1.25,
-                        py: 0.65,
-                        borderRadius: "999px",
-                        backgroundColor: "#fff",
-                        border: "1px solid rgba(31,42,68,0.08)",
-                        boxShadow: "0 2px 8px rgba(31,42,68,0.06)",
-                      }}
-                    >
-                      <LockOutlinedIcon sx={{ fontSize: 17, color: accentOrange }} />
-                      <Typography variant="caption" sx={{ fontWeight: 600, color: "#5a6b8a" }}>
-                        {sidebar.sslSecured}
-                      </Typography>
-                    </Stack>
-                  </Stack>
-                  <Stack
-                    direction="row"
-                    spacing={0.6}
-                    alignItems="center"
-                    sx={{
-                      px: 1.25,
-                      py: 0.65,
-                      borderRadius: "999px",
-                      backgroundColor: "#fff",
-                      border: "1px solid rgba(31,42,68,0.08)",
-                      boxShadow: "0 2px 8px rgba(31,42,68,0.06)",
-                    }}
-                  >
-                    <VolunteerActivismOutlinedIcon sx={{ fontSize: 17, color: accentOrange }} />
-                    <Typography variant="caption" sx={{ fontWeight: 600, color: "#5a6b8a" }}>
-                      {sidebar.donationImpact}
-                    </Typography>
-                  </Stack>
+                    </Box>
+                  ))}
                 </Stack>
-
-                <Typography variant="caption" sx={{ color: "rgba(31,42,68,0.45)", pt: 0.5 }}>
-                  {sidebar.secureCheckout} <code>{DONATION_CHECKOUT_PATH}</code>
-                </Typography>
               </Stack>
             </MKBox>
           </Grid>
 
           {/* Right column — form */}
-          <Grid item xs={12} md={7}>
-            <MKBox sx={{ p: { xs: 2.5, sm: 3, md: 3.5 } }}>
+          <Grid item xs={12} md={9}>
+            <MKBox sx={{ p: { xs: 3, sm: 3.75, md: 4.5 } }}>
               <Stack
                 direction="row"
                 alignItems="center"
                 justifyContent="space-between"
-                spacing={1}
-                sx={{ mb: 2 }}
+                spacing={1.5}
+                sx={{ mb: 3 }}
               >
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <Typography
@@ -1333,13 +1478,14 @@ export default function RazorpayTestPage() {
                     sx={{
                       fontFamily: HEADING_FONT,
                       fontWeight: 500,
-                      fontSize: { xs: "1.35rem", sm: "1.5rem" },
+                      fontSize: { xs: "1.4rem", sm: "1.65rem" },
                       color: "#1f2a44",
+                      lineHeight: 1.2,
                     }}
                   >
                     {form.title}
                   </Typography>
-                  <FavoriteBorderIcon sx={{ color: "#ff6b6b", fontSize: 26 }} />
+                  <FavoriteBorderIcon sx={{ color: "#ff6b6b", fontSize: 24, opacity: 0.9 }} />
                 </Stack>
                 <Button
                   onClick={toggleLanguage}
@@ -1352,10 +1498,10 @@ export default function RazorpayTestPage() {
                     fontWeight: 600,
                     fontSize: "0.78rem",
                     borderRadius: "999px",
-                    borderColor: "rgba(31, 42, 68, 0.18)",
+                    borderColor: "rgba(31, 42, 68, 0.14)",
                     color: "#1f2a44",
                     px: 1.5,
-                    py: 0.5,
+                    py: 0.55,
                     "&:hover": {
                       borderColor: brandGreen,
                       backgroundColor: "rgba(79, 169, 83, 0.06)",
@@ -1366,733 +1512,875 @@ export default function RazorpayTestPage() {
                 </Button>
               </Stack>
 
-              {!keyId && (
-                <Alert severity="warning" sx={{ mb: 2 }}>
-                  {form.missingKey}
-                </Alert>
-              )}
+              <Stack spacing={2.75}>
+                {!keyId && (
+                  <Alert severity="warning" sx={{ borderRadius: "12px" }}>
+                    {form.missingKey}
+                  </Alert>
+                )}
 
-              {keyId && keyMode === "live" && process.env.NODE_ENV === "development" && (
-                <Alert severity="error" sx={{ mb: 2 }}>
-                  <Trans
-                    i18nKey="donationForm.liveKeyWarning"
-                    components={{
-                      1: <strong />,
-                      2: <Box component="code" />,
-                      3: <strong />,
-                      4: <Box component="code" />,
-                    }}
-                  />
-                </Alert>
-              )}
+                {keyId && keyMode === "live" && process.env.NODE_ENV === "development" && (
+                  <Alert severity="error" sx={{ borderRadius: "12px" }}>
+                    <Trans
+                      i18nKey="donationForm.liveKeyWarning"
+                      components={{
+                        1: <strong />,
+                        2: <Box component="code" />,
+                        3: <strong />,
+                        4: <Box component="code" />,
+                      }}
+                    />
+                  </Alert>
+                )}
 
-              {amountClamped && !programFromUrl && (
-                <Alert severity="info" sx={{ mb: 2 }}>
-                  {form.amountAdjusted}
-                </Alert>
-              )}
+                {amountClamped && !programFromUrl && (
+                  <Alert severity="info" sx={{ borderRadius: "12px" }}>
+                    {form.amountAdjusted}
+                  </Alert>
+                )}
 
-              {programFromUrl &&
-                amountCheck.ok &&
-                amountCheck.valueInr === programFromUrl.amountInr && (
-                  <Alert severity="info" sx={{ mb: 2 }}>
+                {programFromUrl &&
+                  amountCheck.ok &&
+                  amountCheck.valueInr === programFromUrl.amountInr && (
+                    <Alert severity="info" sx={{ borderRadius: "12px" }}>
+                      <Trans
+                        i18nKey="donationForm.amountPrefilled"
+                        values={{
+                          label: programFromUrl.label,
+                          amount: programFromUrl.amountInr.toLocaleString("en-IN"),
+                        }}
+                        components={{ 1: <strong /> }}
+                      />
+                    </Alert>
+                  )}
+
+                {!programFromUrl && amountCheck.ok && hasCheckoutEntrySource(location) && (
+                  <Alert severity="info" sx={{ borderRadius: "12px" }}>
                     <Trans
                       i18nKey="donationForm.amountPrefilled"
                       values={{
-                        label: programFromUrl.label,
-                        amount: programFromUrl.amountInr.toLocaleString("en-IN"),
+                        label: resolvedProgramLabel,
+                        amount: amountCheck.valueInr.toLocaleString("en-IN"),
                       }}
                       components={{ 1: <strong /> }}
                     />
                   </Alert>
                 )}
 
-              {isMembershipMode && (
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: 1.5,
-                    p: { xs: 1.5, sm: 1.75 },
-                    mb: 2,
-                    borderRadius: "12px",
-                    backgroundColor: "rgba(79, 169, 83, 0.08)",
-                    border: "1px solid rgba(79, 169, 83, 0.22)",
-                  }}
-                >
-                  <Box>
-                    <Typography sx={{ fontWeight: 800, color: "#1f2a44", fontSize: "1rem" }}>
-                      {t("donationForm.membership.titleSuffix", { tier: membershipTierLabel })}
-                    </Typography>
-                    <Typography sx={{ color: formTextMuted, fontSize: "0.8rem", fontWeight: 600 }}>
-                      {membershipFrequency === "yearly"
-                        ? t("donationForm.membership.billedYearly")
-                        : t("donationForm.membership.billedMonthly")}
-                    </Typography>
-                  </Box>
-                  <Typography
-                    sx={{ fontWeight: 900, color: brandGreen, fontSize: "1.3rem", flexShrink: 0 }}
-                  >
-                    ₹{membershipAmountInr.toLocaleString("en-IN")}
-                    <Typography component="span" sx={{ fontSize: "0.75rem", fontWeight: 700 }}>
-                      /
-                      {membershipFrequency === "yearly"
-                        ? t("donationForm.membership.perYearShort")
-                        : t("donationForm.membership.perMonthShort")}
-                    </Typography>
-                  </Typography>
-                </Box>
-              )}
-
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1.25,
-                  p: { xs: 1.25, sm: 1.35 },
-                  mb: 1.5,
-                  borderRadius: "12px",
-                  background:
-                    "linear-gradient(90deg, rgba(255, 243, 224, 0.95) 0%, rgba(255, 251, 245, 0.9) 100%)",
-                  borderTop: `1px solid ${accentOrange}66`,
-                  borderBottom: `1px solid ${accentOrange}66`,
-                }}
-              >
-                <Typography
-                  component="span"
-                  sx={{ fontSize: "1.35rem", lineHeight: 1, flexShrink: 0 }}
-                >
-                  🪔
-                </Typography>
-                <Typography
-                  variant="body2"
-                  sx={{ color: formTextPrimary, lineHeight: 1.55, fontWeight: 500 }}
-                >
-                  <Trans
-                    i18nKey="donationForm.shubhDanMessage"
-                    components={{
-                      1: <Box component="span" sx={{ color: payOrange, fontWeight: 600 }} />,
-                    }}
-                  />
-                </Typography>
-              </Box>
-
-              {!isMembershipMode && (
-                <>
-                  <Typography
-                    variant="subtitle1"
-                    sx={{
-                      fontFamily: HEADING_FONT,
-                      fontWeight: 500,
-                      fontSize: { xs: "1rem", sm: "1.1rem" },
-                      color: "#1f2a44",
-                      mb: 1.5,
-                    }}
-                  >
-                    {form.selectAmountTitle}
-                  </Typography>
-
-                  <Stack direction="row" flexWrap="wrap" useFlexGap sx={{ gap: 1.1, mb: 1.5 }}>
-                    {PRESET_AMOUNTS.map((amt) => {
-                      const active = selectedPreset === amt && amountInr === String(amt);
-                      return (
-                        <Box
-                          key={amt}
-                          sx={{ position: "relative", flex: "1 1 88px", minWidth: 72 }}
-                        >
-                          {amt === MOST_CHOSEN_AMOUNT && (
-                            <Box
-                              sx={{
-                                position: "absolute",
-                                top: -11,
-                                left: "50%",
-                                transform: "translateX(-50%)",
-                                backgroundColor: "#eaf7ea",
-                                color: brandGreen,
-                                border: "1px solid rgba(46, 125, 50, 0.28)",
-                                px: 1,
-                                py: 0.25,
-                                borderRadius: "999px",
-                                fontSize: "0.62rem",
-                                fontWeight: 800,
-                                whiteSpace: "nowrap",
-                                zIndex: 1,
-                              }}
-                            >
-                              {form.mostPopular}
-                            </Box>
-                          )}
-                          <MKButton
-                            fullWidth
-                            variant="outlined"
-                            onClick={() => onSelectPreset(amt)}
-                            sx={{
-                              py: 1.1,
-                              borderRadius: "10px",
-                              fontWeight: 800,
-                              borderWidth: active ? 2 : 1,
-                              borderColor: active ? brandGreen : "rgba(31,42,68,0.18)",
-                              color: active ? brandGreen : "#24324f",
-                              backgroundColor: active ? "rgba(79, 169, 83, 0.06)" : "#fff",
-                              "&:hover": {
-                                borderColor: brandGreen,
-                                backgroundColor: "rgba(79, 169, 83, 0.08)",
-                              },
-                            }}
-                          >
-                            ₹{amt.toLocaleString("en-IN")}
-                          </MKButton>
-                        </Box>
-                      );
-                    })}
-                  </Stack>
-
+                {isMembershipMode && (
                   <Box
                     sx={{
                       display: "flex",
                       alignItems: "center",
-                      my: 1.35,
-                      gap: { xs: 1.25, sm: 1.75 },
-                      width: "100%",
+                      justifyContent: "space-between",
+                      gap: 1.5,
+                      p: { xs: 1.75, sm: 2 },
+                      borderRadius: "14px",
+                      backgroundColor: "rgba(79, 169, 83, 0.07)",
+                      border: "1px solid rgba(79, 169, 83, 0.18)",
                     }}
                   >
-                    <Box
-                      component="span"
-                      aria-hidden
-                      sx={{
-                        flex: 1,
-                        height: "1px",
-                        minWidth: 0,
-                        bgcolor: "rgba(31, 42, 68, 0.22)",
-                      }}
-                    />
+                    <Box>
+                      <Typography sx={{ fontWeight: 800, color: "#1f2a44", fontSize: "1rem" }}>
+                        {t("donationForm.membership.titleSuffix", { tier: membershipTierLabel })}
+                      </Typography>
+                      <Typography
+                        sx={{ color: formTextMuted, fontSize: "0.8rem", fontWeight: 600 }}
+                      >
+                        {membershipFrequency === "yearly"
+                          ? t("donationForm.membership.billedYearly")
+                          : t("donationForm.membership.billedMonthly")}
+                      </Typography>
+                    </Box>
                     <Typography
-                      variant="body2"
-                      component="span"
+                      sx={{ fontWeight: 900, color: brandGreen, fontSize: "1.3rem", flexShrink: 0 }}
+                    >
+                      ₹{membershipAmountInr.toLocaleString("en-IN")}
+                      <Typography component="span" sx={{ fontSize: "0.75rem", fontWeight: 700 }}>
+                        /
+                        {membershipFrequency === "yearly"
+                          ? t("donationForm.membership.perYearShort")
+                          : t("donationForm.membership.perMonthShort")}
+                      </Typography>
+                    </Typography>
+                  </Box>
+                )}
+
+                {/* Amount */}
+                {!isMembershipMode && (
+                  <Box>
+                    <FormStepTitle step={1}>
+                      {form.sectionAmount || form.selectAmountTitle}
+                    </FormStepTitle>
+
+                    <Box
                       sx={{
-                        flexShrink: 0,
-                        fontWeight: 700,
-                        letterSpacing: "0.08em",
-                        color: formTextPrimary,
-                        fontSize: "0.8125rem",
-                        lineHeight: 1,
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: 1.25,
+                        mb: 2,
+                        p: { xs: 1.5, sm: 1.75 },
+                        borderRadius: "12px",
+                        backgroundColor: "#FFF8F0",
+                        border: "1px solid #FBE7D1",
                       }}
                     >
-                      {form.orDivider}
-                    </Typography>
+                      <DiyaIcon sx={{ mt: 0.15 }} />
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: "#7D4F2A",
+                          lineHeight: 1.55,
+                          fontWeight: 500,
+                          fontSize: "0.8125rem",
+                          m: 0,
+                        }}
+                      >
+                        <Trans
+                          i18nKey="donationForm.shubhDanMessage"
+                          components={{
+                            1: <Box component="span" sx={{ color: payOrange, fontWeight: 700 }} />,
+                          }}
+                        />
+                      </Typography>
+                    </Box>
+
                     <Box
-                      component="span"
-                      aria-hidden
                       sx={{
-                        flex: 1,
-                        height: "1px",
-                        minWidth: 0,
-                        bgcolor: "rgba(31, 42, 68, 0.22)",
+                        display: "flex",
+                        flexDirection: { xs: "column", md: "row" },
+                        alignItems: { xs: "stretch", md: "center" },
+                        gap: { xs: 1.5, md: 1.75 },
                       }}
+                    >
+                      <Stack
+                        direction="row"
+                        flexWrap="wrap"
+                        useFlexGap
+                        sx={{ gap: 1.1, flex: "1 1 auto", minWidth: 0 }}
+                      >
+                        {PRESET_AMOUNTS.map((amt) => {
+                          const active = selectedPreset === amt && amountInr === String(amt);
+                          return (
+                            <Box
+                              key={amt}
+                              sx={{ position: "relative", flex: "1 1 88px", minWidth: 76 }}
+                            >
+                              {amt === MOST_CHOSEN_AMOUNT && (
+                                <Box
+                                  sx={{
+                                    position: "absolute",
+                                    top: -10,
+                                    left: "50%",
+                                    transform: "translateX(-50%)",
+                                    backgroundColor: brandGreen,
+                                    color: "#fff",
+                                    px: 1,
+                                    py: 0.2,
+                                    borderRadius: "999px",
+                                    fontSize: "0.62rem",
+                                    fontWeight: 800,
+                                    whiteSpace: "nowrap",
+                                    zIndex: 1,
+                                    boxShadow: "0 4px 10px rgba(46, 125, 50, 0.25)",
+                                  }}
+                                >
+                                  {form.mostPopular}
+                                </Box>
+                              )}
+                              <MKButton
+                                fullWidth
+                                variant="outlined"
+                                onClick={() => onSelectPreset(amt)}
+                                sx={{
+                                  py: 1.25,
+                                  borderRadius: "12px",
+                                  fontWeight: 700,
+                                  fontSize: "0.9rem",
+                                  borderWidth: active ? 2 : 1,
+                                  borderColor: active ? brandGreen : "rgba(31,42,68,0.12)",
+                                  color: active ? brandGreen : "#24324f",
+                                  backgroundColor: active ? "rgba(79, 169, 83, 0.1)" : "#fff",
+                                  boxShadow: active
+                                    ? "0 8px 20px rgba(46, 125, 50, 0.14)"
+                                    : "0 1px 2px rgba(31, 42, 68, 0.04)",
+                                  transition:
+                                    "border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease",
+                                  "&:hover": {
+                                    borderColor: brandGreen,
+                                    backgroundColor: "rgba(79, 169, 83, 0.08)",
+                                  },
+                                }}
+                              >
+                                ₹{amt.toLocaleString("en-IN")}
+                              </MKButton>
+                            </Box>
+                          );
+                        })}
+                      </Stack>
+
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: { xs: "row", md: "column" },
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: 0.75,
+                          flexShrink: 0,
+                          alignSelf: { xs: "stretch", md: "center" },
+                          py: { md: 0.5 },
+                        }}
+                      >
+                        <Box
+                          component="span"
+                          aria-hidden
+                          sx={{
+                            flex: { xs: 1, md: "none" },
+                            width: { md: "1px" },
+                            height: { xs: "1px", md: 18 },
+                            bgcolor: "rgba(31, 42, 68, 0.12)",
+                          }}
+                        />
+                        <Typography
+                          variant="body2"
+                          component="span"
+                          sx={{
+                            flexShrink: 0,
+                            fontWeight: 700,
+                            letterSpacing: "0.08em",
+                            color: "rgba(31, 42, 68, 0.45)",
+                            fontSize: "0.7rem",
+                            lineHeight: 1,
+                          }}
+                        >
+                          {form.orDivider}
+                        </Typography>
+                        <Box
+                          component="span"
+                          aria-hidden
+                          sx={{
+                            flex: { xs: 1, md: "none" },
+                            width: { md: "1px" },
+                            height: { xs: "1px", md: 18 },
+                            bgcolor: "rgba(31, 42, 68, 0.12)",
+                          }}
+                        />
+                      </Box>
+
+                      <TextField
+                        size="small"
+                        label={form.customAmountLabel}
+                        placeholder={form.customAmountPlaceholder}
+                        value={amountInr}
+                        onChange={onCustomAmountChange}
+                        onBlur={markTouched("amount")}
+                        error={showError("amount", amountCheck)}
+                        helperText={
+                          showError("amount", amountCheck) ? fieldHelper(amountCheck) : " "
+                        }
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <Typography
+                                sx={{
+                                  fontWeight: 700,
+                                  color: formTextMuted,
+                                  fontSize: formInputFontSize,
+                                }}
+                              >
+                                ₹
+                              </Typography>
+                            </InputAdornment>
+                          ),
+                          inputProps: { inputMode: "numeric", maxLength: 7, pattern: "[0-9]*" },
+                        }}
+                        sx={{
+                          ...formFieldSx,
+                          flex: { xs: "1 1 auto", md: "0 0 180px" },
+                          minWidth: { md: 160 },
+                          maxWidth: { md: 200 },
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                )}
+
+                {/* Donor details */}
+                <Box>
+                  <FormStepTitle step={isMembershipMode ? 1 : 2}>
+                    {form.sectionYourDetails || "Your Details"}
+                  </FormStepTitle>
+                  <Grid container spacing={formGridSpacing} alignItems="flex-start">
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        size="small"
+                        required
+                        label={form.fullNameLabel}
+                        placeholder={form.fullNamePlaceholder}
+                        value={name}
+                        onChange={(e) => setName(sanitizeText(e.target.value, NAME_MAX))}
+                        onBlur={markTouched("name")}
+                        error={showError("name", nameCheck)}
+                        helperText={showError("name", nameCheck) ? fieldHelper(nameCheck) : " "}
+                        sx={formFieldSx}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <PersonOutlineIcon sx={formIconSx} />
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        size="small"
+                        required
+                        label={form.mobileLabel}
+                        placeholder={form.mobilePlaceholder}
+                        value={contact}
+                        onChange={(e) =>
+                          setContact(e.target.value.replace(/\D/g, "").slice(0, PHONE_LEN))
+                        }
+                        onBlur={markTouched("contact")}
+                        error={showError("contact", contactCheck)}
+                        helperText={
+                          showError("contact", contactCheck) ? fieldHelper(contactCheck) : " "
+                        }
+                        sx={formFieldSx}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <PhoneIphoneOutlinedIcon sx={formIconSx} />
+                            </InputAdornment>
+                          ),
+                          inputProps: { inputMode: "tel", maxLength: PHONE_LEN },
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        size="small"
+                        required
+                        label={form.emailLabel}
+                        placeholder={form.emailPlaceholder}
+                        value={email}
+                        onChange={(e) => setEmail(sanitizeText(e.target.value, EMAIL_MAX))}
+                        onBlur={markTouched("email")}
+                        error={showError("email", emailCheck)}
+                        helperText={showError("email", emailCheck) ? fieldHelper(emailCheck) : " "}
+                        sx={formFieldSx}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <EmailOutlinedIcon sx={formIconSx} />
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        size="small"
+                        required
+                        label={form.fatherHusbandLabel}
+                        placeholder={form.fatherHusbandPlaceholder}
+                        value={fatherOrHusbandName}
+                        onChange={(e) =>
+                          setFatherOrHusbandName(sanitizeText(e.target.value, NAME_MAX))
+                        }
+                        onBlur={markTouched("fatherOrHusbandName")}
+                        error={showError("fatherOrHusbandName", fatherOrHusbandNameCheck)}
+                        helperText={
+                          showError("fatherOrHusbandName", fatherOrHusbandNameCheck)
+                            ? fieldHelper(fatherOrHusbandNameCheck)
+                            : " "
+                        }
+                        sx={formFieldSx}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <ContactEmergencyOutlinedIcon sx={formIconSx} />
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        size="small"
+                        label={form.panLabel}
+                        placeholder={form.panPlaceholder}
+                        value={pan}
+                        onChange={(e) =>
+                          setPan(
+                            sanitizeText(e.target.value, PAN_LEN)
+                              .toUpperCase()
+                              .replace(/[^A-Z0-9]/g, "")
+                          )
+                        }
+                        onBlur={markTouched("pan")}
+                        error={showError("pan", panCheck)}
+                        helperText={
+                          showError("pan", panCheck)
+                            ? fieldHelper(panCheck)
+                            : pan.trim()
+                            ? " "
+                            : form.panExemptionNote
+                        }
+                        FormHelperTextProps={
+                          showError("pan", panCheck) || pan.trim()
+                            ? undefined
+                            : {
+                                component: "p",
+                                sx: {
+                                  color: "#d32f2f",
+                                  mt: 0.5,
+                                  mb: 0,
+                                  mx: 0,
+                                  width: "100%",
+                                  maxWidth: "100%",
+                                  display: "block",
+                                  textAlign: "left",
+                                  lineHeight: 1.45,
+                                  fontSize: { xs: "0.72rem", sm: "0.75rem" },
+                                  fontWeight: 500,
+                                },
+                              }
+                        }
+                        sx={{
+                          ...formFieldSx,
+                          "& .MuiFormHelperText-root": {
+                            minHeight: "unset",
+                            whiteSpace: "normal",
+                            marginLeft: 0,
+                            marginRight: 0,
+                            width: "100%",
+                            maxWidth: "100%",
+                            boxSizing: "border-box",
+                          },
+                        }}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <BadgeOutlinedIcon sx={formIconSx} />
+                            </InputAdornment>
+                          ),
+                          inputProps: { maxLength: PAN_LEN },
+                        }}
+                      />
+                    </Grid>
+                  </Grid>
+                </Box>
+
+                {/* Address + Purpose */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: { xs: "column", md: "row" },
+                    alignItems: "flex-start",
+                    gap: { xs: 2.5, md: 2.5 },
+                    width: "100%",
+                  }}
+                >
+                  <Box sx={{ flex: { md: "1 1 58%" }, minWidth: 0, width: "100%" }}>
+                    <FormStepTitle step={isMembershipMode ? 2 : 3}>
+                      {form.sectionAddress || "Address"}
+                    </FormStepTitle>
+                    <Grid container spacing={formGridSpacing} alignItems="flex-start">
+                      <Grid item xs={12}>
+                        <TextField
+                          fullWidth
+                          size="small"
+                          required
+                          label={form.addressLabel}
+                          placeholder={form.addressPlaceholder}
+                          value={address}
+                          onChange={(e) => setAddress(sanitizeText(e.target.value, ADDRESS_MAX))}
+                          onBlur={markTouched("address")}
+                          error={showError("address", addressCheck)}
+                          helperText={
+                            showError("address", addressCheck) ? fieldHelper(addressCheck) : " "
+                          }
+                          sx={formFieldSx}
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <LocationOnOutlinedIcon sx={formIconSx} />
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={4} sx={{ display: "flex", flexDirection: "column" }}>
+                        <Autocomplete
+                          fullWidth
+                          size="small"
+                          sx={autocompleteFieldSx}
+                          options={INDIAN_STATES}
+                          value={stateSel || null}
+                          onChange={(_, value) => {
+                            setStateSel(value || "");
+                            setCitySel("");
+                          }}
+                          onBlur={markTouched("state")}
+                          isOptionEqualToValue={(opt, val) => opt === val}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              size="small"
+                              required
+                              label={form.stateLabel}
+                              placeholder={form.statePlaceholder}
+                              onBlur={(e) => {
+                                params.inputProps.onBlur?.(e);
+                                markTouched("state")();
+                              }}
+                              error={showError("state", stateCheck)}
+                              helperText={
+                                showError("state", stateCheck) ? fieldHelper(stateCheck) : " "
+                              }
+                              sx={formFieldSx}
+                              InputProps={{
+                                ...params.InputProps,
+                                startAdornment: (
+                                  <>
+                                    <InputAdornment position="start">
+                                      <MapOutlinedIcon sx={formIconSx} />
+                                    </InputAdornment>
+                                    {params.InputProps.startAdornment}
+                                  </>
+                                ),
+                              }}
+                            />
+                          )}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={4} sx={{ display: "flex", flexDirection: "column" }}>
+                        <Autocomplete
+                          freeSolo
+                          fullWidth
+                          size="small"
+                          sx={autocompleteFieldSx}
+                          disabled={!stateSel}
+                          options={cityOptions}
+                          value={citySel}
+                          inputValue={citySel}
+                          onInputChange={(_, value) => setCitySel(value)}
+                          onChange={(_, value) => setCitySel(value || "")}
+                          onBlur={markTouched("city")}
+                          filterOptions={(opts, { inputValue }) => {
+                            const q = inputValue.trim().toLowerCase();
+                            if (!q) return opts;
+                            return opts.filter((c) => c.toLowerCase().includes(q));
+                          }}
+                          noOptionsText={stateSel ? form.cityNoOptions : form.citySelectStateFirst}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              size="small"
+                              required
+                              label={form.cityLabel}
+                              placeholder={
+                                stateSel ? form.cityPlaceholder : form.cityPlaceholderNoState
+                              }
+                              onBlur={(e) => {
+                                params.inputProps.onBlur?.(e);
+                                markTouched("city")();
+                              }}
+                              error={showError("city", cityCheck)}
+                              helperText={
+                                showError("city", cityCheck) ? fieldHelper(cityCheck) : " "
+                              }
+                              sx={formFieldSx}
+                              InputProps={{
+                                ...params.InputProps,
+                                startAdornment: (
+                                  <>
+                                    <InputAdornment position="start">
+                                      <LocationCityOutlinedIcon sx={formIconSx} />
+                                    </InputAdornment>
+                                    {params.InputProps.startAdornment}
+                                  </>
+                                ),
+                              }}
+                            />
+                          )}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={4} sx={{ display: "flex", flexDirection: "column" }}>
+                        <TextField
+                          fullWidth
+                          size="small"
+                          required
+                          label={form.pinLabel}
+                          placeholder={form.pinPlaceholder}
+                          value={pin}
+                          onChange={(e) => setPin(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                          onBlur={markTouched("pin")}
+                          error={showError("pin", pinCheck)}
+                          helperText={showError("pin", pinCheck) ? fieldHelper(pinCheck) : " "}
+                          sx={formFieldSx}
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <LocationOnOutlinedIcon sx={formIconSx} />
+                              </InputAdornment>
+                            ),
+                            inputProps: { inputMode: "numeric", maxLength: 6 },
+                          }}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Box>
+
+                  <Box sx={{ flex: { md: "1 1 42%" }, minWidth: 0, width: "100%" }}>
+                    <FormStepTitle step={isMembershipMode ? 3 : 4}>
+                      {form.sectionPurpose || form.purposeLabel}
+                    </FormStepTitle>
+                    <Autocomplete
+                      freeSolo
+                      fullWidth
+                      size="small"
+                      sx={autocompleteFieldSx}
+                      options={resolvedProgramLabel ? [resolvedProgramLabel] : []}
+                      value={purposeText}
+                      onChange={(_, value) => setPurposeText(sanitizeText(value || "", NOTE_MAX))}
+                      onInputChange={(_, value) =>
+                        setPurposeText(sanitizeText(value || "", NOTE_MAX))
+                      }
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          size="small"
+                          label={form.purposeLabel}
+                          placeholder={form.purposePlaceholder}
+                          sx={formFieldSx}
+                          InputProps={{
+                            ...params.InputProps,
+                            startAdornment: (
+                              <>
+                                <InputAdornment position="start">
+                                  <FavoriteBorderIcon sx={formIconSx} />
+                                </InputAdornment>
+                                {params.InputProps.startAdornment}
+                              </>
+                            ),
+                          }}
+                        />
+                      )}
+                    />
+                  </Box>
+                </Box>
+
+                {/* Domestic donations notice — full width of form column */}
+                <Box
+                  sx={{
+                    width: "100%",
+                    boxSizing: "border-box",
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: 1.25,
+                    p: { xs: 1.5, sm: 1.75 },
+                    borderRadius: "12px",
+                    backgroundColor: "#FFF8F0",
+                    border: "1px solid #FBE7D1",
+                  }}
+                >
+                  <InfoOutlinedIcon
+                    sx={{ fontSize: 22, color: "#1976d2", flexShrink: 0, mt: 0.15 }}
+                    aria-hidden
+                  />
+                  <Box sx={{ minWidth: 0, flex: 1, textAlign: "left" }}>
+                    <Typography
+                      sx={{
+                        fontWeight: 700,
+                        color: "#1f2a44",
+                        fontSize: "0.875rem",
+                        lineHeight: 1.4,
+                        mb: 0.35,
+                      }}
+                    >
+                      {form.domesticDonationsOnlyTitle || "Domestic donations only."}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        color: "#5a6b82",
+                        fontSize: "0.8rem",
+                        fontWeight: 500,
+                        lineHeight: 1.55,
+                      }}
+                    >
+                      {form.domesticDonationsOnlyBody}
+                    </Typography>
+                  </Box>
+                </Box>
+
+                {/* Consent + pay */}
+                <Box
+                  sx={{
+                    position: { xs: "sticky", md: "static" },
+                    bottom: 0,
+                    zIndex: 2,
+                    width: "100%",
+                    mx: { xs: -0.5, sm: 0 },
+                    px: { xs: 0.5, sm: 0 },
+                    pt: { xs: 1, md: 0 },
+                    pb: { xs: 0.5, md: 0 },
+                    background: {
+                      xs: "linear-gradient(180deg, rgba(255,255,255,0) 0%, #fff 18%)",
+                      md: "transparent",
+                    },
+                  }}
+                >
+                  <FormStepTitle step={isMembershipMode ? 4 : 5} sx={{ mb: 1.25 }}>
+                    {form.sectionConsent || "Confirm & Proceed"}
+                  </FormStepTitle>
+                  <Box sx={{ width: "100%" }}>
+                    <ExpandableTermsCheckbox
+                      checked={privacyAccepted}
+                      onChange={(e) => setPrivacyAccepted(e.target.checked)}
+                      summary={form.privacyConsentSummary}
+                      details={
+                        <Trans
+                          i18nKey="donationForm.privacyConsentDetails"
+                          components={policyLinkComponents}
+                        />
+                      }
                     />
                   </Box>
 
-                  <TextField
-                    fullWidth
-                    size="small"
-                    label={form.customAmountLabel}
-                    placeholder={form.customAmountPlaceholder}
-                    value={amountInr}
-                    onChange={onCustomAmountChange}
-                    onBlur={markTouched("amount")}
-                    error={showError("amount", amountCheck)}
-                    helperText={showError("amount", amountCheck) ? fieldHelper(amountCheck) : " "}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <Typography
-                            sx={{
-                              fontWeight: 700,
-                              color: formTextMuted,
-                              fontSize: formInputFontSize,
-                            }}
-                          >
-                            ₹
-                          </Typography>
-                        </InputAdornment>
-                      ),
-                      inputProps: { inputMode: "numeric", maxLength: 7, pattern: "[0-9]*" },
-                    }}
-                    sx={{ mb: 1, ...formFieldSx }}
-                  />
-                </>
-              )}
+                  {apiSetupWarning && (
+                    <Alert severity="warning" sx={{ mt: 2, borderRadius: "12px", width: "100%" }}>
+                      {apiSetupWarning}
+                    </Alert>
+                  )}
 
-              <Grid container spacing={formGridSpacing} alignItems="flex-start">
-                <Grid item xs={12} sm={6}>
-                  <TextField
+                  {error && (
+                    <Alert severity="error" sx={{ mt: 2, borderRadius: "12px", width: "100%" }}>
+                      {error}
+                    </Alert>
+                  )}
+
+                  <MKButton
                     fullWidth
-                    size="small"
-                    required
-                    label={form.fullNameLabel}
-                    placeholder={form.fullNamePlaceholder}
-                    value={name}
-                    onChange={(e) => setName(sanitizeText(e.target.value, NAME_MAX))}
-                    onBlur={markTouched("name")}
-                    error={showError("name", nameCheck)}
-                    helperText={showError("name", nameCheck) ? fieldHelper(nameCheck) : " "}
-                    sx={formFieldSx}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <PersonOutlineIcon sx={formIconSx} />
-                        </InputAdornment>
-                      ),
+                    variant="contained"
+                    onClick={startPayment}
+                    disabled={paymentBusy || !keyId || !formValid}
+                    sx={{
+                      mt: 2.5,
+                      py: 1.8,
+                      borderRadius: "14px",
+                      fontWeight: 800,
+                      fontSize: { xs: "0.98rem", sm: "1.05rem" },
+                      letterSpacing: "0.02em",
+                      textTransform: "none",
+                      background: `linear-gradient(90deg, ${payOrange} 0%, #d35400 100%)`,
+                      boxShadow: "0 12px 30px rgba(230, 126, 34, 0.32)",
+                      color: "#fff !important",
+                      "&:hover": {
+                        background: `linear-gradient(90deg, #f39c12 0%, ${payOrange} 100%)`,
+                        boxShadow: "0 14px 34px rgba(230, 126, 34, 0.4)",
+                      },
+                      "&.Mui-disabled": { color: "rgba(255,255,255,0.7) !important" },
                     }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    size="small"
-                    required
-                    label={form.mobileLabel}
-                    placeholder={form.mobilePlaceholder}
-                    value={contact}
-                    onChange={(e) =>
-                      setContact(e.target.value.replace(/\D/g, "").slice(0, PHONE_LEN))
-                    }
-                    onBlur={markTouched("contact")}
-                    error={showError("contact", contactCheck)}
-                    helperText={
-                      showError("contact", contactCheck) ? fieldHelper(contactCheck) : " "
-                    }
-                    sx={formFieldSx}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <PhoneIphoneOutlinedIcon sx={formIconSx} />
-                        </InputAdornment>
-                      ),
-                      inputProps: { inputMode: "tel", maxLength: PHONE_LEN },
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    size="small"
-                    required
-                    label={form.emailLabel}
-                    placeholder={form.emailPlaceholder}
-                    value={email}
-                    onChange={(e) => setEmail(sanitizeText(e.target.value, EMAIL_MAX))}
-                    onBlur={markTouched("email")}
-                    error={showError("email", emailCheck)}
-                    helperText={showError("email", emailCheck) ? fieldHelper(emailCheck) : " "}
-                    sx={formFieldSx}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <EmailOutlinedIcon sx={formIconSx} />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    size="small"
-                    required
-                    label={form.fatherHusbandLabel}
-                    placeholder={form.fatherHusbandPlaceholder}
-                    value={fatherOrHusbandName}
-                    onChange={(e) => setFatherOrHusbandName(sanitizeText(e.target.value, NAME_MAX))}
-                    onBlur={markTouched("fatherOrHusbandName")}
-                    error={showError("fatherOrHusbandName", fatherOrHusbandNameCheck)}
-                    helperText={
-                      showError("fatherOrHusbandName", fatherOrHusbandNameCheck)
-                        ? fieldHelper(fatherOrHusbandNameCheck)
-                        : " "
-                    }
-                    sx={formFieldSx}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <ContactEmergencyOutlinedIcon sx={formIconSx} />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sx={{ mb: { xs: 1.5, sm: 2 } }}>
-                  <TextField
-                    fullWidth
-                    size="small"
-                    label={form.panLabel}
-                    placeholder={form.panPlaceholder}
-                    value={pan}
-                    onChange={(e) =>
-                      setPan(
-                        sanitizeText(e.target.value, PAN_LEN)
-                          .toUpperCase()
-                          .replace(/[^A-Z0-9]/g, "")
+                    startIcon={
+                      paymentBusy ? (
+                        <CircularProgress size={20} color="inherit" />
+                      ) : (
+                        <LockOutlinedIcon />
                       )
                     }
-                    onBlur={markTouched("pan")}
-                    error={showError("pan", panCheck)}
-                    helperText={
-                      showError("pan", panCheck) ? fieldHelper(panCheck) : form.panExemptionNote
-                    }
-                    FormHelperTextProps={
-                      showError("pan", panCheck)
-                        ? undefined
-                        : {
-                            component: "p",
-                            sx: {
-                              color: "#c62828",
-                              mt: 0.75,
-                              mb: 0.5,
-                              mx: 0,
-                              px: 0,
-                              width: "100%",
-                              maxWidth: "100%",
-                              display: "block",
-                              textAlign: "justify",
-                              lineHeight: 1.55,
-                              fontSize: { xs: "0.72rem", sm: "0.78rem" },
-                              fontWeight: 500,
-                            },
-                          }
-                    }
-                    sx={{
-                      ...formFieldSx,
-                      "& .MuiFormHelperText-root": {
-                        minHeight: "unset",
-                        whiteSpace: "normal",
-                        marginLeft: 0,
-                        marginRight: 0,
-                        paddingLeft: { xs: 1.5, sm: 2 },
-                        paddingRight: { xs: 1.5, sm: 2 },
-                        width: "100%",
-                        maxWidth: "100%",
-                        boxSizing: "border-box",
-                      },
-                    }}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <BadgeOutlinedIcon sx={formIconSx} />
-                        </InputAdornment>
-                      ),
-                      inputProps: { maxLength: PAN_LEN },
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    size="small"
-                    required
-                    label={form.addressLabel}
-                    placeholder={form.addressPlaceholder}
-                    value={address}
-                    onChange={(e) => setAddress(sanitizeText(e.target.value, ADDRESS_MAX))}
-                    onBlur={markTouched("address")}
-                    error={showError("address", addressCheck)}
-                    helperText={
-                      showError("address", addressCheck) ? fieldHelper(addressCheck) : " "
-                    }
-                    sx={formFieldSx}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <LocationOnOutlinedIcon sx={formIconSx} />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={4} sx={{ display: "flex", flexDirection: "column" }}>
-                  <Autocomplete
-                    fullWidth
-                    size="small"
-                    sx={autocompleteFieldSx}
-                    options={INDIAN_STATES}
-                    value={stateSel || null}
-                    onChange={(_, value) => {
-                      setStateSel(value || "");
-                      setCitySel("");
-                    }}
-                    onBlur={markTouched("state")}
-                    isOptionEqualToValue={(opt, val) => opt === val}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        size="small"
-                        required
-                        label={form.stateLabel}
-                        placeholder={form.statePlaceholder}
-                        onBlur={(e) => {
-                          params.inputProps.onBlur?.(e);
-                          markTouched("state")();
-                        }}
-                        error={showError("state", stateCheck)}
-                        helperText={showError("state", stateCheck) ? fieldHelper(stateCheck) : " "}
-                        sx={formFieldSx}
-                        InputProps={{
-                          ...params.InputProps,
-                          startAdornment: (
-                            <>
-                              <InputAdornment position="start">
-                                <MapOutlinedIcon sx={formIconSx} />
-                              </InputAdornment>
-                              {params.InputProps.startAdornment}
-                            </>
-                          ),
-                        }}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={4} sx={{ display: "flex", flexDirection: "column" }}>
-                  <Autocomplete
-                    freeSolo
-                    fullWidth
-                    size="small"
-                    sx={autocompleteFieldSx}
-                    disabled={!stateSel}
-                    options={cityOptions}
-                    value={citySel}
-                    inputValue={citySel}
-                    onInputChange={(_, value) => setCitySel(value)}
-                    onChange={(_, value) => setCitySel(value || "")}
-                    onBlur={markTouched("city")}
-                    filterOptions={(opts, { inputValue }) => {
-                      const q = inputValue.trim().toLowerCase();
-                      if (!q) return opts;
-                      return opts.filter((c) => c.toLowerCase().includes(q));
-                    }}
-                    noOptionsText={stateSel ? form.cityNoOptions : form.citySelectStateFirst}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        size="small"
-                        required
-                        label={form.cityLabel}
-                        placeholder={stateSel ? form.cityPlaceholder : form.cityPlaceholderNoState}
-                        onBlur={(e) => {
-                          params.inputProps.onBlur?.(e);
-                          markTouched("city")();
-                        }}
-                        error={showError("city", cityCheck)}
-                        helperText={showError("city", cityCheck) ? fieldHelper(cityCheck) : " "}
-                        sx={formFieldSx}
-                        InputProps={{
-                          ...params.InputProps,
-                          startAdornment: (
-                            <>
-                              <InputAdornment position="start">
-                                <LocationCityOutlinedIcon sx={formIconSx} />
-                              </InputAdornment>
-                              {params.InputProps.startAdornment}
-                            </>
-                          ),
-                        }}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={4} sx={{ display: "flex", flexDirection: "column" }}>
-                  <TextField
-                    fullWidth
-                    size="small"
-                    required
-                    label={form.pinLabel}
-                    placeholder={form.pinPlaceholder}
-                    value={pin}
-                    onChange={(e) => setPin(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                    onBlur={markTouched("pin")}
-                    error={showError("pin", pinCheck)}
-                    helperText={showError("pin", pinCheck) ? fieldHelper(pinCheck) : " "}
-                    sx={formFieldSx}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <LocationOnOutlinedIcon sx={formIconSx} />
-                        </InputAdornment>
-                      ),
-                      inputProps: { inputMode: "numeric", maxLength: 6 },
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    size="small"
-                    label={form.purposeLabel}
-                    placeholder={form.purposePlaceholder}
-                    value={purposeText}
-                    onChange={(e) => setPurposeText(sanitizeText(e.target.value, NOTE_MAX))}
-                    sx={formFieldSx}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <CardGiftcardOutlinedIcon sx={formIconSx} />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
-              </Grid>
-
-              <Box
-                sx={{
-                  mt: { xs: 1.5, sm: 1.75 },
-                  pt: { xs: 1.5, sm: 1.75 },
-                  borderTop: "1px solid rgba(31, 42, 68, 0.09)",
-                }}
-              >
-                <ExpandableTermsCheckbox
-                  checked={privacyAccepted}
-                  onChange={(e) => setPrivacyAccepted(e.target.checked)}
-                  summary={form.privacyConsentSummary}
-                  details={
-                    <Trans
-                      i18nKey="donationForm.privacyConsentDetails"
-                      components={policyLinkComponents}
-                    />
-                  }
-                />
-                <ExpandableTermsCheckbox
-                  checked={declarationAccepted}
-                  onChange={(e) => setDeclarationAccepted(e.target.checked)}
-                  summary={form.donorDeclarationSummary}
-                  details={form.donorDeclarationDetails}
-                />
-              </Box>
-
-              {apiSetupWarning && (
-                <Alert severity="warning" sx={{ mt: 2 }}>
-                  {apiSetupWarning}
-                </Alert>
-              )}
-
-              {error && (
-                <Alert severity="error" sx={{ mt: 2 }}>
-                  {error}
-                </Alert>
-              )}
-
-              <MKButton
-                fullWidth
-                variant="contained"
-                onClick={startPayment}
-                disabled={paymentBusy || !keyId || !formValid}
-                sx={{
-                  mt: 2,
-                  py: 1.55,
-                  borderRadius: "12px",
-                  fontWeight: 800,
-                  fontSize: "1rem",
-                  letterSpacing: "0.04em",
-                  textTransform: "none",
-                  background: `linear-gradient(90deg, ${payOrange} 0%, #d35400 100%)`,
-                  boxShadow: "0 12px 28px rgba(230, 126, 34, 0.35)",
-                  color: "#fff !important",
-                  "&:hover": {
-                    background: `linear-gradient(90deg, #f39c12 0%, ${payOrange} 100%)`,
-                    boxShadow: "0 14px 32px rgba(230, 126, 34, 0.42)",
-                  },
-                  "&.Mui-disabled": { color: "rgba(255,255,255,0.7) !important" },
-                }}
-                startIcon={
-                  paymentBusy ? (
-                    <CircularProgress size={20} color="inherit" />
-                  ) : (
-                    <LockOutlinedIcon />
-                  )
-                }
-              >
-                {paymentButtonLabel}
-              </MKButton>
-
-              <Box
-                component="footer"
-                aria-label="Secure payments powered by Razorpay"
-                sx={{
-                  mt: 1.25,
-                  pt: 0.5,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  width: "100%",
-                }}
-              >
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="center"
-                  flexWrap="wrap"
-                  useFlexGap
-                  sx={{ gap: 0.75, rowGap: 0.5 }}
-                >
-                  <Typography
-                    variant="body2"
-                    component="span"
-                    sx={{ color: formTextMuted, fontWeight: 500, fontSize: "0.8rem" }}
                   >
-                    {form.securePaymentsPoweredBy}
-                  </Typography>
-                  <Box
-                    component={RazorpayLogoLight}
-                    aria-label="Razorpay"
-                    sx={{
-                      height: { xs: 20, sm: 22 },
-                      width: "auto",
-                      display: "block",
-                      flexShrink: 0,
-                      bgcolor: "transparent",
-                      "& svg": {
-                        display: "block",
-                        height: "100%",
-                        width: "auto",
-                      },
-                    }}
-                  />
-                </Stack>
-              </Box>
+                    {paymentButtonLabel}
+                  </MKButton>
 
-              <Box
-                sx={{
-                  mt: 2,
-                  pt: 1.5,
-                  borderTop: "1px solid rgba(31, 42, 68, 0.06)",
-                  textAlign: "center",
-                }}
-              >
-                <Button
-                  type="button"
-                  onClick={requestLeaveCheckout}
-                  disabled={paymentBusy}
-                  variant="text"
-                  size="small"
-                  startIcon={<ChevronLeftIcon sx={{ fontSize: 17, opacity: 0.7 }} />}
-                  sx={{
-                    textTransform: "none",
-                    fontSize: "0.78rem",
-                    fontWeight: 600,
-                    color: "rgba(31, 42, 68, 0.5)",
-                    px: 1,
-                    py: 0.5,
-                    borderRadius: "8px",
-                    "&:hover": {
-                      backgroundColor: "rgba(31, 42, 68, 0.04)",
-                      color: "rgba(31, 42, 68, 0.72)",
-                    },
-                    "&.Mui-disabled": { color: "rgba(31, 42, 68, 0.28)" },
-                  }}
-                >
-                  {form.backToDonatePageLink}
-                </Button>
-              </Box>
+                  <Box
+                    component="footer"
+                    aria-label="Secure payments powered by Razorpay"
+                    sx={{
+                      mt: 1.75,
+                      pt: 0.25,
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      width: "100%",
+                    }}
+                  >
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      justifyContent="center"
+                      flexWrap="wrap"
+                      useFlexGap
+                      sx={{ gap: 0.75, rowGap: 0.5 }}
+                    >
+                      <Typography
+                        variant="body2"
+                        component="span"
+                        sx={{ color: formTextMuted, fontWeight: 500, fontSize: "0.8rem" }}
+                      >
+                        {form.securePaymentsPoweredBy}
+                      </Typography>
+                      <Box
+                        component={RazorpayLogoLight}
+                        aria-label="Razorpay"
+                        sx={{
+                          height: { xs: 20, sm: 22 },
+                          width: "auto",
+                          display: "block",
+                          flexShrink: 0,
+                          bgcolor: "transparent",
+                          "& svg": {
+                            display: "block",
+                            height: "100%",
+                            width: "auto",
+                          },
+                        }}
+                      />
+                    </Stack>
+                  </Box>
+
+                  <Box
+                    sx={{
+                      mt: 2.25,
+                      pt: 1.75,
+                      borderTop: "1px solid rgba(31, 42, 68, 0.06)",
+                      textAlign: "center",
+                    }}
+                  >
+                    <Button
+                      type="button"
+                      onClick={requestLeaveCheckout}
+                      disabled={paymentBusy}
+                      variant="text"
+                      size="small"
+                      startIcon={<ChevronLeftIcon sx={{ fontSize: 17, opacity: 0.7 }} />}
+                      sx={{
+                        textTransform: "none",
+                        fontSize: "0.78rem",
+                        fontWeight: 600,
+                        color: "rgba(31, 42, 68, 0.5)",
+                        px: 1,
+                        py: 0.5,
+                        borderRadius: "8px",
+                        "&:hover": {
+                          backgroundColor: "rgba(31, 42, 68, 0.04)",
+                          color: "rgba(31, 42, 68, 0.72)",
+                        },
+                        "&.Mui-disabled": { color: "rgba(31, 42, 68, 0.28)" },
+                      }}
+                    >
+                      {form.backToDonatePageLink}
+                    </Button>
+                  </Box>
+                </Box>
+              </Stack>
             </MKBox>
           </Grid>
         </Grid>
@@ -2165,12 +2453,7 @@ export default function RazorpayTestPage() {
         </Box>
       ) : null}
 
-      <Dialog
-        open={leaveDialogOpen}
-        onClose={() => setLeaveDialogOpen(false)}
-        maxWidth="xs"
-        fullWidth
-      >
+      <Dialog open={leaveDialogOpen} onClose={stayOnCheckout} maxWidth="xs" fullWidth>
         <DialogTitle sx={{ fontWeight: 800 }}>{form.cancelDonationTitle}</DialogTitle>
         <DialogContent>
           <DialogContentText sx={{ color: "rgba(31,42,68,0.78)" }}>
@@ -2178,10 +2461,7 @@ export default function RazorpayTestPage() {
           </DialogContentText>
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2.5 }}>
-          <Button
-            onClick={() => setLeaveDialogOpen(false)}
-            sx={{ textTransform: "none", fontWeight: 700 }}
-          >
+          <Button onClick={stayOnCheckout} sx={{ textTransform: "none", fontWeight: 700 }}>
             {form.cancelDonationStay}
           </Button>
           <Button

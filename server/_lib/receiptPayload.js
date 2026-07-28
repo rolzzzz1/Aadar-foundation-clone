@@ -1,4 +1,4 @@
-const { sanitizeText, NAME_MAX } = require("./donation");
+const { sanitizeText, NAME_MAX, formatGeneralDonationLabel } = require("./donation");
 
 function normalizePan(v) {
   return String(v || "")
@@ -41,12 +41,18 @@ function buildClientReceiptFromRazorpay({ payment, order, donorPan, locale }) {
       ? new Date(Number(payment.created_at) * 1000).toISOString()
       : new Date().toISOString();
 
+  const amountInr = Math.round(amountPaise / 100);
+  const programLabel =
+    sanitizeText(pickNote(notes, "purpose"), 120) || formatGeneralDonationLabel(amountInr);
+  const purpose =
+    sanitizeText(pickNote(notes, "note"), 240) || programLabel;
+
   return {
     ok: true,
     record: {
       status: "success",
       locale: locale === "hi" ? "hi" : "en",
-      amountInr: Math.round(amountPaise / 100),
+      amountInr,
       currency: payment.currency || "INR",
       donor: {
         name: sanitizeText(pickNote(notes, "donor_name"), NAME_MAX),
@@ -58,8 +64,8 @@ function buildClientReceiptFromRazorpay({ payment, order, donorPan, locale }) {
       paymentId: payment.id,
       orderId: payment.order_id || (order && order.id) || "",
       receiptNo: (order && order.receipt) || "",
-      purpose: sanitizeText(pickNote(notes, "note"), 240),
-      programLabel: sanitizeText(pickNote(notes, "purpose"), 120),
+      purpose,
+      programLabel,
       paidAt,
       verified: true,
       testMode:

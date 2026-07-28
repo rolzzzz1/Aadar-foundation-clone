@@ -41,11 +41,11 @@ const ALLOWED_NOTE_KEYS = Object.freeze([
 /** Server-enforced canonical prices. Keep in sync with src/utils/donation.js. */
 const PROGRAMS = Object.freeze({
   "donate-501": {
-    label: "Membership — ₹501",
+    label: "Membership Support — ₹501",
     amountInr: 501,
   },
   "donate-1001": {
-    label: "Donation — ₹1,001",
+    label: "General Donation — ₹1,001",
     amountInr: 1001,
   },
   "meal-sponsorship": {
@@ -53,14 +53,25 @@ const PROGRAMS = Object.freeze({
     amountInr: 1501,
   },
   "sponsor-prabhuji-month": {
-    label: "Sponsor a Prabhuji (1 month)",
+    label: "Sponsor a Prabhuji (1 month) — ₹3,001",
     amountInr: 3001,
   },
   "sponsor-prabhuji-year": {
-    label: "Sponsor a Prabhuji (1 year)",
+    label: "Sponsor a Prabhuji (1 year) — ₹30,001",
     amountInr: 30001,
   },
 });
+
+/** Label used when checkout has a free/custom amount (no PROGRAMS purpose key). */
+function formatGeneralDonationLabel(amountInr) {
+  const n = Number(amountInr);
+  if (!Number.isFinite(n) || n <= 0) return "General Donation";
+  // ASCII-only so Razorpay notes / DB never drop the value due to locale separators.
+  const formatted = Math.round(n)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return `General Donation - Rs ${formatted}`;
+}
 
 const CONTROL_CHARS = /[\u0000-\u001F\u007F]/g;
 // eslint-disable-next-line no-misleading-character-class
@@ -443,6 +454,7 @@ module.exports = {
   EMAIL_MAX,
   NOTE_MAX,
   PROGRAMS,
+  formatGeneralDonationLabel,
   sanitizeText,
   sanitizeReceipt,
   sanitizeNotes,

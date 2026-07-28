@@ -1,6 +1,6 @@
 import React from "react";
 import * as ReactDOMClient from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "App";
 import PageLoadingFallback from "components/PageLoadingFallback";
 import "./i18n.js";
@@ -96,10 +96,15 @@ const root = ReactDOMClient.createRoot(container);
 // Simple loading fallback — mobile uses hero shell for faster perceived LCP
 const LoadingFallback = () => <PageLoadingFallback />;
 
+const router = createBrowserRouter([
+  {
+    path: "*",
+    element: <App />,
+  },
+]);
+
 root.render(
-  <BrowserRouter>
-    <React.Suspense fallback={<LoadingFallback />}>
-      <App />
-    </React.Suspense>
-  </BrowserRouter>
+  <React.Suspense fallback={<LoadingFallback />}>
+    <RouterProvider router={router} />
+  </React.Suspense>
 );
