@@ -23,6 +23,7 @@ const routes = {
   "/api/donation-receipt": require(path.join(apiDir, "donation-receipt.js")),
   "/api/donation-receipt-list": require(path.join(apiDir, "donation-receipt-list.js")),
   "/api/donation-receipt-upi": require(path.join(apiDir, "donation-receipt-upi.js")),
+  "/api/receipt-request": require(path.join(apiDir, "receipt-request.js")),
   "/api/admin-donation-receipt": require(path.join(apiDir, "admin-donation-receipt.js")),
   "/api/admin-receipt-auth": require(path.join(apiDir, "admin-receipt-auth.js")),
   "/api/donation-receipt-resend": require(path.join(apiDir, "donation-receipt-resend.js")),
@@ -188,6 +189,7 @@ server.listen(PORT, "127.0.0.1", () => {
   console.log("  POST /api/donation-receipt");
   console.log("  POST /api/donation-receipt-list");
   console.log("  POST /api/donation-receipt-upi");
+  console.log("  POST /api/receipt-request");
   console.log("  POST /api/admin-donation-receipt");
   console.log("  POST /api/admin-receipt-auth");
   console.log("  POST /api/donation-receipt-resend");

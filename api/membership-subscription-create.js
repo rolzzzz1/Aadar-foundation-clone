@@ -166,7 +166,7 @@ module.exports = async function handler(req, res) {
       donor_state: donorNotes.donor_state,
       donor_city: donorNotes.donor_city,
       donor_pin: donorNotes.donor_pin,
-      fcra_declaration: donorNotes.fcra_declaration,
+      fcra_declaration: "",
       total_count: frequencyConfig.totalCount,
       source: "create",
     });

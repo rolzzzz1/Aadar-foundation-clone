@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
@@ -65,10 +66,10 @@ function normalizeContact(v) {
   return digits.length >= 10 ? digits.slice(-10) : digits;
 }
 
-function formatPaidAt(iso) {
+function formatPaidAt(iso, locale) {
   if (!iso) return "—";
   try {
-    return new Date(iso).toLocaleDateString("en-IN", {
+    return new Date(iso).toLocaleDateString(locale === "hi" ? "hi-IN" : "en-IN", {
       day: "numeric",
       month: "short",
       year: "numeric",
@@ -92,6 +93,8 @@ function isContactValid(method, value) {
 }
 
 export default function AdminReceiptRetrieve({ onBack, onLogout }) {
+  const { t, i18n } = useTranslation();
+  const receiptLocale = i18n.language === "hi" ? "hi" : "en";
   const [contactLookup, setContactLookup] = useState(emptyContactLookup);
   const [donationsList, setDonationsList] = useState(null);
   const [verifiedContact, setVerifiedContact] = useState(null);
@@ -111,16 +114,22 @@ export default function AdminReceiptRetrieve({ onBack, onLogout }) {
 
   const handleDownload = async () => {
     if (!record || !record.verified) return;
-    setDownloadMsg("Preparing PDF…");
+    setDownloadMsg(t("adminPortal.preparingPdf"));
     const { downloadReceiptPdf } = await import("utils/donationReceipt");
     const result = await downloadReceiptPdf(record);
-    setDownloadMsg(result === "pdf" ? "PDF downloaded." : "Download failed.");
+    setDownloadMsg(
+      result === "pdf" ? t("donationResult.pdfDownloaded") : t("donationResult.downloadFailed")
+    );
   };
 
   const handleFindDonations = async () => {
     resetResult();
     if (!isContactValid(contactLookup.method, contactLookup.value)) {
-      setError("Enter a valid email or 10-digit mobile number.");
+      setError(
+        contactLookup.method === "mobile"
+          ? t("adminPortal.enterMobile")
+          : t("adminPortal.enterEmail")
+      );
       return;
     }
 
@@ -129,11 +138,11 @@ export default function AdminReceiptRetrieve({ onBack, onLogout }) {
     try {
       const result = await postJson("/api/donation-receipt-list", {
         ...contactPayload,
-        locale: "en",
+        locale: receiptLocale,
       });
       const rows = result?.donations;
       if (!Array.isArray(rows) || rows.length === 0) {
-        throw new Error("No donations found for this contact.");
+        throw new Error(t("adminPortal.noDonations"));
       }
       setVerifiedContact(contactPayload);
       setDonationsList(rows);
@@ -141,7 +150,7 @@ export default function AdminReceiptRetrieve({ onBack, onLogout }) {
         donationsHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       });
     } catch (err) {
-      setError((err && err.message) || "Could not find donations.");
+      setError((err && err.message) || t("adminPortal.lookupFailed"));
     } finally {
       setBusy(false);
     }
@@ -156,13 +165,13 @@ export default function AdminReceiptRetrieve({ onBack, onLogout }) {
       const result = await postJson("/api/donation-receipt", {
         payment_id: paymentId,
         ...verifiedContact,
-        locale: "en",
+        locale: receiptLocale,
       });
-      if (!result?.record) throw new Error("Receipt not found.");
+      if (!result?.record) throw new Error(t("adminPortal.receiptNotFound"));
       setRecord(result.record);
       setDonationsList(null);
     } catch (err) {
-      setError((err && err.message) || "Could not load receipt.");
+      setError((err && err.message) || t("adminPortal.receiptNotFound"));
     } finally {
       setBusy(false);
     }
@@ -179,10 +188,10 @@ export default function AdminReceiptRetrieve({ onBack, onLogout }) {
       >
         <Box>
           <Typography sx={{ fontWeight: 800, color: "#1f2a44", fontSize: "1.25rem" }}>
-            Retrieve donation receipt
+            {t("adminPortal.retrieveTitle")}
           </Typography>
           <Typography sx={{ color: "#64748b", fontSize: "0.9rem", mt: 0.5 }}>
-            Look up receipts by donor email or mobile.
+            {t("adminPortal.retrieveSubtitle")}
           </Typography>
         </Box>
         <Stack direction="row" spacing={1} sx={{ flexShrink: 0 }}>
@@ -192,7 +201,7 @@ export default function AdminReceiptRetrieve({ onBack, onLogout }) {
             onClick={onBack}
             sx={{ textTransform: "none", fontWeight: 700 }}
           >
-            Back
+            {t("adminPortal.back")}
           </MKButton>
           <MKButton
             variant="text"
@@ -200,7 +209,7 @@ export default function AdminReceiptRetrieve({ onBack, onLogout }) {
             onClick={onLogout}
             sx={{ textTransform: "none", fontWeight: 700 }}
           >
-            Logout
+            {t("adminPortal.logout")}
           </MKButton>
         </Stack>
       </Stack>
@@ -210,7 +219,7 @@ export default function AdminReceiptRetrieve({ onBack, onLogout }) {
           <Stack direction="row" spacing={1} alignItems="center" mb={2}>
             <CheckCircleIcon sx={{ color: "#2e7d32" }} />
             <Typography sx={{ fontWeight: 800, color: "#2e7d32", fontSize: "1.05rem" }}>
-              Receipt loaded
+              {t("adminPortal.receiptLoaded")}
             </Typography>
           </Stack>
 
@@ -227,7 +236,7 @@ export default function AdminReceiptRetrieve({ onBack, onLogout }) {
               onClick={handleDownload}
               sx={{ fontWeight: 800, textTransform: "none", borderRadius: "10px" }}
             >
-              Download PDF
+              {t("adminPortal.downloadPdf")}
             </MKButton>
             <MKButton
               fullWidth
@@ -237,7 +246,7 @@ export default function AdminReceiptRetrieve({ onBack, onLogout }) {
               onClick={resetResult}
               sx={{ fontWeight: 700, textTransform: "none", borderRadius: "10px" }}
             >
-              Search again
+              {t("adminPortal.searchAgain")}
             </MKButton>
           </Stack>
 
@@ -265,13 +274,13 @@ export default function AdminReceiptRetrieve({ onBack, onLogout }) {
               value="email"
               icon={<EmailOutlinedIcon sx={{ fontSize: 18 }} />}
               iconPosition="start"
-              label="Email"
+              label={t("adminPortal.email")}
             />
             <Tab
               value="mobile"
               icon={<PhoneIphoneOutlinedIcon sx={{ fontSize: 18 }} />}
               iconPosition="start"
-              label="Mobile"
+              label={t("adminPortal.mobile")}
             />
           </Tabs>
 
@@ -283,7 +292,11 @@ export default function AdminReceiptRetrieve({ onBack, onLogout }) {
             }}
           >
             <TextField
-              label={contactLookup.method === "mobile" ? "Mobile number" : "Email address"}
+              label={
+                contactLookup.method === "mobile"
+                  ? t("receiptRetrieve.mobile")
+                  : t("receiptRetrieve.emailAddress")
+              }
               value={contactLookup.value}
               onChange={(e) => setContactLookup((prev) => ({ ...prev, value: e.target.value }))}
               placeholder={contactLookup.method === "mobile" ? "9826441863" : "donor@example.com"}
@@ -308,7 +321,7 @@ export default function AdminReceiptRetrieve({ onBack, onLogout }) {
               }
               sx={{ fontWeight: 800, textTransform: "none", borderRadius: "12px", py: 1.15 }}
             >
-              {busy ? "Searching…" : "Find donations"}
+              {busy ? t("adminPortal.searching") : t("adminPortal.findDonations")}
             </MKButton>
           </Box>
 
@@ -320,7 +333,7 @@ export default function AdminReceiptRetrieve({ onBack, onLogout }) {
                 ref={donationsHeadingRef}
                 sx={{ fontWeight: 800, color: "#1f2a44", mb: 1.25, fontSize: "0.9375rem" }}
               >
-                Donations found
+                {t("adminPortal.donationsFound")}
               </Typography>
               <Stack spacing={1.25}>
                 {donationsList.map((item) => (
@@ -343,7 +356,7 @@ export default function AdminReceiptRetrieve({ onBack, onLogout }) {
                         {formatInr(item.amountInr)}
                       </Typography>
                       <Typography sx={{ fontSize: "0.875rem", color: "#64748b" }}>
-                        {formatPaidAt(item.paidAt)}
+                        {formatPaidAt(item.paidAt, receiptLocale)}
                         {item.programLabel ? ` · ${item.programLabel}` : ""}
                       </Typography>
                       {item.paymentId ? (
@@ -374,7 +387,7 @@ export default function AdminReceiptRetrieve({ onBack, onLogout }) {
                         color: "#2e7d32",
                       }}
                     >
-                      View receipt
+                      {t("adminPortal.viewReceipt")}
                     </MKButton>
                   </Box>
                 ))}

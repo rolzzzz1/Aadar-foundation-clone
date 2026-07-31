@@ -3,7 +3,10 @@ const { applySecurityHeaders, isProduction, paymentsAreEnabled } = require("../s
 const { getWebhookRawBody } = require("../server/_lib/rawBody");
 const { fetchOrder, validateCapturedPayment } = require("../server/_lib/razorpay");
 const { updateDonationRecordStatus } = require("../server/_lib/donationRecord");
-const { persistCapturedDonation } = require("../server/_lib/donationPersist");
+const {
+  persistCapturedDonation,
+  persistRazorpayQrDonation,
+} = require("../server/_lib/donationPersist");
 const { updateSubscriptionRecord } = require("../server/_lib/membershipRecord");
 
 const MAX_BODY_BYTES = 64 * 1024;
@@ -32,10 +35,33 @@ function logWebhookSkip(event, reason, meta) {
 }
 
 async function handlePaymentCaptured(paymentEntity) {
-  if (!paymentEntity || !paymentEntity.id || !paymentEntity.order_id) {
-    logWebhookSkip("payment.captured", "missing_payment_or_order", {
-      payment_id: paymentEntity && paymentEntity.id,
+  if (!paymentEntity || !paymentEntity.id) {
+    logWebhookSkip("payment.captured", "missing_payment", {});
+    return;
+  }
+
+  // Static QR / order-less UPI: no Razorpay order — still log to Supabase.
+  if (!paymentEntity.order_id) {
+    const status = String(paymentEntity.status || "").toLowerCase();
+    if (status !== "captured") {
+      logWebhookSkip("payment.captured", "qr_not_captured", {
+        payment_id: paymentEntity.id,
+        payment_status: status,
+      });
+      return;
+    }
+
+    const persisted = await persistRazorpayQrDonation({
+      payment: paymentEntity,
+      source: "razorpay_qr",
     });
+    if (!persisted.saved) {
+      // eslint-disable-next-line no-console
+      console.warn("[razorpay-webhook] QR payment.captured but donation not saved", {
+        payment_id: paymentEntity.id,
+        reason: persisted.reason,
+      });
+    }
     return;
   }
 

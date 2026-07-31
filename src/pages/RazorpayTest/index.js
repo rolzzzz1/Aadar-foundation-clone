@@ -847,13 +847,16 @@ export default function RazorpayTestPage() {
       await loadRazorpayCheckoutScript();
 
       if (isMembershipMode) {
-        const receiptNo = `rcpt_${Date.now()}`;
         const donor = {
           name: nameCheck.value,
           fatherOrHusbandName: fatherOrHusbandNameCheck.value,
           email: emailCheck.value,
           contact: contactCheck.value,
           pan: panCheck.value,
+          address: addressCheck.value,
+          state: stateCheck.value,
+          city: cityCheck.value,
+          pin: pinCheck.value,
         };
 
         const subscription = await postJson("/api/membership-subscription-create", {
@@ -870,7 +873,6 @@ export default function RazorpayTestPage() {
             donor_state: stateCheck.value,
             donor_city: cityCheck.value,
             donor_pin: pinCheck.value,
-            fcra_declaration: "accepted",
             privacy_consent: "accepted",
             donor_locale: isHi ? "hi" : "en",
           },
@@ -916,9 +918,10 @@ export default function RazorpayTestPage() {
                   paymentId: response.razorpay_payment_id,
                   orderId:
                     (verification && verification.order_id) || response.razorpay_subscription_id,
-                  receiptNo,
+                  receiptNo: (verification && verification.receipt_no) || "",
                   purpose: purposeCheck.value,
                   programLabel: membershipProgramLabel,
+                  paymentMethod: (verification && verification.payment_method) || "",
                   keyId,
                   verified: paymentOk,
                   receiptEmailSent: !!(verification && verification.receipt_email_sent),
@@ -946,7 +949,7 @@ export default function RazorpayTestPage() {
                   donor,
                   paymentId: response.razorpay_payment_id,
                   orderId: response.razorpay_subscription_id,
-                  receiptNo,
+                  receiptNo: "",
                   purpose: purposeCheck.value,
                   programLabel: membershipProgramLabel,
                   keyId,
@@ -973,7 +976,7 @@ export default function RazorpayTestPage() {
               orderId:
                 (resp && resp.error && resp.error.metadata && resp.error.metadata.order_id) ||
                 subscription.subscription_id,
-              receiptNo,
+              receiptNo: "",
               purpose: purposeCheck.value,
               programLabel: membershipProgramLabel,
               keyId,
@@ -992,11 +995,11 @@ export default function RazorpayTestPage() {
         return;
       }
 
-      const receiptNo = `rcpt_${Date.now()}`;
+      const razorpayReceiptRef = `rcpt_${Date.now()}`;
       const programLabelForOrder = resolvedProgramLabel;
       const orderRequest = {
         currency: "INR",
-        receipt: receiptNo,
+        receipt: razorpayReceiptRef,
         notes: {
           note: buildOrderNote() || programLabelForOrder,
           purpose: programLabelForOrder,
@@ -1009,7 +1012,6 @@ export default function RazorpayTestPage() {
           donor_state: stateCheck.value,
           donor_city: cityCheck.value,
           donor_pin: pinCheck.value,
-          fcra_declaration: "accepted",
           privacy_consent: "accepted",
           donor_locale: isHi ? "hi" : "en",
         },
@@ -1057,6 +1059,10 @@ export default function RazorpayTestPage() {
             email: emailCheck.value,
             contact: contactCheck.value,
             pan: panCheck.value,
+            address: addressCheck.value,
+            state: stateCheck.value,
+            city: cityCheck.value,
+            pin: pinCheck.value,
           };
           try {
             const verification = await postJson("/api/razorpay-verify", {
@@ -1084,9 +1090,10 @@ export default function RazorpayTestPage() {
                 donor,
                 paymentId: response.razorpay_payment_id,
                 orderId: response.razorpay_order_id,
-                receiptNo,
+                receiptNo: (verification && verification.receipt_no) || "",
                 purpose: purposeCheck.value || formatGeneralDonationLabel(confirmedAmountInr),
                 programLabel: orderProgram?.label || formatGeneralDonationLabel(confirmedAmountInr),
+                paymentMethod: (verification && verification.payment_method) || "",
                 keyId,
                 verified: paymentOk,
                 receiptEmailSent: !!(verification && verification.receipt_email_sent),
@@ -1112,7 +1119,7 @@ export default function RazorpayTestPage() {
                 donor,
                 paymentId: response.razorpay_payment_id,
                 orderId: response.razorpay_order_id,
-                receiptNo,
+                receiptNo: "",
                 purpose: purposeCheck.value || formatGeneralDonationLabel(amountCheck.valueInr),
                 programLabel:
                   orderProgram?.label || formatGeneralDonationLabel(amountCheck.valueInr),
@@ -1140,10 +1147,14 @@ export default function RazorpayTestPage() {
               email: emailCheck.value,
               contact: contactCheck.value,
               pan: panCheck.value,
+              address: addressCheck.value,
+              state: stateCheck.value,
+              city: cityCheck.value,
+              pin: pinCheck.value,
             },
             orderId:
               (resp && resp.error && resp.error.metadata && resp.error.metadata.order_id) || "",
-            receiptNo,
+            receiptNo: "",
             purpose: purposeCheck.value || resolvedProgramLabel,
             programLabel: resolvedProgramLabel,
             keyId,

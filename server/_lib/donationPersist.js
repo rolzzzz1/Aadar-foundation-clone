@@ -1,5 +1,6 @@
 const {
   buildRecordFromRazorpay,
+  buildRecordFromRazorpayQr,
   upsertDonationRecord,
   fetchDonationByPaymentId,
 } = require("./donationRecord");
@@ -68,6 +69,39 @@ async function persistCapturedDonation({
   };
 }
 
+/**
+ * Persist a Razorpay Static QR (order-less) payment. Does not email a receipt —
+ * donor PAN/address are almost never present on QR payments.
+ */
+async function persistRazorpayQrDonation({ payment, source = "razorpay_qr" }) {
+  if (!payment || !payment.id) {
+    return { saved: false, reason: "missing_payment" };
+  }
+
+  const record = buildRecordFromRazorpayQr({ payment, source });
+  if (!record) {
+    return { saved: false, reason: "invalid_qr_payment" };
+  }
+
+  const saved = await upsertDonationRecord(record);
+  if (!saved.saved) {
+    return saved;
+  }
+
+  const row = saved.row || (await fetchDonationByPaymentId(payment.id));
+  if (!row) {
+    return { saved: false, reason: "row_missing_after_save" };
+  }
+
+  return {
+    saved: true,
+    row,
+    created: saved.created,
+    receiptEmail: { sent: false, reason: "qr_incomplete_donor" },
+  };
+}
+
 module.exports = {
   persistCapturedDonation,
+  persistRazorpayQrDonation,
 };

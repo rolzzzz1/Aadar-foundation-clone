@@ -38,6 +38,7 @@ function donationRowToReceiptRecord(row, options = {}) {
     receiptNo: row.receipt_no || "",
     purpose: row.purpose || "",
     programLabel: row.program_label || "",
+    paymentMethod: String(row.payment_method || "").toLowerCase(),
     paidAt: row.created_at || new Date().toISOString(),
     verified: captured,
     testMode: keyId.startsWith("rzp_test_"),

@@ -7,7 +7,8 @@ export const DONATION_RECEIPT_STORAGE_KEY = "aadar_donation_receipt_v1";
  * @property {DonationReceiptStatus} status
  * @property {number} amountInr
  * @property {string} currency
- * @property {{ name: string, fatherOrHusbandName?: string, email: string, contact: string, pan: string }} donor
+ * @property {{ name: string, fatherOrHusbandName?: string, email: string, contact: string, pan: string, address?: string, state?: string, city?: string, pin?: string }} donor
+ * @property {string} [paymentMethod]
  * @property {string} [paymentId]
  * @property {string} [orderId]
  * @property {string} [receiptNo]

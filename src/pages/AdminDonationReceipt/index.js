@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
@@ -42,7 +43,6 @@ import {
   validateEmail,
   validatePan,
   validatePinIn,
-  validateRequiredSelection,
 } from "utils/donation";
 
 const ADMIN_SECRET_KEY = "aadar_admin_receipt_secret";
@@ -117,49 +117,45 @@ async function verifyAdminLogin({ secret, username }) {
   return data;
 }
 
-function validateForm(form) {
+function validateForm(form, t) {
   const amount = Math.round(Number(form.amountInr));
   if (!Number.isFinite(amount) || amount < 1) {
-    return "Enter a valid donation amount in INR.";
+    return t("adminPortal.validationAmount");
   }
   if (amount > 500000) {
-    return "Maximum donation amount is ₹5,00,000.";
+    return t("adminPortal.validationMaxAmount");
   }
 
   const ref = String(form.transactionRef || "").trim();
   if (!ref) {
     return form.paymentMethod === "bank"
-      ? "Bank transaction reference is required."
-      : "UPI transaction reference (UTR) is required.";
+      ? t("adminPortal.validationBankRef")
+      : t("adminPortal.validationUtr");
   }
 
-  if (!form.paidAt) return "Payment date is required.";
+  if (!form.paidAt) return t("adminPortal.validationPaidAt");
 
-  const nameCheck = validateRequiredSelection(form.donorName, "Donor name");
-  if (!nameCheck.ok) return nameCheck.error;
+  if (!String(form.donorName || "").trim()) return t("adminPortal.validationName");
 
   const emailCheck = validateEmail(form.donorEmail);
-  if (!emailCheck.ok) return emailCheck.error;
+  if (!emailCheck.ok) return t("adminPortal.validationEmail");
 
   const contactCheck = validateContactIN(form.donorContact);
-  if (!contactCheck.ok) return contactCheck.error;
+  if (!contactCheck.ok) return t("adminPortal.validationMobile");
 
   const panCheck = validatePan(form.donorPan);
   if (!panCheck.ok || !panCheck.value) {
-    return panCheck.error || "PAN is required for the 80G receipt.";
+    return t("adminPortal.validationPan80g");
   }
 
   const addressCheck = validateAddressLine(form.donorAddress);
-  if (!addressCheck.ok) return addressCheck.error;
+  if (!addressCheck.ok) return t("adminPortal.validationAddress");
 
-  const stateCheck = validateRequiredSelection(form.donorState, "State");
-  if (!stateCheck.ok) return stateCheck.error;
-
-  const cityCheck = validateRequiredSelection(form.donorCity, "City");
-  if (!cityCheck.ok) return cityCheck.error;
+  if (!String(form.donorState || "").trim()) return t("adminPortal.validationState");
+  if (!String(form.donorCity || "").trim()) return t("adminPortal.validationCity");
 
   const pinCheck = validatePinIn(form.donorPin);
-  if (!pinCheck.ok) return pinCheck.error;
+  if (!pinCheck.ok) return t("adminPortal.validationPin");
 
   return "";
 }
@@ -187,6 +183,7 @@ function buildPayload(form) {
 }
 
 export default function AdminDonationReceiptPage() {
+  const { t, i18n } = useTranslation();
   const [adminSecret, setAdminSecret] = useState("");
   const [adminUsername, setAdminUsername] = useState("");
   const [secretInput, setSecretInput] = useState("");
@@ -194,7 +191,11 @@ export default function AdminDonationReceiptPage() {
   const [authBusy, setAuthBusy] = useState(false);
   const [unlocked, setUnlocked] = useState(false);
   const [adminView, setAdminView] = useState("menu"); // 'menu' | 'create' | 'retrieve'
-  const [form, setForm] = useState({ ...emptyForm, paidAt: todayIsoDate() });
+  const [form, setForm] = useState({
+    ...emptyForm,
+    paidAt: todayIsoDate(),
+    locale: i18n.language === "hi" ? "hi" : "en",
+  });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [result, setResult] = useState(null);
@@ -224,11 +225,11 @@ export default function AdminDonationReceiptPage() {
     const username = adminUsername.trim();
     const trimmed = secretInput.trim();
     if (!username) {
-      setError("Enter the admin username.");
+      setError(t("adminPortal.enterUsername"));
       return;
     }
     if (!trimmed) {
-      setError("Enter the admin password.");
+      setError(t("adminPortal.enterPassword"));
       return;
     }
     setError("");
@@ -237,7 +238,7 @@ export default function AdminDonationReceiptPage() {
       setAuthBusy(true);
       await verifyAdminLogin({ username, secret: trimmed });
     } catch (err) {
-      setError("Invalid username or password.");
+      setError(t("adminPortal.invalidLogin"));
       return;
     } finally {
       setAuthBusy(false);
@@ -278,7 +279,7 @@ export default function AdminDonationReceiptPage() {
     setError("");
     setResult(null);
 
-    const validationError = validateForm(form);
+    const validationError = validateForm(form, t);
     if (validationError) {
       setError(validationError);
       return;
@@ -295,12 +296,12 @@ export default function AdminDonationReceiptPage() {
       if (!response.receipt_email_sent) {
         setError(
           response.email_reason === "already_sent"
-            ? "Receipt saved, but email was already sent for this donation."
-            : "Receipt saved, but the email could not be sent. Check Resend configuration and try resend."
+            ? t("adminPortal.emailAlreadySent")
+            : t("adminPortal.emailSendFailed")
         );
       }
     } catch (err) {
-      setError((err && err.message) || "Could not issue receipt.");
+      setError((err && err.message) || t("adminPortal.createFailed"));
     } finally {
       setBusy(false);
     }
@@ -309,7 +310,11 @@ export default function AdminDonationReceiptPage() {
   const handleIssueAnother = () => {
     setResult(null);
     setError("");
-    setForm({ ...emptyForm, paidAt: todayIsoDate() });
+    setForm({
+      ...emptyForm,
+      paidAt: todayIsoDate(),
+      locale: i18n.language === "hi" ? "hi" : "en",
+    });
   };
 
   if (!unlocked) {
@@ -387,7 +392,7 @@ export default function AdminDonationReceiptPage() {
 
                   <Box sx={{ textAlign: { xs: "center", md: "left" } }}>
                     <Typography sx={{ fontWeight: 900, color: "#1f2a44", fontSize: "1.35rem" }}>
-                      Admin Portal
+                      {t("adminPortal.portalTitle")}
                     </Typography>
                     <Box
                       sx={{
@@ -409,8 +414,7 @@ export default function AdminDonationReceiptPage() {
                         maxWidth: 320,
                       }}
                     >
-                      Secure access to manage and retrieve donation receipts and organizational
-                      operations.
+                      {t("adminPortal.portalLead")}
                     </Typography>
                   </Box>
 
@@ -442,12 +446,12 @@ export default function AdminDonationReceiptPage() {
                     </Box>
                     <Box sx={{ minWidth: 0 }}>
                       <Typography sx={{ fontWeight: 900, fontSize: "0.92rem", color: "#2e7d32" }}>
-                        Secure Admin Access
+                        {t("adminPortal.secureAccess")}
                       </Typography>
                       <Typography
                         sx={{ color: "rgba(31,42,68,0.72)", fontSize: "0.82rem", mt: 0.25 }}
                       >
-                        Restricted to authorized administrators only.
+                        {t("adminPortal.restrictedOnly")}
                       </Typography>
                     </Box>
                   </Box>
@@ -491,7 +495,7 @@ export default function AdminDonationReceiptPage() {
                       <Typography
                         sx={{ fontWeight: 900, color: "#1f2a44", fontSize: "1.55rem", mt: 1.1 }}
                       >
-                        Welcome Back
+                        {t("adminPortal.welcomeBack")}
                       </Typography>
                       <Typography
                         sx={{
@@ -501,11 +505,11 @@ export default function AdminDonationReceiptPage() {
                           lineHeight: 1.55,
                         }}
                       >
-                        Enter your admin credentials to continue.
+                        {t("adminPortal.enterCredentials")}
                       </Typography>
                     </Box>
                     <Typography sx={{ fontWeight: 800, fontSize: "0.9rem", color: "#1f2a44" }}>
-                      Admin Username
+                      {t("adminPortal.adminUsername")}
                     </Typography>
                     <TextField
                       label=""
@@ -521,7 +525,7 @@ export default function AdminDonationReceiptPage() {
                       }}
                       disabled={authBusy}
                       autoComplete="username"
-                      placeholder="Enter admin username"
+                      placeholder={t("adminPortal.usernameEnter")}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -536,7 +540,7 @@ export default function AdminDonationReceiptPage() {
                     <Typography
                       sx={{ fontWeight: 800, fontSize: "0.9rem", color: "#1f2a44", mt: 0.35 }}
                     >
-                      Admin Password
+                      {t("adminPortal.adminPassword")}
                     </Typography>
                     <TextField
                       label=""
@@ -553,7 +557,7 @@ export default function AdminDonationReceiptPage() {
                       }}
                       disabled={authBusy}
                       autoComplete="current-password"
-                      placeholder="Enter password"
+                      placeholder={t("adminPortal.passwordEnter")}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -563,7 +567,11 @@ export default function AdminDonationReceiptPage() {
                         endAdornment: (
                           <InputAdornment position="end">
                             <IconButton
-                              aria-label={isSecretVisible ? "Hide password" : "Show password"}
+                              aria-label={
+                                isSecretVisible
+                                  ? t("adminPortal.hidePassword")
+                                  : t("adminPortal.showPassword")
+                              }
                               edge="end"
                               onClick={() => setIsSecretVisible((v) => !v)}
                               tabIndex={-1}
@@ -612,7 +620,7 @@ export default function AdminDonationReceiptPage() {
                         )
                       }
                     >
-                      {authBusy ? "Checking…" : "Login"}
+                      {authBusy ? t("adminPortal.checking") : t("adminPortal.login")}
                     </MKButton>
 
                     <Stack
@@ -630,7 +638,7 @@ export default function AdminDonationReceiptPage() {
                         sx={{ fontSize: 18, color: "rgba(46, 125, 50, 0.8)" }}
                       />
                       <Typography sx={{ fontSize: "0.84rem", color: "rgba(31,42,68,0.6)" }}>
-                        Authorized administrators only
+                        {t("adminPortal.authorizedOnly")}
                       </Typography>
                     </Stack>
                   </Stack>
@@ -685,7 +693,7 @@ export default function AdminDonationReceiptPage() {
                       Aadar Foundation
                     </Typography>
                     <Typography sx={{ color: "#64748b", fontSize: "0.85rem" }}>
-                      Admin Portal
+                      {t("adminPortal.portalTitle")}
                     </Typography>
                   </Box>
                 </Stack>
@@ -705,7 +713,9 @@ export default function AdminDonationReceiptPage() {
                     <PersonOutlineOutlinedIcon sx={{ fontSize: 20, color: "#2e7d32" }} />
                   </Box>
                   <Box sx={{ textAlign: "right" }}>
-                    <Typography sx={{ color: "#64748b", fontSize: "0.85rem" }}>Welcome,</Typography>
+                    <Typography sx={{ color: "#64748b", fontSize: "0.85rem" }}>
+                      {t("adminPortal.welcomeComma")}
+                    </Typography>
                     <Typography sx={{ fontWeight: 900, color: "#1f2a44", fontSize: "0.95rem" }}>
                       {adminUsername || "admin"}
                     </Typography>
@@ -730,10 +740,10 @@ export default function AdminDonationReceiptPage() {
                 <Typography
                   sx={{ fontWeight: 900, color: "#1f2a44", fontSize: "1.45rem", mt: 0.75 }}
                 >
-                  Admin Tools
+                  {t("adminPortal.adminTools")}
                 </Typography>
                 <Typography sx={{ color: "#64748b", fontSize: "0.9rem" }}>
-                  Choose what you want to do.
+                  {t("adminPortal.chooseAction")}
                 </Typography>
               </Stack>
 
@@ -781,10 +791,10 @@ export default function AdminDonationReceiptPage() {
                         </Box>
                         <Box>
                           <Typography sx={{ fontWeight: 900, color: "#1f2a44" }}>
-                            Retrieve Receipt
+                            {t("adminPortal.retrieveReceipt")}
                           </Typography>
                           <Typography sx={{ color: "#64748b", fontSize: "0.88rem", mt: 0.25 }}>
-                            Search and retrieve existing donation receipts.
+                            {t("adminPortal.retrieveMenuDesc")}
                           </Typography>
                         </Box>
                       </Stack>
@@ -846,10 +856,10 @@ export default function AdminDonationReceiptPage() {
                         </Box>
                         <Box>
                           <Typography sx={{ fontWeight: 900, color: "#1f2a44" }}>
-                            Create Receipt
+                            {t("adminPortal.createReceipt")}
                           </Typography>
                           <Typography sx={{ color: "#64748b", fontSize: "0.88rem", mt: 0.25 }}>
-                            Create a new donation receipt.
+                            {t("adminPortal.createMenuDesc")}
                           </Typography>
                         </Box>
                       </Stack>
@@ -882,7 +892,7 @@ export default function AdminDonationReceiptPage() {
                   startIcon={<LogoutOutlinedIcon />}
                   sx={{ textTransform: "none", fontWeight: 800, mt: 0.9 }}
                 >
-                  Logout
+                  {t("adminPortal.logout")}
                 </MKButton>
               </Stack>
             </Stack>
@@ -924,10 +934,10 @@ export default function AdminDonationReceiptPage() {
         >
           <Box>
             <Typography sx={{ fontWeight: 800, color: "#1f2a44", fontSize: "1.35rem" }}>
-              Issue donation receipt
+              {t("adminPortal.issueTitle")}
             </Typography>
             <Typography sx={{ color: "#64748b", fontSize: "0.9rem", mt: 0.5 }}>
-              For verified UPI / QR and bank transfer donations only.
+              {t("adminPortal.issueSubtitle")}
             </Typography>
           </Box>
           <Stack direction="row" spacing={1} sx={{ flexShrink: 0 }}>
@@ -941,7 +951,7 @@ export default function AdminDonationReceiptPage() {
               }}
               sx={{ textTransform: "none", fontWeight: 700 }}
             >
-              Back
+              {t("adminPortal.back")}
             </MKButton>
             <MKButton
               variant="text"
@@ -949,7 +959,7 @@ export default function AdminDonationReceiptPage() {
               onClick={handleLogout}
               sx={{ textTransform: "none", fontWeight: 700 }}
             >
-              Logout
+              {t("adminPortal.logout")}
             </MKButton>
           </Stack>
         </Stack>
@@ -961,12 +971,11 @@ export default function AdminDonationReceiptPage() {
             sx={{ p: { xs: 2.5, sm: 3 }, borderRadius: "18px" }}
           >
             <Alert severity="info" sx={{ mb: 2.5 }}>
-              Verify the donor&apos;s payment screenshot and bank/UPI details before issuing the
-              receipt. The PDF will be emailed to the donor automatically.
+              {t("adminPortal.verifyAlert")}
             </Alert>
 
             <Typography sx={{ fontWeight: 800, color: "#1f2a44", mb: 1.25 }}>
-              Payment details
+              {t("adminPortal.paymentDetails")}
             </Typography>
             <Tabs
               value={form.paymentMethod}
@@ -980,8 +989,8 @@ export default function AdminDonationReceiptPage() {
                 "& .MuiTab-root": { textTransform: "none", fontWeight: 700 },
               }}
             >
-              <Tab value="upi" label="UPI / QR" />
-              <Tab value="bank" label="Bank transfer" />
+              <Tab value="upi" label={t("adminPortal.methodUpi")} />
+              <Tab value="bank" label={t("adminPortal.methodBank")} />
             </Tabs>
 
             <Grid container spacing={2}>
@@ -989,8 +998,8 @@ export default function AdminDonationReceiptPage() {
                 <TextField
                   label={
                     form.paymentMethod === "bank"
-                      ? "Bank transaction reference"
-                      : "UPI reference (UTR)"
+                      ? t("adminPortal.bankRef")
+                      : t("adminPortal.upiRef")
                   }
                   value={form.transactionRef}
                   onChange={updateField("transactionRef")}
@@ -1002,7 +1011,7 @@ export default function AdminDonationReceiptPage() {
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
                 <TextField
-                  label="Amount (₹)"
+                  label={t("adminPortal.amount")}
                   type="number"
                   inputProps={{ min: 1, step: 1 }}
                   value={form.amountInr}
@@ -1014,7 +1023,7 @@ export default function AdminDonationReceiptPage() {
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
                 <TextField
-                  label="Payment date"
+                  label={t("adminPortal.paidAt")}
                   type="date"
                   InputLabelProps={{ shrink: true }}
                   value={form.paidAt}
@@ -1029,12 +1038,12 @@ export default function AdminDonationReceiptPage() {
             <Divider sx={{ my: 2.5 }} />
 
             <Typography sx={{ fontWeight: 800, color: "#1f2a44", mb: 1.25 }}>
-              Donor details
+              {t("adminPortal.donorDetails")}
             </Typography>
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
                 <TextField
-                  label="Full name"
+                  label={t("adminPortal.name")}
                   value={form.donorName}
                   onChange={updateField("donorName")}
                   fullWidth
@@ -1044,7 +1053,7 @@ export default function AdminDonationReceiptPage() {
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  label="Father / husband name"
+                  label={t("adminPortal.fatherHusband")}
                   value={form.fatherOrHusbandName}
                   onChange={updateField("fatherOrHusbandName")}
                   fullWidth
@@ -1053,7 +1062,7 @@ export default function AdminDonationReceiptPage() {
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  label="Email"
+                  label={t("adminPortal.email")}
                   type="email"
                   value={form.donorEmail}
                   onChange={updateField("donorEmail")}
@@ -1064,7 +1073,7 @@ export default function AdminDonationReceiptPage() {
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  label="Mobile"
+                  label={t("adminPortal.mobile")}
                   type="tel"
                   value={form.donorContact}
                   onChange={updateField("donorContact")}
@@ -1076,7 +1085,7 @@ export default function AdminDonationReceiptPage() {
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  label="PAN"
+                  label={t("adminPortal.pan")}
                   value={form.donorPan}
                   onChange={updateField("donorPan")}
                   placeholder="ABCDE1234F"
@@ -1087,7 +1096,7 @@ export default function AdminDonationReceiptPage() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  label="Address"
+                  label={t("adminPortal.address")}
                   value={form.donorAddress}
                   onChange={updateField("donorAddress")}
                   fullWidth
@@ -1097,7 +1106,7 @@ export default function AdminDonationReceiptPage() {
               </Grid>
               <Grid item xs={12} md={4}>
                 <TextField
-                  label="City"
+                  label={t("adminPortal.city")}
                   value={form.donorCity}
                   onChange={updateField("donorCity")}
                   fullWidth
@@ -1107,7 +1116,7 @@ export default function AdminDonationReceiptPage() {
               </Grid>
               <Grid item xs={12} md={4}>
                 <TextField
-                  label="State"
+                  label={t("adminPortal.state")}
                   value={form.donorState}
                   onChange={updateField("donorState")}
                   fullWidth
@@ -1117,7 +1126,7 @@ export default function AdminDonationReceiptPage() {
               </Grid>
               <Grid item xs={12} md={4}>
                 <TextField
-                  label="PIN code"
+                  label={t("adminPortal.pinCode")}
                   value={form.donorPin}
                   onChange={updateField("donorPin")}
                   fullWidth
@@ -1127,7 +1136,7 @@ export default function AdminDonationReceiptPage() {
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  label="Program (optional)"
+                  label={t("adminPortal.programOptional")}
                   value={form.programLabel}
                   onChange={updateField("programLabel")}
                   fullWidth
@@ -1136,7 +1145,7 @@ export default function AdminDonationReceiptPage() {
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
-                  label="Purpose / note (optional)"
+                  label={t("adminPortal.purposeOptional")}
                   value={form.purpose}
                   onChange={updateField("purpose")}
                   fullWidth
@@ -1155,18 +1164,18 @@ export default function AdminDonationReceiptPage() {
                     }
                   />
                 }
-                label="Re-send email if this transaction already exists"
+                label={t("adminPortal.resendIfExists")}
               />
               <TextField
                 select
-                label="Receipt language"
+                label={t("adminPortal.receiptLanguage")}
                 value={form.locale}
                 onChange={updateField("locale")}
                 SelectProps={{ native: true }}
                 sx={{ ...fieldSx, minWidth: 160 }}
               >
-                <option value="en">English</option>
-                <option value="hi">Hindi</option>
+                <option value="en">{t("adminPortal.langEnglish")}</option>
+                <option value="hi">{t("adminPortal.langHindi")}</option>
               </TextField>
             </Stack>
 
@@ -1192,7 +1201,7 @@ export default function AdminDonationReceiptPage() {
                 borderRadius: "12px",
               }}
             >
-              {busy ? "Creating receipt…" : "Create receipt & email donor"}
+              {busy ? t("adminPortal.creatingReceipt") : t("adminPortal.createButton")}
             </MKButton>
           </Card>
         ) : (
@@ -1202,8 +1211,13 @@ export default function AdminDonationReceiptPage() {
               icon={result.receipt_email_sent ? <CheckCircleIcon /> : undefined}
             >
               {result.receipt_email_sent
-                ? `Receipt ${result.receipt_no || ""} emailed to ${result.donor_email}.`
-                : `Receipt ${result.receipt_no || ""} saved, but email was not sent.`}
+                ? t("adminPortal.emailSentTo", {
+                    receiptNo: result.receipt_no || "",
+                    email: result.donor_email,
+                  })
+                : t("adminPortal.emailSavedNotSent", {
+                    receiptNo: result.receipt_no || "",
+                  })}
             </Alert>
 
             {previewRecord ? (
@@ -1218,7 +1232,7 @@ export default function AdminDonationReceiptPage() {
               onClick={handleIssueAnother}
               sx={{ alignSelf: "flex-start", textTransform: "none", fontWeight: 700 }}
             >
-              Issue another receipt
+              {t("adminPortal.issueAnother")}
             </MKButton>
           </Stack>
         )}

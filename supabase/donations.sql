@@ -5,6 +5,7 @@ create table if not exists public.donations (
   id bigint generated always as identity primary key,
   payment_id text not null,
   order_id text not null,
+  -- Official receipt number: AADAR-YYYY-000001 (assigned at insert; display as stored)
   receipt_no text,
   amount_paise integer not null,
   currency text not null default 'INR',
@@ -33,7 +34,13 @@ create table if not exists public.donations (
 create index if not exists donations_created_at_idx on public.donations (created_at desc);
 create index if not exists donations_order_id_idx on public.donations (order_id);
 
+-- Enforce unique official receipt numbers (legacy empty/null values allowed)
+create unique index if not exists donations_receipt_no_key
+  on public.donations (receipt_no)
+  where receipt_no is not null and receipt_no <> '';
+
 comment on table public.donations is 'Razorpay captured donations; written by Vercel API (service role).';
+comment on column public.donations.receipt_no is 'Official receipt number AADAR-YYYY-000001; single source of truth for PDF/email/UI.';
 
 -- Recurring membership (Razorpay Subscriptions) adds subscription_id/is_recurring/frequency
 -- columns to this table plus two new tables — see supabase/membership.sql.
@@ -49,6 +56,9 @@ comment on table public.donations is 'Razorpay captured donations; written by Ve
 -- alter table public.donations add column if not exists payment_method text;
 -- alter table public.donations add column if not exists updated_at timestamptz not null default now();
 -- alter table public.donations add column if not exists receipt_email_sent_at timestamptz;
+-- create unique index if not exists donations_receipt_no_key
+--   on public.donations (receipt_no)
+--   where receipt_no is not null and receipt_no <> '';
 
 -- Lock down public access; your Node API uses SUPABASE_SERVICE_ROLE_KEY (bypasses RLS).
 alter table public.donations enable row level security;

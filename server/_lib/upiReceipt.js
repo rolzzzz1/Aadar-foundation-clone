@@ -24,15 +24,6 @@ function upiPaymentId(utr) {
   return `upi_${normalizeUtr(utr)}`;
 }
 
-function generateUpiReceiptNo(utr, paidAt) {
-  const normalized = normalizeUtr(utr);
-  const date = paidAt ? new Date(paidAt) : new Date();
-  const ymd = Number.isNaN(date.getTime())
-    ? new Date().toISOString().slice(0, 10).replace(/-/g, "")
-    : date.toISOString().slice(0, 10).replace(/-/g, "");
-  return `AFT${ymd}${normalized.slice(-6)}`;
-}
-
 function parsePaidAt(value) {
   if (!value) return null;
   const raw = String(value).trim();
@@ -114,7 +105,8 @@ function buildUpiDonationRecord(body) {
     record: {
       payment_id: paymentId,
       order_id: "upi_qr",
-      receipt_no: generateUpiReceiptNo(utr, paidAtCheck.value),
+      // Official AADAR-YYYY-###### assigned in upsertDonationRecord
+      receipt_no: "",
       amount_paise: amountInr * 100,
       currency: "INR",
       status: "captured",
@@ -133,6 +125,7 @@ function buildUpiDonationRecord(body) {
       program_label: sanitizeText(body.program_label || body.programLabel || "", 120),
       purpose: sanitizeText(body.purpose || body.note || "", 240),
       fcra_declaration: "",
+      payment_method: "upi_qr",
       source: "upi_qr",
       created_at: paidAtCheck.value,
       updated_at: new Date().toISOString(),
@@ -146,8 +139,8 @@ module.exports = {
   normalizeUtr,
   validateUtr,
   upiPaymentId,
-  generateUpiReceiptNo,
   validatePaidAt,
   normalizePan,
+  normalizeContact,
   buildUpiDonationRecord,
 };

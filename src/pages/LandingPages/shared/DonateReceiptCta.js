@@ -1,4 +1,5 @@
 import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import BoltOutlinedIcon from "@mui/icons-material/BoltOutlined";
 import AccountBalanceOutlinedIcon from "@mui/icons-material/AccountBalanceOutlined";
 import PropTypes from "prop-types";
@@ -94,6 +95,7 @@ export default function DonateReceiptCta({ sx = {} }) {
           to={DONATION_RECEIPT_PATH}
           variant="outlined"
           startIcon={<ReceiptLongOutlinedIcon />}
+          endIcon={<ArrowForwardIcon />}
           sx={{
             flexShrink: 0,
             fontWeight: 700,
@@ -111,6 +113,10 @@ export default function DonateReceiptCta({ sx = {} }) {
             backgroundColor: "#ffffff",
             boxShadow: "none",
             letterSpacing: "0.01em",
+            "& .MuiButton-endIcon": {
+              marginLeft: "8px",
+              marginRight: "-2px",
+            },
             "& .MuiSvgIcon-root": {
               color: "#2e7d32",
               fontSize: "1.3rem !important",
@@ -164,7 +170,7 @@ export default function DonateReceiptCta({ sx = {} }) {
               <BoltOutlinedIcon sx={{ color: "#2e7d32", fontSize: 18 }} />
             </MKBox>
             <MKTypography sx={{ fontWeight: 700, color: "#1f2a44", fontSize: "0.9rem" }}>
-              Online Donations via Razorpay
+              {copy.onlineTitle || "Online Donations via Razorpay"}
             </MKTypography>
           </MKBox>
           <MKTypography sx={{ fontWeight: 700, color: "#2e7d32", fontSize: "0.83rem", mb: 0.5 }}>
@@ -173,8 +179,8 @@ export default function DonateReceiptCta({ sx = {} }) {
           <MKTypography
             sx={{ color: "rgba(31, 42, 68, 0.68)", fontSize: "0.8rem", lineHeight: 1.55 }}
           >
-            Your donation details are captured automatically. Retrieve or download your 80G receipt
-            instantly.
+            {copy.onlineBody ||
+              "Your donation details are captured automatically. Retrieve or download your 80G receipt instantly."}
           </MKTypography>
         </MKBox>
 
@@ -245,26 +251,14 @@ export default function DonateReceiptCta({ sx = {} }) {
               <AccountBalanceOutlinedIcon sx={{ color: "#b3791f", fontSize: 18 }} />
             </MKBox>
             <MKTypography sx={{ fontWeight: 700, color: "#1f2a44", fontSize: "0.9rem" }}>
-              Donated via Direct QR or Bank Transfer?
+              {copy.bankTitle || "Donated via Direct QR or Bank Transfer?"}
             </MKTypography>
           </MKBox>
           <MKTypography
             sx={{ color: "rgba(31, 42, 68, 0.68)", fontSize: "0.8rem", lineHeight: 1.6 }}
           >
-            Email{" "}
-            <MKBox component="span" sx={{ color: "#2e7d32", fontWeight: 700 }}>
-              aadarfoundation2018@gmail.com
-            </MKBox>{" "}
-            with your name, father/husband name, mobile, email,{" "}
-            <MKBox component="span" sx={{ fontWeight: 700, color: "#1f2a44" }}>
-              PAN (required)
-            </MKBox>
-            , address, donation amount, payment date, UTR/Bank Reference, and payment screenshot.
-          </MKTypography>
-          <MKTypography
-            sx={{ color: "rgba(31, 42, 68, 0.68)", fontSize: "0.8rem", lineHeight: 1.6, mt: 1 }}
-          >
-            After verification, we&apos;ll email your 80G tax receipt.
+            {copy.bankBody ||
+              "Submit your details on the Get my receipt page. After verification, we'll email your 80G tax receipt."}
           </MKTypography>
         </MKBox>
       </MKBox>

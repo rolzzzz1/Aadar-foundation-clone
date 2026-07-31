@@ -67,6 +67,7 @@
     "eject": "react-scripts eject",
     "api:dev": "node scripts/dev-server.js",
     "resend-receipt": "node scripts/resend-receipt-email.js",
+    "seed:qr-payment": "node scripts/seed-test-qr-payment.js",
     "lint": "eslint ./src",
     "prettify": "prettier --write ."
   },

@@ -97,21 +97,9 @@ function formatReceiptDate(iso, locale = "en") {
   }
 }
 
-function formatDisplayReceiptNo(record) {
-  const raw = record.receiptNo || "";
-  if (/^AADAR-\d{4}-\d+/i.test(raw)) return raw.toUpperCase();
-
-  const year = new Date(record.paidAt || Date.now()).getFullYear();
-  const digits = (record.paymentId || record.orderId || raw || String(Date.now()))
-    .replace(/\D/g, "")
-    .slice(-5)
-    .padStart(5, "0");
-  return `AADAR-${year}-${digits}`;
-}
-
 function receiptForLabel(record, copy) {
-  if (record.programLabel) return record.programLabel;
   if (record.purpose) return record.purpose;
+  if (record.programLabel) return record.programLabel;
   return copy.generalDonation;
 }
 
@@ -121,26 +109,56 @@ function paymentStatusLabel(record, copy) {
   return copy.status.failed;
 }
 
+function formatDonorAddress(donor) {
+  const d = donor || {};
+  const line = String(d.address || "").trim();
+  const city = String(d.city || "").trim();
+  const state = String(d.state || "").trim();
+  const pin = String(d.pin || "").trim();
+  const cityState = [city, state].filter(Boolean).join(", ");
+  const locality = [cityState, pin].filter(Boolean).join(" - ");
+  return [line, locality].filter(Boolean).join(", ");
+}
+
+function paymentMethodLabel(method, copy) {
+  const key = String(method || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[\s-]+/g, "_");
+  if (!key) return copy.paymentMode;
+  const map = copy.paymentMethods || {};
+  if (map[key]) return map[key];
+  if (key === "upi_qr") return map.upi_qr || map.upi || "UPI (QR)";
+  if (key.includes("upi")) return map.upi || "UPI";
+  if (key.includes("card")) return map.card || "Card";
+  if (key.includes("netbank")) return map.netbanking || "Net Banking";
+  if (key.includes("wallet")) return map.wallet || "Wallet";
+  if (key.includes("bank")) return map.bank_transfer || "Bank Transfer";
+  return copy.paymentMode;
+}
+
 function buildReceiptViewModel(record) {
   const locale = getReceiptLocale(record);
   const copy = getReceiptCopy(locale);
   const donor = record.donor || {};
   const org = { ...ORG_BASE, ...copy.org };
+  const donorAddress = formatDonorAddress(donor);
 
   return {
     locale,
     copy,
     isSuccess: record.status === "success",
     testMode: !!record.testMode,
-    receiptNo: formatDisplayReceiptNo(record),
+    receiptNo: record.receiptNo || "—",
     date: formatReceiptDate(record.paidAt || new Date().toISOString(), locale),
-    paymentMode: copy.paymentMode,
+    paymentMode: paymentMethodLabel(record.paymentMethod || record.payment_method, copy),
     paymentStatus: paymentStatusLabel(record, copy),
     donorName: donor.name || "—",
     fatherOrHusbandName: donor.fatherOrHusbandName || "—",
     email: donor.email || "—",
     mobile: donor.contact ? `+91 ${donor.contact}` : "—",
     pan: donor.pan || "—",
+    donorAddress: donorAddress || "—",
     amountInr: Number(record.amountInr) || 0,
     amountFormatted: formatInr(record.amountInr),
     amountFormattedPdf: formatInrPdf(record.amountInr),
@@ -149,6 +167,7 @@ function buildReceiptViewModel(record) {
     paymentId: record.paymentId || "—",
     orderId: record.orderId || "—",
     receiptFor: receiptForLabel(record, copy),
+    purpose: receiptForLabel(record, copy),
     org,
     qrHint: copy.qrHint,
   };

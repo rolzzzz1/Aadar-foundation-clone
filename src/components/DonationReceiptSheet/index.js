@@ -127,13 +127,15 @@ export default function DonationReceiptSheet({ record, logoSrc }) {
     [dr.email, vm.email],
     [dr.mobile, vm.mobile],
     [dr.pan, vm.pan],
+    [dr.address, vm.donorAddress],
   ];
 
   const donationRows = [
     [dn.amount, vm.amountFormatted],
     [dn.transactionId, vm.paymentId],
     [dn.orderId, vm.orderId],
-    [dn.receiptFor, vm.receiptFor],
+    [dn.purpose || dn.receiptFor, vm.purpose || vm.receiptFor],
+    [dn.modeOfTransaction || copy.meta.payment, vm.paymentMode],
     [dn.inWords, vm.amountWords],
   ];
 

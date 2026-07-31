@@ -117,12 +117,19 @@ module.exports = async function handler(req, res) {
     locale,
   });
 
+  const receiptRecord = {
+    ...built.record,
+    receiptNo:
+      (persisted.row && persisted.row.receipt_no) || built.record.receiptNo || "",
+  };
+
   return res.status(200).json({
     ok: true,
     verified: true,
     amount_paise: finalCheck.amount_paise,
     currency: finalCheck.currency,
-    record: built.record,
+    record: receiptRecord,
+    receipt_no: receiptRecord.receiptNo || "",
     record_saved: persisted.saved,
     record_save_reason: persisted.saved ? undefined : persisted.reason,
     receipt_email_sent: !!(persisted.receiptEmail && persisted.receiptEmail.sent),

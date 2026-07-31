@@ -14,6 +14,19 @@ function pickNote(notes, key) {
   return v == null ? "" : String(v);
 }
 
+function extractPaymentMethod(payment) {
+  if (!payment || typeof payment !== "object") return "";
+  const direct = String(payment.method || "")
+    .trim()
+    .toLowerCase();
+  if (direct) return direct;
+  if (payment.upi || payment.vpa) return "upi";
+  if (payment.card) return "card";
+  if (payment.wallet) return "wallet";
+  if (payment.bank) return "netbanking";
+  return "";
+}
+
 /**
  * Build a client-safe receipt record from Razorpay payment + order (source of truth).
  * Requires donor PAN to match order notes when PAN is present on the order.
@@ -60,12 +73,18 @@ function buildClientReceiptFromRazorpay({ payment, order, donorPan, locale }) {
         email: sanitizeText(pickNote(notes, "donor_email"), 254),
         contact: sanitizeText(pickNote(notes, "donor_contact"), 20),
         pan: panProvided,
+        address: sanitizeText(pickNote(notes, "donor_address"), 200),
+        state: sanitizeText(pickNote(notes, "donor_state"), 80),
+        city: sanitizeText(pickNote(notes, "donor_city"), 80),
+        pin: sanitizeText(pickNote(notes, "donor_pin"), 6),
       },
       paymentId: payment.id,
       orderId: payment.order_id || (order && order.id) || "",
-      receiptNo: (order && order.receipt) || "",
+      // Filled from donations.receipt_no after persist (official AADAR-YYYY-######)
+      receiptNo: "",
       purpose,
       programLabel,
+      paymentMethod: extractPaymentMethod(payment),
       paidAt,
       verified: true,
       testMode:

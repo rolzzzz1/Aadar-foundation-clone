@@ -22,6 +22,7 @@ const {
 const { fetchPayment } = require("../server/_lib/razorpay");
 const { fetchSubscription } = require("../server/_lib/razorpaySubscriptions");
 const { persistCapturedDonation } = require("../server/_lib/donationPersist");
+const { extractPaymentMethod } = require("../server/_lib/donationRecord");
 const { updateSubscriptionRecord } = require("../server/_lib/membershipRecord");
 const { applyRateLimit, LIMITS } = require("../server/_lib/rateLimit");
 
@@ -223,7 +224,9 @@ module.exports = async function handler(req, res) {
     payment_status: paymentStatus,
     amount_paise: Number(payment.amount) || 0,
     currency: payment.currency || "INR",
+    payment_method: extractPaymentMethod(payment),
     order_id: payment.order_id || "",
+    receipt_no: (persisted.row && persisted.row.receipt_no) || "",
     tier_key: tierKey,
     frequency,
     subscription_status: subscription.status,

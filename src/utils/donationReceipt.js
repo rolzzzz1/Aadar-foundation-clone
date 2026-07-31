@@ -209,6 +209,7 @@ export function receiptDocumentHtml(
       [dr.email, vm.email],
       [dr.mobile, vm.mobile],
       [dr.pan, vm.pan],
+      [dr.address, vm.donorAddress],
     ],
     amountLabels
   );
@@ -219,7 +220,8 @@ export function receiptDocumentHtml(
       [dn.amountAlt, vm.amountFormatted],
       [dn.transactionId, vm.paymentId],
       [dn.orderId, vm.orderId],
-      [dn.receiptFor, vm.receiptFor],
+      [dn.purpose || dn.receiptFor, vm.purpose || vm.receiptFor],
+      [dn.modeOfTransaction || copy.meta.payment, vm.paymentMode],
       [dn.amountInWords, vm.amountWords],
     ],
     amountLabels
@@ -515,12 +517,14 @@ async function buildReceiptPdfVector(record) {
     [dr.email, vm.email],
     [dr.mobile, vm.mobile],
     [dr.pan, vm.pan],
+    [dr.address, vm.donorAddress],
   ];
   const donationRows = [
     [dn.amountAlt, vm.amountFormattedPdf],
     [dn.transactionId, vm.paymentId],
     [dn.orderId, vm.orderId],
-    [dn.receiptFor, vm.receiptFor],
+    [dn.purpose || dn.receiptFor, vm.purpose || vm.receiptFor],
+    [dn.modeOfTransaction || copy.meta.payment, vm.paymentMode],
     [dn.inWords, vm.amountWords],
   ];
 

@@ -229,6 +229,7 @@ function buildReceiptDocumentHtml(record) {
       [dr.email, vm.email],
       [dr.mobile, vm.mobile],
       [dr.pan, vm.pan],
+      [dr.address, vm.donorAddress],
     ],
     amountLabels
   );
@@ -239,7 +240,8 @@ function buildReceiptDocumentHtml(record) {
       [dn.amountAlt, vm.amountFormatted],
       [dn.transactionId, vm.paymentId],
       [dn.orderId, vm.orderId],
-      [dn.receiptFor, vm.receiptFor],
+      [dn.purpose || dn.receiptFor, vm.purpose || vm.receiptFor],
+      [dn.modeOfTransaction || copy.meta.payment, vm.paymentMode],
       [dn.amountInWords, vm.amountWords],
     ],
     amountLabels

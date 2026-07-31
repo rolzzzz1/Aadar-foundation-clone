@@ -2,7 +2,6 @@ const { sanitizeText, NAME_MAX, EMAIL_MAX } = require("./donation");
 const {
   validateUtr,
   upiPaymentId,
-  generateUpiReceiptNo,
   validatePaidAt,
   normalizePan,
   normalizeContact,
@@ -98,7 +97,8 @@ function buildManualDonationRecord(body) {
     record: {
       payment_id: paymentId,
       order_id: orderId,
-      receipt_no: generateUpiReceiptNo(refValue, paidAtCheck.value),
+      // Official AADAR-YYYY-###### assigned in upsertDonationRecord
+      receipt_no: "",
       amount_paise: amountInr * 100,
       currency: "INR",
       status: "captured",

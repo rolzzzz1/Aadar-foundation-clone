@@ -508,13 +508,13 @@
       "title": "Moments from our work",
       "subtitle": "A glimpse of the lives we serve",
       "captions": {
-        "aadarshGram": "Aadarsh Gram — community light & hope",
+        "ashramSwargSadan": "Ashram Swarg Sadan — lit with hope",
         "mediaCoverage": "Recognised in the press for shelter care",
         "careTransformation": "Dignity restored — before & after",
         "holiCelebration": "Joy shared — Holi at the ashram"
       },
       "alts": {
-        "aadarshGram": "Lit diyas forming the words Aadarsh Gram on the ground at night",
+        "ashramSwargSadan": "Lit diyas forming the words Ashram Swarg Sadan on the ground at night",
         "mediaCoverage": "Pradesh Today newspaper feature on Swarg Sadan shelter work",
         "careTransformation": "Before and after care of an elderly resident at the ashram",
         "holiCelebration": "Residents and volunteers celebrating Holi together with colors"
@@ -581,14 +581,14 @@
             "description": "Expenses of one Prabhuji",
             "periodDetail": "( for a Month )",
             "highlight": "One Month – Rs. 3,001",
-            "payButton": "Pay Now - Rs. 3,001",
+            "payButton": "Donate Now - Rs. 3,001",
             "amount": 3001
           },
           {
             "description": "Expenses of one Prabhuji",
             "periodDetail": "( for a Year )",
             "highlight": "One Year – Rs. 30,001",
-            "payButton": "Pay Now - Rs. 30,001",
+            "payButton": "Donate Now - Rs. 30,001",
             "amount": 30001
           }
         ],
@@ -637,17 +637,51 @@
         "annualMembershipCta": "Annual Membership",
         "annualMembershipMethods": "Yearly support • Auto-renew",
         "foodItems": [
-          { "title": "Breakfast", "detail": "50 Prabhuji" },
-          { "title": "Lunch / Dinner", "detail": "50 Prabhuji" },
-          { "title": "100 Meals", "detail": "100 Prabhuji" },
-          { "title": "Full Day Meals", "detail": "100 Prabhuji" }
+          {
+            "title": "Breakfast",
+            "detail": "50 Prabhuji"
+          },
+          {
+            "title": "Lunch / Dinner",
+            "detail": "50 Prabhuji"
+          },
+          {
+            "title": "100 Meals",
+            "detail": "100 Prabhuji"
+          },
+          {
+            "title": "Full Day Meals",
+            "detail": "100 Prabhuji"
+          }
         ],
         "membershipItems": [
-          { "title": "Monthly Support" },
-          { "title": "6-Month Support" },
-          { "title": "Annual Support" }
+          {
+            "title": "Monthly Support"
+          },
+          {
+            "title": "6-Month Support"
+          },
+          {
+            "title": "Annual Support"
+          }
         ]
       }
+    },
+    "membership": {
+      "chooseTitle": "Choose your membership",
+      "toggleOneTime": "One-time",
+      "toggleMonthly": "Monthly",
+      "toggleYearly": "Yearly",
+      "recurringNotice": "Recurring memberships are billed automatically via Razorpay — cancel anytime.",
+      "becomeMember": "Become a Member",
+      "becomeMemberAriaLabel": "Become a member for ₹{{amount}}/{{period}}",
+      "tiers": {
+        "supporter": "Supporter",
+        "sustainer": "Sustainer",
+        "patron": "Patron"
+      },
+      "perMonthShort": "month",
+      "perYearShort": "year"
     }
   },
   "donationForm": {
@@ -758,6 +792,13 @@
       "panRequired": "PAN is required.",
       "panLength": "PAN must be 10 characters.",
       "panInvalid": "Enter a valid PAN (e.g. ABCDE1234F)."
+    },
+    "membership": {
+      "titleSuffix": "{{tier}} Membership",
+      "billedMonthly": "Billed monthly — cancel anytime",
+      "billedYearly": "Billed yearly — cancel anytime",
+      "perMonthShort": "mo",
+      "perYearShort": "yr"
     }
   },
   "donationResult": {
@@ -824,7 +865,27 @@
     "paymentId": "Payment ID",
     "orderId": "Order ID",
     "program": "Program",
-    "purpose": "Purpose"
+    "purpose": "Purpose",
+    "pleaseWait": "Please wait",
+    "lookupWhereTitle": "Where to find Payment ID?",
+    "lookupWhereUpiTitle": "UPI App",
+    "lookupWhereUpiBody": "Check your UPI payment history.",
+    "lookupWhereSmsTitle": "Bank SMS",
+    "lookupWhereSmsBody": "Look for Razorpay payment SMS.",
+    "lookupWhereRzpTitle": "Razorpay Message",
+    "lookupWhereRzpBody": "Open the confirmation message from Razorpay.",
+    "lookupWhereStmtTitle": "Bank Statement",
+    "lookupWhereStmtBody": "Check your account statement.",
+    "lookupNotFoundTitle": "We couldn't find a matching donation",
+    "lookupHelpTitle": "Need assistance?",
+    "lookupHelpBody": "We're here to help you.",
+    "lookupSupportAgainTitle": "Want to support again?",
+    "lookupFooter": "Thank you for supporting Aadar Foundation.",
+    "lookupPaymentIdHint": "You can find this in UPI SMS, Bank SMS, Razorpay message or Bank statement.",
+    "lookupEmailPh": "Enter the email used during donation",
+    "lookupPrivacy": "Your details are safe and used only to retrieve your receipt.",
+    "lookupNotFoundBody": "Please verify your Payment ID and PAN. If the issue persists, contact us at {{email}} or {{phone}}.",
+    "lookupSupportAgainBody": "Your contribution helps us create a better and brighter future."
   },
   "receiptRetrieve": {
     "title": "Retrieve your donation receipt",
@@ -850,8 +911,8 @@
         "subtitle": "Find and download in seconds"
       }
     },
-    "tabOnline": "Online payment",
-    "tabUpi": "UPI / QR payment",
+    "tabOnline": "Online Donations via Razorpay",
+    "tabUpi": "Donated via Direct QR or Bank Transfer",
     "onlineHint": "Online donations only. Enter the email or mobile number you used when donating to find your donations and download receipts.",
     "contactEmail": "Email",
     "contactMobile": "Mobile",
@@ -894,8 +955,67 @@
       "title": "Need your donation receipt?",
       "body": "Retrieve or download your official 80G receipt for online donations only.",
       "bankTransferNote": "For UPI/QR or bank transfer donations, email aadarfoundation2018@gmail.com with your donor details (name, father/husband name, email, mobile, PAN, address), donation details (amount and date), transaction reference (UTR/Bank Ref), and payment screenshot. We will verify the payment and email your 80G tax receipt.",
-      "button": "Get my receipt"
-    }
+      "button": "Get my receipt",
+      "onlineTitle": "Online Donations via Razorpay",
+      "onlineBody": "Retrieve or download your official 80G receipt for Razorpay donations.",
+      "bankTitle": "Donated via Direct QR or Bank Transfer?",
+      "bankBody": "Submit your details on the Get my receipt page. After verification, we'll email your 80G tax receipt.",
+      "bankButton": "Open receipt request form"
+    },
+    "findMyReceipt": "Find My Receipt",
+    "thankYouPrefix": "Thank you for choosing",
+    "thankYouHighlight": "kindness",
+    "thankYouSubtitle": "Your support helps us bring food, shelter and dignity to those who need it most.",
+    "trustBadge": "Aadar Foundation is a registered NGO committed to transparency and accountability.",
+    "knowMore": "Know more about us",
+    "impactTitle": "Your Impact in Action",
+    "cardSubtitle": "Enter the email address or mobile number used during your donation.",
+    "dataSafeNote": "Your data is safe with us. We use it only to help you retrieve your receipt.",
+    "impact": {
+      "lives": {
+        "title": "Thousands",
+        "subtitle": "Lives touched with care"
+      },
+      "meals": {
+        "title": "Daily Meals",
+        "subtitle": "Served with dignity"
+      },
+      "shelter": {
+        "title": "Shelter & Support",
+        "subtitle": "For the homeless & unclaimed"
+      },
+      "transparent": {
+        "title": "100% Transparent",
+        "subtitle": "Use of every donation"
+      }
+    },
+    "channelOnline": "Online Donations via Razorpay",
+    "channelBank": "Donated via Direct QR or Bank Transfer",
+    "onlineCardSubtitle": "Enter the email address or mobile number used during your Razorpay donation.",
+    "bankCardSubtitle": "Submit your donation details below. After verification, we'll email your 80G tax receipt.",
+    "bankIntroLead": "Email",
+    "bankIntroEmail": "aadarfoundation2018@gmail.com",
+    "bankIntroBody": "with your name, father/husband name, mobile, email, PAN (required), address, donation amount, payment date, UTR/Bank Reference, and payment screenshot.",
+    "bankIntroAfter": "After verification, we'll email your 80G tax receipt.",
+    "bankFormHint": "Fill this form to send your details to Aadar Foundation. A payment screenshot is required.",
+    "bankUtr": "UTR / Bank Reference",
+    "bankScreenshot": "Payment screenshot",
+    "bankScreenshotHint": "JPG, PNG or WebP · max 3 MB",
+    "bankScreenshotChoose": "Upload screenshot",
+    "bankScreenshotSelected": "Selected: {{name}}",
+    "bankSubmit": "Submit receipt request",
+    "bankSubmitting": "Sending…",
+    "bankSuccess": "Your request was emailed to Aadar Foundation. After verification, we'll send your 80G tax receipt to {{email}}.",
+    "bankInvalid": "Please fill all required fields correctly, including PAN and payment screenshot.",
+    "bankScreenshotRequired": "Please attach your payment screenshot.",
+    "bankScreenshotTooLarge": "Screenshot must be under 3 MB.",
+    "bankScreenshotType": "Please upload a JPG, PNG, or WebP image.",
+    "bankFailed": "Could not send your request right now. Please email aadarfoundation2018@gmail.com directly.",
+    "panRequired": "PAN (required)",
+    "chooseDonationType": "How did you donate?",
+    "findByLabel": "Find by",
+    "channelOnlineHint": "Instant lookup & 80G PDF download",
+    "channelBankHint": "Submit details for verification"
   },
   "footer": {
     "title": "Aadar foundation",
@@ -924,5 +1044,112 @@
     "designed by": "Designed by",
     "visitProfile": "Visit profile",
     "developerName": "Aishx.dev ( Aishwarya )"
+  },
+  "adminPortal": {
+    "portalTitle": "Admin Portal",
+    "secureAccess": "Secure Admin Access",
+    "secureAccessSubtitle": "Sign in to manage donation receipts",
+    "welcomeBack": "Welcome Back",
+    "enterCredentials": "Enter your admin credentials to continue.",
+    "username": "Username",
+    "password": "Password",
+    "usernamePlaceholder": "Admin username",
+    "passwordPlaceholder": "Password",
+    "login": "Login",
+    "checking": "Checking…",
+    "logout": "Logout",
+    "back": "Back",
+    "adminTools": "Admin Tools",
+    "chooseAction": "Choose what you want to do.",
+    "retrieveReceipt": "Retrieve Receipt",
+    "retrieveReceiptDesc": "Find donations by email or mobile and download receipts.",
+    "createReceipt": "Create Receipt",
+    "createReceiptDesc": "Issue a receipt for verified UPI / QR or bank transfer donations.",
+    "issueTitle": "Issue donation receipt",
+    "issueSubtitle": "For verified UPI / QR or bank transfer donations.",
+    "retrieveTitle": "Retrieve donation receipt",
+    "retrieveSubtitle": "Look up receipts by donor email or mobile.",
+    "findDonations": "Find donations",
+    "searching": "Searching…",
+    "donationsFound": "Donations found",
+    "viewReceipt": "View receipt",
+    "downloadPdf": "Download PDF",
+    "searchAgain": "Search again",
+    "receiptLoaded": "Receipt loaded",
+    "preparingPdf": "Preparing PDF…",
+    "email": "Email",
+    "mobile": "Mobile",
+    "enterEmail": "Enter a valid email address.",
+    "enterMobile": "Enter a valid 10-digit mobile number.",
+    "enterUsername": "Enter the admin username.",
+    "enterPassword": "Enter the admin password.",
+    "invalidLogin": "Invalid username or password.",
+    "noDonations": "No donations found for this email or mobile.",
+    "receiptNotFound": "Receipt not found.",
+    "lookupFailed": "Could not look up donations right now. Please try again.",
+    "createBusy": "Creating…",
+    "createButton": "Create receipt & email donor",
+    "createSuccess": "Receipt created and emailed to the donor.",
+    "createFailed": "Could not create receipt. Please check details and try again.",
+    "amount": "Amount (₹)",
+    "utr": "UPI / Bank transaction reference (UTR)",
+    "paidAt": "Payment date",
+    "name": "Full name",
+    "fatherHusband": "Father / husband name",
+    "pan": "PAN",
+    "address": "Address",
+    "state": "State",
+    "city": "City",
+    "pin": "PIN",
+    "purpose": "Purpose (optional)",
+    "programLabel": "Program label (optional)",
+    "paymentMethod": "Payment method",
+    "methodUpi": "UPI / QR",
+    "methodBank": "Bank transfer",
+    "validationAmount": "Enter a valid donation amount in whole rupees.",
+    "validationUtr": "UPI transaction reference (UTR) is required.",
+    "validationName": "Donor name is required.",
+    "validationFather": "Father's / husband's name is required.",
+    "validationEmail": "Enter a valid email address.",
+    "validationMobile": "Enter a valid 10-digit mobile number.",
+    "validationPan": "Enter a valid PAN.",
+    "validationAddress": "Address is required.",
+    "validationState": "State is required.",
+    "validationCity": "City is required.",
+    "validationPin": "Enter a valid 6-digit PIN.",
+    "portalLead": "Secure access to manage and retrieve donation receipts and organizational operations.",
+    "restrictedOnly": "Restricted to authorized administrators only.",
+    "authorizedOnly": "Authorized administrators only",
+    "adminUsername": "Admin Username",
+    "adminPassword": "Admin Password",
+    "usernameEnter": "Enter admin username",
+    "passwordEnter": "Enter password",
+    "hidePassword": "Hide password",
+    "showPassword": "Show password",
+    "welcomeComma": "Welcome,",
+    "verifyAlert": "Verify the donor's payment screenshot and bank/UPI details before issuing the receipt. The PDF will be emailed to the donor automatically.",
+    "paymentDetails": "Payment details",
+    "donorDetails": "Donor details",
+    "bankRef": "Bank transaction reference",
+    "upiRef": "UPI reference (UTR)",
+    "pinCode": "PIN code",
+    "programOptional": "Program (optional)",
+    "purposeOptional": "Purpose / note (optional)",
+    "resendIfExists": "Re-send email if this transaction already exists",
+    "receiptLanguage": "Receipt language",
+    "langEnglish": "English",
+    "langHindi": "Hindi",
+    "creatingReceipt": "Creating receipt…",
+    "emailSentTo": "Receipt {{receiptNo}} emailed to {{email}}.",
+    "emailSavedNotSent": "Receipt {{receiptNo}} saved, but email was not sent.",
+    "emailAlreadySent": "Receipt saved, but email was already sent for this donation.",
+    "emailSendFailed": "Receipt saved, but the email could not be sent. Check Resend configuration and try resend.",
+    "issueAnother": "Issue another receipt",
+    "validationMaxAmount": "Maximum donation amount is ₹5,00,000.",
+    "validationBankRef": "Bank transaction reference is required.",
+    "validationPaidAt": "Payment date is required.",
+    "validationPan80g": "PAN is required for the 80G receipt.",
+    "retrieveMenuDesc": "Search and retrieve existing donation receipts.",
+    "createMenuDesc": "Create a new donation receipt."
   }
 }

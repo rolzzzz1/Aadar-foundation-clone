@@ -485,6 +485,8 @@ async function trySendReceiptEmail(row, options = {}) {
 
 module.exports = {
   isEmailConfigured,
+  getReplyToEmail,
+  getContactEmail,
   sendDonationReceiptEmail,
   trySendReceiptEmail,
   buildReceiptEmailHtml,

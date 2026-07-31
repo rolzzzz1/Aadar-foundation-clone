@@ -11,6 +11,7 @@ const {
 } = require("../server/_lib/donation");
 const { fetchPaymentUntilCaptured, fetchOrder } = require("../server/_lib/razorpay");
 const { persistCapturedDonation } = require("../server/_lib/donationPersist");
+const { extractPaymentMethod } = require("../server/_lib/donationRecord");
 const { applyRateLimit, LIMITS } = require("../server/_lib/rateLimit");
 
 const MAX_BODY_BYTES = 2 * 1024;
@@ -169,6 +170,8 @@ module.exports = async function handler(req, res) {
     payment_status: captureCheck.payment_status,
     amount_paise: captureCheck.amount_paise,
     currency: captureCheck.currency,
+    payment_method: extractPaymentMethod(payment),
+    receipt_no: (persisted.row && persisted.row.receipt_no) || "",
     record_saved: persisted.saved,
     record_save_reason: persisted.saved ? undefined : persisted.reason,
     receipt_email_sent: !!(persisted.receiptEmail && persisted.receiptEmail.sent),

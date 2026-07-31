@@ -33,9 +33,9 @@ const ALLOWED_NOTE_KEYS = Object.freeze([
   "donor_state",
   "donor_city",
   "donor_pin",
-  "fcra_declaration",
   "privacy_consent",
   "purpose",
+  "donor_locale",
 ]);
 
 /** Server-enforced canonical prices. Keep in sync with src/utils/donation.js. */
@@ -237,10 +237,6 @@ function validateOrderNotes(rawNotes) {
   const pin = validatePinIn(incoming.donor_pin);
   if (!pin.ok) return { ok: false, error: pin.error };
 
-  if (incoming.fcra_declaration !== "accepted") {
-    return { ok: false, error: "Domestic donation declaration is required before payment." };
-  }
-
   if (incoming.privacy_consent !== "accepted") {
     return { ok: false, error: "Privacy and terms consent is required before payment." };
   }
@@ -259,7 +255,6 @@ function validateOrderNotes(rawNotes) {
       donor_state: state.value,
       donor_city: city.value,
       donor_pin: pin.value,
-      fcra_declaration: "accepted",
       privacy_consent: "accepted",
       note: purpose.value,
     },

@@ -12,24 +12,27 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Container from "@mui/material/Container";
 import InputAdornment from "@mui/material/InputAdornment";
 import Stack from "@mui/material/Stack";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import AccountBalanceOutlinedIcon from "@mui/icons-material/AccountBalanceOutlined";
+import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
 import PhoneIphoneOutlinedIcon from "@mui/icons-material/PhoneIphoneOutlined";
 import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 import ReplayOutlinedIcon from "@mui/icons-material/ReplayOutlined";
 import RestaurantOutlinedIcon from "@mui/icons-material/RestaurantOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import ShieldOutlinedIcon from "@mui/icons-material/ShieldOutlined";
 import VerifiedOutlinedIcon from "@mui/icons-material/VerifiedOutlined";
 
@@ -41,10 +44,16 @@ import DonationReceiptSheet from "components/DonationReceiptSheet";
 import aadarLogo from "assets/images/logos/logo-aadar.jpg";
 import getRoutes from "routes1";
 import getFooterRoutes from "footer.routes1";
-import { DONATE_PAGE_PATH } from "utils/donation";
+import {
+  DONATE_PAGE_PATH,
+  validateAddressLine,
+  validateContactIN,
+  validateEmail,
+  validatePan,
+  validatePinIn,
+} from "utils/donation";
 import { ABOUT_PATH } from "utils/paths";
-import { postJson } from "utils/api";
-import { validateEmail } from "utils/donation";
+import { formatApiErrorMessage, getApiUrl, postJson } from "utils/api";
 import { formatInr } from "utils/receiptFormat";
 
 const brandGreen = "#1e6b35";
@@ -61,13 +70,49 @@ const panelWarm = "#faf8f2";
 const ink = "#1f2a44";
 
 const fieldSx = {
-  "& .MuiInputBase-input": { fontSize: { xs: "0.9375rem", sm: "0.975rem" }, py: 1.45 },
-  "& .MuiInputLabel-root": { fontSize: { xs: "0.875rem", sm: "0.9375rem" }, fontWeight: 600 },
+  "& .MuiInputBase-input": {
+    fontSize: { xs: "0.9375rem", sm: "0.975rem" },
+    py: 1.45,
+    lineHeight: 1.5,
+  },
+  "& .MuiInputLabel-root": {
+    fontSize: { xs: "0.875rem", sm: "0.9375rem" },
+    fontWeight: 600,
+    lineHeight: 1.55,
+    overflow: "visible",
+    textOverflow: "clip",
+    maxWidth: "calc(100% - 28px)",
+    whiteSpace: "nowrap",
+    // Devanagari matras need extra room inside the field before shrink.
+    "&.MuiInputLabel-outlined:not(.MuiInputLabel-shrink)": {
+      transform: "translate(14px, 16px) scale(1)",
+    },
+    "&.MuiInputLabel-shrink": {
+      // Default maxWidth calc clips Hindi glyphs on the left/top.
+      maxWidth: "none",
+      overflow: "visible",
+      lineHeight: 1.45,
+      letterSpacing: "0.01em",
+      px: 0.35,
+    },
+  },
   "& .MuiOutlinedInput-root": {
     borderRadius: "12px",
     backgroundColor: "#fff",
     boxShadow: "0 2px 8px rgba(30, 107, 53, 0.04)",
-    "& fieldset": { borderColor: "rgba(30, 107, 53, 0.16)" },
+    overflow: "visible",
+    "& fieldset": {
+      borderColor: "rgba(30, 107, 53, 0.16)",
+      overflow: "visible",
+    },
+    // Widen the outline notch so shrunk Hindi labels are not cut.
+    "& .MuiOutlinedInput-notchedOutline legend": {
+      maxWidth: "100%",
+    },
+    "& .MuiOutlinedInput-notchedOutline legend span": {
+      paddingLeft: "8px",
+      paddingRight: "8px",
+    },
     "&:hover fieldset": { borderColor: yellowBorder },
     "&.Mui-focused fieldset": {
       borderColor: brandGreen,
@@ -79,32 +124,60 @@ const fieldSx = {
   },
 };
 
-const tabSx = {
-  minHeight: 48,
-  p: 0.5,
-  borderRadius: "14px",
-  bgcolor: "rgba(236, 165, 51, 0.07)",
-  border: `1px solid ${yellowBorder}`,
-  "& .MuiTabs-flexContainer": { gap: 0.5 },
-  "& .MuiTab-root": {
-    minHeight: 42,
-    flex: 1,
-    textTransform: "none",
-    fontWeight: 600,
-    fontSize: "0.9rem",
-    color: "rgba(31, 42, 68, 0.5)",
-    gap: 0.75,
-    borderRadius: "11px",
-    transition: "background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease",
-    "&.Mui-selected": {
-      color: brandGreenDark,
-      fontWeight: 700,
-      bgcolor: "#fff",
-      boxShadow: `0 3px 12px rgba(30, 107, 53, 0.1), inset 0 -2px 0 ${brandYellow}`,
+const channelCardSx = (selected) => ({
+  position: "relative",
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  gap: 1.25,
+  width: "100%",
+  m: 0,
+  p: { xs: 1.5, sm: 1.75 },
+  pr: { xs: 1.25, sm: 1.5 },
+  textAlign: "left",
+  cursor: "pointer",
+  borderRadius: "18px",
+  overflow: "hidden",
+  fontFamily: "inherit",
+  border: selected ? `1.5px solid ${brandGreen}` : "1.5px solid rgba(31, 42, 68, 0.1)",
+  background: selected
+    ? `linear-gradient(155deg, #ffffff 0%, ${panelGreen} 55%, ${brandYellowSoft} 100%)`
+    : "linear-gradient(180deg, #ffffff 0%, #fbfcfa 100%)",
+  boxShadow: selected
+    ? `0 14px 32px rgba(30, 107, 53, 0.16), 0 0 0 3px rgba(236, 165, 51, 0.12)`
+    : "0 6px 18px rgba(31, 42, 68, 0.05)",
+  transform: selected ? "translateY(-2px)" : "none",
+  transition:
+    "transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease",
+  "&::before": {
+    content: '""',
+    position: "absolute",
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: 4,
+    borderRadius: "18px 0 0 18px",
+    background: selected
+      ? `linear-gradient(180deg, ${brandYellow} 0%, ${brandGreen} 100%)`
+      : "transparent",
+  },
+  "&:hover": {
+    transform: "translateY(-2px)",
+    borderColor: selected ? brandGreen : yellowBorder,
+    boxShadow: selected
+      ? `0 16px 36px rgba(30, 107, 53, 0.18), 0 0 0 3px rgba(236, 165, 51, 0.16)`
+      : `0 10px 24px rgba(31, 42, 68, 0.08), 0 0 0 3px ${yellowTint}`,
+    "& .channel-card-arrow": {
+      transform: "translateX(3px)",
+      bgcolor: selected ? brandGreen : "rgba(30, 107, 53, 0.12)",
+      color: selected ? "#fff" : brandGreenDark,
     },
   },
-  "& .MuiTabs-indicator": { display: "none" },
-};
+  "&:focus-visible": {
+    outline: `3px solid ${yellowTintStrong}`,
+    outlineOffset: 2,
+  },
+});
 
 const findReceiptBtnSx = {
   py: 1.55,
@@ -155,6 +228,40 @@ const findReceiptBtnSx = {
 };
 
 const emptyContactLookup = { method: "email", value: "" };
+
+const MAX_SCREENSHOT_BYTES = 3 * 1024 * 1024;
+const ALLOWED_SCREENSHOT_TYPES = new Set(["image/jpeg", "image/jpg", "image/png", "image/webp"]);
+
+function todayIsoDate() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+const emptyBankForm = {
+  name: "",
+  fatherOrHusbandName: "",
+  mobile: "",
+  email: "",
+  pan: "",
+  address: "",
+  city: "",
+  state: "",
+  pin: "",
+  amountInr: "",
+  paidAt: todayIsoDate(),
+  transactionRef: "",
+  screenshotName: "",
+  screenshotType: "",
+  screenshotBase64: "",
+};
+
+function readFileAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ""));
+    reader.onerror = () => reject(new Error("Could not read file"));
+    reader.readAsDataURL(file);
+  });
+}
 
 function normalizeContact(v) {
   const digits = String(v || "").replace(/\D/g, "");
@@ -482,13 +589,27 @@ export default function DonationReceiptRetrievePage() {
   const [downloadMsg, setDownloadMsg] = useState("");
   const [record, setRecord] = useState(null);
   const [emailSent, setEmailSent] = useState(false);
+  const [channel, setChannel] = useState("online"); // 'online' | 'bank'
+  const [bankForm, setBankForm] = useState({ ...emptyBankForm, paidAt: todayIsoDate() });
+  const [bankBusy, setBankBusy] = useState(false);
+  const [bankError, setBankError] = useState("");
+  const [bankSuccess, setBankSuccess] = useState("");
 
   const copy = useMemo(() => t("receiptRetrieve", { returnObjects: true }), [t]);
-  const ctaCopy = copy.cta || {};
 
   const donationsHeadingRef = useRef(null);
   const prevDonationsCountRef = useRef(0);
   const receiptCardRef = useRef(null);
+  const screenshotInputRef = useRef(null);
+
+  useEffect(() => {
+    const hash = String(window.location.hash || "")
+      .replace(/^#/, "")
+      .toLowerCase();
+    if (hash === "bank" || hash === "qr" || hash === "transfer") {
+      setChannel("bank");
+    }
+  }, []);
 
   useEffect(() => {
     const count = Array.isArray(donationsList) ? donationsList.length : 0;
@@ -542,6 +663,136 @@ export default function DonationReceiptRetrievePage() {
     setEmailSent(false);
     setDonationsList(null);
     setVerifiedContact(null);
+  };
+
+  const updateBankField = (field) => (event) => {
+    setBankForm((prev) => ({ ...prev, [field]: event.target.value }));
+    setBankError("");
+    setBankSuccess("");
+  };
+
+  const handleScreenshotChange = async (event) => {
+    const file = event.target.files && event.target.files[0];
+    setBankError("");
+    setBankSuccess("");
+    if (!file) {
+      setBankForm((prev) => ({
+        ...prev,
+        screenshotName: "",
+        screenshotType: "",
+        screenshotBase64: "",
+      }));
+      return;
+    }
+    if (!ALLOWED_SCREENSHOT_TYPES.has(String(file.type || "").toLowerCase())) {
+      setBankError(copy.bankScreenshotType || "Please upload a JPG, PNG, or WebP image.");
+      event.target.value = "";
+      return;
+    }
+    if (file.size > MAX_SCREENSHOT_BYTES) {
+      setBankError(copy.bankScreenshotTooLarge || "Screenshot must be under 3 MB.");
+      event.target.value = "";
+      return;
+    }
+    try {
+      const dataUrl = await readFileAsDataUrl(file);
+      setBankForm((prev) => ({
+        ...prev,
+        screenshotName: file.name,
+        screenshotType: file.type,
+        screenshotBase64: dataUrl,
+      }));
+    } catch {
+      setBankError(copy.bankFailed || "Could not read screenshot file.");
+      event.target.value = "";
+    }
+  };
+
+  const handleBankSubmit = async (event) => {
+    event.preventDefault();
+    setBankError("");
+    setBankSuccess("");
+
+    const name = String(bankForm.name || "").trim();
+    const father = String(bankForm.fatherOrHusbandName || "").trim();
+    const emailCheck = validateEmail(bankForm.email);
+    const mobileCheck = validateContactIN(bankForm.mobile);
+    const panCheck = validatePan(bankForm.pan);
+    const addressCheck = validateAddressLine(bankForm.address);
+    const city = String(bankForm.city || "").trim();
+    const state = String(bankForm.state || "").trim();
+    const pinCheck = validatePinIn(bankForm.pin);
+    const amount = Math.round(Number(bankForm.amountInr));
+    const utr = String(bankForm.transactionRef || "").trim();
+
+    if (
+      !name ||
+      !father ||
+      !emailCheck.ok ||
+      !mobileCheck.ok ||
+      !panCheck.ok ||
+      !panCheck.value ||
+      !addressCheck.ok ||
+      !city ||
+      !state ||
+      !pinCheck.ok ||
+      !Number.isFinite(amount) ||
+      amount < 1 ||
+      !bankForm.paidAt ||
+      utr.length < 4
+    ) {
+      setBankError(copy.bankInvalid || "Please fill all required fields correctly.");
+      return;
+    }
+    if (!bankForm.screenshotBase64) {
+      setBankError(copy.bankScreenshotRequired || "Please attach your payment screenshot.");
+      return;
+    }
+
+    setBankBusy(true);
+    try {
+      const url = getApiUrl("/api/receipt-request");
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({
+          name,
+          father_or_husband_name: father,
+          email: emailCheck.value,
+          mobile: mobileCheck.value,
+          pan: panCheck.value,
+          address: addressCheck.value,
+          city,
+          state,
+          pin: pinCheck.value,
+          amount_inr: amount,
+          paid_at: bankForm.paidAt,
+          transaction_ref: utr,
+          screenshot_base64: bankForm.screenshotBase64,
+          screenshot_type: bankForm.screenshotType,
+          screenshot_name: bankForm.screenshotName,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(formatApiErrorMessage(data, res.status));
+      }
+      setBankSuccess(
+        t("receiptRetrieve.bankSuccess", {
+          email: emailCheck.value,
+          defaultValue:
+            copy.bankSuccess ||
+            `Your request was emailed to Aadar Foundation. After verification, we'll send your 80G tax receipt to ${emailCheck.value}.`,
+        })
+      );
+      setBankForm({ ...emptyBankForm, paidAt: todayIsoDate() });
+      if (screenshotInputRef.current) screenshotInputRef.current.value = "";
+    } catch (err) {
+      setBankError((err && err.message) || copy.bankFailed || t("receiptRetrieve.bankFailed"));
+    } finally {
+      setBankBusy(false);
+    }
   };
 
   const handleDownload = async () => {
@@ -685,219 +936,632 @@ export default function DonationReceiptRetrievePage() {
     </Box>
   ) : null;
 
-  const lookupForm = (
-    <Stack spacing={2.25} sx={{ width: "100%", alignItems: "center" }}>
-      <Box
-        sx={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <Stack
-          spacing={2.25}
+  const onlineLookupForm = (
+    <Stack spacing={2.5} sx={{ width: "100%", maxWidth: 640, mx: "auto", alignItems: "center" }}>
+      <Box sx={{ width: "100%" }}>
+        <Typography
           sx={{
-            width: "100%",
-            maxWidth: 640,
-            alignItems: "center",
-            py: { xs: 1.25, sm: 1.75 },
+            fontWeight: 800,
+            fontSize: "0.72rem",
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            color: "rgba(31, 42, 68, 0.45)",
+            mb: 1,
+            textAlign: "center",
           }}
         >
-          <Tabs
-            value={contactLookup.method}
-            onChange={(_, value) => {
-              setContactLookup({ method: value, value: "" });
-              setError("");
-              setDonationsList(null);
-            }}
-            sx={{ ...tabSx, width: "100%", mx: "auto", alignSelf: "center" }}
-          >
-            <Tab
-              value="email"
-              icon={<EmailOutlinedIcon sx={{ fontSize: 18 }} />}
-              iconPosition="start"
-              label={copy.contactEmail || "Email"}
-            />
-            <Tab
-              value="mobile"
-              icon={<PhoneIphoneOutlinedIcon sx={{ fontSize: 18 }} />}
-              iconPosition="start"
-              label={copy.contactMobile || "Mobile"}
-            />
-          </Tabs>
-
-          <Box
-            component="form"
-            sx={{ width: "100%", mx: "auto", alignSelf: "center", pb: { xs: 0.5, sm: 0.75 } }}
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (!busy) handleFindDonations();
-            }}
-          >
-            <TextField
-              label={
-                contactLookup.method === "mobile"
-                  ? copy.mobile || t("donationResult.mobile")
-                  : copy.emailAddress || copy.email || t("donationResult.email")
-              }
-              value={contactLookup.value}
-              onChange={(e) => setContactLookup((prev) => ({ ...prev, value: e.target.value }))}
-              placeholder={
-                contactLookup.method === "mobile"
-                  ? copy.mobilePlaceholder || "9826441863"
-                  : copy.emailPlaceholder || "Enter your email address"
-              }
-              type={contactLookup.method === "mobile" ? "tel" : "email"}
-              fullWidth
-              sx={{ ...fieldSx, mb: 2.25 }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    {contactLookup.method === "mobile" ? (
-                      <PhoneIphoneOutlinedIcon
-                        sx={{ fontSize: 20, color: "rgba(31,42,68,0.35)" }}
-                      />
-                    ) : (
-                      <EmailOutlinedIcon sx={{ fontSize: 20, color: "rgba(31,42,68,0.35)" }} />
-                    )}
-                  </InputAdornment>
-                ),
-              }}
-            />
-
-            <MKButton
-              type="submit"
-              variant="contained"
-              disabled={busy}
-              fullWidth
-              aria-busy={busy}
-              startIcon={
-                busy ? (
-                  <CircularProgress size={20} color="inherit" thickness={5} />
-                ) : (
-                  <SearchOutlinedIcon sx={{ fontSize: 22 }} />
-                )
-              }
-              sx={findReceiptBtnSx}
-            >
-              {busy
-                ? copy.busy || t("donationResult.lookupBusy")
-                : copy.findMyReceipt || copy.findDonations || "Find My Receipt"}
-            </MKButton>
-          </Box>
-
-          {error ? (
-            <Alert severity="error" sx={{ width: "100%", borderRadius: "10px" }}>
-              {error}
-            </Alert>
-          ) : null}
-
-          {donationsList?.length ? (
-            <Box sx={{ width: "100%" }}>
-              <Typography
-                ref={donationsHeadingRef}
-                sx={{ fontWeight: 800, color: "#1f2a44", mb: 1.25, fontSize: "0.9375rem" }}
-              >
-                {copy.listTitle || "Your donations"}
-              </Typography>
-              <Stack spacing={1.25}>
-                {donationsList.map((item) => (
-                  <Box
-                    key={item.paymentId}
-                    sx={{
-                      p: 1.5,
-                      borderRadius: "12px",
-                      border: "1px solid rgba(30,107,53,0.12)",
-                      bgcolor: panelGreen,
-                      display: "flex",
-                      flexDirection: { xs: "column", sm: "row" },
-                      alignItems: { xs: "stretch", sm: "center" },
-                      justifyContent: "space-between",
-                      gap: 1.25,
-                    }}
-                  >
-                    <Box sx={{ minWidth: 0 }}>
-                      <Typography sx={{ fontWeight: 800, color: brandGreen }}>
-                        {formatInr(item.amountInr)}
-                      </Typography>
-                      <Typography sx={{ fontSize: "0.875rem", color: "#64748b" }}>
-                        {formatPaidAt(item.paidAt)}
-                        {item.programLabel ? ` · ${item.programLabel}` : ""}
-                      </Typography>
-                      {item.paymentId ? (
-                        <Typography
-                          sx={{
-                            fontSize: "0.75rem",
-                            color: "rgba(31,42,68,0.55)",
-                            mt: 0.25,
-                            wordBreak: "break-all",
-                          }}
-                        >
-                          {item.paymentId}
-                        </Typography>
-                      ) : null}
-                    </Box>
-                    <MKButton
-                      variant="outlined"
-                      size="small"
-                      disabled={busy}
-                      startIcon={<ReceiptLongOutlinedIcon />}
-                      onClick={() => handleSelectDonation(item.paymentId)}
-                      sx={{
-                        flexShrink: 0,
-                        fontWeight: 700,
-                        textTransform: "none",
-                        borderRadius: "10px",
-                        borderColor: brandGreen,
-                        color: brandGreen,
-                      }}
-                    >
-                      {copy.viewReceipt || "View receipt"}
-                    </MKButton>
-                  </Box>
-                ))}
-              </Stack>
-            </Box>
-          ) : null}
-
-          <Box sx={{ textAlign: "center", pt: 1.5 }}>
-            <Typography
-              sx={{
-                fontWeight: 700,
-                fontSize: "0.875rem",
-                color: ink,
-                mb: 1,
-              }}
-            >
-              {copy.cantFindTitle || "Can't find your receipt?"}
-            </Typography>
-            <Box
-              sx={{
-                px: { xs: 1.5, sm: 2 },
-                py: 1.25,
-                borderRadius: "12px",
-                bgcolor: "rgba(30, 107, 53, 0.04)",
-                border: "1px dashed rgba(30, 107, 53, 0.16)",
-                width: "100%",
-                maxWidth: 640,
-                mx: "auto",
-              }}
-            >
-              <Typography
+          {copy.findByLabel || "Find by"}
+        </Typography>
+        <Box
+          role="tablist"
+          aria-label={copy.contactEmail || "Contact method"}
+          sx={{
+            width: "100%",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: 0.6,
+            p: 0.6,
+            borderRadius: "16px",
+            bgcolor: "rgba(30, 107, 53, 0.05)",
+            border: "1px solid rgba(30, 107, 53, 0.12)",
+            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.7)",
+          }}
+        >
+          {[
+            {
+              value: "email",
+              label: copy.contactEmail || "Email",
+              icon: EmailOutlinedIcon,
+            },
+            {
+              value: "mobile",
+              label: copy.contactMobile || "Mobile",
+              icon: PhoneIphoneOutlinedIcon,
+            },
+          ].map((option) => {
+            const selected = contactLookup.method === option.value;
+            const Icon = option.icon;
+            return (
+              <Box
+                key={option.value}
+                component="button"
+                type="button"
+                role="tab"
+                aria-selected={selected}
+                disabled={busy}
+                onClick={() => {
+                  setContactLookup({ method: option.value, value: "" });
+                  setError("");
+                  setDonationsList(null);
+                }}
                 sx={{
-                  fontSize: "0.78rem",
-                  color: "rgba(31, 42, 68, 0.62)",
-                  lineHeight: 1.5,
-                  fontStyle: "italic",
+                  position: "relative",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 0.85,
+                  py: 1.2,
+                  px: 1.25,
+                  m: 0,
+                  cursor: busy ? "not-allowed" : "pointer",
+                  borderRadius: "12px",
+                  border: "none",
+                  bgcolor: selected ? "#fff" : "transparent",
+                  color: selected ? brandGreenDark : "rgba(31, 42, 68, 0.5)",
+                  fontWeight: selected ? 800 : 600,
+                  fontSize: "0.9rem",
+                  fontFamily: "inherit",
+                  lineHeight: 1.2,
+                  boxShadow: selected
+                    ? `0 6px 16px rgba(30, 107, 53, 0.12), inset 0 -2px 0 ${brandYellow}`
+                    : "none",
+                  transition:
+                    "background-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease",
+                  "&:hover": {
+                    color: selected ? brandGreenDark : ink,
+                    bgcolor: selected ? "#fff" : "rgba(255,255,255,0.55)",
+                  },
+                  "&:focus-visible": {
+                    outline: `3px solid ${yellowTintStrong}`,
+                    outlineOffset: 1,
+                  },
                 }}
               >
-                {ctaCopy.bankTransferNote ||
-                  "For UPI/QR or bank transfer donations, email aadarfoundation2018@gmail.com with your donor details (name, father/husband name, email, mobile, PAN, address), donation details (amount and date), transaction reference (UTR/Bank Ref), and payment screenshot. We will verify the payment and email your 80G tax receipt."}
-              </Typography>
-            </Box>
-          </Box>
-        </Stack>
+                <Box
+                  sx={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: "9px",
+                    display: "grid",
+                    placeItems: "center",
+                    bgcolor: selected ? "rgba(30, 107, 53, 0.1)" : "rgba(31, 42, 68, 0.06)",
+                    color: selected ? brandGreen : "inherit",
+                    flexShrink: 0,
+                  }}
+                >
+                  <Icon sx={{ fontSize: 16 }} />
+                </Box>
+                {option.label}
+              </Box>
+            );
+          })}
+        </Box>
       </Box>
+
+      <Box
+        component="form"
+        sx={{ width: "100%", mx: "auto", alignSelf: "center", pb: { xs: 0.5, sm: 0.75 } }}
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (!busy) handleFindDonations();
+        }}
+      >
+        <TextField
+          label={
+            contactLookup.method === "mobile"
+              ? copy.mobile || t("donationResult.mobile")
+              : copy.emailAddress || copy.email || t("donationResult.email")
+          }
+          value={contactLookup.value}
+          onChange={(e) => setContactLookup((prev) => ({ ...prev, value: e.target.value }))}
+          placeholder={
+            contactLookup.method === "mobile"
+              ? copy.mobilePlaceholder || "9826441863"
+              : copy.emailPlaceholder || "Enter your email address"
+          }
+          type={contactLookup.method === "mobile" ? "tel" : "email"}
+          fullWidth
+          sx={{ ...fieldSx, mb: 2.25 }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                {contactLookup.method === "mobile" ? (
+                  <PhoneIphoneOutlinedIcon sx={{ fontSize: 20, color: "rgba(31,42,68,0.35)" }} />
+                ) : (
+                  <EmailOutlinedIcon sx={{ fontSize: 20, color: "rgba(31,42,68,0.35)" }} />
+                )}
+              </InputAdornment>
+            ),
+          }}
+        />
+
+        <MKButton
+          type="submit"
+          variant="contained"
+          disabled={busy}
+          fullWidth
+          aria-busy={busy}
+          startIcon={
+            busy ? (
+              <CircularProgress size={20} color="inherit" thickness={5} />
+            ) : (
+              <SearchOutlinedIcon sx={{ fontSize: 22 }} />
+            )
+          }
+          sx={findReceiptBtnSx}
+        >
+          {busy
+            ? copy.busy || t("donationResult.lookupBusy")
+            : copy.findMyReceipt || copy.findDonations || "Find My Receipt"}
+        </MKButton>
+      </Box>
+
+      {error ? (
+        <Alert severity="error" sx={{ width: "100%", borderRadius: "10px" }}>
+          {error}
+        </Alert>
+      ) : null}
+
+      {donationsList?.length ? (
+        <Box sx={{ width: "100%" }}>
+          <Typography
+            ref={donationsHeadingRef}
+            sx={{ fontWeight: 800, color: "#1f2a44", mb: 1.25, fontSize: "0.9375rem" }}
+          >
+            {copy.listTitle || "Your donations"}
+          </Typography>
+          <Stack spacing={1.25}>
+            {donationsList.map((item) => (
+              <Box
+                key={item.paymentId}
+                sx={{
+                  p: 1.5,
+                  borderRadius: "12px",
+                  border: "1px solid rgba(30,107,53,0.12)",
+                  bgcolor: panelGreen,
+                  display: "flex",
+                  flexDirection: { xs: "column", sm: "row" },
+                  alignItems: { xs: "stretch", sm: "center" },
+                  justifyContent: "space-between",
+                  gap: 1.25,
+                }}
+              >
+                <Box sx={{ minWidth: 0 }}>
+                  <Typography sx={{ fontWeight: 800, color: brandGreen }}>
+                    {formatInr(item.amountInr)}
+                  </Typography>
+                  <Typography sx={{ fontSize: "0.875rem", color: "#64748b" }}>
+                    {formatPaidAt(item.paidAt)}
+                    {item.programLabel ? ` · ${item.programLabel}` : ""}
+                  </Typography>
+                  {item.paymentId ? (
+                    <Typography
+                      sx={{
+                        fontSize: "0.75rem",
+                        color: "rgba(31,42,68,0.55)",
+                        mt: 0.25,
+                        wordBreak: "break-all",
+                      }}
+                    >
+                      {item.paymentId}
+                    </Typography>
+                  ) : null}
+                </Box>
+                <MKButton
+                  variant="outlined"
+                  size="small"
+                  disabled={busy}
+                  startIcon={<ReceiptLongOutlinedIcon />}
+                  onClick={() => handleSelectDonation(item.paymentId)}
+                  sx={{
+                    flexShrink: 0,
+                    fontWeight: 700,
+                    textTransform: "none",
+                    borderRadius: "10px",
+                    borderColor: brandGreen,
+                    color: brandGreen,
+                  }}
+                >
+                  {copy.viewReceipt || "View receipt"}
+                </MKButton>
+              </Box>
+            ))}
+          </Stack>
+        </Box>
+      ) : null}
+    </Stack>
+  );
+
+  const bankRequestForm = (
+    <Stack
+      spacing={2}
+      sx={{ width: "100%", maxWidth: 640, mx: "auto", overflow: "visible", pt: 0.75 }}
+    >
+      <Typography sx={{ fontSize: "0.82rem", color: "rgba(31,42,68,0.62)", textAlign: "center" }}>
+        {copy.bankFormHint ||
+          "Fill this form to send your details to Aadar Foundation. A payment screenshot is required."}
+        <br />
+        {copy.bankIntroAfter || "After verification, we'll email your 80G tax receipt."}
+      </Typography>
+
+      {bankSuccess ? (
+        <Alert severity="success" sx={{ borderRadius: "10px" }}>
+          {bankSuccess}
+        </Alert>
+      ) : null}
+
+      <Box component="form" onSubmit={handleBankSubmit}>
+        <Grid container spacing={1.75}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label={copy.name || "Full name"}
+              value={bankForm.name}
+              onChange={updateBankField("name")}
+              fullWidth
+              required
+              disabled={bankBusy}
+              sx={fieldSx}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label={copy.fatherHusband || "Father / husband name"}
+              value={bankForm.fatherOrHusbandName}
+              onChange={updateBankField("fatherOrHusbandName")}
+              fullWidth
+              required
+              disabled={bankBusy}
+              sx={fieldSx}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label={copy.mobile || "Mobile number"}
+              value={bankForm.mobile}
+              onChange={updateBankField("mobile")}
+              placeholder="9826441863"
+              type="tel"
+              fullWidth
+              required
+              disabled={bankBusy}
+              sx={fieldSx}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label={copy.email || "Email"}
+              value={bankForm.email}
+              onChange={updateBankField("email")}
+              type="email"
+              fullWidth
+              required
+              disabled={bankBusy}
+              sx={fieldSx}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label={copy.panRequired || copy.pan || "PAN (required)"}
+              value={bankForm.pan}
+              onChange={updateBankField("pan")}
+              placeholder="ABCDE1234F"
+              fullWidth
+              required
+              disabled={bankBusy}
+              inputProps={{ maxLength: 10 }}
+              sx={fieldSx}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label={copy.amount || "Amount (₹)"}
+              value={bankForm.amountInr}
+              onChange={updateBankField("amountInr")}
+              type="number"
+              inputProps={{ min: 1, step: 1 }}
+              fullWidth
+              required
+              disabled={bankBusy}
+              sx={fieldSx}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              label={copy.address || "Address"}
+              value={bankForm.address}
+              onChange={updateBankField("address")}
+              fullWidth
+              required
+              disabled={bankBusy}
+              sx={fieldSx}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <TextField
+              label={copy.city || "City"}
+              value={bankForm.city}
+              onChange={updateBankField("city")}
+              fullWidth
+              required
+              disabled={bankBusy}
+              sx={fieldSx}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <TextField
+              label={copy.state || "State"}
+              value={bankForm.state}
+              onChange={updateBankField("state")}
+              fullWidth
+              required
+              disabled={bankBusy}
+              sx={fieldSx}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <TextField
+              label={copy.pin || "PIN code"}
+              value={bankForm.pin}
+              onChange={updateBankField("pin")}
+              fullWidth
+              required
+              disabled={bankBusy}
+              inputProps={{ maxLength: 6, inputMode: "numeric" }}
+              sx={fieldSx}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label={copy.paidAt || "Payment date"}
+              value={bankForm.paidAt}
+              onChange={updateBankField("paidAt")}
+              type="date"
+              InputLabelProps={{
+                shrink: true,
+                sx: {
+                  maxWidth: "none",
+                  overflow: "visible",
+                  lineHeight: 1.45,
+                  px: 0.35,
+                },
+              }}
+              fullWidth
+              required
+              disabled={bankBusy}
+              sx={fieldSx}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label={copy.bankUtr || copy.utr || "UTR / Bank Reference"}
+              value={bankForm.transactionRef}
+              onChange={updateBankField("transactionRef")}
+              placeholder="123456789012"
+              fullWidth
+              required
+              disabled={bankBusy}
+              sx={fieldSx}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <input
+              ref={screenshotInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              hidden
+              onChange={handleScreenshotChange}
+            />
+            <Stack
+              direction={{ xs: "column", sm: "row" }}
+              spacing={1.25}
+              alignItems={{ xs: "stretch", sm: "center" }}
+            >
+              <MKButton
+                type="button"
+                variant="outlined"
+                color="dark"
+                disabled={bankBusy}
+                startIcon={<AttachFileOutlinedIcon />}
+                onClick={() => screenshotInputRef.current?.click()}
+                sx={{ textTransform: "none", fontWeight: 700, borderRadius: "12px" }}
+              >
+                {copy.bankScreenshotChoose || "Upload screenshot"}
+              </MKButton>
+              <Box sx={{ minWidth: 0 }}>
+                <Typography
+                  sx={{
+                    fontWeight: 700,
+                    fontSize: "0.875rem",
+                    color: ink,
+                    lineHeight: 1.55,
+                    overflow: "visible",
+                  }}
+                >
+                  {copy.bankScreenshot || "Payment screenshot"} *
+                </Typography>
+                <Typography
+                  sx={{ fontSize: "0.78rem", color: "rgba(31,42,68,0.55)", lineHeight: 1.45 }}
+                >
+                  {bankForm.screenshotName
+                    ? t("receiptRetrieve.bankScreenshotSelected", {
+                        name: bankForm.screenshotName,
+                        defaultValue: `Selected: ${bankForm.screenshotName}`,
+                      })
+                    : copy.bankScreenshotHint || "JPG, PNG or WebP · max 3 MB"}
+                </Typography>
+              </Box>
+            </Stack>
+          </Grid>
+        </Grid>
+
+        {bankError ? (
+          <Alert severity="error" sx={{ mt: 2, borderRadius: "10px" }}>
+            {bankError}
+          </Alert>
+        ) : null}
+
+        <MKButton
+          type="submit"
+          variant="contained"
+          disabled={bankBusy}
+          fullWidth
+          aria-busy={bankBusy}
+          startIcon={
+            bankBusy ? (
+              <CircularProgress size={20} color="inherit" thickness={5} />
+            ) : (
+              <SendOutlinedIcon sx={{ fontSize: 20 }} />
+            )
+          }
+          sx={{ ...findReceiptBtnSx, mt: 2.25 }}
+        >
+          {bankBusy
+            ? copy.bankSubmitting || "Sending…"
+            : copy.bankSubmit || "Submit receipt request"}
+        </MKButton>
+      </Box>
+    </Stack>
+  );
+
+  const selectChannel = (value) => {
+    setChannel(value);
+    setError("");
+    setBankError("");
+    setBankSuccess("");
+    setDonationsList(null);
+    if (value === "bank") {
+      window.history.replaceState(null, "", `${window.location.pathname}#bank`);
+    } else {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  };
+
+  const channelOptions = [
+    {
+      value: "online",
+      title: copy.channelOnline || copy.tabOnline || "Online Donations via Razorpay",
+      subtitle: copy.channelOnlineHint || "Instant lookup & 80G PDF download",
+      icon: PaymentsOutlinedIcon,
+    },
+    {
+      value: "bank",
+      title: copy.channelBank || copy.tabUpi || "Donated via Direct QR or Bank Transfer",
+      subtitle: copy.channelBankHint || "Submit details for verification",
+      icon: AccountBalanceOutlinedIcon,
+    },
+  ];
+
+  const lookupForm = (
+    <Stack spacing={2.75} sx={{ width: "100%", alignItems: "center" }}>
+      <Box sx={{ width: "100%" }}>
+        <Typography
+          sx={{
+            fontWeight: 800,
+            fontSize: "0.72rem",
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            color: "rgba(31, 42, 68, 0.45)",
+            mb: 1.25,
+            textAlign: "center",
+          }}
+        >
+          {copy.chooseDonationType || "How did you donate?"}
+        </Typography>
+        <Box
+          role="tablist"
+          aria-label={copy.chooseDonationType || "Donation type"}
+          sx={{
+            width: "100%",
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+            gap: 1.35,
+          }}
+        >
+          {channelOptions.map((option) => {
+            const selected = channel === option.value;
+            const Icon = option.icon;
+            return (
+              <Box
+                key={option.value}
+                component="button"
+                type="button"
+                role="tab"
+                aria-selected={selected}
+                onClick={() => selectChannel(option.value)}
+                sx={channelCardSx(selected)}
+              >
+                <Box
+                  sx={{
+                    width: 42,
+                    height: 42,
+                    borderRadius: "14px",
+                    display: "grid",
+                    placeItems: "center",
+                    bgcolor: selected ? "rgba(30, 107, 53, 0.14)" : "rgba(31, 42, 68, 0.06)",
+                    color: selected ? brandGreen : "rgba(31, 42, 68, 0.45)",
+                    boxShadow: selected ? `0 0 0 4px rgba(236, 165, 51, 0.14)` : "none",
+                    flexShrink: 0,
+                  }}
+                >
+                  <Icon sx={{ fontSize: 22 }} />
+                </Box>
+                <Box sx={{ minWidth: 0, flex: 1, pr: 0.5 }}>
+                  <Typography
+                    sx={{
+                      fontWeight: 800,
+                      fontSize: { xs: "0.9rem", sm: "0.95rem" },
+                      color: selected ? brandGreenDark : ink,
+                      lineHeight: 1.3,
+                      letterSpacing: "-0.01em",
+                    }}
+                  >
+                    {option.title}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      mt: 0.45,
+                      fontSize: "0.78rem",
+                      lineHeight: 1.4,
+                      color: selected ? "rgba(23, 79, 40, 0.72)" : "rgba(31, 42, 68, 0.5)",
+                    }}
+                  >
+                    {option.subtitle}
+                  </Typography>
+                </Box>
+                <Box
+                  className="channel-card-arrow"
+                  sx={{
+                    width: 34,
+                    height: 34,
+                    borderRadius: "999px",
+                    display: "grid",
+                    placeItems: "center",
+                    flexShrink: 0,
+                    bgcolor: selected ? brandGreen : "rgba(31, 42, 68, 0.06)",
+                    color: selected ? "#fff" : "rgba(31, 42, 68, 0.45)",
+                    boxShadow: selected ? "0 4px 12px rgba(30, 107, 53, 0.28)" : "none",
+                    transition: "transform 0.2s ease, background-color 0.2s ease, color 0.2s ease",
+                  }}
+                >
+                  <ChevronRightIcon sx={{ fontSize: 22 }} />
+                </Box>
+              </Box>
+            );
+          })}
+        </Box>
+      </Box>
+
+      {channel === "online" ? onlineLookupForm : bankRequestForm}
     </Stack>
   );
 
@@ -1146,7 +1810,7 @@ export default function DonationReceiptRetrievePage() {
           <Card
             ref={receiptCardRef}
             sx={{
-              overflow: "hidden",
+              overflow: "visible",
               borderRadius: "22px",
               border: `1px solid ${yellowBorder}`,
               boxShadow: `0 28px 70px rgba(31, 42, 68, 0.08), 0 8px 24px ${yellowTint}`,
@@ -1161,12 +1825,20 @@ export default function DonationReceiptRetrievePage() {
                 left: 0,
                 right: 0,
                 height: 3,
+                borderRadius: "22px 22px 0 0",
                 background: `linear-gradient(90deg, ${brandGreenDark} 0%, ${brandGreen} 32%, ${brandYellow} 50%, ${brandGreen} 68%, ${brandGreenDark} 100%)`,
                 zIndex: 2,
               },
             }}
           >
-            <Box sx={{ position: "relative", zIndex: 1, p: { xs: 3, sm: 3.75, md: 4.25 } }}>
+            <Box
+              sx={{
+                position: "relative",
+                zIndex: 1,
+                p: { xs: 3, sm: 3.75, md: 4.25 },
+                overflow: "visible",
+              }}
+            >
               <Box
                 sx={{
                   position: "relative",
@@ -1183,24 +1855,12 @@ export default function DonationReceiptRetrievePage() {
                     fontWeight: 800,
                     fontSize: { xs: "1.25rem", sm: "1.4rem" },
                     color: brandGreenDark,
-                    mb: 0.75,
+                    mb: 0,
                     letterSpacing: "-0.01em",
                     lineHeight: 1.25,
                   }}
                 >
                   {copy.title || "Retrieve your donation receipt"}
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: "0.9rem",
-                    color: "rgba(31, 42, 68, 0.62)",
-                    lineHeight: 1.55,
-                    maxWidth: 480,
-                    mx: "auto",
-                  }}
-                >
-                  {copy.cardSubtitle ||
-                    "Enter the email address or mobile number used during your donation."}
                 </Typography>
               </Box>
 

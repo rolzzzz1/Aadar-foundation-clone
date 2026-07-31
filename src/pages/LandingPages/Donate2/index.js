@@ -34,6 +34,9 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import CloseIcon from "@mui/icons-material/Close";
+import Modal from "@mui/material/Modal";
+import IconButton from "@mui/material/IconButton";
 
 // Material Kit 2 React examples
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
@@ -52,6 +55,7 @@ import LandingPageHero from "components/LandingPageHero";
 import donate2UpiQr from "assets/images/donate2-upi-qr.png";
 import donateImg from "assets/images/donate-happy-faces.png";
 import sponsorLeafGold from "assets/images/sponsor-leaf-gold.png";
+import donateCareIllustration from "assets/images/donate-care-illustration.png";
 import donate2Carousel1 from "assets/images/donate2-carousel-1.png";
 import donate2Carousel2 from "assets/images/donate2-carousel-2.png";
 import donate2Carousel3 from "assets/images/donate2-carousel-3.png";
@@ -61,8 +65,8 @@ import MKButton from "components/MKButton";
 const DONATE2_IMPACT_PHOTOS = [
   {
     src: donate2Carousel1,
-    altKey: "aadarshGram",
-    captionKey: "aadarshGram",
+    altKey: "ashramSwargSadan",
+    captionKey: "ashramSwargSadan",
   },
   {
     src: donate2Carousel2,
@@ -244,7 +248,7 @@ function ImpactTestimonialCarousel({ testimonials }) {
           position: "relative",
           zIndex: 1,
           pl: { xs: 0.75, sm: 1 },
-          minHeight: { xs: 118, sm: 112 },
+          minHeight: { xs: 100, sm: 96 },
           display: "flex",
           flexDirection: "column",
           animation: "impactTestimonialFade 0.45s ease",
@@ -379,6 +383,7 @@ function ImpactPhotosCarousel({ gallery }) {
   const photos = DONATE2_IMPACT_PHOTOS;
   const [index, setIndex] = React.useState(0);
   const [paused, setPaused] = React.useState(false);
+  const [lightboxOpen, setLightboxOpen] = React.useState(false);
   const active = photos[index] || photos[0];
   const alts = gallery?.alts || {};
   const captions = gallery?.captions || {};
@@ -387,16 +392,29 @@ function ImpactPhotosCarousel({ gallery }) {
   const activeCaption = captions[active.captionKey] || alts[active.altKey] || "";
 
   React.useEffect(() => {
-    if (photos.length <= 1 || paused) return undefined;
+    if (photos.length <= 1 || paused || lightboxOpen) return undefined;
     const timer = window.setInterval(() => {
       setIndex((prev) => (prev + 1) % photos.length);
     }, 4500);
     return () => window.clearInterval(timer);
-  }, [photos.length, paused]);
+  }, [photos.length, paused, lightboxOpen]);
 
   const goTo = (nextIndex) => {
     setIndex((nextIndex + photos.length) % photos.length);
   };
+
+  const openLightbox = () => setLightboxOpen(true);
+  const closeLightbox = () => setLightboxOpen(false);
+  const lightboxListRef = React.useRef(null);
+
+  React.useEffect(() => {
+    if (!lightboxOpen) return undefined;
+    const frame = window.requestAnimationFrame(() => {
+      const target = lightboxListRef.current?.querySelector(`[data-lightbox-index="${index}"]`);
+      target?.scrollIntoView({ block: "center", behavior: "auto" });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [lightboxOpen, index]);
 
   return (
     <MKBox
@@ -418,7 +436,7 @@ function ImpactPhotosCarousel({ gallery }) {
           inset: 0,
           pointerEvents: "none",
           background:
-            "linear-gradient(90deg, transparent 0%, transparent 58%, rgba(236,165,51,0.05) 100%)",
+            "linear-gradient(90deg, transparent 0%, transparent 48%, rgba(236,165,51,0.05) 100%)",
           zIndex: 0,
         },
       }}
@@ -435,13 +453,13 @@ function ImpactPhotosCarousel({ gallery }) {
         <MKBox
           sx={{
             position: "relative",
-            flex: { xs: "none", md: "1 1 64%" },
-            width: { xs: "100%", md: "64%" },
-            maxWidth: { md: "64%" },
+            flex: { xs: "none", md: "1 1 52%" },
+            width: { xs: "100%", md: "52%" },
+            maxWidth: { md: "52%" },
             height: { xs: 210, sm: 260, md: 286 },
-            background:
-              "radial-gradient(ellipse at center, rgba(255,255,255,0.08) 0%, transparent 65%), #151b2b",
-            boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.06)",
+            background: "transparent",
+            boxShadow: "none",
+            overflow: "hidden",
           }}
         >
           <MKBox
@@ -491,8 +509,8 @@ function ImpactPhotosCarousel({ gallery }) {
                   opacity: isActive ? 1 : 0,
                   transform: isActive ? "translateY(0) scale(1)" : "translateY(6px) scale(0.985)",
                   transition: "opacity 0.5s ease, transform 0.55s ease",
-                  pointerEvents: isActive ? "auto" : "none",
-                  p: { xs: 0.75, sm: 1 },
+                  pointerEvents: "none",
+                  p: 0,
                   filter: isActive ? "none" : "blur(1px)",
                 }}
               />
@@ -500,11 +518,34 @@ function ImpactPhotosCarousel({ gallery }) {
           })}
 
           <MKBox
+            role="button"
+            tabIndex={0}
+            aria-label={`View full size gallery: ${alts[active.altKey] || title}`}
+            onClick={openLightbox}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                openLightbox();
+              }
+            }}
+            sx={{
+              position: "absolute",
+              inset: 0,
+              zIndex: 1,
+              cursor: "zoom-in",
+              backgroundColor: "transparent",
+            }}
+          />
+
+          <MKBox
             component="button"
             type="button"
             className="impact-nav"
             aria-label="Previous photo"
-            onClick={() => goTo(index - 1)}
+            onClick={(event) => {
+              event.stopPropagation();
+              goTo(index - 1);
+            }}
             sx={{
               position: "absolute",
               left: { xs: 8, sm: 10 },
@@ -514,20 +555,21 @@ function ImpactPhotosCarousel({ gallery }) {
               width: { xs: 30, sm: 34 },
               height: { xs: 30, sm: 34 },
               p: 0,
-              border: "1px solid rgba(255,255,255,0.22)",
+              border: "1px solid rgba(31, 42, 68, 0.14)",
               borderRadius: "50%",
               cursor: "pointer",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: "#fff",
-              backgroundColor: "rgba(15, 22, 38, 0.55)",
+              color: "#1f2a44",
+              backgroundColor: "rgba(255, 250, 241, 0.88)",
               backdropFilter: "blur(8px)",
-              opacity: { xs: 1, md: 0.65 },
+              boxShadow: "0 2px 8px rgba(31, 42, 68, 0.1)",
+              opacity: { xs: 1, md: 0.75 },
               transition: "opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease",
               "&:hover": {
                 opacity: 1,
-                backgroundColor: "rgba(15, 22, 38, 0.78)",
+                backgroundColor: "#fffaf1",
                 transform: "translateY(-50%) scale(1.06)",
               },
             }}
@@ -540,7 +582,10 @@ function ImpactPhotosCarousel({ gallery }) {
             type="button"
             className="impact-nav"
             aria-label="Next photo"
-            onClick={() => goTo(index + 1)}
+            onClick={(event) => {
+              event.stopPropagation();
+              goTo(index + 1);
+            }}
             sx={{
               position: "absolute",
               right: { xs: 8, sm: 10 },
@@ -550,20 +595,21 @@ function ImpactPhotosCarousel({ gallery }) {
               width: { xs: 30, sm: 34 },
               height: { xs: 30, sm: 34 },
               p: 0,
-              border: "1px solid rgba(255,255,255,0.22)",
+              border: "1px solid rgba(31, 42, 68, 0.14)",
               borderRadius: "50%",
               cursor: "pointer",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: "#fff",
-              backgroundColor: "rgba(15, 22, 38, 0.55)",
+              color: "#1f2a44",
+              backgroundColor: "rgba(255, 250, 241, 0.88)",
               backdropFilter: "blur(8px)",
-              opacity: { xs: 1, md: 0.65 },
+              boxShadow: "0 2px 8px rgba(31, 42, 68, 0.1)",
+              opacity: { xs: 1, md: 0.75 },
               transition: "opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease",
               "&:hover": {
                 opacity: 1,
-                backgroundColor: "rgba(15, 22, 38, 0.78)",
+                backgroundColor: "#fffaf1",
                 transform: "translateY(-50%) scale(1.06)",
               },
             }}
@@ -580,7 +626,7 @@ function ImpactPhotosCarousel({ gallery }) {
               bottom: 0,
               height: 3,
               zIndex: 3,
-              backgroundColor: "rgba(255,255,255,0.12)",
+              backgroundColor: "rgba(31, 42, 68, 0.1)",
             }}
           >
             <MKBox
@@ -590,7 +636,7 @@ function ImpactPhotosCarousel({ gallery }) {
                 width: paused ? `${((index + 1) / photos.length) * 100}%` : "100%",
                 background: "linear-gradient(90deg, #eca533 0%, #f5c56a 100%)",
                 transformOrigin: "left center",
-                animation: paused ? "none" : "impactPhotoProgress 4.5s linear",
+                animation: paused || lightboxOpen ? "none" : "impactPhotoProgress 4.5s linear",
                 "@keyframes impactPhotoProgress": {
                   from: { transform: "scaleX(0)" },
                   to: { transform: "scaleX(1)" },
@@ -602,9 +648,9 @@ function ImpactPhotosCarousel({ gallery }) {
 
         <MKBox
           sx={{
-            flex: { xs: "none", md: "1 1 36%" },
-            width: { xs: "100%", md: "36%" },
-            maxWidth: { md: "36%" },
+            flex: { xs: "none", md: "1 1 48%" },
+            width: { xs: "100%", md: "48%" },
+            maxWidth: { md: "48%" },
             display: "flex",
             flexDirection: "column",
             justifyContent: { xs: "flex-start", md: "center" },
@@ -737,7 +783,7 @@ function ImpactPhotosCarousel({ gallery }) {
                     boxShadow: isActive ? "0 0 0 2px rgba(236,165,51,0.22)" : "none",
                     opacity: isActive ? 1 : 0.72,
                     transition: "opacity 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease",
-                    backgroundColor: "#151b2b",
+                    backgroundColor: "#e6dfd2",
                     "&:hover": { opacity: 1 },
                   }}
                 >
@@ -759,6 +805,118 @@ function ImpactPhotosCarousel({ gallery }) {
           </MKBox>
         </MKBox>
       </MKBox>
+
+      <Modal
+        open={lightboxOpen}
+        onClose={closeLightbox}
+        aria-label={title}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          p: { xs: 1, sm: 2 },
+          zIndex: 2100,
+        }}
+      >
+        <MKBox
+          sx={{
+            position: "relative",
+            outline: "none",
+            width: "100%",
+            maxWidth: "min(96vw, 980px)",
+            maxHeight: "92vh",
+            display: "flex",
+            flexDirection: "column",
+          }}
+          onClick={(event) => event.stopPropagation()}
+        >
+          <IconButton
+            aria-label="Close full size gallery"
+            onClick={closeLightbox}
+            sx={{
+              position: "absolute",
+              top: 8,
+              right: 8,
+              zIndex: 3,
+              color: "#fff",
+              backgroundColor: "rgba(15, 22, 38, 0.55)",
+              "&:hover": { backgroundColor: "rgba(15, 22, 38, 0.78)" },
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+
+          <MKBox
+            ref={lightboxListRef}
+            sx={{
+              overflowY: "auto",
+              overflowX: "hidden",
+              maxHeight: "92vh",
+              display: "flex",
+              flexDirection: "column",
+              gap: { xs: 2, sm: 2.5 },
+              py: { xs: 1, sm: 1.5 },
+              px: { xs: 0.5, sm: 1 },
+              scrollBehavior: "smooth",
+              "&::-webkit-scrollbar": { width: 8 },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "rgba(255,255,255,0.28)",
+                borderRadius: 8,
+              },
+            }}
+          >
+            {photos.map((photo, photoIndex) => {
+              const caption = captions[photo.captionKey] || alts[photo.altKey] || "";
+              const alt = alts[photo.altKey] || title;
+              const isActive = photoIndex === index;
+              return (
+                <MKBox
+                  key={photo.src}
+                  data-lightbox-index={photoIndex}
+                  onClick={() => setIndex(photoIndex)}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 0.85,
+                    cursor: "pointer",
+                  }}
+                >
+                  <MKBox
+                    component="img"
+                    src={photo.src}
+                    alt={alt}
+                    sx={{
+                      display: "block",
+                      width: "auto",
+                      height: "auto",
+                      maxWidth: "100%",
+                      maxHeight: { xs: "72vh", sm: "78vh" },
+                      objectFit: "contain",
+                      borderRadius: { xs: "10px", sm: "12px" },
+                      boxShadow: isActive
+                        ? "0 0 0 2px rgba(236,165,51,0.85), 0 24px 64px rgba(0, 0, 0, 0.45)"
+                        : "0 24px 64px rgba(0, 0, 0, 0.45)",
+                      backgroundColor: "transparent",
+                    }}
+                  />
+                  <MKTypography
+                    sx={{
+                      color: "rgba(255,255,255,0.88)",
+                      fontSize: { xs: "0.8rem", sm: "0.9rem" },
+                      fontWeight: 500,
+                      textAlign: "center",
+                      px: 1,
+                    }}
+                  >
+                    {caption || `${photoIndex + 1} / ${photos.length}`}
+                  </MKTypography>
+                </MKBox>
+              );
+            })}
+          </MKBox>
+        </MKBox>
+      </Modal>
     </MKBox>
   );
 }
@@ -857,8 +1015,10 @@ function Donate2() {
           mx: { xs: 2, lg: 3 },
           mt: -2,
           mb: 0.5,
-          backgroundColor: "#f7f8fa",
+          backgroundColor: "#faf8f2",
           boxShadow: ({ boxShadows: { xxl } }) => xxl,
+          overflow: "hidden",
+          position: "relative",
         }}
       >
         <MKBox component="section" mt={{ xs: 1.5, sm: 1.75, md: 2 }} mb={{ xs: 0.5, sm: 0.75 }}>
@@ -886,29 +1046,55 @@ function Donate2() {
               spacing={{ xs: 3, md: 5, lg: 6 }}
               alignItems="stretch"
             >
-              <Grid item xs={12} lg={6} xl={6} sx={{ display: "flex" }}>
+              <Grid
+                item
+                xs={12}
+                lg={6}
+                xl={6}
+                sx={{ display: "flex", alignSelf: { lg: "flex-start" } }}
+              >
                 <MKBox
                   sx={{
+                    position: "relative",
                     pr: { xs: 0, sm: 0, md: 2, lg: 3 },
                     maxWidth: 720,
                     width: "100%",
                     display: "flex",
                     flexDirection: "column",
-                    flex: 1,
-                    minHeight: 0,
                     justifyContent: "flex-start",
                   }}
                 >
+                  <MKBox
+                    component="img"
+                    src={donateCareIllustration}
+                    alt=""
+                    aria-hidden="true"
+                    sx={{
+                      position: "absolute",
+                      top: { xs: 16, sm: 20, md: 18, lg: 20 },
+                      right: { xs: -16, sm: -12, md: -8, lg: -28, xl: -36 },
+                      width: { xs: 130, sm: 160, md: 200, lg: 235, xl: 250 },
+                      height: "auto",
+                      opacity: { xs: 0.55, sm: 0.7, md: 0.82, lg: 0.85 },
+                      pointerEvents: "none",
+                      userSelect: "none",
+                      zIndex: 0,
+                      objectFit: "contain",
+                    }}
+                  />
                   <MKTypography
                     component="h1"
                     sx={{
+                      position: "relative",
+                      zIndex: 1,
                       fontFamily: '"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
                       fontWeight: 600,
                       fontSize: { xs: "1.35rem", sm: "1.5rem", md: "1.6rem", lg: "1.7rem" },
-                      lineHeight: 1.3,
+                      lineHeight: 1.25,
                       color: "#1A2B4C",
                       letterSpacing: "-0.01em",
-                      mt: { xs: 2, sm: 2.5, md: 3 },
+                      mt: { xs: 1, sm: 1.25, md: 1.5 },
+                      maxWidth: { xs: "70%", sm: "68%", md: "62%", lg: "58%" },
                     }}
                   >
                     {donatePage.heroHeadlineLead || "Your action today has"}
@@ -939,11 +1125,13 @@ function Donate2() {
                     fontSize={{ xs: "0.88rem", sm: "0.92rem", md: "0.95rem" }}
                     fontFamily='"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                     sx={{
+                      position: "relative",
+                      zIndex: 1,
                       letterSpacing: "0.01rem",
-                      lineHeight: 1.65,
+                      lineHeight: 1.5,
                       color: "rgba(31, 42, 68, 0.72)",
-                      maxWidth: { xs: "100%", sm: 440, md: 420 },
-                      mt: { xs: 1.5, sm: 1.75 },
+                      maxWidth: { xs: "100%", sm: 400, md: 380 },
+                      mt: { xs: 1, sm: 1.15 },
                     }}
                   >
                     {donatePage.description}
@@ -951,10 +1139,11 @@ function Donate2() {
 
                   <MKBox
                     sx={{
+                      position: "relative",
+                      zIndex: 1,
                       width: "100%",
                       maxWidth: 640,
-                      mt: { xs: 3, sm: 3.25, md: 3.5, lg: "auto" },
-                      pt: { lg: 3 },
+                      mt: { xs: 2, sm: 2.25, md: 2.5 },
                     }}
                   >
                     <MKTypography
@@ -965,7 +1154,7 @@ function Donate2() {
                         fontSize: { xs: "0.78rem", sm: "0.82rem" },
                         letterSpacing: "0.02em",
                         color: "rgba(31, 42, 68, 0.55)",
-                        mb: { xs: 1.75, sm: 2 },
+                        mb: { xs: 1.25, sm: 1.35 },
                       }}
                     >
                       {donatePage.quickGiveCards.heading || "Ways to Support"}
@@ -1018,7 +1207,7 @@ function Donate2() {
                               flexDirection="column"
                               pl={1.75}
                               pr={1.5}
-                              py={{ xs: 1.1, sm: 1.15 }}
+                              py={{ xs: 0.95, sm: 1 }}
                               sx={{
                                 width: "100%",
                                 textAlign: "left",
@@ -1285,6 +1474,7 @@ function Donate2() {
                         flexDirection: "column",
                         flex: 1,
                         minHeight: 0,
+                        justifyContent: "space-between",
                         gap: { xs: 1.35, sm: 1.5 },
                       }}
                     >
@@ -1542,7 +1732,7 @@ function Donate2() {
                         </MKBox>
                       </MKButton>
 
-                      <MKBox sx={{ mt: "auto", pt: { xs: 1, sm: 1.25 } }}>
+                      <MKBox sx={{ pt: { xs: 0.5, sm: 0.75 } }}>
                         <DonateTrustBanner />
                       </MKBox>
                     </MKBox>
@@ -1551,13 +1741,13 @@ function Donate2() {
               </Grid>
             </Grid>
 
-            <LazyVisible rootMargin="600px" minHeight={260}>
+            <LazyVisible rootMargin="600px" minHeight={240}>
               <MKBox
                 sx={{
-                  mt: { xs: 6.5, sm: 7, md: 7.5 },
-                  mb: { xs: 3.5, sm: 4, md: 4.5 },
-                  pt: { xs: 1.5, sm: 2 },
-                  pb: { xs: 1.5, sm: 2 },
+                  mt: { xs: 5, sm: 5.5, md: 6 },
+                  mb: { xs: 2.5, sm: 3, md: 3.5 },
+                  pt: { xs: 1, sm: 1.25 },
+                  pb: { xs: 1, sm: 1.25 },
                 }}
               >
                 <MKBox
@@ -1580,7 +1770,7 @@ function Donate2() {
                     border: "1px solid rgba(31, 42, 68, 0.07)",
                     boxShadow: "0 10px 28px rgba(31, 42, 68, 0.06)",
                     px: { xs: 1.75, sm: 2.5, md: 3 },
-                    py: { xs: 2.15, sm: 2.4, md: 2.65 },
+                    py: { xs: 1.65, sm: 1.85, md: 2 },
                     transition: "box-shadow 0.25s ease, border-color 0.25s ease",
                     "&::before": {
                       content: '""',
@@ -1602,7 +1792,7 @@ function Donate2() {
                     },
                   }}
                 >
-                  <Grid container spacing={{ xs: 2.25, md: 3 }} alignItems="stretch">
+                  <Grid container spacing={{ xs: 1.75, md: 2.5 }} alignItems="stretch">
                     <Grid item xs={12} md={5} lg={5}>
                       <MKBox
                         sx={{
@@ -1612,7 +1802,7 @@ function Donate2() {
                           alignItems: "flex-start",
                           justifyContent: "flex-start",
                           textAlign: "left",
-                          gap: { xs: 2.1, sm: 2.35, md: 2.5 },
+                          gap: { xs: 1.6, sm: 1.75, md: 1.85 },
                           px: { xs: 0.5, sm: 0.75, md: 0.75, lg: 1.25 },
                         }}
                       >
@@ -1623,7 +1813,7 @@ function Donate2() {
                             alignItems: "center",
                             alignSelf: "center",
                             textAlign: "center",
-                            gap: 1.15,
+                            gap: 0.85,
                             maxWidth: "100%",
                           }}
                         >
@@ -1893,7 +2083,7 @@ function Donate2() {
                           src={donateImg}
                           alt={impactBanner.title}
                           width="100%"
-                          height={{ xs: "188px", sm: "218px", md: "245px", lg: "262px" }}
+                          height={{ xs: "168px", sm: "192px", md: "210px", lg: "224px" }}
                           loading="lazy"
                           decoding="async"
                           fetchPriority="low"
@@ -2035,10 +2225,9 @@ function Donate2() {
                           borderRadius: "22px",
                           px: { xs: 1.75, sm: 2.5, md: 3 },
                           py: { xs: 2, sm: 2.25, md: 2.5 },
-                          background:
-                            "linear-gradient(180deg, rgba(255, 251, 242, 0.55) 0%, rgba(255, 245, 230, 0.35) 100%)",
-                          border: "1px solid rgba(236, 165, 51, 0.14)",
-                          boxShadow: "0 14px 34px rgba(31, 42, 68, 0.05)",
+                          background: "transparent",
+                          border: "none",
+                          boxShadow: "none",
                         }}
                       >
                         <MKBox
@@ -2127,7 +2316,7 @@ function Donate2() {
                                     alignItems: "center",
                                     justifyContent: "center",
                                     backgroundColor: "rgba(236, 165, 51, 0.18)",
-                                    color: "#1f2a44",
+                                    color: "rgba(31, 42, 68, 0.62)",
                                     flex: "0 0 auto",
                                   }}
                                 >
@@ -2167,20 +2356,27 @@ function Donate2() {
                                     onClick={() => navigator.clipboard.writeText(value)}
                                     variant="text"
                                     color="text"
-                                    size="small"
+                                    size="medium"
                                     iconOnly
                                     sx={{
                                       flex: "0 0 auto",
-                                      minWidth: "unset",
-                                      width: 32,
-                                      height: 32,
+                                      width: "36px !important",
+                                      minWidth: "36px !important",
+                                      height: "36px !important",
+                                      minHeight: "36px !important",
+                                      p: "6px !important",
                                       borderRadius: "10px",
+                                      color: "rgba(31, 42, 68, 0.55)",
+                                      "& .MuiSvgIcon-root": {
+                                        fontSize: "20px !important",
+                                      },
                                       "&:hover": {
+                                        color: "#1f2a44",
                                         backgroundColor: "rgba(31, 42, 68, 0.06)",
                                       },
                                     }}
                                   >
-                                    <ContentCopyIcon sx={{ fontSize: 18 }} />
+                                    <ContentCopyIcon />
                                   </MKButton>
                                 </Tooltip>
                               </MKBox>
