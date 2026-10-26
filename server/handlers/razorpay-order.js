@@ -1,4 +1,4 @@
-const { createOrder } = require("../server/_lib/razorpay");
+const { createOrder } = require("../_lib/razorpay");
 const {
   MAX_AMOUNT_PAISE,
   MIN_AMOUNT_PAISE,
@@ -14,8 +14,8 @@ const {
   validateOrderNotes,
   formatGeneralDonationLabel,
   formatRazorpayError,
-} = require("../server/_lib/donation");
-const { applyRateLimit, LIMITS } = require("../server/_lib/rateLimit");
+} = require("../_lib/donation");
+const { applyRateLimit, LIMITS } = require("../_lib/rateLimit");
 
 const MAX_BODY_BYTES = 4 * 1024;
 

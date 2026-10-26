@@ -75,8 +75,10 @@ const RazorpayTest = isPaymentsEnabled() ? lazy(() => import("pages/RazorpayTest
 const DonationResult = isPaymentsEnabled()
   ? lazy(() => import(/* webpackChunkName: "donation-result" */ "pages/DonationResult"))
   : null;
-const Donate = lazy(() => import("layouts/pages/landing-pages/donate"));
+const DonateBankOnly = lazy(() => import("layouts/pages/landing-pages/donate"));
 const Donate2 = isDonate2Enabled ? lazy(() => import("pages/LandingPages/Donate2")) : null;
+/** Public `/donate`: Donate2 when payments loop is on, else bank/UPI-only page. */
+const Donate = isDonate2Enabled && Donate2 ? Donate2 : DonateBankOnly;
 const DonationReceiptRetrieve = lazy(() =>
   import(/* webpackChunkName: "donation-receipt-retrieve" */ "pages/DonationReceiptRetrieve")
 );
@@ -401,18 +403,7 @@ export default function App() {
               </Suspense>
             }
           />
-          <Route
-            path={DONATE2_PAGE_PATH}
-            element={
-              isDonate2Enabled && Donate2 ? (
-                <Suspense fallback={<PageLoadingFallback />}>
-                  <Donate2 />
-                </Suspense>
-              ) : (
-                <Navigate to={DONATE_PAGE_PATH} replace />
-              )
-            }
-          />
+          <Route path={DONATE2_PAGE_PATH} element={<Navigate to={DONATE_PAGE_PATH} replace />} />
           <Route
             path={DONATION_RECEIPT_PATH}
             element={

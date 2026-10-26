@@ -27,6 +27,8 @@ import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import VolunteerActivismRoundedIcon from "@mui/icons-material/VolunteerActivismRounded";
 import SpaOutlinedIcon from "@mui/icons-material/SpaOutlined";
 import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
+import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import SunriseOutlinedIcon from "components/Icons/SunriseOutlinedIcon";
 import MealCoverIcon from "components/Icons/MealCoverIcon";
 import StarRoundedIcon from "@mui/icons-material/StarRounded";
@@ -60,6 +62,9 @@ import donate2Carousel1 from "assets/images/donate2-carousel-1.png";
 import donate2Carousel2 from "assets/images/donate2-carousel-2.png";
 import donate2Carousel3 from "assets/images/donate2-carousel-3.png";
 import donate2Carousel4 from "assets/images/donate2-carousel-4.png";
+import membershipMonthlyIcon from "assets/images/membership-monthly.png";
+import membershipSixMonthIcon from "assets/images/membership-six-month.png";
+import membershipAnnualIcon from "assets/images/membership-annual.png";
 import MKButton from "components/MKButton";
 
 const DONATE2_IMPACT_PHOTOS = [
@@ -93,6 +98,7 @@ import LazyVisible from "components/LazyMedia/LazyVisible";
 import {
   DONATE_PAGE_PATH,
   DONATE_WIDGET_PRESET_PURPOSE,
+  DONATION_RECEIPT_PATH,
   getDonationCheckoutNavigation,
   sanitizeAmountInput,
   validateAmountInr,
@@ -2510,13 +2516,26 @@ function Donate2() {
                       sx={{
                         display: "grid",
                         gridTemplateColumns: { xs: "1fr", lg: "minmax(0, 7fr) minmax(0, 5fr)" },
+                        gridTemplateAreas: {
+                          xs: `
+                            "leftTop"
+                            "rightTop"
+                            "leftBot"
+                            "rightBot"
+                          `,
+                          lg: `
+                            "leftTop rightTop"
+                            "leftBot rightBot"
+                          `,
+                        },
                         columnGap: { lg: 5 },
-                        rowGap: { xs: 3, sm: 3.5 },
+                        rowGap: { xs: 3, sm: 3.5, lg: 2 },
                         alignItems: "stretch",
                       }}
                     >
                       <MKBox
                         sx={{
+                          gridArea: "leftTop",
                           display: "flex",
                           flexDirection: "column",
                           minHeight: 0,
@@ -2627,15 +2646,206 @@ function Donate2() {
                           })}
                         </MKBox>
 
-                        {/* Donate Now — displayed below Membership Support */}
+                        {/* Membership Support section */}
+                        <MKBox sx={{ mb: 0.75, mt: { xs: 7, sm: 8 } }}>
+                          <MKTypography
+                            sx={{
+                              fontWeight: 700,
+                              color: "#1f2a44",
+                              fontSize: { xs: "1.15rem", sm: "1.25rem" },
+                            }}
+                          >
+                            {donatePage.membershipSection.directGiving.membershipCard.title}
+                          </MKTypography>
+                        </MKBox>
+                        <MKTypography
+                          sx={{
+                            fontSize: { xs: "0.9rem", sm: "0.95rem" },
+                            color: "rgba(31, 42, 68, 0.6)",
+                            lineHeight: 1.5,
+                            mb: 2,
+                          }}
+                        >
+                          {donatePage.membershipSection.directGiving.membershipCard.subtitle}
+                        </MKTypography>
+
+                        <MKBox
+                          sx={{
+                            display: "grid",
+                            gridTemplateColumns: { xs: "1fr", sm: "repeat(3, 1fr)" },
+                            gap: { xs: 1.25, sm: 1.5 },
+                          }}
+                        >
+                          {[
+                            { iconSrc: membershipMonthlyIcon, iconAlt: "Monthly support" },
+                            { iconSrc: membershipSixMonthIcon, iconAlt: "6-month support" },
+                            { iconSrc: membershipAnnualIcon, iconAlt: "Annual support" },
+                          ].map(({ iconSrc, iconAlt }, idx) => {
+                            const item = donatePage.membershipSection.membership.items[idx];
+                            const meta =
+                              donatePage.membershipSection.directGiving.membershipItems[idx];
+                            if (!item || !meta) return null;
+                            const price = item.amount
+                              .replace(/^Rs\s*/i, "")
+                              .replace(/\s*\/\s*/g, " / ");
+                            return (
+                              <MKBox
+                                key={meta.title}
+                                sx={{
+                                  textAlign: "center",
+                                  borderRadius: "14px",
+                                  backgroundColor: "#ffffff",
+                                  border: "1px solid rgba(31, 42, 68, 0.06)",
+                                  px: 1,
+                                  py: 1.5,
+                                }}
+                              >
+                                <MKBox
+                                  component="img"
+                                  src={iconSrc}
+                                  alt={iconAlt}
+                                  sx={{
+                                    display: "block",
+                                    mx: "auto",
+                                    width: { xs: "2.15rem", sm: "2.4rem" },
+                                    height: { xs: "2.15rem", sm: "2.4rem" },
+                                    objectFit: "contain",
+                                  }}
+                                />
+                                <MKTypography
+                                  sx={{
+                                    mt: 0.6,
+                                    fontWeight: 700,
+                                    color: "#1f2a44",
+                                    fontSize: "0.85rem",
+                                    lineHeight: 1.3,
+                                  }}
+                                >
+                                  {meta.title}
+                                </MKTypography>
+                                {item.detail ? (
+                                  <MKTypography
+                                    sx={{
+                                      fontSize: "0.68rem",
+                                      color: "rgba(31, 42, 68, 0.5)",
+                                      mt: 0.15,
+                                    }}
+                                  >
+                                    {item.detail.replace(/[()]/g, "").trim()}
+                                  </MKTypography>
+                                ) : null}
+                                <MKBox
+                                  sx={{
+                                    borderTop: "1px dashed rgba(31, 42, 68, 0.14)",
+                                    my: 0.75,
+                                  }}
+                                />
+                                <MKTypography
+                                  sx={{
+                                    fontWeight: 800,
+                                    color: "#2e7d32",
+                                    fontSize: "0.92rem",
+                                    fontVariantNumeric: "tabular-nums",
+                                  }}
+                                >
+                                  ₹{price}
+                                </MKTypography>
+                              </MKBox>
+                            );
+                          })}
+                        </MKBox>
+                      </MKBox>
+
+                      <MKBox
+                        sx={{
+                          gridArea: "rightTop",
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: { xs: "center", lg: "flex-end" },
+                          minHeight: 0,
+                          pl: { lg: 3, xl: 4 },
+                          pr: { lg: 0.5 },
+                        }}
+                      >
+                        <MKBox
+                          sx={{
+                            width: "100%",
+                            maxWidth: { xs: "100%", lg: 300 },
+                            mt: { xs: 2.7, sm: 3.4 },
+                            mb: 1.5,
+                          }}
+                        >
+                          <MKTypography
+                            sx={{
+                              fontWeight: 700,
+                              color: "#1f2a44",
+                              fontSize: { xs: "1.15rem", sm: "1.25rem" },
+                            }}
+                          >
+                            {donatePage.membershipSection.directGiving.scanCard.title}
+                          </MKTypography>
+                        </MKBox>
+
+                        <MKBox
+                          component="figure"
+                          sx={{
+                            m: 0,
+                            mx: { xs: "auto", lg: 0 },
+                            mb: 0,
+                            p: 0,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: "100%",
+                            maxWidth: { xs: 280, sm: 290, md: 300, lg: 300 },
+                            overflow: "hidden",
+                          }}
+                        >
+                          <MKBox
+                            component="img"
+                            src={donate2UpiQr}
+                            alt="Aadar Foundation UPI QR — scan to donate"
+                            width="674"
+                            height="1090"
+                            loading="lazy"
+                            decoding="async"
+                            fetchPriority="low"
+                            sx={{
+                              display: "block",
+                              width: "100%",
+                              maxWidth: { xs: 280, sm: 290, md: 300, lg: 300 },
+                              aspectRatio: "674 / 1090",
+                              height: "auto",
+                              objectFit: "contain",
+                              objectPosition: "center",
+                              p: 0,
+                              m: 0,
+                              border: "1.5px solid rgba(100, 149, 237, 0.45)",
+                              borderRadius: "12px",
+                              boxShadow:
+                                "0 8px 24px rgba(31, 42, 68, 0.1), 0 2px 8px rgba(31, 42, 68, 0.06)",
+                              backgroundColor: "#fff",
+                            }}
+                          />
+                        </MKBox>
+                      </MKBox>
+
+                      <MKBox
+                        sx={{
+                          gridArea: "leftBot",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "flex-start",
+                          minHeight: 0,
+                        }}
+                      >
+                        {/* Donate Now — aligned with receipt CTA */}
                         <MKBox
                           sx={{
                             display: "flex",
                             justifyContent: "flex-start",
-                            alignItems: "flex-end",
-                            order: 1,
-                            mt: { xs: 3, sm: 3.5, lg: "auto" },
-                            pt: { lg: 3.5 },
+                            alignItems: "center",
+                            width: "100%",
                             mb: 0,
                           }}
                         >
@@ -2797,170 +3007,214 @@ function Donate2() {
                             </MKBox>
                           </MKBox>
                         </MKBox>
-
-                        {/* Membership Support section */}
-                        <MKBox sx={{ mb: 0.75, mt: { xs: 4.5, sm: 5 } }}>
-                          <MKTypography
-                            sx={{
-                              fontWeight: 700,
-                              color: "#1f2a44",
-                              fontSize: { xs: "1.15rem", sm: "1.25rem" },
-                            }}
-                          >
-                            {donatePage.membershipSection.directGiving.membershipCard.title}
-                          </MKTypography>
-                        </MKBox>
-                        <MKTypography
-                          sx={{
-                            fontSize: { xs: "0.9rem", sm: "0.95rem" },
-                            color: "rgba(31, 42, 68, 0.6)",
-                            lineHeight: 1.5,
-                            mb: 2,
-                          }}
-                        >
-                          {donatePage.membershipSection.directGiving.membershipCard.subtitle}
-                        </MKTypography>
-
-                        <MKBox
-                          sx={{
-                            display: "grid",
-                            gridTemplateColumns: { xs: "1fr", sm: "repeat(3, 1fr)" },
-                            gap: { xs: 1.25, sm: 1.5 },
-                          }}
-                        >
-                          {donatePage.membershipSection.membership.items.map((item, idx) => {
-                            const meta =
-                              donatePage.membershipSection.directGiving.membershipItems[idx];
-                            if (!meta) return null;
-                            const price = item.amount
-                              .replace(/^Rs\s*/i, "")
-                              .replace(/\s*\/\s*/g, " / ");
-                            return (
-                              <MKBox
-                                key={meta.title}
-                                sx={{
-                                  textAlign: "center",
-                                  borderRadius: "14px",
-                                  backgroundColor: "#ffffff",
-                                  border: "1px solid rgba(31, 42, 68, 0.06)",
-                                  px: 1,
-                                  py: 1.5,
-                                }}
-                              >
-                                <MKTypography
-                                  sx={{
-                                    fontWeight: 700,
-                                    color: "#1f2a44",
-                                    fontSize: "0.85rem",
-                                    lineHeight: 1.3,
-                                  }}
-                                >
-                                  {meta.title}
-                                </MKTypography>
-                                {item.detail ? (
-                                  <MKTypography
-                                    sx={{
-                                      fontSize: "0.68rem",
-                                      color: "rgba(31, 42, 68, 0.5)",
-                                      mt: 0.15,
-                                    }}
-                                  >
-                                    {item.detail.replace(/[()]/g, "").trim()}
-                                  </MKTypography>
-                                ) : null}
-                                <MKBox
-                                  sx={{
-                                    borderTop: "1px dashed rgba(31, 42, 68, 0.14)",
-                                    my: 0.75,
-                                  }}
-                                />
-                                <MKTypography
-                                  sx={{
-                                    fontWeight: 800,
-                                    color: "#2e7d32",
-                                    fontSize: "0.92rem",
-                                    fontVariantNumeric: "tabular-nums",
-                                  }}
-                                >
-                                  ₹{price}
-                                </MKTypography>
-                              </MKBox>
-                            );
-                          })}
-                        </MKBox>
                       </MKBox>
 
                       <MKBox
                         sx={{
+                          gridArea: "rightBot",
                           display: "flex",
-                          flexDirection: "column",
-                          alignItems: { xs: "center", lg: "flex-end" },
-                          minHeight: 0,
+                          alignItems: "center",
+                          justifyContent: { xs: "center", lg: "flex-end" },
                           pl: { lg: 3, xl: 4 },
                           pr: { lg: 0.5 },
+                          minHeight: 0,
                         }}
                       >
                         <MKBox
                           sx={{
+                            mt: 0,
                             width: "100%",
-                            maxWidth: { xs: "100%", lg: 300 },
-                            mt: { xs: 2.7, sm: 3.4 },
-                            mb: 2,
-                          }}
-                        >
-                          <MKTypography
-                            sx={{
-                              fontWeight: 700,
-                              color: "#1f2a44",
-                              fontSize: { xs: "1.15rem", sm: "1.25rem" },
-                            }}
-                          >
-                            {donatePage.membershipSection.directGiving.scanCard.title}
-                          </MKTypography>
-                        </MKBox>
-
-                        <MKBox
-                          component="figure"
-                          sx={{
-                            m: 0,
+                            maxWidth: { xs: 280, sm: 290, md: 300, lg: 300 },
                             mx: { xs: "auto", lg: 0 },
-                            mb: 0,
-                            mt: { lg: "auto" },
-                            p: 0,
                             display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            width: "100%",
-                            maxWidth: { xs: 260, sm: 280, md: 280, lg: 300 },
-                            overflow: "hidden",
+                            alignItems: "flex-start",
+                            gap: 1,
+                            px: { xs: 1.15, sm: 1.25 },
+                            py: { xs: 0.95, sm: 1.05 },
+                            borderRadius: "14px",
+                            backgroundColor: "#fff9eb",
+                            border: "1.5px solid rgba(232, 168, 56, 0.55)",
+                            boxShadow: "0 4px 12px rgba(196, 140, 40, 0.1)",
                           }}
                         >
                           <MKBox
-                            component="img"
-                            src={donate2UpiQr}
-                            alt="Aadar Foundation UPI QR — scan to donate"
-                            width="674"
-                            height="1090"
-                            loading="lazy"
-                            decoding="async"
-                            fetchPriority="low"
+                            aria-hidden
                             sx={{
-                              display: "block",
-                              width: "100%",
-                              maxWidth: { xs: 260, sm: 280, md: 280, lg: 300 },
-                              aspectRatio: "674 / 1090",
-                              height: "auto",
-                              objectFit: "contain",
-                              objectPosition: "center",
-                              p: 0,
-                              m: 0,
-                              border: "1.5px solid rgba(100, 149, 237, 0.45)",
-                              borderRadius: "12px",
-                              boxShadow:
-                                "0 8px 24px rgba(31, 42, 68, 0.1), 0 2px 8px rgba(31, 42, 68, 0.06)",
-                              backgroundColor: "#fff",
+                              position: "relative",
+                              flexShrink: 0,
+                              width: { xs: 36, sm: 38 },
+                              height: { xs: 36, sm: 38 },
+                              mt: 0,
                             }}
-                          />
+                          >
+                            <MKBox
+                              sx={{
+                                position: "absolute",
+                                inset: 0,
+                                borderRadius: "50%",
+                                backgroundColor: "rgba(236, 191, 90, 0.22)",
+                              }}
+                            />
+                            <DescriptionOutlinedIcon
+                              sx={{
+                                position: "absolute",
+                                left: "50%",
+                                top: "46%",
+                                transform: "translate(-50%, -50%)",
+                                color: "#e0a020",
+                                fontSize: { xs: 22, sm: 24 },
+                              }}
+                            />
+                            <MKBox
+                              sx={{
+                                position: "absolute",
+                                right: -2,
+                                bottom: -1,
+                                width: 15,
+                                height: 15,
+                                borderRadius: "50%",
+                                backgroundColor: "#c47a1f",
+                                color: "#fff",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                fontSize: "0.62rem",
+                                fontWeight: 800,
+                                lineHeight: 1,
+                                boxShadow: "0 0 0 2px #fff9eb",
+                                "&::before, &::after": {
+                                  content: '""',
+                                  position: "absolute",
+                                  backgroundColor: "#c47a1f",
+                                  borderRadius: 1,
+                                },
+                                "&::before": {
+                                  width: 7,
+                                  height: 1.5,
+                                  right: -6,
+                                  top: 5,
+                                  transform: "rotate(-28deg)",
+                                },
+                                "&::after": {
+                                  width: 5,
+                                  height: 1.5,
+                                  right: -3,
+                                  top: 1,
+                                  transform: "rotate(-55deg)",
+                                },
+                              }}
+                            >
+                              !
+                            </MKBox>
+                          </MKBox>
+
+                          <MKBox sx={{ minWidth: 0, flex: 1 }}>
+                            <MKTypography
+                              component="p"
+                              sx={{
+                                m: 0,
+                                fontWeight: 700,
+                                color: "#1f2a44",
+                                fontSize: { xs: "0.8rem", sm: "0.84rem" },
+                                lineHeight: 1.3,
+                              }}
+                            >
+                              {donatePage.membershipSection.directGiving.scanCard.receiptCtaBefore}{" "}
+                              <MKTypography
+                                component={Link}
+                                to={`${DONATION_RECEIPT_PATH}#bank`}
+                                sx={{
+                                  color: "#2563eb",
+                                  fontWeight: 700,
+                                  fontSize: "inherit",
+                                  lineHeight: "inherit",
+                                  textDecoration: "none",
+                                  "&:hover": {
+                                    color: "#1d4ed8",
+                                    textDecoration: "underline",
+                                    textUnderlineOffset: "2px",
+                                  },
+                                }}
+                              >
+                                {donatePage.membershipSection.directGiving.scanCard.receiptCtaLink}
+                              </MKTypography>
+                            </MKTypography>
+
+                            <MKBox
+                              sx={{
+                                mt: 0.45,
+                                display: "flex",
+                                alignItems: "flex-start",
+                                flexWrap: "wrap",
+                                gap: 0.6,
+                              }}
+                            >
+                              <MKBox
+                                component="span"
+                                sx={{
+                                  display: "inline-flex",
+                                  alignItems: "center",
+                                  px: 0.7,
+                                  py: 0.2,
+                                  borderRadius: "5px",
+                                  backgroundColor: "#c47a1f",
+                                  color: "#ffffff",
+                                  fontSize: { xs: "0.58rem", sm: "0.62rem" },
+                                  fontWeight: 800,
+                                  letterSpacing: "0.04em",
+                                  lineHeight: 1.3,
+                                  flexShrink: 0,
+                                }}
+                              >
+                                {
+                                  donatePage.membershipSection.directGiving.scanCard
+                                    .receiptCtaImportant
+                                }
+                              </MKBox>
+                              <MKTypography
+                                component="span"
+                                sx={{
+                                  color: "#1f2a44",
+                                  fontSize: { xs: "0.68rem", sm: "0.72rem" },
+                                  lineHeight: 1.4,
+                                  fontWeight: 600,
+                                }}
+                              >
+                                {donatePage.membershipSection.directGiving.scanCard.receiptCtaLine1}
+                              </MKTypography>
+                            </MKBox>
+
+                            <MKBox
+                              sx={{
+                                mt: 0.4,
+                                display: "flex",
+                                alignItems: "flex-start",
+                                gap: 0.55,
+                              }}
+                            >
+                              <MailOutlineIcon
+                                sx={{
+                                  color: "#1f2a44",
+                                  fontSize: { xs: 15, sm: 16 },
+                                  mt: "1px",
+                                  flexShrink: 0,
+                                  opacity: 0.85,
+                                }}
+                              />
+                              <MKTypography
+                                component="p"
+                                sx={{
+                                  m: 0,
+                                  color: "rgba(31, 42, 68, 0.78)",
+                                  fontSize: { xs: "0.72rem", sm: "0.76rem" },
+                                  lineHeight: 1.4,
+                                  fontWeight: 500,
+                                }}
+                              >
+                                {donatePage.membershipSection.directGiving.scanCard.receiptCtaLine2}
+                              </MKTypography>
+                            </MKBox>
+                          </MKBox>
                         </MKBox>
                       </MKBox>
                     </MKBox>

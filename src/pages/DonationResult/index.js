@@ -994,7 +994,7 @@ export default function DonationResultPage() {
     >
       <Card
         sx={{
-          maxWidth: canDownloadReceipt || canRecoverReceipt ? 720 : 560,
+          maxWidth: canDownloadReceipt || canRecoverReceipt ? 920 : 640,
           mx: "auto",
           borderRadius: "18px",
           overflow: "hidden",
@@ -1075,8 +1075,8 @@ export default function DonationResultPage() {
               >
                 {t("donationResult.yourReceipt")}
               </Typography>
-              <Box sx={{ width: "100%", maxWidth: 720 }}>
-                <DonationReceiptSheet record={record} logoSrc={aadarLogo} />
+              <Box sx={{ width: "100%", maxWidth: 860 }}>
+                <DonationReceiptSheet record={record} logoSrc={aadarLogo} maxWidth={860} />
               </Box>
             </MKBox>
           ) : (

@@ -114,7 +114,7 @@ DetailTable.propTypes = {
   amountLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default function DonationReceiptSheet({ record, logoSrc }) {
+export default function DonationReceiptSheet({ record, logoSrc, maxWidth = 720 }) {
   const vm = buildReceiptViewModel(record);
   const { copy, org } = vm;
   const dr = copy.donorRows;
@@ -152,7 +152,7 @@ export default function DonationReceiptSheet({ record, logoSrc }) {
         fontFamily: '"Segoe UI", Lato, "Noto Sans Devanagari", Helvetica, Arial, sans-serif',
         textAlign: "center",
         mx: "auto",
-        maxWidth: 720,
+        maxWidth,
         "@media print": {
           maxWidth: "100%",
           borderRadius: 0,
@@ -340,4 +340,5 @@ export default function DonationReceiptSheet({ record, logoSrc }) {
 DonationReceiptSheet.propTypes = {
   record: PropTypes.object.isRequired,
   logoSrc: PropTypes.string,
+  maxWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };

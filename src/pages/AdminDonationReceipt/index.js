@@ -208,6 +208,7 @@ export default function AdminDonationReceiptPage() {
         if (stored.trim().startsWith("{")) {
           const parsed = JSON.parse(stored);
           setAdminSecret(String(parsed?.secret || "").trim());
+          setAdminUsername(String(parsed?.username || "").trim());
         } else {
           setAdminSecret(stored);
         }
@@ -912,6 +913,8 @@ export default function AdminDonationReceiptPage() {
               setError("");
             }}
             onLogout={handleLogout}
+            adminSecret={adminSecret}
+            adminUsername={adminUsername}
           />
         </Container>
       </MKBox>

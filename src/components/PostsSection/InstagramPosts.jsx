@@ -3,6 +3,125 @@ import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 import "./InstagramPosts.css";
 
+function PostImage({ src, alt, isActive }) {
+  if (!src) {
+    return <div className="unsupported-media">Unsupported media type</div>;
+  }
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      onContextMenu={(e) => e.preventDefault()}
+      draggable="false"
+      loading={isActive ? "eager" : "lazy"}
+      decoding="async"
+      // eslint-disable-next-line react/no-unknown-property
+      fetchpriority={isActive ? "high" : "low"}
+    />
+  );
+}
+
+PostImage.propTypes = {
+  src: PropTypes.string,
+  alt: PropTypes.string,
+  isActive: PropTypes.bool,
+};
+
+/**
+ * Renders an Instagram image, or a video only when a playable file exists.
+ * Native controls stay hidden until playback starts so empty/failed videos
+ * do not show a browser player chrome.
+ */
+function PostMedia({ post, isActive, preload, videoRefs, onPlay, onPause, onEnded }) {
+  const { t } = useTranslation();
+  const [videoFailed, setVideoFailed] = useState(false);
+  const [showControls, setShowControls] = useState(false);
+  const alt = post.caption || "Instagram post";
+  const imageSrc =
+    post.media_type === "VIDEO"
+      ? post.thumbnail_url || (videoFailed ? undefined : post.media_url)
+      : post.media_url;
+  const canRenderVideo = post.media_type === "VIDEO" && Boolean(post.media_url) && !videoFailed;
+
+  if (!canRenderVideo) {
+    const isImageLike =
+      post.media_type === "IMAGE" ||
+      post.media_type === "CAROUSEL_ALBUM" ||
+      post.media_type === "VIDEO";
+    if (isImageLike) {
+      return <PostImage src={imageSrc} alt={alt} isActive={isActive} />;
+    }
+    return <div className="unsupported-media">Unsupported media type</div>;
+  }
+
+  return (
+    <>
+      <video
+        ref={(el) => {
+          if (el) {
+            videoRefs.current[post.id] = el;
+          } else {
+            delete videoRefs.current[post.id];
+          }
+        }}
+        controls={showControls}
+        controlsList="nodownload"
+        preload={preload}
+        poster={post.thumbnail_url || undefined}
+        onPlay={() => {
+          setShowControls(true);
+          onPlay();
+        }}
+        onPause={onPause}
+        onEnded={onEnded}
+        onError={() => {
+          setVideoFailed(true);
+          setShowControls(false);
+          delete videoRefs.current[post.id];
+        }}
+      >
+        <source src={post.media_url} type="video/mp4" />
+      </video>
+      {!showControls && (
+        <button
+          type="button"
+          className="post-video-play"
+          aria-label={t("homePage.postsSection.playVideo")}
+          onClick={() => {
+            const el = videoRefs.current[post.id];
+            if (!el) return;
+            const playPromise = el.play();
+            if (playPromise && typeof playPromise.catch === "function") {
+              playPromise.catch(() => {
+                setVideoFailed(true);
+                setShowControls(false);
+                delete videoRefs.current[post.id];
+              });
+            }
+          }}
+        />
+      )}
+    </>
+  );
+}
+
+PostMedia.propTypes = {
+  post: PropTypes.shape({
+    id: PropTypes.string,
+    caption: PropTypes.string,
+    media_type: PropTypes.string,
+    media_url: PropTypes.string,
+    thumbnail_url: PropTypes.string,
+  }).isRequired,
+  isActive: PropTypes.bool,
+  preload: PropTypes.string,
+  videoRefs: PropTypes.shape({ current: PropTypes.object }).isRequired,
+  onPlay: PropTypes.func.isRequired,
+  onPause: PropTypes.func.isRequired,
+  onEnded: PropTypes.func.isRequired,
+};
+
 /**
  * InstagramPosts Component
  *
@@ -215,6 +334,14 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
     return false;
   };
 
+  const resumeCarouselIfNoVideoPlaying = () => {
+    setTimeout(() => {
+      if (!checkVideosPlaying()) {
+        setIsAutoPlayPaused(false);
+      }
+    }, 500);
+  };
+
   const nextSlide = () => {
     if (totalSlides === 0) return;
     setIsAutoPlayPaused(true);
@@ -368,85 +495,15 @@ const InstagramPosts = ({ postsPerSlide: propPostsPerSlide, className = "" }) =>
                         return (
                           <div key={post.id} className="post-card">
                             <div className="post-media">
-                              {post.media_type === "IMAGE" ||
-                              post.media_type === "CAROUSEL_ALBUM" ? (
-                                <img
-                                  src={post.media_url}
-                                  alt={post.caption || "Instagram post"}
-                                  onContextMenu={(e) => e.preventDefault()}
-                                  draggable="false"
-                                  loading={isActive ? "eager" : "lazy"}
-                                  decoding="async"
-                                  // eslint-disable-next-line react/no-unknown-property
-                                  fetchpriority={isActive ? "high" : "low"}
-                                />
-                              ) : post.media_type === "VIDEO" ? (
-                                <video
-                                  ref={(el) => {
-                                    if (el) {
-                                      videoRefs.current[post.id] = el;
-                                    }
-                                  }}
-                                  controls
-                                  controlsList="nodownload"
-                                  preload={videoPreloadMode(globalPostIndex)}
-                                  poster={post.thumbnail_url || undefined}
-                                  loading="lazy"
-                                  onPlay={() => {
-                                    // Pause auto-play when video starts playing
-                                    setIsAutoPlayPaused(true);
-                                  }}
-                                  onPause={() => {
-                                    // Resume auto-play when video is paused (after a short delay)
-                                    // Check if any video in current slide is still playing
-                                    setTimeout(() => {
-                                      const currentSlideStart = currentIndex * postsPerSlide;
-                                      const currentSlideEnd = currentSlideStart + postsPerSlide;
-                                      const currentSlidePosts = posts.slice(
-                                        currentSlideStart,
-                                        currentSlideEnd
-                                      );
-                                      const anyVideoPlaying = currentSlidePosts.some((p) => {
-                                        if (p.media_type === "VIDEO") {
-                                          const videoRef = videoRefs.current[p.id];
-                                          return videoRef && !videoRef.paused && !videoRef.ended;
-                                        }
-                                        return false;
-                                      });
-                                      if (!anyVideoPlaying) {
-                                        setIsAutoPlayPaused(false);
-                                      }
-                                    }, 500);
-                                  }}
-                                  onEnded={() => {
-                                    // Resume auto-play when video ends
-                                    // Check if any video in current slide is still playing
-                                    setTimeout(() => {
-                                      const currentSlideStart = currentIndex * postsPerSlide;
-                                      const currentSlideEnd = currentSlideStart + postsPerSlide;
-                                      const currentSlidePosts = posts.slice(
-                                        currentSlideStart,
-                                        currentSlideEnd
-                                      );
-                                      const anyVideoPlaying = currentSlidePosts.some((p) => {
-                                        if (p.media_type === "VIDEO") {
-                                          const videoRef = videoRefs.current[p.id];
-                                          return videoRef && !videoRef.paused && !videoRef.ended;
-                                        }
-                                        return false;
-                                      });
-                                      if (!anyVideoPlaying) {
-                                        setIsAutoPlayPaused(false);
-                                      }
-                                    }, 500);
-                                  }}
-                                >
-                                  <source src={post.media_url} type="video/mp4" />
-                                  Your browser does not support the video tag.
-                                </video>
-                              ) : (
-                                <div className="unsupported-media">Unsupported media type</div>
-                              )}
+                              <PostMedia
+                                post={post}
+                                isActive={isActive}
+                                preload={videoPreloadMode(globalPostIndex)}
+                                videoRefs={videoRefs}
+                                onPlay={() => setIsAutoPlayPaused(true)}
+                                onPause={resumeCarouselIfNoVideoPlaying}
+                                onEnded={resumeCarouselIfNoVideoPlaying}
+                              />
                             </div>
                             <div className="post-content">
                               {post.caption && (

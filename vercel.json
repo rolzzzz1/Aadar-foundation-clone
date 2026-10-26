@@ -4,7 +4,11 @@
   "installCommand": "npm install",
   "framework": "create-react-app",
   "functions": {
-    "api/**/*.js": {
+    "api/razorpay-webhook.js": {
+      "maxDuration": 60,
+      "memory": 1024
+    },
+    "api/[...path].js": {
       "maxDuration": 60,
       "memory": 1024
     }

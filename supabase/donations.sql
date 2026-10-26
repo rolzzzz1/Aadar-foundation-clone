@@ -8,6 +8,8 @@ create table if not exists public.donations (
   -- Official receipt number: AADAR-YYYY-000001 (assigned at insert; display as stored)
   receipt_no text,
   amount_paise integer not null,
+  -- Rupees for Studio/reports (derived). Existing projects: run supabase/amount_inr_display.sql
+  amount_inr integer generated always as (amount_paise / 100) stored,
   currency text not null default 'INR',
   status text not null,
   donor_name text,

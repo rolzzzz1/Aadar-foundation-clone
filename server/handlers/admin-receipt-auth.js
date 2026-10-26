@@ -3,8 +3,8 @@ const {
   getJsonBody,
   isProduction,
   originIsAllowed,
-} = require("../server/_lib/donation");
-const { applyRateLimit, LIMITS } = require("../server/_lib/rateLimit");
+} = require("../_lib/donation");
+const { applyRateLimit, LIMITS } = require("../_lib/rateLimit");
 
 const MAX_BODY_BYTES = 2 * 1024;
 

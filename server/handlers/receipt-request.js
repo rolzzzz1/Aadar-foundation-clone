@@ -3,13 +3,13 @@ const {
   getJsonBody,
   originIsAllowed,
   sanitizeText,
-} = require("../server/_lib/donation");
-const { applyRateLimit, LIMITS } = require("../server/_lib/rateLimit");
+} = require("../_lib/donation");
+const { applyRateLimit, LIMITS } = require("../_lib/rateLimit");
 const {
   MAX_SCREENSHOT_BYTES,
   sendReceiptRequestEmail,
   isEmailConfigured,
-} = require("../server/_lib/receiptRequestEmail");
+} = require("../_lib/receiptRequestEmail");
 
 const MAX_BODY_BYTES = 4.5 * 1024 * 1024;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -123,7 +123,7 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: "Enter a valid donation amount." });
   }
   if (amountInr > 500000) {
-    return res.status(400).json({ error: "Maximum donation amount is ₹5,00,000." });
+    return res.status(400).json({ error: "Maximum donation amount is ?5,00,000." });
   }
   if (!paidAt) {
     return res.status(400).json({ error: "Payment date is required." });

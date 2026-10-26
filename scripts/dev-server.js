@@ -13,27 +13,31 @@ const { applyDevTlsWorkaround } = require("../server/_lib/httpsAgent");
 const PORT = Number(process.env.PORT) || 3001;
 
 const apiDir = path.join(__dirname, "..", "api");
+const handlersDir = path.join(__dirname, "..", "server", "handlers");
 
 const routes = {
   "/api/test": require("./api-test.js"),
-  "/api/health": require(path.join(apiDir, "health.js")),
-  "/api/razorpay-order": require(path.join(apiDir, "razorpay-order.js")),
-  "/api/razorpay-verify": require(path.join(apiDir, "razorpay-verify.js")),
+  "/api/health": require(path.join(handlersDir, "health.js")),
+  "/api/razorpay-order": require(path.join(handlersDir, "razorpay-order.js")),
+  "/api/razorpay-verify": require(path.join(handlersDir, "razorpay-verify.js")),
   "/api/razorpay-webhook": require(path.join(apiDir, "razorpay-webhook.js")),
-  "/api/donation-receipt": require(path.join(apiDir, "donation-receipt.js")),
-  "/api/donation-receipt-list": require(path.join(apiDir, "donation-receipt-list.js")),
-  "/api/donation-receipt-upi": require(path.join(apiDir, "donation-receipt-upi.js")),
-  "/api/receipt-request": require(path.join(apiDir, "receipt-request.js")),
-  "/api/admin-donation-receipt": require(path.join(apiDir, "admin-donation-receipt.js")),
-  "/api/admin-receipt-auth": require(path.join(apiDir, "admin-receipt-auth.js")),
-  "/api/donation-receipt-resend": require(path.join(apiDir, "donation-receipt-resend.js")),
-  "/api/donation-confirm": require(path.join(apiDir, "donation-confirm.js")),
-  "/api/instagram-posts": require(path.join(apiDir, "instagram-posts.js")),
+  "/api/donation-receipt": require(path.join(handlersDir, "donation-receipt.js")),
+  "/api/donation-receipt-list": require(path.join(handlersDir, "donation-receipt-list.js")),
+  "/api/donation-receipt-upi": require(path.join(handlersDir, "donation-receipt-upi.js")),
+  "/api/receipt-request": require(path.join(handlersDir, "receipt-request.js")),
+  "/api/admin-donation-receipt": require(path.join(handlersDir, "admin-donation-receipt.js")),
+  "/api/admin-donation-receipt-lookup": require(
+    path.join(handlersDir, "admin-donation-receipt-lookup.js")
+  ),
+  "/api/admin-receipt-auth": require(path.join(handlersDir, "admin-receipt-auth.js")),
+  "/api/donation-receipt-resend": require(path.join(handlersDir, "donation-receipt-resend.js")),
+  "/api/donation-confirm": require(path.join(handlersDir, "donation-confirm.js")),
+  "/api/instagram-posts": require(path.join(handlersDir, "instagram-posts.js")),
   "/api/membership-subscription-create": require(
-    path.join(apiDir, "membership-subscription-create.js")
+    path.join(handlersDir, "membership-subscription-create.js")
   ),
   "/api/membership-subscription-verify": require(
-    path.join(apiDir, "membership-subscription-verify.js")
+    path.join(handlersDir, "membership-subscription-verify.js")
   ),
 };
 
@@ -191,6 +195,7 @@ server.listen(PORT, "127.0.0.1", () => {
   console.log("  POST /api/donation-receipt-upi");
   console.log("  POST /api/receipt-request");
   console.log("  POST /api/admin-donation-receipt");
+  console.log("  POST /api/admin-donation-receipt-lookup");
   console.log("  POST /api/admin-receipt-auth");
   console.log("  POST /api/donation-receipt-resend");
   console.log("  POST /api/donation-confirm");

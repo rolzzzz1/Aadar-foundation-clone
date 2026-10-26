@@ -1350,6 +1350,20 @@ export default function DonationReceiptRetrievePage() {
               fullWidth
               required
               disabled={bankBusy}
+              helperText={
+                copy.bankUtrHint ||
+                "UTR is the unique ID shown in your UPI app after payment. For a bank transfer, enter the NEFT/RTGS/IMPS reference from your bank SMS or receipt."
+              }
+              FormHelperTextProps={{
+                sx: {
+                  mx: 0.5,
+                  mt: 0.75,
+                  fontSize: "0.78rem",
+                  lineHeight: 1.5,
+                  color: "rgba(31,42,68,0.58)",
+                  whiteSpace: "normal",
+                },
+              }}
               sx={fieldSx}
             />
           </Grid>

@@ -302,6 +302,64 @@ async function fetchDonationByPaymentId(paymentId) {
 }
 
 /**
+ * Normalize official receipt number for lookup (AADAR-YYYY-######).
+ * @returns {string}
+ */
+function normalizeReceiptNo(value) {
+  return String(value || "")
+    .trim()
+    .toUpperCase()
+    .replace(/\s+/g, "");
+}
+
+/**
+ * Fetch one donation row by official receipt_no.
+ * @returns {Promise<object|null>}
+ */
+async function fetchDonationByReceiptNo(receiptNo) {
+  const normalized = normalizeReceiptNo(receiptNo);
+  if (!isStoreConfigured() || !normalized) return null;
+
+  const base = process.env.SUPABASE_URL.replace(/\/$/, "");
+  const url = `${base}/rest/v1/donations?receipt_no=eq.${encodeURIComponent(
+    normalized
+  )}&select=${DONATION_SELECT_FIELDS}&limit=1`;
+
+  try {
+    const res = await fetch(url, {
+      headers: {
+        apikey: process.env.SUPABASE_SERVICE_ROLE_KEY,
+        Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`,
+        Accept: "application/json",
+      },
+    });
+    if (!res.ok) {
+      if (!isProduction()) {
+        const text = await res.text().catch(() => "");
+        // eslint-disable-next-line no-console
+        console.warn("[donation] Supabase fetch by receipt_no failed", {
+          receipt_no: normalized,
+          status: res.status,
+          details: text.slice(0, 200),
+        });
+      }
+      return null;
+    }
+    const rows = await res.json().catch(() => []);
+    return Array.isArray(rows) && rows[0] ? rows[0] : null;
+  } catch (err) {
+    if (!isProduction()) {
+      // eslint-disable-next-line no-console
+      console.warn("[donation] Supabase fetch by receipt_no error", {
+        receipt_no: normalized,
+        message: err && err.message ? err.message : String(err),
+      });
+    }
+    return null;
+  }
+}
+
+/**
  * Insert or merge donation row by payment_id.
  * New rows receive an official AADAR-YYYY-###### receipt_no when missing.
  * @returns {Promise<{ saved: boolean, reason?: string, row?: object, created?: boolean }>}
@@ -596,7 +654,9 @@ module.exports = {
   extractPaymentMethod,
   extractPaymentUtr,
   fetchDonationByPaymentId,
+  fetchDonationByReceiptNo,
   fetchDonationsByContact,
+  normalizeReceiptNo,
   upsertDonationRecord,
   saveDonationRecord,
   markReceiptEmailSent,

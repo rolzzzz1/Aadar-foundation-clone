@@ -6,10 +6,10 @@ const {
   paymentsAreEnabled,
   paymentsDisabledResponse,
   validateRzpId,
-} = require("../server/_lib/donation");
-const { fetchDonationByPaymentId } = require("../server/_lib/donationRecord");
-const { trySendReceiptEmail, isEmailConfigured } = require("../server/_lib/receiptEmail");
-const { applyRateLimit, LIMITS } = require("../server/_lib/rateLimit");
+} = require("../_lib/donation");
+const { fetchDonationByPaymentId } = require("../_lib/donationRecord");
+const { trySendReceiptEmail, isEmailConfigured } = require("../_lib/receiptEmail");
+const { applyRateLimit, LIMITS } = require("../_lib/rateLimit");
 
 /**
  * Re-send donation receipt email (dev / admin).

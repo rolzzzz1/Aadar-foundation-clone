@@ -1,13 +1,13 @@
 /**
- * Create a Razorpay recurring membership Subscription (Supporter/Sustainer/Patron Ã—
+ * Create a Razorpay recurring membership Subscription (Supporter/Sustainer/Patron ×
  * Monthly/Yearly). Mirrors api/razorpay-order.js but returns a `subscription_id` for
- * Razorpay Standard Checkout instead of an `order_id` â€” see src/utils/razorpayCheckout.js
+ * Razorpay Standard Checkout instead of an `order_id` — see src/utils/razorpayCheckout.js
  * (`buildRazorpaySubscriptionCheckoutOptions`) and api/membership-subscription-verify.js.
  */
-const { createPlan, createSubscription } = require("../server/_lib/razorpaySubscriptions");
-const { getCachedPlanId, cachePlanId } = require("../server/_lib/membershipPlanStore");
-const { insertSubscriptionRecord } = require("../server/_lib/membershipRecord");
-const { resolveMembershipAmount } = require("../server/_lib/membershipPlans");
+const { createPlan, createSubscription } = require("../_lib/razorpaySubscriptions");
+const { getCachedPlanId, cachePlanId } = require("../_lib/membershipPlanStore");
+const { insertSubscriptionRecord } = require("../_lib/membershipRecord");
+const { resolveMembershipAmount } = require("../_lib/membershipPlans");
 const {
   applySecurityHeaders,
   getJsonBody,
@@ -17,8 +17,8 @@ const {
   paymentsDisabledResponse,
   validateOrderNotes,
   formatRazorpayError,
-} = require("../server/_lib/donation");
-const { applyRateLimit, LIMITS } = require("../server/_lib/rateLimit");
+} = require("../_lib/donation");
+const { applyRateLimit, LIMITS } = require("../_lib/rateLimit");
 
 const MAX_BODY_BYTES = 4 * 1024;
 
@@ -38,7 +38,7 @@ async function getOrCreatePlanId({
     period: frequencyConfig.period,
     interval: frequencyConfig.interval,
     item: {
-      name: `${tierLabel} Membership â€” â‚¹${amountInr.toLocaleString("en-IN")}/${
+      name: `${tierLabel} Membership — ?${amountInr.toLocaleString("en-IN")}/${
         frequencyKey === "yearly" ? "year" : "month"
       }`,
       amount: amountPaise,

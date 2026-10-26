@@ -14,7 +14,6 @@ import Typography from "@mui/material/Typography";
 
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PhoneIphoneOutlinedIcon from "@mui/icons-material/PhoneIphoneOutlined";
 import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 import ReplayOutlinedIcon from "@mui/icons-material/ReplayOutlined";
@@ -23,8 +22,6 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import DonationReceiptSheet from "components/DonationReceiptSheet";
 import MKButton from "components/MKButton";
 import aadarLogo from "assets/images/logos/logo-aadar.jpg";
-import { postJson } from "utils/api";
-import { validateEmail } from "utils/donation";
 import { formatInr } from "utils/receiptFormat";
 
 const panelGreen = "#edf7ee";
@@ -59,11 +56,18 @@ const tabSx = {
   "& .MuiTabs-indicator": { display: "none" },
 };
 
-const emptyContactLookup = { method: "email", value: "" };
+const emptyLookup = { method: "mobile", value: "" };
 
 function normalizeContact(v) {
   const digits = String(v || "").replace(/\D/g, "");
   return digits.length >= 10 ? digits.slice(-10) : digits;
+}
+
+function normalizeReceiptNoInput(v) {
+  return String(v || "")
+    .trim()
+    .toUpperCase()
+    .replace(/\s+/g, "");
 }
 
 function formatPaidAt(iso, locale) {
@@ -79,25 +83,35 @@ function formatPaidAt(iso, locale) {
   }
 }
 
-function buildContactPayload(method, value) {
-  const raw = String(value || "").trim();
-  if (method === "mobile") {
-    return { contact_type: "mobile", donor_contact: normalizeContact(raw) };
-  }
-  return { contact_type: "email", donor_email: raw.toLowerCase() };
-}
-
-function isContactValid(method, value) {
+function isLookupValid(method, value) {
   if (method === "mobile") return normalizeContact(value).length === 10;
-  return validateEmail(value).ok;
+  return normalizeReceiptNoInput(value).length >= 8;
 }
 
-export default function AdminReceiptRetrieve({ onBack, onLogout }) {
+async function postAdminLookup(body, { secret, username }) {
+  const res = await fetch("/api/admin-donation-receipt-lookup", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Admin-Receipt-Secret": secret,
+      "X-Admin-Receipt-Username": username || "",
+    },
+    body: JSON.stringify({ ...body, secret, username }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const err = new Error(data.error || "Lookup failed");
+    err.status = res.status;
+    throw err;
+  }
+  return data;
+}
+
+export default function AdminReceiptRetrieve({ onBack, onLogout, adminSecret, adminUsername }) {
   const { t, i18n } = useTranslation();
   const receiptLocale = i18n.language === "hi" ? "hi" : "en";
-  const [contactLookup, setContactLookup] = useState(emptyContactLookup);
+  const [lookup, setLookup] = useState(emptyLookup);
   const [donationsList, setDonationsList] = useState(null);
-  const [verifiedContact, setVerifiedContact] = useState(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [downloadMsg, setDownloadMsg] = useState("");
@@ -109,7 +123,6 @@ export default function AdminReceiptRetrieve({ onBack, onLogout }) {
     setError("");
     setDownloadMsg("");
     setDonationsList(null);
-    setVerifiedContact(null);
   };
 
   const handleDownload = async () => {
@@ -124,27 +137,41 @@ export default function AdminReceiptRetrieve({ onBack, onLogout }) {
 
   const handleFindDonations = async () => {
     resetResult();
-    if (!isContactValid(contactLookup.method, contactLookup.value)) {
+    if (!isLookupValid(lookup.method, lookup.value)) {
       setError(
-        contactLookup.method === "mobile"
-          ? t("adminPortal.enterMobile")
-          : t("adminPortal.enterEmail")
+        lookup.method === "mobile" ? t("adminPortal.enterMobile") : t("adminPortal.enterReceiptNo")
       );
       return;
     }
 
-    const contactPayload = buildContactPayload(contactLookup.method, contactLookup.value);
     setBusy(true);
     try {
-      const result = await postJson("/api/donation-receipt-list", {
-        ...contactPayload,
-        locale: receiptLocale,
-      });
+      if (lookup.method === "receipt_no") {
+        const result = await postAdminLookup(
+          {
+            mode: "receipt_no",
+            receipt_no: normalizeReceiptNoInput(lookup.value),
+            locale: receiptLocale,
+          },
+          { secret: adminSecret, username: adminUsername }
+        );
+        if (!result?.record) throw new Error(t("adminPortal.receiptNotFound"));
+        setRecord(result.record);
+        return;
+      }
+
+      const result = await postAdminLookup(
+        {
+          mode: "mobile",
+          donor_contact: normalizeContact(lookup.value),
+          locale: receiptLocale,
+        },
+        { secret: adminSecret, username: adminUsername }
+      );
       const rows = result?.donations;
       if (!Array.isArray(rows) || rows.length === 0) {
         throw new Error(t("adminPortal.noDonations"));
       }
-      setVerifiedContact(contactPayload);
       setDonationsList(rows);
       window.requestAnimationFrame(() => {
         donationsHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -157,16 +184,19 @@ export default function AdminReceiptRetrieve({ onBack, onLogout }) {
   };
 
   const handleSelectDonation = async (paymentId) => {
-    if (!verifiedContact || !paymentId) return;
+    if (!paymentId) return;
     setError("");
     setDownloadMsg("");
     setBusy(true);
     try {
-      const result = await postJson("/api/donation-receipt", {
-        payment_id: paymentId,
-        ...verifiedContact,
-        locale: receiptLocale,
-      });
+      const result = await postAdminLookup(
+        {
+          mode: "payment_id",
+          payment_id: paymentId,
+          locale: receiptLocale,
+        },
+        { secret: adminSecret, username: adminUsername }
+      );
       if (!result?.record) throw new Error(t("adminPortal.receiptNotFound"));
       setRecord(result.record);
       setDonationsList(null);
@@ -262,25 +292,25 @@ export default function AdminReceiptRetrieve({ onBack, onLogout }) {
       ) : (
         <Stack spacing={2}>
           <Tabs
-            value={contactLookup.method}
+            value={lookup.method}
             onChange={(_, value) => {
-              setContactLookup({ method: value, value: "" });
+              setLookup({ method: value, value: "" });
               setError("");
               setDonationsList(null);
             }}
             sx={tabSx}
           >
             <Tab
-              value="email"
-              icon={<EmailOutlinedIcon sx={{ fontSize: 18 }} />}
-              iconPosition="start"
-              label={t("adminPortal.email")}
-            />
-            <Tab
               value="mobile"
               icon={<PhoneIphoneOutlinedIcon sx={{ fontSize: 18 }} />}
               iconPosition="start"
               label={t("adminPortal.mobile")}
+            />
+            <Tab
+              value="receipt_no"
+              icon={<ReceiptLongOutlinedIcon sx={{ fontSize: 18 }} />}
+              iconPosition="start"
+              label={t("adminPortal.receiptNo")}
             />
           </Tabs>
 
@@ -293,14 +323,19 @@ export default function AdminReceiptRetrieve({ onBack, onLogout }) {
           >
             <TextField
               label={
-                contactLookup.method === "mobile"
+                lookup.method === "mobile"
                   ? t("receiptRetrieve.mobile")
-                  : t("receiptRetrieve.emailAddress")
+                  : t("adminPortal.receiptNo")
               }
-              value={contactLookup.value}
-              onChange={(e) => setContactLookup((prev) => ({ ...prev, value: e.target.value }))}
-              placeholder={contactLookup.method === "mobile" ? "9826441863" : "donor@example.com"}
-              type={contactLookup.method === "mobile" ? "tel" : "email"}
+              value={lookup.value}
+              onChange={(e) => setLookup((prev) => ({ ...prev, value: e.target.value }))}
+              placeholder={lookup.method === "mobile" ? "9826441863" : "AADAR-2026-000001"}
+              type={lookup.method === "mobile" ? "tel" : "text"}
+              inputProps={
+                lookup.method === "receipt_no"
+                  ? { autoCapitalize: "characters", spellCheck: false }
+                  : undefined
+              }
               fullWidth
               sx={{ ...fieldSx, mb: 2 }}
               disabled={busy}
@@ -338,7 +373,7 @@ export default function AdminReceiptRetrieve({ onBack, onLogout }) {
               <Stack spacing={1.25}>
                 {donationsList.map((item) => (
                   <Box
-                    key={item.paymentId}
+                    key={item.paymentId || item.receiptNo}
                     sx={{
                       p: 1.5,
                       borderRadius: "12px",
@@ -359,7 +394,18 @@ export default function AdminReceiptRetrieve({ onBack, onLogout }) {
                         {formatPaidAt(item.paidAt, receiptLocale)}
                         {item.programLabel ? ` · ${item.programLabel}` : ""}
                       </Typography>
-                      {item.paymentId ? (
+                      {item.receiptNo ? (
+                        <Typography
+                          sx={{
+                            fontSize: "0.75rem",
+                            color: "rgba(31,42,68,0.55)",
+                            mt: 0.25,
+                            wordBreak: "break-all",
+                          }}
+                        >
+                          {item.receiptNo}
+                        </Typography>
+                      ) : item.paymentId ? (
                         <Typography
                           sx={{
                             fontSize: "0.75rem",
@@ -403,4 +449,10 @@ export default function AdminReceiptRetrieve({ onBack, onLogout }) {
 AdminReceiptRetrieve.propTypes = {
   onBack: PropTypes.func.isRequired,
   onLogout: PropTypes.func.isRequired,
+  adminSecret: PropTypes.string.isRequired,
+  adminUsername: PropTypes.string,
+};
+
+AdminReceiptRetrieve.defaultProps = {
+  adminUsername: "",
 };

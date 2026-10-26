@@ -18,13 +18,13 @@ const {
   paymentsDisabledResponse,
   validateRzpId,
   validateSignatureHex,
-} = require("../server/_lib/donation");
-const { fetchPayment } = require("../server/_lib/razorpay");
-const { fetchSubscription } = require("../server/_lib/razorpaySubscriptions");
-const { persistCapturedDonation } = require("../server/_lib/donationPersist");
-const { extractPaymentMethod } = require("../server/_lib/donationRecord");
-const { updateSubscriptionRecord } = require("../server/_lib/membershipRecord");
-const { applyRateLimit, LIMITS } = require("../server/_lib/rateLimit");
+} = require("../_lib/donation");
+const { fetchPayment } = require("../_lib/razorpay");
+const { fetchSubscription } = require("../_lib/razorpaySubscriptions");
+const { persistCapturedDonation } = require("../_lib/donationPersist");
+const { extractPaymentMethod } = require("../_lib/donationRecord");
+const { updateSubscriptionRecord } = require("../_lib/membershipRecord");
+const { applyRateLimit, LIMITS } = require("../_lib/rateLimit");
 
 const MAX_BODY_BYTES = 2 * 1024;
 const CAPTURE_RETRY_STATUSES = new Set(["authorized", "created", "pending", "processing"]);

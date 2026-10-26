@@ -220,7 +220,7 @@ Redeploy after changing any variable.
 
 ### D. Production smoke test (real ₹1–₹10)
 
-1. Open `https://www.aadarfoundation.org/donate/checkout` (or from Donate2 → Pay).
+1. Open `https://www.aadarfoundation.org/donate` (Donate2, when payments flags are on) → Pay, or `/donate/checkout` with an amount/purpose.
 2. Complete a **small live** payment.
 3. Confirm:
    - Success page + PDF download works.
@@ -248,7 +248,7 @@ using Razorpay's **Subscriptions API** (plans + subscriptions, auto-charged each
 ```mermaid
 sequenceDiagram
   participant Donor
-  participant Donate2 as /donate2
+  participant Donate2 as /donate
   participant Checkout as /donate/checkout
   participant CreateAPI as POST /api/membership-subscription-create
   participant Razorpay
