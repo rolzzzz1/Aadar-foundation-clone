@@ -1,7 +1,5 @@
 /** Canonical public URLs — single source of truth for nav, sitemap, and internal links. */
 
-import { isPaymentsEnabled } from "./paymentsFeature";
-
 export const HOME_PATH = "/";
 
 export const ABOUT_PATH = "/about";
@@ -11,11 +9,11 @@ export const DONATE_PAGE_PATH = "/donate";
 export const DONATE2_PAGE_PATH = "/donate2";
 
 /**
- * Donate2 (Razorpay + UPI/bank landing) is public only when the payments loop is on.
- * Same gate as checkout: local ON by default; production needs REACT_APP_PAYMENTS_ENABLED=true.
- * When enabled, `/donate` serves Donate2; `/donate2` redirects there.
+ * Soft-launch Donate2 at `/donate2` (admin login) — independent of payments flag.
+ * Public `/donate` stays bank/UPI-only until Donate2 is opened to everyone.
+ * Checkout still requires REACT_APP_PAYMENTS_ENABLED=true in production.
  */
-export const isDonate2Enabled = isPaymentsEnabled();
+export const isDonate2Enabled = true;
 export const GALLERY_PATH = "/gallery";
 export const CONTACT_PATH = "/contact";
 export const PRIVACY_POLICY_PATH = "/privacy-policy";
@@ -38,7 +36,7 @@ export const LEGACY_PATH_REDIRECTS = Object.freeze({
   "/pages/landing-pages/work": WORK_PATH,
   "/pages/landing-pages/volunteer": VOLUNTEER_PATH,
   "/pages/landing-pages/donate": DONATE_PAGE_PATH,
-  "/pages/landing-pages/donate2": DONATE_PAGE_PATH,
+  "/pages/landing-pages/donate2": DONATE2_PAGE_PATH,
   "/pages/landing-pages/gallery": GALLERY_PATH,
   "/pages/landing-pages/contact": CONTACT_PATH,
   "/pages/landing-pages/privacy-policy": PRIVACY_POLICY_PATH,

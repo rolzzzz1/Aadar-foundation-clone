@@ -17,6 +17,7 @@ import theme from "assets/theme";
 import DeferredVitals from "components/DeferredVitals";
 import PageLoadingFallback from "components/PageLoadingFallback";
 import MobileHomeFallback from "components/MobileHomeFallback";
+import AdminAccessGate from "components/AdminAccessGate";
 
 const Home = lazy(() => import(/* webpackPreload: true */ "layouts/pages/home"));
 
@@ -30,7 +31,6 @@ import {
   DONATION_RECEIPT_PATH,
   DONATION_SUCCESS_PATH,
   ADMIN_RECEIPT_PATH,
-  isDonate2Enabled,
   LEGACY_PATH_REDIRECTS,
 } from "utils/paths";
 import { isPaymentsEnabled } from "utils/paymentsFeature";
@@ -76,9 +76,9 @@ const DonationResult = isPaymentsEnabled()
   ? lazy(() => import(/* webpackChunkName: "donation-result" */ "pages/DonationResult"))
   : null;
 const DonateBankOnly = lazy(() => import("layouts/pages/landing-pages/donate"));
-const Donate2 = isDonate2Enabled ? lazy(() => import("pages/LandingPages/Donate2")) : null;
-/** Public `/donate`: Donate2 when payments loop is on, else bank/UPI-only page. */
-const Donate = isDonate2Enabled && Donate2 ? Donate2 : DonateBankOnly;
+/** Soft-launch Donate2 at `/donate2` (admin login). Public `/donate` stays bank/UPI-only. */
+const Donate2 = lazy(() => import("pages/LandingPages/Donate2"));
+const Donate = DonateBankOnly;
 const DonationReceiptRetrieve = lazy(() =>
   import(/* webpackChunkName: "donation-receipt-retrieve" */ "pages/DonationReceiptRetrieve")
 );
@@ -403,7 +403,20 @@ export default function App() {
               </Suspense>
             }
           />
-          <Route path={DONATE2_PAGE_PATH} element={<Navigate to={DONATE_PAGE_PATH} replace />} />
+          <Route
+            path={DONATE2_PAGE_PATH}
+            element={
+              <Suspense fallback={<PageLoadingFallback />}>
+                <AdminAccessGate
+                  title="Donate2 preview"
+                  subtitle="Admin login required while Donate2 is in soft launch."
+                  persistSession={false}
+                >
+                  <Donate2 />
+                </AdminAccessGate>
+              </Suspense>
+            }
+          />
           <Route
             path={DONATION_RECEIPT_PATH}
             element={

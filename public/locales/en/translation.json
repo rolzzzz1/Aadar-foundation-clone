@@ -491,8 +491,9 @@
       "mealSponsorship": {
         "title": "Meal Sponsorship",
         "subtitle": "50 prabhuji breakfast",
-        "amount": "₹1,501",
-        "period": "one-time donation"
+        "amount": "₹1,500",
+        "period": "one-time donation",
+        "inputHint": "Meal Sponsorship — 50 Prabhuji"
       },
       "monthlyCare": {
         "title": "Monthly\nCare",
@@ -601,7 +602,7 @@
         "items": [
           {
             "label": "One time breakfast for 50 Prabhuji",
-            "amount": "Rs 1,501"
+            "amount": "Rs 1,500"
           },
           {
             "label": "One time lunch or dinner for 50 Prabhuji",
@@ -617,9 +618,16 @@
           }
         ]
       },
+      "conversion": {
+        "useFormAboveCta": "Card or netbanking",
+        "giftGuideHint": "Amounts below are a guide. Choose Meal Sponsorship or another option in the form above to donate securely.",
+        "seeGalleryCta": "See moments from our work in the Gallery",
+        "mealFromUpiCta": "Sponsor a meal — ₹1,500",
+        "openBankCta": "Bank transfer"
+      },
       "directGiving": {
-        "title": "Direct Giving Options",
-        "subtitle": "Support meals, resident care, or donate instantly via UPI.",
+        "title": "Give by UPI",
+        "subtitle": "Open your UPI app and scan. Your gift supports daily care for our Prabhuji.",
         "foodCard": {
           "title": "Food Sponsorship",
           "subtitle": "Sponsor nutritious meals and bring smiles to those in need."
@@ -629,13 +637,13 @@
           "subtitle": "Join as a regular supporter and help sustain the daily care of our residents."
         },
         "scanCard": {
-          "title": "Alternative: Scan and donate",
-          "subtitle": "UPI Payments via Razorpay",
+          "title": "Scan with any UPI app",
+          "subtitle": "GPay · PhonePe · Paytm · BHIM and more",
           "receiptCtaBefore": "Submit your details",
-          "receiptCtaLink": "here →",
+          "receiptCtaLink": "here",
           "receiptCtaImportant": "IMPORTANT:",
-          "receiptCtaLine1": "After payment, submit your details.",
-          "receiptCtaLine2": "We'll email your 80G tax receipt."
+          "receiptCtaLine1": "After you pay, share your details",
+          "receiptCtaLine2": "— we will email your 80G tax receipt."
         },
         "donateNowCta": "Donate Now",
         "donateNowBadge": "Recommended",
@@ -963,9 +971,12 @@
       "bankTransferNote": "For UPI/QR or bank transfer donations, email aadarfoundation2018@gmail.com with your donor details (name, father/husband name, email, mobile, PAN, address), donation details (amount and date), transaction reference (UTR/Bank Ref), and payment screenshot. We will verify the payment and email your 80G tax receipt.",
       "button": "Get my receipt",
       "onlineTitle": "Online Donations via Razorpay",
+      "onlineMethods": "UPI, Cards, Net Banking",
       "onlineBody": "Retrieve or download your official 80G receipt for Razorpay donations.",
+      "onlineBodyOnPage": "Retrieve or download your official 80G receipt for Razorpay donations.",
       "bankTitle": "Donated via Direct QR or Bank Transfer?",
       "bankBody": "Submit your details on the Get my receipt page. After verification, we'll email your 80G tax receipt.",
+      "bankBodyOnPage": "Submit your details below. After verification, we'll email your 80G tax receipt.",
       "bankButton": "Open receipt request form"
     },
     "findMyReceipt": "Find My Receipt",

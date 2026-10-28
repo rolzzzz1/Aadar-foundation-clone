@@ -41,6 +41,7 @@ import DefaultFooter from "examples/Footers/DefaultFooter";
 import MKBox from "components/MKBox";
 import MKButton from "components/MKButton";
 import DonationReceiptSheet from "components/DonationReceiptSheet";
+import DonateReceiptCta from "pages/LandingPages/shared/DonateReceiptCta";
 import aadarLogo from "assets/images/logos/logo-aadar.jpg";
 import getRoutes from "routes1";
 import getFooterRoutes from "footer.routes1";
@@ -1820,6 +1821,15 @@ export default function DonationReceiptRetrievePage() {
               </Box>
             </Grid>
           </Grid>
+
+          <DonateReceiptCta
+            variant="guide"
+            sx={{
+              mb: { xs: 2, md: 2.5 },
+              mx: "auto",
+              maxWidth: 980,
+            }}
+          />
 
           <Card
             ref={receiptCardRef}

@@ -56,8 +56,8 @@ export const PROGRAMS = Object.freeze({
     amountInr: 1001,
   },
   "meal-sponsorship": {
-    label: "Meal Sponsorship — ₹1,501",
-    amountInr: 1501,
+    label: "Meal Sponsorship — ₹1,500 (50 Prabhuji)",
+    amountInr: 1500,
   },
   "sponsor-prabhuji-month": {
     label: "Sponsor a Prabhuji (1 month) — ₹3,001",
@@ -84,6 +84,7 @@ export function formatGeneralDonationLabel(amountInr) {
 export const DONATE_WIDGET_PRESET_PURPOSE = Object.freeze({
   501: "donate-501",
   1001: "donate-1001",
+  1500: "meal-sponsorship",
   3001: "sponsor-prabhuji-month",
 });
 

@@ -10,8 +10,8 @@
  * When going live, set REACT_APP_PAYMENTS_ENABLED=true on Vercel Production
  * (and PAYMENTS_ENABLED=true for the API — see .env.example).
  *
- * Same flag also publishes Donate2 as `/donate` (checkout + UPI landing).
- * With payments OFF, `/donate` stays the bank/UPI-only page.
+ * Donate2 soft-launch at `/donate2` is separate (admin-gated; always routable).
+ * Checkout / success / failed still require this flag in production.
  */
 export function isPaymentsEnabled() {
   const flag = process.env.REACT_APP_PAYMENTS_ENABLED;

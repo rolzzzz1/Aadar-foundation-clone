@@ -12,145 +12,35 @@ import MKTypography from "components/MKTypography";
 import { DONATION_RECEIPT_PATH } from "utils/donation";
 
 const BODY_FALLBACK = "Retrieve or download your official 80G receipt for online donations only.";
+const ONLINE_BODY_FALLBACK =
+  "Retrieve or download your official 80G receipt for Razorpay donations.";
+const BANK_BODY_FALLBACK =
+  "Submit your details below. After verification, we'll email your 80G tax receipt.";
 
-export default function DonateReceiptCta({ sx = {} }) {
+/**
+ * @param {"cta"|"guide"} variant
+ * - cta: Donate2 header + “Get my receipt” button
+ * - guide: receipt-page Razorpay vs QR/bank OR panel
+ */
+export default function DonateReceiptCta({ variant = "cta", sx = {} }) {
   const { t } = useTranslation();
-  const copy = t("receiptRetrieve.cta", { returnObjects: true });
+  const copy = t("receiptRetrieve.cta", { returnObjects: true }) || {};
 
-  return (
-    <MKBox
-      sx={{
-        borderRadius: "22px",
-        background:
-          "linear-gradient(135deg, rgba(240, 253, 244, 0.95) 0%, rgba(236, 252, 243, 0.75) 55%, rgba(255, 255, 255, 0.9) 100%)",
-        border: "1px solid rgba(46, 125, 50, 0.16)",
-        boxShadow: "0 14px 34px rgba(31, 42, 68, 0.06)",
-        p: { xs: 2, sm: 2.5, md: 3 },
-        ...sx,
-      }}
-    >
-      {/* Header: icon + title/subtitle + CTA button */}
-      <MKBox
-        sx={{
-          display: "flex",
-          flexDirection: { xs: "column", sm: "row" },
-          alignItems: { xs: "flex-start", sm: "center" },
-          justifyContent: "space-between",
-          gap: { xs: 1.5, sm: 2 },
-          mb: { xs: 2, sm: 2.25 },
-        }}
-      >
-        <MKBox
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: { xs: 1.25, sm: 1.75 },
-            minWidth: 0,
-          }}
-        >
-          <MKBox
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexShrink: 0,
-              lineHeight: 0,
-              fontSize: { xs: 58, sm: 68 },
-            }}
-          >
-            <ReceiptLongOutlinedIcon
-              sx={{ color: "#2e7d32", fontSize: "1em", width: "1em", height: "1em" }}
-            />
-          </MKBox>
-
-          <MKBox sx={{ minWidth: 0 }}>
-            <MKTypography
-              sx={{
-                fontFamily:
-                  '"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
-                fontWeight: 500,
-                color: "#1f2a44",
-                fontSize: { xs: "1.25rem", sm: "1.4rem", md: "1.5rem" },
-                lineHeight: 1.3,
-              }}
-            >
-              {copy.title || "Need your donation receipt?"}
-            </MKTypography>
-            <MKTypography
-              sx={{
-                color: "rgba(31, 42, 68, 0.68)",
-                fontSize: { xs: "0.85rem", sm: "0.9rem" },
-                lineHeight: 1.5,
-                mt: 0.25,
-                maxWidth: 480,
-              }}
-            >
-              {copy.body || BODY_FALLBACK}
-            </MKTypography>
-          </MKBox>
-        </MKBox>
-
-        <MKButton
-          component={RouterLink}
-          to={DONATION_RECEIPT_PATH}
-          variant="outlined"
-          startIcon={<ReceiptLongOutlinedIcon />}
-          endIcon={<ArrowForwardIcon />}
-          sx={{
-            flexShrink: 0,
-            fontWeight: 700,
-            textTransform: "none",
-            borderRadius: "12px",
-            px: { xs: 2.75, sm: 3.25 },
-            py: { xs: 1.15, sm: 1.25 },
-            fontSize: { xs: "0.9rem", sm: "0.975rem" },
-            width: { xs: "100%", sm: "auto" },
-            minWidth: { sm: 200, md: 220 },
-            maxWidth: { xs: 300, sm: "none" },
-            mr: { sm: 2.5, md: 3.5 },
-            color: "#2e7d32",
-            border: "1.5px solid rgba(46, 125, 50, 0.45)",
-            backgroundColor: "#ffffff",
-            boxShadow: "none",
-            letterSpacing: "0.01em",
-            "& .MuiButton-endIcon": {
-              marginLeft: "8px",
-              marginRight: "-2px",
-            },
-            "& .MuiSvgIcon-root": {
-              color: "#2e7d32",
-              fontSize: "1.3rem !important",
-            },
-            "&:hover": {
-              backgroundColor: "rgba(46, 125, 50, 0.06)",
-              border: "1.5px solid rgba(46, 125, 50, 0.65)",
-              boxShadow: "none",
-              color: "#1b5e20",
-            },
-            "&:focus, &.Mui-focusVisible, &:focus-visible, &:focus:not(:hover)": {
-              backgroundColor: "#ffffff",
-              border: "1.5px solid rgba(46, 125, 50, 0.65)",
-              boxShadow: "0 0 0 3px rgba(46, 125, 50, 0.12)",
-              outline: "none",
-            },
-          }}
-        >
-          {copy.button || "Get my receipt"}
-        </MKButton>
-      </MKBox>
-
-      {/* Two-column panel: online donations vs direct QR / bank transfer */}
+  if (variant === "guide") {
+    return (
       <MKBox
         sx={{
           position: "relative",
           borderRadius: "16px",
-          backgroundColor: "rgba(255, 255, 255, 0.6)",
-          border: "1px solid rgba(46, 125, 50, 0.14)",
+          backgroundColor: "#ffffff",
+          border: "1px solid rgba(31, 42, 68, 0.1)",
+          boxShadow: "0 8px 24px rgba(31, 42, 68, 0.05)",
           p: { xs: 2, sm: 2.5, md: 2.75 },
           display: "grid",
           gridTemplateColumns: { xs: "1fr", md: "1fr auto 1fr" },
           columnGap: { md: 3 },
           rowGap: 2,
+          ...sx,
         }}
       >
         <MKBox>
@@ -174,17 +64,15 @@ export default function DonateReceiptCta({ sx = {} }) {
             </MKTypography>
           </MKBox>
           <MKTypography sx={{ fontWeight: 700, color: "#2e7d32", fontSize: "0.83rem", mb: 0.5 }}>
-            UPI, Cards, Net Banking
+            {copy.onlineMethods || "UPI, Cards, Net Banking"}
           </MKTypography>
           <MKTypography
             sx={{ color: "rgba(31, 42, 68, 0.68)", fontSize: "0.8rem", lineHeight: 1.55 }}
           >
-            {copy.onlineBody ||
-              "Your donation details are captured automatically. Retrieve or download your 80G receipt instantly."}
+            {copy.onlineBodyOnPage || copy.onlineBody || ONLINE_BODY_FALLBACK}
           </MKTypography>
         </MKBox>
 
-        {/* Divider with "OR" badge — vertical on desktop, horizontal on mobile */}
         <MKBox
           sx={{
             display: { xs: "flex", md: "none" },
@@ -257,15 +145,146 @@ export default function DonateReceiptCta({ sx = {} }) {
           <MKTypography
             sx={{ color: "rgba(31, 42, 68, 0.68)", fontSize: "0.8rem", lineHeight: 1.6 }}
           >
-            {copy.bankBody ||
-              "Submit your details on the Get my receipt page. After verification, we'll email your 80G tax receipt."}
+            {copy.bankBodyOnPage || BANK_BODY_FALLBACK}
           </MKTypography>
         </MKBox>
+      </MKBox>
+    );
+  }
+
+  return (
+    <MKBox
+      sx={{
+        position: "relative",
+        borderRadius: { xs: "16px", md: "18px" },
+        background: "linear-gradient(165deg, #f3f9f4 0%, #eef6ef 45%, #e8f2ea 100%)",
+        border: "1px solid rgba(79, 169, 83, 0.22)",
+        boxShadow: "0 10px 28px rgba(31, 42, 68, 0.05)",
+        p: { xs: 2, sm: 2.25, md: 2.5 },
+        overflow: "hidden",
+        "&::before": {
+          content: '""',
+          position: "absolute",
+          left: 0,
+          top: 0,
+          bottom: 0,
+          width: 3,
+          backgroundColor: "#4FA953",
+          opacity: 0.85,
+        },
+        ...sx,
+      }}
+    >
+      <MKBox
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          alignItems: { xs: "flex-start", sm: "center" },
+          justifyContent: "space-between",
+          gap: { xs: 1.5, sm: 2 },
+        }}
+      >
+        <MKBox
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: { xs: 1.25, sm: 1.5 },
+            minWidth: 0,
+          }}
+        >
+          <MKBox
+            sx={{
+              width: { xs: 44, sm: 48 },
+              height: { xs: 44, sm: 48 },
+              borderRadius: "14px",
+              backgroundColor: "rgba(79, 169, 83, 0.12)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+            }}
+          >
+            <ReceiptLongOutlinedIcon sx={{ color: "#2e7d32", fontSize: { xs: 24, sm: 26 } }} />
+          </MKBox>
+
+          <MKBox sx={{ minWidth: 0 }}>
+            <MKTypography
+              sx={{
+                fontFamily:
+                  '"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
+                fontWeight: 500,
+                color: "#1f2a44",
+                fontSize: { xs: "1.2rem", sm: "1.35rem", md: "1.45rem" },
+                lineHeight: 1.3,
+              }}
+            >
+              {copy.title || "Need your donation receipt?"}
+            </MKTypography>
+            <MKTypography
+              sx={{
+                color: "rgba(31, 42, 68, 0.62)",
+                fontSize: { xs: "0.84rem", sm: "0.9rem" },
+                lineHeight: 1.5,
+                mt: 0.35,
+                maxWidth: 480,
+              }}
+            >
+              {copy.body || BODY_FALLBACK}
+            </MKTypography>
+          </MKBox>
+        </MKBox>
+
+        <MKButton
+          component={RouterLink}
+          to={DONATION_RECEIPT_PATH}
+          variant="outlined"
+          endIcon={<ArrowForwardIcon />}
+          sx={{
+            flexShrink: 0,
+            fontWeight: 700,
+            textTransform: "none",
+            borderRadius: "12px",
+            px: { xs: 2.5, sm: 3 },
+            py: { xs: 1.05, sm: 1.15 },
+            fontSize: { xs: "0.88rem", sm: "0.94rem" },
+            width: { xs: "100%", sm: "auto" },
+            minWidth: { sm: 180 },
+            maxWidth: { xs: 300, sm: "none" },
+            color: "#1f2a44",
+            border: "1px solid rgba(79, 169, 83, 0.28)",
+            backgroundColor: "rgba(255, 255, 255, 0.85)",
+            boxShadow: "none",
+            letterSpacing: "0.01em",
+            "& .MuiButton-endIcon": {
+              marginLeft: "8px",
+              marginRight: "-2px",
+            },
+            "& .MuiSvgIcon-root": {
+              color: "#2e7d32",
+              fontSize: "1.2rem !important",
+            },
+            "&:hover": {
+              backgroundColor: "#ffffff",
+              border: "1px solid rgba(79, 169, 83, 0.5)",
+              boxShadow: "none",
+              color: "#1f2a44",
+            },
+            "&:focus, &.Mui-focusVisible, &:focus-visible, &:focus:not(:hover)": {
+              backgroundColor: "rgba(255, 255, 255, 0.85)",
+              border: "1px solid rgba(79, 169, 83, 0.5)",
+              boxShadow: "0 0 0 3px rgba(79, 169, 83, 0.12)",
+              outline: "none",
+            },
+          }}
+        >
+          {copy.button || "Get my receipt"}
+        </MKButton>
       </MKBox>
     </MKBox>
   );
 }
 
 DonateReceiptCta.propTypes = {
+  variant: PropTypes.oneOf(["cta", "guide"]),
   sx: PropTypes.object,
 };

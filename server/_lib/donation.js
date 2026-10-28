@@ -49,8 +49,8 @@ const PROGRAMS = Object.freeze({
     amountInr: 1001,
   },
   "meal-sponsorship": {
-    label: "Meal Sponsorship — ₹1,501",
-    amountInr: 1501,
+    label: "Meal Sponsorship — ₹1,500 (50 Prabhuji)",
+    amountInr: 1500,
   },
   "sponsor-prabhuji-month": {
     label: "Sponsor a Prabhuji (1 month) — ₹3,001",

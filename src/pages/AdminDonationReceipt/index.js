@@ -38,14 +38,18 @@ import AdminReceiptRetrieve from "pages/AdminDonationReceipt/AdminReceiptRetriev
 import aadarLogo from "assets/images/logos/logo-aadar.jpg";
 import { formatApiErrorMessage, getApiUrl } from "utils/api";
 import {
+  clearAdminSession,
+  readAdminSession,
+  verifyAdminLogin,
+  writeAdminSession,
+} from "utils/adminReceiptAuth";
+import {
   validateAddressLine,
   validateContactIN,
   validateEmail,
   validatePan,
   validatePinIn,
 } from "utils/donation";
-
-const ADMIN_SECRET_KEY = "aadar_admin_receipt_secret";
 
 const fieldSx = {
   "& .MuiInputBase-input": { fontSize: { xs: "0.9375rem", sm: "0.975rem" } },
@@ -89,26 +93,6 @@ async function postAdminReceipt(body, { secret, username }) {
     },
     credentials: "same-origin",
     body: JSON.stringify({ ...body, secret, username }),
-  });
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) {
-    throw new Error(formatApiErrorMessage(data, res.status));
-  }
-  return data;
-}
-
-async function verifyAdminLogin({ secret, username }) {
-  const url = getApiUrl("/api/admin-receipt-auth");
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      "X-Admin-Receipt-Secret": secret,
-      "X-Admin-Receipt-Username": username || "",
-    },
-    credentials: "same-origin",
-    body: JSON.stringify({ secret, username }),
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
@@ -201,22 +185,13 @@ export default function AdminDonationReceiptPage() {
   const [result, setResult] = useState(null);
 
   useEffect(() => {
-    try {
-      const stored = sessionStorage.getItem(ADMIN_SECRET_KEY);
-      if (stored) {
-        // Keep session unlock, but never prefill login fields.
-        if (stored.trim().startsWith("{")) {
-          const parsed = JSON.parse(stored);
-          setAdminSecret(String(parsed?.secret || "").trim());
-          setAdminUsername(String(parsed?.username || "").trim());
-        } else {
-          setAdminSecret(stored);
-        }
-        setUnlocked(true);
-        setAdminView("menu");
-      }
-    } catch {
-      /* ignore */
+    const session = readAdminSession();
+    if (session?.secret) {
+      // Keep session unlock, but never prefill login fields.
+      setAdminSecret(session.secret);
+      setAdminUsername(session.username || "");
+      setUnlocked(true);
+      setAdminView("menu");
     }
   }, []);
 
@@ -249,7 +224,7 @@ export default function AdminDonationReceiptPage() {
     setUnlocked(true);
     setAdminView("menu");
     try {
-      sessionStorage.setItem(ADMIN_SECRET_KEY, JSON.stringify({ username, secret: trimmed }));
+      writeAdminSession({ username, secret: trimmed });
     } catch {
       /* ignore */
     }
@@ -263,11 +238,7 @@ export default function AdminDonationReceiptPage() {
     setResult(null);
     setError("");
     setAdminView("menu");
-    try {
-      sessionStorage.removeItem(ADMIN_SECRET_KEY);
-    } catch {
-      /* ignore */
-    }
+    clearAdminSession();
   };
 
   const updateField = (field) => (event) => {
