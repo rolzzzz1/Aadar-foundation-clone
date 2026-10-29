@@ -584,14 +584,24 @@
             "periodDetail": "( एक महीने के लिए )",
             "highlight": "एक महीना – Rs. 3,001",
             "payButton": "अभी दान करें - Rs. 3,001",
-            "amount": 3001
+            "amount": 3001,
+            "purpose": "sponsor-prabhuji-month"
           },
           {
             "description": "एक प्रभुजी का खर्च",
             "periodDetail": "( एक साल के लिए )",
             "highlight": "एक साल – Rs. 30,001",
             "payButton": "अभी दान करें - Rs. 30,001",
-            "amount": 30001
+            "amount": 30001,
+            "purpose": "sponsor-prabhuji-year"
+          },
+          {
+            "description": "10 प्रभुजी के लिए भोजन",
+            "periodDetail": "( एक बार का भोजन सहयोग )",
+            "highlight": "10 के लिए भोजन – Rs. 300",
+            "payButton": "अभी दान करें - Rs. 300",
+            "amount": 300,
+            "purpose": "food-10-prabhuji"
           }
         ],
         "description": "** इसमें उनका उपचार, भोजन, कपड़े और देखभाल शामिल है।"
@@ -615,6 +625,10 @@
           {
             "label": "100 प्रभुजी के लिए पूरे दिन का भोजन",
             "amount": "Rs 15,001"
+          },
+          {
+            "label": "10 प्रभुजी के लिए भोजन",
+            "amount": "Rs 300"
           }
         ]
       },

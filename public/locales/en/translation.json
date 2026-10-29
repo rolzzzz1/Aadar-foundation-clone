@@ -584,14 +584,24 @@
             "periodDetail": "( for a Month )",
             "highlight": "One Month – Rs. 3,001",
             "payButton": "Donate Now - Rs. 3,001",
-            "amount": 3001
+            "amount": 3001,
+            "purpose": "sponsor-prabhuji-month"
           },
           {
             "description": "Expenses of one Prabhuji",
             "periodDetail": "( for a Year )",
             "highlight": "One Year – Rs. 30,001",
             "payButton": "Donate Now - Rs. 30,001",
-            "amount": 30001
+            "amount": 30001,
+            "purpose": "sponsor-prabhuji-year"
+          },
+          {
+            "description": "Food for 10 Prabhuji",
+            "periodDetail": "( one-time meal support )",
+            "highlight": "Food for 10 – Rs. 300",
+            "payButton": "Donate Now - Rs. 300",
+            "amount": 300,
+            "purpose": "food-10-prabhuji"
           }
         ],
         "description": "** This includes their treatment, food, clothes and care."
@@ -615,6 +625,10 @@
           {
             "label": "Full day meals for 100 Prabhuji",
             "amount": "Rs 15,001"
+          },
+          {
+            "label": "Food for 10 Prabhuji",
+            "amount": "Rs 300"
           }
         ]
       },

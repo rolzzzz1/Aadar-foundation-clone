@@ -60,6 +60,10 @@ const PROGRAMS = Object.freeze({
     label: "Sponsor a Prabhuji (1 year) — ₹30,001",
     amountInr: 30001,
   },
+  "food-10-prabhuji": {
+    label: "Food for 10 Prabhuji — ₹300",
+    amountInr: 300,
+  },
 });
 
 /** Label used when checkout has a free/custom amount (no PROGRAMS purpose key). */
@@ -412,10 +416,7 @@ function formatRazorpayError(err) {
   if (err.code === "transport_failed" && typeof err.message === "string") {
     return err.message;
   }
-  if (
-    typeof err.message === "string" &&
-    /reading 'status'/.test(err.message)
-  ) {
+  if (typeof err.message === "string" && /reading 'status'/.test(err.message)) {
     return (
       "Cannot reach Razorpay API (network or SSL error). " +
       "If your keys are correct, set RAZORPAY_INSECURE_TLS=true in .env for local dev only, or NODE_EXTRA_CA_CERTS for a corporate CA bundle, then restart npm start."

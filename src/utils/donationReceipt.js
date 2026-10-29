@@ -96,18 +96,21 @@ function receiptDocumentStyles(forPdf) {
     body { margin: 0; padding: 0; width: 190mm; font-family: "Segoe UI", Lato, "Noto Sans Devanagari", Helvetica, Arial, sans-serif; color: #1a2340; background: #fff; font-size: 11px; line-height: 1.35; }
     .sheet { width: 190mm; max-width: 190mm; margin: 0; background: #fff; border: 1px solid #c5d8c5; border-radius: 4px; overflow: hidden; position: relative; }
     .watermark { display: none; }
-    .inner.pdf-body { display: flex; flex-direction: column; align-items: stretch; gap: 11px; padding: 14px 16px 16px; text-align: center; }
-    .inner.pdf-body > * { margin: 0; }
+    .inner.pdf-body { display: block; padding: 14px 16px 16px; text-align: center; }
+    .inner.pdf-body > * { margin: 0 0 11px; }
+    .inner.pdf-body > *:last-child { margin-bottom: 0; }
     ${receiptHeaderCss}
-    .meta { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px 10px; padding: 10px 10px; background: #f6faf6; border-radius: 6px; text-align: center; }
-    .meta label { display: block; font-size: 0.65rem; color: #4a5568; font-weight: 700; margin-bottom: 3px; line-height: 1.2; }
-    .meta span { display: block; font-size: 0.76rem; font-weight: 800; word-break: break-word; color: #1a2340; line-height: 1.25; }
-    .meta .green { color: #2e7d32; }
-    .pdf-thanks { display: flex; flex-direction: column; gap: 4px; text-align: center; }
-    .pdf-thanks .thanks { font-size: 0.78rem; line-height: 1.4; color: #1a2340; }
-    .pdf-thanks em.thanks { font-size: 0.72rem; color: #4a5568; font-style: italic; }
-    .tables { display: flex; gap: 10px; align-items: stretch; }
-    .detail-table { flex: 1 1 0; min-width: 0; border: 1px solid #c8d4c8; border-radius: 6px; overflow: hidden; }
+    table.meta { width: 100%; border-collapse: separate; border-spacing: 0; background: #f6faf6; border-radius: 6px; table-layout: fixed; }
+    table.meta td { width: 25%; padding: 10px 8px; text-align: center; vertical-align: top; }
+    .meta-label { display: block; font-size: 0.65rem; color: #4a5568; font-weight: 700; margin-bottom: 3px; line-height: 1.2; }
+    .meta-value { display: block; font-size: 0.76rem; font-weight: 800; word-break: break-word; color: #1a2340; line-height: 1.25; }
+    .meta-value.green { color: #2e7d32; }
+    .pdf-thanks { display: block; text-align: center; }
+    .pdf-thanks .thanks { margin: 0 0 4px; font-size: 0.78rem; line-height: 1.4; color: #1a2340; }
+    .pdf-thanks em.thanks { display: block; margin: 0; font-size: 0.72rem; color: #4a5568; font-style: italic; }
+    table.tables { width: 100%; border-collapse: separate; border-spacing: 10px 0; table-layout: fixed; }
+    table.tables > tbody > tr > td { width: 50%; vertical-align: top; padding: 0; }
+    .detail-table { width: 100%; border: 1px solid #c8d4c8; border-radius: 6px; overflow: hidden; }
     .detail-table-head { background: #1b5e20; color: #fff; padding: 5px 8px; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.04em; text-align: center; line-height: 1.2; }
     .detail-table table { width: 100%; border-collapse: collapse; }
     .detail-table th, .detail-table td { padding: 5px 7px; font-size: 0.68rem; line-height: 1.3; vertical-align: top; }
@@ -119,11 +122,12 @@ function receiptDocumentStyles(forPdf) {
     .tax-box { border: 1px dashed #a8bca8; border-radius: 6px; padding: 10px 12px; background: #f6faf6; font-size: 0.7rem; line-height: 1.4; text-align: center; color: #1a2340; }
     .tax-box strong { color: #2e7d32; display: block; margin-top: 6px; font-size: inherit; font-weight: 800; line-height: 1.35; }
     .tax-box strong + strong { margin-top: 4px; }
-    .footer-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; text-align: left; font-size: 0.68rem; line-height: 1.4; }
-    .footer-row .contact { flex: 1; min-width: 0; font-weight: 600; color: #1a2340; }
-    .footer-row .qr-block { flex-shrink: 0; text-align: center; }
-    .footer-row img.qr { width: 52px; height: 52px; object-fit: contain; display: block; margin: 0 auto; }
-    .footer-row .qr-hint { font-size: 0.62rem; color: #4a5568; margin-top: 4px; font-weight: 600; line-height: 1.2; max-width: 72px; }
+    table.footer-row { width: 100%; border-collapse: collapse; table-layout: fixed; text-align: left; font-size: 0.68rem; line-height: 1.4; }
+    table.footer-row td { vertical-align: middle; padding: 0; }
+    table.footer-row .contact { font-weight: 600; color: #1a2340; }
+    table.footer-row .qr-block { width: 72px; text-align: center; }
+    table.footer-row img.qr { width: 52px; height: 52px; object-fit: contain; display: block; margin: 0 auto; }
+    table.footer-row .qr-hint { font-size: 0.62rem; color: #4a5568; margin-top: 4px; font-weight: 600; line-height: 1.2; max-width: 72px; }
     .closing { padding-top: 10px; border-top: 1px solid #dcefdc; font-size: 0.72rem; line-height: 1.38; color: #1a2340; }
     .closing .bold { font-weight: 800; color: #1b5e20; display: block; margin-top: 4px; }
     .sig { font-size: 0.64rem; color: #4a5568; margin-top: 6px; line-height: 1.3; }
@@ -141,14 +145,16 @@ function receiptDocumentStyles(forPdf) {
     .watermark { position: absolute; left: 50%; top: 45%; transform: translate(-50%,-50%); width: ${RECEIPT_WATERMARK_PX}px; opacity: 0.05; pointer-events: none; }
     .inner { position: relative; padding: 12px 14px; text-align: center; }
     ${receiptHeaderCss}
-    .meta { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 8px; text-align: center; }
-    .meta label { display: block; font-size: 0.58rem; color: rgba(31,42,68,0.55); font-weight: 600; }
-    .meta span { display: block; font-size: 0.68rem; font-weight: 700; word-break: break-word; }
-    .meta .green { color: #2e7d32; }
+    table.meta { width: 100%; border-collapse: separate; border-spacing: 0; margin-bottom: 8px; table-layout: fixed; text-align: center; }
+    table.meta td { width: 25%; padding: 4px 6px; vertical-align: top; }
+    .meta-label { display: block; font-size: 0.58rem; color: rgba(31,42,68,0.55); font-weight: 600; margin-bottom: 2px; }
+    .meta-value { display: block; font-size: 0.68rem; font-weight: 700; word-break: break-word; }
+    .meta-value.green { color: #2e7d32; }
     .thanks { font-size: 0.68rem; line-height: 1.4; margin: 0 0 2px; }
     .thanks em { font-size: 0.62rem; color: rgba(31,42,68,0.65); font-style: italic; display: block; margin-bottom: 8px; }
-    .tables { display: flex; gap: 8px; margin-bottom: 8px; }
-    .detail-table { flex: 1; border: 1px solid #d8e0d8; border-radius: 6px; overflow: hidden; min-width: 0; }
+    table.tables { width: 100%; border-collapse: separate; border-spacing: 8px 0; margin-bottom: 8px; table-layout: fixed; }
+    table.tables > tbody > tr > td { width: 50%; vertical-align: top; padding: 0; }
+    .detail-table { width: 100%; border: 1px solid #d8e0d8; border-radius: 6px; overflow: hidden; min-width: 0; }
     .detail-table-head { background: #1b5e20; color: #fff; padding: 4px 8px; font-size: 0.58rem; font-weight: 800; letter-spacing: 0.06em; text-align: center; }
     .detail-table table { width: 100%; border-collapse: collapse; }
     .detail-table th, .detail-table td { padding: 3px 6px; font-size: 0.58rem; vertical-align: top; }
@@ -242,8 +248,9 @@ export function receiptDocumentHtml(
   <style>
     ${receiptDocumentStyles(forPdf)}
     @media (max-width: 600px) {
-      .meta { grid-template-columns: repeat(2, 1fr); }
-      .tables { flex-direction: column; }
+      table.meta td { display: block; width: 50%; float: left; }
+      table.tables, table.tables tbody, table.tables tr, table.tables td { display: block; width: 100%; }
+      table.tables td + td { margin-top: 8px; }
     }
     @media print {
       @page { size: A4; margin: 8mm; }

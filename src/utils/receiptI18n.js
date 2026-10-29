@@ -238,29 +238,57 @@ export function buildReceiptHtmlBody({
     : `<p class="thanks">${escapeHtml(copy.thanks(vm.donorName))}</p>
       <em class="thanks">${escapeHtml(copy.thanksSub)}</em>`;
 
-  return `
-      <div class="meta">
-        <div><label>${escapeHtml(copy.meta.receiptNo)}</label><span class="green">${
-    safe.receiptNo
-  }</span></div>
-        <div><label>${escapeHtml(copy.meta.date)}</label><span>${safe.date}</span></div>
-        <div><label>${escapeHtml(copy.meta.payment)}</label><span>${safe.paymentMode}</span></div>
-        <div><label>${escapeHtml(copy.meta.status)}</label><span class="green">${
-    safe.paymentStatus
-  }</span></div>
-      </div>
+  const metaAndDetails = `
+      <table class="meta" role="presentation" width="100%" cellspacing="0" cellpadding="0">
+        <tr>
+          <td>
+            <span class="meta-label">${escapeHtml(copy.meta.receiptNo)}</span>
+            <span class="meta-value green">${safe.receiptNo}</span>
+          </td>
+          <td>
+            <span class="meta-label">${escapeHtml(copy.meta.date)}</span>
+            <span class="meta-value">${safe.date}</span>
+          </td>
+          <td>
+            <span class="meta-label">${escapeHtml(copy.meta.payment)}</span>
+            <span class="meta-value">${safe.paymentMode}</span>
+          </td>
+          <td>
+            <span class="meta-label">${escapeHtml(copy.meta.status)}</span>
+            <span class="meta-value green">${safe.paymentStatus}</span>
+          </td>
+        </tr>
+      </table>
       ${thanksHtml}
-      <div class="tables">
-        ${donorTable}
-        ${donationTable}
-      </div>
+      <table class="tables" role="presentation" width="100%" cellspacing="0" cellpadding="0">
+        <tr>
+          <td>${donorTable}</td>
+          <td>${donationTable}</td>
+        </tr>
+      </table>
       <div class="tax-box">
         ${escapeHtml(copy.taxNotice)}
         <strong>${escapeHtml(copy.reg80g(vm.org.registration80G))}</strong>
         <strong>${escapeHtml(copy.fundsNotice)}</strong>
         <strong>${escapeHtml(copy.fcraNotice)}</strong>
-      </div>
-      <div class="footer-row">
+      </div>`;
+
+  const footerHtml = forPdf
+    ? `<table class="footer-row" role="presentation" width="100%" cellspacing="0" cellpadding="0">
+        <tr>
+          <td class="contact">
+            ${safe.orgAddress}<br />
+            ${escapeHtml(copy.contact.email)}: ${safe.orgEmail}<br />
+            ${escapeHtml(copy.contact.phone)}: ${safe.orgPhone}<br />
+            ${escapeHtml(copy.contact.pan)}: ${safe.orgPan}
+          </td>
+          <td class="qr-block">
+            <img class="qr" src="${safe.qrSrc}" alt="${escapeHtml(vm.qrHint)}" />
+            <div class="qr-hint">${escapeHtml(vm.qrHint)}</div>
+          </td>
+        </tr>
+      </table>`
+    : `<div class="footer-row">
         <div class="contact">
           ${safe.orgAddress}<br />
           ${escapeHtml(copy.contact.email)}: ${safe.orgEmail}<br />
@@ -271,7 +299,11 @@ export function buildReceiptHtmlBody({
           <img class="qr" src="${safe.qrSrc}" alt="${escapeHtml(vm.qrHint)}" />
           <div class="qr-hint">${escapeHtml(vm.qrHint)}</div>
         </div>
-      </div>
+      </div>`;
+
+  return `
+      ${metaAndDetails}
+      ${footerHtml}
       <div class="closing">
         <div>${escapeHtml(copy.closing1)}</div>
         <div class="bold">${escapeHtml(copy.closing2)}</div>

@@ -67,6 +67,10 @@ export const PROGRAMS = Object.freeze({
     label: "Sponsor a Prabhuji (1 year) — ₹30,001",
     amountInr: 30001,
   },
+  "food-10-prabhuji": {
+    label: "Food for 10 Prabhuji — ₹300",
+    amountInr: 300,
+  },
 });
 
 /** Label used when checkout has a free/custom amount (no PROGRAMS purpose key). */
@@ -85,6 +89,7 @@ export const DONATE_WIDGET_PRESET_PURPOSE = Object.freeze({
   501: "donate-501",
   1001: "donate-1001",
   1500: "meal-sponsorship",
+  300: "food-10-prabhuji",
   3001: "sponsor-prabhuji-month",
 });
 

@@ -68,8 +68,18 @@ export default function AdminAccessGate({ children, title, subtitle, persistSess
       }
       setUnlocked(true);
       setSecretInput("");
-    } catch {
-      setError(t("adminPortal.invalidLogin"));
+    } catch (err) {
+      const apiMessage = String(err?.message || "").trim();
+      // Prefer server message so missing/misconfigured Vercel env is obvious.
+      if (
+        /not enabled/i.test(apiMessage) ||
+        /forbidden/i.test(apiMessage) ||
+        /origin/i.test(apiMessage)
+      ) {
+        setError(apiMessage);
+      } else {
+        setError(apiMessage || t("adminPortal.invalidLogin"));
+      }
     } finally {
       setAuthBusy(false);
     }

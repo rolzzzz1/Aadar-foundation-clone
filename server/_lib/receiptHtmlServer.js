@@ -91,18 +91,21 @@ function receiptDocumentStyles() {
     body { margin: 0; padding: 0; width: 190mm; font-family: "Segoe UI", Lato, "Noto Sans Devanagari", Helvetica, Arial, sans-serif; color: #1a2340; background: #fff; font-size: 11px; line-height: 1.35; }
     .sheet { width: 190mm; max-width: 190mm; margin: 0; background: #fff; border: 1px solid #c5d8c5; border-radius: 4px; overflow: hidden; position: relative; }
     .watermark { display: none; }
-    .inner.pdf-body { display: flex; flex-direction: column; align-items: stretch; gap: 11px; padding: 14px 16px 16px; text-align: center; }
-    .inner.pdf-body > * { margin: 0; }
+    .inner.pdf-body { display: block; padding: 14px 16px 16px; text-align: center; }
+    .inner.pdf-body > * { margin: 0 0 11px; }
+    .inner.pdf-body > *:last-child { margin-bottom: 0; }
     ${receiptHeaderCss}
-    .meta { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px 10px; padding: 10px 10px; background: #f6faf6; border-radius: 6px; text-align: center; }
-    .meta label { display: block; font-size: 0.65rem; color: #4a5568; font-weight: 700; margin-bottom: 3px; line-height: 1.2; }
-    .meta span { display: block; font-size: 0.76rem; font-weight: 800; word-break: break-word; color: #1a2340; line-height: 1.25; }
-    .meta .green { color: #2e7d32; }
-    .pdf-thanks { display: flex; flex-direction: column; gap: 4px; text-align: center; }
-    .pdf-thanks .thanks { font-size: 0.78rem; line-height: 1.4; color: #1a2340; }
-    .pdf-thanks em.thanks { font-size: 0.72rem; color: #4a5568; font-style: italic; }
-    .tables { display: flex; gap: 10px; align-items: stretch; }
-    .detail-table { flex: 1 1 0; min-width: 0; border: 1px solid #c8d4c8; border-radius: 6px; overflow: hidden; }
+    table.meta { width: 100%; border-collapse: separate; border-spacing: 0; background: #f6faf6; border-radius: 6px; table-layout: fixed; }
+    table.meta td { width: 25%; padding: 10px 8px; text-align: center; vertical-align: top; }
+    .meta-label { display: block; font-size: 0.65rem; color: #4a5568; font-weight: 700; margin-bottom: 3px; line-height: 1.2; }
+    .meta-value { display: block; font-size: 0.76rem; font-weight: 800; word-break: break-word; color: #1a2340; line-height: 1.25; }
+    .meta-value.green { color: #2e7d32; }
+    .pdf-thanks { display: block; text-align: center; }
+    .pdf-thanks .thanks { margin: 0 0 4px; font-size: 0.78rem; line-height: 1.4; color: #1a2340; }
+    .pdf-thanks em.thanks { display: block; margin: 0; font-size: 0.72rem; color: #4a5568; font-style: italic; }
+    table.tables { width: 100%; border-collapse: separate; border-spacing: 10px 0; table-layout: fixed; }
+    table.tables > tbody > tr > td { width: 50%; vertical-align: top; padding: 0; }
+    .detail-table { width: 100%; border: 1px solid #c8d4c8; border-radius: 6px; overflow: hidden; }
     .detail-table-head { background: #1b5e20; color: #fff; padding: 5px 8px; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.04em; text-align: center; line-height: 1.2; }
     .detail-table table { width: 100%; border-collapse: collapse; }
     .detail-table th, .detail-table td { padding: 5px 7px; font-size: 0.68rem; line-height: 1.3; vertical-align: top; }
@@ -114,9 +117,10 @@ function receiptDocumentStyles() {
     .tax-box { border: 1px dashed #a8bca8; border-radius: 6px; padding: 10px 12px; background: #f6faf6; font-size: 0.7rem; line-height: 1.4; text-align: center; color: #1a2340; }
     .tax-box strong { color: #2e7d32; display: block; margin-top: 6px; font-size: inherit; font-weight: 800; line-height: 1.35; }
     .tax-box strong + strong { margin-top: 4px; }
-    .footer-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; text-align: left; font-size: 0.68rem; line-height: 1.4; }
-    .footer-row .contact { flex: 1; min-width: 0; font-weight: 600; color: #1a2340; }
-    .footer-row .qr-block { flex-shrink: 0; text-align: center; }
+    table.footer-row { width: 100%; border-collapse: collapse; table-layout: fixed; text-align: left; font-size: 0.68rem; line-height: 1.4; }
+    table.footer-row td { vertical-align: middle; padding: 0; }
+    table.footer-row .contact { font-weight: 600; color: #1a2340; }
+    table.footer-row .qr-block { width: 72px; text-align: center; }
     .footer-row img.qr { width: 52px; height: 52px; object-fit: contain; display: block; margin: 0 auto; }
     .footer-row .qr-hint { font-size: 0.62rem; color: #4a5568; margin-top: 4px; font-weight: 600; line-height: 1.2; max-width: 72px; }
     .closing { padding-top: 10px; border-top: 1px solid #dcefdc; font-size: 0.72rem; line-height: 1.38; color: #1a2340; }
@@ -148,42 +152,56 @@ function detailTableHtml(title, rows, amountLabels) {
 
 function buildReceiptHtmlBody({ copy, vm, safe, donorTable, donationTable }) {
   return `
-      <div class="meta">
-        <div><label>${escapeHtml(copy.meta.receiptNo)}</label><span class="green">${
-    safe.receiptNo
-  }</span></div>
-        <div><label>${escapeHtml(copy.meta.date)}</label><span>${safe.date}</span></div>
-        <div><label>${escapeHtml(copy.meta.payment)}</label><span>${safe.paymentMode}</span></div>
-        <div><label>${escapeHtml(copy.meta.status)}</label><span class="green">${
-    safe.paymentStatus
-  }</span></div>
-      </div>
+      <table class="meta" role="presentation" width="100%" cellspacing="0" cellpadding="0">
+        <tr>
+          <td>
+            <span class="meta-label">${escapeHtml(copy.meta.receiptNo)}</span>
+            <span class="meta-value green">${safe.receiptNo}</span>
+          </td>
+          <td>
+            <span class="meta-label">${escapeHtml(copy.meta.date)}</span>
+            <span class="meta-value">${safe.date}</span>
+          </td>
+          <td>
+            <span class="meta-label">${escapeHtml(copy.meta.payment)}</span>
+            <span class="meta-value">${safe.paymentMode}</span>
+          </td>
+          <td>
+            <span class="meta-label">${escapeHtml(copy.meta.status)}</span>
+            <span class="meta-value green">${safe.paymentStatus}</span>
+          </td>
+        </tr>
+      </table>
       <div class="pdf-thanks">
         <p class="thanks">${escapeHtml(copy.thanks(vm.donorName))}</p>
         <em class="thanks">${escapeHtml(copy.thanksSub)}</em>
       </div>
-      <div class="tables">
-        ${donorTable}
-        ${donationTable}
-      </div>
+      <table class="tables" role="presentation" width="100%" cellspacing="0" cellpadding="0">
+        <tr>
+          <td>${donorTable}</td>
+          <td>${donationTable}</td>
+        </tr>
+      </table>
       <div class="tax-box">
         ${escapeHtml(copy.taxNotice)}
         <strong>${escapeHtml(copy.reg80g(vm.org.registration80G))}</strong>
         <strong>${escapeHtml(copy.fundsNotice)}</strong>
         <strong>${escapeHtml(copy.fcraNotice)}</strong>
       </div>
-      <div class="footer-row">
-        <div class="contact">
-          ${safe.orgAddress}<br />
-          ${escapeHtml(copy.contact.email)}: ${safe.orgEmail}<br />
-          ${escapeHtml(copy.contact.phone)}: ${safe.orgPhone}<br />
-          ${escapeHtml(copy.contact.pan)}: ${safe.orgPan}
-        </div>
-        <div class="qr-block">
-          <img class="qr" src="${safe.qrSrc}" alt="${escapeHtml(vm.qrHint)}" />
-          <div class="qr-hint">${escapeHtml(vm.qrHint)}</div>
-        </div>
-      </div>
+      <table class="footer-row" role="presentation" width="100%" cellspacing="0" cellpadding="0">
+        <tr>
+          <td class="contact">
+            ${safe.orgAddress}<br />
+            ${escapeHtml(copy.contact.email)}: ${safe.orgEmail}<br />
+            ${escapeHtml(copy.contact.phone)}: ${safe.orgPhone}<br />
+            ${escapeHtml(copy.contact.pan)}: ${safe.orgPan}
+          </td>
+          <td class="qr-block">
+            <img class="qr" src="${safe.qrSrc}" alt="${escapeHtml(vm.qrHint)}" />
+            <div class="qr-hint">${escapeHtml(vm.qrHint)}</div>
+          </td>
+        </tr>
+      </table>
       <div class="closing">
         <div>${escapeHtml(copy.closing1)}</div>
         <div class="bold">${escapeHtml(copy.closing2)}</div>
