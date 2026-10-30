@@ -29,7 +29,7 @@ body {
 
 /* Apply Hind font for Hindi translations - softer and more elegant */
 html[lang="hi"] body {
-  font-family: '"Hind", "Mukta", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif';
+  font-family: '"Noto Sans Devanagari", "Hind", "Mukta", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif';
   font-weight: 600;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -39,7 +39,7 @@ html[lang="hi"] body {
 /* Apply Hind to typography components for Hindi with increased weight */
 html[lang="hi"] .MuiTypography-root,
 html[lang="hi"] .MKTypography-root {
-  font-family: '"Hind", "Mukta", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif';
+  font-family: '"Noto Sans Devanagari", "Hind", "Mukta", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif';
   font-weight: 600;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

@@ -149,7 +149,10 @@ export default function DonationReceiptSheet({ record, logoSrc, maxWidth = 720 }
         borderRadius: "10px",
         border: "1px solid #d5e8d5",
         overflow: "hidden",
-        fontFamily: '"Segoe UI", Lato, "Noto Sans Devanagari", Helvetica, Arial, sans-serif',
+        fontFamily:
+          vm.locale === "hi"
+            ? '"Noto Sans Devanagari", Hind, Mukta, "Segoe UI", Helvetica, Arial, sans-serif'
+            : '"Segoe UI", Lato, Helvetica, Arial, sans-serif',
         textAlign: "center",
         mx: "auto",
         maxWidth,

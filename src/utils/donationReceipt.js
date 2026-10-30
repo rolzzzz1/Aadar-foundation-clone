@@ -89,11 +89,45 @@ function detailTableHtml(title, rows, amountLabels) {
   </div>`;
 }
 
-function receiptDocumentStyles(forPdf) {
+function buildClientDevanagariFontFaceCss(fontBaseUrl) {
+  const base = String(fontBaseUrl || "").replace(/\/$/, "");
+  if (!base) return "";
+  return `
+    @font-face {
+      font-family: "Noto Sans Devanagari";
+      font-style: normal;
+      font-weight: 400;
+      src: url("${base}/fonts/NotoSansDevanagari-Regular.ttf") format("truetype");
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Noto Sans Devanagari";
+      font-style: normal;
+      font-weight: 700;
+      src: url("${base}/fonts/NotoSansDevanagari-Bold.ttf") format("truetype");
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Noto Sans Devanagari";
+      font-style: normal;
+      font-weight: 800;
+      src: url("${base}/fonts/NotoSansDevanagari-Bold.ttf") format("truetype");
+      font-display: block;
+    }`;
+}
+
+function receiptDocumentStyles(forPdf, { locale = "en", fontBaseUrl = "" } = {}) {
+  const isHi = locale === "hi";
+  const fontStack = isHi
+    ? `"Noto Sans Devanagari", Hind, Mukta, "Segoe UI", Helvetica, Arial, sans-serif`
+    : `"Segoe UI", Lato, Helvetica, Arial, sans-serif`;
+  const fontFaces = isHi ? buildClientDevanagariFontFaceCss(fontBaseUrl) : "";
+
   if (forPdf) {
     return `
+    ${fontFaces}
     * { box-sizing: border-box; }
-    body { margin: 0; padding: 0; width: 190mm; font-family: "Segoe UI", Lato, "Noto Sans Devanagari", Helvetica, Arial, sans-serif; color: #1a2340; background: #fff; font-size: 11px; line-height: 1.35; }
+    body { margin: 0; padding: 0; width: 190mm; font-family: ${fontStack}; color: #1a2340; background: #fff; font-size: 11px; line-height: 1.35; }
     .sheet { width: 190mm; max-width: 190mm; margin: 0; background: #fff; border: 1px solid #c5d8c5; border-radius: 4px; overflow: hidden; position: relative; }
     .watermark { display: none; }
     .inner.pdf-body { display: block; padding: 14px 16px 16px; text-align: center; }
@@ -139,8 +173,9 @@ function receiptDocumentStyles(forPdf) {
   }
 
   return `
+    ${fontFaces}
     * { box-sizing: border-box; }
-    body { margin: 0; padding: 8px; font-family: "Segoe UI", Lato, "Noto Sans Devanagari", Helvetica, Arial, sans-serif; color: #1f2a44; background: #fff; font-size: 10px; }
+    body { margin: 0; padding: 8px; font-family: ${fontStack}; color: #1f2a44; background: #fff; font-size: 10px; }
     .sheet { max-width: 720px; margin: 0 auto; background: #fff; border: 1px solid #d5e8d5; border-radius: 8px; overflow: hidden; position: relative; page-break-inside: avoid; }
     .watermark { position: absolute; left: 50%; top: 45%; transform: translate(-50%,-50%); width: ${RECEIPT_WATERMARK_PX}px; opacity: 0.05; pointer-events: none; }
     .inner { position: relative; padding: 12px 14px; text-align: center; }
@@ -181,13 +216,16 @@ export function receiptDocumentHtml(
   record,
   logoSrc = aadarLogoUrl,
   qrSrc = getReceiptWebsiteQrSrc(),
-  { forPdf = false } = {}
+  { forPdf = false, fontBaseUrl = "" } = {}
 ) {
   const vm = buildReceiptViewModel(record);
   const { copy } = vm;
   const dr = copy.donorRows;
   const dn = copy.donationRows;
   const amountLabels = [dn.amount, dn.amountAlt, dn.amountInWords];
+  const resolvedFontBase =
+    fontBaseUrl ||
+    (typeof window !== "undefined" ? `${window.location.origin}${process.env.PUBLIC_URL || ""}` : "");
 
   const safe = {
     logoSrc: escapeHtml(logoSrc),
@@ -246,7 +284,7 @@ export function receiptDocumentHtml(
   <meta charset="utf-8" />
   <title>${escapeHtml(copy.htmlTitle(vm.org.name))}</title>
   <style>
-    ${receiptDocumentStyles(forPdf)}
+    ${receiptDocumentStyles(forPdf, { locale: vm.locale, fontBaseUrl: resolvedFontBase })}
     @media (max-width: 600px) {
       table.meta td { display: block; width: 50%; float: left; }
       table.tables, table.tables tbody, table.tables tr, table.tables td { display: block; width: 100%; }
@@ -371,8 +409,11 @@ function drawPdfMetaGrid(doc, vm, startY, margin, contentW) {
 async function getReceiptRenderHtml(record, { forPdf = false } = {}) {
   const logoData = await getLogoDataUrl();
   const qrData = await getReceiptQrDataUrl();
+  const fontBaseUrl =
+    typeof window !== "undefined" ? `${window.location.origin}${process.env.PUBLIC_URL || ""}` : "";
   return receiptDocumentHtml(record, logoData || aadarLogoUrl, qrData || getReceiptWebsiteQrSrc(), {
     forPdf,
+    fontBaseUrl,
   });
 }
 
@@ -407,12 +448,17 @@ async function buildReceiptPdfFromHtml(record) {
       iframe.onerror = reject;
       iframe.srcdoc = html;
     });
-    await new Promise((r) => setTimeout(r, 350));
 
-    const sheet = iframe.contentDocument?.querySelector(".sheet");
+    const idoc = iframe.contentDocument;
+    const sheet = idoc?.querySelector(".sheet");
     if (!sheet) throw new Error("Receipt layout not found");
 
     await waitForReceiptImages(sheet);
+    if (idoc.fonts && idoc.fonts.ready) {
+      await idoc.fonts.ready;
+    }
+    // Extra beat so Devanagari shaping settles before rasterizing.
+    await new Promise((r) => setTimeout(r, 200));
 
     const canvas = await html2canvas(sheet, {
       scale: HTML2CANVAS_SCALE,
@@ -639,6 +685,10 @@ export async function buildReceiptPdf(record) {
     if (process.env.NODE_ENV === "development") {
       // eslint-disable-next-line no-console
       console.error("buildReceiptPdfFromHtml:", err);
+    }
+    // jsPDF/Helvetica mangles Devanagari conjuncts — never use vector for Hindi.
+    if (record && record.locale === "hi") {
+      throw err;
     }
     return buildReceiptPdfVector(record);
   }

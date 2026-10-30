@@ -6,7 +6,7 @@ import Backend from "i18next-http-backend";
 import enTranslation from "./locales/en/translation.json";
 
 const SECONDARY_FONTS_URL =
-  "https://fonts.googleapis.com/css2?family=Hind:wght@400;600;700&family=Mukta:wght@400;600;700&family=Pacifico&display=swap";
+  "https://fonts.googleapis.com/css2?family=Hind:wght@400;600;700&family=Mukta:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;700&family=Pacifico&display=swap";
 
 function loadSecondaryFonts() {
   if (typeof document === "undefined" || document.getElementById("aadar-secondary-fonts")) {
@@ -41,8 +41,14 @@ i18n
     },
   });
 
-i18n.on("languageChanged", (lng) => {
+function ensureHiFontsForLanguage(lng) {
   if (typeof lng === "string" && lng.startsWith("hi")) {
     loadSecondaryFonts();
   }
-});
+}
+
+i18n.on("languageChanged", ensureHiFontsForLanguage);
+i18n.on("initialized", () => ensureHiFontsForLanguage(i18n.language));
+if (i18n.isInitialized) {
+  ensureHiFontsForLanguage(i18n.language);
+}
