@@ -18,11 +18,11 @@ const receiptHeaderCss = `
     .receipt-reg-dots { flex: 1; border-top: 2px dotted #2e7d32; opacity: 0.55; min-width: 16px; }
     .receipt-reg-pill { flex-shrink: 0; border: 1.5px solid #2e7d32; border-radius: 999px; padding: 4px 14px; font-size: 0.6rem; font-weight: 700; color: #1b5e20; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.25; text-align: center; }
     .receipt-title-banner { background: #1b5e20; color: #fff; text-align: center; padding: 7px 28px; font-size: 0.85rem; font-weight: 800; letter-spacing: 0.14em; line-height: 1.2; clip-path: polygon(14px 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 14px 100%, 0 50%); }
-    .receipt-header.pdf-header .receipt-logo { width: 90px; height: 90px; }
-    .receipt-header.pdf-header .receipt-org-name { font-size: 1.55rem; }
-    .receipt-header.pdf-header .receipt-org-sub { font-size: 0.98rem; }
-    .receipt-header.pdf-header .receipt-reg-pill { font-size: 0.64rem; padding: 5px 16px; }
-    .receipt-header.pdf-header .receipt-title-banner { font-size: 0.92rem; padding: 8px 32px; }`;
+    .receipt-header.pdf-header .receipt-logo { width: 72px; height: 72px; }
+    .receipt-header.pdf-header .receipt-org-name { font-size: 1.4rem; }
+    .receipt-header.pdf-header .receipt-org-sub { font-size: 0.9rem; }
+    .receipt-header.pdf-header .receipt-reg-pill { font-size: 0.6rem; padding: 4px 14px; }
+    .receipt-header.pdf-header .receipt-title-banner { font-size: 0.85rem; padding: 7px 28px; }`;
 
 function escapeHtml(text) {
   return String(text ?? "")
@@ -138,8 +138,8 @@ function receiptDocumentStyles(locale = "en") {
     body { margin: 0; padding: 0; width: 190mm; font-family: ${hiFonts}; color: #1a2340; background: #fff; font-size: 11px; line-height: 1.35; }
     .sheet { width: 190mm; max-width: 190mm; margin: 0; background: #fff; border: 1px solid #c5d8c5; border-radius: 4px; overflow: hidden; position: relative; }
     .watermark { display: none; }
-    .inner.pdf-body { display: block; padding: 14px 16px 16px; text-align: center; }
-    .inner.pdf-body > * { margin: 0 0 11px; }
+    .inner.pdf-body { display: block; padding: 8px 12px 10px; text-align: center; }
+    .inner.pdf-body > * { margin: 0 0 8px; }
     .inner.pdf-body > *:last-child { margin-bottom: 0; }
     ${receiptHeaderCss}
     table.meta { width: 100%; border-collapse: separate; border-spacing: 0; background: #f6faf6; border-radius: 6px; table-layout: fixed; }

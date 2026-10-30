@@ -130,8 +130,8 @@ function receiptDocumentStyles(forPdf, { locale = "en", fontBaseUrl = "" } = {})
     body { margin: 0; padding: 0; width: 190mm; font-family: ${fontStack}; color: #1a2340; background: #fff; font-size: 11px; line-height: 1.35; }
     .sheet { width: 190mm; max-width: 190mm; margin: 0; background: #fff; border: 1px solid #c5d8c5; border-radius: 4px; overflow: hidden; position: relative; }
     .watermark { display: none; }
-    .inner.pdf-body { display: block; padding: 14px 16px 16px; text-align: center; }
-    .inner.pdf-body > * { margin: 0 0 11px; }
+    .inner.pdf-body { display: block; padding: 8px 12px 10px; text-align: center; }
+    .inner.pdf-body > * { margin: 0 0 8px; }
     .inner.pdf-body > *:last-child { margin-bottom: 0; }
     ${receiptHeaderCss}
     table.meta { width: 100%; border-collapse: separate; border-spacing: 0; background: #f6faf6; border-radius: 6px; table-layout: fixed; }
@@ -473,18 +473,22 @@ async function buildReceiptPdfFromHtml(record) {
     const doc = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait" });
     const pageW = doc.internal.pageSize.getWidth();
     const pageH = doc.internal.pageSize.getHeight();
-    const margin = 10;
-    const maxW = pageW - margin * 2;
-    const maxH = pageH - margin * 2;
+    const marginX = 8;
+    const marginTop = 6;
+    const marginBottom = 6;
+    const maxW = pageW - marginX * 2;
+    const maxH = pageH - marginTop - marginBottom;
     const pxPerMm = (96 * HTML2CANVAS_SCALE) / 25.4;
     const contentWmm = canvas.width / pxPerMm;
     const contentHmm = canvas.height / pxPerMm;
     const fitScale = Math.min(maxW / contentWmm, maxH / contentHmm, 1);
     const w = contentWmm * fitScale;
     const h = contentHmm * fitScale;
-    const y = margin + Math.max(0, (maxH - h) / 2);
+    // Top-align — vertical centering left large empty bands above and below.
+    const x = (pageW - w) / 2;
+    const y = marginTop;
     const dataUrl = canvas.toDataURL("image/png");
-    doc.addImage(dataUrl, "PNG", (pageW - w) / 2, y, w, h);
+    doc.addImage(dataUrl, "PNG", x, y, w, h);
     return doc;
   } finally {
     if (iframe.parentNode) document.body.removeChild(iframe);

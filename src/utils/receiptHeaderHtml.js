@@ -17,11 +17,11 @@ export const receiptHeaderCss = `
     .receipt-reg-dots { flex: 1; border-top: 2px dotted #2e7d32; opacity: 0.55; min-width: 16px; }
     .receipt-reg-pill { flex-shrink: 0; border: 1.5px solid #2e7d32; border-radius: 999px; padding: 4px 14px; font-size: 0.6rem; font-weight: 700; color: #1b5e20; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.25; text-align: center; }
     .receipt-title-banner { background: #1b5e20; color: #fff; text-align: center; padding: 7px 28px; font-size: 0.85rem; font-weight: 800; letter-spacing: 0.14em; line-height: 1.2; clip-path: polygon(14px 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 14px 100%, 0 50%); }
-    .receipt-header.pdf-header .receipt-logo { width: 90px; height: 90px; }
-    .receipt-header.pdf-header .receipt-org-name { font-size: 1.55rem; }
-    .receipt-header.pdf-header .receipt-org-sub { font-size: 0.98rem; }
-    .receipt-header.pdf-header .receipt-reg-pill { font-size: 0.64rem; padding: 5px 16px; }
-    .receipt-header.pdf-header .receipt-title-banner { font-size: 0.92rem; padding: 8px 32px; }`;
+    .receipt-header.pdf-header .receipt-logo { width: 72px; height: 72px; }
+    .receipt-header.pdf-header .receipt-org-name { font-size: 1.4rem; }
+    .receipt-header.pdf-header .receipt-org-sub { font-size: 0.9rem; }
+    .receipt-header.pdf-header .receipt-reg-pill { font-size: 0.6rem; padding: 4px 14px; }
+    .receipt-header.pdf-header .receipt-title-banner { font-size: 0.85rem; padding: 7px 28px; }`;
 
 /** HTML fragment for PDF / print receipt. Strings must be HTML-escaped by caller. */
 export function buildReceiptHeaderHtml({ org, title, logoSrc, logoAlt, forPdf = false }) {
