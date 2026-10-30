@@ -204,7 +204,9 @@ export default function DonateReceiptCta({ variant = "cta", sx = {} }) {
               position: "relative",
             }}
           >
-            <MKBox sx={{ width: "1px", height: "100%", backgroundColor: "rgba(31, 42, 68, 0.14)" }} />
+            <MKBox
+              sx={{ width: "1px", height: "100%", backgroundColor: "rgba(31, 42, 68, 0.14)" }}
+            />
             <MKBox
               sx={{
                 position: "absolute",
