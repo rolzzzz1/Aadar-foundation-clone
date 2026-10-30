@@ -309,10 +309,18 @@ async function buildReceiptPdfVector(record) {
   return doc;
 }
 
+function isServerlessEnv() {
+  return !!(
+    process.env.VERCEL ||
+    process.env.AWS_LAMBDA_FUNCTION_NAME ||
+    process.env.LAMBDA_TASK_ROOT
+  );
+}
+
 /**
  * Build donation receipt PDF buffer (same content as success-page download).
- * On serverless (Vercel), uses vector PDF — Chromium HTML→PDF is flaky there and
- * was producing overlapping meta fields. Locally still prefers HTML when available.
+ * Hindi always uses HTML→PDF with embedded Noto Sans Devanagari (jsPDF cannot shape
+ * Devanagari correctly). English on serverless may use vector PDF for speed/reliability.
  * @returns {Promise<{ buffer: Buffer, filename: string, source: 'html' | 'vector' }>}
  */
 async function buildReceiptPdfBuffer(input, options = {}) {
@@ -321,11 +329,12 @@ async function buildReceiptPdfBuffer(input, options = {}) {
   if (!record) throw new Error("Missing receipt record");
 
   const filename = receiptFilename(record);
-  const forceVector =
-    options.forceVector === true ||
-    !!(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.LAMBDA_TASK_ROOT);
+  const isHi = record.locale === "hi";
+  // Devanagari must go through Chromium; vector/Helvetica mangles conjunct spelling.
+  const forceVector = options.forceVector === true;
+  const preferHtml = options.preferHtml === true || isHi || !isServerlessEnv();
 
-  if (!forceVector) {
+  if (!forceVector && preferHtml) {
     try {
       const html = buildReceiptDocumentHtml(record);
       const buffer = await renderHtmlToPdfBuffer(html);
@@ -335,6 +344,12 @@ async function buildReceiptPdfBuffer(input, options = {}) {
     } catch (err) {
       // eslint-disable-next-line no-console
       console.warn("[receipt-pdf] HTML render failed, using vector fallback:", err.message);
+      if (isHi) {
+        // eslint-disable-next-line no-console
+        console.warn(
+          "[receipt-pdf] Hindi PDF fell back to vector — Devanagari glyphs may be incorrect"
+        );
+      }
     }
   }
 

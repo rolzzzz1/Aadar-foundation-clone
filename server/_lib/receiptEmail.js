@@ -45,12 +45,13 @@ const EMAIL_COPY = {
     footerThanks: "With gratitude,",
     footerTeam: "Team Aadar Foundation",
     footerWebsite: "Visit our website",
+    subject: (amount) => `Your Aadar Foundation donation receipt — ${amount}`,
   },
   hi: {
     receiptLabel: "दान रसीद",
     greeting: (name) => `प्रिय ${name},`,
     intro:
-      "आपके उदार सहयोग के लिए धन्यवाद। आपका योगदान बेघर और अनाथ लोगों को देखभाल, आश्रय और गरिमा प्रदान करने में मदद करता है।",
+      "आपके उदार सहयोग के लिए धन्यवाद। आपका योगदान बेघर एवं लावारिस लोगों को देखभाल, आश्रय और गरिमा प्रदान करने में मदद करता है।",
     amountLabel: "प्राप्त दान राशि",
     pdfTitle: "आधिकारिक रसीद संलग्न",
     pdfNote:
@@ -67,6 +68,7 @@ const EMAIL_COPY = {
     footerThanks: "कृतज्ञता सहित,",
     footerTeam: "टीम आदर फाउंडेशन",
     footerWebsite: "हमारी वेबसाइट देखें",
+    subject: (amount) => `आदर फाउंडेशन दान रसीद — ${amount}`,
   },
 };
 
@@ -370,7 +372,12 @@ async function sendDonationReceiptEmail(row, options = {}) {
   const logoCid = logoBuffer ? LOGO_CID : null;
   const html = buildReceiptEmailHtml(record, { logoCid, siteUrl });
   const amount = formatAmountInr(record.amountInr);
+  const copy = emailCopy(record);
   const replyTo = getReplyToEmail();
+  const subject =
+    typeof copy.subject === "function"
+      ? copy.subject(amount)
+      : `Your Aadar Foundation donation receipt — ${amount}`;
 
   const attachments = [
     {
@@ -399,7 +406,7 @@ async function sendDonationReceiptEmail(row, options = {}) {
       from: process.env.RECEIPT_FROM_EMAIL,
       to: [email],
       reply_to: replyTo,
-      subject: `Your Aadar Foundation donation receipt — ${amount}`,
+      subject,
       html,
       attachments,
       tags: [

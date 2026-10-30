@@ -63,6 +63,47 @@ function readQrDataUrl() {
   return buf ? `data:image/png;base64,${buf.toString("base64")}` : "";
 }
 
+function readFontBase64(filename) {
+  const filePath = path.join(__dirname, "fonts", filename);
+  try {
+    if (fs.existsSync(filePath)) {
+      return fs.readFileSync(filePath).toString("base64");
+    }
+  } catch {
+    /* missing font */
+  }
+  return "";
+}
+
+/** Embed Noto Sans Devanagari so Chromium PDF shapes Hindi correctly (no Google Fonts needed). */
+function buildDevanagariFontFaceCss() {
+  const regular = readFontBase64("NotoSansDevanagari-Regular.ttf");
+  const bold = readFontBase64("NotoSansDevanagari-Bold.ttf") || regular;
+  if (!regular) return "";
+  return `
+    @font-face {
+      font-family: "Noto Sans Devanagari";
+      font-style: normal;
+      font-weight: 400;
+      src: url(data:font/ttf;base64,${regular}) format("truetype");
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Noto Sans Devanagari";
+      font-style: normal;
+      font-weight: 700;
+      src: url(data:font/ttf;base64,${bold}) format("truetype");
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Noto Sans Devanagari";
+      font-style: normal;
+      font-weight: 800;
+      src: url(data:font/ttf;base64,${bold}) format("truetype");
+      font-display: block;
+    }`;
+}
+
 function buildReceiptHeaderHtml({ org, title, logoSrc, logoAlt, forPdf = false }) {
   const pdfClass = forPdf ? " receipt-header pdf-header" : "";
   const logoBlock = logoSrc
@@ -85,10 +126,16 @@ function buildReceiptHeaderHtml({ org, title, logoSrc, logoAlt, forPdf = false }
     </header>`;
 }
 
-function receiptDocumentStyles() {
+function receiptDocumentStyles(locale = "en") {
+  const hiFonts =
+    locale === "hi"
+      ? `"Noto Sans Devanagari", "Segoe UI", Lato, Helvetica, Arial, sans-serif`
+      : `"Segoe UI", Lato, "Noto Sans Devanagari", Helvetica, Arial, sans-serif`;
+  const fontFaces = locale === "hi" ? buildDevanagariFontFaceCss() : "";
   return `
+    ${fontFaces}
     * { box-sizing: border-box; }
-    body { margin: 0; padding: 0; width: 190mm; font-family: "Segoe UI", Lato, "Noto Sans Devanagari", Helvetica, Arial, sans-serif; color: #1a2340; background: #fff; font-size: 11px; line-height: 1.35; }
+    body { margin: 0; padding: 0; width: 190mm; font-family: ${hiFonts}; color: #1a2340; background: #fff; font-size: 11px; line-height: 1.35; }
     .sheet { width: 190mm; max-width: 190mm; margin: 0; background: #fff; border: 1px solid #c5d8c5; border-radius: 4px; overflow: hidden; position: relative; }
     .watermark { display: none; }
     .inner.pdf-body { display: block; padding: 14px 16px 16px; text-align: center; }
@@ -268,16 +315,21 @@ function buildReceiptDocumentHtml(record) {
   const testBanner = vm.testMode ? `<p class="test-banner">${escapeHtml(copy.testBanner)}</p>` : "";
   const htmlTitle = copy.htmlTitle ? copy.htmlTitle(vm.org.name) : "Donation Receipt";
 
+  const googleFonts =
+    vm.locale === "hi"
+      ? ""
+      : `<link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet" />`;
+
   return `<!DOCTYPE html>
 <html lang="${vm.locale}">
 <head>
   <meta charset="utf-8" />
   <title>${escapeHtml(htmlTitle)}</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet" />
+  ${googleFonts}
   <style>
-    ${receiptDocumentStyles()}
+    ${receiptDocumentStyles(vm.locale)}
     @page { size: A4; margin: 8mm; }
   </style>
 </head>

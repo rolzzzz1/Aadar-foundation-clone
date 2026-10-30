@@ -6,11 +6,13 @@
   "functions": {
     "api/razorpay-webhook.js": {
       "maxDuration": 60,
-      "memory": 1024
+      "memory": 1024,
+      "includeFiles": "server/_lib/fonts/**"
     },
     "api/[...path].js": {
       "maxDuration": 60,
-      "memory": 1024
+      "memory": 1024,
+      "includeFiles": "server/_lib/fonts/**"
     }
   },
   "redirects": [

@@ -64,7 +64,13 @@ async function renderWithPuppeteer(html) {
 
   try {
     const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: "networkidle0", timeout: 30000 });
+    // Embedded fonts need "load" + fonts.ready; networkidle0 can hang without external assets.
+    await page.setContent(html, { waitUntil: "load", timeout: 60000 });
+    await page.evaluate(async () => {
+      if (document.fonts && document.fonts.ready) {
+        await document.fonts.ready;
+      }
+    });
     const pdf = await page.pdf({
       format: "A4",
       printBackground: true,
