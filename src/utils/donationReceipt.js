@@ -339,13 +339,14 @@ function drawPdfTable(doc, x, w, title, rows, startY, locale, amountLabels) {
   return cy + 1;
 }
 
-function drawPdfMetaGrid(doc, vm, y, margin, contentW) {
+function drawPdfMetaGrid(doc, vm, startY, margin, contentW) {
   const colW = contentW / 2;
   const left = margin;
   const right = margin + colW;
   const rowH = 9;
   const loc = vm.locale;
   const m = vm.copy.meta;
+  let y = startY;
 
   const drawPair = (labelL, valL, greenL, labelR, valR, greenR) => {
     doc.setFont("helvetica", "normal");
@@ -359,12 +360,12 @@ function drawPdfMetaGrid(doc, vm, y, margin, contentW) {
     doc.text(pdfSafeText(valL, loc), left, y + 3.5);
     doc.setTextColor(greenR ? 46 : 31, greenR ? 125 : 42, greenR ? 50 : 68);
     doc.text(pdfSafeText(valR, loc), right, y + 3.5);
-    return y + rowH;
+    y += rowH;
   };
 
-  let cy = drawPair(m.receiptNo, vm.receiptNo, true, m.date, vm.date, false);
-  cy = drawPair(m.payment, vm.paymentMode, false, m.status, vm.paymentStatus, true);
-  return cy + 1;
+  drawPair(m.receiptNo, vm.receiptNo, true, m.date, vm.date, false);
+  drawPair(m.payment, vm.paymentMode, false, m.status, vm.paymentStatus, true);
+  return y + 1;
 }
 
 async function getReceiptRenderHtml(record, { forPdf = false } = {}) {

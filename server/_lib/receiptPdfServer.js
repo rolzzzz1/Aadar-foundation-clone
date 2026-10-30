@@ -96,13 +96,14 @@ function drawPdfTable(doc, x, w, title, rows, startY, locale, amountLabels) {
   return cy + 1;
 }
 
-function drawPdfMetaGrid(doc, vm, y, margin, contentW) {
+function drawPdfMetaGrid(doc, vm, startY, margin, contentW) {
   const colW = contentW / 2;
   const left = margin;
   const right = margin + colW;
   const rowH = 9;
   const loc = vm.locale;
   const m = vm.copy.meta;
+  let y = startY;
 
   const drawPair = (labelL, valL, greenL, labelR, valR, greenR) => {
     doc.setFont("helvetica", "normal");
@@ -116,12 +117,12 @@ function drawPdfMetaGrid(doc, vm, y, margin, contentW) {
     doc.text(pdfSafeText(valL, loc), left, y + 3.5);
     doc.setTextColor(greenR ? 46 : 31, greenR ? 125 : 42, greenR ? 50 : 68);
     doc.text(pdfSafeText(valR, loc), right, y + 3.5);
-    return y + rowH;
+    y += rowH;
   };
 
-  let cy = drawPair(m.receiptNo, vm.receiptNo, true, m.date, vm.date, false);
-  cy = drawPair(m.payment, vm.paymentMode, false, m.status, vm.paymentStatus, true);
-  return cy + 1;
+  drawPair(m.receiptNo, vm.receiptNo, true, m.date, vm.date, false);
+  drawPair(m.payment, vm.paymentMode, false, m.status, vm.paymentStatus, true);
+  return y + 1;
 }
 
 /**
@@ -310,7 +311,8 @@ async function buildReceiptPdfVector(record) {
 
 /**
  * Build donation receipt PDF buffer (same content as success-page download).
- * Prefers HTML→PDF (official layout); falls back to vector PDF if Chrome unavailable.
+ * On serverless (Vercel), uses vector PDF — Chromium HTML→PDF is flaky there and
+ * was producing overlapping meta fields. Locally still prefers HTML when available.
  * @returns {Promise<{ buffer: Buffer, filename: string, source: 'html' | 'vector' }>}
  */
 async function buildReceiptPdfBuffer(input, options = {}) {
@@ -319,16 +321,21 @@ async function buildReceiptPdfBuffer(input, options = {}) {
   if (!record) throw new Error("Missing receipt record");
 
   const filename = receiptFilename(record);
+  const forceVector =
+    options.forceVector === true ||
+    !!(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.LAMBDA_TASK_ROOT);
 
-  try {
-    const html = buildReceiptDocumentHtml(record);
-    const buffer = await renderHtmlToPdfBuffer(html);
-    if (buffer && buffer.length > 500) {
-      return { buffer, filename, source: "html" };
+  if (!forceVector) {
+    try {
+      const html = buildReceiptDocumentHtml(record);
+      const buffer = await renderHtmlToPdfBuffer(html);
+      if (buffer && buffer.length > 500) {
+        return { buffer, filename, source: "html" };
+      }
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.warn("[receipt-pdf] HTML render failed, using vector fallback:", err.message);
     }
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.warn("[receipt-pdf] HTML render failed, using vector fallback:", err.message);
   }
 
   const doc = await buildReceiptPdfVector(record);
