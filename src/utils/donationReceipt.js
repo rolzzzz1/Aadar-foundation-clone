@@ -225,7 +225,9 @@ export function receiptDocumentHtml(
   const amountLabels = [dn.amount, dn.amountAlt, dn.amountInWords];
   const resolvedFontBase =
     fontBaseUrl ||
-    (typeof window !== "undefined" ? `${window.location.origin}${process.env.PUBLIC_URL || ""}` : "");
+    (typeof window !== "undefined"
+      ? `${window.location.origin}${process.env.PUBLIC_URL || ""}`
+      : "");
 
   const safe = {
     logoSrc: escapeHtml(logoSrc),
