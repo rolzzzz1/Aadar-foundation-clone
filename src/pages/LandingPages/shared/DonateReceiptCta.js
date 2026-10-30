@@ -2,6 +2,7 @@ import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import BoltOutlinedIcon from "@mui/icons-material/BoltOutlined";
 import AccountBalanceOutlinedIcon from "@mui/icons-material/AccountBalanceOutlined";
+import PriorityHighRoundedIcon from "@mui/icons-material/PriorityHighRounded";
 import PropTypes from "prop-types";
 import { Link as RouterLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -16,6 +17,11 @@ const ONLINE_BODY_FALLBACK =
   "Retrieve or download your official 80G receipt for Razorpay donations.";
 const BANK_BODY_FALLBACK =
   "Submit your details below. After verification, we'll email your 80G tax receipt.";
+const GUIDE_HEADLINE_FALLBACK = "Read this before you continue";
+const GUIDE_SUB_FALLBACK =
+  "Pick the path that matches how you donated — the wrong path will not find your receipt.";
+const ONLINE_ACTION_FALLBACK = "Use the lookup form below";
+const BANK_ACTION_FALLBACK = "Use the bank / QR form below";
 
 /**
  * @param {"cta"|"guide"} variant
@@ -29,124 +35,251 @@ export default function DonateReceiptCta({ variant = "cta", sx = {} }) {
   if (variant === "guide") {
     return (
       <MKBox
+        role="region"
+        aria-label={copy.guideHeadline || GUIDE_HEADLINE_FALLBACK}
         sx={{
           position: "relative",
-          borderRadius: "16px",
-          backgroundColor: "#ffffff",
-          border: "1px solid rgba(31, 42, 68, 0.1)",
-          boxShadow: "0 8px 24px rgba(31, 42, 68, 0.05)",
-          p: { xs: 2, sm: 2.5, md: 2.75 },
-          display: "grid",
-          gridTemplateColumns: { xs: "1fr", md: "1fr auto 1fr" },
-          columnGap: { md: 3 },
-          rowGap: 2,
+          borderRadius: "18px",
+          overflow: "hidden",
+          backgroundColor: "#fffdf8",
+          border: "1.5px solid rgba(236, 165, 51, 0.55)",
+          boxShadow: "0 14px 36px rgba(179, 121, 31, 0.12), 0 2px 0 rgba(236, 165, 51, 0.35)",
+          animation: "receiptGuidePulse 2.8s ease-in-out 1",
+          "@keyframes receiptGuidePulse": {
+            "0%": { boxShadow: "0 14px 36px rgba(179, 121, 31, 0.08)" },
+            "40%": { boxShadow: "0 16px 42px rgba(179, 121, 31, 0.22)" },
+            "100%": { boxShadow: "0 14px 36px rgba(179, 121, 31, 0.12)" },
+          },
           ...sx,
         }}
       >
-        <MKBox>
-          <MKBox sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.85 }}>
-            <MKBox
-              sx={{
-                width: 34,
-                height: 34,
-                borderRadius: "50%",
-                backgroundColor: "rgba(46, 125, 50, 0.12)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-              }}
-            >
-              <BoltOutlinedIcon sx={{ color: "#2e7d32", fontSize: 18 }} />
-            </MKBox>
-            <MKTypography sx={{ fontWeight: 700, color: "#1f2a44", fontSize: "0.9rem" }}>
-              {copy.onlineTitle || "Online Donations via Razorpay"}
-            </MKTypography>
-          </MKBox>
-          <MKTypography sx={{ fontWeight: 700, color: "#2e7d32", fontSize: "0.83rem", mb: 0.5 }}>
-            {copy.onlineMethods || "UPI, Cards, Net Banking"}
-          </MKTypography>
-          <MKTypography
-            sx={{ color: "rgba(31, 42, 68, 0.68)", fontSize: "0.8rem", lineHeight: 1.55 }}
-          >
-            {copy.onlineBodyOnPage || copy.onlineBody || ONLINE_BODY_FALLBACK}
-          </MKTypography>
-        </MKBox>
-
         <MKBox
           sx={{
-            display: { xs: "flex", md: "none" },
-            alignItems: "center",
-            gap: 1,
+            display: "flex",
+            alignItems: { xs: "flex-start", sm: "center" },
+            gap: 1.25,
+            px: { xs: 2, sm: 2.5 },
+            py: { xs: 1.35, sm: 1.5 },
+            background: "linear-gradient(90deg, #ECA533 0%, #f0b84a 55%, #f6c96a 100%)",
           }}
         >
-          <MKBox sx={{ flex: 1, height: "1px", backgroundColor: "rgba(31, 42, 68, 0.12)" }} />
-          <MKTypography
-            sx={{
-              fontSize: "0.7rem",
-              fontWeight: 700,
-              color: "rgba(31, 42, 68, 0.5)",
-              letterSpacing: "0.04em",
-            }}
-          >
-            OR
-          </MKTypography>
-          <MKBox sx={{ flex: 1, height: "1px", backgroundColor: "rgba(31, 42, 68, 0.12)" }} />
-        </MKBox>
-        <MKBox
-          sx={{
-            display: { xs: "none", md: "flex" },
-            alignItems: "center",
-            justifyContent: "center",
-            position: "relative",
-          }}
-        >
-          <MKBox sx={{ width: "1px", height: "100%", backgroundColor: "rgba(31, 42, 68, 0.12)" }} />
           <MKBox
             sx={{
-              position: "absolute",
-              width: 32,
-              height: 32,
+              width: 34,
+              height: 34,
               borderRadius: "50%",
-              backgroundColor: "#ffffff",
-              border: "1px solid rgba(31, 42, 68, 0.14)",
+              backgroundColor: "rgba(255,255,255,0.92)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: "0.68rem",
-              fontWeight: 700,
-              color: "rgba(31, 42, 68, 0.5)",
+              flexShrink: 0,
             }}
           >
-            OR
+            <PriorityHighRoundedIcon sx={{ color: "#8a5a10", fontSize: 22 }} />
+          </MKBox>
+          <MKBox sx={{ minWidth: 0 }}>
+            <MKTypography
+              component="p"
+              sx={{
+                m: 0,
+                fontWeight: 800,
+                color: "#3d2a08",
+                fontSize: { xs: "0.95rem", sm: "1.05rem" },
+                letterSpacing: "0.02em",
+                lineHeight: 1.25,
+                textTransform: "uppercase",
+              }}
+            >
+              {copy.guideHeadline || GUIDE_HEADLINE_FALLBACK}
+            </MKTypography>
+            <MKTypography
+              component="p"
+              sx={{
+                m: 0,
+                mt: 0.35,
+                color: "rgba(61, 42, 8, 0.82)",
+                fontSize: { xs: "0.8rem", sm: "0.86rem" },
+                lineHeight: 1.45,
+                fontWeight: 600,
+              }}
+            >
+              {copy.guideSub || GUIDE_SUB_FALLBACK}
+            </MKTypography>
           </MKBox>
         </MKBox>
 
-        <MKBox>
-          <MKBox sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.85 }}>
+        <MKBox
+          sx={{
+            p: { xs: 2, sm: 2.5, md: 2.75 },
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "1fr auto 1fr" },
+            columnGap: { md: 3 },
+            rowGap: 2.25,
+          }}
+        >
+          <MKBox
+            sx={{
+              borderRadius: "14px",
+              backgroundColor: "#ffffff",
+              border: "1px solid rgba(46, 125, 50, 0.22)",
+              p: { xs: 1.75, sm: 2 },
+            }}
+          >
+            <MKTypography
+              sx={{
+                mb: 1,
+                fontSize: "0.68rem",
+                fontWeight: 800,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                color: "#2e7d32",
+              }}
+            >
+              {copy.onlineStep || "Path 1"}
+            </MKTypography>
+            <MKBox sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.85 }}>
+              <MKBox
+                sx={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: "50%",
+                  backgroundColor: "rgba(46, 125, 50, 0.12)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                }}
+              >
+                <BoltOutlinedIcon sx={{ color: "#2e7d32", fontSize: 19 }} />
+              </MKBox>
+              <MKTypography sx={{ fontWeight: 800, color: "#1f2a44", fontSize: "0.98rem" }}>
+                {copy.onlineTitle || "Online Donations via Razorpay"}
+              </MKTypography>
+            </MKBox>
+            <MKTypography sx={{ fontWeight: 700, color: "#2e7d32", fontSize: "0.86rem", mb: 0.55 }}>
+              {copy.onlineMethods || "UPI, Cards, Net Banking"}
+            </MKTypography>
+            <MKTypography
+              sx={{ color: "rgba(31, 42, 68, 0.72)", fontSize: "0.84rem", lineHeight: 1.55, mb: 1 }}
+            >
+              {copy.onlineBodyOnPage || copy.onlineBody || ONLINE_BODY_FALLBACK}
+            </MKTypography>
+            <MKTypography
+              sx={{
+                fontWeight: 800,
+                color: "#1b5e20",
+                fontSize: "0.82rem",
+                lineHeight: 1.4,
+              }}
+            >
+              → {copy.onlineAction || ONLINE_ACTION_FALLBACK}
+            </MKTypography>
+          </MKBox>
+
+          <MKBox
+            sx={{
+              display: { xs: "flex", md: "none" },
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            <MKBox sx={{ flex: 1, height: "1px", backgroundColor: "rgba(31, 42, 68, 0.14)" }} />
+            <MKTypography
+              sx={{
+                fontSize: "0.72rem",
+                fontWeight: 800,
+                color: "rgba(31, 42, 68, 0.55)",
+                letterSpacing: "0.06em",
+              }}
+            >
+              OR
+            </MKTypography>
+            <MKBox sx={{ flex: 1, height: "1px", backgroundColor: "rgba(31, 42, 68, 0.14)" }} />
+          </MKBox>
+          <MKBox
+            sx={{
+              display: { xs: "none", md: "flex" },
+              alignItems: "center",
+              justifyContent: "center",
+              position: "relative",
+            }}
+          >
+            <MKBox sx={{ width: "1px", height: "100%", backgroundColor: "rgba(31, 42, 68, 0.14)" }} />
             <MKBox
               sx={{
-                width: 34,
-                height: 34,
+                position: "absolute",
+                width: 38,
+                height: 38,
                 borderRadius: "50%",
-                backgroundColor: "rgba(236, 165, 51, 0.16)",
+                backgroundColor: "#fffdf8",
+                border: "1.5px solid rgba(236, 165, 51, 0.45)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                flexShrink: 0,
+                fontSize: "0.72rem",
+                fontWeight: 800,
+                color: "#8a5a10",
               }}
             >
-              <AccountBalanceOutlinedIcon sx={{ color: "#b3791f", fontSize: 18 }} />
+              OR
             </MKBox>
-            <MKTypography sx={{ fontWeight: 700, color: "#1f2a44", fontSize: "0.9rem" }}>
-              {copy.bankTitle || "Donated via Direct QR or Bank Transfer?"}
+          </MKBox>
+
+          <MKBox
+            sx={{
+              borderRadius: "14px",
+              backgroundColor: "#ffffff",
+              border: "1px solid rgba(236, 165, 51, 0.35)",
+              p: { xs: 1.75, sm: 2 },
+            }}
+          >
+            <MKTypography
+              sx={{
+                mb: 1,
+                fontSize: "0.68rem",
+                fontWeight: 800,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                color: "#b3791f",
+              }}
+            >
+              {copy.bankStep || "Path 2"}
+            </MKTypography>
+            <MKBox sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.85 }}>
+              <MKBox
+                sx={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: "50%",
+                  backgroundColor: "rgba(236, 165, 51, 0.18)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                }}
+              >
+                <AccountBalanceOutlinedIcon sx={{ color: "#b3791f", fontSize: 19 }} />
+              </MKBox>
+              <MKTypography sx={{ fontWeight: 800, color: "#1f2a44", fontSize: "0.98rem" }}>
+                {copy.bankTitle || "Donated via Direct QR or Bank Transfer?"}
+              </MKTypography>
+            </MKBox>
+            <MKTypography
+              sx={{ color: "rgba(31, 42, 68, 0.72)", fontSize: "0.84rem", lineHeight: 1.55, mb: 1 }}
+            >
+              {copy.bankBodyOnPage || BANK_BODY_FALLBACK}
+            </MKTypography>
+            <MKTypography
+              sx={{
+                fontWeight: 800,
+                color: "#8a5a10",
+                fontSize: "0.82rem",
+                lineHeight: 1.4,
+              }}
+            >
+              → {copy.bankAction || BANK_ACTION_FALLBACK}
             </MKTypography>
           </MKBox>
-          <MKTypography
-            sx={{ color: "rgba(31, 42, 68, 0.68)", fontSize: "0.8rem", lineHeight: 1.6 }}
-          >
-            {copy.bankBodyOnPage || BANK_BODY_FALLBACK}
-          </MKTypography>
         </MKBox>
       </MKBox>
     );
