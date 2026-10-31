@@ -204,7 +204,7 @@ function DonateJoinOfflineSection({
 
         <Grid
           container
-          spacing={{ xs: 2, sm: 2.75, md: 4 }}
+          spacing={{ xs: 2, sm: 2.75, lg: 3.5 }}
           alignItems="center"
           justifyContent="center"
           sx={{
@@ -214,7 +214,7 @@ function DonateJoinOfflineSection({
             animation: "upiSoftIn 0.85s ease 0.12s both",
           }}
         >
-          <Grid item xs={12} md={5}>
+          <Grid item xs={12} lg={5} sx={{ minWidth: 0 }}>
             <MKBox
               sx={{
                 mx: "auto",
@@ -233,8 +233,14 @@ function DonateJoinOfflineSection({
                 fetchPriority="low"
                 sx={{
                   display: "block",
-                  width: { xs: "min(58vw, 200px)", sm: "min(42vw, 240px)", md: "260px" },
+                  width: {
+                    xs: "min(58vw, 200px)",
+                    sm: "min(42vw, 220px)",
+                    md: "220px",
+                    lg: "240px",
+                  },
                   height: "auto",
+                  maxWidth: "100%",
                   objectFit: "contain",
                   borderRadius: "14px",
                   border: "1px solid rgba(31, 42, 68, 0.07)",
@@ -246,8 +252,8 @@ function DonateJoinOfflineSection({
           </Grid>
 
           {foodGuide?.items?.length || membershipGuide?.items?.length ? (
-            <Grid item xs={12} md={7}>
-              <MKBox sx={{ width: "100%", maxWidth: { xs: 420, md: "none" }, mx: "auto" }}>
+            <Grid item xs={12} lg={7} sx={{ minWidth: 0 }}>
+              <MKBox sx={{ width: "100%", maxWidth: { xs: 420, lg: "none" }, mx: "auto" }}>
                 {foodGuide?.items?.length ? (
                   <MKBox sx={{ mb: membershipGuide?.items?.length ? { xs: 2.25, sm: 2.5 } : 0 }}>
                     <MKTypography
@@ -256,7 +262,7 @@ function DonateJoinOfflineSection({
                         fontWeight: 700,
                         fontSize: { xs: "1rem", sm: "1.06rem" },
                         color: "#1f2a44",
-                        textAlign: { xs: "center", md: "left" },
+                        textAlign: { xs: "center", lg: "left" },
                       }}
                     >
                       {foodGuide.title}
@@ -321,7 +327,7 @@ function DonateJoinOfflineSection({
                         fontWeight: 700,
                         fontSize: { xs: "1rem", sm: "1.06rem" },
                         color: "#1f2a44",
-                        textAlign: { xs: "center", md: "left" },
+                        textAlign: { xs: "center", lg: "left" },
                       }}
                     >
                       {membershipGuide.title}

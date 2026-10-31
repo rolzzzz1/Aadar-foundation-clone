@@ -180,6 +180,13 @@ function resolvePurpose(card, idx) {
   return "food-10-prabhuji";
 }
 
+function shortPayLabel(payButton) {
+  // "Donate Now - Rs. 3,001" → keep amount only when space is tight
+  const parts = String(payButton || "").split(/\s[-–—]\s/);
+  if (parts.length >= 2) return parts[parts.length - 1].trim();
+  return "Donate";
+}
+
 function SponsorCard({ card, idx, payButtonSx }) {
   const purpose = resolvePurpose(card, idx);
   const isFood = purpose === "food-10-prabhuji" || idx === 2;
@@ -206,13 +213,14 @@ function SponsorCard({ card, idx, payButtonSx }) {
           justifyContent: { xs: "space-between", md: "flex-start" },
           gap: { xs: 1.25, md: 0 },
           textAlign: { xs: "left", md: "center" },
-          px: { xs: 1.35, sm: 1.5, md: 2 },
-          py: { xs: 1.25, sm: 1.35, md: 1.65 },
+          px: { xs: 1.35, sm: 1.5, md: 1.35, lg: 2 },
+          py: { xs: 1.25, sm: 1.35, md: 1.5, lg: 1.65 },
           backgroundColor: "#ffffff",
           borderRadius: { xs: "14px", md: "18px" },
           border: "1px solid rgba(82, 125, 62, 0.1)",
           boxShadow: "0 14px 36px rgba(31, 42, 68, 0.07)",
           transition: "transform 0.2s ease, box-shadow 0.2s ease",
+          overflow: "hidden",
           "&:hover": {
             transform: { md: "translateY(-3px)" },
             boxShadow: { md: "0 18px 42px rgba(31, 42, 68, 0.1)" },
@@ -222,11 +230,11 @@ function SponsorCard({ card, idx, payButtonSx }) {
         <MKBox
           sx={{
             width: "100%",
-            height: { md: 88, lg: 102 },
+            height: { md: 80, lg: 102 },
             display: { xs: "none", md: "flex" },
             alignItems: "center",
             justifyContent: "center",
-            mb: { md: 0.85 },
+            mb: { md: 0.75 },
             flexShrink: 0,
             overflow: "hidden",
           }}
@@ -234,7 +242,7 @@ function SponsorCard({ card, idx, payButtonSx }) {
           {isFood ? (
             <MKBox
               sx={{
-                width: { md: 118, lg: 128 },
+                width: { md: 108, lg: 128 },
                 height: "100%",
                 transform: "scale(1.18)",
                 transformOrigin: "center center",
@@ -277,7 +285,7 @@ function SponsorCard({ card, idx, payButtonSx }) {
         >
           <MKTypography
             sx={{
-              fontSize: { xs: "0.86rem", sm: "0.9rem", md: "0.98rem" },
+              fontSize: { xs: "0.86rem", sm: "0.9rem", md: "0.88rem", lg: "0.98rem" },
               fontWeight: 700,
               color: "#1f2a44",
               lineHeight: 1.3,
@@ -293,7 +301,7 @@ function SponsorCard({ card, idx, payButtonSx }) {
           <MKTypography
             sx={{
               mt: 0.25,
-              fontSize: { xs: "0.7rem", sm: "0.74rem", md: "0.8rem" },
+              fontSize: { xs: "0.7rem", sm: "0.74rem", md: "0.72rem", lg: "0.8rem" },
               fontWeight: 500,
               color: "rgba(31, 42, 68, 0.62)",
               lineHeight: 1.25,
@@ -305,9 +313,9 @@ function SponsorCard({ card, idx, payButtonSx }) {
 
           <MKTypography
             sx={{
-              mt: { xs: 0.4, md: 1 },
-              mb: { xs: 0, md: 1.25 },
-              fontSize: { xs: "0.9rem", sm: "0.95rem", md: "1.08rem" },
+              mt: { xs: 0.4, md: 0.85 },
+              mb: { xs: 0, md: 1.1 },
+              fontSize: { xs: "0.9rem", sm: "0.95rem", md: "0.95rem", lg: "1.08rem" },
               fontWeight: 800,
               color: BRAND_GREEN,
               lineHeight: 1.2,
@@ -328,16 +336,63 @@ function SponsorCard({ card, idx, payButtonSx }) {
             ...payButtonSx,
             mt: { xs: 0, md: "auto" },
             width: { xs: "auto", md: "100%" },
+            maxWidth: "100%",
             flexShrink: 0,
             alignSelf: { xs: "center", md: "stretch" },
             minWidth: { xs: 96, md: 0 },
+            overflow: "hidden",
           }}
         >
-          <ButtonHeartHandsIcon />
-          <MKBox component="span" sx={{ display: { xs: "none", md: "inline" } }}>
+          <MKBox
+            component="span"
+            sx={{
+              display: { xs: "none", lg: "inline-flex" },
+              alignItems: "center",
+              justifyContent: "center",
+              minWidth: 0,
+            }}
+          >
+            <ButtonHeartHandsIcon />
             {card.payButton}
           </MKBox>
-          <MKBox component="span" sx={{ display: { xs: "inline", md: "none" } }}>
+          <MKBox
+            component="span"
+            sx={{
+              display: { xs: "none", md: "inline-flex", lg: "none" },
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 0.5,
+              minWidth: 0,
+              maxWidth: "100%",
+            }}
+          >
+            <MKBox
+              component="span"
+              sx={{
+                display: "inline-flex",
+                flexShrink: 0,
+                "& > *": { width: 16, height: 16, mr: 0.5 },
+              }}
+            >
+              <ButtonHeartHandsIcon />
+            </MKBox>
+            <MKBox
+              component="span"
+              sx={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                minWidth: 0,
+              }}
+            >
+              {shortPayLabel(card.payButton)}
+            </MKBox>
+          </MKBox>
+          <MKBox
+            component="span"
+            sx={{ display: { xs: "inline-flex", md: "none" }, alignItems: "center" }}
+          >
+            <ButtonHeartHandsIcon />
             Donate
           </MKBox>
         </MKButton>
@@ -363,15 +418,15 @@ export default function SponsorPrabhujiCtaCards({ sponsor }) {
   const { title, subtitle, cards } = sponsor;
 
   const payButtonSx = {
-    py: { xs: 0.9, sm: 1, md: 1.1 },
-    px: { xs: 1.15, sm: 1.3, md: 1.6 },
+    py: { xs: 0.9, sm: 1, md: 1, lg: 1.1 },
+    px: { xs: 1.15, sm: 1.3, md: 1.1, lg: 1.5 },
     width: "100%",
-    minHeight: { xs: 40, sm: 44, md: 48 },
+    minHeight: { xs: 40, sm: 44, md: 44, lg: 48 },
     borderRadius: "12px",
     background: "linear-gradient(90deg, #67b35b 0%, #52a548 55%, #67b35b 100%)",
     color: "#ffffff !important",
     fontWeight: 800,
-    fontSize: { xs: "0.76rem", sm: "0.8rem", md: "0.9rem" },
+    fontSize: { xs: "0.76rem", sm: "0.8rem", md: "0.78rem", lg: "0.88rem" },
     lineHeight: 1.2,
     textTransform: "none",
     textDecoration: "none",

@@ -9,7 +9,22 @@ import donateImg from "assets/images/donate-happy-faces.png";
 import ImpactLeaf from "./ImpactLeaf";
 import ImpactTestimonialCarousel, { FALLBACK_TESTIMONIALS } from "./ImpactTestimonialCarousel";
 
-function DonateImpactProof({ donatePage, impactBanner, scrollToDonateWidget }) {
+function DonateImpactProof({ impactBanner, scrollToDonateWidget }) {
+  const titleNode = (() => {
+    const title = String(impactBanner.title || "");
+    const marker = " Real Impact";
+    const idx = title.lastIndexOf(marker);
+    if (idx === -1) return title;
+    return (
+      <>
+        {title.slice(0, idx)}{" "}
+        <MKBox component="span" sx={{ whiteSpace: "nowrap" }}>
+          Real Impact
+        </MKBox>
+      </>
+    );
+  })();
+
   return (
     <LazyVisible rootMargin="600px" minHeight={200}>
       <MKBox
@@ -31,7 +46,7 @@ function DonateImpactProof({ donatePage, impactBanner, scrollToDonateWidget }) {
             border: "1px solid rgba(31, 42, 68, 0.07)",
             boxShadow: "0 10px 28px rgba(31, 42, 68, 0.06)",
             px: { xs: 1.25, sm: 2.25, md: 3 },
-            py: { xs: 1.5, sm: 1.85, md: 2 },
+            py: { xs: 1.5, sm: 1.85, md: 2.25 },
             maxWidth: "100%",
             "&::before": {
               content: '""',
@@ -45,8 +60,123 @@ function DonateImpactProof({ donatePage, impactBanner, scrollToDonateWidget }) {
             },
           }}
         >
-          <Grid container spacing={{ xs: 1.5, sm: 1.75, md: 2.5 }} alignItems="stretch">
-            <Grid item xs={12} md={5} lg={5}>
+          {/* Full-width title — avoids empty right column at tablet widths */}
+          <MKBox
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textAlign: "center",
+              gap: 0.85,
+              maxWidth: "100%",
+              width: "100%",
+              mb: { xs: 1.5, sm: 1.75, lg: 2 },
+            }}
+          >
+            <MKBox
+              sx={{
+                display: "grid",
+                gridTemplateColumns: {
+                  xs: "minmax(0, 1fr)",
+                  sm: "auto minmax(0, auto) auto",
+                },
+                alignItems: "center",
+                justifyContent: "center",
+                gap: { xs: 0.5, sm: 1.1 },
+                maxWidth: "100%",
+                width: "100%",
+              }}
+            >
+              <MKBox sx={{ display: { xs: "none", sm: "block" } }}>
+                <ImpactLeaf />
+              </MKBox>
+              <MKTypography
+                fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
+                sx={{
+                  fontWeight: 400,
+                  fontSize: {
+                    xs: "1.12rem",
+                    sm: "1.32rem",
+                    md: "1.4rem",
+                    lg: "1.48rem",
+                  },
+                  lineHeight: 1.28,
+                  letterSpacing: "0.01em",
+                  color: "#1f2a44",
+                  textAlign: "center",
+                  px: { xs: 0.5, sm: 0 },
+                }}
+              >
+                {titleNode}
+              </MKTypography>
+              <MKBox sx={{ display: { xs: "none", sm: "block" } }}>
+                <ImpactLeaf mirrored />
+              </MKBox>
+            </MKBox>
+            <MKBox
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 1,
+              }}
+            >
+              <MKBox
+                sx={{
+                  width: { xs: 36, sm: 58 },
+                  height: 2,
+                  borderRadius: 999,
+                  background:
+                    "linear-gradient(90deg, transparent 0%, rgba(236,165,51,0.28) 18%, #ECA533 100%)",
+                }}
+              />
+              <MKBox
+                sx={{
+                  position: "relative",
+                  width: 8,
+                  height: 8,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                }}
+              >
+                <MKBox
+                  sx={{
+                    position: "absolute",
+                    width: 12,
+                    height: 12,
+                    borderRadius: "50%",
+                    backgroundColor: "rgba(236, 165, 51, 0.16)",
+                  }}
+                />
+                <MKBox
+                  sx={{
+                    width: 7,
+                    height: 7,
+                    borderRadius: "2px",
+                    transform: "rotate(45deg)",
+                    background:
+                      "radial-gradient(circle at 30% 30%, #f6c56a 0%, #ECA533 55%, #d48a1f 100%)",
+                    boxShadow: "0 1px 3px rgba(212, 138, 31, 0.3)",
+                  }}
+                />
+              </MKBox>
+              <MKBox
+                sx={{
+                  width: { xs: 36, sm: 58 },
+                  height: 2,
+                  borderRadius: 999,
+                  background:
+                    "linear-gradient(90deg, #ECA533 0%, rgba(236,165,51,0.28) 82%, transparent 100%)",
+                }}
+              />
+            </MKBox>
+          </MKBox>
+
+          {/* Stack until lg so tablet mid-widths stay readable */}
+          <Grid container spacing={{ xs: 1.5, sm: 2, lg: 2.5 }} alignItems="stretch">
+            <Grid item xs={12} lg={5}>
               <MKBox
                 sx={{
                   height: "100%",
@@ -55,137 +185,11 @@ function DonateImpactProof({ donatePage, impactBanner, scrollToDonateWidget }) {
                   alignItems: "flex-start",
                   justifyContent: "flex-start",
                   textAlign: "left",
-                  gap: { xs: 1.4, sm: 1.65, md: 1.85 },
-                  px: { xs: 0.25, sm: 0.75, md: 0.75, lg: 1.25 },
+                  gap: { xs: 1.4, sm: 1.65, lg: 1.85 },
+                  px: { xs: 0.25, sm: 0.5, lg: 0.75 },
                   minWidth: 0,
                 }}
               >
-                <MKBox
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    alignSelf: "center",
-                    textAlign: "center",
-                    gap: 0.85,
-                    maxWidth: "100%",
-                    width: "100%",
-                  }}
-                >
-                  <MKBox
-                    sx={{
-                      display: "grid",
-                      gridTemplateColumns: {
-                        xs: "minmax(0, 1fr)",
-                        sm: "auto minmax(0, auto) auto",
-                      },
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: { xs: 0.5, sm: 1.1 },
-                      maxWidth: "100%",
-                      width: "100%",
-                    }}
-                  >
-                    <MKBox sx={{ display: { xs: "none", sm: "block" } }}>
-                      <ImpactLeaf />
-                    </MKBox>
-                    <MKTypography
-                      fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
-                      sx={{
-                        fontWeight: 400,
-                        fontSize: {
-                          xs: "1.12rem",
-                          sm: "1.32rem",
-                          md: "1.32rem",
-                          lg: "1.48rem",
-                        },
-                        lineHeight: 1.28,
-                        letterSpacing: "0.01em",
-                        color: "#1f2a44",
-                        textAlign: "center",
-                        px: { xs: 0.5, sm: 0 },
-                      }}
-                    >
-                      {(() => {
-                        const title = String(impactBanner.title || "");
-                        const marker = " Real Impact";
-                        const idx = title.lastIndexOf(marker);
-                        if (idx === -1) return title;
-                        return (
-                          <>
-                            {title.slice(0, idx)}{" "}
-                            <MKBox component="span" sx={{ whiteSpace: "nowrap" }}>
-                              Real Impact
-                            </MKBox>
-                          </>
-                        );
-                      })()}
-                    </MKTypography>
-                    <MKBox sx={{ display: { xs: "none", sm: "block" } }}>
-                      <ImpactLeaf mirrored />
-                    </MKBox>
-                  </MKBox>
-                  <MKBox
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 1,
-                    }}
-                  >
-                    <MKBox
-                      sx={{
-                        width: { xs: 36, sm: 58 },
-                        height: 2,
-                        borderRadius: 999,
-                        background:
-                          "linear-gradient(90deg, transparent 0%, rgba(236,165,51,0.28) 18%, #ECA533 100%)",
-                      }}
-                    />
-                    <MKBox
-                      sx={{
-                        position: "relative",
-                        width: 8,
-                        height: 8,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
-                      }}
-                    >
-                      <MKBox
-                        sx={{
-                          position: "absolute",
-                          width: 12,
-                          height: 12,
-                          borderRadius: "50%",
-                          backgroundColor: "rgba(236, 165, 51, 0.16)",
-                        }}
-                      />
-                      <MKBox
-                        sx={{
-                          width: 7,
-                          height: 7,
-                          borderRadius: "2px",
-                          transform: "rotate(45deg)",
-                          background:
-                            "radial-gradient(circle at 30% 30%, #f6c56a 0%, #ECA533 55%, #d48a1f 100%)",
-                          boxShadow: "0 1px 3px rgba(212, 138, 31, 0.3)",
-                        }}
-                      />
-                    </MKBox>
-                    <MKBox
-                      sx={{
-                        width: { xs: 36, sm: 58 },
-                        height: 2,
-                        borderRadius: 999,
-                        background:
-                          "linear-gradient(90deg, #ECA533 0%, rgba(236,165,51,0.28) 82%, transparent 100%)",
-                      }}
-                    />
-                  </MKBox>
-                </MKBox>
-
                 <MKBox
                   sx={{
                     width: "100%",
@@ -284,8 +288,7 @@ function DonateImpactProof({ donatePage, impactBanner, scrollToDonateWidget }) {
                         "&:hover": { color: "#1e6b2c" },
                       }}
                     >
-                      {donatePage.membershipSection?.conversion?.useFormAboveCta ||
-                        "Donate with the form above"}
+                      {impactBanner.donateCta || "Donate with the form above"}
                     </MKTypography>
                   </MKBox>
                 </MKBox>
@@ -302,7 +305,7 @@ function DonateImpactProof({ donatePage, impactBanner, scrollToDonateWidget }) {
               </MKBox>
             </Grid>
 
-            <Grid item xs={12} md={7} lg={7} sx={{ display: "flex" }}>
+            <Grid item xs={12} lg={7} sx={{ display: "flex" }}>
               <MKBox
                 sx={{
                   p: "4px",
@@ -310,8 +313,7 @@ function DonateImpactProof({ donatePage, impactBanner, scrollToDonateWidget }) {
                   backgroundColor: "#ECA533",
                   boxShadow: "0 8px 22px rgba(31, 42, 68, 0.08)",
                   width: "100%",
-                  mt: { md: "auto" },
-                  alignSelf: { xs: "stretch", md: "flex-end" },
+                  alignSelf: "stretch",
                 }}
               >
                 <MKBox
@@ -319,7 +321,7 @@ function DonateImpactProof({ donatePage, impactBanner, scrollToDonateWidget }) {
                   src={donateImg}
                   alt={impactBanner.title}
                   width="100%"
-                  height={{ xs: "150px", sm: "180px", md: "210px", lg: "224px" }}
+                  height={{ xs: "150px", sm: "200px", md: "220px", lg: "100%" }}
                   loading="lazy"
                   decoding="async"
                   fetchPriority="low"
@@ -330,6 +332,7 @@ function DonateImpactProof({ donatePage, impactBanner, scrollToDonateWidget }) {
                     borderRadius: { xs: "8px", sm: "10px" },
                     border: { xs: "2px solid #ffffff", sm: "3px solid #ffffff" },
                     backgroundColor: "#fff",
+                    minHeight: { lg: 210 },
                   }}
                 />
               </MKBox>
@@ -342,7 +345,7 @@ function DonateImpactProof({ donatePage, impactBanner, scrollToDonateWidget }) {
 }
 
 DonateImpactProof.propTypes = {
-  donatePage: PropTypes.object.isRequired,
+  donatePage: PropTypes.object,
   impactBanner: PropTypes.object.isRequired,
   scrollToDonateWidget: PropTypes.func.isRequired,
 };
