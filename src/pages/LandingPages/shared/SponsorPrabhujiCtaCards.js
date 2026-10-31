@@ -180,13 +180,6 @@ function resolvePurpose(card, idx) {
   return "food-10-prabhuji";
 }
 
-function shortPayLabel(payButton) {
-  // "Donate Now - Rs. 3,001" → keep amount only when space is tight
-  const parts = String(payButton || "").split(/\s[-–—]\s/);
-  if (parts.length >= 2) return parts[parts.length - 1].trim();
-  return "Donate";
-}
-
 function SponsorCard({ card, idx, payButtonSx }) {
   const purpose = resolvePurpose(card, idx);
   const isFood = purpose === "food-10-prabhuji" || idx === 2;
@@ -337,33 +330,23 @@ function SponsorCard({ card, idx, payButtonSx }) {
             mt: { xs: 0, md: "auto" },
             width: { xs: "auto", md: "100%" },
             maxWidth: "100%",
-            flexShrink: 0,
+            flexShrink: 1,
             alignSelf: { xs: "center", md: "stretch" },
-            minWidth: { xs: 96, md: 0 },
+            minWidth: { xs: 0, md: 0 },
             overflow: "hidden",
           }}
         >
           <MKBox
             component="span"
             sx={{
-              display: { xs: "none", lg: "inline-flex" },
+              display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
-              minWidth: 0,
-            }}
-          >
-            <ButtonHeartHandsIcon />
-            {card.payButton}
-          </MKBox>
-          <MKBox
-            component="span"
-            sx={{
-              display: { xs: "none", md: "inline-flex", lg: "none" },
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 0.5,
+              gap: { xs: 0.5, md: 0.65 },
               minWidth: 0,
               maxWidth: "100%",
+              color: "#ffffff !important",
+              "&, & *": { color: "#ffffff !important" },
             }}
           >
             <MKBox
@@ -371,7 +354,13 @@ function SponsorCard({ card, idx, payButtonSx }) {
               sx={{
                 display: "inline-flex",
                 flexShrink: 0,
-                "& > *": { width: 16, height: 16, mr: 0.5 },
+                color: "#ffffff !important",
+                "& > *": {
+                  width: { xs: 16, md: 18, lg: 20 },
+                  height: { xs: 16, md: 18, lg: 20 },
+                  mr: { xs: 0.5, md: 0.75 },
+                  color: "#ffffff !important",
+                },
               }}
             >
               <ButtonHeartHandsIcon />
@@ -379,21 +368,18 @@ function SponsorCard({ card, idx, payButtonSx }) {
             <MKBox
               component="span"
               sx={{
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
+                color: "#ffffff !important",
+                fontWeight: 800,
+                lineHeight: 1.2,
+                textAlign: "center",
+                whiteSpace: "normal",
+                overflowWrap: "anywhere",
+                wordBreak: "break-word",
                 minWidth: 0,
               }}
             >
-              {shortPayLabel(card.payButton)}
+              {card.payButton}
             </MKBox>
-          </MKBox>
-          <MKBox
-            component="span"
-            sx={{ display: { xs: "inline-flex", md: "none" }, alignItems: "center" }}
-          >
-            <ButtonHeartHandsIcon />
-            Donate
           </MKBox>
         </MKButton>
       </MKBox>
@@ -419,32 +405,35 @@ export default function SponsorPrabhujiCtaCards({ sponsor }) {
 
   const payButtonSx = {
     py: { xs: 0.9, sm: 1, md: 1, lg: 1.1 },
-    px: { xs: 1.15, sm: 1.3, md: 1.1, lg: 1.5 },
+    px: { xs: 1.1, sm: 1.25, md: 1, lg: 1.4 },
     width: "100%",
-    minHeight: { xs: 40, sm: 44, md: 44, lg: 48 },
+    minHeight: { xs: 40, sm: 44, md: 46, lg: 48 },
     borderRadius: "12px",
     background: "linear-gradient(90deg, #67b35b 0%, #52a548 55%, #67b35b 100%)",
     color: "#ffffff !important",
     fontWeight: 800,
-    fontSize: { xs: "0.76rem", sm: "0.8rem", md: "0.78rem", lg: "0.88rem" },
+    fontSize: { xs: "0.72rem", sm: "0.78rem", md: "0.74rem", lg: "0.86rem" },
     lineHeight: 1.2,
     textTransform: "none",
     textDecoration: "none",
     boxShadow: "0 12px 28px rgba(82, 165, 72, 0.24)",
-    whiteSpace: "nowrap",
-    "&&": { color: "#ffffff" },
-    "& *": { color: "#ffffff" },
+    whiteSpace: "normal",
+    "&&": { color: "#ffffff !important" },
+    "&, & *": { color: "#ffffff !important" },
     "&:hover": {
       background: "linear-gradient(90deg, #5aa84f 0%, #48963f 55%, #5aa84f 100%)",
       boxShadow: "0 15px 32px rgba(82, 165, 72, 0.3)",
       textDecoration: "none",
       transform: "translateY(-1px)",
+      color: "#ffffff !important",
+      "&, & *": { color: "#ffffff !important" },
     },
     "&:focus, &.Mui-focusVisible, &:focus-visible, &:focus:not(:hover)": {
       background: "linear-gradient(90deg, #67b35b 0%, #52a548 55%, #67b35b 100%)",
-      color: "#ffffff",
+      color: "#ffffff !important",
       boxShadow: "0 12px 28px rgba(82, 165, 72, 0.24)",
       outline: "none",
+      "&, & *": { color: "#ffffff !important" },
     },
   };
 
