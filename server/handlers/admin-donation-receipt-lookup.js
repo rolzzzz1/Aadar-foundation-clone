@@ -141,6 +141,27 @@ module.exports = async function handler(req, res) {
       });
     }
 
+    if (mode === "email") {
+      const contact = parseContactLookup({
+        contact_type: "email",
+        donor_email: body.donor_email || body.value || body.email,
+      });
+      if (!contact.ok) {
+        return res.status(400).json({ error: "Please enter a valid email address." });
+      }
+
+      const rows = await fetchDonationsByContact(contact);
+      if (!rows.length) {
+        return res.status(404).json({ error: "No donations found for this email address." });
+      }
+
+      return res.status(200).json({
+        ok: true,
+        mode: "email",
+        donations: rows.map(summarizeRow),
+      });
+    }
+
     if (mode === "receipt_no" || mode === "receipt") {
       const receiptNo = normalizeReceiptNo(body.receipt_no || body.receiptNo || body.value);
       if (!receiptNo) {
@@ -179,7 +200,7 @@ module.exports = async function handler(req, res) {
     }
 
     return res.status(400).json({
-      error: "Invalid lookup mode. Use mobile, receipt_no, or payment_id.",
+      error: "Invalid lookup mode. Use mobile, email, receipt_no, or payment_id.",
     });
   } catch (err) {
     if (!isProduction()) {

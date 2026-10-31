@@ -14,10 +14,12 @@ import Typography from "@mui/material/Typography";
 
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
+import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PhoneIphoneOutlinedIcon from "@mui/icons-material/PhoneIphoneOutlined";
 import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 import ReplayOutlinedIcon from "@mui/icons-material/ReplayOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import { validateEmail } from "utils/donation";
 
 import DonationReceiptSheet from "components/DonationReceiptSheet";
 import MKButton from "components/MKButton";
@@ -42,10 +44,12 @@ const tabSx = {
   "& .MuiTab-root": {
     minHeight: 38,
     flex: 1,
+    minWidth: 0,
     textTransform: "none",
     fontWeight: 600,
-    fontSize: "0.9rem",
+    fontSize: { xs: "0.78rem", sm: "0.88rem" },
     borderRadius: "10px",
+    px: { xs: 0.5, sm: 1 },
     "&.Mui-selected": {
       color: "#174f28",
       fontWeight: 700,
@@ -85,7 +89,26 @@ function formatPaidAt(iso, locale) {
 
 function isLookupValid(method, value) {
   if (method === "mobile") return normalizeContact(value).length === 10;
+  if (method === "email") return validateEmail(value).ok;
   return normalizeReceiptNoInput(value).length >= 8;
+}
+
+function lookupInvalidMessage(method, t) {
+  if (method === "mobile") return t("adminPortal.enterMobile");
+  if (method === "email") return t("adminPortal.enterEmail");
+  return t("adminPortal.enterReceiptNo");
+}
+
+function fieldLabel(method, t) {
+  if (method === "mobile") return t("receiptRetrieve.mobile");
+  if (method === "email") return t("adminPortal.email");
+  return t("adminPortal.receiptNo");
+}
+
+function fieldPlaceholder(method) {
+  if (method === "mobile") return "9826441863";
+  if (method === "email") return "donor@example.com";
+  return "AADAR-2026-000001";
 }
 
 async function postAdminLookup(body, { secret, username }) {
@@ -138,9 +161,7 @@ export default function AdminReceiptRetrieve({ onBack, onLogout, adminSecret, ad
   const handleFindDonations = async () => {
     resetResult();
     if (!isLookupValid(lookup.method, lookup.value)) {
-      setError(
-        lookup.method === "mobile" ? t("adminPortal.enterMobile") : t("adminPortal.enterReceiptNo")
-      );
+      setError(lookupInvalidMessage(lookup.method, t));
       return;
     }
 
@@ -160,17 +181,30 @@ export default function AdminReceiptRetrieve({ onBack, onLogout, adminSecret, ad
         return;
       }
 
-      const result = await postAdminLookup(
-        {
-          mode: "mobile",
-          donor_contact: normalizeContact(lookup.value),
-          locale: receiptLocale,
-        },
-        { secret: adminSecret, username: adminUsername }
-      );
+      const contactPayload =
+        lookup.method === "email"
+          ? {
+              mode: "email",
+              donor_email: validateEmail(lookup.value).value,
+              locale: receiptLocale,
+            }
+          : {
+              mode: "mobile",
+              donor_contact: normalizeContact(lookup.value),
+              locale: receiptLocale,
+            };
+
+      const result = await postAdminLookup(contactPayload, {
+        secret: adminSecret,
+        username: adminUsername,
+      });
       const rows = result?.donations;
       if (!Array.isArray(rows) || rows.length === 0) {
-        throw new Error(t("adminPortal.noDonations"));
+        throw new Error(
+          lookup.method === "email"
+            ? t("adminPortal.noDonationsEmail")
+            : t("adminPortal.noDonations")
+        );
       }
       setDonationsList(rows);
       window.requestAnimationFrame(() => {
@@ -302,13 +336,19 @@ export default function AdminReceiptRetrieve({ onBack, onLogout, adminSecret, ad
           >
             <Tab
               value="mobile"
-              icon={<PhoneIphoneOutlinedIcon sx={{ fontSize: 18 }} />}
+              icon={<PhoneIphoneOutlinedIcon sx={{ fontSize: { xs: 16, sm: 18 } }} />}
               iconPosition="start"
               label={t("adminPortal.mobile")}
             />
             <Tab
+              value="email"
+              icon={<EmailOutlinedIcon sx={{ fontSize: { xs: 16, sm: 18 } }} />}
+              iconPosition="start"
+              label={t("adminPortal.email")}
+            />
+            <Tab
               value="receipt_no"
-              icon={<ReceiptLongOutlinedIcon sx={{ fontSize: 18 }} />}
+              icon={<ReceiptLongOutlinedIcon sx={{ fontSize: { xs: 16, sm: 18 } }} />}
               iconPosition="start"
               label={t("adminPortal.receiptNo")}
             />
@@ -322,18 +362,18 @@ export default function AdminReceiptRetrieve({ onBack, onLogout, adminSecret, ad
             }}
           >
             <TextField
-              label={
-                lookup.method === "mobile"
-                  ? t("receiptRetrieve.mobile")
-                  : t("adminPortal.receiptNo")
-              }
+              label={fieldLabel(lookup.method, t)}
               value={lookup.value}
               onChange={(e) => setLookup((prev) => ({ ...prev, value: e.target.value }))}
-              placeholder={lookup.method === "mobile" ? "9826441863" : "AADAR-2026-000001"}
-              type={lookup.method === "mobile" ? "tel" : "text"}
+              placeholder={fieldPlaceholder(lookup.method)}
+              type={
+                lookup.method === "mobile" ? "tel" : lookup.method === "email" ? "email" : "text"
+              }
               inputProps={
                 lookup.method === "receipt_no"
                   ? { autoCapitalize: "characters", spellCheck: false }
+                  : lookup.method === "email"
+                  ? { autoCapitalize: "none", autoCorrect: "off", spellCheck: false }
                   : undefined
               }
               fullWidth
