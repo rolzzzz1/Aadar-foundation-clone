@@ -79,7 +79,13 @@ function Donate2() {
   }, []);
 
   return (
-    <MKBox minWidth="320px">
+    <MKBox
+      minWidth="320px"
+      sx={{
+        // Keep in-page anchors / widget scrolls clear of the sticky navbar on phones.
+        scrollPaddingTop: { xs: "96px", sm: "110px", md: "120px" },
+      }}
+    >
       <DefaultNavbar
         routes={routes}
         action={{
@@ -98,9 +104,9 @@ function Donate2() {
 
       <Card
         sx={{
-          p: { xs: 1.5, sm: 2 },
+          p: { xs: 1.25, sm: 2 },
           pb: { xs: 1.5, sm: 2 },
-          mx: { xs: 2, lg: 3 },
+          mx: { xs: 1.25, sm: 2, lg: 3 },
           mt: -2,
           mb: 1.5,
           backgroundColor: "#faf8f2",

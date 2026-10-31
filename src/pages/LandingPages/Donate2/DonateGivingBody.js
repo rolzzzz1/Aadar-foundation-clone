@@ -489,26 +489,39 @@ function DonateGivingBody({
                                 top: 0,
                                 left: "50%",
                                 transform: "translate(-50%, -50%)",
+                                maxWidth: "calc(100% + 8px)",
                                 backgroundColor: "#fff8ec",
                                 color: "#b8740b",
                                 border: "1px solid rgba(236, 165, 51, 0.55)",
                                 boxShadow: "0 2px 5px rgba(138, 90, 18, 0.1)",
-                                px: { xs: 0.65, sm: 0.9 },
+                                px: { xs: 0.45, sm: 0.9 },
                                 py: 0.2,
                                 borderRadius: "999px",
-                                fontSize: { xs: "0.5rem", sm: "0.57rem" },
+                                fontSize: { xs: "0.45rem", sm: "0.57rem" },
                                 fontWeight: 800,
                                 zIndex: 3,
                                 whiteSpace: "nowrap",
                                 display: "inline-flex",
                                 alignItems: "center",
                                 justifyContent: "center",
-                                gap: 0.3,
+                                gap: { xs: 0.15, sm: 0.3 },
                                 lineHeight: 1.2,
+                                overflow: "hidden",
                               }}
                             >
-                              <StarRoundedIcon sx={{ fontSize: { xs: 9, sm: 10 } }} />
-                              {donatePage.mostPopular}
+                              <StarRoundedIcon sx={{ fontSize: { xs: 8, sm: 10 }, flexShrink: 0 }} />
+                              <MKBox
+                                component="span"
+                                sx={{ display: { xs: "none", sm: "inline" } }}
+                              >
+                                {donatePage.mostPopular}
+                              </MKBox>
+                              <MKBox
+                                component="span"
+                                sx={{ display: { xs: "inline", sm: "none" } }}
+                              >
+                                Popular
+                              </MKBox>
                             </MKBox>
                           )}
                           <MKButton
