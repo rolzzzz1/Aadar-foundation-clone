@@ -368,6 +368,7 @@ function SponsorCard({ card, idx, payButtonSx }) {
             <MKBox
               component="span"
               sx={{
+                display: { xs: "none", lg: "inline" },
                 color: "#ffffff !important",
                 fontWeight: 800,
                 lineHeight: 1.2,
@@ -379,6 +380,18 @@ function SponsorCard({ card, idx, payButtonSx }) {
               }}
             >
               {card.payButton}
+            </MKBox>
+            <MKBox
+              component="span"
+              sx={{
+                display: { xs: "inline", lg: "none" },
+                color: "#ffffff !important",
+                fontWeight: 800,
+                lineHeight: 1.2,
+                whiteSpace: "nowrap",
+              }}
+            >
+              Donate
             </MKBox>
           </MKBox>
         </MKButton>
