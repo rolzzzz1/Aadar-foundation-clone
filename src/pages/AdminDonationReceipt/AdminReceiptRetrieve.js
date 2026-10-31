@@ -185,11 +185,13 @@ export default function AdminReceiptRetrieve({ onBack, onLogout, adminSecret, ad
         lookup.method === "email"
           ? {
               mode: "email",
+              contact_type: "email",
               donor_email: validateEmail(lookup.value).value,
               locale: receiptLocale,
             }
           : {
               mode: "mobile",
+              contact_type: "mobile",
               donor_contact: normalizeContact(lookup.value),
               locale: receiptLocale,
             };

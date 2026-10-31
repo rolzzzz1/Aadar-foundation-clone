@@ -115,9 +115,17 @@ module.exports = async function handler(req, res) {
   }
 
   const locale = body.locale === "hi" ? "hi" : "en";
-  const mode = String(body.mode || body.lookup_type || "")
+  let mode = String(body.mode || body.lookup_type || body.contact_type || "")
     .trim()
     .toLowerCase();
+
+  // Infer mode from payload fields when clients omit / send an older mode string.
+  if (!mode || mode === "contact") {
+    if (body.donor_email || body.email) mode = "email";
+    else if (body.donor_contact || body.mobile) mode = "mobile";
+    else if (body.receipt_no || body.receiptNo) mode = "receipt_no";
+    else if (body.payment_id || body.paymentId) mode = "payment_id";
+  }
 
   try {
     if (mode === "mobile") {
