@@ -356,9 +356,9 @@ function SponsorCard({ card, idx, payButtonSx }) {
                 flexShrink: 0,
                 color: "#ffffff !important",
                 "& > *": {
-                  width: { xs: 16, md: 18, lg: 20 },
-                  height: { xs: 16, md: 18, lg: 20 },
-                  mr: { xs: 0.5, md: 0.75 },
+                  width: { xs: 18, sm: 19, md: 20, lg: 20 },
+                  height: { xs: 18, sm: 19, md: 20, lg: 20 },
+                  mr: { xs: 0.65, md: 0.75 },
                   color: "#ffffff !important",
                 },
               }}
@@ -371,6 +371,7 @@ function SponsorCard({ card, idx, payButtonSx }) {
                 display: { xs: "none", lg: "inline" },
                 color: "#ffffff !important",
                 fontWeight: 800,
+                fontSize: { lg: "0.86rem", xl: "0.9rem" },
                 lineHeight: 1.2,
                 textAlign: "center",
                 whiteSpace: "normal",
@@ -387,8 +388,10 @@ function SponsorCard({ card, idx, payButtonSx }) {
                 display: { xs: "inline", lg: "none" },
                 color: "#ffffff !important",
                 fontWeight: 800,
+                fontSize: { xs: "0.88rem", sm: "0.92rem", md: "0.95rem" },
                 lineHeight: 1.2,
                 whiteSpace: "nowrap",
+                letterSpacing: "0.01em",
               }}
             >
               Donate
@@ -417,15 +420,15 @@ export default function SponsorPrabhujiCtaCards({ sponsor }) {
   const { title, subtitle, cards } = sponsor;
 
   const payButtonSx = {
-    py: { xs: 0.9, sm: 1, md: 1, lg: 1.1 },
-    px: { xs: 1.1, sm: 1.25, md: 1, lg: 1.4 },
+    py: { xs: 0.95, sm: 1.05, md: 1.1, lg: 1.1 },
+    px: { xs: 1.35, sm: 1.5, md: 1.35, lg: 1.4 },
     width: "100%",
-    minHeight: { xs: 40, sm: 44, md: 46, lg: 48 },
+    minHeight: { xs: 42, sm: 46, md: 48, lg: 48 },
     borderRadius: "12px",
     background: "linear-gradient(90deg, #67b35b 0%, #52a548 55%, #67b35b 100%)",
     color: "#ffffff !important",
     fontWeight: 800,
-    fontSize: { xs: "0.72rem", sm: "0.78rem", md: "0.74rem", lg: "0.86rem" },
+    fontSize: { xs: "0.88rem", sm: "0.92rem", md: "0.95rem", lg: "0.86rem" },
     lineHeight: 1.2,
     textTransform: "none",
     textDecoration: "none",
