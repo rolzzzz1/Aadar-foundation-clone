@@ -172,7 +172,11 @@ function SponsorCard({ card, idx, payButtonSx }) {
   return (
     <MKBox
       sx={{
-        width: { xs: "calc(33.333% - 8px)", sm: "calc(33.333% - 12px)", lg: "calc(33.333% - 14px)" },
+        width: {
+          xs: "calc(33.333% - 8px)",
+          sm: "calc(33.333% - 12px)",
+          lg: "calc(33.333% - 14px)",
+        },
         flex: "1 1 0",
         minWidth: 0,
         display: "flex",
