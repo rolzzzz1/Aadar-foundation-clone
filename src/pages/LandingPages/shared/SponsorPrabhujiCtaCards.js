@@ -172,10 +172,8 @@ function SponsorCard({ card, idx, payButtonSx }) {
   return (
     <MKBox
       sx={{
-        width: { xs: "100%", sm: "calc(50% - 12px)", lg: "calc(33.333% - 14px)" },
-        maxWidth: { xs: 420, sm: "none" },
-        mx: { xs: "auto", sm: 0 },
-        flex: { sm: "1 1 260px", lg: "1 1 0" },
+        width: { xs: "calc(33.333% - 8px)", sm: "calc(33.333% - 12px)", lg: "calc(33.333% - 14px)" },
+        flex: "1 1 0",
         minWidth: 0,
         display: "flex",
       }}
@@ -187,11 +185,11 @@ function SponsorCard({ card, idx, payButtonSx }) {
           flexDirection: "column",
           alignItems: "center",
           textAlign: "center",
-          px: { xs: 1.75, sm: 2 },
-          pt: { xs: 1.5, sm: 1.65 },
-          pb: { xs: 1.5, sm: 1.65 },
+          px: { xs: 1, sm: 1.5, md: 2 },
+          pt: { xs: 1.15, sm: 1.4, md: 1.65 },
+          pb: { xs: 1.15, sm: 1.4, md: 1.65 },
           backgroundColor: "#ffffff",
-          borderRadius: "18px",
+          borderRadius: { xs: "14px", sm: "18px" },
           border: "1px solid rgba(82, 125, 62, 0.1)",
           boxShadow: "0 14px 36px rgba(31, 42, 68, 0.07)",
           transition: "transform 0.2s ease, box-shadow 0.2s ease",
@@ -204,7 +202,7 @@ function SponsorCard({ card, idx, payButtonSx }) {
         <MKBox
           sx={{
             width: "100%",
-            height: { xs: 88, sm: 96, md: 102 },
+            height: { xs: 72, sm: 88, md: 102 },
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -216,9 +214,9 @@ function SponsorCard({ card, idx, payButtonSx }) {
           {isFood ? (
             <MKBox
               sx={{
-                width: { xs: 118, sm: 128 },
+                width: { xs: 96, sm: 118, md: 128 },
                 height: "100%",
-                transform: "scale(1.18)",
+                transform: { xs: "scale(1.08)", sm: "scale(1.18)" },
                 transformOrigin: "center center",
               }}
             >
@@ -239,7 +237,7 @@ function SponsorCard({ card, idx, payButtonSx }) {
                 objectFit: "contain",
                 objectPosition: "center bottom",
                 display: "block",
-                transform: "scale(1.28)",
+                transform: { xs: "scale(1.12)", sm: "scale(1.28)" },
                 transformOrigin: "center center",
               }}
             />
@@ -248,7 +246,7 @@ function SponsorCard({ card, idx, payButtonSx }) {
 
         <MKTypography
           sx={{
-            fontSize: { xs: "0.95rem", sm: "0.98rem" },
+            fontSize: { xs: "0.78rem", sm: "0.9rem", md: "0.98rem" },
             fontWeight: 700,
             color: "#1f2a44",
             lineHeight: 1.3,
@@ -264,7 +262,7 @@ function SponsorCard({ card, idx, payButtonSx }) {
         <MKTypography
           sx={{
             mt: 0.3,
-            fontSize: { xs: "0.76rem", sm: "0.8rem" },
+            fontSize: { xs: "0.68rem", sm: "0.76rem", md: "0.8rem" },
             fontWeight: 500,
             color: "rgba(31, 42, 68, 0.62)",
             lineHeight: 1.25,
@@ -276,9 +274,9 @@ function SponsorCard({ card, idx, payButtonSx }) {
 
         <MKTypography
           sx={{
-            mt: 1,
-            mb: 1.25,
-            fontSize: { xs: "1.02rem", sm: "1.08rem" },
+            mt: { xs: 0.65, sm: 1 },
+            mb: { xs: 0.9, sm: 1.25 },
+            fontSize: { xs: "0.82rem", sm: "0.95rem", md: "1.08rem" },
             fontWeight: 800,
             color: BRAND_GREEN,
             lineHeight: 1.2,
@@ -324,15 +322,16 @@ export default function SponsorPrabhujiCtaCards({ sponsor }) {
   const { title, subtitle, cards } = sponsor;
 
   const payButtonSx = {
-    py: { xs: 1.05, sm: 1.1 },
-    px: { xs: 1.4, sm: 1.6 },
+    py: { xs: 0.85, sm: 1.05, md: 1.1 },
+    px: { xs: 0.75, sm: 1.4, md: 1.6 },
     width: "100%",
+    minHeight: { xs: 44, sm: 48 },
     borderRadius: "12px",
     background: "linear-gradient(90deg, #67b35b 0%, #52a548 55%, #67b35b 100%)",
     color: "#ffffff !important",
     fontWeight: 800,
-    fontSize: { xs: "0.86rem", sm: "0.9rem" },
-    lineHeight: 1.25,
+    fontSize: { xs: "0.68rem", sm: "0.82rem", md: "0.9rem" },
+    lineHeight: 1.2,
     textTransform: "none",
     textDecoration: "none",
     boxShadow: "0 12px 28px rgba(82, 165, 72, 0.24)",
@@ -422,11 +421,11 @@ export default function SponsorPrabhujiCtaCards({ sponsor }) {
         <MKBox
           sx={{
             display: "flex",
-            flexDirection: { xs: "column", sm: "row" },
-            flexWrap: "wrap",
+            flexDirection: "row",
+            flexWrap: "nowrap",
             justifyContent: "center",
             alignItems: "stretch",
-            gap: { xs: 2, sm: 2.25, lg: 2.5 },
+            gap: { xs: 1.25, sm: 2, lg: 2.5 },
             width: "100%",
           }}
         >

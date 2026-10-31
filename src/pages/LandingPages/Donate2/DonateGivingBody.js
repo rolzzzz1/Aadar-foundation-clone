@@ -509,7 +509,9 @@ function DonateGivingBody({
                                 overflow: "hidden",
                               }}
                             >
-                              <StarRoundedIcon sx={{ fontSize: { xs: 8, sm: 10 }, flexShrink: 0 }} />
+                              <StarRoundedIcon
+                                sx={{ fontSize: { xs: 8, sm: 10 }, flexShrink: 0 }}
+                              />
                               <MKBox
                                 component="span"
                                 sx={{ display: { xs: "none", sm: "inline" } }}
