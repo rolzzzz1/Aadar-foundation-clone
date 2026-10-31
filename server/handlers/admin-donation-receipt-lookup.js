@@ -14,6 +14,7 @@ const {
 const { donationRowToReceiptRecord } = require("../_lib/receiptRecord");
 const { applyRateLimit, LIMITS } = require("../_lib/rateLimit");
 const { parseContactLookup } = require("../_lib/receiptContact");
+const { trySendReceiptEmail, isEmailConfigured } = require("../_lib/receiptEmail");
 
 const MAX_BODY_BYTES = 2 * 1024;
 
@@ -207,8 +208,64 @@ module.exports = async function handler(req, res) {
       });
     }
 
+    if (mode === "resend_email" || mode === "email_receipt") {
+      if (!isEmailConfigured()) {
+        return res.status(503).json({
+          error: "Receipt email is not configured. Set RESEND_API_KEY and RECEIPT_FROM_EMAIL.",
+        });
+      }
+
+      const paymentId = String(body.payment_id || body.paymentId || "").trim();
+      const receiptNo = normalizeReceiptNo(body.receipt_no || body.receiptNo || "");
+      let row = null;
+      if (paymentId) {
+        row = await fetchDonationByPaymentId(paymentId);
+      } else if (receiptNo) {
+        row = await fetchDonationByReceiptNo(receiptNo);
+      } else {
+        return res.status(400).json({ error: "payment_id or receipt_no is required." });
+      }
+
+      if (!row) {
+        return res.status(404).json({ error: "Receipt not found." });
+      }
+
+      const donorEmail = String(row.donor_email || "").trim();
+      if (!donorEmail) {
+        return res.status(400).json({ error: "This receipt has no donor email address." });
+      }
+
+      const emailResult = await trySendReceiptEmail(row, {
+        locale,
+        forceResend: true,
+      });
+
+      if (!emailResult.sent) {
+        const reason = emailResult.reason || "send_failed";
+        const messages = {
+          no_email: "This receipt has no donor email address.",
+          not_captured: "Only captured donations can be emailed.",
+          missing_row: "Receipt not found.",
+          send_failed: "Could not send the receipt email. Please try again.",
+        };
+        return res.status(502).json({
+          error: messages[reason] || "Could not send the receipt email.",
+          reason,
+        });
+      }
+
+      return res.status(200).json({
+        ok: true,
+        mode: "resend_email",
+        email: donorEmail,
+        payment_id: row.payment_id,
+        receipt_no: row.receipt_no || null,
+        resend_id: emailResult.id || null,
+      });
+    }
+
     return res.status(400).json({
-      error: "Invalid lookup mode. Use mobile, email, receipt_no, or payment_id.",
+      error: "Invalid lookup mode. Use mobile, email, receipt_no, payment_id, or resend_email.",
     });
   } catch (err) {
     if (!isProduction()) {

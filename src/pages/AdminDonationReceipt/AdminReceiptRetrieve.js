@@ -136,26 +136,59 @@ export default function AdminReceiptRetrieve({ onBack, onLogout, adminSecret, ad
   const [lookup, setLookup] = useState(emptyLookup);
   const [donationsList, setDonationsList] = useState(null);
   const [busy, setBusy] = useState(false);
+  const [emailBusy, setEmailBusy] = useState(false);
   const [error, setError] = useState("");
   const [downloadMsg, setDownloadMsg] = useState("");
+  const [emailMsg, setEmailMsg] = useState("");
   const [record, setRecord] = useState(null);
   const donationsHeadingRef = useRef(null);
+
+  const donorEmail = String(record?.donor?.email || "").trim();
+  const canEmailDonor = Boolean(donorEmail && record?.verified && record?.paymentId);
 
   const resetResult = () => {
     setRecord(null);
     setError("");
     setDownloadMsg("");
+    setEmailMsg("");
     setDonationsList(null);
   };
 
   const handleDownload = async () => {
     if (!record || !record.verified) return;
+    setEmailMsg("");
     setDownloadMsg(t("adminPortal.preparingPdf"));
     const { downloadReceiptPdf } = await import("utils/donationReceipt");
     const result = await downloadReceiptPdf(record);
     setDownloadMsg(
       result === "pdf" ? t("donationResult.pdfDownloaded") : t("donationResult.downloadFailed")
     );
+  };
+
+  const handleEmailDonor = async () => {
+    if (!canEmailDonor || emailBusy) return;
+    setError("");
+    setDownloadMsg("");
+    setEmailMsg(t("adminPortal.sendingEmail"));
+    setEmailBusy(true);
+    try {
+      const result = await postAdminLookup(
+        {
+          mode: "resend_email",
+          payment_id: record.paymentId,
+          receipt_no: record.receiptNo || "",
+          locale: record.locale === "hi" ? "hi" : receiptLocale,
+        },
+        { secret: adminSecret, username: adminUsername }
+      );
+      const sentTo = result?.email || donorEmail;
+      setEmailMsg(t("adminPortal.emailSentTo", { email: sentTo }));
+    } catch (err) {
+      setEmailMsg("");
+      setError((err && err.message) || t("adminPortal.emailSendFailed"));
+    } finally {
+      setEmailBusy(false);
+    }
   };
 
   const handleFindDonations = async () => {
@@ -223,6 +256,7 @@ export default function AdminReceiptRetrieve({ onBack, onLogout, adminSecret, ad
     if (!paymentId) return;
     setError("");
     setDownloadMsg("");
+    setEmailMsg("");
     setBusy(true);
     try {
       const result = await postAdminLookup(
@@ -300,6 +334,7 @@ export default function AdminReceiptRetrieve({ onBack, onLogout, adminSecret, ad
               color="success"
               startIcon={<DownloadOutlinedIcon />}
               onClick={handleDownload}
+              disabled={busy || emailBusy}
               sx={{ fontWeight: 800, textTransform: "none", borderRadius: "10px" }}
             >
               {t("adminPortal.downloadPdf")}
@@ -307,22 +342,87 @@ export default function AdminReceiptRetrieve({ onBack, onLogout, adminSecret, ad
             <MKButton
               fullWidth
               variant="outlined"
+              color="success"
+              startIcon={
+                emailBusy ? (
+                  <CircularProgress size={18} color="inherit" thickness={5} />
+                ) : (
+                  <EmailOutlinedIcon />
+                )
+              }
+              onClick={handleEmailDonor}
+              disabled={!canEmailDonor || busy || emailBusy}
+              sx={{
+                fontWeight: 800,
+                textTransform: "none",
+                borderRadius: "10px",
+                borderColor: "#2e7d32",
+                color: "#2e7d32",
+                "&.Mui-disabled": { opacity: 0.55 },
+              }}
+            >
+              {emailBusy
+                ? t("adminPortal.sendingEmail")
+                : donorEmail
+                ? t("adminPortal.emailToDonor")
+                : t("adminPortal.noDonorEmail")}
+            </MKButton>
+            <MKButton
+              fullWidth
+              variant="outlined"
               color="dark"
               startIcon={<ReplayOutlinedIcon />}
               onClick={resetResult}
+              disabled={busy || emailBusy}
               sx={{ fontWeight: 700, textTransform: "none", borderRadius: "10px" }}
             >
               {t("adminPortal.searchAgain")}
             </MKButton>
           </Stack>
 
+          {donorEmail ? (
+            <Typography
+              variant="body2"
+              sx={{
+                mt: 1.25,
+                textAlign: "center",
+                color: "rgba(31,42,68,0.62)",
+                fontSize: "0.84rem",
+              }}
+            >
+              {t("adminPortal.willEmailTo", { email: donorEmail })}
+            </Typography>
+          ) : (
+            <Typography
+              variant="body2"
+              sx={{ mt: 1.25, textAlign: "center", color: "#b45309", fontSize: "0.84rem" }}
+            >
+              {t("adminPortal.noDonorEmailHint")}
+            </Typography>
+          )}
+
           {downloadMsg ? (
             <Typography
               variant="body2"
-              sx={{ mt: 1.5, textAlign: "center", color: "rgba(31,42,68,0.72)" }}
+              sx={{ mt: 1, textAlign: "center", color: "rgba(31,42,68,0.72)" }}
             >
               {downloadMsg}
             </Typography>
+          ) : null}
+
+          {emailMsg ? (
+            <Typography
+              variant="body2"
+              sx={{ mt: 1, textAlign: "center", color: "#2e7d32", fontWeight: 600 }}
+            >
+              {emailMsg}
+            </Typography>
+          ) : null}
+
+          {error ? (
+            <Alert severity="error" sx={{ mt: 1.5 }}>
+              {error}
+            </Alert>
           ) : null}
         </Box>
       ) : (
