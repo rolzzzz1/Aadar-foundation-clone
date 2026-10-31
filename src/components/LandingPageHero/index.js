@@ -33,18 +33,26 @@ function LandingPageHero({ title, minHeight, brushBackgroundPosition, titleFontS
         backgroundSize: "contain",
         backgroundRepeat: "no-repeat",
         backgroundPosition: brushBackgroundPosition,
-        width: "40%",
-        minHeight: "40vh",
+        width: { xs: "min(78%, 280px)", sm: "48%", md: "40%" },
+        minHeight: { xs: "26vh", sm: "34vh", md: "40vh" },
+        maxWidth: { xs: "88%", sm: "none" },
+        mr: { xs: 1.25, sm: 1.5, md: 2 },
+        mb: { xs: 2, sm: 2, md: 2.5 },
       }}
     >
       <MKTypography
         variant="h3"
         color="white"
         textAlign="center"
-        ml={-2}
+        ml={{ xs: 0, sm: -1, md: -2 }}
         fontFamily={TITLE_FONT}
         fontSize={titleFontSize}
-        sx={{ mb: { xs: 1, sm: 0 }, ...titleSx }}
+        sx={{
+          mb: { xs: 0.5, sm: 0 },
+          px: { xs: 1, sm: 0.5, md: 0 },
+          lineHeight: { xs: 1.25, sm: 1.3 },
+          ...titleSx,
+        }}
       >
         {title}
       </MKTypography>

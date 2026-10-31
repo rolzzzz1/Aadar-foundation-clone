@@ -40,10 +40,11 @@ function DonateGivingBody({
             fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
             sx={{
               fontWeight: "500",
-              fontSize: { xs: "1.5rem", sm: "1.75rem", md: "1.875rem", lg: "1.875rem" },
+              fontSize: { xs: "1.35rem", sm: "1.65rem", md: "1.875rem", lg: "1.875rem" },
+              lineHeight: 1.25,
             }}
-            pt={{ xs: 1, sm: 1.25, md: 1.5 }}
-            pb={{ xs: 2.75, sm: 3.25, md: 3.75 }}
+            pt={{ xs: 0.75, sm: 1.25, md: 1.5 }}
+            pb={{ xs: 2, sm: 2.75, md: 3.75 }}
           >
             {donatePage.title}
           </MKTypography>
@@ -74,12 +75,13 @@ function DonateGivingBody({
               alt=""
               aria-hidden="true"
               sx={{
+                display: { xs: "none", sm: "block" },
                 position: "absolute",
-                top: { xs: 16, sm: 20, md: 18, lg: 20 },
-                right: { xs: -16, sm: -12, md: -8, lg: -28, xl: -36 },
-                width: { xs: 130, sm: 160, md: 200, lg: 235, xl: 250 },
+                top: { sm: 20, md: 18, lg: 20 },
+                right: { sm: -8, md: -8, lg: -28, xl: -36 },
+                width: { sm: 140, md: 200, lg: 235, xl: 250 },
                 height: "auto",
-                opacity: { xs: 0.55, sm: 0.7, md: 0.82, lg: 0.85 },
+                opacity: { sm: 0.65, md: 0.82, lg: 0.85 },
                 pointerEvents: "none",
                 userSelect: "none",
                 zIndex: 0,
@@ -93,12 +95,12 @@ function DonateGivingBody({
                 zIndex: 1,
                 fontFamily: '"Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
                 fontWeight: 600,
-                fontSize: { xs: "1.35rem", sm: "1.5rem", md: "1.6rem", lg: "1.7rem" },
+                fontSize: { xs: "1.28rem", sm: "1.5rem", md: "1.6rem", lg: "1.7rem" },
                 lineHeight: 1.25,
                 color: "#1A2B4C",
                 letterSpacing: "-0.01em",
-                mt: { xs: 1, sm: 1.25, md: 1.5 },
-                maxWidth: { xs: "70%", sm: "68%", md: "62%", lg: "58%" },
+                mt: { xs: 0.5, sm: 1.25, md: 1.5 },
+                maxWidth: { xs: "100%", sm: "72%", md: "62%", lg: "58%" },
               }}
             >
               {donatePage.heroHeadlineLead || "Your action today has"}
@@ -403,9 +405,10 @@ function DonateGivingBody({
               <SpaOutlinedIcon
                 sx={{
                   position: "absolute",
-                  top: 14,
-                  left: 14,
-                  fontSize: 26,
+                  top: { xs: 10, sm: 14 },
+                  left: { xs: 10, sm: 14 },
+                  fontSize: { xs: 20, sm: 26 },
+                  display: { xs: "none", sm: "block" },
                   color: "rgba(79, 169, 83, 0.16)",
                   transform: "rotate(-25deg)",
                   pointerEvents: "none",
@@ -415,9 +418,10 @@ function DonateGivingBody({
               <SpaOutlinedIcon
                 sx={{
                   position: "absolute",
-                  top: 14,
-                  right: 14,
-                  fontSize: 26,
+                  top: { xs: 10, sm: 14 },
+                  right: { xs: 10, sm: 14 },
+                  fontSize: { xs: 20, sm: 26 },
+                  display: { xs: "none", sm: "block" },
                   color: "rgba(79, 169, 83, 0.16)",
                   transform: "scaleX(-1) rotate(-25deg)",
                   pointerEvents: "none",
@@ -427,8 +431,8 @@ function DonateGivingBody({
 
               <MKBox
                 sx={{
-                  px: { xs: 3, sm: 4, md: 4.5 },
-                  pt: { xs: 3, sm: 3.5 },
+                  px: { xs: 2, sm: 3.25, md: 4.5 },
+                  pt: { xs: 2.5, sm: 3.25, md: 3.5 },
                   pb: { xs: 0.75, sm: 1 },
                   textAlign: "center",
                 }}
@@ -465,7 +469,7 @@ function DonateGivingBody({
 
               <MKBox
                 sx={{
-                  px: { xs: 3, sm: 4, md: 4.5 },
+                  px: { xs: 2, sm: 3.25, md: 4.5 },
                   pb: { xs: 2, sm: 2.25 },
                   pt: { xs: 0.5, sm: 0.75 },
                   display: "flex",
@@ -473,10 +477,10 @@ function DonateGivingBody({
                   flex: 1,
                   minHeight: 0,
                   justifyContent: "space-between",
-                  gap: { xs: 1.35, sm: 1.5 },
+                  gap: { xs: 1.25, sm: 1.5 },
                 }}
               >
-                <Grid container spacing={1.25} sx={{ mt: { xs: 1.5, sm: 1.75 } }}>
+                <Grid container spacing={{ xs: 1, sm: 1.25 }} sx={{ mt: { xs: 1.25, sm: 1.75 } }}>
                   {[501, 1001, 3001].map((amt) => {
                     const active = selectedAmount === amt && !customAmount;
                     return (
@@ -489,22 +493,22 @@ function DonateGivingBody({
                                 top: 0,
                                 left: "50%",
                                 transform: "translate(-50%, -50%)",
-                                maxWidth: "calc(100% + 8px)",
+                                maxWidth: "calc(100% + 4px)",
                                 backgroundColor: "#fff8ec",
                                 color: "#b8740b",
                                 border: "1px solid rgba(236, 165, 51, 0.55)",
                                 boxShadow: "0 2px 5px rgba(138, 90, 18, 0.1)",
-                                px: { xs: 0.45, sm: 0.9 },
+                                px: { xs: 0.4, sm: 0.9 },
                                 py: 0.2,
                                 borderRadius: "999px",
-                                fontSize: { xs: "0.45rem", sm: "0.57rem" },
+                                fontSize: { xs: "0.42rem", sm: "0.57rem" },
                                 fontWeight: 800,
                                 zIndex: 3,
                                 whiteSpace: "nowrap",
                                 display: "inline-flex",
                                 alignItems: "center",
                                 justifyContent: "center",
-                                gap: { xs: 0.15, sm: 0.3 },
+                                gap: { xs: 0.1, sm: 0.3 },
                                 lineHeight: 1.2,
                                 overflow: "hidden",
                               }}
@@ -514,13 +518,13 @@ function DonateGivingBody({
                               />
                               <MKBox
                                 component="span"
-                                sx={{ display: { xs: "none", sm: "inline" } }}
+                                sx={{ display: { xs: "none", md: "inline" } }}
                               >
                                 {donatePage.mostPopular}
                               </MKBox>
                               <MKBox
                                 component="span"
-                                sx={{ display: { xs: "inline", sm: "none" } }}
+                                sx={{ display: { xs: "inline", md: "none" } }}
                               >
                                 Popular
                               </MKBox>
@@ -546,11 +550,11 @@ function DonateGivingBody({
                                   ? "0 0 0 4px rgba(236, 165, 51, 0.22), 0 6px 14px rgba(236, 165, 51, 0.15)"
                                   : "0 1px 2px rgba(31, 42, 68, 0.04)",
                                 borderRadius: "12px",
-                                py: 1.2,
+                                py: { xs: 1, sm: 1.2 },
                                 fontWeight: active ? 800 : 700,
-                                fontSize: { xs: "0.95rem", sm: "1.02rem" },
+                                fontSize: { xs: "0.82rem", sm: "0.95rem", md: "1.02rem" },
                                 letterSpacing: "0.01em",
-                                minHeight: 48,
+                                minHeight: { xs: 44, sm: 48 },
                                 height: "100%",
                                 fontVariantNumeric: "tabular-nums",
                                 transform: active ? "translateY(-1px)" : "none",
@@ -700,17 +704,20 @@ function DonateGivingBody({
                     component="span"
                     sx={{
                       display: "grid",
-                      gridTemplateColumns: "40px 1fr 40px",
+                      gridTemplateColumns: {
+                        xs: "32px minmax(0, 1fr) 32px",
+                        sm: "40px 1fr 40px",
+                      },
                       alignItems: "center",
                       width: "100%",
-                      gap: 0.5,
+                      gap: { xs: 0.35, sm: 0.5 },
                     }}
                   >
                     <MKBox
                       component="span"
                       sx={{
-                        width: 36,
-                        height: 36,
+                        width: { xs: 30, sm: 36 },
+                        height: { xs: 30, sm: 36 },
                         borderRadius: "50%",
                         backgroundColor: "rgba(255, 255, 255, 0.2)",
                         display: "inline-flex",
@@ -719,16 +726,17 @@ function DonateGivingBody({
                         justifySelf: "start",
                       }}
                     >
-                      <VolunteerActivismRoundedIcon sx={{ fontSize: { xs: 20, sm: 22 } }} />
+                      <VolunteerActivismRoundedIcon sx={{ fontSize: { xs: 18, sm: 22 } }} />
                     </MKBox>
                     <MKBox
                       component="span"
                       sx={{
                         fontWeight: 800,
-                        fontSize: { xs: "1rem", sm: "1.08rem" },
+                        fontSize: { xs: "0.92rem", sm: "1.08rem" },
                         lineHeight: 1.2,
                         textAlign: "center",
                         color: "#ffffff !important",
+                        minWidth: 0,
                       }}
                     >
                       {donatePage.donateNow}
@@ -737,8 +745,8 @@ function DonateGivingBody({
                       component="span"
                       className="donate-cta-arrow"
                       sx={{
-                        width: 36,
-                        height: 36,
+                        width: { xs: 30, sm: 36 },
+                        height: { xs: 30, sm: 36 },
                         borderRadius: "50%",
                         backgroundColor: "rgba(255, 255, 255, 0.2)",
                         display: "inline-flex",
@@ -747,7 +755,7 @@ function DonateGivingBody({
                         justifySelf: "end",
                       }}
                     >
-                      <ArrowForwardRoundedIcon sx={{ fontSize: { xs: 20, sm: 22 } }} />
+                      <ArrowForwardRoundedIcon sx={{ fontSize: { xs: 18, sm: 22 } }} />
                     </MKBox>
                   </MKBox>
                 </MKButton>

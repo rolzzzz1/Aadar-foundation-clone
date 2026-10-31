@@ -80,8 +80,10 @@ function Donate2() {
 
   return (
     <MKBox
-      minWidth="320px"
       sx={{
+        width: "100%",
+        maxWidth: "100%",
+        overflowX: "clip",
         // Keep in-page anchors / widget scrolls clear of the sticky navbar on phones.
         scrollPaddingTop: { xs: "96px", sm: "110px", md: "120px" },
       }}
@@ -99,24 +101,35 @@ function Donate2() {
 
       <LandingPageHero
         title={donatePage.tagLine}
-        minHeight={{ xs: "55vh", sm: "65vh", md: "80vh" }}
+        minHeight={{ xs: "48vh", sm: "58vh", md: "72vh", lg: "80vh" }}
+        titleFontSize={{ xs: "1.05rem", sm: "1.45rem", md: "1.875rem" }}
       />
 
       <Card
         sx={{
-          p: { xs: 1.25, sm: 2 },
+          p: { xs: 1, sm: 1.75, md: 2 },
           pb: { xs: 1.5, sm: 2 },
-          mx: { xs: 1.25, sm: 2, lg: 3 },
-          mt: -2,
+          mx: { xs: 1, sm: 1.75, md: 2.5, lg: 3 },
+          mt: { xs: -1.5, sm: -2 },
           mb: 1.5,
           backgroundColor: "#faf8f2",
           boxShadow: ({ boxShadows: { xxl } }) => xxl,
           overflow: "hidden",
           position: "relative",
+          maxWidth: "100%",
         }}
       >
-        <MKBox component="section" mt={{ xs: 1.5, sm: 1.75, md: 2 }} mb={{ xs: 1.5, sm: 2 }}>
-          <Container>
+        <MKBox
+          component="section"
+          mt={{ xs: 1, sm: 1.5, md: 2 }}
+          mb={{ xs: 1.25, sm: 1.75, md: 2 }}
+        >
+          <Container
+            maxWidth="lg"
+            sx={{
+              px: { xs: 1, sm: 2, md: 3 },
+            }}
+          >
             <DonateGivingBody
               donatePage={donatePage}
               selectedAmount={selectedAmount}

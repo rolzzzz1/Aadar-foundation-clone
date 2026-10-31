@@ -20,11 +20,11 @@ function DecorativeLeaf({ side }) {
       alt=""
       aria-hidden="true"
       sx={{
-        width: { xs: 100, sm: 140 },
+        display: { xs: "none", md: "block" },
+        width: { md: 120, lg: 140 },
         height: "auto",
         opacity: 0.85,
         transform: flip,
-        display: "block",
         objectFit: "contain",
       }}
     />
@@ -42,23 +42,38 @@ function DividerFlourish() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        gap: 1,
-        mb: { xs: 3, md: 3.25 },
+        gap: { xs: 0.75, sm: 1 },
+        mb: { xs: 2.25, sm: 2.75, md: 3.25 },
+        px: { xs: 1, sm: 0 },
       }}
     >
-      <MKBox sx={{ width: 94, height: 1.5, bgcolor: "rgba(82, 125, 62, 0.28)" }} />
+      <MKBox
+        sx={{
+          width: { xs: 48, sm: 72, md: 94 },
+          height: 1.5,
+          bgcolor: "rgba(82, 125, 62, 0.28)",
+          flexShrink: 0,
+        }}
+      />
       <MKBox
         component="svg"
         viewBox="0 0 24 16"
         aria-hidden
-        sx={{ width: 20, height: "auto", color: "#c7b238" }}
+        sx={{ width: { xs: 16, sm: 20 }, height: "auto", color: "#c7b238", flexShrink: 0 }}
       >
         <path
           d="M12 13c0-4 1.6-6.7 6-8-1 4.8-3.4 7.2-6 8zm0 0C12 9 10.4 6.3 6 5c1 4.8 3.4 7.2 6 8z"
           fill="currentColor"
         />
       </MKBox>
-      <MKBox sx={{ width: 94, height: 1.5, bgcolor: "rgba(82, 125, 62, 0.28)" }} />
+      <MKBox
+        sx={{
+          width: { xs: 48, sm: 72, md: 94 },
+          height: 1.5,
+          bgcolor: "rgba(82, 125, 62, 0.28)",
+          flexShrink: 0,
+        }}
+      />
     </MKBox>
   );
 }
@@ -174,10 +189,10 @@ function SponsorCard({ card, idx, payButtonSx }) {
       sx={{
         width: {
           xs: "100%",
-          sm: "calc(33.333% - 12px)",
+          md: "calc(33.333% - 12px)",
           lg: "calc(33.333% - 14px)",
         },
-        flex: { xs: "1 1 auto", sm: "1 1 0" },
+        flex: { xs: "1 1 auto", md: "1 1 0" },
         minWidth: 0,
         display: "flex",
       }}
@@ -186,32 +201,32 @@ function SponsorCard({ card, idx, payButtonSx }) {
         sx={{
           width: "100%",
           display: "flex",
-          flexDirection: { xs: "row", sm: "column" },
-          alignItems: { xs: "center", sm: "center" },
-          justifyContent: { xs: "space-between", sm: "flex-start" },
-          gap: { xs: 1.25, sm: 0 },
-          textAlign: { xs: "left", sm: "center" },
-          px: { xs: 1.5, sm: 1.5, md: 2 },
-          py: { xs: 1.35, sm: 1.4, md: 1.65 },
+          flexDirection: { xs: "row", md: "column" },
+          alignItems: "center",
+          justifyContent: { xs: "space-between", md: "flex-start" },
+          gap: { xs: 1.25, md: 0 },
+          textAlign: { xs: "left", md: "center" },
+          px: { xs: 1.35, sm: 1.5, md: 2 },
+          py: { xs: 1.25, sm: 1.35, md: 1.65 },
           backgroundColor: "#ffffff",
-          borderRadius: { xs: "14px", sm: "18px" },
+          borderRadius: { xs: "14px", md: "18px" },
           border: "1px solid rgba(82, 125, 62, 0.1)",
           boxShadow: "0 14px 36px rgba(31, 42, 68, 0.07)",
           transition: "transform 0.2s ease, box-shadow 0.2s ease",
           "&:hover": {
-            transform: "translateY(-3px)",
-            boxShadow: "0 18px 42px rgba(31, 42, 68, 0.1)",
+            transform: { md: "translateY(-3px)" },
+            boxShadow: { md: "0 18px 42px rgba(31, 42, 68, 0.1)" },
           },
         }}
       >
         <MKBox
           sx={{
             width: "100%",
-            height: { sm: 88, md: 102 },
-            display: { xs: "none", sm: "flex" },
+            height: { md: 88, lg: 102 },
+            display: { xs: "none", md: "flex" },
             alignItems: "center",
             justifyContent: "center",
-            mb: { sm: 0.85 },
+            mb: { md: 0.85 },
             flexShrink: 0,
             overflow: "hidden",
           }}
@@ -219,7 +234,7 @@ function SponsorCard({ card, idx, payButtonSx }) {
           {isFood ? (
             <MKBox
               sx={{
-                width: { sm: 118, md: 128 },
+                width: { md: 118, lg: 128 },
                 height: "100%",
                 transform: "scale(1.18)",
                 transformOrigin: "center center",
@@ -251,24 +266,25 @@ function SponsorCard({ card, idx, payButtonSx }) {
 
         <MKBox
           sx={{
-            flex: { xs: "1 1 auto", sm: "0 0 auto" },
+            flex: { xs: "1 1 auto", md: "0 0 auto" },
             minWidth: 0,
             display: "flex",
             flexDirection: "column",
-            alignItems: { xs: "flex-start", sm: "center" },
-            width: { sm: "100%" },
+            alignItems: { xs: "flex-start", md: "center" },
+            width: { md: "100%" },
+            pr: { xs: 0.5, md: 0 },
           }}
         >
           <MKTypography
             sx={{
-              fontSize: { xs: "0.88rem", sm: "0.9rem", md: "0.98rem" },
+              fontSize: { xs: "0.86rem", sm: "0.9rem", md: "0.98rem" },
               fontWeight: 700,
               color: "#1f2a44",
               lineHeight: 1.3,
-              minHeight: { sm: "2.6em" },
+              minHeight: { md: "2.6em" },
               display: "flex",
-              alignItems: { xs: "flex-start", sm: "flex-end" },
-              justifyContent: { xs: "flex-start", sm: "center" },
+              alignItems: { xs: "flex-start", md: "flex-end" },
+              justifyContent: { xs: "flex-start", md: "center" },
             }}
           >
             {card.description}
@@ -277,11 +293,11 @@ function SponsorCard({ card, idx, payButtonSx }) {
           <MKTypography
             sx={{
               mt: 0.25,
-              fontSize: { xs: "0.72rem", sm: "0.76rem", md: "0.8rem" },
+              fontSize: { xs: "0.7rem", sm: "0.74rem", md: "0.8rem" },
               fontWeight: 500,
               color: "rgba(31, 42, 68, 0.62)",
               lineHeight: 1.25,
-              minHeight: { sm: "1.25em" },
+              minHeight: { md: "1.25em" },
             }}
           >
             {card.periodDetail}
@@ -289,9 +305,9 @@ function SponsorCard({ card, idx, payButtonSx }) {
 
           <MKTypography
             sx={{
-              mt: { xs: 0.45, sm: 1 },
-              mb: { xs: 0, sm: 1.25 },
-              fontSize: { xs: "0.92rem", sm: "0.95rem", md: "1.08rem" },
+              mt: { xs: 0.4, md: 1 },
+              mb: { xs: 0, md: 1.25 },
+              fontSize: { xs: "0.9rem", sm: "0.95rem", md: "1.08rem" },
               fontWeight: 800,
               color: BRAND_GREEN,
               lineHeight: 1.2,
@@ -310,17 +326,18 @@ function SponsorCard({ card, idx, payButtonSx }) {
           disableElevation
           sx={{
             ...payButtonSx,
-            mt: { xs: 0, sm: "auto" },
-            width: { xs: "auto", sm: "100%" },
+            mt: { xs: 0, md: "auto" },
+            width: { xs: "auto", md: "100%" },
             flexShrink: 0,
-            alignSelf: { xs: "center", sm: "stretch" },
+            alignSelf: { xs: "center", md: "stretch" },
+            minWidth: { xs: 96, md: 0 },
           }}
         >
           <ButtonHeartHandsIcon />
-          <MKBox component="span" sx={{ display: { xs: "none", sm: "inline" } }}>
+          <MKBox component="span" sx={{ display: { xs: "none", md: "inline" } }}>
             {card.payButton}
           </MKBox>
-          <MKBox component="span" sx={{ display: { xs: "inline", sm: "none" } }}>
+          <MKBox component="span" sx={{ display: { xs: "inline", md: "none" } }}>
             Donate
           </MKBox>
         </MKButton>
@@ -346,15 +363,15 @@ export default function SponsorPrabhujiCtaCards({ sponsor }) {
   const { title, subtitle, cards } = sponsor;
 
   const payButtonSx = {
-    py: { xs: 0.95, sm: 1.05, md: 1.1 },
-    px: { xs: 1.25, sm: 1.4, md: 1.6 },
+    py: { xs: 0.9, sm: 1, md: 1.1 },
+    px: { xs: 1.15, sm: 1.3, md: 1.6 },
     width: "100%",
-    minHeight: { xs: 42, sm: 48 },
+    minHeight: { xs: 40, sm: 44, md: 48 },
     borderRadius: "12px",
     background: "linear-gradient(90deg, #67b35b 0%, #52a548 55%, #67b35b 100%)",
     color: "#ffffff !important",
     fontWeight: 800,
-    fontSize: { xs: "0.78rem", sm: "0.82rem", md: "0.9rem" },
+    fontSize: { xs: "0.76rem", sm: "0.8rem", md: "0.9rem" },
     lineHeight: 1.2,
     textTransform: "none",
     textDecoration: "none",
@@ -380,16 +397,19 @@ export default function SponsorPrabhujiCtaCards({ sponsor }) {
     <MKBox
       sx={{
         width: "100%",
+        maxWidth: "100%",
         position: "relative",
+        overflow: "hidden",
       }}
     >
       <MKBox
         sx={{
           position: "absolute",
-          top: { xs: 34, md: 44 },
-          left: { xs: 4, md: 16 },
+          top: { md: 44 },
+          left: { md: 8, lg: 16 },
           pointerEvents: "none",
           zIndex: 0,
+          display: { xs: "none", md: "block" },
         }}
       >
         <DecorativeLeaf side="left" />
@@ -397,26 +417,28 @@ export default function SponsorPrabhujiCtaCards({ sponsor }) {
       <MKBox
         sx={{
           position: "absolute",
-          top: { xs: 34, md: 44 },
-          right: { xs: 4, md: 16 },
+          top: { md: 44 },
+          right: { md: 8, lg: 16 },
           pointerEvents: "none",
           zIndex: 0,
+          display: { xs: "none", md: "block" },
         }}
       >
         <DecorativeLeaf side="right" />
       </MKBox>
 
-      <MKBox sx={{ position: "relative", zIndex: 1 }}>
+      <MKBox sx={{ position: "relative", zIndex: 1, width: "100%" }}>
         <MKTypography
           sx={{
             fontFamily:
               '"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
-            fontSize: { xs: "1.3rem", sm: "1.52rem", md: "1.72rem" },
+            fontSize: { xs: "1.22rem", sm: "1.45rem", md: "1.72rem" },
             fontWeight: 500,
             color: "#1f2a44",
             textAlign: "center",
-            lineHeight: 1.15,
-            mb: 1.2,
+            lineHeight: 1.2,
+            mb: { xs: 1, sm: 1.2 },
+            px: { xs: 0.5, sm: 1 },
           }}
         >
           {title}
@@ -426,14 +448,14 @@ export default function SponsorPrabhujiCtaCards({ sponsor }) {
           <MKTypography
             sx={{
               textAlign: "center",
-              mb: 1.1,
-              fontSize: { xs: "0.92rem", sm: "1rem", md: "1.02rem" },
+              mb: { xs: 0.85, sm: 1.1 },
+              fontSize: { xs: "0.86rem", sm: "0.96rem", md: "1.02rem" },
               fontWeight: 400,
               color: "rgba(31, 42, 68, 0.62)",
               lineHeight: 1.55,
               maxWidth: { xs: "100%", sm: 580, md: 640 },
               mx: "auto",
-              px: 2,
+              px: { xs: 1, sm: 2 },
             }}
           >
             {subtitle}
@@ -445,11 +467,11 @@ export default function SponsorPrabhujiCtaCards({ sponsor }) {
         <MKBox
           sx={{
             display: "flex",
-            flexDirection: { xs: "column", sm: "row" },
-            flexWrap: { xs: "nowrap", sm: "nowrap" },
+            flexDirection: { xs: "column", md: "row" },
+            flexWrap: "nowrap",
             justifyContent: "center",
             alignItems: "stretch",
-            gap: { xs: 1.25, sm: 2, lg: 2.5 },
+            gap: { xs: 1.15, sm: 1.35, md: 2, lg: 2.5 },
             width: "100%",
           }}
         >

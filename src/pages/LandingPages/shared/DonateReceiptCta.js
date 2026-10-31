@@ -295,8 +295,9 @@ export default function DonateReceiptCta({ variant = "cta", sx = {} }) {
         background: "linear-gradient(165deg, #f3f9f4 0%, #eef6ef 45%, #e8f2ea 100%)",
         border: "1px solid rgba(79, 169, 83, 0.22)",
         boxShadow: "0 10px 28px rgba(31, 42, 68, 0.05)",
-        p: { xs: 2, sm: 2.25, md: 2.5 },
+        p: { xs: 1.5, sm: 2.25, md: 2.5 },
         overflow: "hidden",
+        maxWidth: "100%",
         "&::before": {
           content: '""',
           position: "absolute",
@@ -314,24 +315,26 @@ export default function DonateReceiptCta({ variant = "cta", sx = {} }) {
         sx={{
           display: "flex",
           flexDirection: { xs: "column", sm: "row" },
-          alignItems: { xs: "flex-start", sm: "center" },
+          alignItems: { xs: "stretch", sm: "center" },
           justifyContent: "space-between",
-          gap: { xs: 1.5, sm: 2 },
+          gap: { xs: 1.35, sm: 2 },
+          width: "100%",
         }}
       >
         <MKBox
           sx={{
             display: "flex",
-            alignItems: "center",
-            gap: { xs: 1.25, sm: 1.5 },
+            alignItems: "flex-start",
+            gap: { xs: 1.1, sm: 1.5 },
             minWidth: 0,
+            width: "100%",
           }}
         >
           <MKBox
             sx={{
-              width: { xs: 44, sm: 48 },
-              height: { xs: 44, sm: 48 },
-              borderRadius: "14px",
+              width: { xs: 40, sm: 48 },
+              height: { xs: 40, sm: 48 },
+              borderRadius: { xs: "12px", sm: "14px" },
               backgroundColor: "rgba(79, 169, 83, 0.12)",
               display: "flex",
               alignItems: "center",
@@ -339,17 +342,17 @@ export default function DonateReceiptCta({ variant = "cta", sx = {} }) {
               flexShrink: 0,
             }}
           >
-            <ReceiptLongOutlinedIcon sx={{ color: "#2e7d32", fontSize: { xs: 24, sm: 26 } }} />
+            <ReceiptLongOutlinedIcon sx={{ color: "#2e7d32", fontSize: { xs: 22, sm: 26 } }} />
           </MKBox>
 
-          <MKBox sx={{ minWidth: 0 }}>
+          <MKBox sx={{ minWidth: 0, flex: 1 }}>
             <MKTypography
               sx={{
                 fontFamily:
                   '"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
                 fontWeight: 500,
                 color: "#1f2a44",
-                fontSize: { xs: "1.2rem", sm: "1.35rem", md: "1.45rem" },
+                fontSize: { xs: "1.08rem", sm: "1.35rem", md: "1.45rem" },
                 lineHeight: 1.3,
               }}
             >
@@ -358,7 +361,7 @@ export default function DonateReceiptCta({ variant = "cta", sx = {} }) {
             <MKTypography
               sx={{
                 color: "rgba(31, 42, 68, 0.62)",
-                fontSize: { xs: "0.84rem", sm: "0.9rem" },
+                fontSize: { xs: "0.8rem", sm: "0.9rem" },
                 lineHeight: 1.5,
                 mt: 0.35,
                 maxWidth: 480,
@@ -379,12 +382,12 @@ export default function DonateReceiptCta({ variant = "cta", sx = {} }) {
             fontWeight: 700,
             textTransform: "none",
             borderRadius: "12px",
-            px: { xs: 2.5, sm: 3 },
-            py: { xs: 1.05, sm: 1.15 },
-            fontSize: { xs: "0.88rem", sm: "0.94rem" },
+            px: { xs: 2, sm: 3 },
+            py: { xs: 1, sm: 1.15 },
+            fontSize: { xs: "0.84rem", sm: "0.94rem" },
             width: { xs: "100%", sm: "auto" },
             minWidth: { sm: 180 },
-            maxWidth: { xs: 300, sm: "none" },
+            alignSelf: { xs: "stretch", sm: "center" },
             color: "#1f2a44",
             border: "1px solid rgba(79, 169, 83, 0.28)",
             backgroundColor: "rgba(255, 255, 255, 0.85)",

@@ -44,21 +44,23 @@ function DonateJoinOfflineSection({
   return (
     <MKBox
       component="section"
-      pt={{ xs: 2.5, sm: 3, md: 3.5 }}
-      pb={{ xs: 2, sm: 2.5 }}
-      mt={{ xs: 3, sm: 4, md: 5 }}
-      mb={{ xs: 2, sm: 2.5 }}
+      pt={{ xs: 2, sm: 2.75, md: 3.5 }}
+      pb={{ xs: 1.75, sm: 2.25 }}
+      mt={{ xs: 2.5, sm: 3.5, md: 5 }}
+      mb={{ xs: 1.5, sm: 2.25 }}
       mx={0}
-      px={{ xs: 1.5, sm: 2, md: 3, lg: 4 }}
+      px={{ xs: 0.75, sm: 1.5, md: 2.5, lg: 3.5 }}
       sx={{
         backgroundColor: "rgba(250, 248, 242, 0.65)",
-        borderRadius: "20px",
+        borderRadius: { xs: "16px", md: "20px" },
+        maxWidth: "100%",
+        overflow: "hidden",
       }}
     >
       <Grid
         container
-        pt={{ xs: 0.5, sm: 1 }}
-        px={{ xs: 1, sm: 2 }}
+        pt={{ xs: 0.25, sm: 0.75 }}
+        px={{ xs: 0.5, sm: 1.5 }}
         spacing={1}
         alignItems="center"
         justifyContent="center"
@@ -68,13 +70,22 @@ function DonateJoinOfflineSection({
             variant="h4"
             fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
             sx={{
-              fontSize: { xs: "1.45rem", sm: "1.75rem", md: "1.95rem" },
+              fontSize: { xs: "1.28rem", sm: "1.6rem", md: "1.95rem" },
               fontWeight: 500,
               color: "#1f2a44",
-              py: { xs: 0.75, sm: 1 },
+              py: { xs: 0.5, sm: 0.85 },
+              lineHeight: 1.25,
+              px: { xs: 0.25, sm: 0 },
             }}
           >
-            <MKBox component="span" sx={{ color: "#ECA533", mr: 1.25 }}>
+            <MKBox
+              component="span"
+              sx={{
+                color: "#ECA533",
+                mr: { xs: 0.75, sm: 1.25 },
+                display: { xs: "block", sm: "inline" },
+              }}
+            >
               {donatePage.membershipSection.title}
             </MKBox>
             {donatePage.membershipSection.subTitle}
@@ -85,8 +96,8 @@ function DonateJoinOfflineSection({
       <MKBox
         sx={{
           width: "100%",
-          px: { xs: 1, sm: 2, md: 2 },
-          pt: { xs: 2.5, sm: 3 },
+          px: { xs: 0.5, sm: 1.25, md: 2 },
+          pt: { xs: 2, sm: 2.75 },
           pb: { xs: 0.5, sm: 1 },
         }}
       >
@@ -95,8 +106,8 @@ function DonateJoinOfflineSection({
 
       <MKBox
         sx={{
-          px: { xs: 1, sm: 2 },
-          pt: { xs: 1.5, sm: 2 },
+          px: { xs: 0.75, sm: 1.5 },
+          pt: { xs: 1.25, sm: 2 },
           pb: { xs: 1, sm: 1.5 },
           textAlign: "center",
         }}
@@ -121,11 +132,11 @@ function DonateJoinOfflineSection({
       <MKBox
         sx={{
           position: "relative",
-          mx: { xs: 1, sm: 2 },
-          mt: { xs: 2, sm: 2.5 },
-          mb: { xs: 2, sm: 2.5 },
-          px: { xs: 1.75, sm: 2.5, md: 3 },
-          py: { xs: 2.5, sm: 3, md: 3.5 },
+          mx: { xs: 0.25, sm: 1.25, md: 2 },
+          mt: { xs: 1.75, sm: 2.25 },
+          mb: { xs: 1.75, sm: 2.25 },
+          px: { xs: 1.35, sm: 2.25, md: 3 },
+          py: { xs: 2.15, sm: 2.75, md: 3.5 },
           borderRadius: { xs: "16px", md: "18px" },
           overflow: "hidden",
           background: "linear-gradient(165deg, #fff9ef 0%, #faf6ee 42%, #f5f1e8 100%)",
@@ -166,23 +177,25 @@ function DonateJoinOfflineSection({
             sx={{
               fontFamily:
                 '"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif',
-              fontSize: { xs: "1.55rem", sm: "1.85rem", md: "2.05rem" },
+              fontSize: { xs: "1.35rem", sm: "1.7rem", md: "2.05rem" },
               fontWeight: 500,
               color: "#1f2a44",
               lineHeight: 1.25,
+              px: { xs: 0.5, sm: 0 },
             }}
           >
             {direct.title}
           </MKTypography>
           <MKTypography
             sx={{
-              mt: { xs: 0.85, sm: 1 },
-              maxWidth: { xs: 360, sm: 480, md: 520 },
+              mt: { xs: 0.75, sm: 1 },
+              maxWidth: { xs: "100%", sm: 480, md: 520 },
               mx: "auto",
-              fontSize: { xs: "0.9rem", sm: "0.98rem" },
+              fontSize: { xs: "0.86rem", sm: "0.95rem", md: "0.98rem" },
               color: "rgba(31, 42, 68, 0.62)",
               lineHeight: 1.55,
               letterSpacing: "0.01em",
+              px: { xs: 0.25, sm: 0 },
             }}
           >
             {direct.subtitle}
@@ -191,12 +204,13 @@ function DonateJoinOfflineSection({
 
         <Grid
           container
-          spacing={{ xs: 2.5, sm: 3, md: 4 }}
+          spacing={{ xs: 2, sm: 2.75, md: 4 }}
           alignItems="center"
           justifyContent="center"
           sx={{
             mx: "auto",
             maxWidth: 920,
+            width: "100%",
             animation: "upiSoftIn 0.85s ease 0.12s both",
           }}
         >
@@ -219,7 +233,7 @@ function DonateJoinOfflineSection({
                 fetchPriority="low"
                 sx={{
                   display: "block",
-                  width: { xs: "min(72vw, 240px)", sm: "250px", md: "260px" },
+                  width: { xs: "min(58vw, 200px)", sm: "min(42vw, 240px)", md: "260px" },
                   height: "auto",
                   objectFit: "contain",
                   borderRadius: "14px",
@@ -508,8 +522,8 @@ function DonateJoinOfflineSection({
         id="bank"
         sx={{
           position: "relative",
-          mx: { xs: 1, sm: 2 },
-          mb: { xs: 1.5, sm: 2 },
+          mx: { xs: 0.25, sm: 1.25, md: 2 },
+          mb: { xs: 1.25, sm: 2 },
           borderRadius: { xs: "16px", md: "18px" },
           border: "1px solid rgba(31, 42, 68, 0.07)",
           backgroundColor: "#ffffff",
@@ -540,8 +554,8 @@ function DonateJoinOfflineSection({
             alignItems: "center",
             justifyContent: "space-between",
             gap: 1.5,
-            px: { xs: 1.75, sm: 2.25 },
-            py: { xs: 1.5, sm: 1.65 },
+            px: { xs: 1.35, sm: 2.25 },
+            py: { xs: 1.35, sm: 1.65 },
             border: "none",
             background: "none",
             cursor: "pointer",
@@ -552,11 +566,11 @@ function DonateJoinOfflineSection({
             },
           }}
         >
-          <MKBox>
+          <MKBox sx={{ minWidth: 0, flex: 1 }}>
             <MKTypography
               sx={{
                 fontWeight: 700,
-                fontSize: { xs: "0.95rem", sm: "1.05rem" },
+                fontSize: { xs: "0.9rem", sm: "1.05rem" },
                 lineHeight: 1.3,
               }}
             >
@@ -566,8 +580,9 @@ function DonateJoinOfflineSection({
               <MKTypography
                 sx={{
                   mt: 0.35,
-                  fontSize: { xs: "0.78rem", sm: "0.84rem" },
+                  fontSize: { xs: "0.74rem", sm: "0.84rem" },
                   color: "rgba(31, 42, 68, 0.55)",
+                  pr: 0.5,
                 }}
               >
                 {donatePage.bankAccountDetails.subtitle}
@@ -577,7 +592,7 @@ function DonateJoinOfflineSection({
           <ExpandMoreIcon
             sx={{
               color: "rgba(31, 42, 68, 0.55)",
-              fontSize: { xs: 32, sm: 36 },
+              fontSize: { xs: 28, sm: 36 },
               transform: bankOpen ? "rotate(180deg)" : "none",
               transition: "transform 0.2s ease",
               flexShrink: 0,
@@ -586,8 +601,8 @@ function DonateJoinOfflineSection({
         </MKBox>
 
         {bankOpen ? (
-          <MKBox sx={{ px: { xs: 1.5, sm: 2 }, pb: { xs: 1.75, sm: 2 } }}>
-            <Grid container spacing={{ xs: 1.5, md: 2 }} alignItems="stretch">
+          <MKBox sx={{ px: { xs: 1.15, sm: 2 }, pb: { xs: 1.5, sm: 2 } }}>
+            <Grid container spacing={{ xs: 1.15, sm: 1.5, md: 2 }} alignItems="stretch">
               {[
                 {
                   Icon: PersonOutlineIcon,
@@ -618,18 +633,19 @@ function DonateJoinOfflineSection({
                       height: "100%",
                       display: "flex",
                       alignItems: "center",
-                      gap: 1.25,
-                      px: 1.5,
-                      py: 1.25,
+                      gap: { xs: 1, sm: 1.25 },
+                      px: { xs: 1.15, sm: 1.5 },
+                      py: { xs: 1.1, sm: 1.25 },
                       borderRadius: "12px",
                       backgroundColor: "rgba(250, 248, 242, 0.9)",
                       border: "1px solid rgba(31, 42, 68, 0.06)",
+                      minWidth: 0,
                     }}
                   >
                     <MKBox
                       sx={{
-                        width: 40,
-                        height: 40,
+                        width: { xs: 36, sm: 40 },
+                        height: { xs: 36, sm: 40 },
                         borderRadius: "999px",
                         display: "flex",
                         alignItems: "center",
@@ -639,12 +655,12 @@ function DonateJoinOfflineSection({
                         flex: "0 0 auto",
                       }}
                     >
-                      <Icon sx={{ fontSize: 22 }} />
+                      <Icon sx={{ fontSize: { xs: 20, sm: 22 } }} />
                     </MKBox>
                     <MKBox sx={{ minWidth: 0, flex: 1 }}>
                       <MKTypography
                         sx={{
-                          fontSize: "0.75rem",
+                          fontSize: { xs: "0.7rem", sm: "0.75rem" },
                           fontWeight: 700,
                           color: "rgba(31, 42, 68, 0.55)",
                           mb: 0.35,
@@ -654,7 +670,7 @@ function DonateJoinOfflineSection({
                       </MKTypography>
                       <MKTypography
                         sx={{
-                          fontSize: "0.84rem",
+                          fontSize: { xs: "0.78rem", sm: "0.84rem" },
                           fontWeight: 600,
                           color: "#1f2a44",
                           whiteSpace: nowrap ? "nowrap" : "normal",
@@ -702,20 +718,21 @@ function DonateJoinOfflineSection({
         ) : null}
       </MKBox>
 
-      <Grid container px={{ xs: 1, sm: 2, md: 2 }} spacing={{ xs: 2, lg: 3 }}>
+      <Grid container px={{ xs: 0.5, sm: 1.5, md: 2 }} spacing={{ xs: 1.5, lg: 3 }}>
         <Grid item xs={12}>
           <MKBox
             sx={{
-              mx: { xs: 0, sm: 0 },
-              mt: { xs: 2, sm: 2.5 },
+              mx: 0,
+              mt: { xs: 1.75, sm: 2.5 },
               mb: { xs: 0.5, sm: 1 },
-              px: { xs: 0, sm: 0 },
+              px: 0,
+              maxWidth: "100%",
             }}
           >
             <DonateReceiptCta
               variant="cta"
               sx={{
-                mx: { xs: 1, sm: 2 },
+                mx: { xs: 0.25, sm: 1.25, md: 2 },
               }}
             />
           </MKBox>
@@ -725,7 +742,7 @@ function DonateJoinOfflineSection({
           <MKBox
             width="100%"
             maxWidth={{ xs: "100%", sm: "64rem", md: "72rem", lg: "80rem" }}
-            px={{ xs: 1.25, sm: 2, md: 3 }}
+            px={{ xs: 0.75, sm: 2, md: 3 }}
             pt={{ xs: 0.75, sm: 1 }}
             pb={0}
             mx="auto"
@@ -742,7 +759,7 @@ function DonateJoinOfflineSection({
               alignItems="center"
               justifyContent="center"
               flexWrap="wrap"
-              gap={{ xs: 1.25, sm: 1.75 }}
+              gap={{ xs: 1, sm: 1.75 }}
               mx="auto"
               mb={0.85}
             >

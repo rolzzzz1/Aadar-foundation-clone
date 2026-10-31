@@ -30,8 +30,9 @@ function DonateImpactProof({ donatePage, impactBanner, scrollToDonateWidget }) {
             backgroundColor: "#ffffff",
             border: "1px solid rgba(31, 42, 68, 0.07)",
             boxShadow: "0 10px 28px rgba(31, 42, 68, 0.06)",
-            px: { xs: 1.75, sm: 2.5, md: 3 },
-            py: { xs: 1.65, sm: 1.85, md: 2 },
+            px: { xs: 1.25, sm: 2.25, md: 3 },
+            py: { xs: 1.5, sm: 1.85, md: 2 },
+            maxWidth: "100%",
             "&::before": {
               content: '""',
               position: "absolute",
@@ -44,7 +45,7 @@ function DonateImpactProof({ donatePage, impactBanner, scrollToDonateWidget }) {
             },
           }}
         >
-          <Grid container spacing={{ xs: 1.75, md: 2.5 }} alignItems="stretch">
+          <Grid container spacing={{ xs: 1.5, sm: 1.75, md: 2.5 }} alignItems="stretch">
             <Grid item xs={12} md={5} lg={5}>
               <MKBox
                 sx={{
@@ -54,8 +55,9 @@ function DonateImpactProof({ donatePage, impactBanner, scrollToDonateWidget }) {
                   alignItems: "flex-start",
                   justifyContent: "flex-start",
                   textAlign: "left",
-                  gap: { xs: 1.6, sm: 1.75, md: 1.85 },
-                  px: { xs: 0.5, sm: 0.75, md: 0.75, lg: 1.25 },
+                  gap: { xs: 1.4, sm: 1.65, md: 1.85 },
+                  px: { xs: 0.25, sm: 0.75, md: 0.75, lg: 1.25 },
+                  minWidth: 0,
                 }}
               >
                 <MKBox
@@ -67,32 +69,41 @@ function DonateImpactProof({ donatePage, impactBanner, scrollToDonateWidget }) {
                     textAlign: "center",
                     gap: 0.85,
                     maxWidth: "100%",
+                    width: "100%",
                   }}
                 >
                   <MKBox
                     sx={{
                       display: "grid",
-                      gridTemplateColumns: "auto minmax(0, auto) auto",
+                      gridTemplateColumns: {
+                        xs: "minmax(0, 1fr)",
+                        sm: "auto minmax(0, auto) auto",
+                      },
                       alignItems: "center",
                       justifyContent: "center",
-                      gap: { xs: 0.8, sm: 1.1 },
+                      gap: { xs: 0.5, sm: 1.1 },
                       maxWidth: "100%",
+                      width: "100%",
                     }}
                   >
-                    <ImpactLeaf />
+                    <MKBox sx={{ display: { xs: "none", sm: "block" } }}>
+                      <ImpactLeaf />
+                    </MKBox>
                     <MKTypography
                       fontFamily='"Pacifico", "Pacifico-fallback", "Flix", "Lato", "Lato-fallback", "Helvetica", "Arial", sans-serif'
                       sx={{
                         fontWeight: 400,
                         fontSize: {
-                          xs: "1.22rem",
-                          sm: "1.38rem",
+                          xs: "1.12rem",
+                          sm: "1.32rem",
                           md: "1.32rem",
                           lg: "1.48rem",
                         },
                         lineHeight: 1.28,
                         letterSpacing: "0.01em",
                         color: "#1f2a44",
+                        textAlign: "center",
+                        px: { xs: 0.5, sm: 0 },
                       }}
                     >
                       {(() => {
@@ -110,7 +121,9 @@ function DonateImpactProof({ donatePage, impactBanner, scrollToDonateWidget }) {
                         );
                       })()}
                     </MKTypography>
-                    <ImpactLeaf mirrored />
+                    <MKBox sx={{ display: { xs: "none", sm: "block" } }}>
+                      <ImpactLeaf mirrored />
+                    </MKBox>
                   </MKBox>
                   <MKBox
                     sx={{
@@ -122,7 +135,7 @@ function DonateImpactProof({ donatePage, impactBanner, scrollToDonateWidget }) {
                   >
                     <MKBox
                       sx={{
-                        width: { xs: 44, sm: 58 },
+                        width: { xs: 36, sm: 58 },
                         height: 2,
                         borderRadius: 999,
                         background:
@@ -163,7 +176,7 @@ function DonateImpactProof({ donatePage, impactBanner, scrollToDonateWidget }) {
                     </MKBox>
                     <MKBox
                       sx={{
-                        width: { xs: 44, sm: 58 },
+                        width: { xs: 36, sm: 58 },
                         height: 2,
                         borderRadius: 999,
                         background:
@@ -179,14 +192,15 @@ function DonateImpactProof({ donatePage, impactBanner, scrollToDonateWidget }) {
                     display: "flex",
                     flexDirection: { xs: "column", sm: "row" },
                     alignItems: { xs: "flex-start", sm: "center" },
-                    gap: { xs: 1.35, sm: 1.75 },
-                    px: { xs: 1.5, sm: 1.75 },
-                    py: { xs: 1.35, sm: 1.5 },
-                    borderRadius: "16px",
+                    gap: { xs: 1.15, sm: 1.75 },
+                    px: { xs: 1.25, sm: 1.75 },
+                    py: { xs: 1.2, sm: 1.5 },
+                    borderRadius: { xs: "14px", sm: "16px" },
                     border: "1px solid rgba(31, 42, 68, 0.08)",
                     backgroundColor: "rgba(250, 248, 242, 0.9)",
                     textAlign: "left",
                     color: "#1f2a44",
+                    minWidth: 0,
                   }}
                 >
                   <MKBox display="flex" alignItems="center" gap={0.9} flexShrink={0}>
@@ -305,7 +319,7 @@ function DonateImpactProof({ donatePage, impactBanner, scrollToDonateWidget }) {
                   src={donateImg}
                   alt={impactBanner.title}
                   width="100%"
-                  height={{ xs: "168px", sm: "192px", md: "210px", lg: "224px" }}
+                  height={{ xs: "150px", sm: "180px", md: "210px", lg: "224px" }}
                   loading="lazy"
                   decoding="async"
                   fetchPriority="low"
@@ -313,8 +327,8 @@ function DonateImpactProof({ donatePage, impactBanner, scrollToDonateWidget }) {
                     display: "block",
                     objectFit: "cover",
                     objectPosition: "center",
-                    borderRadius: "10px",
-                    border: "3px solid #ffffff",
+                    borderRadius: { xs: "8px", sm: "10px" },
+                    border: { xs: "2px solid #ffffff", sm: "3px solid #ffffff" },
                     backgroundColor: "#fff",
                   }}
                 />
