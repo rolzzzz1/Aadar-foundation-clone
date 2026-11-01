@@ -165,27 +165,7 @@ export default function DonationReceiptSheet({ record, logoSrc, maxWidth = 720 }
         },
       }}
     >
-      {logoSrc ? (
-        <Box
-          component="img"
-          src={logoSrc}
-          alt=""
-          aria-hidden
-          sx={{
-            position: "absolute",
-            left: "50%",
-            top: "45%",
-            transform: "translate(-50%, -50%)",
-            width: 88,
-            height: 88,
-            opacity: 0.05,
-            pointerEvents: "none",
-            objectFit: "contain",
-          }}
-        />
-      ) : null}
-
-      <Box sx={{ position: "relative", px: { xs: 1.25, sm: 1.75 }, py: 1.25 }}>
+      <Box sx={{ position: "relative", px: { xs: 1.25, sm: 2 }, py: { xs: 1.25, sm: 1.75 } }}>
         <ReceiptHeader org={org} title={copy.title} logoSrc={logoSrc} />
 
         {vm.testMode ? (
@@ -204,7 +184,11 @@ export default function DonationReceiptSheet({ record, logoSrc, maxWidth = 720 }
           </Typography>
         ) : null}
 
-        <Grid container spacing={0.75} sx={{ mb: 0.75 }}>
+        <Grid
+          container
+          spacing={0.75}
+          sx={{ mb: 1, bgcolor: "#f6faf6", borderRadius: "6px", py: 1, px: 0.5 }}
+        >
           <Grid item xs={6} sm={3}>
             <MetaCell label={copy.meta.receiptNo} value={vm.receiptNo} valueGreen />
           </Grid>
@@ -252,14 +236,14 @@ export default function DonationReceiptSheet({ record, logoSrc, maxWidth = 720 }
 
         <Box
           sx={{
-            border: "1px dashed #b8c9b8",
+            border: "1px dashed #a8bca8",
             borderRadius: "6px",
-            p: 0.85,
-            bgcolor: "#fafcfa",
-            mb: 0.75,
-            fontSize: "0.62rem",
+            p: 1.1,
+            bgcolor: "#f6faf6",
+            mb: 1,
+            fontSize: "0.68rem",
             lineHeight: 1.45,
-            color: "#1f2a44",
+            color: "#1a2340",
           }}
         >
           {copy.taxNotice}
@@ -280,7 +264,7 @@ export default function DonationReceiptSheet({ record, logoSrc, maxWidth = 720 }
           <Typography
             component="span"
             display="block"
-            sx={{ fontWeight: 600, color: "rgba(31,42,68,0.72)", mt: 0.35, fontSize: "0.58rem" }}
+            sx={{ fontWeight: 800, color: greenMid, mt: 0.35, fontSize: "inherit" }}
           >
             {copy.fcraNotice}
           </Typography>

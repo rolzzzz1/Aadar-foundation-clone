@@ -366,7 +366,33 @@ async function sendDonationReceiptEmail(row, options = {}) {
   }
 
   const record = donationRowToReceiptRecord(row, options);
-  const { buffer, filename } = await buildReceiptPdfBuffer(record);
+
+  let buffer;
+  let filename;
+  try {
+    // Every emailed receipt uses the official HTML layout (Receipt Demo.pdf).
+    try {
+      ({ buffer, filename } = await Promise.race([
+        buildReceiptPdfBuffer(record, { preferHtml: true }),
+        new Promise((_, reject) => {
+          setTimeout(() => reject(new Error("html_pdf_timeout")), 45000);
+        }),
+      ]));
+    } catch (htmlErr) {
+      // eslint-disable-next-line no-console
+      console.warn("[receipt-email] HTML PDF failed, using official vector layout:", htmlErr.message);
+      ({ buffer, filename } = await buildReceiptPdfBuffer(record, { forceVector: true }));
+    }
+  } catch (pdfErr) {
+    throw new Error(
+      `PDF attachment build failed: ${pdfErr && pdfErr.message ? pdfErr.message : String(pdfErr)}`
+    );
+  }
+
+  if (!buffer || buffer.length < 200) {
+    throw new Error("PDF attachment build failed: empty PDF buffer");
+  }
+
   const siteUrl = getSiteUrl();
   const logoBuffer = readLogoBuffer();
   const logoCid = logoBuffer ? LOGO_CID : null;
@@ -381,7 +407,7 @@ async function sendDonationReceiptEmail(row, options = {}) {
 
   const attachments = [
     {
-      filename,
+      filename: String(filename || "aadar-donation-receipt.pdf").replace(/[^\w.\-]+/g, "_"),
       content: buffer.toString("base64"),
       content_type: "application/pdf",
     },
@@ -395,6 +421,12 @@ async function sendDonationReceiptEmail(row, options = {}) {
       content_id: logoCid,
     });
   }
+
+  // Resend tags must be ASCII-safe; bank UTR payment ids often have spaces/symbols.
+  const safeTag = (value) =>
+    String(value || "unknown")
+      .replace(/[^a-zA-Z0-9_-]/g, "_")
+      .slice(0, 50) || "unknown";
 
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -411,14 +443,14 @@ async function sendDonationReceiptEmail(row, options = {}) {
       attachments,
       tags: [
         { name: "type", value: "donation_receipt" },
-        { name: "payment_id", value: String(record.paymentId || "unknown").slice(0, 50) },
+        { name: "payment_id", value: safeTag(record.paymentId) },
       ],
     }),
   });
 
   if (!res.ok) {
     const text = await res.text().catch(() => "");
-    throw new Error(`Resend API failed (${res.status}): ${text.slice(0, 200)}`);
+    throw new Error(`Resend API failed (${res.status}): ${text.slice(0, 300)}`);
   }
 
   const data = await res.json().catch(() => ({}));

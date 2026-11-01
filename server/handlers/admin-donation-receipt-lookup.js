@@ -248,9 +248,12 @@ module.exports = async function handler(req, res) {
           missing_row: "Receipt not found.",
           send_failed: "Could not send the receipt email. Please try again.",
         };
+        const base = messages[reason] || "Could not send the receipt email.";
+        const detail = emailResult.detail ? String(emailResult.detail).slice(0, 240) : "";
         return res.status(502).json({
-          error: messages[reason] || "Could not send the receipt email.",
+          error: detail ? `${base} ${detail}` : base,
           reason,
+          detail: detail || undefined,
         });
       }
 

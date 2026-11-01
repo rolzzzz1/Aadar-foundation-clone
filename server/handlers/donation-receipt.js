@@ -77,7 +77,7 @@ module.exports = async function handler(req, res) {
   const base = process.env.SUPABASE_URL.replace(/\/$/, "");
   const url = `${base}/rest/v1/donations?payment_id=eq.${encodeURIComponent(
     paymentId
-  )}&select=payment_id,order_id,receipt_no,amount_paise,currency,status,donor_name,donor_father_or_husband,donor_email,donor_contact,donor_pan,donor_address,donor_state,donor_city,donor_pin,program_label,purpose,created_at`;
+  )}&select=payment_id,order_id,receipt_no,amount_paise,currency,status,donor_name,donor_father_or_husband,donor_email,donor_contact,donor_pan,donor_address,donor_state,donor_city,donor_pin,program_label,purpose,payment_method,created_at`;
 
   try {
     const r = await fetch(url, {
