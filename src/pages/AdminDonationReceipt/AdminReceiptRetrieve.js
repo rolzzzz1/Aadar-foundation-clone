@@ -140,17 +140,23 @@ export default function AdminReceiptRetrieve({ onBack, onLogout, adminSecret, ad
   const [error, setError] = useState("");
   const [downloadMsg, setDownloadMsg] = useState("");
   const [emailMsg, setEmailMsg] = useState("");
+  const [emailTarget, setEmailTarget] = useState("");
+  const [sendToEmail, setSendToEmail] = useState("");
   const [record, setRecord] = useState(null);
   const donationsHeadingRef = useRef(null);
 
   const donorEmail = String(record?.donor?.email || "").trim();
   const canEmailDonor = Boolean(donorEmail && record?.verified && record?.paymentId);
+  const sendToCheck = validateEmail(sendToEmail);
+  const canSendToAddress = Boolean(record?.verified && record?.paymentId && sendToCheck.ok);
 
   const resetResult = () => {
     setRecord(null);
     setError("");
     setDownloadMsg("");
     setEmailMsg("");
+    setEmailTarget("");
+    setSendToEmail("");
     setDonationsList(null);
   };
 
@@ -170,6 +176,7 @@ export default function AdminReceiptRetrieve({ onBack, onLogout, adminSecret, ad
     setError("");
     setDownloadMsg("");
     setEmailMsg(t("adminPortal.sendingEmail"));
+    setEmailTarget("donor");
     setEmailBusy(true);
     try {
       const result = await postAdminLookup(
@@ -189,6 +196,42 @@ export default function AdminReceiptRetrieve({ onBack, onLogout, adminSecret, ad
       setError((err && err.message) || t("adminPortal.emailSendFailed"));
     } finally {
       setEmailBusy(false);
+      setEmailTarget("");
+    }
+  };
+
+  const handleSendToAddress = async () => {
+    if (!record?.verified || !record?.paymentId || emailBusy) return;
+    if (!sendToCheck.ok) {
+      setEmailMsg("");
+      setError(t("adminPortal.enterSendEmail"));
+      return;
+    }
+    setError("");
+    setDownloadMsg("");
+    setEmailMsg(t("adminPortal.sendingEmail"));
+    setEmailTarget("address");
+    setEmailBusy(true);
+    try {
+      const result = await postAdminLookup(
+        {
+          mode: "resend_email",
+          payment_id: record.paymentId,
+          receipt_no: record.receiptNo || "",
+          to_email: sendToCheck.value,
+          locale: record.locale === "hi" ? "hi" : receiptLocale,
+        },
+        { secret: adminSecret, username: adminUsername }
+      );
+      const sentTo = result?.email || sendToCheck.value;
+      const receiptNo = result?.receipt_no || record.receiptNo || "";
+      setEmailMsg(t("adminPortal.emailSentTo", { receiptNo, email: sentTo }));
+    } catch (err) {
+      setEmailMsg("");
+      setError((err && err.message) || t("adminPortal.emailSendFailed"));
+    } finally {
+      setEmailBusy(false);
+      setEmailTarget("");
     }
   };
 
@@ -345,7 +388,7 @@ export default function AdminReceiptRetrieve({ onBack, onLogout, adminSecret, ad
               variant="outlined"
               color="success"
               startIcon={
-                emailBusy ? (
+                emailBusy && emailTarget === "donor" ? (
                   <CircularProgress size={18} color="inherit" thickness={5} />
                 ) : (
                   <EmailOutlinedIcon />
@@ -362,7 +405,7 @@ export default function AdminReceiptRetrieve({ onBack, onLogout, adminSecret, ad
                 "&.Mui-disabled": { opacity: 0.55 },
               }}
             >
-              {emailBusy
+              {emailBusy && emailTarget === "donor"
                 ? t("adminPortal.sendingEmail")
                 : donorEmail
                 ? t("adminPortal.emailToDonor")
@@ -401,6 +444,51 @@ export default function AdminReceiptRetrieve({ onBack, onLogout, adminSecret, ad
               {t("adminPortal.noDonorEmailHint")}
             </Typography>
           )}
+
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            spacing={1.25}
+            alignItems={{ xs: "stretch", sm: "flex-start" }}
+            sx={{ mt: 1.5 }}
+          >
+            <TextField
+              label={t("adminPortal.sendToEmailLabel")}
+              placeholder={t("adminPortal.sendToEmailPlaceholder")}
+              value={sendToEmail}
+              onChange={(e) => setSendToEmail(e.target.value)}
+              type="email"
+              fullWidth
+              disabled={busy || emailBusy}
+              inputProps={{ autoCapitalize: "none", autoCorrect: "off", spellCheck: false }}
+              sx={fieldSx}
+            />
+            <MKButton
+              variant="contained"
+              color="success"
+              onClick={handleSendToAddress}
+              disabled={!canSendToAddress || busy || emailBusy}
+              startIcon={
+                emailBusy && emailTarget === "address" ? (
+                  <CircularProgress size={18} color="inherit" thickness={5} />
+                ) : (
+                  <EmailOutlinedIcon />
+                )
+              }
+              sx={{
+                fontWeight: 800,
+                textTransform: "none",
+                borderRadius: "10px",
+                minWidth: { sm: 190 },
+                height: 44,
+                flexShrink: 0,
+                mt: { sm: "8px" },
+              }}
+            >
+              {emailBusy && emailTarget === "address"
+                ? t("adminPortal.sendingEmail")
+                : t("adminPortal.sendToThisEmail")}
+            </MKButton>
+          </Stack>
 
           {downloadMsg ? (
             <Typography

@@ -3,6 +3,7 @@ const {
   getJsonBody,
   isProduction,
   originIsAllowed,
+  validateEmail,
 } = require("../_lib/donation");
 const {
   isStoreConfigured,
@@ -231,13 +232,23 @@ module.exports = async function handler(req, res) {
       }
 
       const donorEmail = String(row.donor_email || "").trim();
-      if (!donorEmail) {
+      const rawTo = body.to_email || body.toEmail || "";
+      let toEmail = "";
+      if (String(rawTo).trim()) {
+        const checked = validateEmail(rawTo);
+        if (!checked.ok) {
+          return res.status(400).json({ error: "Enter a valid email address." });
+        }
+        toEmail = checked.value;
+      }
+      if (!toEmail && !donorEmail) {
         return res.status(400).json({ error: "This receipt has no donor email address." });
       }
 
       const emailResult = await trySendReceiptEmail(row, {
         locale,
         forceResend: true,
+        toEmail: toEmail || undefined,
       });
 
       if (!emailResult.sent) {
@@ -260,7 +271,7 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({
         ok: true,
         mode: "resend_email",
-        email: donorEmail,
+        email: emailResult.email || toEmail || donorEmail,
         payment_id: row.payment_id,
         receipt_no: row.receipt_no || null,
         resend_id: emailResult.id || null,

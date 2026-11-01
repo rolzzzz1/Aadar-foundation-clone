@@ -467,4 +467,5 @@ module.exports = {
   getJsonBody,
   applySecurityHeaders,
   formatRazorpayError,
+  validateEmail,
 };

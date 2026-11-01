@@ -192,8 +192,8 @@ async function sendDonationReceiptEmail(row, options = {}) {
     return { sent: false, reason: "not_configured" };
   }
 
-  const email = String((row && row.donor_email) || "").trim();
-  if (!email || email.length < 5) {
+  const email = String(options.toEmail || (row && row.donor_email) || "").trim();
+  if (!email || email.length < 5 || !email.includes("@")) {
     return { sent: false, reason: "no_email" };
   }
   if (!isCapturedStatus(row.status)) {
@@ -280,7 +280,7 @@ async function sendDonationReceiptEmail(row, options = {}) {
   }
 
   const data = await res.json().catch(() => ({}));
-  return { sent: true, id: data.id };
+  return { sent: true, id: data.id, email };
 }
 
 /**
@@ -296,7 +296,8 @@ async function trySendReceiptEmail(row, options = {}) {
   if (!isCapturedStatus(row.status)) {
     return { sent: false, reason: "not_captured" };
   }
-  if (!String(row.donor_email || "").trim()) {
+  const overrideEmail = String(options.toEmail || "").trim();
+  if (!overrideEmail && !String(row.donor_email || "").trim()) {
     return { sent: false, reason: "no_email" };
   }
 
@@ -313,8 +314,17 @@ async function trySendReceiptEmail(row, options = {}) {
           return result;
         }
 
-        const marked = await markReceiptEmailSent(row.payment_id);
-        if (!marked.saved && marked.reason !== "already_sent") {
+        const donorEmail = String(row.donor_email || "")
+          .trim()
+          .toLowerCase();
+        const sentTo = String(result.email || overrideEmail || donorEmail)
+          .trim()
+          .toLowerCase();
+        const sentToDonor = !overrideEmail || sentTo === donorEmail;
+        const marked = sentToDonor
+          ? await markReceiptEmailSent(row.payment_id)
+          : { saved: true, reason: "alternate_recipient" };
+        if (sentToDonor && !marked.saved && marked.reason !== "already_sent") {
           // eslint-disable-next-line no-console
           console.warn("[receipt-email] sent but failed to mark receipt_email_sent_at", {
             payment_id: row.payment_id,
