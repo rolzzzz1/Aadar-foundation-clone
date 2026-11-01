@@ -710,12 +710,14 @@ async function buildReceiptPdfVector(record) {
   const addr = doc.splitTextToSize(pdfSafeText(vm.org.address, loc), textColW);
   doc.text(addr, margin, footerTop + 3);
   let textY = footerTop + 3 + addr.length * 3.2;
-  [`${copy.contact.email}: ${vm.org.email}`, `${copy.contact.phone}: ${vm.org.phone}`, `${copy.contact.pan}: ${vm.org.pan}`].forEach(
-    (line) => {
-      doc.text(pdfSafeText(line, loc), margin, textY);
-      textY += 3.4;
-    }
-  );
+  [
+    `${copy.contact.email}: ${vm.org.email}`,
+    `${copy.contact.phone}: ${vm.org.phone}`,
+    `${copy.contact.pan}: ${vm.org.pan}`,
+  ].forEach((line) => {
+    doc.text(pdfSafeText(line, loc), margin, textY);
+    textY += 3.4;
+  });
 
   const qrData = await getReceiptQrDataUrl();
   if (qrData) {
