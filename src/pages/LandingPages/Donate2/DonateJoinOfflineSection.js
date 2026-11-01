@@ -599,7 +599,7 @@ function DonateJoinOfflineSection({
           <ExpandMoreIcon
             sx={{
               color: "rgba(31, 42, 68, 0.55)",
-              fontSize: { xs: 28, sm: 36 },
+              fontSize: { xs: 40, sm: 48 },
               transform: bankOpen ? "rotate(180deg)" : "none",
               transition: "transform 0.2s ease",
               flexShrink: 0,
