@@ -182,7 +182,8 @@ export default function AdminReceiptRetrieve({ onBack, onLogout, adminSecret, ad
         { secret: adminSecret, username: adminUsername }
       );
       const sentTo = result?.email || donorEmail;
-      setEmailMsg(t("adminPortal.emailSentTo", { email: sentTo }));
+      const receiptNo = result?.receipt_no || record.receiptNo || "";
+      setEmailMsg(t("adminPortal.emailSentTo", { receiptNo, email: sentTo }));
     } catch (err) {
       setEmailMsg("");
       setError((err && err.message) || t("adminPortal.emailSendFailed"));
