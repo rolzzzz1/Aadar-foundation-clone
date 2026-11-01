@@ -1,10 +1,8 @@
 const { buildReceiptPdfBuffer } = require("./receiptPdfServer");
 const { donationRowToReceiptRecord, isCapturedStatus } = require("./receiptRecord");
 const { markReceiptEmailSent } = require("./donationRecord");
-const { readLogoBuffer } = require("./receiptHtmlServer");
 const { buildReceiptViewModel } = require("./receiptFormatServer");
 
-const LOGO_CID = "aadar-logo";
 const EMAIL_SEND_RETRY_DELAY_MS = 2500;
 const EMAIL_SEND_MAX_ATTEMPTS = 2;
 
@@ -38,6 +36,7 @@ const EMAIL_COPY = {
     orderId: "Order ID",
     pan: "PAN",
     receiptNo: "Receipt No.",
+    date: "Date",
     taxNotice:
       "Donations to Aadar Foundation are eligible for deduction under Section 80G of the Income Tax Act, 1961, subject to applicable limits and rules.",
     reg80g: (no) => `80G Registration No.: ${no}`,
@@ -61,6 +60,7 @@ const EMAIL_COPY = {
     orderId: "ऑर्डर आईडी",
     pan: "PAN",
     receiptNo: "रसीद संख्या",
+    date: "दिनांक",
     taxNotice:
       "आदर फाउंडेशन को किए गए दान आयकर अधिनियम, 1961 की धारा 80G के अंतर्गत, लागू सीमा और नियमों के अधीन कर कटौती के लिए पात्र हैं।",
     reg80g: (no) => `80G पंजीकरण संख्या: ${no}`,
@@ -115,24 +115,40 @@ function escapeHtml(text) {
     .replace(/"/g, "&quot;");
 }
 
-function logoImgHtml(logoCid, siteUrl) {
-  const src = logoCid ? `cid:${logoCid}` : `${siteUrl}/assets/images/logos/logo-aadar.jpg`;
-  return `<img src="${src}" alt="${escapeHtml(ORG.name)}" width="88" height="88" border="0" style="display:block;width:88px;height:88px;max-width:88px;border-radius:50%;border:3px solid #2e7d32;margin:0 auto;" />`;
-}
+/** Plain-text letter so inboxes still show a body when HTML is hidden. */
+function buildReceiptEmailText(record) {
+  const donor = record.donor || {};
+  const copy = emailCopy(record);
+  const vm = buildReceiptViewModel(record);
+  const amount = formatAmountInr(record.amountInr);
+  const donorName = donor.name || "Donor";
 
-function detailRow(label, value) {
-  if (!value || value === "—") return "";
-  return `
-    <tr>
-      <td width="38%" style="padding:11px 16px;font-family:Segoe UI,Helvetica,Arial,sans-serif;font-size:13px;line-height:1.45;color:#64748b;font-weight:600;border-bottom:1px solid #e8f0e8;vertical-align:top;">${escapeHtml(label)}</td>
-      <td style="padding:11px 16px;font-family:Segoe UI,Helvetica,Arial,sans-serif;font-size:13px;line-height:1.45;color:#1f2a44;font-weight:700;border-bottom:1px solid #e8f0e8;text-align:right;vertical-align:top;word-break:break-word;">${escapeHtml(value)}</td>
-    </tr>`;
+  return [
+    copy.greeting(donorName),
+    "",
+    copy.intro,
+    "",
+    `${copy.amountLabel}: ${amount}`,
+    `${copy.receiptNo}: ${vm.receiptNo}`,
+    `${copy.date}: ${vm.date}`,
+    "",
+    copy.pdfNote,
+    "",
+    copy.taxNotice,
+    copy.reg80g(ORG.reg80G),
+    "",
+    copy.footerThanks,
+    copy.footerTeam,
+    getContactEmail(),
+    ORG.phone,
+    getSiteUrl(),
+  ].join("\n");
 }
 
 /**
- * Table-based HTML email (Gmail / Outlook safe) with inline logo via CID.
+ * Short HTML letter plus the PDF attachment. Kept simple so mail apps show the message, not only the file.
  */
-function buildReceiptEmailHtml(record, { logoCid, siteUrl } = {}) {
+function buildReceiptEmailHtml(record, { siteUrl } = {}) {
   const donor = record.donor || {};
   const copy = emailCopy(record);
   const vm = buildReceiptViewModel(record);
@@ -140,210 +156,29 @@ function buildReceiptEmailHtml(record, { logoCid, siteUrl } = {}) {
   const donorName = donor.name || "Donor";
   const url = siteUrl || getSiteUrl();
   const contactEmail = getContactEmail();
-  const year = new Date().getFullYear();
 
-  const detailRows = [
-    detailRow(copy.paymentId, record.paymentId),
-    detailRow(copy.orderId, record.orderId),
-    detailRow(copy.receiptNo, vm.receiptNo),
-    detailRow(copy.pan, donor.pan),
-  ].join("");
-
-  return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="${record.locale === "hi" ? "hi" : "en"}">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${escapeHtml(copy.receiptLabel)} — ${escapeHtml(ORG.name)}</title>
-</head>
-<body style="margin:0;padding:0;background-color:#eef4ee;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">
-  <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#eef4ee" style="background-color:#eef4ee;">
-    <tr>
-      <td align="center" style="padding:32px 16px;">
-        <table role="presentation" width="600" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff" style="max-width:600px;width:100%;background-color:#ffffff;border:1px solid #d5e8d5;border-radius:12px;">
-
-          <!-- Header -->
-          <tr>
-            <td align="center" bgcolor="#f8fcf8" style="padding:32px 32px 24px;background-color:#f8fcf8;border-bottom:1px solid #eaf3ea;">
-              <table role="presentation" border="0" cellspacing="0" cellpadding="0" width="100%">
-                <tr>
-                  <td align="center" style="padding-bottom:14px;">
-                    ${logoImgHtml(logoCid, url)}
-                  </td>
-                </tr>
-                <tr>
-                  <td align="center" style="font-family:Segoe UI,Helvetica,Arial,sans-serif;font-size:22px;line-height:1.25;font-weight:700;color:#1b5e20;padding-bottom:4px;">
-                    ${escapeHtml(ORG.name)}
-                  </td>
-                </tr>
-                <tr>
-                  <td align="center" style="font-family:Segoe UI,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.35;font-weight:600;color:#1e3a5f;padding-bottom:16px;">
-                    ${escapeHtml(ORG.subtitle)}
-                  </td>
-                </tr>
-                <tr>
-                  <td align="center" style="padding-bottom:14px;">
-                    <table role="presentation" border="0" cellspacing="0" cellpadding="0">
-                      <tr>
-                        <td style="font-family:Segoe UI,Helvetica,Arial,sans-serif;font-size:10px;line-height:1.35;font-weight:700;color:#1b5e20;letter-spacing:0.06em;text-transform:uppercase;border:1.5px solid #2e7d32;border-radius:20px;padding:6px 16px;">
-                          ${escapeHtml(ORG.tagline)}
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
-          <!-- Title bar -->
-          <tr>
-            <td align="center" bgcolor="#1b5e20" style="background-color:#1b5e20;padding:12px 24px;">
-              <span style="font-family:Segoe UI,Helvetica,Arial,sans-serif;font-size:12px;line-height:1.3;font-weight:700;color:#ffffff;letter-spacing:0.14em;text-transform:uppercase;">
-                ${escapeHtml(copy.receiptLabel)}
-              </span>
-            </td>
-          </tr>
-
-          <!-- Body -->
-          <tr>
-            <td style="padding:28px 32px;">
-              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                  <td style="font-family:Segoe UI,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.55;font-weight:600;color:#1f2a44;padding-bottom:10px;">
-                    ${escapeHtml(copy.greeting(donorName))}
-                  </td>
-                </tr>
-                <tr>
-                  <td style="font-family:Segoe UI,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.65;color:#475569;padding-bottom:22px;">
-                    ${escapeHtml(copy.intro)}
-                  </td>
-                </tr>
-
-                <!-- Amount -->
-                <tr>
-                  <td style="padding-bottom:20px;">
-                    <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f0faf0" style="background-color:#f0faf0;border:1px solid #c8e6c9;border-radius:10px;">
-                      <tr>
-                        <td align="center" style="padding:20px 16px;">
-                          <div style="font-family:Segoe UI,Helvetica,Arial,sans-serif;font-size:11px;line-height:1.3;font-weight:700;color:#2e7d32;letter-spacing:0.06em;text-transform:uppercase;padding-bottom:6px;">
-                            ${escapeHtml(copy.amountLabel)}
-                          </div>
-                          <div style="font-family:Segoe UI,Helvetica,Arial,sans-serif;font-size:30px;line-height:1.1;font-weight:700;color:#1b5e20;">
-                            ${escapeHtml(amount)}
-                          </div>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-
-                <!-- PDF notice -->
-                <tr>
-                  <td style="padding-bottom:22px;">
-                    <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#fffbeb" style="background-color:#fffbeb;border:1px solid #fde68a;border-radius:8px;">
-                      <tr>
-                        <td style="padding:14px 16px;font-family:Segoe UI,Helvetica,Arial,sans-serif;font-size:13px;line-height:1.6;color:#78350f;">
-                          <strong style="color:#92400e;">${escapeHtml(copy.pdfTitle)}</strong><br />
-                          ${escapeHtml(copy.pdfNote)}
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-
-                <!-- Details heading -->
-                <tr>
-                  <td style="font-family:Segoe UI,Helvetica,Arial,sans-serif;font-size:11px;line-height:1.3;font-weight:700;color:#1b5e20;letter-spacing:0.08em;text-transform:uppercase;padding-bottom:8px;">
-                    ${escapeHtml(copy.detailsTitle)}
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding-bottom:22px;">
-                    <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="border:1px solid #dcefdc;border-radius:8px;">
-                      ${detailRows}
-                    </table>
-                  </td>
-                </tr>
-
-                <!-- 80G -->
-                <tr>
-                  <td style="padding-bottom:0;">
-                    <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f6faf6" style="background-color:#f6faf6;border:1px dashed #a8c9a8;border-radius:8px;">
-                      <tr>
-                        <td align="center" style="padding:16px 18px;font-family:Segoe UI,Helvetica,Arial,sans-serif;font-size:12px;line-height:1.65;color:#334155;">
-                          ${escapeHtml(copy.taxNotice)}<br />
-                          <strong style="color:#2e7d32;font-size:12px;line-height:1.5;">${escapeHtml(copy.reg80g(ORG.reg80G))}</strong>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
-          <!-- Footer: contact details once -->
-          <tr>
-            <td align="center" bgcolor="#f8fcf8" style="padding:28px 32px 24px;background-color:#f8fcf8;border-top:1px solid #eaf3ea;">
-              <table role="presentation" border="0" cellspacing="0" cellpadding="0" width="100%">
-                <tr>
-                  <td align="center" style="font-family:Segoe UI,Helvetica,Arial,sans-serif;font-size:13px;line-height:1.45;font-weight:700;color:#1b5e20;padding-bottom:4px;">
-                    ${escapeHtml(copy.footerThanks)}
-                  </td>
-                </tr>
-                <tr>
-                  <td align="center" style="font-family:Segoe UI,Helvetica,Arial,sans-serif;font-size:13px;line-height:1.45;font-weight:600;color:#475569;padding-bottom:12px;">
-                    ${escapeHtml(copy.footerTeam)}
-                  </td>
-                </tr>
-                <tr>
-                  <td align="center" style="font-family:Segoe UI,Helvetica,Arial,sans-serif;font-size:12px;line-height:1.55;color:#64748b;padding-bottom:16px;">
-                    ${escapeHtml(copy.footerHelpLine)}
-                  </td>
-                </tr>
-                <tr>
-                  <td align="center" style="padding-bottom:16px;">
-                    <table role="presentation" border="0" cellspacing="0" cellpadding="0">
-                      <tr>
-                        <td style="font-family:Segoe UI,Helvetica,Arial,sans-serif;font-size:12px;line-height:1.5;padding:0 10px;">
-                          <a href="mailto:${escapeHtml(contactEmail)}" style="color:#1b5e20;text-decoration:none;font-weight:600;">${escapeHtml(contactEmail)}</a>
-                        </td>
-                        <td style="color:#cbd5c1;font-size:12px;">|</td>
-                        <td style="font-family:Segoe UI,Helvetica,Arial,sans-serif;font-size:12px;line-height:1.5;padding:0 10px;">
-                          <a href="tel:${escapeHtml(ORG.phone.replace(/\s/g, ""))}" style="color:#1b5e20;text-decoration:none;font-weight:600;">${escapeHtml(ORG.phone)}</a>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-                <tr>
-                  <td align="center" style="font-family:Segoe UI,Helvetica,Arial,sans-serif;font-size:11px;line-height:1.55;color:#64748b;padding-bottom:10px;">
-                    ${escapeHtml(ORG.address)}
-                  </td>
-                </tr>
-                <tr>
-                  <td align="center" style="font-family:Segoe UI,Helvetica,Arial,sans-serif;font-size:11px;line-height:1.5;">
-                    <a href="${escapeHtml(url)}" style="color:#1b5e20;font-weight:600;text-decoration:underline;">${escapeHtml(copy.footerWebsite)}</a>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
-        </table>
-
-        <table role="presentation" width="600" border="0" cellspacing="0" cellpadding="0" style="max-width:600px;width:100%;">
-          <tr>
-            <td align="center" style="padding:16px 8px 0;font-family:Segoe UI,Helvetica,Arial,sans-serif;font-size:10px;line-height:1.4;color:#94a3b8;">
-              &copy; ${year} ${escapeHtml(ORG.name)}. All rights reserved.
-            </td>
-          </tr>
-        </table>
-
-      </td>
-    </tr>
-  </table>
+  return `<!DOCTYPE html>
+<html lang="${record.locale === "hi" ? "hi" : "en"}">
+<body style="margin:0;padding:24px;background:#ffffff;font-family:Segoe UI,Helvetica,Arial,sans-serif;color:#1f2a44;">
+  <p style="margin:0 0 16px;font-size:16px;line-height:1.5;">${escapeHtml(copy.greeting(donorName))}</p>
+  <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#334155;">${escapeHtml(copy.intro)}</p>
+  <p style="margin:0 0 16px;font-size:15px;line-height:1.6;">
+    <strong>${escapeHtml(copy.amountLabel)}:</strong> ${escapeHtml(amount)}<br />
+    <strong>${escapeHtml(copy.receiptNo)}:</strong> ${escapeHtml(vm.receiptNo)}<br />
+    <strong>${escapeHtml(copy.date)}:</strong> ${escapeHtml(vm.date)}
+  </p>
+  <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#334155;">${escapeHtml(copy.pdfNote)}</p>
+  <p style="margin:0 0 16px;font-size:14px;line-height:1.6;color:#334155;">
+    ${escapeHtml(copy.taxNotice)}<br />
+    <strong>${escapeHtml(copy.reg80g(ORG.reg80G))}</strong>
+  </p>
+  <p style="margin:0 0 4px;font-size:15px;line-height:1.5;">${escapeHtml(copy.footerThanks)}</p>
+  <p style="margin:0 0 16px;font-size:15px;line-height:1.5;font-weight:600;color:#1b5e20;">${escapeHtml(copy.footerTeam)}</p>
+  <p style="margin:0;font-size:13px;line-height:1.6;color:#64748b;">
+    <a href="mailto:${escapeHtml(contactEmail)}" style="color:#1b5e20;">${escapeHtml(contactEmail)}</a><br />
+    ${escapeHtml(ORG.phone)}<br />
+    <a href="${escapeHtml(url)}" style="color:#1b5e20;">${escapeHtml(url)}</a>
+  </p>
 </body>
 </html>`;
 }
@@ -394,9 +229,8 @@ async function sendDonationReceiptEmail(row, options = {}) {
   }
 
   const siteUrl = getSiteUrl();
-  const logoBuffer = readLogoBuffer();
-  const logoCid = logoBuffer ? LOGO_CID : null;
-  const html = buildReceiptEmailHtml(record, { logoCid, siteUrl });
+  const html = buildReceiptEmailHtml(record, { siteUrl });
+  const text = buildReceiptEmailText(record);
   const amount = formatAmountInr(record.amountInr);
   const copy = emailCopy(record);
   const replyTo = getReplyToEmail();
@@ -412,15 +246,6 @@ async function sendDonationReceiptEmail(row, options = {}) {
       content_type: "application/pdf",
     },
   ];
-
-  if (logoBuffer && logoCid) {
-    attachments.push({
-      filename: "logo-aadar.jpg",
-      content: logoBuffer.toString("base64"),
-      content_type: "image/jpeg",
-      content_id: logoCid,
-    });
-  }
 
   // Resend tags must be ASCII-safe; bank UTR payment ids often have spaces/symbols.
   const safeTag = (value) =>
@@ -440,6 +265,7 @@ async function sendDonationReceiptEmail(row, options = {}) {
       reply_to: replyTo,
       subject,
       html,
+      text,
       attachments,
       tags: [
         { name: "type", value: "donation_receipt" },
