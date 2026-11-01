@@ -598,10 +598,10 @@ function DonateJoinOfflineSection({
           </MKBox>
           <ExpandMoreIcon
             sx={{
-              color: "rgba(31, 42, 68, 0.72)",
-              width: { xs: "2.75rem", sm: "3.25rem" },
-              height: { xs: "2.75rem", sm: "3.25rem" },
-              fontSize: { xs: "2.75rem !important", sm: "3.25rem !important" },
+              color: "rgba(31, 42, 68, 0.65)",
+              width: { xs: "2rem", sm: "2.35rem" },
+              height: { xs: "2rem", sm: "2.35rem" },
+              fontSize: { xs: "2rem !important", sm: "2.35rem !important" },
               transform: bankOpen ? "rotate(180deg)" : "none",
               transition: "transform 0.2s ease",
               flexShrink: 0,
