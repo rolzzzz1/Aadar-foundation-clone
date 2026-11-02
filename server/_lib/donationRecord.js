@@ -496,6 +496,119 @@ async function upsertDonationRecord(record) {
   }
 }
 
+/**
+ * Replace editable fields on an admin-issued UPI or bank receipt.
+ * Keeps the receipt number and does not fill blanks from the previous row.
+ */
+async function updateManualDonationRecord(paymentId, record) {
+  if (!isStoreConfigured() || !paymentId) {
+    return { saved: false, reason: "not_configured" };
+  }
+
+  const base = process.env.SUPABASE_URL.replace(/\/$/, "");
+  const patch = {
+    amount_paise: Number(record.amount_paise) || 0,
+    donor_name: record.donor_name || "",
+    donor_father_or_husband: record.donor_father_or_husband || "",
+    donor_email: record.donor_email || "",
+    donor_contact: record.donor_contact || "",
+    donor_pan: record.donor_pan || "",
+    donor_address: record.donor_address || "",
+    donor_state: record.donor_state || "",
+    donor_city: record.donor_city || "",
+    donor_pin: record.donor_pin || "",
+    program_label: record.program_label || "",
+    purpose: record.purpose || "",
+    payment_method: record.payment_method || "",
+    created_at: record.created_at,
+    updated_at: new Date().toISOString(),
+  };
+  const url = `${base}/rest/v1/donations?payment_id=eq.${encodeURIComponent(paymentId)}`;
+
+  try {
+    const res = await fetch(url, {
+      method: "PATCH",
+      headers: storeHeaders("return=representation"),
+      body: JSON.stringify(patch),
+    });
+
+    if (res.ok) {
+      const rows = await res.json().catch(() => []);
+      const row = Array.isArray(rows) ? rows[0] : null;
+      return { saved: true, created: false, row };
+    }
+
+    const text = await res.text().catch(() => "");
+    logSaveFailure("Supabase manual update failed", {
+      status: res.status,
+      payment_id: paymentId,
+      detail: text.slice(0, 200),
+    });
+    return { saved: false, reason: `store_error_${res.status}` };
+  } catch (err) {
+    logSaveFailure("Supabase manual update error", {
+      payment_id: paymentId,
+      message: err && err.message ? err.message : String(err),
+    });
+    return { saved: false, reason: "store_error" };
+  }
+}
+
+/**
+ * Correct donor details on a captured Razorpay receipt.
+ * Does not change amount, payment date, payment id, or receipt number.
+ */
+async function updateDonorDetails(paymentId, patch) {
+  if (!isStoreConfigured() || !paymentId) {
+    return { saved: false, reason: "not_configured" };
+  }
+
+  const base = process.env.SUPABASE_URL.replace(/\/$/, "");
+  const body = {
+    donor_name: patch.donor_name || "",
+    donor_father_or_husband: patch.donor_father_or_husband || "",
+    donor_email: patch.donor_email || "",
+    donor_contact: patch.donor_contact || "",
+    donor_pan: patch.donor_pan || "",
+    donor_address: patch.donor_address || "",
+    donor_state: patch.donor_state || "",
+    donor_city: patch.donor_city || "",
+    donor_pin: patch.donor_pin || "",
+    program_label: patch.program_label || "",
+    purpose: patch.purpose || "",
+    updated_at: new Date().toISOString(),
+  };
+  const url = `${base}/rest/v1/donations?payment_id=eq.${encodeURIComponent(paymentId)}`;
+
+  try {
+    const res = await fetch(url, {
+      method: "PATCH",
+      headers: storeHeaders("return=representation"),
+      body: JSON.stringify(body),
+    });
+
+    if (res.ok) {
+      const rows = await res.json().catch(() => []);
+      const row = Array.isArray(rows) ? rows[0] : null;
+      return { saved: true, created: false, row };
+    }
+
+    const text = await res.text().catch(() => "");
+    logSaveFailure("Supabase donor update failed", {
+      status: res.status,
+      payment_id: paymentId,
+      detail: text.slice(0, 200),
+    });
+    return { saved: false, reason: `store_error_${res.status}` };
+  } catch (err) {
+    logSaveFailure("Supabase donor update error", {
+      payment_id: paymentId,
+      message: err && err.message ? err.message : String(err),
+    });
+    return { saved: false, reason: "store_error" };
+  }
+}
+
 /** @deprecated Use upsertDonationRecord */
 async function saveDonationRecord(record) {
   return upsertDonationRecord(record);
@@ -658,6 +771,8 @@ module.exports = {
   fetchDonationsByContact,
   normalizeReceiptNo,
   upsertDonationRecord,
+  updateManualDonationRecord,
+  updateDonorDetails,
   saveDonationRecord,
   markReceiptEmailSent,
   updateDonationRecordStatus,

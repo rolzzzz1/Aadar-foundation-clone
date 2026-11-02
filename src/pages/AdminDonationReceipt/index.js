@@ -7,12 +7,10 @@ import Card from "@mui/material/Card";
 import CircularProgress from "@mui/material/CircularProgress";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Stack from "@mui/material/Stack";
-import Switch from "@mui/material/Switch";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import TextField from "@mui/material/TextField";
@@ -26,6 +24,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DashboardCustomizeOutlinedIcon from "@mui/icons-material/DashboardCustomizeOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import VerifiedOutlinedIcon from "@mui/icons-material/VerifiedOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
@@ -35,6 +34,7 @@ import DonationReceiptSheet from "components/DonationReceiptSheet";
 import MKButton from "components/MKButton";
 import MKBox from "components/MKBox";
 import AdminReceiptRetrieve from "pages/AdminDonationReceipt/AdminReceiptRetrieve";
+import AdminReceiptUpdate from "pages/AdminDonationReceipt/AdminReceiptUpdate";
 import aadarLogo from "assets/images/logos/logo-aadar.jpg";
 import { formatApiErrorMessage, getApiUrl } from "utils/api";
 import {
@@ -74,7 +74,6 @@ const emptyForm = {
   programLabel: "",
   purpose: "",
   locale: "en",
-  resendIfExists: false,
 };
 
 function todayIsoDate() {
@@ -148,8 +147,8 @@ function validateForm(form, t) {
   if (!contactCheck.ok) return t("adminPortal.validationMobile");
 
   const panCheck = validatePan(form.donorPan);
-  if (!panCheck.ok || !panCheck.value) {
-    return t("adminPortal.validationPan80g");
+  if (!panCheck.ok) {
+    return t("adminPortal.validationPan");
   }
 
   const addressCheck = validateAddressLine(form.donorAddress);
@@ -182,7 +181,6 @@ function buildPayload(form) {
     program_label: form.programLabel.trim(),
     purpose: form.purpose.trim(),
     locale: form.locale,
-    resend: form.resendIfExists,
   };
 }
 
@@ -194,7 +192,7 @@ export default function AdminDonationReceiptPage() {
   const [isSecretVisible, setIsSecretVisible] = useState(false);
   const [authBusy, setAuthBusy] = useState(false);
   const [unlocked, setUnlocked] = useState(false);
-  const [adminView, setAdminView] = useState("menu"); // 'menu' | 'create' | 'retrieve'
+  const [adminView, setAdminView] = useState("menu"); // 'menu' | 'create' | 'update' | 'retrieve'
   const [form, setForm] = useState({
     ...emptyForm,
     paidAt: todayIsoDate(),
@@ -311,6 +309,7 @@ export default function AdminDonationReceiptPage() {
     });
   };
 
+  const panFieldCheck = validatePan(form.donorPan);
   const donorEmail = String(previewRecord?.donor?.email || result?.donor_email || "").trim();
   const canEmailDonor = Boolean(donorEmail && previewRecord?.verified && previewRecord?.paymentId);
   const sendToCheck = validateEmail(sendToEmail);
@@ -941,6 +940,71 @@ export default function AdminDonationReceiptPage() {
                       </Box>
                     </Stack>
                   </Card>
+
+                  <Card
+                    onClick={() => setAdminView("update")}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") setAdminView("update");
+                    }}
+                    sx={{
+                      width: "100%",
+                      p: { xs: 2, sm: 2.25 },
+                      borderRadius: "16px",
+                      border: "1px solid rgba(31,42,68,0.08)",
+                      bgcolor: "#fff",
+                      cursor: "pointer",
+                      transition: "transform 0.15s ease, box-shadow 0.15s ease",
+                      "&:hover": {
+                        transform: "translateY(-2px)",
+                        boxShadow: "0 14px 40px rgba(31,42,68,0.12)",
+                      },
+                    }}
+                  >
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      justifyContent="space-between"
+                      spacing={2}
+                    >
+                      <Stack direction="row" spacing={1.5} alignItems="center">
+                        <Box
+                          sx={{
+                            width: 52,
+                            height: 52,
+                            borderRadius: "16px",
+                            display: "grid",
+                            placeItems: "center",
+                            bgcolor: "rgba(46, 125, 50, 0.12)",
+                          }}
+                        >
+                          <EditOutlinedIcon sx={{ fontSize: 26, color: "#2e7d32" }} />
+                        </Box>
+                        <Box>
+                          <Typography sx={{ fontWeight: 900, color: "#1f2a44" }}>
+                            {t("adminPortal.updateReceipt")}
+                          </Typography>
+                          <Typography sx={{ color: "#64748b", fontSize: "0.88rem", mt: 0.25 }}>
+                            {t("adminPortal.updateMenuDesc")}
+                          </Typography>
+                        </Box>
+                      </Stack>
+                      <Box
+                        sx={{
+                          width: 44,
+                          height: 44,
+                          borderRadius: "14px",
+                          display: "grid",
+                          placeItems: "center",
+                          bgcolor: "rgba(46, 125, 50, 0.12)",
+                          border: "1px solid rgba(46, 125, 50, 0.18)",
+                        }}
+                      >
+                        <ChevronRightIcon sx={{ fontSize: 26, color: "#2e7d32" }} />
+                      </Box>
+                    </Stack>
+                  </Card>
                 </Stack>
               </Box>
 
@@ -970,6 +1034,24 @@ export default function AdminDonationReceiptPage() {
       <MKBox minHeight="100vh" sx={{ bgcolor: "#eef1f6", pt: { xs: 3, md: 4 }, pb: 6 }}>
         <Container maxWidth="md">
           <AdminReceiptRetrieve
+            onBack={() => {
+              setAdminView("menu");
+              setError("");
+            }}
+            onLogout={handleLogout}
+            adminSecret={adminSecret}
+            adminUsername={adminUsername}
+          />
+        </Container>
+      </MKBox>
+    );
+  }
+
+  if (unlocked && adminView === "update") {
+    return (
+      <MKBox minHeight="100vh" sx={{ bgcolor: "#eef1f6", pt: { xs: 3, md: 4 }, pb: 6 }}>
+        <Container maxWidth="md">
+          <AdminReceiptUpdate
             onBack={() => {
               setAdminView("menu");
               setError("");
@@ -1148,14 +1230,38 @@ export default function AdminDonationReceiptPage() {
                   sx={fieldSx}
                 />
               </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12}>
                 <TextField
-                  label={t("adminPortal.pan")}
+                  label={t("adminPortal.panOptional")}
                   value={form.donorPan}
-                  onChange={updateField("donorPan")}
-                  placeholder="ABCDE1234F"
+                  onChange={(event) => {
+                    const next = String(event.target.value || "")
+                      .toUpperCase()
+                      .replace(/[^A-Z0-9]/g, "")
+                      .slice(0, 10);
+                    setForm((prev) => ({ ...prev, donorPan: next }));
+                    setError("");
+                  }}
                   fullWidth
-                  required
+                  error={!panFieldCheck.ok}
+                  helperText={
+                    panFieldCheck.ok
+                      ? form.donorPan.trim()
+                        ? ""
+                        : t("adminPortal.panExemptionNote")
+                      : t("adminPortal.validationPan")
+                  }
+                  FormHelperTextProps={{
+                    sx: {
+                      color: "#d32f2f",
+                      mx: 0.25,
+                      mt: 0.5,
+                      fontWeight: 500,
+                      fontSize: "0.8rem",
+                      lineHeight: 1.45,
+                    },
+                  }}
+                  inputProps={{ maxLength: 10, autoCapitalize: "characters" }}
                   sx={fieldSx}
                 />
               </Grid>
@@ -1220,17 +1326,6 @@ export default function AdminDonationReceiptPage() {
             </Grid>
 
             <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems="center" mt={2.5}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={form.resendIfExists}
-                    onChange={(e) =>
-                      setForm((prev) => ({ ...prev, resendIfExists: e.target.checked }))
-                    }
-                  />
-                }
-                label={t("adminPortal.resendIfExists")}
-              />
               <TextField
                 select
                 label={t("adminPortal.receiptLanguage")}

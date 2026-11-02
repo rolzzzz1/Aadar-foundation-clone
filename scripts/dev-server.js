@@ -15,30 +15,24 @@ const PORT = Number(process.env.PORT) || 3001;
 const apiDir = path.join(__dirname, "..", "api");
 const handlersDir = path.join(__dirname, "..", "server", "handlers");
 
-const routes = {
-  "/api/test": require("./api-test.js"),
-  "/api/health": require(path.join(handlersDir, "health.js")),
-  "/api/razorpay-order": require(path.join(handlersDir, "razorpay-order.js")),
-  "/api/razorpay-verify": require(path.join(handlersDir, "razorpay-verify.js")),
-  "/api/razorpay-webhook": require(path.join(apiDir, "razorpay-webhook.js")),
-  "/api/donation-receipt": require(path.join(handlersDir, "donation-receipt.js")),
-  "/api/donation-receipt-list": require(path.join(handlersDir, "donation-receipt-list.js")),
-  "/api/donation-receipt-upi": require(path.join(handlersDir, "donation-receipt-upi.js")),
-  "/api/receipt-request": require(path.join(handlersDir, "receipt-request.js")),
-  "/api/admin-donation-receipt": require(path.join(handlersDir, "admin-donation-receipt.js")),
-  "/api/admin-donation-receipt-lookup": require(
-    path.join(handlersDir, "admin-donation-receipt-lookup.js")
-  ),
-  "/api/admin-receipt-auth": require(path.join(handlersDir, "admin-receipt-auth.js")),
-  "/api/donation-receipt-resend": require(path.join(handlersDir, "donation-receipt-resend.js")),
-  "/api/donation-confirm": require(path.join(handlersDir, "donation-confirm.js")),
-  "/api/instagram-posts": require(path.join(handlersDir, "instagram-posts.js")),
-  "/api/membership-subscription-create": require(
-    path.join(handlersDir, "membership-subscription-create.js")
-  ),
-  "/api/membership-subscription-verify": require(
-    path.join(handlersDir, "membership-subscription-verify.js")
-  ),
+const routeFiles = {
+  "/api/test": path.join(__dirname, "api-test.js"),
+  "/api/health": path.join(handlersDir, "health.js"),
+  "/api/razorpay-order": path.join(handlersDir, "razorpay-order.js"),
+  "/api/razorpay-verify": path.join(handlersDir, "razorpay-verify.js"),
+  "/api/razorpay-webhook": path.join(apiDir, "razorpay-webhook.js"),
+  "/api/donation-receipt": path.join(handlersDir, "donation-receipt.js"),
+  "/api/donation-receipt-list": path.join(handlersDir, "donation-receipt-list.js"),
+  "/api/donation-receipt-upi": path.join(handlersDir, "donation-receipt-upi.js"),
+  "/api/receipt-request": path.join(handlersDir, "receipt-request.js"),
+  "/api/admin-donation-receipt": path.join(handlersDir, "admin-donation-receipt.js"),
+  "/api/admin-donation-receipt-lookup": path.join(handlersDir, "admin-donation-receipt-lookup.js"),
+  "/api/admin-receipt-auth": path.join(handlersDir, "admin-receipt-auth.js"),
+  "/api/donation-receipt-resend": path.join(handlersDir, "donation-receipt-resend.js"),
+  "/api/donation-confirm": path.join(handlersDir, "donation-confirm.js"),
+  "/api/instagram-posts": path.join(handlersDir, "instagram-posts.js"),
+  "/api/membership-subscription-create": path.join(handlersDir, "membership-subscription-create.js"),
+  "/api/membership-subscription-verify": path.join(handlersDir, "membership-subscription-verify.js"),
 };
 
 function loadEnvFiles() {
@@ -120,6 +114,19 @@ function readBody(nodeReq) {
   });
 }
 
+function loadRoute(urlPath) {
+  const handlerPath = routeFiles[urlPath];
+  if (!handlerPath) return null;
+  Object.keys(require.cache).forEach((key) => {
+    if (key.includes(`${path.sep}server${path.sep}`) || key.includes(`${path.sep}api${path.sep}`)) {
+      delete require.cache[key];
+    }
+  });
+  const resolved = require.resolve(handlerPath);
+  delete require.cache[resolved];
+  return require(handlerPath);
+}
+
 const server = http.createServer(async (nodeReq, nodeRes) => {
   const rawUrl = nodeReq.url || "/";
   const urlPath = rawUrl.split("?")[0];
@@ -132,7 +139,7 @@ const server = http.createServer(async (nodeReq, nodeRes) => {
     return;
   }
 
-  const handler = routes[urlPath];
+  const handler = loadRoute(urlPath);
   if (!handler) {
     nodeRes.statusCode = 404;
     nodeRes.setHeader("Content-Type", "application/json; charset=utf-8");

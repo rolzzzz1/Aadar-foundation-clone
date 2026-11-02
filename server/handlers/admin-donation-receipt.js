@@ -7,11 +7,19 @@ const {
 const {
   isStoreConfigured,
   fetchDonationByPaymentId,
+  fetchDonationByReceiptNo,
+  normalizeReceiptNo,
   upsertDonationRecord,
+  updateManualDonationRecord,
+  updateDonorDetails,
 } = require("../_lib/donationRecord");
 const { donationRowToReceiptRecord } = require("../_lib/receiptRecord");
 const { applyRateLimit, LIMITS } = require("../_lib/rateLimit");
-const { buildManualDonationRecord } = require("../_lib/manualReceipt");
+const {
+  buildManualDonationRecord,
+  buildDonorDetailUpdate,
+  isAdminEditableReceipt,
+} = require("../_lib/manualReceipt");
 
 const MAX_BODY_BYTES = 8 * 1024;
 
@@ -94,22 +102,94 @@ module.exports = async function handler(req, res) {
     });
   }
 
+  if (body.update === true && body.donor_only === true) {
+    const paymentId = String(body.payment_id || body.paymentId || "").trim();
+    const receiptNo = normalizeReceiptNo(body.receipt_no || body.receiptNo || "");
+    let existing = null;
+    if (paymentId) existing = await fetchDonationByPaymentId(paymentId);
+    else if (receiptNo) existing = await fetchDonationByReceiptNo(receiptNo);
+    else {
+      return res.status(400).json({ error: "payment_id or receipt_no is required." });
+    }
+
+    if (!existing) {
+      return res.status(404).json({ error: "Receipt not found." });
+    }
+    if (isAdminEditableReceipt(existing)) {
+      return res.status(400).json({
+        error: "This receipt was issued for a UPI or bank transfer. Update it from that tab.",
+      });
+    }
+    if (String(existing.status || "").toLowerCase() !== "captured") {
+      return res.status(400).json({ error: "Only captured donations can be updated." });
+    }
+
+    const donorUpdate = buildDonorDetailUpdate(body);
+    if (!donorUpdate.ok) {
+      return res.status(400).json({ error: donorUpdate.error });
+    }
+
+    const savedDonor = await updateDonorDetails(existing.payment_id, donorUpdate.patch);
+    if (!savedDonor.saved || !savedDonor.row) {
+      return res.status(502).json({ error: "Could not update donation record." });
+    }
+
+    const updatedDonor = savedDonor.row;
+    return res.status(200).json({
+      ok: true,
+      created: false,
+      updated: true,
+      donor_only: true,
+      receipt_email_sent: false,
+      payment_id: updatedDonor.payment_id,
+      receipt_no: updatedDonor.receipt_no,
+      donor_email: updatedDonor.donor_email,
+      record: donationRowToReceiptRecord(updatedDonor, {
+        locale: body.locale === "hi" ? "hi" : "en",
+      }),
+    });
+  }
+
   const built = buildManualDonationRecord(body);
   if (!built.ok) {
     return res.status(400).json({ error: built.error });
   }
 
   const existing = await fetchDonationByPaymentId(built.paymentId);
-  if (existing && String(existing.status || "").toLowerCase() === "captured") {
-    const allowResend = body.resend === true || body.force === true;
-    if (!allowResend) {
-      return res.status(409).json({
-        error: "A receipt was already issued for this transaction reference.",
-        payment_id: built.paymentId,
-        receipt_no: existing.receipt_no || null,
-        receipt_email_sent: !!existing.receipt_email_sent_at,
+  const updating = body.update === true;
+
+  if (updating) {
+    if (!existing || !isAdminEditableReceipt(existing)) {
+      return res.status(404).json({
+        error: "No UPI or bank transfer receipt was found for this reference.",
       });
     }
+
+    const savedUpdate = await updateManualDonationRecord(built.paymentId, built.record);
+    if (!savedUpdate.saved || !savedUpdate.row) {
+      return res.status(502).json({ error: "Could not update donation record." });
+    }
+
+    const updated = savedUpdate.row;
+    return res.status(200).json({
+      ok: true,
+      created: false,
+      updated: true,
+      receipt_email_sent: false,
+      payment_id: updated.payment_id,
+      receipt_no: updated.receipt_no,
+      donor_email: updated.donor_email,
+      record: donationRowToReceiptRecord(updated, { locale: body.locale === "hi" ? "hi" : "en" }),
+    });
+  }
+
+  if (existing && String(existing.status || "").toLowerCase() === "captured") {
+    return res.status(409).json({
+      error: "A receipt was already issued for this transaction reference.",
+      payment_id: built.paymentId,
+      receipt_no: existing.receipt_no || null,
+      receipt_email_sent: !!existing.receipt_email_sent_at,
+    });
   }
 
   const saved = await upsertDonationRecord(built.record);

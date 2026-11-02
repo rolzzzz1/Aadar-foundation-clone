@@ -70,7 +70,9 @@ function buildManualDonationRecord(body) {
   if (!paidAtCheck.ok) return { ok: false, error: paidAtCheck.error };
 
   const pan = normalizePan(body.donor_pan || body.pan);
-  if (pan.length !== 10) return { ok: false, error: "Valid PAN is required for the 80G receipt." };
+  if (pan && !/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(pan)) {
+    return { ok: false, error: "Enter a valid PAN (e.g. ABCDE1234F)." };
+  }
 
   const name = sanitizeText(body.donor_name || body.name || "", NAME_MAX);
   if (!name) return { ok: false, error: "Donor name is required." };
@@ -127,9 +129,74 @@ function buildManualDonationRecord(body) {
   };
 }
 
+function buildDonorDetailUpdate(body) {
+  const name = sanitizeText(body.donor_name || body.name || "", NAME_MAX);
+  if (!name) return { ok: false, error: "Donor name is required." };
+
+  const contact = normalizeContact(body.donor_contact || body.contact || body.mobile);
+  if (contact.length !== 10) {
+    return { ok: false, error: "Valid 10-digit mobile number is required." };
+  }
+
+  const email = sanitizeText(body.donor_email || body.email || "", EMAIL_MAX).toLowerCase();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return { ok: false, error: "Valid donor email is required." };
+  }
+
+  const pan = normalizePan(body.donor_pan || body.pan);
+  if (pan && !/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(pan)) {
+    return { ok: false, error: "Enter a valid PAN (e.g. ABCDE1234F)." };
+  }
+
+  const address = sanitizeText(body.donor_address || body.address || "", 200);
+  const state = sanitizeText(body.donor_state || body.state || "", 80);
+  const city = sanitizeText(body.donor_city || body.city || "", 80);
+  const pin = sanitizeText(body.donor_pin || body.pin || "", 6).replace(/\D/g, "");
+  if (!address || !state || !city || pin.length !== 6) {
+    return { ok: false, error: "Complete donor address is required for the receipt." };
+  }
+
+  return {
+    ok: true,
+    patch: {
+      donor_name: name,
+      donor_father_or_husband: sanitizeText(
+        body.donor_father_or_husband || body.fatherOrHusbandName || "",
+        NAME_MAX
+      ),
+      donor_email: email,
+      donor_contact: contact,
+      donor_pan: pan,
+      donor_address: address,
+      donor_state: state,
+      donor_city: city,
+      donor_pin: pin,
+      program_label: sanitizeText(body.program_label || body.programLabel || "", 120),
+      purpose: sanitizeText(body.purpose || body.note || "", 240),
+    },
+  };
+}
+
+function isAdminEditableReceipt(row) {
+  if (!row) return false;
+  const source = String(row.source || "").toLowerCase();
+  const method = String(row.payment_method || "").toLowerCase();
+  const id = String(row.payment_id || "");
+  return (
+    source === "upi_qr" ||
+    source === "bank_transfer" ||
+    method === "upi_qr" ||
+    method === "bank_transfer" ||
+    id.startsWith("upi_") ||
+    id.startsWith("bank_")
+  );
+}
+
 module.exports = {
   normalizeBankRef,
   validateBankRef,
   bankPaymentId,
   buildManualDonationRecord,
+  buildDonorDetailUpdate,
+  isAdminEditableReceipt,
 };

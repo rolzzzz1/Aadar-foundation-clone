@@ -16,6 +16,12 @@ const { donationRowToReceiptRecord } = require("../_lib/receiptRecord");
 const { applyRateLimit, LIMITS } = require("../_lib/rateLimit");
 const { parseContactLookup } = require("../_lib/receiptContact");
 const { trySendReceiptEmail, isEmailConfigured } = require("../_lib/receiptEmail");
+const { validateUtr, upiPaymentId } = require("../_lib/upiReceipt");
+const {
+  validateBankRef,
+  bankPaymentId,
+  isAdminEditableReceipt,
+} = require("../_lib/manualReceipt");
 
 const MAX_BODY_BYTES = 2 * 1024;
 
@@ -205,6 +211,35 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({
         ok: true,
         mode: "payment_id",
+        record: donationRowToReceiptRecord(row, { locale }),
+      });
+    }
+
+    if (mode === "transaction_ref") {
+      const method = String(body.payment_method || body.paymentMethod || "upi")
+        .trim()
+        .toLowerCase();
+      const isBank = method === "bank" || method === "bank_transfer";
+      const refCheck = isBank
+        ? validateBankRef(body.transaction_ref || body.bank_ref || body.value)
+        : validateUtr(body.transaction_ref || body.utr || body.value);
+      if (!refCheck.ok) {
+        return res.status(400).json({ error: refCheck.error });
+      }
+
+      const paymentId = isBank ? bankPaymentId(refCheck.value) : upiPaymentId(refCheck.value);
+      const row = await fetchDonationByPaymentId(paymentId);
+      if (!row || !isAdminEditableReceipt(row)) {
+        return res.status(404).json({
+          error: "No UPI or bank transfer receipt was found for this reference.",
+        });
+      }
+
+      return res.status(200).json({
+        ok: true,
+        mode: "transaction_ref",
+        payment_id: row.payment_id,
+        receipt_no: row.receipt_no || null,
         record: donationRowToReceiptRecord(row, { locale }),
       });
     }
