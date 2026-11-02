@@ -10,7 +10,6 @@ const {
   upsertDonationRecord,
 } = require("../_lib/donationRecord");
 const { donationRowToReceiptRecord } = require("../_lib/receiptRecord");
-const { trySendReceiptEmail, isEmailConfigured } = require("../_lib/receiptEmail");
 const { applyRateLimit, LIMITS } = require("../_lib/rateLimit");
 const { buildManualDonationRecord } = require("../_lib/manualReceipt");
 
@@ -95,12 +94,6 @@ module.exports = async function handler(req, res) {
     });
   }
 
-  if (!isEmailConfigured()) {
-    return res.status(503).json({
-      error: "Receipt email is not configured. Set RESEND_API_KEY and RECEIPT_FROM_EMAIL.",
-    });
-  }
-
   const built = buildManualDonationRecord(body);
   if (!built.ok) {
     return res.status(400).json({ error: built.error });
@@ -136,21 +129,14 @@ module.exports = async function handler(req, res) {
   }
 
   const locale = body.locale === "hi" ? "hi" : "en";
-  const emailResult = await trySendReceiptEmail(row, {
-    locale,
-    forceResend: body.resend === true || body.force === true,
-  });
-
-  const updatedRow = (await fetchDonationByPaymentId(built.paymentId)) || row;
 
   return res.status(200).json({
     ok: true,
     created: !!saved.created,
-    receipt_email_sent: !!emailResult.sent,
-    email_reason: emailResult.sent ? undefined : emailResult.reason || "send_failed",
-    payment_id: updatedRow.payment_id,
-    receipt_no: updatedRow.receipt_no,
-    donor_email: updatedRow.donor_email,
-    record: donationRowToReceiptRecord(updatedRow, { locale }),
+    receipt_email_sent: false,
+    payment_id: row.payment_id,
+    receipt_no: row.receipt_no,
+    donor_email: row.donor_email,
+    record: donationRowToReceiptRecord(row, { locale }),
   });
 };

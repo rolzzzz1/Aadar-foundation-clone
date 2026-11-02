@@ -9,9 +9,11 @@ import "./fonts.css";
 const CHUNK_RELOAD_KEY = "aadar_chunk_reload";
 
 function isChunkLoadFailure(reason) {
+  const name = reason?.name || "";
   const message = reason?.message || String(reason || "");
   return (
-    /Loading chunk [\d]+ failed/i.test(message) ||
+    name === "ChunkLoadError" ||
+    /Loading chunk .+ failed/i.test(message) ||
     /ChunkLoadError/i.test(message) ||
     /Failed to fetch dynamically imported module/i.test(message) ||
     /Importing a module script failed/i.test(message) ||
