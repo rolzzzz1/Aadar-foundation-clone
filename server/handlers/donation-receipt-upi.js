@@ -1,15 +1,5 @@
-const {
-  applySecurityHeaders,
-  getJsonBody,
-  isProduction,
-  originIsAllowed,
-  sanitizeText,
-} = require("../_lib/donation");
-const {
-  isStoreConfigured,
-  fetchDonationByPaymentId,
-  upsertDonationRecord,
-} = require("../_lib/donationRecord");
+const { applySecurityHeaders, getJsonBody, originIsAllowed } = require("../_lib/donation");
+const { isStoreConfigured, fetchDonationByPaymentId } = require("../_lib/donationRecord");
 const { donationRowToReceiptRecord } = require("../_lib/receiptRecord");
 const { trySendReceiptEmail } = require("../_lib/receiptEmail");
 const { applyRateLimit, LIMITS } = require("../_lib/rateLimit");
@@ -133,37 +123,12 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: "Invalid lookup payload." });
   }
 
-  if (existing) {
-    if (!panMatches(existing, pan)) {
-      return res.status(404).json(NOT_FOUND);
-    }
-    if (!amountsMatch(existing, Math.round(built.record.amount_paise / 100))) {
-      return res.status(404).json(NOT_FOUND);
-    }
-
-    const saved = await upsertDonationRecord(built.record);
-    if (!saved.saved) {
-      if (!isProduction()) {
-        return res.status(502).json({ error: "Could not save donation record.", reason: saved.reason });
-      }
-      return res.status(502).json({ error: "Could not save donation record." });
-    }
-
-    const row = saved.row || (await fetchDonationByPaymentId(paymentId));
-    if (!row) return res.status(502).json({ error: "Could not save donation record." });
-    return respondWithRow(res, row, { locale, sendEmail: !row.receipt_email_sent_at });
+  if (!existing || !panMatches(existing, pan)) {
+    return res.status(404).json(NOT_FOUND);
+  }
+  if (!amountsMatch(existing, Math.round(built.record.amount_paise / 100))) {
+    return res.status(404).json(NOT_FOUND);
   }
 
-  const saved = await upsertDonationRecord(built.record);
-  if (!saved.saved) {
-    if (!isProduction()) {
-      return res.status(502).json({ error: "Could not save donation record.", reason: saved.reason });
-    }
-    return res.status(502).json({ error: "Could not save donation record." });
-  }
-
-  const row = saved.row || (await fetchDonationByPaymentId(paymentId));
-  if (!row) return res.status(502).json({ error: "Could not save donation record." });
-
-  return respondWithRow(res, row, { locale, created: true, sendEmail: true });
+  return respondWithRow(res, existing, { locale, sendEmail: !existing.receipt_email_sent_at });
 };

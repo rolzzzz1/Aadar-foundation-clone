@@ -677,6 +677,20 @@ async function updateDonationRecordStatus(paymentId, patch) {
     return { saved: false, reason: "missing_payment_id" };
   }
 
+  const existing = await fetchDonationByPaymentId(paymentId);
+  if (!existing) {
+    return { saved: false, reason: "not_found" };
+  }
+
+  const current = String(existing.status || "").toLowerCase();
+  const next = String((patch && patch.status) || "").toLowerCase();
+  if (current === "captured" && (next === "failed" || next === "created")) {
+    return { saved: false, reason: "captured_protected" };
+  }
+  if (current === "refunded" && next !== "refunded") {
+    return { saved: false, reason: "refund_protected" };
+  }
+
   const base = process.env.SUPABASE_URL.replace(/\/$/, "");
   const url = `${base}/rest/v1/donations?payment_id=eq.${encodeURIComponent(paymentId)}`;
 
@@ -737,15 +751,15 @@ async function fetchDonationsByContact(contact, limit = 25) {
       },
     });
     if (!res.ok) {
+      const text = await res.text().catch(() => "");
       if (!isProduction()) {
-        const text = await res.text().catch(() => "");
         // eslint-disable-next-line no-console
         console.warn("[donation] Supabase list by contact failed", {
           status: res.status,
           details: text.slice(0, 200),
         });
       }
-      return [];
+      throw new Error("store_error");
     }
     const rows = await res.json().catch(() => []);
     return Array.isArray(rows) ? rows : [];
@@ -756,7 +770,7 @@ async function fetchDonationsByContact(contact, limit = 25) {
         message: err && err.message ? err.message : String(err),
       });
     }
-    return [];
+    throw err;
   }
 }
 

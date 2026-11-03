@@ -111,6 +111,26 @@ module.exports = async function handler(req, res) {
       return res.status(404).json(NOT_FOUND);
     }
 
+    const status = String(row.status || "").toLowerCase();
+    if (status === "refunded") {
+      return res.status(409).json({
+        error: "This payment was refunded, so a donation receipt cannot be issued.",
+      });
+    }
+    if (status === "failed") {
+      return res.status(409).json({
+        error: "This payment did not succeed, so a donation receipt cannot be issued.",
+      });
+    }
+    if (status === "disputed") {
+      return res.status(409).json({
+        error: "This payment is under review, so a donation receipt cannot be issued yet.",
+      });
+    }
+    if (status !== "captured") {
+      return res.status(404).json(NOT_FOUND);
+    }
+
     const locale = body.locale === "hi" ? "hi" : "en";
     const record = donationRowToReceiptRecord(row, { locale });
 

@@ -2,7 +2,10 @@ const crypto = require("crypto");
 const { applySecurityHeaders, isProduction, paymentsAreEnabled } = require("../server/_lib/donation");
 const { getWebhookRawBody } = require("../server/_lib/rawBody");
 const { fetchOrder, validateCapturedPayment } = require("../server/_lib/razorpay");
-const { updateDonationRecordStatus } = require("../server/_lib/donationRecord");
+const {
+  updateDonationRecordStatus,
+  fetchDonationByPaymentId,
+} = require("../server/_lib/donationRecord");
 const {
   persistCapturedDonation,
   persistRazorpayQrDonation,
@@ -61,8 +64,9 @@ async function handlePaymentCaptured(paymentEntity) {
         payment_id: paymentEntity.id,
         reason: persisted.reason,
       });
+      return { retry: persisted.reason !== "invalid_qr_payment" };
     }
-    return;
+    return { retry: false };
   }
 
   let order = null;
@@ -77,7 +81,7 @@ async function handlePaymentCaptured(paymentEntity) {
       payment_id: paymentEntity.id,
       order_id: paymentEntity.order_id,
     });
-    return;
+    return { retry: true };
   }
 
   const check = validateCapturedPayment(paymentEntity, paymentEntity.order_id, order);
@@ -87,7 +91,7 @@ async function handlePaymentCaptured(paymentEntity) {
       order_id: paymentEntity.order_id,
       payment_status: check.payment_status,
     });
-    return;
+    return { retry: false };
   }
 
   const persisted = await persistCapturedDonation({
@@ -101,7 +105,9 @@ async function handlePaymentCaptured(paymentEntity) {
       payment_id: paymentEntity.id,
       reason: persisted.reason,
     });
+    return { retry: true };
   }
+  return { retry: false };
 }
 
 async function handlePaymentFailed(paymentEntity) {
@@ -122,6 +128,20 @@ async function handlePaymentFailed(paymentEntity) {
 
 async function handleRefund(refundEntity, event) {
   if (!refundEntity || !refundEntity.payment_id) return;
+  if (event !== "refund.processed") return;
+
+  const existing = await fetchDonationByPaymentId(refundEntity.payment_id);
+  const refundPaise = Number(refundEntity.amount);
+  const paidPaise = existing ? Number(existing.amount_paise) : 0;
+  if (existing && refundPaise > 0 && paidPaise > 0 && refundPaise < paidPaise) {
+    // eslint-disable-next-line no-console
+    console.warn("[razorpay-webhook] partial refund left the receipt captured", {
+      payment_id: refundEntity.payment_id,
+      refund_paise: refundPaise,
+      paid_paise: paidPaise,
+    });
+    return;
+  }
 
   const saved = await updateDonationRecordStatus(refundEntity.payment_id, {
     status: "refunded",
@@ -193,6 +213,7 @@ async function handleSubscriptionCharged(subscriptionEntity, paymentEntity) {
       payment_id: paymentEntity.id,
       reason: persisted.reason,
     });
+    return { retry: true };
   }
 
   const saved = await updateSubscriptionRecord(
@@ -227,8 +248,25 @@ async function handleSubscriptionStatusEvent(subscriptionEntity, event) {
   }
 }
 
-async function handleDispute(paymentEntity) {
+async function handleDispute(paymentEntity, event) {
   if (!paymentEntity || !paymentEntity.id) return;
+
+  if (event === "payment.dispute.won") {
+    const existing = await fetchDonationByPaymentId(paymentEntity.id);
+    if (!existing || String(existing.status || "").toLowerCase() !== "disputed") return;
+    const saved = await updateDonationRecordStatus(paymentEntity.id, {
+      status: "captured",
+      source: "webhook",
+    });
+    if (!saved.saved && saved.reason !== "not_configured") {
+      // eslint-disable-next-line no-console
+      console.warn("[razorpay-webhook] dispute won status not restored", {
+        payment_id: paymentEntity.id,
+        reason: saved.reason,
+      });
+    }
+    return;
+  }
 
   const saved = await updateDonationRecordStatus(paymentEntity.id, {
     status: "disputed",
@@ -318,9 +356,11 @@ module.exports = async function handler(req, res) {
     payload.payload.subscription &&
     payload.payload.subscription.entity;
 
+  let retry = false;
   try {
     if (event === "payment.captured") {
-      await handlePaymentCaptured(paymentEntity);
+      const result = await handlePaymentCaptured(paymentEntity);
+      retry = !!(result && result.retry);
     } else if (event === "payment.failed") {
       await handlePaymentFailed(paymentEntity);
     } else if (
@@ -334,9 +374,10 @@ module.exports = async function handler(req, res) {
       event === "payment.dispute.won" ||
       event === "payment.dispute.lost"
     ) {
-      await handleDispute(paymentEntity);
+      await handleDispute(paymentEntity, event);
     } else if (event === "subscription.charged") {
-      await handleSubscriptionCharged(subscriptionEntity, paymentEntity);
+      const result = await handleSubscriptionCharged(subscriptionEntity, paymentEntity);
+      retry = !!(result && result.retry);
     } else if (
       event === "subscription.activated" ||
       event === "subscription.completed" ||
@@ -354,6 +395,13 @@ module.exports = async function handler(req, res) {
       event,
       message: err && err.message ? err.message : String(err),
     });
+    if (event === "payment.captured" || event === "subscription.charged") {
+      retry = true;
+    }
+  }
+
+  if (retry) {
+    return res.status(500).json({ ok: false, retry: true });
   }
 
   return res.status(200).json({ ok: true });

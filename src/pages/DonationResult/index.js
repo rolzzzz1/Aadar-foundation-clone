@@ -197,6 +197,7 @@ export default function DonationResultPage() {
             ok: true,
             record: mergeConfirmedRecord(initial, result),
             receiptEmailSent: !!result.receipt_email_sent,
+            recordSaved: result.record_saved !== false,
           };
         }
 
@@ -235,7 +236,14 @@ export default function DonationResultPage() {
       if (outcome.ok) {
         saveDonationReceipt(outcome.record);
         setRecord(outcome.record);
-        if (outcome.receiptEmailSent && outcome.record.donor?.email) {
+        if (outcome.recordSaved === false) {
+          setReceiptEmailMsg(
+            t(
+              "donationResult.receiptSavePending",
+              "Your payment was received. If Retrieve receipt does not show it yet, contact us with your payment ID."
+            )
+          );
+        } else if (outcome.receiptEmailSent && outcome.record.donor?.email) {
           setReceiptEmailMsg(
             t(
               "donationResult.receiptEmailed",
@@ -357,7 +365,14 @@ export default function DonationResultPage() {
       if (outcome.ok) {
         saveDonationReceipt(outcome.record);
         setRecord(outcome.record);
-        if (outcome.receiptEmailSent && outcome.record.donor?.email) {
+        if (outcome.recordSaved === false) {
+          setReceiptEmailMsg(
+            t(
+              "donationResult.receiptSavePending",
+              "Your payment was received. If Retrieve receipt does not show it yet, contact us with your payment ID."
+            )
+          );
+        } else if (outcome.receiptEmailSent && outcome.record.donor?.email) {
           setReceiptEmailMsg(
             t(
               "donationResult.receiptEmailed",

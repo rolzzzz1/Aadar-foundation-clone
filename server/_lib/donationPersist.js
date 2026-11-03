@@ -34,7 +34,10 @@ async function persistCapturedDonation({
   }
 
   const record = buildRecordFromRazorpay({ payment, order, source, subscriptionId, frequency });
-  const saved = await upsertDonationRecord(record);
+  let saved = await upsertDonationRecord(record);
+  if (!saved.saved) {
+    saved = await upsertDonationRecord(record);
+  }
 
   if (!saved.saved) {
     return saved;
@@ -83,7 +86,10 @@ async function persistRazorpayQrDonation({ payment, source = "razorpay_qr" }) {
     return { saved: false, reason: "invalid_qr_payment" };
   }
 
-  const saved = await upsertDonationRecord(record);
+  let saved = await upsertDonationRecord(record);
+  if (!saved.saved) {
+    saved = await upsertDonationRecord(record);
+  }
   if (!saved.saved) {
     return saved;
   }
