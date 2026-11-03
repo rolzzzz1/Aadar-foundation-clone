@@ -60,4 +60,4 @@ vercel env pull .env.local
    See **[docs/PAYMENTS_VERCEL_SETUP.md](docs/PAYMENTS_VERCEL_SETUP.md)** for:
 
    - `ALLOWED_ORIGINS` — `https://www.aadarfoundation.org,https://aadarfoundation.org`
-   - `RAZORPAY_WEBHOOK_SECRET` — from Razorpay → Webhooks → `https://www.aadarfoundation.org/api/razorpay-webhook` (event: `payment.captured`)
+   - `RAZORPAY_WEBHOOK_SECRET` — from Razorpay → Webhooks → `https://www.aadarfoundation.org/api/razorpay-webhook` (events: `payment.captured`, `qr_code.credited`)

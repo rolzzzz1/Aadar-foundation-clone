@@ -44,6 +44,7 @@ Backup path: saves donations to Supabase if the browser never hits `/api/razorpa
 2. **Webhook URL:** `https://www.aadarfoundation.org/api/razorpay-webhook`
 3. **Events:** enable at minimum:
    - **`payment.captured`** (required — saves verified donations)
+   - **`qr_code.credited`** (required for the Razorpay QR — saves the payment to Supabase as soon as someone pays)
    - **`payment.failed`** (updates Supabase status)
    - **`refund.created`** and **`refund.processed`** (marks donations refunded)
    - Optional: **`payment.dispute.created`** (marks disputes)
@@ -182,7 +183,7 @@ sequenceDiagram
 2. **Settings → API Keys → Live** — generate **Live** Key ID + Secret.
 3. **Settings → Webhooks** (while in **Live** mode):
    - URL: `https://www.aadarfoundation.org/api/razorpay-webhook`
-   - Event: **`payment.captured`**
+   - Events: **`payment.captured`** and **`qr_code.credited`** (the QR event writes the payment to Supabase)
    - Copy **Webhook Secret** (shown once).
 4. Ensure payments are set to **capture** (orders use `payment_capture: 1` in code).
 

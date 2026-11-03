@@ -16,7 +16,7 @@ import MKTypography from "components/MKTypography";
 import MKButton from "components/MKButton";
 import DonateReceiptCta from "pages/LandingPages/shared/DonateReceiptCta";
 import SponsorPrabhujiCtaCards from "pages/LandingPages/shared/SponsorPrabhujiCtaCards";
-import donate2UpiQr from "assets/images/scanner.jpg";
+import donate2UpiQr from "assets/images/donate2-razorpay-qr.png";
 import { DONATION_RECEIPT_PATH } from "utils/donation";
 import { GALLERY_PATH } from "utils/paths";
 
@@ -225,22 +225,22 @@ function DonateJoinOfflineSection({
               <MKBox
                 component="img"
                 src={donate2UpiQr}
-                alt="Bank of Baroda UPI QR — scan to donate to Aadar Foundation"
-                width="1824"
-                height="2645"
+                alt="Razorpay UPI QR — scan to donate to Aadar Foundation"
+                width="674"
+                height="1192"
                 loading="lazy"
                 decoding="async"
                 fetchPriority="low"
                 sx={{
                   display: "block",
                   width: {
-                    xs: "min(58vw, 200px)",
-                    sm: "min(42vw, 220px)",
-                    md: "220px",
-                    lg: "240px",
+                    xs: "min(72vw, 260px)",
+                    sm: "280px",
+                    md: "260px",
+                    lg: "280px",
                   },
                   height: "auto",
-                  aspectRatio: "1824 / 2645",
+                  aspectRatio: "674 / 1192",
                   maxWidth: "100%",
                   objectFit: "contain",
                   borderRadius: "14px",

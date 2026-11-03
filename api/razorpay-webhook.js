@@ -1,7 +1,7 @@
 const crypto = require("crypto");
 const { applySecurityHeaders, isProduction, paymentsAreEnabled } = require("../server/_lib/donation");
 const { getWebhookRawBody } = require("../server/_lib/rawBody");
-const { fetchOrder, validateCapturedPayment } = require("../server/_lib/razorpay");
+const { fetchOrder, fetchPayment, validateCapturedPayment } = require("../server/_lib/razorpay");
 const {
   updateDonationRecordStatus,
   fetchDonationByPaymentId,
@@ -106,6 +106,61 @@ async function handlePaymentCaptured(paymentEntity) {
       reason: persisted.reason,
     });
     return { retry: true };
+  }
+  return { retry: false };
+}
+
+/**
+ * Static QR payments are reported as `qr_code.credited`, not only `payment.captured`.
+ * Save the captured payment to Supabase as soon as Razorpay sends that event.
+ */
+async function handleQrCodeCredited(paymentEntity, qrEntity) {
+  if (!paymentEntity || !paymentEntity.id) {
+    logWebhookSkip("qr_code.credited", "missing_payment", {
+      qr_code_id: qrEntity && qrEntity.id,
+    });
+    return { retry: false };
+  }
+
+  let payment = paymentEntity;
+  if (String(payment.status || "").toLowerCase() !== "captured") {
+    try {
+      payment = await fetchPayment(payment.id);
+    } catch {
+      logWebhookSkip("qr_code.credited", "payment_fetch_failed", {
+        payment_id: paymentEntity.id,
+        qr_code_id: qrEntity && qrEntity.id,
+      });
+      return { retry: true };
+    }
+  }
+
+  const status = String((payment && payment.status) || "").toLowerCase();
+  if (status !== "captured") {
+    logWebhookSkip("qr_code.credited", "not_captured", {
+      payment_id: paymentEntity.id,
+      payment_status: status,
+      qr_code_id: qrEntity && qrEntity.id,
+    });
+    return { retry: status === "authorized" || status === "created" || status === "pending" };
+  }
+
+  if (qrEntity && qrEntity.id && !payment.qr_code_id) {
+    payment = { ...payment, qr_code_id: qrEntity.id };
+  }
+
+  const persisted = await persistRazorpayQrDonation({
+    payment,
+    source: "razorpay_qr",
+  });
+  if (!persisted.saved) {
+    // eslint-disable-next-line no-console
+    console.warn("[razorpay-webhook] qr_code.credited but donation not saved", {
+      payment_id: payment.id,
+      qr_code_id: qrEntity && qrEntity.id,
+      reason: persisted.reason,
+    });
+    return { retry: persisted.reason !== "invalid_qr_payment" };
   }
   return { retry: false };
 }
@@ -361,6 +416,11 @@ module.exports = async function handler(req, res) {
     if (event === "payment.captured") {
       const result = await handlePaymentCaptured(paymentEntity);
       retry = !!(result && result.retry);
+    } else if (event === "qr_code.credited") {
+      const qrEntity =
+        payload && payload.payload && payload.payload.qr_code && payload.payload.qr_code.entity;
+      const result = await handleQrCodeCredited(paymentEntity, qrEntity);
+      retry = !!(result && result.retry);
     } else if (event === "payment.failed") {
       await handlePaymentFailed(paymentEntity);
     } else if (
@@ -395,7 +455,11 @@ module.exports = async function handler(req, res) {
       event,
       message: err && err.message ? err.message : String(err),
     });
-    if (event === "payment.captured" || event === "subscription.charged") {
+    if (
+      event === "payment.captured" ||
+      event === "qr_code.credited" ||
+      event === "subscription.charged"
+    ) {
       retry = true;
     }
   }
