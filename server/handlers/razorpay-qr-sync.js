@@ -12,10 +12,6 @@ function authorized(req) {
   const authorization = header(req, "authorization");
   if (cronSecret && authorization === `Bearer ${cronSecret}`) return true;
 
-  const bootstrap = String(process.env.QR_SYNC_BOOTSTRAP || "").trim();
-  const providedBootstrap = header(req, "x-qr-sync-bootstrap");
-  if (bootstrap && providedBootstrap && providedBootstrap === bootstrap) return true;
-
   const configuredSecret = String(process.env.ADMIN_RECEIPT_SECRET || "").trim();
   const configuredUsername = String(process.env.ADMIN_RECEIPT_USERNAME || "").trim();
   if (!configuredSecret) return !isProduction();
