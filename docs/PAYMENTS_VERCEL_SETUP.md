@@ -71,11 +71,10 @@ Also ensure Production has live Razorpay keys (`RAZORPAY_KEY_ID`, `RAZORPAY_KEY_
 
 Razorpay → Webhooks → your webhook → **Send test webhook** (`payment.captured`).
 
-- **200** = signature OK
-- **400 Invalid webhook signature** = wrong secret or redeploy needed
-- **500 Webhook not configured** = missing `RAZORPAY_WEBHOOK_SECRET` on Vercel
+- **200** = the secret matches. Razorpay’s sample payment is not a real charge and is not written to Supabase.
+- **400 Invalid webhook signature** = the Razorpay secret and `RAZORPAY_WEBHOOK_SECRET` still differ, or the site was not redeployed after the secret changed.
 
-Check Supabase `donations` for `source: webhook` on real captured payments.
+A real captured QR payment, after a 200 on this test, is written to Supabase. Check `donations` for `source: webhook`.
 
 A QR payment never comes back to the browser. The webhook writes it immediately when Razorpay calls the site. If that call is turned off, Vercel still copies recent captured payments into `donations` every two hours. Each run is its own once-a-day job so it fits the Hobby plan. That copy uses the live Razorpay keys and does not email the donor. Add `CRON_SECRET` (any long random value, Sensitive, with no spaces) on Vercel Production so the scheduled copy is accepted.
 

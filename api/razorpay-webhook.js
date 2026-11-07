@@ -38,6 +38,12 @@ function logWebhookSkip(event, reason, meta) {
   console.warn("[razorpay-webhook] skipped", { event, reason, ...meta });
 }
 
+/** Razorpay's "Send test webhook" uses a sample id that is not a real payment. */
+function razorpayRecordMissing(err) {
+  const message = err && err.message ? String(err.message) : String(err || "");
+  return /does not exist|not found/i.test(message);
+}
+
 async function saveQrPayment(payment, logEvent) {
   const persisted = await persistRazorpayQrDonation({
     payment,
@@ -76,7 +82,14 @@ async function handlePaymentCaptured(paymentEntity) {
   let order = null;
   try {
     order = await fetchOrder(paymentEntity.order_id);
-  } catch {
+  } catch (err) {
+    if (razorpayRecordMissing(err)) {
+      logWebhookSkip("payment.captured", "order_not_in_razorpay", {
+        payment_id: paymentEntity.id,
+        order_id: paymentEntity.order_id,
+      });
+      return { retry: false };
+    }
     order = null;
   }
 
@@ -139,16 +152,22 @@ async function handleQrCodeCredited(paymentEntity, qrEntity) {
   }
 
   let payment = paymentEntity;
-  if (String(payment.status || "").toLowerCase() !== "captured") {
-    try {
-      payment = await fetchPayment(payment.id);
-    } catch {
-      logWebhookSkip("qr_code.credited", "payment_fetch_failed", {
+  try {
+    const fetched = await fetchPayment(paymentEntity.id);
+    if (fetched && fetched.id) payment = fetched;
+  } catch (err) {
+    if (razorpayRecordMissing(err)) {
+      logWebhookSkip("qr_code.credited", "payment_not_in_razorpay", {
         payment_id: paymentEntity.id,
         qr_code_id: qrEntity && qrEntity.id,
       });
-      return { retry: true };
+      return { retry: false };
     }
+    logWebhookSkip("qr_code.credited", "payment_fetch_failed", {
+      payment_id: paymentEntity.id,
+      qr_code_id: qrEntity && qrEntity.id,
+    });
+    return { retry: true };
   }
 
   const status = String((payment && payment.status) || "").toLowerCase();
