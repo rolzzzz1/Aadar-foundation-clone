@@ -173,7 +173,7 @@ function buildRecordFromRazorpayQr({ payment, source }) {
 
   return {
     payment_id: payment.id,
-    order_id: "razorpay_qr",
+    order_id: payment.order_id || "razorpay_qr",
     receipt_no: "",
     amount_paise: amountPaise,
     currency: payment.currency || "INR",

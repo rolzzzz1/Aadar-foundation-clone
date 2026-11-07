@@ -37,14 +37,38 @@ function logWebhookSkip(event, reason, meta) {
   console.warn("[razorpay-webhook] skipped", { event, reason, ...meta });
 }
 
+/** Static QR payments are often labeled QRv2, and may have no order or an auto-created one. */
+function isStaticQrPayment(payment) {
+  if (!payment || typeof payment !== "object") return false;
+  if (payment.qr_code_id) return true;
+  if (!payment.order_id) return true;
+  return /qrv2/i.test(String(payment.description || ""));
+}
+
+async function saveQrPayment(payment, logEvent) {
+  const persisted = await persistRazorpayQrDonation({
+    payment,
+    source: "razorpay_qr",
+  });
+  if (!persisted.saved) {
+    // eslint-disable-next-line no-console
+    console.warn(`[razorpay-webhook] ${logEvent} but donation not saved`, {
+      payment_id: payment && payment.id,
+      reason: persisted.reason,
+    });
+    return { retry: persisted.reason !== "invalid_qr_payment" };
+  }
+  return { retry: false };
+}
+
 async function handlePaymentCaptured(paymentEntity) {
   if (!paymentEntity || !paymentEntity.id) {
     logWebhookSkip("payment.captured", "missing_payment", {});
     return;
   }
 
-  // Static QR / order-less UPI: no Razorpay order — still log to Supabase.
-  if (!paymentEntity.order_id) {
+  // Static QR: Razorpay may attach an auto-created order whose amount does not match the gift.
+  if (isStaticQrPayment(paymentEntity)) {
     const status = String(paymentEntity.status || "").toLowerCase();
     if (status !== "captured") {
       logWebhookSkip("payment.captured", "qr_not_captured", {
@@ -53,20 +77,7 @@ async function handlePaymentCaptured(paymentEntity) {
       });
       return;
     }
-
-    const persisted = await persistRazorpayQrDonation({
-      payment: paymentEntity,
-      source: "razorpay_qr",
-    });
-    if (!persisted.saved) {
-      // eslint-disable-next-line no-console
-      console.warn("[razorpay-webhook] QR payment.captured but donation not saved", {
-        payment_id: paymentEntity.id,
-        reason: persisted.reason,
-      });
-      return { retry: persisted.reason !== "invalid_qr_payment" };
-    }
-    return { retry: false };
+    return saveQrPayment(paymentEntity, "QR payment.captured");
   }
 
   let order = null;
@@ -86,6 +97,10 @@ async function handlePaymentCaptured(paymentEntity) {
 
   const check = validateCapturedPayment(paymentEntity, paymentEntity.order_id, order);
   if (!check.ok) {
+    const orderAmount = order && order.amount != null ? Number(order.amount) : 0;
+    if (check.reason === "amount_mismatch" && (!orderAmount || orderAmount <= 0)) {
+      return saveQrPayment(paymentEntity, "QR payment.captured");
+    }
     logWebhookSkip("payment.captured", check.reason, {
       payment_id: paymentEntity.id,
       order_id: paymentEntity.order_id,
@@ -149,20 +164,7 @@ async function handleQrCodeCredited(paymentEntity, qrEntity) {
     payment = { ...payment, qr_code_id: qrEntity.id };
   }
 
-  const persisted = await persistRazorpayQrDonation({
-    payment,
-    source: "razorpay_qr",
-  });
-  if (!persisted.saved) {
-    // eslint-disable-next-line no-console
-    console.warn("[razorpay-webhook] qr_code.credited but donation not saved", {
-      payment_id: payment.id,
-      qr_code_id: qrEntity && qrEntity.id,
-      reason: persisted.reason,
-    });
-    return { retry: persisted.reason !== "invalid_qr_payment" };
-  }
-  return { retry: false };
+  return saveQrPayment(payment, "qr_code.credited");
 }
 
 async function handlePaymentFailed(paymentEntity) {
@@ -448,6 +450,10 @@ module.exports = async function handler(req, res) {
       event === "subscription.pending"
     ) {
       await handleSubscriptionStatusEvent(subscriptionEntity, event);
+    } else {
+      logWebhookSkip(event || "unknown", "unhandled_event", {
+        payment_id: paymentEntity && paymentEntity.id,
+      });
     }
   } catch (err) {
     // eslint-disable-next-line no-console
