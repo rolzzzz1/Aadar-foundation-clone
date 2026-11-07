@@ -77,7 +77,7 @@ Razorpay → Webhooks → your webhook → **Send test webhook** (`payment.captu
 
 Check Supabase `donations` for `source: webhook` on real captured payments.
 
-A QR payment never comes back to the browser. The webhook writes it immediately when Razorpay calls the site. If that call is turned off, Vercel still copies recent captured payments into `donations` through the day. That copy uses the live Razorpay keys and does not email the donor. Add `CRON_SECRET` (any long random value, Sensitive) on Vercel Production so the scheduled copy is accepted.
+A QR payment never comes back to the browser. The webhook writes it immediately when Razorpay calls the site. If that call is turned off, Vercel still copies recent captured payments into `donations` every two hours. Each run is its own once-a-day job so it fits the Hobby plan. That copy uses the live Razorpay keys and does not email the donor. Add `CRON_SECRET` (any long random value, Sensitive, with no spaces) on Vercel Production so the scheduled copy is accepted.
 
 ---
 
