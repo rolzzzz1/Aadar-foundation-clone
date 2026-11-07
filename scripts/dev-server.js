@@ -28,6 +28,7 @@ const routeFiles = {
   "/api/admin-donation-receipt": path.join(handlersDir, "admin-donation-receipt.js"),
   "/api/admin-donation-receipt-lookup": path.join(handlersDir, "admin-donation-receipt-lookup.js"),
   "/api/admin-receipt-auth": path.join(handlersDir, "admin-receipt-auth.js"),
+  "/api/razorpay-qr-sync": path.join(handlersDir, "razorpay-qr-sync.js"),
   "/api/donation-receipt-resend": path.join(handlersDir, "donation-receipt-resend.js"),
   "/api/donation-confirm": path.join(handlersDir, "donation-confirm.js"),
   "/api/instagram-posts": path.join(handlersDir, "instagram-posts.js"),

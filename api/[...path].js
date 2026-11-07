@@ -17,6 +17,7 @@ const handlers = {
   "admin-donation-receipt": require("../server/handlers/admin-donation-receipt"),
   "admin-donation-receipt-lookup": require("../server/handlers/admin-donation-receipt-lookup"),
   "admin-receipt-auth": require("../server/handlers/admin-receipt-auth"),
+  "razorpay-qr-sync": require("../server/handlers/razorpay-qr-sync"),
   "membership-subscription-create": require("../server/handlers/membership-subscription-create"),
   "membership-subscription-verify": require("../server/handlers/membership-subscription-verify"),
 };

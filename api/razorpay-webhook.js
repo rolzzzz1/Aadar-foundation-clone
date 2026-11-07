@@ -5,6 +5,7 @@ const { fetchOrder, fetchPayment, validateCapturedPayment } = require("../server
 const {
   updateDonationRecordStatus,
   fetchDonationByPaymentId,
+  isStaticQrPayment,
 } = require("../server/_lib/donationRecord");
 const {
   persistCapturedDonation,
@@ -35,14 +36,6 @@ function debugSnippet(value, maxLen = 140) {
 function logWebhookSkip(event, reason, meta) {
   // eslint-disable-next-line no-console
   console.warn("[razorpay-webhook] skipped", { event, reason, ...meta });
-}
-
-/** Static QR payments are often labeled QRv2, and may have no order or an auto-created one. */
-function isStaticQrPayment(payment) {
-  if (!payment || typeof payment !== "object") return false;
-  if (payment.qr_code_id) return true;
-  if (!payment.order_id) return true;
-  return /qrv2/i.test(String(payment.description || ""));
 }
 
 async function saveQrPayment(payment, logEvent) {
@@ -97,9 +90,17 @@ async function handlePaymentCaptured(paymentEntity) {
 
   const check = validateCapturedPayment(paymentEntity, paymentEntity.order_id, order);
   if (!check.ok) {
-    const orderAmount = order && order.amount != null ? Number(order.amount) : 0;
-    if (check.reason === "amount_mismatch" && (!orderAmount || orderAmount <= 0)) {
-      return saveQrPayment(paymentEntity, "QR payment.captured");
+    if (check.reason === "amount_mismatch") {
+      const persisted = await persistCapturedDonation({
+        payment: paymentEntity,
+        order,
+        source: "webhook",
+        sendEmail: false,
+      });
+      if (!persisted.saved) {
+        return { retry: true };
+      }
+      return { retry: false };
     }
     logWebhookSkip("payment.captured", check.reason, {
       payment_id: paymentEntity.id,

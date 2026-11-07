@@ -146,6 +146,14 @@ function buildRecordFromRazorpay({ payment, order, source, subscriptionId, frequ
  * Donor KYC (PAN, address, etc.) is usually missing — receipt email should not be sent
  * until an admin/donor fills those fields.
  */
+/** Static QR payments are often labeled QRv2, and may have no order or an auto-created one. */
+function isStaticQrPayment(payment) {
+  if (!payment || typeof payment !== "object") return false;
+  if (payment.qr_code_id) return true;
+  if (!payment.order_id) return true;
+  return /qrv2|\bqr\b/i.test(String(payment.description || ""));
+}
+
 function buildRecordFromRazorpayQr({ payment, source }) {
   if (!payment || !payment.id) return null;
 
@@ -778,6 +786,7 @@ module.exports = {
   isStoreConfigured,
   buildRecordFromRazorpay,
   buildRecordFromRazorpayQr,
+  isStaticQrPayment,
   extractPaymentMethod,
   extractPaymentUtr,
   fetchDonationByPaymentId,

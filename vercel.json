@@ -15,6 +15,12 @@
       "includeFiles": "server/_lib/fonts/**"
     }
   },
+  "crons": [
+    {
+      "path": "/api/razorpay-qr-sync",
+      "schedule": "*/10 * * * *"
+    }
+  ],
   "redirects": [
     { "source": "/pages/landing-pages/about-us", "destination": "/about", "permanent": true },
     { "source": "/pages/landing-pages/about", "destination": "/about", "permanent": true },
