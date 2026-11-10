@@ -177,6 +177,33 @@ function buildDonorDetailUpdate(body) {
   };
 }
 
+function isRazorpayStaticQrRow(row) {
+  if (!row) return false;
+  const id = String(row.payment_id || "");
+  if (!id.startsWith("pay_")) return false;
+  return String(row.source || "").toLowerCase() === "razorpay_qr";
+}
+
+function extractUtrFromPurpose(purpose) {
+  const match = String(purpose || "").match(/UTR\s+([A-Z0-9]{10,22})/i);
+  return match ? match[1].toUpperCase() : "";
+}
+
+/**
+ * Keep the stored "UTR …" marker when an admin note is added to a QR payment.
+ */
+function mergeQrPurpose(existingPurpose, adminPurpose, utr) {
+  const marker = utr ? `UTR ${String(utr).toUpperCase()}` : "";
+  const existing = String(existingPurpose || "").trim();
+  const note = String(adminPurpose || "").trim();
+  if (!note) return existing.slice(0, 240);
+  if (!marker) return note.slice(0, 240);
+  if (note.toUpperCase().includes(marker)) return note.slice(0, 240);
+  if (!existing) return `Razorpay Static QR donation · ${marker} · ${note}`.slice(0, 240);
+  if (existing.toUpperCase().includes(note.toUpperCase())) return existing.slice(0, 240);
+  return `${existing} · ${note}`.slice(0, 240);
+}
+
 function isAdminEditableReceipt(row) {
   if (!row) return false;
   const source = String(row.source || "").toLowerCase();
@@ -199,4 +226,7 @@ module.exports = {
   buildManualDonationRecord,
   buildDonorDetailUpdate,
   isAdminEditableReceipt,
+  isRazorpayStaticQrRow,
+  extractUtrFromPurpose,
+  mergeQrPurpose,
 };

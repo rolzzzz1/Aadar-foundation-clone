@@ -187,7 +187,10 @@ export default function AdminReceiptUpdate({ onBack, onLogout, adminSecret, admi
         setError(t("adminPortal.useManualTab"));
         return;
       }
-      setForm(formFromRecord(response.record, lookup.paymentMethod));
+      const loaded = formFromRecord(response.record, lookup.paymentMethod);
+      if (!isRazorpay) loaded.transactionRef = ref;
+      if (paymentId.startsWith("pay_")) loaded.qrLinked = true;
+      setForm(loaded);
     } catch (err) {
       setForm(null);
       setError((err && err.message) || t("adminPortal.lookupFailed"));
@@ -223,7 +226,7 @@ export default function AdminReceiptUpdate({ onBack, onLogout, adminSecret, admi
       };
       const response = await postAdmin(
         "/api/admin-donation-receipt",
-        form.donorOnly
+        form.donorOnly || form.qrLinked
           ? {
               update: true,
               donor_only: true,
@@ -418,9 +421,14 @@ export default function AdminReceiptUpdate({ onBack, onLogout, adminSecret, admi
           sx={{ p: { xs: 2.5, sm: 3 }, borderRadius: "18px" }}
         >
           <Alert severity="info" sx={{ mb: 2.5 }}>
-            {t(form.donorOnly ? "adminPortal.razorpayUpdateAlert" : "adminPortal.updateAlert", {
-              receiptNo: form.receiptNo || "—",
-            })}
+            {t(
+              form.donorOnly || form.qrLinked
+                ? "adminPortal.razorpayUpdateAlert"
+                : "adminPortal.updateAlert",
+              {
+                receiptNo: form.receiptNo || "—",
+              }
+            )}
           </Alert>
           <Typography sx={{ fontWeight: 800, color: "#1f2a44", mb: 1.25 }}>
             {t("adminPortal.paymentDetails")}
@@ -458,7 +466,7 @@ export default function AdminReceiptUpdate({ onBack, onLogout, adminSecret, admi
                 onChange={updateField("amountInr")}
                 fullWidth
                 required
-                disabled={form.donorOnly}
+                disabled={form.donorOnly || form.qrLinked}
                 sx={fieldSx}
               />
             </Grid>
@@ -470,7 +478,7 @@ export default function AdminReceiptUpdate({ onBack, onLogout, adminSecret, admi
                 onChange={updateField("paidAt")}
                 fullWidth
                 required
-                disabled={form.donorOnly}
+                disabled={form.donorOnly || form.qrLinked}
                 InputLabelProps={{ shrink: true }}
                 sx={fieldSx}
               />

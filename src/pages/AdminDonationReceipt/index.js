@@ -1367,9 +1367,14 @@ export default function AdminDonationReceiptPage() {
         ) : (
           <Stack spacing={2.5}>
             <Alert severity="success" icon={<CheckCircleIcon />}>
-              {t("adminPortal.receiptCreatedReview", {
-                receiptNo: result.receipt_no || previewRecord?.receiptNo || "",
-              })}
+              {t(
+                result.linked_qr
+                  ? "adminPortal.receiptLinkedReview"
+                  : "adminPortal.receiptCreatedReview",
+                {
+                  receiptNo: result.receipt_no || previewRecord?.receiptNo || "",
+                }
+              )}
             </Alert>
 
             {previewRecord ? (

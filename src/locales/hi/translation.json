@@ -1195,6 +1195,7 @@
     "purposeOptional": "उद्देश्य / नोट (वैकल्पिक)",
     "resendIfExists": "यदि यह लेनदेन संदर्भ पहले से मौजूद है तो रसीद अपडेट करें",
     "receiptCreatedReview": "रसीद {{receiptNo}} बन गई। नीचे जाँचें, और विवरण सही हों तो ईमेल करें।",
+    "receiptLinkedReview": "दाता विवरण मौजूदा Razorpay QR भुगतान पर सहेज दिए गए। रसीद {{receiptNo}} जाँच और ईमेल के लिए तैयार है।",
     "receiptLanguage": "रसीद की भाषा",
     "langEnglish": "अंग्रेज़ी",
     "langHindi": "हिंदी",

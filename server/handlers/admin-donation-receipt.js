@@ -8,6 +8,7 @@ const {
   isStoreConfigured,
   fetchDonationByPaymentId,
   fetchDonationByReceiptNo,
+  fetchDonationsByQrUtr,
   normalizeReceiptNo,
   upsertDonationRecord,
   updateManualDonationRecord,
@@ -19,6 +20,9 @@ const {
   buildManualDonationRecord,
   buildDonorDetailUpdate,
   isAdminEditableReceipt,
+  isRazorpayStaticQrRow,
+  extractUtrFromPurpose,
+  mergeQrPurpose,
 } = require("../_lib/manualReceipt");
 
 const MAX_BODY_BYTES = 8 * 1024;
@@ -63,6 +67,46 @@ function verifyAdminSecret(req, body) {
     return { ok: false, status: 403, error: "Invalid admin credentials." };
   }
   return { ok: true };
+}
+
+function qrDonorPatch(existing, donorUpdate) {
+  const utr = extractUtrFromPurpose(existing.purpose);
+  const patch = { ...donorUpdate.patch };
+  patch.purpose = mergeQrPurpose(existing.purpose, patch.purpose, utr);
+  if (!String(patch.program_label || "").trim()) {
+    patch.program_label = existing.program_label || "";
+  }
+  return patch;
+}
+
+async function saveQrDonorDetails(res, body, existing) {
+  const status = String(existing.status || "").toLowerCase();
+  if (status !== "captured") {
+    return res.status(400).json({ error: "Only captured donations can be updated." });
+  }
+
+  const donorUpdate = buildDonorDetailUpdate(body);
+  if (!donorUpdate.ok) {
+    return res.status(400).json({ error: donorUpdate.error });
+  }
+
+  const saved = await updateDonorDetails(existing.payment_id, qrDonorPatch(existing, donorUpdate));
+  if (!saved.saved || !saved.row) {
+    return res.status(502).json({ error: "Could not update donation record." });
+  }
+
+  const updated = saved.row;
+  return res.status(200).json({
+    ok: true,
+    created: false,
+    updated: true,
+    linked_qr: true,
+    receipt_email_sent: false,
+    payment_id: updated.payment_id,
+    receipt_no: updated.receipt_no,
+    donor_email: updated.donor_email,
+    record: donationRowToReceiptRecord(updated, { locale: body.locale === "hi" ? "hi" : "en" }),
+  });
 }
 
 module.exports = async function handler(req, res) {
@@ -115,7 +159,7 @@ module.exports = async function handler(req, res) {
     if (!existing) {
       return res.status(404).json({ error: "Receipt not found." });
     }
-    if (isAdminEditableReceipt(existing)) {
+    if (isAdminEditableReceipt(existing) && !isRazorpayStaticQrRow(existing)) {
       return res.status(400).json({
         error: "This receipt was issued for a UPI or bank transfer. Update it from that tab.",
       });
@@ -129,7 +173,10 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: donorUpdate.error });
     }
 
-    const savedDonor = await updateDonorDetails(existing.payment_id, donorUpdate.patch);
+    const donorPatch = isRazorpayStaticQrRow(existing)
+      ? qrDonorPatch(existing, donorUpdate)
+      : donorUpdate.patch;
+    const savedDonor = await updateDonorDetails(existing.payment_id, donorPatch);
     if (!savedDonor.saved || !savedDonor.row) {
       return res.status(502).json({ error: "Could not update donation record." });
     }
@@ -155,8 +202,43 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: built.error });
   }
 
-  const existing = await fetchDonationByPaymentId(built.paymentId);
   const updating = body.update === true;
+  const isBank = built.record.payment_method === "bank_transfer";
+  let qrMatch = null;
+  if (!isBank) {
+    const found = await fetchDonationsByQrUtr(built.refValue);
+    if (!found.ok) {
+      return res.status(502).json({ error: "Could not check the existing QR payment." });
+    }
+    if (found.rows.length > 1) {
+      return res.status(409).json({
+        error: "More than one Razorpay QR payment has this UTR. Update the payment ID directly.",
+      });
+    }
+    qrMatch = found.rows[0] || null;
+  }
+
+  if (qrMatch) {
+    const submittedInr = Math.round(Number(built.record.amount_paise) / 100);
+    const storedInr = Math.round((Number(qrMatch.amount_paise) || 0) / 100);
+    if (!updating && submittedInr !== storedInr) {
+      return res.status(409).json({
+        error: `This UTR belongs to Razorpay QR payment ${qrMatch.payment_id} for ₹${storedInr}. Enter that amount so the existing record is updated.`,
+        payment_id: qrMatch.payment_id,
+        receipt_no: qrMatch.receipt_no || null,
+      });
+    }
+    if (!updating && String(qrMatch.donor_name || "").trim()) {
+      return res.status(409).json({
+        error: "This QR payment already has donor details. Update that receipt instead of creating a new one.",
+        payment_id: qrMatch.payment_id,
+        receipt_no: qrMatch.receipt_no || null,
+      });
+    }
+    return saveQrDonorDetails(res, body, qrMatch);
+  }
+
+  const existing = await fetchDonationByPaymentId(built.paymentId);
 
   if (updating) {
     if (!existing || !isAdminEditableReceipt(existing)) {

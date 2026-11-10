@@ -602,6 +602,7 @@ export default function DonationReceiptRetrievePage() {
   const prevDonationsCountRef = useRef(0);
   const receiptCardRef = useRef(null);
   const screenshotInputRef = useRef(null);
+  const bankNoticeRef = useRef(null);
 
   useEffect(() => {
     const hash = String(window.location.hash || "")
@@ -633,6 +634,20 @@ export default function DonationReceiptRetrievePage() {
       window.scrollTo({ top: Math.max(0, top), behavior });
     });
   }, [donationsList]);
+
+  useEffect(() => {
+    if (!bankSuccess && !bankError) return;
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const behavior = prefersReducedMotion ? "auto" : "smooth";
+    window.requestAnimationFrame(() => {
+      const el = bankNoticeRef.current;
+      if (!el) return;
+      el.scrollIntoView({ behavior, block: "nearest" });
+    });
+  }, [bankSuccess, bankError]);
 
   const scrollToReceiptCardTop = () => {
     const prefersReducedMotion =
@@ -1197,12 +1212,6 @@ export default function DonationReceiptRetrievePage() {
         {copy.bankIntroAfter || "After verification, we'll email your 80G tax receipt."}
       </Typography>
 
-      {bankSuccess ? (
-        <Alert severity="success" sx={{ borderRadius: "10px" }}>
-          {bankSuccess}
-        </Alert>
-      ) : null}
-
       <Box component="form" onSubmit={handleBankSubmit}>
         <Grid container spacing={1.75}>
           <Grid item xs={12} sm={6}>
@@ -1446,12 +1455,6 @@ export default function DonationReceiptRetrievePage() {
           </Grid>
         </Grid>
 
-        {bankError ? (
-          <Alert severity="error" sx={{ mt: 2, borderRadius: "10px" }}>
-            {bankError}
-          </Alert>
-        ) : null}
-
         <MKButton
           type="submit"
           variant="contained"
@@ -1471,6 +1474,20 @@ export default function DonationReceiptRetrievePage() {
             ? copy.bankSubmitting || "Sending…"
             : copy.bankSubmit || "Submit receipt request"}
         </MKButton>
+
+        {bankError || bankSuccess ? (
+          <Box ref={bankNoticeRef} sx={{ mt: 2 }}>
+            {bankError ? (
+              <Alert severity="error" sx={{ borderRadius: "10px" }}>
+                {bankError}
+              </Alert>
+            ) : (
+              <Alert severity="success" sx={{ borderRadius: "10px" }}>
+                {bankSuccess}
+              </Alert>
+            )}
+          </Box>
+        ) : null}
       </Box>
     </Stack>
   );

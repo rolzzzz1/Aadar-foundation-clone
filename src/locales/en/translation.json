@@ -1195,6 +1195,7 @@
     "purposeOptional": "Purpose / note (optional)",
     "resendIfExists": "Update the receipt if this transaction reference already exists",
     "receiptCreatedReview": "Receipt {{receiptNo}} created. Review it below, then email it if the details are correct.",
+    "receiptLinkedReview": "Donor details were saved on the existing Razorpay QR payment. Receipt {{receiptNo}} is ready to review and email.",
     "receiptLanguage": "Receipt language",
     "langEnglish": "English",
     "langHindi": "Hindi",

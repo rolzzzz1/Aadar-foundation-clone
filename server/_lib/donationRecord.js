@@ -368,6 +368,56 @@ async function fetchDonationByReceiptNo(receiptNo) {
 }
 
 /**
+ * Razorpay Static QR rows store the UPI reference as "UTR {value}" in purpose.
+ * Returns ok:false when the lookup itself fails, so callers do not create a second row.
+ * @returns {Promise<{ ok: boolean, rows: object[] }>}
+ */
+async function fetchDonationsByQrUtr(utr) {
+  const normalized = String(utr || "")
+    .trim()
+    .toUpperCase();
+  if (!isStoreConfigured() || !normalized) return { ok: true, rows: [] };
+
+  const base = process.env.SUPABASE_URL.replace(/\/$/, "");
+  const pattern = `*UTR ${normalized}*`.replace(/ /g, "%20");
+  const url = `${base}/rest/v1/donations?source=eq.razorpay_qr&purpose=ilike.${pattern}&select=${DONATION_SELECT_FIELDS}&limit=5`;
+
+  try {
+    const res = await fetch(url, {
+      headers: {
+        apikey: process.env.SUPABASE_SERVICE_ROLE_KEY,
+        Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`,
+        Accept: "application/json",
+      },
+    });
+    if (!res.ok) {
+      const text = await res.text().catch(() => "");
+      logSaveFailure("Supabase fetch by QR UTR failed", {
+        status: res.status,
+        detail: text.slice(0, 200),
+      });
+      return { ok: false, rows: [] };
+    }
+    const rows = await res.json().catch(() => []);
+    const list = Array.isArray(rows) ? rows : [];
+    const marker = `UTR ${normalized}`;
+    const exact = list.filter((row) => {
+      const purpose = String((row && row.purpose) || "").toUpperCase();
+      const at = purpose.indexOf(marker);
+      if (at < 0) return false;
+      const next = purpose.charAt(at + marker.length);
+      return !next || !/[A-Z0-9]/.test(next);
+    });
+    return { ok: true, rows: exact };
+  } catch (err) {
+    logSaveFailure("Supabase fetch by QR UTR error", {
+      message: err && err.message ? err.message : String(err),
+    });
+    return { ok: false, rows: [] };
+  }
+}
+
+/**
  * Insert or merge donation row by payment_id.
  * New rows receive an official AADAR-YYYY-###### receipt_no when missing.
  * @returns {Promise<{ saved: boolean, reason?: string, row?: object, created?: boolean }>}
@@ -791,6 +841,7 @@ module.exports = {
   extractPaymentUtr,
   fetchDonationByPaymentId,
   fetchDonationByReceiptNo,
+  fetchDonationsByQrUtr,
   fetchDonationsByContact,
   normalizeReceiptNo,
   upsertDonationRecord,

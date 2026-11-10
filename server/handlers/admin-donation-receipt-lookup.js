@@ -10,6 +10,7 @@ const {
   fetchDonationByPaymentId,
   fetchDonationByReceiptNo,
   fetchDonationsByContact,
+  fetchDonationsByQrUtr,
   normalizeReceiptNo,
 } = require("../_lib/donationRecord");
 const { donationRowToReceiptRecord } = require("../_lib/receiptRecord");
@@ -21,6 +22,7 @@ const {
   validateBankRef,
   bankPaymentId,
   isAdminEditableReceipt,
+  isRazorpayStaticQrRow,
 } = require("../_lib/manualReceipt");
 
 const MAX_BODY_BYTES = 2 * 1024;
@@ -228,8 +230,21 @@ module.exports = async function handler(req, res) {
       }
 
       const paymentId = isBank ? bankPaymentId(refCheck.value) : upiPaymentId(refCheck.value);
-      const row = await fetchDonationByPaymentId(paymentId);
-      if (!row || !isAdminEditableReceipt(row)) {
+      let row = null;
+      if (!isBank) {
+        const found = await fetchDonationsByQrUtr(refCheck.value);
+        if (!found.ok) {
+          return res.status(502).json({ error: "Could not check the existing QR payment." });
+        }
+        if (found.rows.length > 1) {
+          return res.status(409).json({
+            error: "More than one Razorpay QR payment has this UTR. Update the payment ID directly.",
+          });
+        }
+        row = found.rows[0] || null;
+      }
+      if (!row) row = await fetchDonationByPaymentId(paymentId);
+      if (!row || (!isAdminEditableReceipt(row) && !isRazorpayStaticQrRow(row))) {
         return res.status(404).json({
           error: "No UPI or bank transfer receipt was found for this reference.",
         });
