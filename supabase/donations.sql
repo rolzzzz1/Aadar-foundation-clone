@@ -28,6 +28,8 @@ create table if not exists public.donations (
   payment_method text,
   source text not null,
   created_at timestamptz not null default now(),
+  -- India wall clock of created_at, for the table grid. Existing projects: run supabase/paid_at_ist.sql
+  paid_at_ist timestamp without time zone generated always as (created_at at time zone 'Asia/Kolkata') stored,
   updated_at timestamptz not null default now(),
   receipt_email_sent_at timestamptz,
   constraint donations_payment_id_key unique (payment_id)

@@ -54,7 +54,7 @@ async function sendReceiptRequestEmail(payload, screenshot = null) {
       ${rowHtml("Father / husband name", payload.fatherOrHusbandName)}
       ${rowHtml("Mobile", payload.mobile)}
       ${rowHtml("Email", payload.email)}
-      ${rowHtml("PAN", payload.pan)}
+      ${rowHtml("PAN", payload.pan || "Not provided")}
       ${rowHtml("Address", payload.address)}
       ${rowHtml("City", payload.city)}
       ${rowHtml("State", payload.state)}

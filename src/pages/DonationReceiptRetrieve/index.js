@@ -731,8 +731,6 @@ export default function DonationReceiptRetrievePage() {
       !father ||
       !emailCheck.ok ||
       !mobileCheck.ok ||
-      !panCheck.ok ||
-      !panCheck.value ||
       !addressCheck.ok ||
       !city ||
       !state ||
@@ -743,6 +741,10 @@ export default function DonationReceiptRetrievePage() {
       utr.length < 4
     ) {
       setBankError(copy.bankInvalid || "Please fill all required fields correctly.");
+      return;
+    }
+    if (!panCheck.ok) {
+      setBankError(copy.validationPan || "Enter a valid PAN (e.g. ABCDE1234F).");
       return;
     }
     if (!bankForm.screenshotBase64) {
@@ -1252,14 +1254,39 @@ export default function DonationReceiptRetrievePage() {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              label={copy.panRequired || copy.pan || "PAN (required)"}
+              label={copy.panOptional || "PAN Number (optional)"}
               value={bankForm.pan}
-              onChange={updateBankField("pan")}
-              placeholder="ABCDE1234F"
+              onChange={(event) => {
+                const next = String(event.target.value || "")
+                  .toUpperCase()
+                  .replace(/[^A-Z0-9]/g, "")
+                  .slice(0, 10);
+                setBankForm((prev) => ({ ...prev, pan: next }));
+                setBankError("");
+                setBankSuccess("");
+              }}
               fullWidth
-              required
               disabled={bankBusy}
-              inputProps={{ maxLength: 10 }}
+              error={!validatePan(bankForm.pan).ok}
+              helperText={
+                validatePan(bankForm.pan).ok
+                  ? bankForm.pan.trim()
+                    ? ""
+                    : copy.panExemptionNote ||
+                      "PAN number is required for claiming 50% tax exemption under Section 80G in India."
+                  : copy.validationPan || "Enter a valid PAN (e.g. ABCDE1234F)."
+              }
+              FormHelperTextProps={{
+                sx: {
+                  color: "#d32f2f",
+                  mx: 0.25,
+                  mt: 0.5,
+                  fontWeight: 500,
+                  fontSize: "0.8rem",
+                  lineHeight: 1.45,
+                },
+              }}
+              inputProps={{ maxLength: 10, autoCapitalize: "characters" }}
               sx={fieldSx}
             />
           </Grid>

@@ -104,8 +104,8 @@ module.exports = async function handler(req, res) {
   if (!MOBILE_RE.test(mobile)) {
     return res.status(400).json({ error: "Enter a valid 10-digit mobile number." });
   }
-  if (!PAN_RE.test(pan)) {
-    return res.status(400).json({ error: "Enter a valid PAN (required for 80G receipt)." });
+  if (pan && !PAN_RE.test(pan)) {
+    return res.status(400).json({ error: "Enter a valid PAN (e.g. ABCDE1234F)." });
   }
   if (!address || address.length < 5) {
     return res.status(400).json({ error: "Address is required." });
