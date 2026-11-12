@@ -1383,13 +1383,12 @@ export default function DonationReceiptRetrievePage() {
               label={copy.bankUtr || copy.utr || "UTR / Bank Reference"}
               value={bankForm.transactionRef}
               onChange={updateBankField("transactionRef")}
-              placeholder="123456789012"
               fullWidth
               required
               disabled={bankBusy}
               helperText={
                 copy.bankUtrHint ||
-                "UTR is the unique ID shown in your UPI app after payment. For a bank transfer, enter the NEFT/RTGS/IMPS reference from your bank SMS or receipt."
+                "UTR is the unique ID shown in your UPI app after payment. For a bank transfer, enter the NEFT/RTGS/IMPS reference from your bank SMS or receipt. Example: 123456789012"
               }
               FormHelperTextProps={{
                 sx: {

@@ -22,6 +22,7 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { validateEmail } from "utils/donation";
 
 import DonationReceiptSheet from "components/DonationReceiptSheet";
+import LanguageSelector from "components/language-selector";
 import MKButton from "components/MKButton";
 import aadarLogo from "assets/images/logos/logo-aadar.jpg";
 import { formatInr } from "utils/receiptFormat";
@@ -338,7 +339,8 @@ export default function AdminReceiptRetrieve({ onBack, onLogout, adminSecret, ad
             {t("adminPortal.retrieveSubtitle")}
           </Typography>
         </Box>
-        <Stack direction="row" spacing={1} sx={{ flexShrink: 0 }}>
+        <Stack direction="row" spacing={1} alignItems="center" sx={{ flexShrink: 0 }}>
+          <LanguageSelector />
           <MKButton
             variant="outlined"
             color="dark"

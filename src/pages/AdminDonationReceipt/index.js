@@ -33,6 +33,7 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import DonationReceiptSheet from "components/DonationReceiptSheet";
 import MKButton from "components/MKButton";
 import MKBox from "components/MKBox";
+import LanguageSelector from "components/language-selector";
 import AdminReceiptRetrieve from "pages/AdminDonationReceipt/AdminReceiptRetrieve";
 import AdminReceiptUpdate from "pages/AdminDonationReceipt/AdminReceiptUpdate";
 import aadarLogo from "assets/images/logos/logo-aadar.jpg";
@@ -525,11 +526,22 @@ export default function AdminDonationReceiptPage() {
                 xs={12}
                 md={7}
                 sx={{
+                  position: "relative",
                   p: { xs: 2, sm: 2.75, md: 3 },
                   display: "flex",
                   alignItems: "center",
                 }}
               >
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: 0,
+                    right: { xs: 2, sm: 2.75, md: 3 },
+                    zIndex: 1,
+                  }}
+                >
+                  <LanguageSelector />
+                </Box>
                 <Box
                   component="form"
                   onSubmit={(e) => {
@@ -761,6 +773,7 @@ export default function AdminDonationReceiptPage() {
                 </Stack>
 
                 <Stack direction="row" spacing={1.25} alignItems="center">
+                  <LanguageSelector />
                   <Box
                     sx={{
                       width: 40,
@@ -1087,7 +1100,8 @@ export default function AdminDonationReceiptPage() {
               {t("adminPortal.issueSubtitle")}
             </Typography>
           </Box>
-          <Stack direction="row" spacing={1} sx={{ flexShrink: 0 }}>
+          <Stack direction="row" spacing={1} alignItems="center" sx={{ flexShrink: 0 }}>
+            <LanguageSelector />
             <MKButton
               variant="outlined"
               color="dark"

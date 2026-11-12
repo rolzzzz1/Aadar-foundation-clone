@@ -18,6 +18,7 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 
 import DonationReceiptSheet from "components/DonationReceiptSheet";
+import LanguageSelector from "components/language-selector";
 import MKButton from "components/MKButton";
 import aadarLogo from "assets/images/logos/logo-aadar.jpg";
 import { formatApiErrorMessage, getApiUrl } from "utils/api";
@@ -300,7 +301,8 @@ export default function AdminReceiptUpdate({ onBack, onLogout, adminSecret, admi
             {t("adminPortal.updateSubtitle")}
           </Typography>
         </Box>
-        <Stack direction="row" spacing={1} sx={{ flexShrink: 0 }}>
+        <Stack direction="row" spacing={1} alignItems="center" sx={{ flexShrink: 0 }}>
+          <LanguageSelector />
           <MKButton
             variant="outlined"
             color="dark"
