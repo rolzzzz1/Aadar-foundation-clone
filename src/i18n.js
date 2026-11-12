@@ -33,7 +33,12 @@ i18n
       en: { translation: enTranslation },
     },
     backend: {
-      loadPath: `${process.env.PUBLIC_URL || ""}/locales/{{lng}}/translation.json`,
+      // Query string changes the URL so a browser that cached the previous
+      // Hindi file (Cache-Control max-age) does not keep "फिर से स्वागत है".
+      loadPath: `${process.env.PUBLIC_URL || ""}/locales/{{lng}}/translation.json?v=3`,
+      requestOptions: {
+        cache: "no-cache",
+      },
     },
     react: {
       useSuspense: false,
