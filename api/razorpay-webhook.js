@@ -8,6 +8,7 @@ const {
   isStaticQrPayment,
 } = require("../server/_lib/donationRecord");
 const {
+  BEFORE_RECORD_CUTOFF,
   persistCapturedDonation,
   persistRazorpayQrDonation,
 } = require("../server/_lib/donationPersist");
@@ -50,6 +51,12 @@ async function saveQrPayment(payment, logEvent) {
     source: "razorpay_qr",
   });
   if (!persisted.saved) {
+    if (persisted.reason === BEFORE_RECORD_CUTOFF) {
+      logWebhookSkip(logEvent, BEFORE_RECORD_CUTOFF, {
+        payment_id: payment && payment.id,
+      });
+      return { retry: false };
+    }
     // eslint-disable-next-line no-console
     console.warn(`[razorpay-webhook] ${logEvent} but donation not saved`, {
       payment_id: payment && payment.id,
@@ -111,6 +118,12 @@ async function handlePaymentCaptured(paymentEntity) {
         sendEmail: false,
       });
       if (!persisted.saved) {
+        if (persisted.reason === BEFORE_RECORD_CUTOFF) {
+          logWebhookSkip("payment.captured", BEFORE_RECORD_CUTOFF, {
+            payment_id: paymentEntity.id,
+          });
+          return { retry: false };
+        }
         return { retry: true };
       }
       return { retry: false };
@@ -129,6 +142,12 @@ async function handlePaymentCaptured(paymentEntity) {
     source: "webhook",
   });
   if (!persisted.saved) {
+    if (persisted.reason === BEFORE_RECORD_CUTOFF) {
+      logWebhookSkip("payment.captured", BEFORE_RECORD_CUTOFF, {
+        payment_id: paymentEntity.id,
+      });
+      return { retry: false };
+    }
     // eslint-disable-next-line no-console
     console.warn("[razorpay-webhook] payment.captured but donation not saved", {
       payment_id: paymentEntity.id,
@@ -284,6 +303,13 @@ async function handleSubscriptionCharged(subscriptionEntity, paymentEntity) {
     frequency: subsNotes.frequency || null,
   });
   if (!persisted.saved) {
+    if (persisted.reason === BEFORE_RECORD_CUTOFF) {
+      logWebhookSkip("subscription.charged", BEFORE_RECORD_CUTOFF, {
+        subscription_id: subscriptionEntity.id,
+        payment_id: paymentEntity.id,
+      });
+      return { retry: false };
+    }
     // eslint-disable-next-line no-console
     console.warn("[razorpay-webhook] subscription.charged but donation not saved", {
       subscription_id: subscriptionEntity.id,

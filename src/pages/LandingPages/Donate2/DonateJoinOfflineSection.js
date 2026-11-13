@@ -8,6 +8,7 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import AccountBalanceOutlinedIcon from "@mui/icons-material/AccountBalanceOutlined";
 import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
 import CreditCardOutlinedIcon from "@mui/icons-material/CreditCardOutlined";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
 import VerifiedUserOutlinedIcon from "@mui/icons-material/VerifiedUserOutlined";
@@ -400,35 +401,55 @@ function DonateJoinOfflineSection({
           ) : null}
         </Grid>
 
-        <MKTypography
+        <MKBox
           sx={{
-            mt: { xs: 2.5, sm: 3 },
+            mt: { xs: 2, sm: 2.25 },
             mx: "auto",
-            maxWidth: 400,
+            maxWidth: 420,
             textAlign: "center",
-            fontSize: { xs: "0.82rem", sm: "0.88rem" },
-            color: "rgba(31, 42, 68, 0.72)",
-            lineHeight: 1.55,
             animation: "upiFadeUp 0.7s ease 0.2s both",
           }}
         >
-          {direct.scanCard.receiptCtaLine1}{" "}
           <MKTypography
-            component={Link}
-            to={`${DONATION_RECEIPT_PATH}#bank`}
+            component="p"
             sx={{
-              color: "#1f2a44",
-              fontWeight: 700,
-              fontSize: "inherit",
-              textDecoration: "underline",
-              textUnderlineOffset: "3px",
-              "&:hover": { color: "#ECA533" },
+              fontSize: { xs: "0.92rem", sm: "0.98rem" },
+              fontWeight: 600,
+              color: "rgba(31, 42, 68, 0.78)",
+              lineHeight: 1.5,
             }}
           >
-            {direct.scanCard.receiptCtaLink}
-          </MKTypography>{" "}
-          {direct.scanCard.receiptCtaLine2}
-        </MKTypography>
+            {direct.scanCard.receiptCtaLine1} {direct.scanCard.receiptCtaLine2}
+          </MKTypography>
+          <MKBox
+            component={Link}
+            to={{ pathname: DONATION_RECEIPT_PATH, hash: "#bank" }}
+            preventScrollReset
+            sx={{
+              mt: 1.25,
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              px: 2,
+              py: 0.85,
+              borderRadius: "999px",
+              border: "1.5px solid #1e6b35",
+              bgcolor: "transparent",
+              color: "#1e6b35",
+              fontWeight: 700,
+              fontSize: "0.95rem",
+              lineHeight: 1.2,
+              textDecoration: "none",
+              "&:hover": {
+                bgcolor: "rgba(30, 107, 53, 0.08)",
+                color: "#174f28",
+              },
+            }}
+          >
+            {direct.scanCard.receiptCtaBefore || "Submit your details"}
+            <ArrowForwardIcon sx={{ ml: 0.75, fontSize: 18 }} />
+          </MKBox>
+        </MKBox>
 
         <MKBox
           sx={{

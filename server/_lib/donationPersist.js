@@ -9,6 +9,55 @@ const { fetchOrder, fetchPayment, razorpayRequest } = require("./razorpay");
 const { isCapturedStatus } = require("./receiptRecord");
 const { trySendReceiptEmail } = require("./receiptEmail");
 
+/**
+ * Razorpay payments created before this instant are the wiped test history.
+ * They must not be stored, or they would take AADAR-2026-000001 again.
+ * Override with DONATION_RECORD_AFTER (ISO timestamp) if the line needs to move.
+ */
+const DONATION_RECORD_AFTER_ISO = "2026-11-13T11:00:00.000Z";
+const BEFORE_RECORD_CUTOFF = "before_record_cutoff";
+
+function donationRecordAfterMs() {
+  const fromEnv = String(process.env.DONATION_RECORD_AFTER || "").trim();
+  const parsed = Date.parse(fromEnv || DONATION_RECORD_AFTER_ISO);
+  return Number.isFinite(parsed) ? parsed : Date.parse(DONATION_RECORD_AFTER_ISO);
+}
+
+function paymentCreatedMs(payment) {
+  const raw = payment && payment.created_at;
+  if (raw == null || raw === "") return null;
+  if (typeof raw === "string" && raw.includes("-")) {
+    const parsed = Date.parse(raw);
+    return Number.isFinite(parsed) ? parsed : null;
+  }
+  const n = Number(raw);
+  if (!Number.isFinite(n) || n <= 0) return null;
+  return n < 1e12 ? n * 1000 : n;
+}
+
+function isBeforeDonationRecordCutoff(payment) {
+  const createdMs = paymentCreatedMs(payment);
+  if (createdMs == null) return false;
+  return createdMs < donationRecordAfterMs();
+}
+
+/** One read so the two-hour copy still wakes Supabase without writing old payments. */
+async function touchDonationStore() {
+  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) return;
+  const base = process.env.SUPABASE_URL.replace(/\/$/, "");
+  try {
+    await fetch(`${base}/rest/v1/donations?select=id&limit=1`, {
+      headers: {
+        apikey: process.env.SUPABASE_SERVICE_ROLE_KEY,
+        Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`,
+        Accept: "application/json",
+      },
+    });
+  } catch {
+    // Keep-alive only. A failed ping must not stop the copy.
+  }
+}
+
 function resolveReceiptLocale(order, explicit) {
   if (explicit === "hi") return "hi";
   const notes = (order && order.notes) || {};
@@ -33,6 +82,9 @@ async function persistCapturedDonation({
 }) {
   if (!payment || !payment.id) {
     return { saved: false, reason: "missing_payment" };
+  }
+  if (isBeforeDonationRecordCutoff(payment)) {
+    return { saved: false, reason: BEFORE_RECORD_CUTOFF };
   }
 
   const record = buildRecordFromRazorpay({ payment, order, source, subscriptionId, frequency });
@@ -81,6 +133,9 @@ async function persistCapturedDonation({
 async function persistRazorpayQrDonation({ payment, source = "razorpay_qr" }) {
   if (!payment || !payment.id) {
     return { saved: false, reason: "missing_payment" };
+  }
+  if (isBeforeDonationRecordCutoff(payment)) {
+    return { saved: false, reason: BEFORE_RECORD_CUTOFF };
   }
 
   const record = buildRecordFromRazorpayQr({ payment, source });
@@ -139,6 +194,8 @@ async function syncMissingCapturedPayments({ count = 100, pages = 2, paymentIds 
     }
   }
 
+  await touchDonationStore();
+
   const results = [];
 
   for (const payment of items) {
@@ -149,6 +206,14 @@ async function syncMissingCapturedPayments({ count = 100, pages = 2, paymentIds 
       continue;
     }
     if (status !== "captured") continue;
+    if (isBeforeDonationRecordCutoff(payment)) {
+      results.push({
+        payment_id: payment.id,
+        action: "skipped",
+        reason: BEFORE_RECORD_CUTOFF,
+      });
+      continue;
+    }
 
     const existing = await fetchDonationByPaymentId(payment.id);
     if (existing) {
@@ -184,12 +249,15 @@ async function syncMissingCapturedPayments({ count = 100, pages = 2, paymentIds 
   return {
     checked: items.length,
     saved: results.filter((row) => row.action === "saved").map((row) => row.payment_id),
+    skipped: results.filter((row) => row.action === "skipped").length,
     failed: results.filter((row) => row.action === "failed"),
     existing: results.filter((row) => row.action === "exists").length,
   };
 }
 
 module.exports = {
+  BEFORE_RECORD_CUTOFF,
+  isBeforeDonationRecordCutoff,
   persistCapturedDonation,
   persistRazorpayQrDonation,
   syncMissingCapturedPayments,

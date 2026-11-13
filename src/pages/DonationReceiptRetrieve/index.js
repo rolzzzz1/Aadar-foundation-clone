@@ -233,6 +233,13 @@ const emptyContactLookup = { method: "email", value: "" };
 const MAX_SCREENSHOT_BYTES = 3 * 1024 * 1024;
 const ALLOWED_SCREENSHOT_TYPES = new Set(["image/jpeg", "image/jpg", "image/png", "image/webp"]);
 
+function isQrReceiptHash(hash) {
+  const value = String(hash || "")
+    .replace(/^#/, "")
+    .toLowerCase();
+  return value === "bank" || value === "qr" || value === "transfer";
+}
+
 function todayIsoDate() {
   return new Date().toISOString().slice(0, 10);
 }
@@ -590,7 +597,9 @@ export default function DonationReceiptRetrievePage() {
   const [downloadMsg, setDownloadMsg] = useState("");
   const [record, setRecord] = useState(null);
   const [emailSent, setEmailSent] = useState(false);
-  const [channel, setChannel] = useState("online"); // 'online' | 'bank'
+  const [channel, setChannel] = useState(() =>
+    typeof window !== "undefined" && isQrReceiptHash(window.location.hash) ? "bank" : "online"
+  ); // 'online' | 'bank'
   const [bankForm, setBankForm] = useState({ ...emptyBankForm, paidAt: todayIsoDate() });
   const [bankBusy, setBankBusy] = useState(false);
   const [bankError, setBankError] = useState("");
@@ -603,14 +612,28 @@ export default function DonationReceiptRetrievePage() {
   const receiptCardRef = useRef(null);
   const screenshotInputRef = useRef(null);
   const bankNoticeRef = useRef(null);
+  const qrFormRef = useRef(null);
 
   useEffect(() => {
-    const hash = String(window.location.hash || "")
-      .replace(/^#/, "")
-      .toLowerCase();
-    if (hash === "bank" || hash === "qr" || hash === "transfer") {
-      setChannel("bank");
-    }
+    if (!isQrReceiptHash(window.location.hash)) return undefined;
+    setChannel("bank");
+
+    const scrollToQrForm = () => {
+      const selectedTab = document.querySelector('[role="tab"][aria-selected="true"]');
+      const el = selectedTab || qrFormRef.current;
+      if (!el) return;
+      const offset = 140;
+      const top = window.scrollY + el.getBoundingClientRect().top - offset;
+      window.scrollTo({ top: Math.max(0, top), behavior: "auto" });
+    };
+
+    // App resets scroll to the top after this effect. Scroll again once that has run.
+    const first = window.setTimeout(scrollToQrForm, 0);
+    const second = window.setTimeout(scrollToQrForm, 150);
+    return () => {
+      window.clearTimeout(first);
+      window.clearTimeout(second);
+    };
   }, []);
 
   useEffect(() => {
@@ -1202,6 +1225,8 @@ export default function DonationReceiptRetrievePage() {
 
   const bankRequestForm = (
     <Stack
+      ref={qrFormRef}
+      id="qr-donation-form"
       spacing={2}
       sx={{ width: "100%", maxWidth: 640, mx: "auto", overflow: "visible", pt: 0.75 }}
     >
