@@ -45,7 +45,6 @@ create table if not exists public.membership_subscriptions (
   donor_state text,
   donor_city text,
   donor_pin text,
-  fcra_declaration text,
   current_start timestamptz,
   current_end timestamptz,
   charge_at timestamptz,

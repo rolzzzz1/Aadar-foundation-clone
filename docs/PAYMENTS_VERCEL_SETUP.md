@@ -211,7 +211,6 @@ Redeploy after changing any variable.
    ```sql
    alter table public.donations add column if not exists receipt_no text;
    alter table public.donations add column if not exists donor_father_or_husband text;
-   alter table public.donations add column if not exists fcra_declaration text;
    alter table public.donations add column if not exists donor_address text;
    alter table public.donations add column if not exists donor_state text;
    alter table public.donations add column if not exists donor_city text;

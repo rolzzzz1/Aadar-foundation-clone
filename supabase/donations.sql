@@ -23,7 +23,6 @@ create table if not exists public.donations (
   donor_pin text,
   program_label text,
   purpose text,
-  fcra_declaration text,
   -- Analytics: actual payment method/mode (upi/card/netbanking/wallet/bank_transfer/upi_qr)
   payment_method text,
   source text not null,
@@ -52,7 +51,6 @@ comment on column public.donations.receipt_no is 'Official receipt number AADAR-
 -- If the table already exists from an earlier deploy, run this once in SQL Editor:
 -- alter table public.donations add column if not exists receipt_no text;
 -- alter table public.donations add column if not exists donor_father_or_husband text;
--- alter table public.donations add column if not exists fcra_declaration text;
 -- alter table public.donations add column if not exists donor_address text;
 -- alter table public.donations add column if not exists donor_state text;
 -- alter table public.donations add column if not exists donor_city text;

@@ -124,7 +124,6 @@ function buildUpiDonationRecord(body) {
       donor_pin: pin,
       program_label: sanitizeText(body.program_label || body.programLabel || "", 120),
       purpose: sanitizeText(body.purpose || body.note || "", 240),
-      fcra_declaration: "",
       payment_method: "upi_qr",
       source: "upi_qr",
       created_at: paidAtCheck.value,

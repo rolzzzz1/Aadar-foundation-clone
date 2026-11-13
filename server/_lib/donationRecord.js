@@ -12,7 +12,7 @@ const {
 } = require("./receiptNumber");
 
 const DONATION_SELECT_FIELDS =
-  "payment_id,order_id,receipt_no,amount_paise,currency,status,donor_name,donor_father_or_husband,donor_email,donor_contact,donor_pan,donor_address,donor_state,donor_city,donor_pin,program_label,purpose,fcra_declaration,payment_method,source,created_at,receipt_email_sent_at";
+  "payment_id,order_id,receipt_no,amount_paise,currency,status,donor_name,donor_father_or_husband,donor_email,donor_contact,donor_pan,donor_address,donor_state,donor_city,donor_pin,program_label,purpose,payment_method,source,created_at,receipt_email_sent_at";
 
 /** Extra columns from supabase/membership.sql — only written when present on the row. */
 const DONATION_MEMBERSHIP_FIELDS = ["subscription_id", "is_recurring", "frequency"];
@@ -126,7 +126,6 @@ function buildRecordFromRazorpay({ payment, order, source, subscriptionId, frequ
       formatGeneralDonationLabel(Math.round(Number(payment.amount) / 100)),
     purpose: pickNote(notes, "note") || pickNote(notes, "purpose") ||
       formatGeneralDonationLabel(Math.round(Number(payment.amount) / 100)),
-    fcra_declaration: pickNote(notes, "fcra_declaration") || "",
     payment_method: paymentMethod,
     source: source || "webhook",
     updated_at: new Date().toISOString(),
@@ -197,7 +196,6 @@ function buildRecordFromRazorpayQr({ payment, source }) {
     donor_pin: "",
     program_label: label,
     purpose: purposeParts.join(" · ").slice(0, 240),
-    fcra_declaration: "",
     payment_method: paymentMethod,
     source: source || "razorpay_qr",
     created_at: createdAt,
@@ -235,7 +233,6 @@ function mergeDonationRows(existing, incoming) {
     donor_pin: pick("donor_pin"),
     program_label: pick("program_label"),
     purpose: pick("purpose"),
-    fcra_declaration: pick("fcra_declaration"),
     payment_method: pick("payment_method"),
     source: incoming.source || existing.source,
     updated_at: new Date().toISOString(),
