@@ -439,6 +439,38 @@ async function buildReceiptPdfBuffer(input, options = {}) {
   };
 }
 
+/**
+ * The PDF attached to the receipt email. Downloads use this same builder.
+ * HTML layout first; the vector file is only used if that render fails.
+ */
+async function buildOfficialReceiptPdf(record) {
+  let buffer;
+  let filename;
+  let source;
+  try {
+    ({ buffer, filename, source } = await Promise.race([
+      buildReceiptPdfBuffer(record, { preferHtml: true }),
+      new Promise((_, reject) => {
+        setTimeout(() => reject(new Error("html_pdf_timeout")), 45000);
+      }),
+    ]));
+  } catch (htmlErr) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      "[receipt-pdf] HTML PDF failed, using official vector layout:",
+      htmlErr && htmlErr.message ? htmlErr.message : htmlErr
+    );
+    ({ buffer, filename, source } = await buildReceiptPdfBuffer(record, { forceVector: true }));
+  }
+
+  if (!buffer || buffer.length < 200) {
+    throw new Error("PDF attachment build failed: empty PDF buffer");
+  }
+
+  return { buffer, filename, source };
+}
+
 module.exports = {
   buildReceiptPdfBuffer,
+  buildOfficialReceiptPdf,
 };

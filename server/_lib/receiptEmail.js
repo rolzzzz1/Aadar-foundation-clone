@@ -1,4 +1,4 @@
-const { buildReceiptPdfBuffer } = require("./receiptPdfServer");
+const { buildOfficialReceiptPdf } = require("./receiptPdfServer");
 const { donationRowToReceiptRecord, isCapturedStatus } = require("./receiptRecord");
 const { markReceiptEmailSent } = require("./donationRecord");
 const { buildReceiptViewModel } = require("./receiptFormatServer");
@@ -205,27 +205,11 @@ async function sendDonationReceiptEmail(row, options = {}) {
   let buffer;
   let filename;
   try {
-    // Every emailed receipt uses the official HTML layout (Receipt Demo.pdf).
-    try {
-      ({ buffer, filename } = await Promise.race([
-        buildReceiptPdfBuffer(record, { preferHtml: true }),
-        new Promise((_, reject) => {
-          setTimeout(() => reject(new Error("html_pdf_timeout")), 45000);
-        }),
-      ]));
-    } catch (htmlErr) {
-      // eslint-disable-next-line no-console
-      console.warn("[receipt-email] HTML PDF failed, using official vector layout:", htmlErr.message);
-      ({ buffer, filename } = await buildReceiptPdfBuffer(record, { forceVector: true }));
-    }
+    ({ buffer, filename } = await buildOfficialReceiptPdf(record));
   } catch (pdfErr) {
     throw new Error(
       `PDF attachment build failed: ${pdfErr && pdfErr.message ? pdfErr.message : String(pdfErr)}`
     );
-  }
-
-  if (!buffer || buffer.length < 200) {
-    throw new Error("PDF attachment build failed: empty PDF buffer");
   }
 
   const siteUrl = getSiteUrl();

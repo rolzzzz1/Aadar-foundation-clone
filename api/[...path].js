@@ -10,6 +10,7 @@ const handlers = {
   "donation-confirm": require("../server/handlers/donation-confirm"),
   "instagram-posts": require("../server/handlers/instagram-posts"),
   "donation-receipt": require("../server/handlers/donation-receipt"),
+  "donation-receipt-pdf": require("../server/handlers/donation-receipt-pdf"),
   "donation-receipt-list": require("../server/handlers/donation-receipt-list"),
   "donation-receipt-upi": require("../server/handlers/donation-receipt-upi"),
   "donation-receipt-resend": require("../server/handlers/donation-receipt-resend"),

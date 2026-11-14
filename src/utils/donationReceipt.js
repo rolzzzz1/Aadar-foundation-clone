@@ -2,6 +2,7 @@ import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 
 import aadarLogoUrl from "assets/images/logos/logo-aadar.jpg";
+import { getApiUrl } from "utils/api";
 import { getReceiptWebsiteQrSrc } from "utils/receiptAssets";
 import { buildReceiptViewModel, ORG, formatInr, formatReceiptDate } from "utils/receiptFormat";
 import { buildReceiptHtmlBody } from "utils/receiptI18n";
@@ -776,26 +777,32 @@ export async function buildReceiptPdf(record) {
   }
 }
 
-async function getReceiptPdfBlob(record) {
-  const doc = await buildReceiptPdf(record);
-  const blob = doc.output("blob");
-  if (blob instanceof Blob) {
-    return blob.type === "application/pdf" ? blob : new Blob([blob], { type: "application/pdf" });
-  }
-  return new Blob([blob], { type: "application/pdf" });
+function filenameFromDisposition(header, fallback) {
+  const match = /filename="([^"]+)"/.exec(String(header || ""));
+  return match && match[1] ? match[1] : fallback;
 }
 
 /**
- * Download receipt as PDF (English or Hindi).
+ * Download the same PDF that is attached to the receipt email.
  * @returns {Promise<'pdf' | false>}
  */
 export async function downloadReceiptPdf(record) {
   if (!record || record.verified !== true) return false;
 
   try {
-    const blob = await getReceiptPdfBlob(record);
+    const res = await fetch(getApiUrl("/api/donation-receipt-pdf"), {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/pdf" },
+      body: JSON.stringify({ record }),
+    });
+    if (!res.ok) throw new Error(`Receipt PDF request failed (${res.status})`);
+    const blob = await res.blob();
     if (!blob || blob.size < 200) throw new Error("Generated PDF is empty");
-    triggerDownload(blob, `${receiptFilename(record)}.pdf`);
+    const filename = filenameFromDisposition(
+      res.headers.get("Content-Disposition"),
+      `${receiptFilename(record)}.pdf`
+    );
+    triggerDownload(blob, filename);
     return "pdf";
   } catch (err) {
     if (process.env.NODE_ENV === "development") {

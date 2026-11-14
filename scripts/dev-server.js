@@ -22,6 +22,7 @@ const routeFiles = {
   "/api/razorpay-verify": path.join(handlersDir, "razorpay-verify.js"),
   "/api/razorpay-webhook": path.join(apiDir, "razorpay-webhook.js"),
   "/api/donation-receipt": path.join(handlersDir, "donation-receipt.js"),
+  "/api/donation-receipt-pdf": path.join(handlersDir, "donation-receipt-pdf.js"),
   "/api/donation-receipt-list": path.join(handlersDir, "donation-receipt-list.js"),
   "/api/donation-receipt-upi": path.join(handlersDir, "donation-receipt-upi.js"),
   "/api/receipt-request": path.join(handlersDir, "receipt-request.js"),
@@ -93,14 +94,16 @@ function createMockRes(nodeReq, nodeRes) {
     },
     status(code) {
       nodeRes.statusCode = code;
-      return {
-        json(body) {
-          if (!nodeRes.headersSent) {
-            nodeRes.setHeader("Content-Type", "application/json; charset=utf-8");
-          }
-          nodeRes.end(JSON.stringify(body));
-        },
-      };
+      return res;
+    },
+    json(body) {
+      if (!nodeRes.headersSent) {
+        nodeRes.setHeader("Content-Type", "application/json; charset=utf-8");
+      }
+      nodeRes.end(JSON.stringify(body));
+    },
+    send(body) {
+      nodeRes.end(body);
     },
   };
   return res;
@@ -199,6 +202,7 @@ server.listen(PORT, "127.0.0.1", () => {
   console.log("  POST /api/razorpay-webhook");
   // eslint-disable-next-line no-console
   console.log("  POST /api/donation-receipt");
+  console.log("  POST /api/donation-receipt-pdf");
   console.log("  POST /api/donation-receipt-list");
   console.log("  POST /api/donation-receipt-upi");
   console.log("  POST /api/receipt-request");

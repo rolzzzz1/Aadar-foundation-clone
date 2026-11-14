@@ -81,6 +81,7 @@ const LIMITS = Object.freeze({
   order: { bucket: "razorpay-order", max: 20, windowMs: 15 * 60 * 1000 },
   verify: { bucket: "razorpay-verify", max: 40, windowMs: 15 * 60 * 1000 },
   receipt: { bucket: "donation-receipt", max: 12, windowMs: 15 * 60 * 1000 },
+  receiptPdf: { bucket: "donation-receipt-pdf", max: 20, windowMs: 15 * 60 * 1000 },
   receiptList: { bucket: "donation-receipt-list", max: 10, windowMs: 15 * 60 * 1000 },
   receiptUpi: { bucket: "donation-receipt-upi", max: 10, windowMs: 15 * 60 * 1000 },
   confirm: { bucket: "donation-confirm", max: 20, windowMs: 15 * 60 * 1000 },
