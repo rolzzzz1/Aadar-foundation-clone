@@ -50,7 +50,7 @@ function verifyAdminSecret(req, body) {
   const configuredUsername = String(process.env.ADMIN_RECEIPT_USERNAME || "").trim();
   if (!configured) {
     if (isProduction()) {
-      return { ok: false, status: 503, error: "Admin receipt lookup is not enabled." };
+      return { ok: false, status: 503, error: "Receipt lookup is not available right now." };
     }
     return { ok: true };
   }
@@ -234,11 +234,13 @@ module.exports = async function handler(req, res) {
       if (!isBank) {
         const found = await fetchDonationsByQrUtr(refCheck.value);
         if (!found.ok) {
-          return res.status(502).json({ error: "Could not check the existing QR payment." });
+          return res.status(502).json({
+            error: "We could not check the existing QR payment. Please try again.",
+          });
         }
         if (found.rows.length > 1) {
           return res.status(409).json({
-            error: "More than one Razorpay QR payment has this UTR. Update the payment ID directly.",
+            error: "More than one QR payment uses this UTR. Find that receipt with its Razorpay payment ID instead.",
           });
         }
         row = found.rows[0] || null;
@@ -262,7 +264,7 @@ module.exports = async function handler(req, res) {
     if (mode === "resend_email" || mode === "email_receipt") {
       if (!isEmailConfigured()) {
         return res.status(503).json({
-          error: "Receipt email is not configured. Set RESEND_API_KEY and RECEIPT_FROM_EMAIL.",
+          error: "Email is not set up yet, so the receipt could not be sent.",
         });
       }
 
@@ -274,7 +276,7 @@ module.exports = async function handler(req, res) {
       } else if (receiptNo) {
         row = await fetchDonationByReceiptNo(receiptNo);
       } else {
-        return res.status(400).json({ error: "payment_id or receipt_no is required." });
+        return res.status(400).json({ error: "Enter a payment ID or receipt number." });
       }
 
       if (!row) {
@@ -305,7 +307,7 @@ module.exports = async function handler(req, res) {
         const reason = emailResult.reason || "send_failed";
         const messages = {
           no_email: "This receipt has no donor email address.",
-          not_captured: "Only captured donations can be emailed.",
+          not_captured: "Only a completed payment can be emailed.",
           missing_row: "Receipt not found.",
           send_failed: "Could not send the receipt email. Please try again.",
         };
@@ -329,12 +331,17 @@ module.exports = async function handler(req, res) {
     }
 
     return res.status(400).json({
-      error: "Invalid lookup mode. Use mobile, email, receipt_no, payment_id, or resend_email.",
+      error: "Choose email, mobile number, receipt number, or payment ID, then try again.",
     });
   } catch (err) {
     if (!isProduction()) {
-      return res.status(502).json({ error: "Could not look up donations.", details: err.message });
+      return res.status(502).json({
+        error: "Could not look up donations right now. Please try again.",
+        details: err.message,
+      });
     }
-    return res.status(502).json({ error: "Could not look up donations." });
+    return res.status(502).json({
+      error: "Could not look up donations right now. Please try again.",
+    });
   }
 };

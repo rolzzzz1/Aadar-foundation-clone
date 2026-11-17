@@ -56,7 +56,9 @@ module.exports = async function handler(req, res) {
     (req.headers && (req.headers["content-length"] || req.headers["Content-Length"])) || 0
   );
   if (contentLength > MAX_BODY_BYTES) {
-    return res.status(413).json({ error: "Payload too large. Please use a smaller screenshot." });
+    return res.status(413).json({
+      error: "That screenshot is too large. Please use a smaller photo.",
+    });
   }
 
   if (!isEmailConfigured()) {
@@ -68,7 +70,9 @@ module.exports = async function handler(req, res) {
 
   const body = getJsonBody(req);
   if (body == null || typeof body !== "object") {
-    return res.status(400).json({ error: "Invalid request body." });
+    return res.status(400).json({
+      error: "We could not read your details. Please refresh the page and try again.",
+    });
   }
 
   const name = sanitizeText(body.name || body.donor_name, 120).trim();
@@ -123,7 +127,7 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: "Enter a valid donation amount." });
   }
   if (amountInr > 500000) {
-    return res.status(400).json({ error: "Maximum donation amount is ?5,00,000." });
+    return res.status(400).json({ error: "Maximum donation amount is ₹5,00,000." });
   }
   if (!paidAt) {
     return res.status(400).json({ error: "Payment date is required." });
@@ -152,7 +156,7 @@ module.exports = async function handler(req, res) {
   try {
     screenshotBytes = Buffer.from(screenshotBase64, "base64").length;
   } catch {
-    return res.status(400).json({ error: "Invalid screenshot file." });
+    return res.status(400).json({ error: "We could not read that screenshot. Please upload a JPG or PNG photo." });
   }
   if (!screenshotBytes || screenshotBytes > MAX_SCREENSHOT_BYTES) {
     return res.status(400).json({

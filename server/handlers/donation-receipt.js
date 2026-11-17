@@ -65,13 +65,13 @@ module.exports = async function handler(req, res) {
   const donorPan = normalizeDonorPan(body.donor_pan || body.pan);
 
   if (!validateRzpId(paymentId)) {
-    return res.status(400).json({ error: "Invalid lookup payload." });
+    return res.status(400).json({ error: "Please check the details you entered and try again." });
   }
 
   const hasContact = contact.ok;
   const hasPan = donorPan.length === 10;
   if (!hasContact && !hasPan) {
-    return res.status(400).json({ error: "Invalid lookup payload." });
+    return res.status(400).json({ error: "Please check the details you entered and try again." });
   }
 
   const base = process.env.SUPABASE_URL.replace(/\/$/, "");
@@ -93,9 +93,9 @@ module.exports = async function handler(req, res) {
         const text = await r.text().catch(() => "");
         return res
           .status(502)
-          .json({ error: "Receipt lookup failed", details: text.slice(0, 200) });
+          .json({ error: "We could not find your receipt right now. Please try again.", details: text.slice(0, 200) });
       }
-      return res.status(502).json({ error: "Receipt lookup failed" });
+      return res.status(502).json({ error: "We could not find your receipt right now. Please try again." });
     }
 
     const rows = await r.json().catch(() => []);
@@ -140,8 +140,8 @@ module.exports = async function handler(req, res) {
     });
   } catch (err) {
     if (!isProduction()) {
-      return res.status(502).json({ error: "Receipt lookup failed", details: err.message });
+      return res.status(502).json({ error: "We could not find your receipt right now. Please try again.", details: err.message });
     }
-    return res.status(502).json({ error: "Receipt lookup failed" });
+    return res.status(502).json({ error: "We could not find your receipt right now. Please try again." });
   }
 };

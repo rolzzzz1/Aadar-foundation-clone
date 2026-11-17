@@ -58,7 +58,7 @@ module.exports = async function handler(req, res) {
   const locale = body.locale === "hi" ? "hi" : "en";
 
   if (!validateRzpId(paymentId) || !validateRzpId(orderId) || donorPan.length !== 10) {
-    return res.status(400).json({ error: "Invalid confirmation payload." });
+    return res.status(400).json({ error: "We could not confirm this payment. Please try again, or contact us with your payment ID." });
   }
 
   let order = null;

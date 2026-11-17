@@ -25,6 +25,7 @@ import DonationReceiptSheet from "components/DonationReceiptSheet";
 import LanguageSelector from "components/language-selector";
 import MKButton from "components/MKButton";
 import aadarLogo from "assets/images/logos/logo-aadar.jpg";
+import { formatApiErrorMessage } from "utils/api";
 import { formatInr } from "utils/receiptFormat";
 
 const panelGreen = "#edf7ee";
@@ -124,7 +125,7 @@ async function postAdminLookup(body, { secret, username }) {
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
-    const err = new Error(data.error || "Lookup failed");
+    const err = new Error(formatApiErrorMessage(data, res.status));
     err.status = res.status;
     throw err;
   }

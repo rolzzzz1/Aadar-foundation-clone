@@ -15,7 +15,11 @@ function normalizeUtr(value) {
 function validateUtr(value) {
   const normalized = normalizeUtr(value);
   if (normalized.length < UTR_MIN || !UTR_REGEX.test(normalized)) {
-    return { ok: false, value: normalized, error: "Invalid UPI transaction reference." };
+    return {
+      ok: false,
+      value: normalized,
+      error: "Enter the UTR shown in the UPI app after payment. Example: 123456789012",
+    };
   }
   return { ok: true, value: normalized };
 }
@@ -35,7 +39,7 @@ function parsePaidAt(value) {
 
 function validatePaidAt(value) {
   const parsed = parsePaidAt(value);
-  if (!parsed) return { ok: false, error: "Invalid payment date." };
+  if (!parsed) return { ok: false, error: "Enter the date you paid." };
 
   const now = Date.now();
   const twoYearsMs = 730 * 24 * 60 * 60 * 1000;
@@ -43,7 +47,7 @@ function validatePaidAt(value) {
     return { ok: false, error: "Payment date cannot be in the future." };
   }
   if (parsed.getTime() < now - twoYearsMs) {
-    return { ok: false, error: "Payment date is too old." };
+    return { ok: false, error: "The payment date cannot be more than 2 years ago." };
   }
 
   return { ok: true, value: parsed.toISOString() };
@@ -69,24 +73,24 @@ function buildUpiDonationRecord(body) {
 
   const amountInr = Math.round(Number(body.amount_inr ?? body.amountInr ?? body.amount));
   if (!Number.isFinite(amountInr) || amountInr < 1 || amountInr > 500000) {
-    return { ok: false, error: "Invalid donation amount." };
+    return { ok: false, error: "Enter the donation amount in whole rupees." };
   }
 
   const paidAtCheck = validatePaidAt(body.paid_at || body.paidAt);
   if (!paidAtCheck.ok) return { ok: false, error: paidAtCheck.error };
 
   const pan = normalizePan(body.donor_pan || body.pan);
-  if (pan.length !== 10) return { ok: false, error: "Invalid PAN." };
+  if (pan.length !== 10) return { ok: false, error: "Enter a valid PAN, for example ABCDE1234F." };
 
   const name = sanitizeText(body.donor_name || body.name || "", NAME_MAX);
   if (!name) return { ok: false, error: "Donor name is required." };
 
   const contact = normalizeContact(body.donor_contact || body.contact || body.mobile);
-  if (contact.length !== 10) return { ok: false, error: "Invalid mobile number." };
+  if (contact.length !== 10) return { ok: false, error: "Enter a valid 10-digit mobile number." };
 
   const email = sanitizeText(body.donor_email || body.email || "", EMAIL_MAX).toLowerCase();
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return { ok: false, error: "Valid email is required." };
+    return { ok: false, error: "Enter a valid email address." };
   }
 
   const address = sanitizeText(body.donor_address || body.address || "", 200);
@@ -94,7 +98,7 @@ function buildUpiDonationRecord(body) {
   const city = sanitizeText(body.donor_city || body.city || "", 80);
   const pin = sanitizeText(body.donor_pin || body.pin || "", 6);
   if (!address || !state || !city || pin.length !== 6) {
-    return { ok: false, error: "Complete address is required for the receipt." };
+    return { ok: false, error: "Enter the full address, including state, city, and a 6-digit PIN code." };
   }
 
   const utr = utrCheck.value;

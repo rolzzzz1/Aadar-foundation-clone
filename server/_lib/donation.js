@@ -94,13 +94,13 @@ function isPlainObject(v) {
 function validateAmountPaise(input) {
   const n = Number(input);
   if (!Number.isFinite(n) || !Number.isInteger(n)) {
-    return { ok: false, error: "Amount must be an integer (in paise)." };
+    return { ok: false, error: "Enter the amount in whole rupees." };
   }
   if (n < MIN_AMOUNT_PAISE) {
-    return { ok: false, error: `Amount below the minimum of ${MIN_AMOUNT_PAISE} paise.` };
+    return { ok: false, error: `Minimum donation is ₹${MIN_AMOUNT_INR}.` };
   }
   if (n > MAX_AMOUNT_PAISE) {
-    return { ok: false, error: `Amount above the maximum of ${MAX_AMOUNT_PAISE} paise.` };
+    return { ok: false, error: `Maximum donation is ₹${MAX_AMOUNT_INR.toLocaleString("en-IN")}.` };
   }
   return { ok: true, value: n };
 }
@@ -132,9 +132,9 @@ const PAN_REGEX = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
 function validateName(input) {
   const s = sanitizeText(input, NAME_MAX);
   if (!s) return { ok: false, value: "", error: "Name is required." };
-  if (s.length < 2) return { ok: false, value: s, error: "Name is too short." };
+  if (s.length < 2) return { ok: false, value: s, error: "Enter the full name." };
   if (!NAME_REGEX.test(s)) {
-    return { ok: false, value: s, error: "Invalid donor name." };
+    return { ok: false, value: s, error: "Use only letters, spaces, and hyphens in the name." };
   }
   return { ok: true, value: s };
 }
@@ -142,9 +142,9 @@ function validateName(input) {
 function validateFatherOrHusbandName(input) {
   const s = sanitizeText(input, NAME_MAX);
   if (!s) return { ok: false, value: "", error: "Father's / husband's name is required." };
-  if (s.length < 2) return { ok: false, value: s, error: "Name is too short." };
+  if (s.length < 2) return { ok: false, value: s, error: "Enter the full name." };
   if (!NAME_REGEX.test(s)) {
-    return { ok: false, value: s, error: "Invalid father / husband name." };
+    return { ok: false, value: s, error: "Use only letters, spaces, and hyphens in the name." };
   }
   return { ok: true, value: s };
 }
@@ -153,7 +153,7 @@ function validateEmail(input) {
   const s = sanitizeText(input, EMAIL_MAX).toLowerCase();
   if (!s) return { ok: false, value: "", error: "Email is required." };
   if (!EMAIL_REGEX.test(s)) {
-    return { ok: false, value: s, error: "Invalid email address." };
+    return { ok: false, value: s, error: "Enter a valid email address." };
   }
   return { ok: true, value: s };
 }
@@ -162,9 +162,9 @@ function validateContactIN(input) {
   const digits = String(input ?? "")
     .replace(/\D/g, "")
     .slice(-PHONE_LEN);
-  if (!digits) return { ok: false, value: "", error: "Phone number is required." };
+  if (!digits) return { ok: false, value: "", error: "Mobile number is required." };
   if (!PHONE_REGEX_IN.test(digits)) {
-    return { ok: false, value: digits, error: "Invalid Indian mobile number." };
+    return { ok: false, value: digits, error: "Enter a valid 10-digit mobile number." };
   }
   return { ok: true, value: digits };
 }
@@ -172,7 +172,7 @@ function validateContactIN(input) {
 function validateAddressLine(input) {
   const s = sanitizeText(input, ADDRESS_MAX);
   if (!s) return { ok: false, value: "", error: "Address is required." };
-  if (s.length < 5) return { ok: false, value: s, error: "Address is too short." };
+  if (s.length < 5) return { ok: false, value: s, error: "Enter house number, street, locality, or landmark." };
   return { ok: true, value: s };
 }
 
@@ -187,7 +187,7 @@ function validatePinIn(input) {
     .replace(/\D/g, "")
     .slice(0, 6);
   if (!d) return { ok: false, value: "", error: "PIN code is required." };
-  if (d.length !== 6) return { ok: false, value: d, error: "PIN must be 6 digits." };
+  if (d.length !== 6) return { ok: false, value: d, error: "Enter a 6-digit PIN code." };
   return { ok: true, value: d };
 }
 
@@ -198,8 +198,10 @@ function validatePan(input) {
     .replace(/[^A-Z0-9]/g, "")
     .slice(0, PAN_LEN);
   if (!s) return { ok: true, value: "" };
-  if (s.length !== PAN_LEN) return { ok: false, value: s, error: "PAN must be 10 characters." };
-  if (!PAN_REGEX.test(s)) return { ok: false, value: s, error: "Invalid PAN." };
+  if (s.length !== PAN_LEN)
+    return { ok: false, value: s, error: "PAN must be 10 characters, for example ABCDE1234F." };
+  if (!PAN_REGEX.test(s))
+    return { ok: false, value: s, error: "Enter a valid PAN, for example ABCDE1234F." };
   return { ok: true, value: s };
 }
 
@@ -242,7 +244,7 @@ function validateOrderNotes(rawNotes) {
   if (!pin.ok) return { ok: false, error: pin.error };
 
   if (incoming.privacy_consent !== "accepted") {
-    return { ok: false, error: "Privacy and terms consent is required before payment." };
+    return { ok: false, error: "Please accept the privacy and terms before paying." };
   }
 
   const purpose = validateNote(incoming.note);

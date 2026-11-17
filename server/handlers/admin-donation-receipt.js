@@ -50,7 +50,7 @@ function verifyAdminSecret(req, body) {
   const configuredUsername = String(process.env.ADMIN_RECEIPT_USERNAME || "").trim();
   if (!configured) {
     if (isProduction()) {
-      return { ok: false, status: 503, error: "Admin receipt issuing is not enabled." };
+      return { ok: false, status: 503, error: "Creating receipts is not available right now." };
     }
     return { ok: true };
   }
@@ -82,7 +82,7 @@ function qrDonorPatch(existing, donorUpdate) {
 async function saveQrDonorDetails(res, body, existing) {
   const status = String(existing.status || "").toLowerCase();
   if (status !== "captured") {
-    return res.status(400).json({ error: "Only captured donations can be updated." });
+    return res.status(400).json({ error: "Only a completed payment can be updated." });
   }
 
   const donorUpdate = buildDonorDetailUpdate(body);
@@ -92,7 +92,7 @@ async function saveQrDonorDetails(res, body, existing) {
 
   const saved = await updateDonorDetails(existing.payment_id, qrDonorPatch(existing, donorUpdate));
   if (!saved.saved || !saved.row) {
-    return res.status(502).json({ error: "Could not update donation record." });
+    return res.status(502).json({ error: "The receipt could not be updated. Please try again." });
   }
 
   const updated = saved.row;
@@ -142,7 +142,7 @@ module.exports = async function handler(req, res) {
 
   if (!isStoreConfigured()) {
     return res.status(503).json({
-      error: "Donation store is not configured. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.",
+      error: "Receipts cannot be saved right now. Please try again later.",
     });
   }
 
@@ -153,7 +153,7 @@ module.exports = async function handler(req, res) {
     if (paymentId) existing = await fetchDonationByPaymentId(paymentId);
     else if (receiptNo) existing = await fetchDonationByReceiptNo(receiptNo);
     else {
-      return res.status(400).json({ error: "payment_id or receipt_no is required." });
+      return res.status(400).json({ error: "Enter a payment ID or receipt number." });
     }
 
     if (!existing) {
@@ -161,11 +161,11 @@ module.exports = async function handler(req, res) {
     }
     if (isAdminEditableReceipt(existing) && !isRazorpayStaticQrRow(existing)) {
       return res.status(400).json({
-        error: "This receipt was issued for a UPI or bank transfer. Update it from that tab.",
+        error: "This receipt is for a UPI or bank transfer. Choose UPI or Bank transfer, then update it.",
       });
     }
     if (String(existing.status || "").toLowerCase() !== "captured") {
-      return res.status(400).json({ error: "Only captured donations can be updated." });
+      return res.status(400).json({ error: "Only a completed payment can be updated." });
     }
 
     const donorUpdate = buildDonorDetailUpdate(body);
@@ -178,7 +178,7 @@ module.exports = async function handler(req, res) {
       : donorUpdate.patch;
     const savedDonor = await updateDonorDetails(existing.payment_id, donorPatch);
     if (!savedDonor.saved || !savedDonor.row) {
-      return res.status(502).json({ error: "Could not update donation record." });
+      return res.status(502).json({ error: "The receipt could not be updated. Please try again." });
     }
 
     const updatedDonor = savedDonor.row;
@@ -208,11 +208,13 @@ module.exports = async function handler(req, res) {
   if (!isBank) {
     const found = await fetchDonationsByQrUtr(built.refValue);
     if (!found.ok) {
-      return res.status(502).json({ error: "Could not check the existing QR payment." });
+      return res.status(502).json({
+        error: "We could not check the existing QR payment. Please try again.",
+      });
     }
     if (found.rows.length > 1) {
       return res.status(409).json({
-        error: "More than one Razorpay QR payment has this UTR. Update the payment ID directly.",
+        error: "More than one QR payment uses this UTR. Find that receipt with its Razorpay payment ID instead.",
       });
     }
     qrMatch = found.rows[0] || null;
@@ -249,7 +251,7 @@ module.exports = async function handler(req, res) {
 
     const savedUpdate = await updateManualDonationRecord(built.paymentId, built.record);
     if (!savedUpdate.saved || !savedUpdate.row) {
-      return res.status(502).json({ error: "Could not update donation record." });
+      return res.status(502).json({ error: "The receipt could not be updated. Please try again." });
     }
 
     const updated = savedUpdate.row;
@@ -278,16 +280,16 @@ module.exports = async function handler(req, res) {
   if (!saved.saved) {
     if (!isProduction()) {
       return res.status(502).json({
-        error: "Could not save donation record.",
+        error: "The receipt could not be saved. Please try again.",
         reason: saved.reason,
       });
     }
-    return res.status(502).json({ error: "Could not save donation record." });
+    return res.status(502).json({ error: "The receipt could not be saved. Please try again." });
   }
 
   const row = saved.row || (await fetchDonationByPaymentId(built.paymentId));
   if (!row) {
-    return res.status(502).json({ error: "Could not save donation record." });
+    return res.status(502).json({ error: "The receipt could not be saved. Please try again." });
   }
 
   const locale = body.locale === "hi" ? "hi" : "en";

@@ -71,7 +71,9 @@ module.exports = async function handler(req, res) {
         },
       });
     }
-    return res.status(500).json({ error: "Payments are not configured." });
+    return res.status(500).json({
+      error: "Online payment is not available right now. Please try again later or contact us.",
+    });
   }
 
   const body = getJsonBody(req);
@@ -86,7 +88,9 @@ module.exports = async function handler(req, res) {
     const key = String(body.purpose);
     const program = Object.prototype.hasOwnProperty.call(PROGRAMS, key) ? PROGRAMS[key] : null;
     if (!program) {
-      return res.status(400).json({ error: "Unknown program." });
+      return res.status(400).json({
+        error: "This donation option is not available. Please choose an amount and try again.",
+      });
     }
     amountPaise = program.amountInr * 100;
     programLabel = program.label;
@@ -99,12 +103,12 @@ module.exports = async function handler(req, res) {
   }
 
   if (amountPaise < MIN_AMOUNT_PAISE || amountPaise > MAX_AMOUNT_PAISE) {
-    return res.status(400).json({ error: "Amount out of allowed range." });
+    return res.status(400).json({ error: "Enter a donation between ₹1 and ₹5,00,000." });
   }
 
   const currency = body.currency == null ? "INR" : String(body.currency).toUpperCase();
   if (currency !== "INR") {
-    return res.status(400).json({ error: "Only INR is supported." });
+    return res.status(400).json({ error: "Donations can be made only in Indian rupees." });
   }
 
   const receipt = sanitizeReceipt(body.receipt);
@@ -142,10 +146,10 @@ module.exports = async function handler(req, res) {
       // eslint-disable-next-line no-console
       console.error("razorpay-order error:", err);
       return res.status(502).json({
-        error: "Failed to create order",
+        error: "We could not start the payment. Please try again.",
         details: formatRazorpayError(err),
       });
     }
-    return res.status(502).json({ error: "Failed to create order." });
+    return res.status(502).json({ error: "We could not start the payment. Please try again." });
   }
 };

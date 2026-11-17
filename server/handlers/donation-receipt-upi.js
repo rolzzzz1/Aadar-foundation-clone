@@ -92,7 +92,7 @@ module.exports = async function handler(req, res) {
 
   const utrCheck = validateUtr(body.utr || body.transaction_ref || body.upi_ref);
   if (!utrCheck.ok) {
-    return res.status(400).json({ error: "Invalid lookup payload." });
+    return res.status(400).json({ error: "Please check the details you entered and try again." });
   }
 
   const paymentId = upiPaymentId(utrCheck.value);
@@ -111,7 +111,7 @@ module.exports = async function handler(req, res) {
 
   const pan = normalizePan(body.donor_pan || body.pan);
   if (pan.length !== 10) {
-    return res.status(400).json({ error: "Invalid lookup payload." });
+    return res.status(400).json({ error: "Please check the details you entered and try again." });
   }
 
   const built = buildUpiDonationRecord(body);
@@ -120,7 +120,7 @@ module.exports = async function handler(req, res) {
   }
 
   if (built.pan !== pan) {
-    return res.status(400).json({ error: "Invalid lookup payload." });
+    return res.status(400).json({ error: "Please check the details you entered and try again." });
   }
 
   if (!existing || !panMatches(existing, pan)) {

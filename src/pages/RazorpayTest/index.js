@@ -99,24 +99,24 @@ function localizeValidationError(error, errors, lang) {
 
   const staticMap = {
     "Enter an amount.": errors.enterAmount,
-    "Amount must be a positive whole number.": errors.amountPositiveWhole,
+    "Enter the amount in whole rupees, without paise.": errors.amountPositiveWhole,
     "Name is required.": errors.nameRequired,
-    "Name is too short.": errors.nameTooShort,
-    "Use letters, spaces, hyphens, apostrophes, periods.": errors.nameInvalid,
+    "Enter the full name.": errors.nameTooShort,
+    "Use only letters, spaces, and hyphens in the name.": errors.nameInvalid,
     "Father's / husband's name is required.": errors.fatherRequired,
     "Email is required.": errors.emailRequired,
     "Enter a valid email address.": errors.emailInvalid,
-    "Phone number is required.": errors.phoneRequired,
-    "Enter a valid 10-digit Indian mobile number.": errors.phoneInvalid,
+    "Mobile number is required.": errors.phoneRequired,
+    "Enter a valid 10-digit mobile number.": errors.phoneInvalid,
     "Address is required.": errors.addressRequired,
     "Enter house no., street, locality, or landmark.": errors.addressTooShort,
     "State is required.": errors.stateRequired,
     "City is required.": errors.cityRequired,
     "Select a state first.": errors.selectStateFirst,
     "PIN code is required.": errors.pinRequired,
-    "PIN must be 6 digits.": errors.pinInvalid,
+    "Enter a 6-digit PIN code.": errors.pinInvalid,
     "PAN is required.": errors.panRequired,
-    "PAN must be 10 characters.": errors.panLength,
+    "PAN must be 10 characters, for example ABCDE1234F.": errors.panLength,
     "Enter a valid PAN (e.g. ABCDE1234F).": errors.panInvalid,
   };
   if (staticMap[error]) return staticMap[error];
@@ -826,9 +826,7 @@ export default function RazorpayTestPage() {
     });
 
     if (!keyId) {
-      setError(
-        "Missing REACT_APP_RAZORPAY_KEY_ID. Add it to your environment and redeploy/restart."
-      );
+      setError("Online payment is not available right now. Please try again later or contact us.");
       return;
     }
     if (!isRazorpayTestKey(keyId) && process.env.NODE_ENV === "development") {
@@ -1034,9 +1032,7 @@ export default function RazorpayTestPage() {
         clientKeyMode !== "unknown" &&
         order.key_mode !== clientKeyMode
       ) {
-        setError(
-          `Razorpay key mismatch: checkout uses ${clientKeyMode} keys but the server created the order in ${order.key_mode} mode. Set REACT_APP_RAZORPAY_KEY_ID and RAZORPAY_KEY_ID to the same test (or live) pair in .env, then restart npm start.`
-        );
+        setError("Online payment is not set up correctly. Please try again later or contact us.");
         resetPaymentUi();
         return;
       }

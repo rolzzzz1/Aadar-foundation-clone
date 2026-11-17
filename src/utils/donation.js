@@ -231,7 +231,7 @@ export function validateAmountInr(input) {
 
   const n = Number(cleaned);
   if (!Number.isInteger(n) || n <= 0) {
-    return { ok: false, valueInr: 0, error: "Amount must be a positive whole number." };
+    return { ok: false, valueInr: 0, error: "Enter the amount in whole rupees, without paise." };
   }
   if (n < MIN_AMOUNT_INR) {
     return { ok: false, valueInr: n, error: `Minimum donation is ₹${MIN_AMOUNT_INR}.` };
@@ -258,9 +258,9 @@ const NAME_REGEX = /^[\p{L}\p{M}\s'.-]{2,}$/u;
 export function validateName(input) {
   const s = sanitizeText(input, NAME_MAX).trim();
   if (!s) return { ok: false, value: "", error: "Name is required." };
-  if (s.length < 2) return { ok: false, value: s, error: "Name is too short." };
+  if (s.length < 2) return { ok: false, value: s, error: "Enter the full name." };
   if (!NAME_REGEX.test(s)) {
-    return { ok: false, value: s, error: "Use letters, spaces, hyphens, apostrophes, periods." };
+    return { ok: false, value: s, error: "Use only letters, spaces, and hyphens in the name." };
   }
   return { ok: true, value: s };
 }
@@ -271,9 +271,9 @@ export function validateFatherOrHusbandName(input) {
   if (!s) {
     return { ok: false, value: "", error: "Father's / husband's name is required." };
   }
-  if (s.length < 2) return { ok: false, value: s, error: "Name is too short." };
+  if (s.length < 2) return { ok: false, value: s, error: "Enter the full name." };
   if (!NAME_REGEX.test(s)) {
-    return { ok: false, value: s, error: "Use letters, spaces, hyphens, apostrophes, periods." };
+    return { ok: false, value: s, error: "Use only letters, spaces, and hyphens in the name." };
   }
   return { ok: true, value: s };
 }
@@ -293,9 +293,9 @@ export function validateContactIN(input) {
   const digits = String(input ?? "")
     .replace(/\D/g, "")
     .slice(-PHONE_LEN);
-  if (!digits) return { ok: false, value: "", error: "Phone number is required." };
+  if (!digits) return { ok: false, value: "", error: "Mobile number is required." };
   if (!PHONE_REGEX_IN.test(digits)) {
-    return { ok: false, value: digits, error: "Enter a valid 10-digit Indian mobile number." };
+    return { ok: false, value: digits, error: "Enter a valid 10-digit mobile number." };
   }
   return { ok: true, value: digits };
 }
@@ -320,7 +320,7 @@ export function validatePinIn(input) {
     .replace(/\D/g, "")
     .slice(0, 6);
   if (!d) return { ok: false, value: "", error: "PIN code is required." };
-  if (d.length !== 6) return { ok: false, value: d, error: "PIN must be 6 digits." };
+  if (d.length !== 6) return { ok: false, value: d, error: "Enter a 6-digit PIN code." };
   return { ok: true, value: d };
 }
 
@@ -334,7 +334,7 @@ export function validatePan(input) {
   const s = raw.slice(0, PAN_LEN);
   if (!s) return { ok: true, value: "" };
   if (s.length !== PAN_LEN) {
-    return { ok: false, value: s, error: "PAN must be 10 characters." };
+    return { ok: false, value: s, error: "PAN must be 10 characters, for example ABCDE1234F." };
   }
   if (!PAN_REGEX.test(s)) {
     return { ok: false, value: s, error: "Enter a valid PAN (e.g. ABCDE1234F)." };

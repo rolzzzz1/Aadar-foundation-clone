@@ -27,14 +27,14 @@ module.exports = async function handler(req, res) {
     (req.headers && (req.headers["content-length"] || req.headers["Content-Length"])) || 0
   );
   if (contentLength > MAX_BODY_BYTES) {
-    return res.status(413).json({ error: "Payload too large" });
+    return res.status(413).json({ error: "This request is too large. Please try again." });
   }
 
   const body = getJsonBody(req);
   const record = body && body.record;
   if (!record || typeof record !== "object" || record.verified !== true) {
     return res.status(400).json({
-      error: "Receipt download is available only after payment is verified.",
+      error: "Your receipt can be downloaded after the payment is confirmed.",
     });
   }
 
@@ -52,6 +52,8 @@ module.exports = async function handler(req, res) {
       "[receipt-pdf] download failed",
       err && err.message ? err.message : err
     );
-    return res.status(500).json({ error: "Could not prepare the receipt PDF." });
+    return res.status(500).json({
+      error: "We could not prepare your receipt. Please wait a moment and try again.",
+    });
   }
 };

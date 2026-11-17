@@ -25,9 +25,30 @@ function formatDetails(details) {
   return String(details);
 }
 
+const PLAIN_API_ERRORS = {
+  Forbidden: "This request could not be completed. Please refresh the page and try again.",
+  "Method not allowed": "This request could not be completed. Please refresh the page and try again.",
+  "Payload too large": "This request is too large. Please try again.",
+  "Invalid request body.": "We could not read your details. Please refresh the page and try again.",
+  "Invalid payment payload.": "We could not read this payment. Please try again.",
+  "Invalid payment_id.": "Enter a valid payment ID.",
+  "Missing RAZORPAY_KEY_SECRET":
+    "Online payment is not available right now. Please try again later or contact us.",
+  "Missing Razorpay server environment variables":
+    "Online payment is not available right now. Please try again later or contact us.",
+  "Payments are not configured.":
+    "Online payment is not available right now. Please try again later or contact us.",
+  "Could not save donation record.": "The receipt could not be saved. Please try again.",
+  "Could not update donation record.": "The receipt could not be updated. Please try again.",
+  "Could not check the existing QR payment.":
+    "We could not check the existing QR payment. Please try again.",
+  "Lookup failed": "Could not look up donations right now. Please try again.",
+};
+
 /** Turn a failed API JSON body into a user-visible message (dev hints included). */
 export function formatApiErrorMessage(data, status) {
-  const base = (data && data.error) || `Request failed (${status})`;
+  const raw = (data && data.error) || "Something went wrong. Please try again.";
+  const base = PLAIN_API_ERRORS[raw] || raw;
   const detailStr = formatDetails(data && data.details);
   let msg = detailStr && !base.includes(detailStr) ? `${base} — ${detailStr}` : base;
 
@@ -50,7 +71,7 @@ export function formatApiErrorMessage(data, status) {
       " Run npm start (starts [api] on port 3001 and [web] on 3000). If port 3001 is busy, close old terminals and restart.";
   } else if (status === 500 && lower.includes("missing razorpay")) {
     msg += " Copy .env.example to .env.local, add your test keys, then restart npm start.";
-  } else if (status === 502 && lower.includes("failed to create order")) {
+  } else if (status === 502 && lower.includes("could not start the payment")) {
     if (
       lower.includes("ssl") ||
       lower.includes("certificate") ||
@@ -88,7 +109,11 @@ export async function postJson(path, body) {
       process.env.NODE_ENV === "development"
         ? " Run npm start (not npm run start:web alone). If port 3001 is busy, close old terminals first."
         : "";
-    throw new Error(`Could not reach the payment API.${hint} ${(err && err.message) || err}`);
+    throw new Error(
+      hint
+        ? `Could not reach the payment API.${hint} ${(err && err.message) || err}`
+        : "We could not reach the payment service. Please check your connection and try again."
+    );
   }
 
   const data = await res.json().catch(() => ({}));

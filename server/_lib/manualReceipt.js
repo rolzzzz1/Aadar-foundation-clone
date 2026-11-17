@@ -22,7 +22,11 @@ function normalizeBankRef(value) {
 function validateBankRef(value) {
   const normalized = normalizeBankRef(value);
   if (normalized.length < BANK_REF_MIN || !BANK_REF_REGEX.test(normalized)) {
-    return { ok: false, value: normalized, error: "Invalid bank transaction reference." };
+    return {
+      ok: false,
+      value: normalized,
+      error: "Enter the bank transfer reference from the bank SMS or receipt.",
+    };
   }
   return { ok: true, value: normalized };
 }
@@ -63,7 +67,7 @@ function buildManualDonationRecord(body) {
 
   const amountInr = Math.round(Number(body.amount_inr ?? body.amountInr ?? body.amount));
   if (!Number.isFinite(amountInr) || amountInr < 1 || amountInr > 500000) {
-    return { ok: false, error: "Invalid donation amount." };
+    return { ok: false, error: "Enter the donation amount in whole rupees." };
   }
 
   const paidAtCheck = validatePaidAt(body.paid_at || body.paidAt);
@@ -79,11 +83,11 @@ function buildManualDonationRecord(body) {
 
   const contact = normalizeContact(body.donor_contact || body.contact || body.mobile);
   if (contact.length !== 10)
-    return { ok: false, error: "Valid 10-digit mobile number is required." };
+    return { ok: false, error: "Enter a valid 10-digit mobile number." };
 
   const email = sanitizeText(body.donor_email || body.email || "", EMAIL_MAX).toLowerCase();
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return { ok: false, error: "Valid donor email is required." };
+    return { ok: false, error: "Enter a valid email address." };
   }
 
   const address = sanitizeText(body.donor_address || body.address || "", 200);
@@ -91,7 +95,7 @@ function buildManualDonationRecord(body) {
   const city = sanitizeText(body.donor_city || body.city || "", 80);
   const pin = sanitizeText(body.donor_pin || body.pin || "", 6);
   if (!address || !state || !city || pin.length !== 6) {
-    return { ok: false, error: "Complete donor address is required for the receipt." };
+    return { ok: false, error: "Enter the full address, including state, city, and a 6-digit PIN code." };
   }
 
   return {
@@ -134,12 +138,12 @@ function buildDonorDetailUpdate(body) {
 
   const contact = normalizeContact(body.donor_contact || body.contact || body.mobile);
   if (contact.length !== 10) {
-    return { ok: false, error: "Valid 10-digit mobile number is required." };
+    return { ok: false, error: "Enter a valid 10-digit mobile number." };
   }
 
   const email = sanitizeText(body.donor_email || body.email || "", EMAIL_MAX).toLowerCase();
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return { ok: false, error: "Valid donor email is required." };
+    return { ok: false, error: "Enter a valid email address." };
   }
 
   const pan = normalizePan(body.donor_pan || body.pan);
@@ -152,7 +156,7 @@ function buildDonorDetailUpdate(body) {
   const city = sanitizeText(body.donor_city || body.city || "", 80);
   const pin = sanitizeText(body.donor_pin || body.pin || "", 6).replace(/\D/g, "");
   if (!address || !state || !city || pin.length !== 6) {
-    return { ok: false, error: "Complete donor address is required for the receipt." };
+    return { ok: false, error: "Enter the full address, including state, city, and a 6-digit PIN code." };
   }
 
   return {

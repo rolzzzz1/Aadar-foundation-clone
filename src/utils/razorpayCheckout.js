@@ -138,11 +138,13 @@ export function formatRazorpayPaymentFailedError(err, { testMode = false } = {})
         "not a real card, Google Pay, or PhonePe. After changing .env keys, stop and run npm start again."
       );
     }
-    return (
-      "Payment authentication failed. Ensure live Razorpay keys match on the server and checkout, " +
-      "then try again or use another payment method."
-    );
+    return "The payment could not be confirmed. Please try again, or use another payment method.";
   }
 
-  return description || "Payment failed at the bank or wallet.";
+  const text = String(description || "").trim();
+  const looksTechnical = !text || /^[A-Z0-9_ .:/-]+$/.test(text);
+  if (looksTechnical) {
+    return "The payment did not go through. No donation was taken. Please try again.";
+  }
+  return text;
 }

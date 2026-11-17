@@ -32,7 +32,7 @@ function verifyAdminCredentials(req, body) {
 
   if (!configuredSecret) {
     if (isProduction()) {
-      return { ok: false, status: 503, error: "Admin receipt issuing is not enabled." };
+      return { ok: false, status: 503, error: "Creating receipts is not available right now." };
     }
     return { ok: true };
   }

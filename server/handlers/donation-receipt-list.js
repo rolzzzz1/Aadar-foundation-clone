@@ -73,8 +73,13 @@ module.exports = async function handler(req, res) {
     });
   } catch (err) {
     if (!isProduction()) {
-      return res.status(502).json({ error: "Could not fetch donations.", details: err.message });
+      return res.status(502).json({
+        error: "We could not load your donations right now. Please try again.",
+        details: err.message,
+      });
     }
-    return res.status(502).json({ error: "Could not fetch donations." });
+    return res.status(502).json({
+      error: "We could not load your donations right now. Please try again.",
+    });
   }
 };

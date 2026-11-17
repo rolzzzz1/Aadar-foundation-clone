@@ -40,7 +40,7 @@ module.exports = async function handler(req, res) {
 
   const resendSecret = process.env.RECEIPT_RESEND_SECRET || "";
   if (isProduction() && !resendSecret) {
-    return res.status(503).json({ error: "Receipt resend is not enabled." });
+    return res.status(503).json({ error: "Sending the receipt by email is not available right now." });
   }
 
   const body = getJsonBody(req) || {};
