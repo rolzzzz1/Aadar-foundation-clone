@@ -27,7 +27,8 @@ function formatDetails(details) {
 
 const PLAIN_API_ERRORS = {
   Forbidden: "This request could not be completed. Please refresh the page and try again.",
-  "Method not allowed": "This request could not be completed. Please refresh the page and try again.",
+  "Method not allowed":
+    "This request could not be completed. Please refresh the page and try again.",
   "Payload too large": "This request is too large. Please try again.",
   "Invalid request body.": "We could not read your details. Please refresh the page and try again.",
   "Invalid payment payload.": "We could not read this payment. Please try again.",
