@@ -6,7 +6,7 @@ const ORG_BASE = {
     "Swarg sadan ashram - Sarkari Malti, Behind Muktidham, Guda Gudi Ka Naka, Gwalior, MP 474001",
   pan: "AAIAA2457N",
   email: "aadarfoundation2018@gmail.com",
-  phone: "+91 9039129571",
+  phone: "+91 9630982392, +91 9039129571",
   website: "https://www.aadarfoundation.org/",
 };
 

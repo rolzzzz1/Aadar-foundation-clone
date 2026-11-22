@@ -46,7 +46,8 @@ const payOrange = "#e67e22";
 
 /** Support contact shown on the receipt-recovery form only */
 const RECEIPT_LOOKUP_SUPPORT_EMAIL = "aadarfoundation.tech@gmail.com";
-const RECEIPT_LOOKUP_SUPPORT_PHONE = "+91 9826441863";
+const RECEIPT_LOOKUP_SUPPORT_PHONES = ["+91 9630982392", "+91 9039129571"];
+const RECEIPT_LOOKUP_SUPPORT_PHONE = RECEIPT_LOOKUP_SUPPORT_PHONES.join(", ");
 
 function needsServerConfirm(r) {
   if (!r) return false;
@@ -910,13 +911,16 @@ export default function DonationResultPage() {
                   >
                     {RECEIPT_LOOKUP_SUPPORT_EMAIL}
                   </Link>
-                  <Link
-                    href={`tel:${RECEIPT_LOOKUP_SUPPORT_PHONE.replace(/\s/g, "")}`}
-                    underline="hover"
-                    sx={{ ...lookupBodyText, fontWeight: 700, color: brandGreen }}
-                  >
-                    {RECEIPT_LOOKUP_SUPPORT_PHONE}
-                  </Link>
+                  {RECEIPT_LOOKUP_SUPPORT_PHONES.map((phone) => (
+                    <Link
+                      key={phone}
+                      href={`tel:${phone.replace(/\s/g, "")}`}
+                      underline="hover"
+                      sx={{ ...lookupBodyText, fontWeight: 700, color: brandGreen }}
+                    >
+                      {phone}
+                    </Link>
+                  ))}
                 </Stack>
               </Box>
             </Grid>
