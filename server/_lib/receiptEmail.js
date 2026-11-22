@@ -1,4 +1,5 @@
 const { buildOfficialReceiptPdf } = require("./receiptPdfServer");
+const { readLogoBuffer } = require("./receiptHtmlServer");
 const { donationRowToReceiptRecord, isCapturedStatus } = require("./receiptRecord");
 const { markReceiptEmailSent } = require("./donationRecord");
 const { buildReceiptViewModel } = require("./receiptFormatServer");
@@ -122,6 +123,19 @@ function displaySiteUrl(url) {
     .replace(/\/$/, "");
 }
 
+const LOGO_CID = "aadar-logo";
+
+function emailLogoHtml(logoSrc) {
+  if (!logoSrc) return "";
+  return `<table role="presentation" align="center" cellpadding="0" cellspacing="0" style="margin:0 auto 14px;">
+    <tr>
+      <td align="center" style="background:#ffffff;border-radius:50%;padding:4px;line-height:0;">
+        <img src="${escapeHtml(logoSrc)}" width="76" height="76" alt="${escapeHtml(ORG.name)}" style="display:block;width:76px;height:76px;border:0;border-radius:50%;outline:none;text-decoration:none;" />
+      </td>
+    </tr>
+  </table>`;
+}
+
 function phoneLinksHtml() {
   return ORG.phones
     .map((phone) => {
@@ -171,7 +185,7 @@ function buildReceiptEmailText(record) {
  * HTML letter shown above the attached receipt PDF.
  * Tables and inline styles so Gmail and Outlook keep the layout.
  */
-function buildReceiptEmailHtml(record, { siteUrl } = {}) {
+function buildReceiptEmailHtml(record, { siteUrl, logoSrc = `cid:${LOGO_CID}` } = {}) {
   const donor = record.donor || {};
   const copy = emailCopy(record);
   const vm = buildReceiptViewModel(record);
@@ -190,7 +204,8 @@ function buildReceiptEmailHtml(record, { siteUrl } = {}) {
       <td align="center" style="padding:24px 12px;">
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border:1px solid #d7e6da;border-radius:12px;overflow:hidden;font-family:Segoe UI,Helvetica,Arial,sans-serif;color:#1f2a44;">
           <tr>
-            <td style="background:#1b5e20;padding:22px 24px;">
+            <td align="center" style="background:#1b5e20;padding:22px 24px;text-align:center;">
+              ${emailLogoHtml(logoSrc)}
               <div style="font-size:12px;letter-spacing:0.04em;color:#d7f0dc;">${escapeHtml(copy.receiptLabel)}</div>
               <div style="margin-top:6px;font-size:22px;line-height:1.3;font-weight:700;color:#ffffff;">${escapeHtml(ORG.name)}</div>
               <div style="margin-top:4px;font-size:13px;line-height:1.4;color:#e7f6ea;">${escapeHtml(ORG.subtitle)}</div>
@@ -295,7 +310,11 @@ async function sendDonationReceiptEmail(row, options = {}) {
   }
 
   const siteUrl = getSiteUrl();
-  const html = buildReceiptEmailHtml(record, { siteUrl });
+  const logoBuffer = readLogoBuffer();
+  const html = buildReceiptEmailHtml(record, {
+    siteUrl,
+    logoSrc: logoBuffer ? `cid:${LOGO_CID}` : "",
+  });
   const text = buildReceiptEmailText(record);
   const amount = formatAmountInr(record.amountInr);
   const copy = emailCopy(record);
@@ -312,6 +331,14 @@ async function sendDonationReceiptEmail(row, options = {}) {
       content_type: "application/pdf",
     },
   ];
+  if (logoBuffer) {
+    attachments.push({
+      filename: "aadar-logo.jpg",
+      content: logoBuffer.toString("base64"),
+      content_type: "image/jpeg",
+      content_id: LOGO_CID,
+    });
+  }
 
   // Resend tags must be ASCII-safe; bank UTR payment ids often have spaces/symbols.
   const safeTag = (value) =>
